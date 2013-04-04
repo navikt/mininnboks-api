@@ -8,6 +8,11 @@
 
     <session-config>
         <session-timeout>60</session-timeout>
+        <cookie-config>
+            <name>MINEHENVENDELSER_JSESSIONID</name>
+            <http-only>true</http-only>
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
     <listener>
