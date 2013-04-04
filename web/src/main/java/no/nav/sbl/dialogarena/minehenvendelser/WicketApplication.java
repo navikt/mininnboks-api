@@ -9,6 +9,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.pages.error.NotFoundPage;
 import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
+import org.apache.wicket.core.request.mapper.CryptoMapper;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.settings.IApplicationSettings;
 import org.apache.wicket.settings.IExceptionSettings;
@@ -71,6 +72,8 @@ public class WicketApplication extends WebApplication {
         mountPage("error/ikke-adgang", DeniedPage.class);
         mountPage("error/server-feil", ErrorPage.class);
         mountPage("error/ikke-funnet", NotFoundPage.class);
+
+        setRootRequestMapper(new CryptoMapper(getRootRequestMapper(), this));
 
         setSpringComponentInjector();
     }
