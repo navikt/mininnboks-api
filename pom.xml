@@ -20,7 +20,7 @@
         <module>wsmock-web</module>
     </modules>
     <properties>
-        <wicket.version>6.2.0</wicket.version>
+        <wicket.version>6.6.0</wicket.version>
         <spring.version>3.1.3.RELEASE</spring.version>
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
         <nav.sbl.commons.version>3.19</nav.sbl.commons.version>
@@ -41,7 +41,7 @@
         <commons.io.version>2.4</commons.io.version>
         <collections.generic.version>4.01</collections.generic.version>
         <jsoup.version>1.7.2</jsoup.version>
-        <servlet.api.version>2.5</servlet.api.version>
+        <servlet.api.version>3.0.1</servlet.api.version>
         <fitnesse.version>20111026</fitnesse.version>
         <fitlibrary.version>2.0</fitlibrary.version>
         <cxf.version>2.7.3</cxf.version>
@@ -210,7 +210,7 @@
 
             <dependency>
                 <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
+                <artifactId>javax.servlet-api</artifactId>
                 <version>${servlet.api.version}</version>
                 <scope>provided</scope>
             </dependency>
