@@ -14,7 +14,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
 
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApplicationContextConsumer.class})

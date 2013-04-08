@@ -67,7 +67,7 @@ public class Behandling {
 		return dokumentforventninger.getDokumentforventningList();
 	}
 
-	public static Transformer<Behandling, String> STATUS = new Transformer<Behandling, String>() {
+	public static final Transformer<Behandling, String> STATUS = new Transformer<Behandling, String>() {
 		@Override
 		public String transform(Behandling behandling) {
 			return behandling.getStatus();
@@ -75,16 +75,16 @@ public class Behandling {
 	};
 
     public String getTittel() {
-        return "TITTEL FRA KODEVERK";
+        return "Tittel fra kodeverk";
     }
 
     public int getAntallFerdigeDokumenter() {
         int antallFerdige = 0;
-        for( Dokumentforventning dok : dokumentforventninger.getDokumentforventningList()){
-            if(dok.isHovedskjema()){
+        for (Dokumentforventning dok : dokumentforventninger.getDokumentforventningList()) {
+            if(dok.isHovedskjema()) {
                 continue;
             }
-            if(dok.erInnsendt()){
+            if(dok.erInnsendt()) {
                 antallFerdige++;
             }
         }

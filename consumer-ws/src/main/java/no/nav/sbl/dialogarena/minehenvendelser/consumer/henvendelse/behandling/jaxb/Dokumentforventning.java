@@ -32,6 +32,6 @@ public class Dokumentforventning {
     }
 
     public boolean erInnsendt() {
-        return innsendingsvalg.equals("DIGITAL");
+        return "DIGITAL".equals(innsendingsvalg);
     }
 }

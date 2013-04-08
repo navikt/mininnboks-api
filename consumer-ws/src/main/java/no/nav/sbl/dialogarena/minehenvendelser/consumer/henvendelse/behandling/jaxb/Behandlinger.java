@@ -1,7 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -11,12 +9,12 @@ import java.util.List;
 public class Behandlinger {
 
     @XmlElement(name = "Behandling")
-    private List<Behandling> behandlinger;
+    private List<Behandling> behandlingerList;
 
     public List<Behandling> getBehandlingerList() {
-        if(behandlinger == null){
-            behandlinger = new ArrayList<>();
+        if(behandlingerList == null){
+            behandlingerList = new ArrayList<>();
         }
-        return behandlinger;
+        return behandlingerList;
     }
 }
