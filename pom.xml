@@ -26,8 +26,8 @@
         <nav.sbl.commons.version>3.19</nav.sbl.commons.version>
         <modig.wicket.test.version>0.3.1</modig.wicket.test.version>
         <modig.wicket.version>0.3.0</modig.wicket.version>
-        <modig.fitnesse.version>0.3.1</modig.fitnesse.version>
-        <modig.lang.version>0.3.1</modig.lang.version>
+        <modig.fitnesse.version>0.4.0</modig.fitnesse.version>
+        <modig.lang.version>0.4.0</modig.lang.version>
         <modig.frontend.bootstrap.version>0.3.0</modig.frontend.bootstrap.version>
         <modig.frontend.wicket.version>0.3.0</modig.frontend.wicket.version>
         <nav.sbl.felles.commons.security.version>3.24</nav.sbl.felles.commons.security.version>
@@ -48,6 +48,7 @@
         <webbit.version>0.4.14</webbit.version>
         <reflections.version>0.9.8</reflections.version>
         <junit.dep.version>4.10</junit.dep.version>
+        <joda.time.version>2.2</joda.time.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -140,6 +141,11 @@
                 <groupId>net.sourceforge.collections</groupId>
                 <artifactId>collections-generic</artifactId>
                 <version>${collections.generic.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda.time.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>

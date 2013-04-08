@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org" lang="no">
-    <wicket:head>
-        <title></title>
-    </wicket:head>
-    <wicket:extend>
-        <wicket:container wicket:id="year"/>
-        <h1>Halla balla!</h1>
-    </wicket:extend>
+<wicket:head>
+    <title></title>
+</wicket:head>
+<wicket:extend>
+    <h1>SØKNADER</h1>
+    Under arbeid
+    <ul>
+        <li wicket:id="behandlingerUnderArbeid">
+            <section>
+                <p wicket:id="brukerBehandlingsId"></p>
+            </section>
+        </li>
+
+
+    </ul>
+    Ferdige henvendelser
+    <ul>
+        <li wicket:id="behandlingerFerdig">
+            <article>
+                <section>
+                    <p wicket:id="brukerBehandlingsId"></p>
+                </section>
+            </article>
+        </li>
+    </ul>
+
+</wicket:extend>
 </html>
