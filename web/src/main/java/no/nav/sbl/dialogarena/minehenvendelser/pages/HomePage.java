@@ -1,8 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandlig.BehandlingConsumer;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandlig.BehandlingDTO;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingConsumer;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingDTO;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -15,7 +15,8 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandlig.BehandlingDTO.Behandlingsstatus;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingDTO.FERDIG;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingDTO.UNDER_ARBEID;
 
 
 public class HomePage extends BasePage {
@@ -36,8 +37,8 @@ public class HomePage extends BasePage {
             }
         };
 
-        IModel<List<BehandlingDTO>> underArbeid = new BehandlingerLDM(model, Behandlingsstatus.UNDER_ARBEID);
-        IModel<List<BehandlingDTO>> ferdig = new BehandlingerLDM(model, Behandlingsstatus.FERDIG);
+        IModel<List<BehandlingDTO>> underArbeid = new BehandlingerLDM(model, UNDER_ARBEID);
+        IModel<List<BehandlingDTO>> ferdig = new BehandlingerLDM(model, FERDIG);
 
         add(createUnderArbeidView(underArbeid));
         add(createFerdigView(ferdig));
@@ -66,9 +67,9 @@ public class HomePage extends BasePage {
     private static class BehandlingerLDM extends LoadableDetachableModel<List<BehandlingDTO>> {
 
         private IModel<List<BehandlingDTO>> parentModel;
-        private final Behandlingsstatus status;
+        private final String status;
 
-        BehandlingerLDM (IModel<List<BehandlingDTO>> parentModel, Behandlingsstatus status) {
+        BehandlingerLDM (IModel<List<BehandlingDTO>> parentModel, String status) {
             this.parentModel = parentModel;
             this.status = status;
         }

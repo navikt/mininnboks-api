@@ -1,10 +1,10 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandlig;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandlig.BehandlingDTO.Behandlingsstatus.FERDIG;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandlig.BehandlingDTO.Behandlingsstatus.UNDER_ARBEID;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingDTO.FERDIG;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingDTO.UNDER_ARBEID;
 
 public class BehandlingConsumer {
 

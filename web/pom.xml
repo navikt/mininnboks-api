@@ -249,7 +249,7 @@
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.webbitserver</groupId>
             <artifactId>webbit</artifactId>

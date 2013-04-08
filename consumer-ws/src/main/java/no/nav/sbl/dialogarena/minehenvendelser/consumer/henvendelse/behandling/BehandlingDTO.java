@@ -1,30 +1,50 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandlig;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.adapter.DateTimeAdapterXml;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlRootElement(name = "Behandling" , namespace = "http://service.provider.henvendelse.dialogarena.sbl.nav.no")
 public class BehandlingDTO {
 
+    @XmlElement
 	private String brukerBehandlingsId;
-	private Behandlingsstatus status;
-	private String hovedkravskjemaId;
-	private String behandligstype;
-	private DateTime sistEndret;
-	private DateTime innsendtDato;
-	private List<DokumentforventningDTO> dokumentforventninger;
 
-	public enum Behandlingsstatus {
-		UNDER_ARBEID, FERDIG
-	};
+    @XmlElement
+	private String status;
+
+    @XmlElement
+    private String hovedkravskjemaId;
+
+    @XmlElement
+    private String behandlingstype;
+
+    @XmlElement
+    @XmlJavaTypeAdapter(DateTimeAdapterXml.class)
+    private DateTime sistEndret;
+
+    @XmlElement
+    @XmlJavaTypeAdapter(DateTimeAdapterXml.class)
+    private DateTime innsendtDato;
+
+    @XmlElement
+    private List<DokumentforventningDTO> dokumentforventninger;
+
+    public static final String UNDER_ARBEID = "UNDER_ARBEID";
+    public static final String FERDIG= "FERDIG";
+
 
 	public String getBrukerBehandlingsId() {
 		return brukerBehandlingsId;
 	}
 
-	public Behandlingsstatus getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
@@ -36,8 +56,8 @@ public class BehandlingDTO {
 		return hovedkravskjemaId;
 	}
 
-	public String getBehandligstype() {
-		return behandligstype;
+	public String getBehandlingstype() {
+		return behandlingstype;
 	}
 
 	public DateTime getSistEndret() {
@@ -55,9 +75,9 @@ public class BehandlingDTO {
 		return dokumentforventninger;
 	}
 
-	public static Transformer<BehandlingDTO, Behandlingsstatus> STATUS = new Transformer<BehandlingDTO, Behandlingsstatus>() {
+	public static Transformer<BehandlingDTO, String> STATUS = new Transformer<BehandlingDTO, String>() {
 		@Override
-		public Behandlingsstatus transform(BehandlingDTO behandlingDTO) {
+		public String transform(BehandlingDTO behandlingDTO) {
 			return behandlingDTO.getStatus();
 		}
 	};
@@ -79,7 +99,7 @@ public class BehandlingDTO {
 			return this;
 		}
 		
-		public Builder status(Behandlingsstatus status){
+		public Builder status(String status){
 			dto.status = status;
 			return this;
 		}
@@ -90,7 +110,7 @@ public class BehandlingDTO {
 		}
 		
 		public Builder behandlingsType(String type){
-			dto.behandligstype = type;
+			dto.behandlingstype = type;
 			return this;
 		}
 		

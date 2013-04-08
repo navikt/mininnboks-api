@@ -3,6 +3,8 @@
            xmlns:behandling="http://service.provider.henvendelse.dialogarena.sbl.nav.no"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+    <xs:element name="Behandlinger" type="behandling:Behandlinger"/>
+
     <xs:complexType name="Behandlinger">
         <xs:sequence>
             <xs:element type="behandling:Behandling" name="Behandling"  minOccurs="0" maxOccurs="unbounded"/>
