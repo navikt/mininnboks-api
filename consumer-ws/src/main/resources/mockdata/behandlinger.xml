@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ser:Behandlinger xmlns:ser="http://service.provider.henvendelse.dialogarena.sbl.nav.no">
+    <!--Zero or more repetitions:-->
+    <Behandling>
+        <brukerBehandlingsId>10</brukerBehandlingsId>
+        <status>UNDER_ARBEID</status>
+        <hovedkravskjemaId>skjema1</hovedkravskjemaId>
+        <behandlingstype>SOKNAD</behandlingstype>
+        <sistEndret>2013-04-01T03:49:45</sistEndret>
+        <dokumentforventninger>
+            <!--Zero or more repetitions:-->
+            <dokumentforventning>
+                <skjemaId>LEGE</skjemaId>
+                <egendefinertTittel></egendefinertTittel>
+                <innsendingsvalg>DIGITAL</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+            </dokumentforventning>
+            <dokumentforventning>
+                <skjemaId>LEGE</skjemaId>
+                <egendefinertTittel></egendefinertTittel>
+                <innsendingsvalg>IKKE_SENDT</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+            </dokumentforventning>
+            <dokumentforventning>
+                <skjemaId>EGENDEF</skjemaId>
+                <egendefinertTittel>CV</egendefinertTittel>
+                <innsendingsvalg>IKKE_SENDT</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+            </dokumentforventning>
+            <dokumentforventning>
+                <skjemaId>skjema1</skjemaId>
+                <egendefinertTittel></egendefinertTittel>
+                <innsendingsvalg>DIGITAL</innsendingsvalg>
+                <hovedskjema>true</hovedskjema>
+            </dokumentforventning>
+        </dokumentforventninger>
+    </Behandling>
+    <Behandling>
+        <brukerBehandlingsId>2</brukerBehandlingsId>
+        <status>FERDIG</status>
+        <hovedkravskjemaId>skjema2</hovedkravskjemaId>
+        <behandlingstype>SOKNAD</behandlingstype>
+        <sistEndret>2013-03-01T03:49:45</sistEndret>
+        <innsendtDato>2013-03-01T03:49:45</innsendtDato>
+        <dokumentforventninger>
+            <!--Zero or more repetitions:-->
+            <dokumentforventning>
+                <skjemaId>LEGE</skjemaId>
+                <egendefinertTittel></egendefinertTittel>
+                <innsendingsvalg>DIGITAL</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+            </dokumentforventning>
+            <dokumentforventning>
+                <skjemaId>skjema2</skjemaId>
+                <egendefinertTittel></egendefinertTittel>
+                <innsendingsvalg>DIGITAL</innsendingsvalg>
+                <hovedskjema>true</hovedskjema>
+            </dokumentforventning>
+        </dokumentforventninger>
+    </Behandling>
+</ser:Behandlinger>

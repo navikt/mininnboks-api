@@ -2,7 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingConsumer;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingDTO;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -15,8 +15,8 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingDTO.FERDIG;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingDTO.UNDER_ARBEID;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.FERDIG;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.UNDER_ARBEID;
 
 
 public class HomePage extends BasePage {
@@ -30,53 +30,57 @@ public class HomePage extends BasePage {
     }
 
     public HomePage() {
-        IModel<List<BehandlingDTO>> model = new LoadableDetachableModel<List<BehandlingDTO>>() {
+        IModel<List<Behandling>> model = new LoadableDetachableModel<List<Behandling>>() {
             @Override
-            protected List<BehandlingDTO> load() {
+            protected List<Behandling> load() {
                 return behandlingConsumer.hentBehandlinger(hentAktorId());
             }
         };
 
-        IModel<List<BehandlingDTO>> underArbeid = new BehandlingerLDM(model, UNDER_ARBEID);
-        IModel<List<BehandlingDTO>> ferdig = new BehandlingerLDM(model, FERDIG);
+        IModel<List<Behandling>> underArbeid = new BehandlingerLDM(model, UNDER_ARBEID);
+        IModel<List<Behandling>> ferdig = new BehandlingerLDM(model, FERDIG);
 
         add(createUnderArbeidView(underArbeid));
         add(createFerdigView(ferdig));
     }
 
-    private PropertyListView<BehandlingDTO> createFerdigView(final IModel<List<BehandlingDTO>> ferdig) {
-        return new PropertyListView<BehandlingDTO>("behandlingerFerdig", ferdig) {
+    private PropertyListView<Behandling> createFerdigView(final IModel<List<Behandling>> ferdig) {
+        return new PropertyListView<Behandling>("behandlingerFerdig", ferdig) {
 
             @Override
-            public void populateItem(final ListItem<BehandlingDTO> listItem) {
+            public void populateItem(final ListItem<Behandling> listItem) {
                 listItem.add(new Label("brukerBehandlingsId"));
             }
         };
     }
 
-    private PropertyListView<BehandlingDTO> createUnderArbeidView(final IModel<List<BehandlingDTO>> underArbeid) {
-        return new PropertyListView<BehandlingDTO>("behandlingerUnderArbeid", underArbeid) {
+    private PropertyListView<Behandling> createUnderArbeidView(final IModel<List<Behandling>> underArbeid) {
+        return new PropertyListView<Behandling>("behandlingerUnderArbeid", underArbeid) {
 
             @Override
-            public void populateItem(final ListItem<BehandlingDTO> listItem) {
-                listItem.add(new Label("brukerBehandlingsId"));
+            public void populateItem(final ListItem<Behandling> listItem) {
+                Behandling item = listItem.getModelObject();
+                listItem.add(new Label("tittel", item.getTittel()));
+                listItem.add(new Label("sistEndret", item.getSistEndret()));
+                listItem.add(new Label("antallFerdige", item.getAntallFerdigeDokumenter()));
+                listItem.add(new Label("antallTotalt", item.getAntallSubDokumenter()));
             }
         };
     }
 
-    private static class BehandlingerLDM extends LoadableDetachableModel<List<BehandlingDTO>> {
+    private static class BehandlingerLDM extends LoadableDetachableModel<List<Behandling>> {
 
-        private IModel<List<BehandlingDTO>> parentModel;
+        private IModel<List<Behandling>> parentModel;
         private final String status;
 
-        BehandlingerLDM (IModel<List<BehandlingDTO>> parentModel, String status) {
+        BehandlingerLDM (IModel<List<Behandling>> parentModel, String status) {
             this.parentModel = parentModel;
             this.status = status;
         }
 
         @Override
-        protected List<BehandlingDTO> load() {
-            return on(parentModel.getObject()).filter(where(BehandlingDTO.STATUS, equalTo(status))).collect();
+        protected List<Behandling> load() {
+            return on(parentModel.getObject()).filter(where(Behandling.STATUS, equalTo(status))).collect();
         }
 
         @Override

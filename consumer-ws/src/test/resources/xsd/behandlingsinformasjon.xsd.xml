@@ -10,12 +10,12 @@
         <innsendtDato>2014-09-19T01:18:33</innsendtDato>
         <dokumentforventninger>
             <!--Zero or more repetitions:-->
-            <!--<dokumentforventning>-->
-                <!--<skjemaId>skjemaID-LEGE</skjemaId>-->
-                <!--<egendefinertTittel>tittel-CV</egendefinertTittel>-->
-                <!--<innsendingsvalg>type-ELEK</innsendingsvalg>-->
-                <!--<hovedskjema>true</hovedskjema>-->
-            <!--</dokumentforventning>-->
+            <dokumentforventning>
+                <skjemaId>skjemaID-LEGE</skjemaId>
+                <egendefinertTittel>tittel-CV</egendefinertTittel>
+                <innsendingsvalg>type-ELEK</innsendingsvalg>
+                <hovedskjema>true</hovedskjema>
+            </dokumentforventning>
         </dokumentforventninger>
     </Behandling>
 </ser:Behandlinger>

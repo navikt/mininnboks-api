@@ -1,32 +1,16 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
-import java.util.ArrayList;
-import java.util.List;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingDTO.FERDIG;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingDTO.UNDER_ARBEID;
+import javax.inject.Inject;
+import java.util.List;
 
 public class BehandlingConsumer {
 
-    public List<BehandlingDTO> hentBehandlinger(String aktorId) {
-        List<BehandlingDTO> behandlinger = new ArrayList<>();
-        
-        BehandlingDTO behandling = BehandlingDTO.getBuilder()
-        		.brukerBehandlingsId("ID")
-        		.status(UNDER_ARBEID)
-        		.create();
-        behandlinger.add(behandling);
-        behandling = BehandlingDTO.getBuilder()
-        		.brukerBehandlingsId("ID2")
-        		.status(FERDIG).create();
-        behandlinger.add(behandling);
+    @Inject
+    private BehandlingService behandlingService;
 
-        behandling = BehandlingDTO.getBuilder()
-        		.brukerBehandlingsId("ID3")
-        		.status(FERDIG).create();
-        behandlinger.add(behandling);
-
-        return behandlinger;
-
+    public List<Behandling> hentBehandlinger(String aktoerId) {
+        return behandlingService.hentBehandlinger(aktoerId).getBehandlingerList();
     }
 }
