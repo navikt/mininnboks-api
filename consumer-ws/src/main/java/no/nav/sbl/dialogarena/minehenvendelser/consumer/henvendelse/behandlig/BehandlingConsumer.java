@@ -10,13 +10,20 @@ public class BehandlingConsumer {
 
     public List<BehandlingDTO> hentBehandlinger(String aktorId) {
         List<BehandlingDTO> behandlinger = new ArrayList<>();
-        BehandlingDTO behandling = new BehandlingDTO();
-        behandling.setBrukerBehandlingsId("ID");
-        behandling.setStatus(UNDER_ARBEID);
+        
+        BehandlingDTO behandling = BehandlingDTO.getBuilder()
+        		.brukerBehandlingsId("ID")
+        		.status(UNDER_ARBEID)
+        		.create();
         behandlinger.add(behandling);
-        behandling = new BehandlingDTO();
-        behandling.setBrukerBehandlingsId("ID2");
-        behandling.setStatus(FERDIG);
+        behandling = BehandlingDTO.getBuilder()
+        		.brukerBehandlingsId("ID2")
+        		.status(FERDIG).create();
+        behandlinger.add(behandling);
+
+        behandling = BehandlingDTO.getBuilder()
+        		.brukerBehandlingsId("ID3")
+        		.status(FERDIG).create();
         behandlinger.add(behandling);
 
         return behandlinger;
