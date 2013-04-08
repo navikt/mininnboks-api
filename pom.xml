@@ -19,6 +19,7 @@
         <module>wsmock</module>
         <module>wsmock-web</module>
     </modules>
+    <!-- test -->
     <properties>
         <wicket.version>6.6.0</wicket.version>
         <spring.version>3.1.3.RELEASE</spring.version>
