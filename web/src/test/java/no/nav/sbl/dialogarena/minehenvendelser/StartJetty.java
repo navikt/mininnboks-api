@@ -14,6 +14,8 @@ public final class StartJetty {
 
     public static void main(String[] args) {
         Jetty jetty = usingWar(WEBAPP_SOURCE).at("minehenvendelser").port(PORT).buildJetty();
+
+        System.setProperty("spring.profiles.active", "test");
         jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));
     }
 

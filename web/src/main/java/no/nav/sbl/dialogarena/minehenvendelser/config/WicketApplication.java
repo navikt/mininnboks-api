@@ -1,7 +1,8 @@
-package no.nav.sbl.dialogarena.minehenvendelser;
+package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.frontend.MetaTag;
+import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.error.DeniedPage;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.error.ErrorPage;
@@ -15,15 +16,16 @@ import org.apache.wicket.settings.IApplicationSettings;
 import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.settings.IMarkupSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+
+import javax.inject.Inject;
 
 import static no.nav.modig.frontend.FrontendModules.ALL;
 
 
 public class WicketApplication extends WebApplication {
 
-    @Autowired
+    @Inject
     private ApplicationContext applicationContext;
 
     public static WicketApplication get() {

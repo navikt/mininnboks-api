@@ -2,7 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingConsumer;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
 import org.apache.wicket.markup.html.basic.Label;
@@ -25,8 +25,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 public class HomePage extends BasePage {
 
     @Inject
-    private BehandlingConsumer behandlingConsumer;
-
+    private BehandlingService behandlingService;
 
     private String hentAktorId() {
         return "aktor";
@@ -36,7 +35,7 @@ public class HomePage extends BasePage {
         IModel<List<Behandling>> model = new LoadableDetachableModel<List<Behandling>>() {
             @Override
             protected List<Behandling> load() {
-                return behandlingConsumer.hentBehandlinger(hentAktorId());
+                return behandlingService.hentBehandlinger(hentAktorId());
             }
         };
 

@@ -1,9 +1,11 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandlinger;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
+
+import java.util.List;
 
 public interface BehandlingService {
 
-    Behandlinger hentBehandlinger(String aktoerId);
+    List<Behandling> hentBehandlinger(String aktoerId);
 
 }

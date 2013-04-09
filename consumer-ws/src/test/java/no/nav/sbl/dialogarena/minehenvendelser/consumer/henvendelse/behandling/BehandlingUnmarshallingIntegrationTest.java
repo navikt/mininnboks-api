@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.config.ApplicationContextConsumer;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandlinger;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ApplicationContextConsumer.class})
+@ContextConfiguration(classes = {ConsumerContext.class})
 public class BehandlingUnmarshallingIntegrationTest {
 
     @Inject

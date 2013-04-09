@@ -1,30 +1,23 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
-import no.nav.sbl.dialogarena.minehenvendelser.WicketApplication;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.config.ApplicationContextConsumer;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingConsumer;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
-import no.nav.sbl.dialogarena.minehenvendelser.wsmock.consumer.BehandlingServiceFilebased;
-import org.springframework.context.annotation.Bean;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerContext;
+import no.nav.sbl.dialogarena.minehenvendelser.wsmock.consumer.context.WsMockTestContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Import(ApplicationContextConsumer.class)
+@Import({WebContext.class})
 public class ApplicationContext {
 
-    @Bean
-    public WicketApplication minehenvendelserApplication() {
-        return new WicketApplication();
-    }
-    
-    @Bean
-    public BehandlingConsumer behandlingConsumer() {
-        return new BehandlingConsumer();
-    }
+    @Configuration
+    @Profile("test")
+    @Import({ConsumerContext.class, WsMockTestContext.class})
+    public static class ServiceStubContext {}
 
-    @Bean
-    public BehandlingService behandlingService() {
-        return new BehandlingServiceFilebased();
-    }
+    @Configuration
+    @Profile("default")
+    @Import(ConsumerContext.class)
+    public static class ServiceRealContext {}
+
 }

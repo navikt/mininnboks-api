@@ -22,6 +22,7 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>minehenvendelser-wsmock</artifactId>
             <version>${project.version}</version>
+            <type>test-jar</type>
         </dependency>
 
         <dependency>
