@@ -1,13 +1,18 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
+import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingConsumer;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListItemModel;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.util.ListModel;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -49,7 +54,9 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                listItem.add(new Label("brukerBehandlingsId"));
+                Behandling item = listItem.getModelObject();
+                IModel<List<Dokumentforventning>> dokModel = new ListModel<Dokumentforventning>(item.getDokumentforventninger());
+                listItem.add( new BehandlingPanel("behandling",dokModel ));
             }
         };
     }
