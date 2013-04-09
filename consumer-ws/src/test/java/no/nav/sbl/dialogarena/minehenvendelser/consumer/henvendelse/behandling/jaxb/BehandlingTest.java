@@ -9,29 +9,29 @@ import static org.mockito.Mockito.when;
 
 public class BehandlingTest {
 
+    private static final boolean NOT_HOVEDSKJEMA = false;
+    private static final boolean IS_INNSENDT = true;
+    private static final boolean NOT_INNSENDT = false;
+    private static final boolean IS_HOVEDSKJEMA = true;
+
     @Test
     public void shouldCountCorrectAmountOfAttachments(){
         Behandling behandling = new Behandling();
-        Dokumentforventning dokumentforventning1 = mock(Dokumentforventning.class);
-        Dokumentforventning dokumentforventning2 = mock(Dokumentforventning.class);
-        Dokumentforventning dokumentforventning3 = mock(Dokumentforventning.class);
-        Dokumentforventning dokumentforventning4 = mock(Dokumentforventning.class);
-        when(dokumentforventning1.isHovedskjema()).thenReturn(false);
-        when(dokumentforventning1.erInnsendt()).thenReturn(true);
-        when(dokumentforventning2.isHovedskjema()).thenReturn(false);
-        when(dokumentforventning2.erInnsendt()).thenReturn(true);
-        when(dokumentforventning3.isHovedskjema()).thenReturn(false);
-        when(dokumentforventning3.erInnsendt()).thenReturn(false);
-        when(dokumentforventning4.isHovedskjema()).thenReturn(true);
-        when(dokumentforventning4.erInnsendt()).thenReturn(false);
 
-        behandling.getDokumentforventninger().add(dokumentforventning1);
-        behandling.getDokumentforventninger().add(dokumentforventning2);
-        behandling.getDokumentforventninger().add(dokumentforventning3);
-        behandling.getDokumentforventninger().add(dokumentforventning4);
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
 
         assertThat(behandling.getAntallInnsendteDokumenter(),is(2));
         assertThat(behandling.getAntallSubDokumenter(),is(3));
+    }
+
+    private Dokumentforventning createMock(boolean isHovedskjema, boolean isInnsendt){
+        Dokumentforventning dokumentforventning = mock(Dokumentforventning.class);
+        when(dokumentforventning.isHovedskjema()).thenReturn(isHovedskjema);
+        when(dokumentforventning.erInnsendt()).thenReturn(isInnsendt);
+        return dokumentforventning;
     }
 
 }
