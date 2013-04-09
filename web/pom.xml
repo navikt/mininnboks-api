@@ -22,7 +22,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>minehenvendelser-wsmock</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

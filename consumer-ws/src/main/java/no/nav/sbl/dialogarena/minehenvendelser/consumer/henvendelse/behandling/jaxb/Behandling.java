@@ -16,6 +16,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOpps
 @XmlRootElement(name = "Behandling" , namespace = "http://service.provider.henvendelse.dialogarena.sbl.nav.no")
 public class Behandling implements Serializable {
 
+    private static final int HOVEDDOKUMENT = 1;
     @XmlElement
 	private String brukerBehandlingsId;
 
@@ -99,6 +100,6 @@ public class Behandling implements Serializable {
     }
 
     public int getAntallSubDokumenter() {
-        return  dokumentforventninger.getDokumentforventningList().size() - 1;
+        return  dokumentforventninger.getDokumentforventningList().size() - HOVEDDOKUMENT;
     }
 }
