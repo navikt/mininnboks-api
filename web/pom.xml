@@ -14,7 +14,7 @@
     <packaging>war</packaging>
     
     <properties>
-        <fitnesse.port>9977</fitnesse.port>
+        <fitnesse.port>9989</fitnesse.port>
     </properties>
 
     <dependencies>
