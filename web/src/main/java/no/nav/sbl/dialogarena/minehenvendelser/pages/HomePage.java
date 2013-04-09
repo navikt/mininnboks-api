@@ -67,7 +67,7 @@ public class HomePage extends BasePage {
                 Behandling item = listItem.getModelObject();
                 listItem.add(new Label("tittel", item.getTittel()));
                 listItem.add(new Label("sistEndret", item.getSistEndret()));
-                listItem.add(new Label("antallFerdige", item.getAntallFerdigeDokumenter()));
+                listItem.add(new Label("antallFerdige", item.getAntallInnsendteDokumenter()));
                 listItem.add(new Label("antallTotalt", item.getAntallSubDokumenter()));
             }
         };

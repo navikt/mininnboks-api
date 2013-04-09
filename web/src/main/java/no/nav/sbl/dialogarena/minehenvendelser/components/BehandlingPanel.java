@@ -2,8 +2,6 @@ package no.nav.sbl.dialogarena.minehenvendelser.components;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CMSLookup;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -33,12 +31,28 @@ public class BehandlingPanel extends Panel {
         this.behandling = behandling;
         add(
                 getDateText(),
+                getVedleggsLabel(),
                 getHeadText(),
                 getTopText(),
+                getInnsendteDokumenterHeader(),
                 dokumenterView("innsendteDokumenter", INNSENDT),
+                getManglendeDokumenterHeader(),
                 dokumenterView("manglendeDokumenter", MANGLENDE),
                 getBottomText()
         );
+    }
+
+    private Label getInnsendteDokumenterHeader() {
+        return new Label("innsendteDokumenterHeader", lookupText("innsendtDokumenterHeader"));
+    }
+
+    private Label getManglendeDokumenterHeader() {
+        return new Label("manglendeDokumenterHeader", lookupText("manglendeDokumenterHeader"));
+    }
+
+
+    private Label getVedleggsLabel() {
+        return new Label("vedlegg", lookupText("vedleggantall") + behandling.getAntallInnsendteDokumenter());
     }
 
     private PropertyListView dokumenterView(String dokumentType, boolean statusToFilter) {

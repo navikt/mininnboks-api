@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.adapter.DateTimeAdapterXml;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
@@ -11,6 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.getInnsendtedokumenter;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 @XmlRootElement(name = "Behandling" , namespace = "http://service.provider.henvendelse.dialogarena.sbl.nav.no")
@@ -68,6 +68,9 @@ public class Behandling implements Serializable {
 	}
 
 	public List<Dokumentforventning> getDokumentforventninger() {
+        if(dokumentforventninger == null){
+            dokumentforventninger = new Dokumentforventninger();
+        }
 		return dokumentforventninger.getDokumentforventningList();
 	}
 
@@ -82,9 +85,9 @@ public class Behandling implements Serializable {
         return hentKodeverk(this.getHovedkravskjemaId());
     }
 
-    public int getAntallFerdigeDokumenter() {
+    public int getAntallInnsendteDokumenter() {
         int antallFerdige = 0;
-        for (Dokumentforventning dok : dokumentforventninger.getDokumentforventningList()) {
+        for (Dokumentforventning dok : getInnsendtedokumenter(dokumentforventninger.getDokumentforventningList())) {
             if(dok.isHovedskjema()) {
                 continue;
             }

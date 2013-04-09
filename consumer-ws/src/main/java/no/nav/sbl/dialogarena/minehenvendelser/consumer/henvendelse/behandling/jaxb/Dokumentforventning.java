@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import org.apache.commons.collections15.Transformer;
 
 import javax.xml.bind.annotation.XmlElement;
