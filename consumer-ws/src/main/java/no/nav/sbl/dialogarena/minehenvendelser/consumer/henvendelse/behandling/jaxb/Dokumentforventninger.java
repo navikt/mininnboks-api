@@ -14,7 +14,7 @@ import static no.nav.modig.lang.collections.PredicateUtils.where;
 @XmlRootElement
 public class Dokumentforventninger implements Serializable {
 
-    private static final boolean NOT_HOVEDSKJEMA = false;
+    private static final boolean ER_INNSENDT = true;
     @XmlElement(name = "dokumentforventning")
     private List<Dokumentforventning> dokumentforventningList;
 
@@ -26,6 +26,6 @@ public class Dokumentforventninger implements Serializable {
     }
 
     public static List<Dokumentforventning> getInnsendtedokumenter(List<Dokumentforventning> dokumentforventningList) {
-        return on(dokumentforventningList).filter(where(Dokumentforventning.STATUS, equalTo(true))).collect();
+        return on(dokumentforventningList).filter(where(Dokumentforventning.STATUS, equalTo(ER_INNSENDT))).collect();
     }
 }

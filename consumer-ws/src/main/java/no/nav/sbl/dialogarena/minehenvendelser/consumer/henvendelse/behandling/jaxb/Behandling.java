@@ -68,7 +68,7 @@ public class Behandling implements Serializable {
 	}
 
 	public List<Dokumentforventning> getDokumentforventninger() {
-        if(dokumentforventninger == null){
+        if (dokumentforventninger == null) {
             dokumentforventninger = new Dokumentforventninger();
         }
 		return dokumentforventninger.getDokumentforventningList();
@@ -88,10 +88,10 @@ public class Behandling implements Serializable {
     public int getAntallInnsendteDokumenter() {
         int antallFerdige = 0;
         for (Dokumentforventning dok : getInnsendtedokumenter(dokumentforventninger.getDokumentforventningList())) {
-            if(dok.isHovedskjema()) {
+            if (dok.isHovedskjema()) {
                 continue;
             }
-            if(dok.erInnsendt()) {
+            if (dok.erInnsendt()) {
                 antallFerdige++;
             }
         }

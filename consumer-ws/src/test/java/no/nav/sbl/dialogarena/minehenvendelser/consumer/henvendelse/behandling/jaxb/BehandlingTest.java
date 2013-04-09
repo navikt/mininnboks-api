@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -9,12 +8,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class BehandlingTest {
-
-    @Before
-    public void setUp() throws Exception {
-
-
-    }
 
     @Test
     public void shouldCountCorrectAmountOfAttachments(){
@@ -40,4 +33,5 @@ public class BehandlingTest {
         assertThat(behandling.getAntallInnsendteDokumenter(),is(2));
         assertThat(behandling.getAntallSubDokumenter(),is(3));
     }
+
 }

@@ -12,7 +12,7 @@ public class Behandlinger {
     private List<Behandling> behandlingerList;
 
     public List<Behandling> getBehandlingerList() {
-        if(behandlingerList == null){
+        if (behandlingerList == null) {
             behandlingerList = new ArrayList<>();
         }
         return behandlingerList;
