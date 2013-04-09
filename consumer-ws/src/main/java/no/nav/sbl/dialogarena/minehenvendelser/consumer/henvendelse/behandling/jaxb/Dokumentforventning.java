@@ -1,10 +1,13 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
 
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import org.apache.commons.collections15.Transformer;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 @XmlRootElement(name = "dokumentforventning")
 public class Dokumentforventning implements Serializable {
@@ -46,6 +49,6 @@ public class Dokumentforventning implements Serializable {
     }
 
     public String getTittel() {
-        return "Dokuemnt tittel";
+        return hentKodeverk(this.getSkjemaId());
     }
 }

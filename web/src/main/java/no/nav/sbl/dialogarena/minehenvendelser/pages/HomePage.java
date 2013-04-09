@@ -7,11 +7,9 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.j
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListItemModel;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 
 import javax.inject.Inject;
@@ -56,7 +54,7 @@ public class HomePage extends BasePage {
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
                 IModel<List<Dokumentforventning>> dokModel = new ListModel<Dokumentforventning>(item.getDokumentforventninger());
-                listItem.add( new BehandlingPanel("behandling",dokModel ));
+                listItem.add(new BehandlingPanel("behandling", dokModel));
             }
         };
     }
@@ -80,7 +78,7 @@ public class HomePage extends BasePage {
         private IModel<List<Behandling>> parentModel;
         private final String status;
 
-        BehandlingerLDM (IModel<List<Behandling>> parentModel, String status) {
+        BehandlingerLDM(IModel<List<Behandling>> parentModel, String status) {
             this.parentModel = parentModel;
             this.status = status;
         }

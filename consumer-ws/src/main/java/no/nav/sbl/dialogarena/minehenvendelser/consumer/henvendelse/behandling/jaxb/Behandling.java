@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.adapter.DateTimeAdapterXml;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
@@ -8,6 +9,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
+
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 @XmlRootElement(name = "Behandling" , namespace = "http://service.provider.henvendelse.dialogarena.sbl.nav.no")
 public class Behandling {
@@ -75,7 +78,7 @@ public class Behandling {
 	};
 
     public String getTittel() {
-        return "Tittel fra kodeverk";
+        return hentKodeverk(this.getHovedkravskjemaId());
     }
 
     public int getAntallFerdigeDokumenter() {

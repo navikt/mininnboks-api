@@ -40,29 +40,29 @@ public class BehandlingPanel extends Panel {
             @Override
             protected void populateItem(ListItem<Dokumentforventning> listItem) {
                 Dokumentforventning dokumentforventning = listItem.getModelObject();
-                listItem.add(new Label("dokument", dokumentforventning.getTittel() ) );
+                listItem.add(new Label("dokument", dokumentforventning.getTittel()));
             }
         };
     }
 
-    public Label getHeadText() {
-        return new Label("tittel","Header");
+    private Label getHeadText() {
+        return new Label("tittel", "Header");
     }
 
-    public Label getTopText() {
-        return new Label("forTekst","Toptext");
+    private Label getTopText() {
+        return new Label("forTekst", "Toptext");
     }
 
 
-    public Label getBottomText() {
-        return new Label("etterTekst","Bottom text");
+    private Label getBottomText() {
+        return new Label("etterTekst", "Bottom text");
     }
 
-    public Label getDateText() {
+    private Label getDateText() {
         return new Label("innsendtDato", "Dato");
     }
 
-    private class DokumentforventningModel extends LoadableDetachableModel<List<Dokumentforventning>> {
+    private static class DokumentforventningModel extends LoadableDetachableModel<List<Dokumentforventning>> {
 
         private IModel<List<Dokumentforventning>> parentModel;
         private boolean statusToFilter;
