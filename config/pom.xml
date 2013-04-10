@@ -27,6 +27,22 @@
                     <password>admin</password>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-content-maven-plugin</artifactId>
+                <version>0.0.2-SNAPSHOT</version>
+                <configuration>
+                    <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
+                    <propertiesFiler>
+                        <nb>innholdstekster_nb.properties</nb>
+                        <en>innholdstekster_en.properties</en>
+                    </propertiesFiler>
+                    <menyPunktPaths>
+                        <nb>/site/16/minehenvendelser/nb/tekster</nb>
+                        <en>/site/16/minehenvendelser/en/tekster</en>
+                    </menyPunktPaths>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
