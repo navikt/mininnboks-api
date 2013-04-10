@@ -1,5 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
 
+import no.nav.modig.lang.collections.predicate.TransformerOutputPredicate;
+import org.apache.commons.collections15.Transformer;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -9,13 +12,16 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.HOVEDSKJEMA;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS;
 
 @XmlRootElement
 public class Dokumentforventninger implements Serializable {
 
-    private static final boolean ER_INNSENDT = true;
-    private static final boolean IKKE_INNSENDT = false;
-    private static final boolean NOT_HOVEDSKJEMA = false;
+    public static final boolean IS_INNSENDT = true;
+    public static final boolean NOT_INNSENDT = false;
+    public static final boolean IS_HOVEDSKJEMA = true;
+    public static final boolean NOT_HOVEDSKJEMA = false;
 
     @XmlElement(name = "dokumentforventning")
     private List<Dokumentforventning> dokumentforventningList;
@@ -27,20 +33,23 @@ public class Dokumentforventninger implements Serializable {
         return dokumentforventningList;
     }
 
-    public static List<Dokumentforventning> getInnsendtedokumenterWhichAreNotHovedskjemaer(List<Dokumentforventning> dokumentforventningList) {
+    public static List<Dokumentforventning> filterDokumenter(List<Dokumentforventning> dokumentforventningList, Boolean isInnsendt, Boolean isHovedskjema) {
+        TransformerOutputPredicate<Dokumentforventning, Boolean> innsendtFilter = where(STATUS, equalTo(isInnsendt));
+        TransformerOutputPredicate<Dokumentforventning, Boolean> allInnsendte = where(alwaysTrueTransformer, equalTo(true));
+        TransformerOutputPredicate<Dokumentforventning, Boolean> hovedskjemaFilter = where(HOVEDSKJEMA, equalTo(isHovedskjema));
+        TransformerOutputPredicate<Dokumentforventning, Boolean> allSkjemas = where(alwaysTrueTransformer, equalTo(true));
         return on(dokumentforventningList)
-                .filter(where(Dokumentforventning.STATUS, equalTo(ER_INNSENDT)))
-                .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(NOT_HOVEDSKJEMA))).collect();
+                .filter(isInnsendt == null ? allInnsendte : innsendtFilter)
+                .filter(hovedskjemaFilter == null ? allSkjemas : hovedskjemaFilter)
+                .collect();
     }
 
-    public static List<Dokumentforventning> getIkkeInnsendtedokumenterWhichAreNotHovedskjemaer(List<Dokumentforventning> dokumentforventningList) {
-        return on(dokumentforventningList)
-                .filter(where(Dokumentforventning.STATUS, equalTo(IKKE_INNSENDT)))
-                .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(NOT_HOVEDSKJEMA))).collect();
-    }
+    private static final Transformer<Dokumentforventning, Boolean> alwaysTrueTransformer = new Transformer<Dokumentforventning, Boolean>() {
 
-    public static List<Dokumentforventning> getDokumenterWhichAreNotHovedskjemaer(List<Dokumentforventning> dokumentforventningList) {
-        return on(dokumentforventningList).filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(NOT_HOVEDSKJEMA))).collect();
-    }
+        @Override
+        public Boolean transform(Dokumentforventning dokumentforventning) {
+            return true;
+        }
+    };
 
 }

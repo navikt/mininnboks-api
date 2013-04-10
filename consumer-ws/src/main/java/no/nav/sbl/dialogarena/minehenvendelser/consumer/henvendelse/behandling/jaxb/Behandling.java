@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.IS_INNSENDT;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.NOT_HOVEDSKJEMA;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 @XmlRootElement(name = "Behandling" , namespace = "http://service.provider.henvendelse.dialogarena.sbl.nav.no")
@@ -85,13 +87,7 @@ public class Behandling implements Serializable {
     }
 
     public int getAntallInnsendteDokumenter() {
-        int antallFerdige = 0;
-        for (Dokumentforventning dok : Dokumentforventninger.getInnsendtedokumenterWhichAreNotHovedskjemaer(this.getDokumentforventninger())) {
-            if (dok.erInnsendt()) {
-                antallFerdige++;
-            }
-        }
-        return antallFerdige;
+        return Dokumentforventninger.filterDokumenter(this.getDokumentforventninger(), IS_INNSENDT, NOT_HOVEDSKJEMA).size();
     }
 
     public int getAntallSubDokumenter() {

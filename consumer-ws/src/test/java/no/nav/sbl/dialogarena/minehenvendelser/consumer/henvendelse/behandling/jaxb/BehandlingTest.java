@@ -2,10 +2,10 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.
 
 import org.junit.Test;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.IS_HOVEDSKJEMA;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.IS_INNSENDT;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.NOT_HOVEDSKJEMA;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.NOT_INNSENDT;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.IS_HOVEDSKJEMA;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.IS_INNSENDT;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.NOT_HOVEDSKJEMA;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.NOT_INNSENDT;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.createMock;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

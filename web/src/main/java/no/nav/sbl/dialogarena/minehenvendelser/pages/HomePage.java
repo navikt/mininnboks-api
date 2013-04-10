@@ -5,6 +5,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -20,7 +21,7 @@ import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.FERDIG;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.UNDER_ARBEID;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.getDokumenterWhichAreNotHovedskjemaer;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.NOT_HOVEDSKJEMA;
 
 public class HomePage extends BasePage {
 
@@ -49,7 +50,7 @@ public class HomePage extends BasePage {
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
-                IModel<List<Dokumentforventning>> dokModel = new ListModel<Dokumentforventning>(getDokumenterWhichAreNotHovedskjemaer(item.getDokumentforventninger()));
+                IModel<List<Dokumentforventning>> dokModel = new ListModel<Dokumentforventning>(Dokumentforventninger.filterDokumenter(item.getDokumentforventninger(), null, NOT_HOVEDSKJEMA));
                 listItem.add(new BehandlingPanel("behandling", dokModel, item));
             }
         };
