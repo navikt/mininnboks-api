@@ -35,16 +35,16 @@ public class Dokumentforventninger implements Serializable {
 
     public static List<Dokumentforventning> filterDokumenter(List<Dokumentforventning> dokumentforventningList, Boolean isInnsendt, Boolean isHovedskjema) {
         TransformerOutputPredicate<Dokumentforventning, Boolean> innsendtFilter = where(STATUS, equalTo(isInnsendt));
-        TransformerOutputPredicate<Dokumentforventning, Boolean> allInnsendte = where(alwaysTrueTransformer, equalTo(true));
+        TransformerOutputPredicate<Dokumentforventning, Boolean> allInnsendte = where(ALWAYS_TRUE_TRANSFORMER, equalTo(true));
         TransformerOutputPredicate<Dokumentforventning, Boolean> hovedskjemaFilter = where(HOVEDSKJEMA, equalTo(isHovedskjema));
-        TransformerOutputPredicate<Dokumentforventning, Boolean> allSkjemas = where(alwaysTrueTransformer, equalTo(true));
+        TransformerOutputPredicate<Dokumentforventning, Boolean> allSkjemas = where(ALWAYS_TRUE_TRANSFORMER, equalTo(true));
         return on(dokumentforventningList)
                 .filter(isInnsendt == null ? allInnsendte : innsendtFilter)
                 .filter(hovedskjemaFilter == null ? allSkjemas : hovedskjemaFilter)
                 .collect();
     }
 
-    private static final Transformer<Dokumentforventning, Boolean> alwaysTrueTransformer = new Transformer<Dokumentforventning, Boolean>() {
+    private static final Transformer<Dokumentforventning, Boolean> ALWAYS_TRUE_TRANSFORMER = new Transformer<Dokumentforventning, Boolean>() {
 
         @Override
         public Boolean transform(Dokumentforventning dokumentforventning) {
