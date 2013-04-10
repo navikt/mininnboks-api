@@ -157,7 +157,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -261,6 +260,25 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <usedDependencies>
+                                <usedDependency>no.nav.modig:modig-content</usedDependency>
+                                <usedDependency>org.springframework:spring-web</usedDependency>
+                                <usedDependency>org.springframework:spring-core</usedDependency>
+                                <usedDependency>no.nav.sbl.dialogarena:common-web</usedDependency>
+                            </usedDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

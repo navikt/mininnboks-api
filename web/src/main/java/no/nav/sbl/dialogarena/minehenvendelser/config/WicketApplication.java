@@ -83,4 +83,8 @@ public class WicketApplication extends WebApplication {
     protected void setSpringComponentInjector() {
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
     }
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
 }
