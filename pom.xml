@@ -50,6 +50,8 @@
         <reflections.version>0.9.8</reflections.version>
         <junit.dep.version>4.10</junit.dep.version>
         <joda.time.version>2.2</joda.time.version>
+        <dialogarena.common.version>1.0.6-SNAPSHOT</dialogarena.common.version>
+
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -57,7 +59,13 @@
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>common-web</artifactId>
-                <version>1.0.5-SNAPSHOT</version>
+                <version>${dialogarena.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>common-jetty</artifactId>
+                <version>${dialogarena.common.version}</version>
+                <scope>test</scope>
             </dependency>
             <!-- Modig dependencies -->
             <dependency>
@@ -79,11 +87,6 @@
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-frontend-wicket</artifactId>
                 <version>${modig.frontend.wicket.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.sbl.felles</groupId>
-                <artifactId>nav-sbl-felles-commons-jetty</artifactId>
-                <version>${nav.sbl.commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.sbl.felles</groupId>

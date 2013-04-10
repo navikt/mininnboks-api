@@ -18,6 +18,11 @@
             <artifactId>minehenvendelser-wsmock</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>common-jetty</artifactId>
+        </dependency>
     
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -38,18 +43,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-        
-        <dependency>
-            <groupId>no.nav.sbl.felles</groupId>
-            <artifactId>nav-sbl-felles-commons-jetty</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mortbay.jetty</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>        
 
         <dependency>
             <groupId>no.nav.modig</groupId>
