@@ -245,11 +245,24 @@
             <scope>provided</scope>
         </dependency>
 
+         <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.webbitserver</groupId>
             <artifactId>webbit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty.orbit</groupId>
+            <artifactId>javax.servlet</artifactId>
+            <version>3.0.0.v201112011016</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
