@@ -25,6 +25,7 @@ public class SelfTestPage extends WebPage {
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
     public SelfTestPage() throws IOException {
+        logger.info("entered SelfTestPage!");
         String version = getApplicationVersion();
         String startUpDate = new Date(WicketApplication.get().getApplicationContext().getStartupDate()).toString();
         List<ServiceStatus> statusList = new ArrayList<>();
