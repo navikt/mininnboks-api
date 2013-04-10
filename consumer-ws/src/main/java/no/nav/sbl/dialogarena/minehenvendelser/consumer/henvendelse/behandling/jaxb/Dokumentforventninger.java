@@ -38,6 +38,7 @@ public class Dokumentforventninger implements Serializable {
         TransformerOutputPredicate<Dokumentforventning, Boolean> allInnsendte = where(ALWAYS_TRUE_TRANSFORMER, equalTo(true));
         TransformerOutputPredicate<Dokumentforventning, Boolean> hovedskjemaFilter = where(HOVEDSKJEMA, equalTo(isHovedskjema));
         TransformerOutputPredicate<Dokumentforventning, Boolean> allSkjemas = where(ALWAYS_TRUE_TRANSFORMER, equalTo(true));
+
         return on(dokumentforventningList)
                 .filter(isInnsendt == null ? allInnsendte : innsendtFilter)
                 .filter(hovedskjemaFilter == null ? allSkjemas : hovedskjemaFilter)
