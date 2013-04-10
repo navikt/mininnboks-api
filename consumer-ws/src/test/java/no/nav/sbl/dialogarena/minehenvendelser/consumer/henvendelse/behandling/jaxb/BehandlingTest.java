@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 public class BehandlingTest {
 
     @Test
-    public void shouldCountCorrectAmountOfAttachments(){
+    public void shouldCountCorrectAmountOfInnsendteDokumenter(){
         Behandling behandling = new Behandling();
 
         behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
@@ -22,7 +22,17 @@ public class BehandlingTest {
         behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
 
         assertThat(behandling.getAntallInnsendteDokumenter(),is(2));
+    }
+    
+    @Test
+    public void shouldCountCorrectAmountOfDokumenter(){
+        Behandling behandling = new Behandling();
+
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
+
         assertThat(behandling.getAntallSubDokumenter(),is(3));
     }
-
 }

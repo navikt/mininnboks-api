@@ -32,7 +32,14 @@ public class Dokumentforventninger implements Serializable {
         }
         return dokumentforventningList;
     }
-
+    
+    /**
+     * 
+     * @param dokumentforventningList Liste som skal filtreres
+     * @param isInnsendt Om innsendte eller ikke innsendte dokumenter skal med i svaret. null betyr alle skal med
+     * @param isHovedskjema Om hovedskjema skal med i svaret eller ikke. null betyr alle skal med
+     * @return Filtrert liste
+     */
     public static List<Dokumentforventning> filterDokumenter(List<Dokumentforventning> dokumentforventningList, Boolean isInnsendt, Boolean isHovedskjema) {
         TransformerOutputPredicate<Dokumentforventning, Boolean> innsendtFilter = where(STATUS, equalTo(isInnsendt));
         TransformerOutputPredicate<Dokumentforventning, Boolean> allInnsendte = where(ALWAYS_TRUE_TRANSFORMER, equalTo(true));
@@ -41,7 +48,7 @@ public class Dokumentforventninger implements Serializable {
 
         return on(dokumentforventningList)
                 .filter(isInnsendt == null ? allInnsendte : innsendtFilter)
-                .filter(hovedskjemaFilter == null ? allSkjemas : hovedskjemaFilter)
+                .filter(isHovedskjema == null ? allSkjemas : hovedskjemaFilter)
                 .collect();
     }
 

@@ -91,6 +91,6 @@ public class Behandling implements Serializable {
     }
 
     public int getAntallSubDokumenter() {
-        return  dokumentforventninger.getDokumentforventningList().size() - HOVEDDOKUMENT;
+        return  Dokumentforventninger.filterDokumenter(this.getDokumentforventninger(), null, NOT_HOVEDSKJEMA).size();
     }
 }
