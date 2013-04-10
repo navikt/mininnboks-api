@@ -10,13 +10,15 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.List;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.getInnsendtedokumenter;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 @XmlRootElement(name = "Behandling" , namespace = "http://service.provider.henvendelse.dialogarena.sbl.nav.no")
 public class Behandling implements Serializable {
 
     private static final int HOVEDDOKUMENT = 1;
+    public static final String UNDER_ARBEID = "UNDER_ARBEID";
+    public static final String FERDIG= "FERDIG";
+
     @XmlElement
 	private String brukerBehandlingsId;
 
@@ -39,10 +41,6 @@ public class Behandling implements Serializable {
 
     @XmlElement
     private Dokumentforventninger dokumentforventninger;
-
-    public static final String UNDER_ARBEID = "UNDER_ARBEID";
-    public static final String FERDIG= "FERDIG";
-
 
 	public String getBrukerBehandlingsId() {
 		return brukerBehandlingsId;
@@ -88,10 +86,7 @@ public class Behandling implements Serializable {
 
     public int getAntallInnsendteDokumenter() {
         int antallFerdige = 0;
-        for (Dokumentforventning dok : getInnsendtedokumenter(dokumentforventninger.getDokumentforventningList())) {
-            if (dok.isHovedskjema()) {
-                continue;
-            }
+        for (Dokumentforventning dok : Dokumentforventninger.getInnsendtedokumenterWhichAreNotHovedskjemaer(this.getDokumentforventninger())) {
             if (dok.erInnsendt()) {
                 antallFerdige++;
             }

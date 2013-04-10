@@ -51,6 +51,12 @@
                 <hovedskjema>false</hovedskjema>
             </dokumentforventning>
             <dokumentforventning>
+                <skjemaId>POLITI</skjemaId>
+                <egendefinertTittel></egendefinertTittel>
+                <innsendingsvalg>IKKE_SENDT</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+            </dokumentforventning>
+            <dokumentforventning>
                 <skjemaId>skjema2</skjemaId>
                 <egendefinertTittel></egendefinertTittel>
                 <innsendingsvalg>DIGITAL</innsendingsvalg>

@@ -43,6 +43,13 @@ public class Dokumentforventning implements Serializable {
         }
     };
 
+    public static final Transformer<Dokumentforventning, Boolean> HOVEDSKJEMA = new Transformer<Dokumentforventning, Boolean>() {
+        @Override
+        public Boolean transform(Dokumentforventning dokumentforventning) {
+            return dokumentforventning.isHovedskjema();
+        }
+    };
+
     public boolean erInnsendt() {
         return "DIGITAL".equals(innsendingsvalg);
     }

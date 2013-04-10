@@ -50,7 +50,6 @@ public class BehandlingPanel extends Panel {
         return new Label("manglendeDokumenterHeader", lookupText("manglendeDokumenterHeader"));
     }
 
-
     private Label getVedleggsLabel() {
         return new Label("vedlegg", lookupText("vedleggantall") + behandling.getAntallInnsendteDokumenter());
     }
@@ -73,7 +72,6 @@ public class BehandlingPanel extends Panel {
     private Label getTopText() {
         return new Label("forTekst", lookupText("topText"));
     }
-
 
     private Label getBottomText() {
         return new Label("etterTekst", lookupText("bottomText"));

@@ -2,17 +2,15 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.
 
 import org.junit.Test;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.IS_HOVEDSKJEMA;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.IS_INNSENDT;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.NOT_HOVEDSKJEMA;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.NOT_INNSENDT;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.createMock;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class BehandlingTest {
-
-    private static final boolean NOT_HOVEDSKJEMA = false;
-    private static final boolean IS_INNSENDT = true;
-    private static final boolean NOT_INNSENDT = false;
-    private static final boolean IS_HOVEDSKJEMA = true;
 
     @Test
     public void shouldCountCorrectAmountOfAttachments(){
@@ -25,13 +23,6 @@ public class BehandlingTest {
 
         assertThat(behandling.getAntallInnsendteDokumenter(),is(2));
         assertThat(behandling.getAntallSubDokumenter(),is(3));
-    }
-
-    private Dokumentforventning createMock(boolean isHovedskjema, boolean isInnsendt){
-        Dokumentforventning dokumentforventning = mock(Dokumentforventning.class);
-        when(dokumentforventning.isHovedskjema()).thenReturn(isHovedskjema);
-        when(dokumentforventning.erInnsendt()).thenReturn(isInnsendt);
-        return dokumentforventning;
     }
 
 }

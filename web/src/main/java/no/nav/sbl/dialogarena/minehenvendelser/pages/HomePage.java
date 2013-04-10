@@ -20,16 +20,12 @@ import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.FERDIG;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.UNDER_ARBEID;
-
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.getDokumenterWhichAreNotHovedskjemaer;
 
 public class HomePage extends BasePage {
 
     @Inject
     private BehandlingService behandlingService;
-
-    private String hentAktorId() {
-        return "aktor";
-    }
 
     public HomePage() {
         IModel<List<Behandling>> model = new LoadableDetachableModel<List<Behandling>>() {
@@ -38,12 +34,13 @@ public class HomePage extends BasePage {
                 return behandlingService.hentBehandlinger(hentAktorId());
             }
         };
+        add(
+                createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
+                createFerdigView(new BehandlingerLDM(model, FERDIG)));
+    }
 
-        IModel<List<Behandling>> underArbeid = new BehandlingerLDM(model, UNDER_ARBEID);
-        IModel<List<Behandling>> ferdig = new BehandlingerLDM(model, FERDIG);
-
-        add(createUnderArbeidView(underArbeid));
-        add(createFerdigView(ferdig));
+    private String hentAktorId() {
+        return "aktor";
     }
 
     private PropertyListView<Behandling> createFerdigView(final IModel<List<Behandling>> ferdig) {
@@ -52,7 +49,7 @@ public class HomePage extends BasePage {
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
-                IModel<List<Dokumentforventning>> dokModel = new ListModel<Dokumentforventning>(item.getDokumentforventninger());
+                IModel<List<Dokumentforventning>> dokModel = new ListModel<Dokumentforventning>(getDokumenterWhichAreNotHovedskjemaer(item.getDokumentforventninger()));
                 listItem.add(new BehandlingPanel("behandling", dokModel, item));
             }
         };
