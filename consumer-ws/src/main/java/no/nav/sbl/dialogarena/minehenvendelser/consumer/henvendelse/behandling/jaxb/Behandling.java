@@ -17,7 +17,6 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOpps
 @XmlRootElement(name = "Behandling" , namespace = "http://service.provider.henvendelse.dialogarena.sbl.nav.no")
 public class Behandling implements Serializable {
 
-    private static final int HOVEDDOKUMENT = 1;
     public static final String UNDER_ARBEID = "UNDER_ARBEID";
     public static final String FERDIG= "FERDIG";
 
