@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class SelfTestPage extends WebPage {
 
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
-    public SelfTestPage() {
+    public SelfTestPage() throws IOException {
         String version = getApplicationVersion();
         String startUpDate = new Date(WicketApplication.get().getApplicationContext().getStartupDate()).toString();
         List<ServiceStatus> statusList = new ArrayList<>();
@@ -32,16 +33,16 @@ public class SelfTestPage extends WebPage {
         add(new ServiceStatusListView("serviceStatusTable", statusList));
     }
 
-    private String getApplicationVersion() {
+    private String getApplicationVersion() throws IOException {
         String version = "unknown version";
-        try {
-            WebRequest req = (WebRequest) RequestCycle.get().getRequest();
-            ServletContext servletContext = ((HttpServletRequest) req.getContainerRequest()).getServletContext();
-            InputStream inputStream = servletContext.getResourceAsStream(("/META-INF/MANIFEST.MF"));
+        WebRequest req = (WebRequest) RequestCycle.get().getRequest();
+        ServletContext servletContext = ((HttpServletRequest) req.getContainerRequest()).getServletContext();
+        InputStream inputStream = servletContext.getResourceAsStream(("/META-INF/MANIFEST.MF"));
+        if (inputStream != null) {
             Manifest manifest = new Manifest(inputStream);
             version = manifest.getMainAttributes().getValue("Implementation-Version");
-        } catch (Exception e) {
-            logger.warn("Feil ved henting av applikasjonsversjon: " + e.getMessage());
+        } else {
+            version = "cannot locate manifest, version unknown";
         }
         return "minehenvendelser - " + version;
     }
