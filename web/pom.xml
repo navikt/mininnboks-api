@@ -18,6 +18,13 @@
     </properties>
 
     <dependencies>
+
+        <!-- Dialogarena dependencies -->
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>common-web</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>minehenvendelser-wsmock</artifactId>
