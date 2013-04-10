@@ -1,5 +1,5 @@
 @echo off
-title Dokumentinnsending FitNesse Server
+title minehenvendelser FitNesse Server
 setlocal
 
 %~d0
