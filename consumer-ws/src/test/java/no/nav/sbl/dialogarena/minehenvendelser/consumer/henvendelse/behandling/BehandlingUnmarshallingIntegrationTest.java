@@ -36,7 +36,7 @@ public class BehandlingUnmarshallingIntegrationTest {
         assertThat(getFirstBehandlingFromList(behandlinger).getSistEndret(), equalTo(new DateTime("2008-09-29T03:49:45")));
         assertThat(getFirstBehandlingFromList(behandlinger).getInnsendtDato(), equalTo(new DateTime("2014-09-19T01:18:33")));
 
-        assertThat(behandlinger.getBehandlingerList().size(), equalTo(1));
+        assertThat(behandlinger.getBehandlinger().size(), equalTo(1));
         assertThat(getFirstBehandlingFromList(behandlinger).getDokumentforventninger().size(), equalTo(1));
 
         assertThat(getFirstBehandlingFromList(behandlinger).getDokumentforventninger().get(0).getSkjemaId(), equalTo("skjemaID-LEGE"));
@@ -46,7 +46,7 @@ public class BehandlingUnmarshallingIntegrationTest {
     }
 
     private Behandling getFirstBehandlingFromList(Behandlinger behandlinger) {
-        return behandlinger.getBehandlingerList().get(0);
+        return behandlinger.getBehandlinger().get(0);
     }
 
 }

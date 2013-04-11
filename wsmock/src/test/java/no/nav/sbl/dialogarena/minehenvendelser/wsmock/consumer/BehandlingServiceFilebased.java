@@ -16,6 +16,6 @@ public class BehandlingServiceFilebased implements BehandlingService {
 
     @Override
     public List<Behandling> hentBehandlinger(String aktoerId) {
-        return ((Behandlinger) jaxb2Marshaller.unmarshal(new StreamSource(getClass().getResourceAsStream("/mockdata/behandlinger.xml")))).getBehandlingerList();
+        return ((Behandlinger) jaxb2Marshaller.unmarshal(new StreamSource(getClass().getResourceAsStream("/mockdata/behandlinger.xml")))).getBehandlinger();
     }
 }

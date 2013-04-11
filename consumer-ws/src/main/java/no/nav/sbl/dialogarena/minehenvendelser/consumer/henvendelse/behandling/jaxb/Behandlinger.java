@@ -9,12 +9,9 @@ import java.util.List;
 public class Behandlinger {
 
     @XmlElement(name = "Behandling")
-    private List<Behandling> behandlingerList;
+    private List<Behandling> behandlinger = new ArrayList<>();
 
-    public List<Behandling> getBehandlingerList() {
-        if (behandlingerList == null) {
-            behandlingerList = new ArrayList<>();
-        }
-        return behandlingerList;
+    public List<Behandling> getBehandlinger() {
+        return behandlinger;
     }
 }

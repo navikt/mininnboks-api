@@ -11,6 +11,8 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOpps
 @XmlRootElement(name = "dokumentforventning")
 public class Dokumentforventning implements Serializable {
 
+    public static final String STATUS_DIGITAL = "STATUS_DIGITAL";
+
     @XmlElement
     private String skjemaId;
     @XmlElement
@@ -36,7 +38,15 @@ public class Dokumentforventning implements Serializable {
         return hovedskjema;
     }
 
-    public static final Transformer<Dokumentforventning, Boolean> STATUS = new Transformer<Dokumentforventning, Boolean>() {
+    public boolean erInnsendt() {
+        return STATUS_DIGITAL.equals(innsendingsvalg);
+    }
+
+    public String getTittel() {
+        return hentKodeverk(getSkjemaId());
+    }
+
+    public static final Transformer<Dokumentforventning, Boolean> DOKUMENTFORVENTNING_STATUS = new Transformer<Dokumentforventning, Boolean>() {
         @Override
         public Boolean transform(Dokumentforventning dokumentforventning) {
             return dokumentforventning.erInnsendt();
@@ -49,12 +59,4 @@ public class Dokumentforventning implements Serializable {
             return dokumentforventning.isHovedskjema();
         }
     };
-
-    public boolean erInnsendt() {
-        return "DIGITAL".equals(innsendingsvalg);
-    }
-
-    public String getTittel() {
-        return hentKodeverk(this.getSkjemaId());
-    }
 }

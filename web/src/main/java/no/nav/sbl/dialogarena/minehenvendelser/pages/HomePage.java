@@ -5,7 +5,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -20,8 +19,8 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.FERDIG;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.NOT_HOVEDSKJEMA;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.UNDER_ARBEID;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventninger.NOT_HOVEDSKJEMA;
 
 public class HomePage extends BasePage {
 
@@ -49,9 +48,9 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                Behandling item = listItem.getModelObject();
-                IModel<List<Dokumentforventning>> dokModel = new ListModel<Dokumentforventning>(Dokumentforventninger.filterDokumenter(item.getDokumentforventninger(), null, NOT_HOVEDSKJEMA));
-                listItem.add(new BehandlingPanel("behandling", dokModel, item));
+                Behandling behandling = listItem.getModelObject();
+                IModel<List<Dokumentforventning>> dokModel = new ListModel<>(behandling.filterDokumenter(null, NOT_HOVEDSKJEMA));
+                listItem.add(new BehandlingPanel("behandling", dokModel, behandling));
             }
         };
     }
@@ -82,7 +81,7 @@ public class HomePage extends BasePage {
 
         @Override
         protected List<Behandling> load() {
-            return on(parentModel.getObject()).filter(where(Behandling.STATUS, equalTo(status))).collect();
+            return on(parentModel.getObject()).filter(where(Behandling.BEHANDLING_STATUS, equalTo(status))).collect();
         }
 
         @Override
