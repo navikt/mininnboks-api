@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
 
-import no.nav.modig.lang.collections.predicate.TransformerOutputPredicate;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.adapter.DateTimeAdapterXml;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
@@ -16,8 +15,8 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.DOKUMENTFORVENTNING_STATUS;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.HOVEDSKJEMA;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_INNSENDT;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 @XmlRootElement(name = "Behandling" , namespace = "http://service.provider.henvendelse.dialogarena.sbl.nav.no")
@@ -87,40 +86,37 @@ public class Behandling implements Serializable {
     }
 
     public int getAntallInnsendteDokumenter() {
-        return filterDokumenter(IS_INNSENDT, NOT_HOVEDSKJEMA).size();
+        return fetchInnsendteDokumenter().size();
     }
 
     public int getAntallSubDokumenter() {
-        return filterDokumenter(null, NOT_HOVEDSKJEMA).size();
+        return fetchAlleDokumenter().size();
     }
 
-    /**
-     * @param isInnsendt Om innsendte eller ikke innsendte dokumenter skal med i svaret. null betyr alle skal med
-     * @param isHovedskjema Om hovedskjema skal med i svaret eller ikke. null betyr alle skal med
-     * @return Filtrert liste
-     */
-    public List<Dokumentforventning> filterDokumenter(Boolean isInnsendt, Boolean isHovedskjema) {
-        TransformerOutputPredicate<Dokumentforventning, Boolean> innsendtFilter = where(DOKUMENTFORVENTNING_STATUS, equalTo(isInnsendt));
-        TransformerOutputPredicate<Dokumentforventning, Boolean> hovedskjemaFilter = where(HOVEDSKJEMA, equalTo(isHovedskjema));
-        TransformerOutputPredicate<Dokumentforventning, Boolean> alle = where(ALWAYS_TRUE_TRANSFORMER, equalTo(true));
 
+    public List<Dokumentforventning> fetchInnsendteDokumenter() {
         return on(dokumentforventninger)
-                .filter(isInnsendt == null ? alle : innsendtFilter)
-                .filter(isHovedskjema == null ? alle : hovedskjemaFilter)
+                .filter(where(STATUS_INNSENDT, equalTo(true)))
+                .filter(where(HOVEDSKJEMA, equalTo(false)))
                 .collect();
     }
 
-    public static final Transformer<Behandling, String> BEHANDLING_STATUS = new Transformer<Behandling, String>() {
+    public List<Dokumentforventning> fetchAlleDokumenter() {
+        return on(dokumentforventninger)
+                .filter(where(HOVEDSKJEMA, equalTo(false)))
+                .collect();
+    }
+
+    public Dokumentforventning fetchHoveddokument() {
+        return on(dokumentforventninger)
+                .filter(where(HOVEDSKJEMA, equalTo(true)))
+                .head().get();
+    }
+
+    public static final Transformer<Behandling, String> STATUS = new Transformer<Behandling, String>() {
         @Override
         public String transform(Behandling behandling) {
             return behandling.getStatus();
-        }
-    };
-
-    private static final Transformer<Dokumentforventning, Boolean> ALWAYS_TRUE_TRANSFORMER = new Transformer<Dokumentforventning, Boolean>() {
-        @Override
-        public Boolean transform(Dokumentforventning dokumentforventning) {
-            return true;
         }
     };
 

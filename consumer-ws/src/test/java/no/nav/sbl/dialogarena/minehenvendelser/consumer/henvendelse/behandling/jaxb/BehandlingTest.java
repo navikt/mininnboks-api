@@ -52,19 +52,7 @@ public class BehandlingTest {
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.filterDokumenter(IS_INNSENDT, NOT_HOVEDSKJEMA).size(), equalTo(2));
-    }
-
-    @Test
-    public void filterDokumenterShouldReturnAllIkkeInsendteDokumenterWhichAreNotHovedskjema() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-
-        assertThat(behandling.filterDokumenter(NOT_INNSENDT, NOT_HOVEDSKJEMA).size(), equalTo(2));
+        assertThat(behandling.fetchInnsendteDokumenter().size(), equalTo(2));
     }
 
     @Test
@@ -76,69 +64,19 @@ public class BehandlingTest {
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.filterDokumenter(null, NOT_HOVEDSKJEMA).size(), equalTo(3));
+        assertThat(behandling.fetchAlleDokumenter().size(), equalTo(3));
     }
 
     @Test
     public void filterDokumenterShouldReturnAlleDokumenterWhichAreHovedskjema() {
         List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
+        Dokumentforventning dokumentforventning = createMock(IS_HOVEDSKJEMA, IS_INNSENDT);
+        dokumentforventningList.add(dokumentforventning);
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.filterDokumenter(null, IS_HOVEDSKJEMA).size(), equalTo(2));
-    }
-
-    @Test
-    public void filterDokumenterShouldReturnAlleDokumenterWhichAreInnsendt() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-
-        assertThat(behandling.filterDokumenter(IS_INNSENDT, null).size(), equalTo(2));
-    }
-
-    @Test
-    public void filterDokumenterShouldReturnAlleDokumenterWhichAreInnsendtAndHovedskjema() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-
-        assertThat(behandling.filterDokumenter(IS_INNSENDT, IS_HOVEDSKJEMA).size(), equalTo(1));
-    }
-
-
-    @Test
-    public void filterDokumenterShouldReturnAlleDokumenterWhichAreNotInnsendtAndHovedskjema() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-
-        assertThat(behandling.filterDokumenter(NOT_INNSENDT, IS_HOVEDSKJEMA).size(), equalTo(1));
-    }
-
-
-    @Test
-    public void filterDokumenterShouldReturnAlleDokumenterWhichAreNotInnsendt() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-
-        assertThat(behandling.filterDokumenter(NOT_INNSENDT, null).size(), equalTo(3));
+        assertThat(behandling.fetchHoveddokument(), equalTo(dokumentforventning));
     }
 
     @Test
@@ -150,6 +88,6 @@ public class BehandlingTest {
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.filterDokumenter(null, null).size(), equalTo(5));
+        assertThat(behandling.getDokumentforventninger().size(), equalTo(5));
     }
 }

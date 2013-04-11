@@ -46,7 +46,7 @@ public class Dokumentforventning implements Serializable {
         return hentKodeverk(getSkjemaId());
     }
 
-    public static final Transformer<Dokumentforventning, Boolean> DOKUMENTFORVENTNING_STATUS = new Transformer<Dokumentforventning, Boolean>() {
+    public static final Transformer<Dokumentforventning, Boolean> STATUS_INNSENDT = new Transformer<Dokumentforventning, Boolean>() {
         @Override
         public Boolean transform(Dokumentforventning dokumentforventning) {
             return dokumentforventning.erInnsendt();

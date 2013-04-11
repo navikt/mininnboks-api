@@ -19,7 +19,6 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.FERDIG;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.NOT_HOVEDSKJEMA;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.UNDER_ARBEID;
 
 public class HomePage extends BasePage {
@@ -49,7 +48,7 @@ public class HomePage extends BasePage {
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling behandling = listItem.getModelObject();
-                IModel<List<Dokumentforventning>> dokModel = new ListModel<>(behandling.filterDokumenter(null, NOT_HOVEDSKJEMA));
+                IModel<List<Dokumentforventning>> dokModel = new ListModel<>(behandling.fetchAlleDokumenter());
                 listItem.add(new BehandlingPanel("behandling", dokModel, behandling));
             }
         };
@@ -81,7 +80,7 @@ public class HomePage extends BasePage {
 
         @Override
         protected List<Behandling> load() {
-            return on(parentModel.getObject()).filter(where(Behandling.BEHANDLING_STATUS, equalTo(status))).collect();
+            return on(parentModel.getObject()).filter(where(Behandling.STATUS, equalTo(status))).collect();
         }
 
         @Override
