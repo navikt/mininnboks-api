@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.modig.wicket.test.FluentWicketTester;
-import no.nav.sbl.dialogarena.minehenvendelser.WicketApplicationContext;
+import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplicationContext;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.junit.Test;
