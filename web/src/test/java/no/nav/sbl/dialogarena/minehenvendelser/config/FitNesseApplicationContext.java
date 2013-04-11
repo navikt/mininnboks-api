@@ -3,11 +3,15 @@ package no.nav.sbl.dialogarena.minehenvendelser.config;
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.sbl.dialogarena.common.jetty.Jetty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 
 import static no.nav.sbl.dialogarena.common.jetty.Jetty.usingWar;
 
+@Import(ApplicationContext.class)
+@ActiveProfiles("test")
 public class FitNesseApplicationContext {
 
     @Bean

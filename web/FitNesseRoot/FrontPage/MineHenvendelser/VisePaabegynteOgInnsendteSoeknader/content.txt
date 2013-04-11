@@ -1,25 +1,23 @@
 !***> Oppsett
 
 !define TEST_RUNNER {fitlibrary.suite.FitLibraryServer}
-| no.nav.sbl.dialogarena.henvendelse.provider.fixture.inngangsporten.InngangsportenFixture |
+| no.nav.sbl.dialogarena.minehenvendelser.fixtures.VisePaabegynteOgInnsendteSoeknaderFixture |
 
-*!
 !brukerhistorie MOD-3558
 !brukerhistorie MOD-3559
-!| Datagrunnlag | |
+*!
+
+!| datagrunnlag | |
 | Aktør Id | Behandlings Id | BrukerBehandlingstype | dokumentBehandlingstype | Status | Sist endret dato | Innsendt Dato | Kodeverksid dokumenter | Innsendingsvalg | Fritekst |
-| ***REMOVED*** | DA01-000000009 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG |2014-09-19T01:18:33|2006-08-19T19:27:14+02:00| 001,002,003,004 | LASTET OPP, SEND I POST, SENDES AV ANDRE, SENDES IKKE | ,,,Fritekst på 25 tegn |
+| ***REMOVED*** | DA01-000000009 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | 2014-09-19T01:18:33 | 2006-08-19T19:27:14+02:00 | 001,002,003,004 | LASTET OPP, SEND I POST, SENDES AV ANDRE, SENDES IKKE | ,,,Fritekst på 25 tegn |
 | ***REMOVED*** | | | | | | | | | |
 
-
 Bruker har ingen påbegynte, og 1 innsendt. 1 av 4 dokumenter er innsendt
-|***REMOVED***|
-|DA01-000000009 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | | | Søknad om dagpenger,Permitteringsvarsel,Arbeidsavtale,Annet | LASTET OPP, SEND I POST, SENDES AV ANDRE, SENDES IKKE | ,,,Fritekst på 25 tegn|
 
+| ***REMOVED*** |
+| DA01-000000009 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | | | Søknad om dagpenger,Permitteringsvarsel,Arbeidsavtale,Annet | LASTET OPP, SEND I POST, SENDES AV ANDRE, SENDES IKKE | ,,,Fritekst på 25 tegn |
 
 Bruker har 1 på påbegynt, ingen innsendte
-
-
 
 | Kodeverksid dokumenter | Navn på dokumentet |
 | 001 | Søknad om dagpenger |
