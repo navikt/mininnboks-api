@@ -5,9 +5,13 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -32,7 +36,9 @@ public class SelfTestPage extends WebPage {
 
     private String getApplicationVersion() throws IOException {
         String version = "unknown version";
-        InputStream inputStream = getClass().getResourceAsStream("/META-INF/MANIFEST.MF");
+        WebRequest req = (WebRequest) RequestCycle.get().getRequest();
+        ServletContext servletContext = ((HttpServletRequest) req.getContainerRequest()).getServletContext();
+        InputStream inputStream = servletContext.getResourceAsStream(("/META-INF/MANIFEST.MF"));
         if (inputStream != null) {
             Manifest manifest = new Manifest(inputStream);
             version = manifest.getMainAttributes().getValue("Implementation-Version");
