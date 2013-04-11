@@ -5,4 +5,8 @@
     <artifacts>
         <ear groupId="no.nav.sbl.dialogarena" artifactId="minehenvendelser-jee" />
     </artifacts>
+
+    <resources>
+        <baseUrl alias="minehenvendelser.cms" mapToProperty="minehenvendelser.cms" />
+    </resources>
 </application>

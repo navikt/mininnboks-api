@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Import({WebContext.class})
+@Import({WebContext.class, PropertyPlaceholderConfiguration.class})
 public class ApplicationContext {
 
     @Configuration

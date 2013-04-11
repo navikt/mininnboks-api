@@ -28,11 +28,18 @@
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>common-web</artifactId>
         </dependency>
+        
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>minehenvendelser-wsmock</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
+        </dependency>
+
+		<dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>minehenvendelser-config</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
