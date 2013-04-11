@@ -1,0 +1,12 @@
+!***> Oppsett
+
+!define TEST_RUNNER {fitlibrary.suite.FitLibraryServer}
+| no.nav.sbl.dialogarena.henvendelse.provider.fixture.inngangsporten.InngangsportenFixture |
+
+*!
+!brukerhistorie MOD-3558
+!brukerhistorie MOD-3559
+!| Datagrunnlag | | | | | | |
+| Aktør Id | Behandlings Id | Behandlingstype | Status | Sist endret dato | Innsendt Dato | Hovedsøknadsskjema, vedlegg | Innsendingsvalg | |
+| ***REMOVED*** | | DOKUMENT_BEHANDLING | | | | | | |
+| ***REMOVED*** | | | | | | | | |
