@@ -36,12 +36,6 @@
             <type>test-jar</type>
         </dependency>
 
-		<dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>minehenvendelser-config</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>minehenvendelser-consumer-ws</artifactId>
@@ -202,6 +196,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
@@ -278,7 +277,7 @@
                         </goals>
                         <configuration>
                             <usedDependencies>
-                                <usedDependency>no.nav.modig:modig-content</usedDependency>
+                                <!--usedDependency>no.nav.modig:modig-content</usedDependency-->
                                 <usedDependency>org.springframework:spring-web</usedDependency>
                                 <usedDependency>org.springframework:spring-core</usedDependency>
                                 <usedDependency>no.nav.sbl.dialogarena:common-web</usedDependency>
