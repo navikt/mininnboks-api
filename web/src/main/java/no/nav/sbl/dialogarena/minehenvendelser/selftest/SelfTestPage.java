@@ -28,7 +28,7 @@ public class SelfTestPage extends WebPage {
 
     @Inject
     private CmsContentRetriver innholdsTekster;
-    
+
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
     public SelfTestPage() throws IOException {
@@ -39,19 +39,19 @@ public class SelfTestPage extends WebPage {
         statusList.add(new ServiceStatus("Testet Appcontext", "OK, startet opp: " + startUpDate, 0));
         statusList.add(new ServiceStatus("Applikasjonsversjon", version, 0));
         add(new ServiceStatusListView("serviceStatusTable", statusList));
-        add(new Label("cmsinfo", "Cms-server: "+ innholdsTekster.getCmsIp()));
+        add(new Label("cmsinfo", "Cms-server: " + innholdsTekster.getCmsIp()));
         add(getCmsStatus());
     }
 
-    private CmsStatusListView getCmsStatus(){
-        
-        
+    private CmsStatusListView getCmsStatus() {
+        String[] keys = { "innsendte.dokumenter.header", "manglende.dokumenter.header", "antall.vedlegg", "slutt.tekst", "topp.tekst" };
         List<CmsStatus> cmsStatusList = new ArrayList<>();
-        cmsStatusList.add(new CmsStatus("innsendte.dokumenter.header"));
-        cmsStatusList.add(new CmsStatus("manglende.dokumenter.header"));
+        for (String key : keys) {
+            cmsStatusList.add(new CmsStatus(key));
+        }
         return new CmsStatusListView("cmsStatusTable", cmsStatusList);
     }
-    
+
     private String getApplicationVersion() throws IOException {
         String version = "unknown version";
         WebRequest req = (WebRequest) RequestCycle.get().getRequest();
@@ -107,7 +107,7 @@ public class SelfTestPage extends WebPage {
         }
 
     }
-    
+
     private static class CmsStatusListView extends PropertyListView<CmsStatus> {
 
         private static final long serialVersionUID = 1L;
@@ -123,8 +123,8 @@ public class SelfTestPage extends WebPage {
             listItem.add(new Label("key"), valueLabel);
         }
     }
-    
-    private  class CmsStatus implements Serializable {
+
+    private class CmsStatus implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
@@ -144,6 +144,5 @@ public class SelfTestPage extends WebPage {
             return value;
         }
     }
-
 
 }

@@ -4,7 +4,6 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_LASTET_OPP;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CMSLookup.lookupText;
 
 import java.util.List;
 
@@ -26,25 +25,14 @@ public class BehandlingPanel extends Panel {
     private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
     private CmsContentRetriver innholdsTekster;
-    
-    
 
     public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriver innholdsTekster) {
         super(id, model);
         this.model = model;
         this.behandling = behandling;
         this.innholdsTekster = innholdsTekster;
-        add(
-                getDateText(),
-                getVedleggsLabel(),
-                getHeadText(),
-                getTopText(),
-                getInnsendteDokumenterHeader(),
-                dokumenterView("innsendteDokumenter", INNSENDT),
-                getManglendeDokumenterHeader(),
-                dokumenterView("manglendeDokumenter", MANGLENDE),
-                getBottomText()
-        );
+        add(getDateText(), getVedleggsLabel(), getHeadText(), getTopText(), getInnsendteDokumenterHeader(), dokumenterView("innsendteDokumenter", INNSENDT),
+                getManglendeDokumenterHeader(), dokumenterView("manglendeDokumenter", MANGLENDE), getBottomText());
     }
 
     private Label getInnsendteDokumenterHeader() {
@@ -60,7 +48,9 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getVedleggsLabel() {
-        return new Label("vedlegg",behandling.getAntallInnsendteDokumenter() + " "+ innholdsTekster.hentTekst("antall.vedlegg") );
+        Label l = new Label("vedlegg", behandling.getAntallInnsendteDokumenter() + " " + innholdsTekster.hentTekst("antall.vedlegg"));
+        l.setEscapeModelStrings(false);
+        return l;
     }
 
     private PropertyListView dokumenterView(String dokumentType, boolean statusToFilter) {
@@ -79,11 +69,15 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getTopText() {
-        return new Label("forTekst", lookupText("topText"));
+        Label l = new Label("forTekst", innholdsTekster.hentArtikkel("topp.tekst"));
+        l.setEscapeModelStrings(false);
+        return l;
     }
 
     private Label getBottomText() {
-        return new Label("etterTekst", lookupText("bottomText"));
+        Label l = new Label("etterTekst", innholdsTekster.hentArtikkel("slutt.tekst"));
+        l.setEscapeModelStrings(false);
+        return l;
     }
 
     private Label getDateText() {

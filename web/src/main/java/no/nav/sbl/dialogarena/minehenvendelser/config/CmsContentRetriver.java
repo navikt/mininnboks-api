@@ -32,4 +32,12 @@ public class CmsContentRetriver {
     public String hentTekst(String key){
         return hentTekst(key,defaultLocale);
     }
+    
+    public String hentArtikkel(String key, String locale){
+        return siteContentRetriver.getValueOf(key, locale);
+    }
+    
+    public String hentArtikkel(String key){
+        return hentArtikkel(key,defaultLocale);
+    }
 }
