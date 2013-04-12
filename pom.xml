@@ -397,17 +397,15 @@
             <plugin>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-content-maven-plugin</artifactId>
-                <version>0.0.2-SNAPSHOT</version>
+                <version>0.0.1</version>
                 <configuration>
                     <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
                     <propertiesFiler>
                         <nb>innholdstekster_nb.properties</nb>
-                        <en>innholdstekster_en.properties</en>
                     </propertiesFiler>
-                    <menyPunktPaths>
+                    <menyPunktUrler>
                         <nb>${minehenvendelser.cms.url}/site/16/minehenvendelser/nb/tekster</nb>
-                        <en>${minehenvendelser.cms.url}/site/16/minehenvendelser/en/tekster</en>
-                    </menyPunktPaths>
+                    </menyPunktUrler>
                 </configuration>
             </plugin>
         </plugins>

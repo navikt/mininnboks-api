@@ -19,9 +19,7 @@ public class WebContext {
 
     private static final String DEFAULT_LOCALE = "nb";
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/site/16/minehenvendelser/nb/tekster";
-    private static final String INNHOLDSTEKSTER_EN_REMOTE = "/site/16/minehenvendelser/en/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innholdstekster";
-    private static final String INNHOLDSTEKSTER_EN_LOCAL = "content.innholdstekster";
 
     @Value("${minehenvendelser.cms.url}")
     private String cmsBaseUrl;
