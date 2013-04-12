@@ -21,7 +21,7 @@ public class PropertyPlaceholderConfiguration {
 
     @Configuration
     @Profile("default")
-    @PropertySource("classpath:environment.properties")
+//    @PropertySource("classpath:environment.properties")
     public static class RealPropertiesContext {
         @Bean
         public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
