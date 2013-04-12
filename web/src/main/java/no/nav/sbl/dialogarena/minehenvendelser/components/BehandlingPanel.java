@@ -31,7 +31,7 @@ public class BehandlingPanel extends Panel {
         this.model = model;
         this.behandling = behandling;
         this.innholdsTekster = innholdsTekster;
-        add(    getDateText(), 
+        add(getDateText(), 
                 getVedleggsLabel(), 
                 getHeadText(), 
                 getTopText(), 
