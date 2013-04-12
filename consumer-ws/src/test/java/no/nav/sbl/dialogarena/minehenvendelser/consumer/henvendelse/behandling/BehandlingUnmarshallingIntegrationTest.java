@@ -14,6 +14,9 @@ import javax.inject.Inject;
 import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.Behandlingsstatus;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.BrukerbehandlingType;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.DokumentbehandlingType;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.Innsendingsvalg.SENDES_AV_ANDRE;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
@@ -32,9 +35,10 @@ public class BehandlingUnmarshallingIntegrationTest {
 
         Behandling forsteBehandling = behandlingerResponse.getBehandlinger().get(0);
 
-        assertThat(forsteBehandling.getBehandlingstype(), equalTo("DOKUMENT_BEHANDLING"));
-        assertThat(forsteBehandling.getStatus(), equalTo("FERDIG"));
-        assertThat(forsteBehandling.getBehandlingstype(), equalTo("DOKUMENT_BEHANDLING"));
+        assertThat(forsteBehandling.getBehandlingsId(), equalTo("behandlingId"));
+        assertThat(forsteBehandling.getBehandlingstype(), equalTo(BrukerbehandlingType.DOKUMENT_BEHANDLING));
+        assertThat(forsteBehandling.getDokumentbehandlingType(), equalTo(DokumentbehandlingType.SOKNADSINNSENDING));
+        assertThat(forsteBehandling.getStatus(), equalTo(Behandlingsstatus.FERDIG));
         assertThat(forsteBehandling.getSistEndret(), equalTo(new DateTime("2014-09-19T01:18:33+02:00")));
         assertThat(forsteBehandling.getInnsendtDato(), equalTo(new DateTime("2006-08-19T19:27:14+02:00")));
 

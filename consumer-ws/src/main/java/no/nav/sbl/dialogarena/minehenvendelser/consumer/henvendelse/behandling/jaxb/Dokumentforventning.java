@@ -3,7 +3,9 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.
 import org.apache.commons.collections15.Transformer;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
@@ -11,6 +13,8 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOpps
 @XmlRootElement(name = "dokumentforventning")
 public class Dokumentforventning implements Serializable {
 
+    @XmlEnum
+    @XmlType(name = "innsendingsvalg")
     public enum Innsendingsvalg {IKKE_VALGT, SEND_SENERE, LASTET_OPP, SEND_I_POST, SENDES_AV_ANDRE, SENDES_IKKE};
 
     @XmlElement

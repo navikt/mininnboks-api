@@ -6,7 +6,9 @@ import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,24 +24,29 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOpps
 @XmlRootElement(name = "brukerbehandling" , namespace = "http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon")
 public class Behandling implements Serializable {
 
-    public static final String UNDER_ARBEID = "UNDER_ARBEID";
-    public static final String FERDIG = "FERDIG";
-    public static final boolean IS_INNSENDT = true;
-    public static final boolean NOT_INNSENDT = false;
-    public static final boolean IS_HOVEDSKJEMA = true;
-    public static final boolean NOT_HOVEDSKJEMA = false;
+    @XmlEnum
+    @XmlType(name = "brukerbehandlingType")
+    public enum BrukerbehandlingType {DOKUMENT_BEHANDLING};
+
+    @XmlEnum
+    @XmlType(name = "dokumentbehandlingType")
+    public enum DokumentbehandlingType {SOKNADSINNSENDING, ETTERSENDING};
+
+    @XmlEnum
+    @XmlType(name = "behandlingsstatus")
+    public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG};
 
     @XmlElement
 	private String behandlingsId;
 
     @XmlElement(name = "brukerbehandlingType")
-    private String behandlingstype;
+    private BrukerbehandlingType behandlingstype;
 
     @XmlElement
-    private String dokumentbehandlingType;
+    private DokumentbehandlingType dokumentbehandlingType;
 
     @XmlElement
-	private String status;
+	private Behandlingsstatus status;
 
     @XmlElement
     @XmlJavaTypeAdapter(DateTimeAdapterXml.class)
@@ -57,13 +64,17 @@ public class Behandling implements Serializable {
 		return behandlingsId;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-    public String getBehandlingstype() {
+    public BrukerbehandlingType getBehandlingstype() {
 		return behandlingstype;
 	}
+
+    public DokumentbehandlingType getDokumentbehandlingType() {
+        return dokumentbehandlingType;
+    }
+
+    public Behandlingsstatus getStatus() {
+        return status;
+    }
 
 	public DateTime getSistEndret() {
 		return sistEndret;
@@ -109,9 +120,9 @@ public class Behandling implements Serializable {
                 .head().get();
     }
 
-    public static final Transformer<Behandling, String> STATUS = new Transformer<Behandling, String>() {
+    public static final Transformer<Behandling, Behandlingsstatus> STATUS = new Transformer<Behandling, Behandlingsstatus>() {
         @Override
-        public String transform(Behandling behandling) {
+        public Behandlingsstatus transform(Behandling behandling) {
             return behandling.getStatus();
         }
     };

@@ -5,16 +5,17 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.IS_HOVEDSKJEMA;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.IS_INNSENDT;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.NOT_HOVEDSKJEMA;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.NOT_INNSENDT;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.createMock;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class BehandlingTest {
+
+    private static final boolean IS_INNSENDT = true;
+    private static final boolean NOT_INNSENDT = false;
+    private static final boolean IS_HOVEDSKJEMA = true;
+    private static final boolean NOT_HOVEDSKJEMA = false;
 
     private Behandling behandling;
 

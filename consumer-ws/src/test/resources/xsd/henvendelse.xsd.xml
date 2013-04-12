@@ -1,21 +1,21 @@
 <inf:brukerbehandlingerResponse xmlns:inf="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon">
     <!--Zero or more repetitions:-->
     <brukerbehandling>
-        <behandlingsId>string</behandlingsId>
+        <behandlingsId>behandlingId</behandlingsId>
         <brukerbehandlingType>DOKUMENT_BEHANDLING</brukerbehandlingType>
         <dokumentbehandlingType>SOKNADSINNSENDING</dokumentbehandlingType>
-        <status>IKKE_SPESIFISERT</status>
-        <sistEndret>2014-09-19T01:18:33</sistEndret>
+        <status>FERDIG</status>
+        <sistEndret>2014-09-19T01:18:33+02:00</sistEndret>
         <!--Optional:-->
         <innsendtDato>2006-08-19T19:27:14+02:00</innsendtDato>
         <dokumentforventninger>
             <!--1 or more repetitions:-->
             <dokumentforventning>
-                <kodeverkId>string</kodeverkId>
+                <kodeverkId>kodeverk33</kodeverkId>
                 <innsendingsvalg>SENDES_AV_ANDRE</innsendingsvalg>
                 <hovedskjema>true</hovedskjema>
                 <!--Optional:-->
-                <egendefinertTittel>string</egendefinertTittel>
+                <egendefinertTittel>CV</egendefinertTittel>
             </dokumentforventning>
         </dokumentforventninger>
     </brukerbehandling>

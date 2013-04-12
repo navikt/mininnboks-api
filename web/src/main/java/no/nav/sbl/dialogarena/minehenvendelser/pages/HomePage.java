@@ -18,8 +18,7 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.FERDIG;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.UNDER_ARBEID;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.Behandlingsstatus;
 
 public class HomePage extends BasePage {
 
@@ -34,8 +33,8 @@ public class HomePage extends BasePage {
             }
         };
         add(
-                createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
-                createFerdigView(new BehandlingerLDM(model, FERDIG)));
+                createUnderArbeidView(new BehandlingerLDM(model, Behandlingsstatus.UNDER_ARBEID)),
+                createFerdigView(new BehandlingerLDM(model, Behandlingsstatus.FERDIG)));
     }
 
     private String hentAktorId() {
@@ -71,9 +70,9 @@ public class HomePage extends BasePage {
     private static class BehandlingerLDM extends LoadableDetachableModel<List<Behandling>> {
 
         private IModel<List<Behandling>> parentModel;
-        private final String status;
+        private final Behandlingsstatus status;
 
-        BehandlingerLDM(IModel<List<Behandling>> parentModel, String status) {
+        BehandlingerLDM(IModel<List<Behandling>> parentModel, Behandlingsstatus status) {
             this.parentModel = parentModel;
             this.status = status;
         }
