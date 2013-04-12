@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
+import no.nav.modig.content.ValueRetriever;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
 import org.apache.wicket.markup.html.basic.Label;
@@ -10,6 +11,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
@@ -23,6 +26,9 @@ public class BehandlingPanel extends Panel {
     private static final boolean INNSENDT = true;
     private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
+    
+    @Inject
+    ValueRetriever innholdsTekster;
 
     public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling) {
         super(id, model);
@@ -42,11 +48,15 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getInnsendteDokumenterHeader() {
-        return new Label("innsendteDokumenterHeader", lookupText("innsendtDokumenterHeader"));
+        Label l = new Label("innsendteDokumenterHeader", innholdsTekster.getValueOf("innsendte.dokumenter.header", "nb"));
+        l.setEscapeModelStrings(false);
+        return l;
     }
 
     private Label getManglendeDokumenterHeader() {
-        return new Label("manglendeDokumenterHeader", lookupText("manglendeDokumenterHeader"));
+        Label l = new Label("manglendeDokumenterHeader", innholdsTekster.getValueOf("manglende.dokumenter.header", "nb"));
+        l.setEscapeModelStrings(false);
+        return l;
     }
 
     private Label getVedleggsLabel() {
