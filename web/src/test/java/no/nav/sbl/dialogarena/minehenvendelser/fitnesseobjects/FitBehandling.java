@@ -6,14 +6,18 @@ import java.util.List;
 
 public class FitBehandling {
 
+    public String aktorId;
+
     public String behandlingsId;
     public String dokumentbehandlingtype;
+    public String brukerbehandlingType;
     public String status;
     public String sistEndretDato;
     public String innsendtDato;
-    public List<String> kodeverksIdDokumenter;
-    public List<String> innsendingsValg;
-    public List<String> fritekst;
+    public List<String> kodeverkId;
+    public List<String> innsendingsvalg;
+    public List<Boolean> hovedskjema;
+    public List<String> egendefinertTittel;
 
     public Behandling asBehandling() {
         Behandling behandling = new Behandling();
