@@ -1,24 +1,26 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
+import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.where;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.Behandlingsstatus;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
+
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.util.ListModel;
-
-import javax.inject.Inject;
-import java.util.List;
-
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
-import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.Behandlingsstatus;
 
 public class HomePage extends BasePage {
 
@@ -32,9 +34,8 @@ public class HomePage extends BasePage {
                 return behandlingService.hentBehandlinger(hentAktorId());
             }
         };
-        add(
-                createUnderArbeidView(new BehandlingerLDM(model, Behandlingsstatus.UNDER_ARBEID)),
-                createFerdigView(new BehandlingerLDM(model, Behandlingsstatus.FERDIG)));
+        add(createUnderArbeidView(new BehandlingerLDM(model, Behandlingsstatus.UNDER_ARBEID)), createFerdigView(new BehandlingerLDM(model,
+                Behandlingsstatus.FERDIG)));
     }
 
     private String hentAktorId() {
@@ -60,9 +61,11 @@ public class HomePage extends BasePage {
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
                 listItem.add(new Label("tittel", item.getTittel()));
-                listItem.add(new Label("sistEndret", item.getSistEndret()));
-                listItem.add(new Label("antallFerdige", item.getAntallInnsendteDokumenter()));
-                listItem.add(new Label("antallTotalt", item.getAntallSubDokumenter()));
+                listItem.add(new Label("sistEndret", innholdsTekster.hentTekst("siste.endret") + " " + item.getSistEndret()));
+                Label antallLabel =new Label("antall", item.getAntallInnsendteDokumenter() + " " + innholdsTekster.hentTekst("antall.mellom") + "  "
+                        + item.getAntallSubDokumenter());
+                antallLabel.setEscapeModelStrings(true);
+                listItem.add(antallLabel);
             }
         };
     }

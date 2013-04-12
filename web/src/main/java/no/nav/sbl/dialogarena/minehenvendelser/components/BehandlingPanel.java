@@ -31,8 +31,15 @@ public class BehandlingPanel extends Panel {
         this.model = model;
         this.behandling = behandling;
         this.innholdsTekster = innholdsTekster;
-        add(getDateText(), getVedleggsLabel(), getHeadText(), getTopText(), getInnsendteDokumenterHeader(), dokumenterView("innsendteDokumenter", INNSENDT),
-                getManglendeDokumenterHeader(), dokumenterView("manglendeDokumenter", MANGLENDE), getBottomText());
+        add(    getDateText(), 
+                getVedleggsLabel(), 
+                getHeadText(), 
+                getTopText(), 
+                getInnsendteDokumenterHeader(), 
+                dokumenterView("innsendteDokumenter", INNSENDT),
+                getManglendeDokumenterHeader(), 
+                dokumenterView("manglendeDokumenter", MANGLENDE), 
+                getBottomText());
     }
 
     private Label getInnsendteDokumenterHeader() {
@@ -53,7 +60,7 @@ public class BehandlingPanel extends Panel {
         return l;
     }
 
-    private PropertyListView dokumenterView(String dokumentType, boolean statusToFilter) {
+    private PropertyListView<Dokumentforventning> dokumenterView(String dokumentType, boolean statusToFilter) {
         IModel<List<Dokumentforventning>> dokumenterLDM = new DokumentforventningModel(model, statusToFilter);
         return new PropertyListView<Dokumentforventning>(dokumentType, dokumenterLDM) {
             @Override

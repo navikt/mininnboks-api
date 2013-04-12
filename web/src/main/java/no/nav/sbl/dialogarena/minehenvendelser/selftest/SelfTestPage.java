@@ -44,7 +44,7 @@ public class SelfTestPage extends WebPage {
     }
 
     private CmsStatusListView getCmsStatus() {
-        String[] keys = { "innsendte.dokumenter.header", "manglende.dokumenter.header", "antall.vedlegg", "slutt.tekst", "topp.tekst" };
+        String[] keys = { "innsendte.dokumenter.header", "manglende.dokumenter.header", "topp.tekst", "slutt.tekst", "antall.vedlegg", "antall.mellom" };
         List<CmsStatus> cmsStatusList = new ArrayList<>();
         for (String key : keys) {
             cmsStatusList.add(new CmsStatus(key));
