@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.Behandlingsstatus;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.BrukerbehandlingType.valueOf;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.DokumentbehandlingType;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
 public class FitBehandling {
@@ -40,9 +43,9 @@ public class FitBehandling {
 
     private void populateSimpleFields(Behandling behandling) {
         setInternalState(behandling, "behandlingsId", behandlingsId);
-//        setInternalState(behandling, "behandlingstype", Behandling.BrukerbehandlingType.valueOf(brukerbehandlingType));
-//        setInternalState(behandling, "dokumentbehandlingType", dokumentbehandlingType);
-//        setInternalState(behandling, "status", status);
+        setInternalState(behandling, "behandlingstype", valueOf(brukerbehandlingType));
+        setInternalState(behandling, "dokumentbehandlingType", DokumentbehandlingType.valueOf(dokumentbehandlingType));
+        setInternalState(behandling, "status", Behandlingsstatus.valueOf(status));
         setInternalState(behandling, "sistEndret", new DateTime(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(sistEndretDato)));
         setInternalState(behandling, "innsendtDato", new DateTime(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(innsendtDato)));
     }
@@ -58,16 +61,10 @@ public class FitBehandling {
     private Dokumentforventning createNewDokumentForventningBasedOnLists(int indexOfLists) {
         Dokumentforventning dokumentforventning = new Dokumentforventning();
         setInternalState(dokumentforventning, "kodeverkId", kodeverkId.get(indexOfLists));
-//        setInternalState(dokumentforventning, "innsendingsvalg", innsendingsvalg.get(indexOfLists));
+        setInternalState(dokumentforventning, "innsendingsvalg", Dokumentforventning.Innsendingsvalg.valueOf(innsendingsvalg.get(indexOfLists)));
 //        setInternalState(dokumentforventning, "hovedskjema", (hovedskjema.get(indexOfLists) == null ? false : hovedskjema.get(indexOfLists)));
         setInternalState(dokumentforventning, "egendefinertTittel", egendefinertTittel.get(indexOfLists));
         return dokumentforventning;
-    }
-
-    public static void main(String ... args) {
-        String xmlDate = "2006-08-19T19:27:14+02:00";
-        DateTime dt = ISODateTimeFormat.dateTimeNoMillis().parseDateTime(xmlDate);
-        System.out.print(dt.toDate());
     }
 
 }
