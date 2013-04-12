@@ -1,0 +1,31 @@
+!***> Oppsett
+
+!define TEST_RUNNER {fitlibrary.suite.FitLibraryServer}
+| no.nav.sbl.dialogarena.minehenvendelser.fixtures.VisePaabegynteOgInnsendteSoeknaderFixture |
+
+!brukerhistorie MOD-3558
+!brukerhistorie MOD-3559
+*!
+!| datagrunnlag | | |
+| Aktør Id | Behandlings Id | BrukerBehandlingstype | dokumentBehandlingstype | Status | Sist endret dato | Innsendt Dato | Kodeverksid dokumenter | Innsendingsvalg | Hovedskjema | Egendefinert tittel |
+| ***REMOVED*** | DA01-000000009 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | 2014-09-19T01:18:33 | 2006-08-19T19:27:14+02:00 | 001,002,003,004 | LASTET OPP, LASTET OPP, LASTET OPP, SENDES IKKE | JA, NEI, NEI, NEI | ,,,Egendef tittel på 25 tegn |
+| ***REMOVED*** | 1 | DOKUMENT_BEHANDLING | | UNDER_ARBEID | 13.03.2012 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, SENDES_IKKE | JA, NEI | |
+| ***REMOVED*** | 2 | DOKUMENT_BEHANDLING | | FERDIG | 13.03.2012 | 12.03.2012 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, LASTET_OPP | JA, NEI | Oppsigelse |
+| ***REMOVED*** | 3 | DOKUMENT_BEHANDLING | | AVBRUTT_AV_BRUKER | 29.02.2012 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | |
+| ***REMOVED*** | 4 | DOKUMENT_BEHANDLING | | UNDER_ARBEID | 01.03.2013 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | |
+| ***REMOVED*** | 5 | DOKUMENT_BEHANDLING | | UNDER_ARBEID | 02.03.2013 | | kodeForDagpenger, kodeForPermitteringsvarsel | | JA, NEI | |
+| ***REMOVED*** | 6 | DOKUMENT_BEHANDLING | | FERDIG | 28.02.2013 | 28.02.2013 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, SENDES_IKKE | A, NEI | Oppsigelsen min |
+| ***REMOVED*** | | | | | | | | | | |
+
+Bruker har ingen påbegynte, og 1 innsendt. 1 av 4 dokumenter er innsendt
+
+| ***REMOVED*** |
+| DA01-000000009 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | | | Søknad om dagpenger,Permitteringsvarsel,Arbeidsavtale,Annet | LASTET OPP, SEND I POST, SENDES AV ANDRE, SENDES IKKE | ,,,Egendef tittel på 25 tegn |
+
+Bruker har 1 på påbegynt, ingen innsendte
+
+| Kodeverksid dokumenter | Navn på dokumentet |
+| 001 | Søknad om dagpenger |
+| 002 | Permitteringsvarsel |
+| 003 | Arbeidsavtale |
+| 004 | Annet |
