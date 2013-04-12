@@ -42,7 +42,7 @@ public class Dokumentforventning implements Serializable {
         return egendefinertTittel;
     }
 
-    public boolean erInnsendt() {
+    public boolean isLastetOpp() {
         return Innsendingsvalg.LASTET_OPP.equals(innsendingsvalg);
     }
 
@@ -50,10 +50,10 @@ public class Dokumentforventning implements Serializable {
         return hentKodeverk(getKodeverkId());
     }
 
-    public static final Transformer<Dokumentforventning, Boolean> STATUS_INNSENDT = new Transformer<Dokumentforventning, Boolean>() {
+    public static final Transformer<Dokumentforventning, Boolean> STATUS_LASTET_OPP = new Transformer<Dokumentforventning, Boolean>() {
         @Override
         public Boolean transform(Dokumentforventning dokumentforventning) {
-            return dokumentforventning.erInnsendt();
+            return dokumentforventning.isLastetOpp();
         }
     };
 

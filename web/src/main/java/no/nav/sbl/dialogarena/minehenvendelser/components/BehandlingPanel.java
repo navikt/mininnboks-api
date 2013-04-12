@@ -14,7 +14,7 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_INNSENDT;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_LASTET_OPP;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CMSLookup.lookupText;
 
 public class BehandlingPanel extends Panel {
@@ -92,7 +92,7 @@ public class BehandlingPanel extends Panel {
 
         @Override
         protected List<Dokumentforventning> load() {
-            return on(parentModel.getObject()).filter(where(STATUS_INNSENDT, equalTo(statusToFilter))).collect();
+            return on(parentModel.getObject()).filter(where(STATUS_LASTET_OPP, equalTo(statusToFilter))).collect();
         }
 
         @Override

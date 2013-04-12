@@ -18,7 +18,7 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.HOVEDSKJEMA;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_INNSENDT;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_LASTET_OPP;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 @XmlRootElement(name = "brukerbehandling" , namespace = "http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon")
@@ -103,7 +103,7 @@ public class Behandling implements Serializable {
 
     public List<Dokumentforventning> fetchInnsendteDokumenter() {
         return on(dokumentforventninger)
-                .filter(where(STATUS_INNSENDT, equalTo(true)))
+                .filter(where(STATUS_LASTET_OPP, equalTo(true)))
                 .filter(where(HOVEDSKJEMA, equalTo(false)))
                 .collect();
     }

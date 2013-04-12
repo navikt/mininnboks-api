@@ -7,10 +7,10 @@ import static org.mockito.Mockito.when;
 
 public class MockCreationUtil {
 
-    public static Dokumentforventning createMock(boolean isHovedskjema, boolean isInnsendt){
+    public static Dokumentforventning createMock(boolean isHovedskjema, boolean isLastetOpp){
         Dokumentforventning dokumentforventning = mock(Dokumentforventning.class);
         when(dokumentforventning.isHovedskjema()).thenReturn(isHovedskjema);
-        when(dokumentforventning.erInnsendt()).thenReturn(isInnsendt);
+        when(dokumentforventning.isLastetOpp()).thenReturn(isLastetOpp);
         return dokumentforventning;
     }
 
