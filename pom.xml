@@ -52,6 +52,7 @@
         <joda.time.version>2.2</joda.time.version>
         <dialogarena.common.version>1.0.6-SNAPSHOT</dialogarena.common.version>
 
+        <minehenvendelser.cms.url>http://10.51.9.185:8080</minehenvendelser.cms.url>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -392,6 +393,22 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-content-maven-plugin</artifactId>
+                <version>0.0.2-SNAPSHOT</version>
+                <configuration>
+                    <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
+                    <propertiesFiler>
+                        <nb>innholdstekster_nb.properties</nb>
+                        <en>innholdstekster_en.properties</en>
+                    </propertiesFiler>
+                    <menyPunktPaths>
+                        <nb>${minehenvendelser.cms.url}/site/16/minehenvendelser/nb/tekster</nb>
+                        <en>${minehenvendelser.cms.url}/site/16/minehenvendelser/en/tekster</en>
+                    </menyPunktPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>

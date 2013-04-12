@@ -1,32 +1,15 @@
 package no.nav.sbl.dialogarena.minehenvendelser.selftest;
 
-import no.nav.modig.wicket.test.FluentWicketTester;
-import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
-import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplicationContext;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.inject.Inject;
-import java.util.Locale;
-
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
+import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
+import no.nav.sbl.dialogarena.minehenvendelser.pages.AbstractWicketTest;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WicketApplication.class)
-@ActiveProfiles("test")
-public class SelfTestPageTest {
+import org.junit.Test;
 
-    @Inject
-    private WicketApplication minehenvendelserApplication;
+public class SelfTestPageTest extends AbstractWicketTest<WicketApplication> {
 
     @Test
     public void shouldRenderSelfTestPage() {
-        FluentWicketTester<WicketApplication> wicketTester = new FluentWicketTester<>(minehenvendelserApplication);
-        wicketTester.tester.getSession().setLocale(new Locale("NO"));
-
         wicketTester.goTo(SelfTestPage.class)
                 .should().containComponent(withId("serviceStatusTable"));
     }
