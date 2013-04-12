@@ -12,8 +12,10 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import no.nav.sbl.dialogarena.minehenvendelser.config.CMSInfo;
+import no.nav.modig.content.enonic.innholdstekst.Innholdstekst;
+import no.nav.sbl.dialogarena.minehenvendelser.config.CmsContentRetriver;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CMSLookup;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -23,11 +25,12 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 public class SelfTestPage extends WebPage {
 
     @Inject
-    private CMSInfo cmsInfo;
+    private CmsContentRetriver innholdsTekster;
     
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
@@ -38,10 +41,18 @@ public class SelfTestPage extends WebPage {
         List<ServiceStatus> statusList = new ArrayList<>();
         statusList.add(new ServiceStatus("Testet Appcontext", "OK, startet opp: " + startUpDate, 0));
         statusList.add(new ServiceStatus("Applikasjonsversjon", version, 0));
-        statusList.add(new ServiceStatus("CMS - " + cmsInfo.getCmsIp(), "OK" , 0));
         add(new ServiceStatusListView("serviceStatusTable", statusList));
+        add(new Label("cmsinfo", "Cms-server: "+ innholdsTekster.getCmsIp()));
+        add(getCmsStatus());
     }
 
+    private CmsStatusListView getCmsStatus(){
+        List<CmsStatus> cmsStatusList = new ArrayList<>();
+        cmsStatusList.add(new CmsStatus("innsendte.dokumenter.header"));
+        cmsStatusList.add(new CmsStatus("manglende.dokumenter.header"));
+        return new CmsStatusListView("cmsStatusTable", cmsStatusList);
+    }
+    
     private String getApplicationVersion() throws IOException {
         String version = "unknown version";
         WebRequest req = (WebRequest) RequestCycle.get().getRequest();
@@ -97,5 +108,43 @@ public class SelfTestPage extends WebPage {
         }
 
     }
+    
+    private static class CmsStatusListView extends PropertyListView<CmsStatus> {
+
+        private static final long serialVersionUID = 1L;
+
+        public CmsStatusListView(String id, List<CmsStatus> cmsStatusList) {
+            super(id, cmsStatusList);
+        }
+
+        @Override
+        protected void populateItem(ListItem<CmsStatus> listItem) {
+            Label valueLabel = new Label("value");
+            valueLabel.setEscapeModelStrings(true);
+            listItem.add(new Label("key"), valueLabel);
+        }
+    }
+    
+    private  class CmsStatus implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        private final String key;
+        private final String value;
+
+        public CmsStatus(String key) {
+            this.key = key;
+            this.value = innholdsTekster.hentTekst(key);
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
 
 }

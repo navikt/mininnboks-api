@@ -42,10 +42,14 @@ public class WebContext {
     }
 
     @Bean
-    public CMSInfo cmsInfo() {
-        CMSInfo info = new CMSInfo();
-        info.setCmsIp(cmsBaseUrl);
-        return info;
+    public CmsContentRetriver cmsContentRetriver() throws URISyntaxException {
+        CmsContentRetriver cmsContentRetriver = new CmsContentRetriver();
+        cmsContentRetriver.setCmsIp(cmsBaseUrl);
+        cmsContentRetriver.setDefaultLocale(DEFAULT_LOCALE);
+        cmsContentRetriver.setInnholdstekster(siteContentRetriever());
+        return cmsContentRetriver;
     }
+    
+    
 
 }

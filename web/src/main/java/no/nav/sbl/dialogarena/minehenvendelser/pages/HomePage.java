@@ -48,7 +48,7 @@ public class HomePage extends BasePage {
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling behandling = listItem.getModelObject();
                 IModel<List<Dokumentforventning>> dokModel = new ListModel<>(behandling.fetchAlleDokumenter());
-                listItem.add(new BehandlingPanel("behandling", dokModel, behandling));
+                listItem.add(new BehandlingPanel("behandling", dokModel, behandling, innholdsTekster));
             }
         };
     }

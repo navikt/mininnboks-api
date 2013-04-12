@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
 import no.nav.modig.content.ValueRetriever;
+import no.nav.sbl.dialogarena.minehenvendelser.config.CmsContentRetriver;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
 import org.apache.wicket.markup.html.basic.Label;
@@ -26,14 +27,15 @@ public class BehandlingPanel extends Panel {
     private static final boolean INNSENDT = true;
     private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
+    private CmsContentRetriver innholdsTekster;
     
-    @Inject
-    ValueRetriever innholdsTekster;
+    
 
-    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling) {
+    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriver innholdsTekster) {
         super(id, model);
         this.model = model;
         this.behandling = behandling;
+        this.innholdsTekster = innholdsTekster;
         add(
                 getDateText(),
                 getVedleggsLabel(),
@@ -48,13 +50,13 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getInnsendteDokumenterHeader() {
-        Label l = new Label("innsendteDokumenterHeader", innholdsTekster.getValueOf("innsendte.dokumenter.header", "nb"));
+        Label l = new Label("innsendteDokumenterHeader", innholdsTekster.hentTekst("innsendte.dokumenter.header"));
         l.setEscapeModelStrings(false);
         return l;
     }
 
     private Label getManglendeDokumenterHeader() {
-        Label l = new Label("manglendeDokumenterHeader", innholdsTekster.getValueOf("manglende.dokumenter.header", "nb"));
+        Label l = new Label("manglendeDokumenterHeader", innholdsTekster.hentTekst("manglende.dokumenter.header"));
         l.setEscapeModelStrings(false);
         return l;
     }

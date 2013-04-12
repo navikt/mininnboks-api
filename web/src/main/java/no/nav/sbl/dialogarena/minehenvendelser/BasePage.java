@@ -1,5 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
+import javax.inject.Inject;
+
+import no.nav.sbl.dialogarena.minehenvendelser.config.CmsContentRetriver;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
@@ -18,6 +21,9 @@ public class BasePage extends WebPage {
     private final WebMarkupContainer body;
     private FeedbackPanel feedback;
 
+    @Inject
+    protected CmsContentRetriver innholdsTekster;
+    
     public BasePage() {
         feedback = new FeedbackPanel("feedback");
         body = new TransparentWebMarkupContainer("body");
