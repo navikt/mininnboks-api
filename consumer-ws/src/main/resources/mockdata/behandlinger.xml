@@ -1,67 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ser:Behandlinger xmlns:ser="http://service.provider.henvendelse.dialogarena.sbl.nav.no">
+<inf:brukerbehandlingerResponse xmlns:inf="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon">
     <!--Zero or more repetitions:-->
-    <Behandling>
-        <brukerBehandlingsId>10</brukerBehandlingsId>
+    <brukerbehandling>
+        <behandlingsId>10</behandlingsId>
+        <brukerbehandlingType>DOKUMENT_BEHANDLING</brukerbehandlingType>
+        <dokumentbehandlingType>SOKNADSINNSENDING</dokumentbehandlingType>
         <status>UNDER_ARBEID</status>
-        <hovedkravskjemaId>skjema1</hovedkravskjemaId>
-        <behandlingstype>SOKNAD</behandlingstype>
         <sistEndret>2013-04-01T03:49:45</sistEndret>
         <dokumentforventninger>
             <!--Zero or more repetitions:-->
             <dokumentforventning>
-                <skjemaId>LEGE</skjemaId>
-                <egendefinertTittel></egendefinertTittel>
-                <innsendingsvalg>DIGITAL</innsendingsvalg>
+                <kodeverkId>1</kodeverkId>
+                <innsendingsvalg>LASTET_OPP</innsendingsvalg>
                 <hovedskjema>false</hovedskjema>
             </dokumentforventning>
             <dokumentforventning>
-                <skjemaId>LEGE</skjemaId>
-                <egendefinertTittel></egendefinertTittel>
-                <innsendingsvalg>IKKE_SENDT</innsendingsvalg>
+                <kodeverkId>2</kodeverkId>
+                <innsendingsvalg>SENDES_IKKE</innsendingsvalg>
                 <hovedskjema>false</hovedskjema>
             </dokumentforventning>
             <dokumentforventning>
-                <skjemaId>EGENDEF</skjemaId>
+                <kodeverkId>3</kodeverkId>
+                <innsendingsvalg>SENDES_IKKE</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
                 <egendefinertTittel>CV</egendefinertTittel>
-                <innsendingsvalg>IKKE_SENDT</innsendingsvalg>
-                <hovedskjema>false</hovedskjema>
             </dokumentforventning>
             <dokumentforventning>
-                <skjemaId>skjema1</skjemaId>
-                <egendefinertTittel></egendefinertTittel>
-                <innsendingsvalg>DIGITAL</innsendingsvalg>
+                <kodeverkId>4</kodeverkId>
+                <innsendingsvalg>LASTET_OPP</innsendingsvalg>
                 <hovedskjema>true</hovedskjema>
             </dokumentforventning>
         </dokumentforventninger>
-    </Behandling>
-    <Behandling>
-        <brukerBehandlingsId>2</brukerBehandlingsId>
+    </brukerbehandling>
+    <brukerbehandling>
+        <behandlingsId>2</behandlingsId>
+        <brukerbehandlingType>DOKUMENT_BEHANDLING</brukerbehandlingType>
+        <dokumentbehandlingType>ETTERSENDING</dokumentbehandlingType>
         <status>FERDIG</status>
-        <hovedkravskjemaId>skjema2</hovedkravskjemaId>
-        <behandlingstype>SOKNAD</behandlingstype>
         <sistEndret>2013-03-01T03:49:45</sistEndret>
         <innsendtDato>2013-03-01T03:49:45</innsendtDato>
         <dokumentforventninger>
             <!--Zero or more repetitions:-->
             <dokumentforventning>
-                <skjemaId>LEGE</skjemaId>
-                <egendefinertTittel></egendefinertTittel>
-                <innsendingsvalg>DIGITAL</innsendingsvalg>
+                <kodeverkId>11</kodeverkId>
+                <innsendingsvalg>LASTET_OPP</innsendingsvalg>
                 <hovedskjema>false</hovedskjema>
             </dokumentforventning>
             <dokumentforventning>
-                <skjemaId>POLITI</skjemaId>
-                <egendefinertTittel></egendefinertTittel>
-                <innsendingsvalg>IKKE_SENDT</innsendingsvalg>
+                <kodeverkId>12</kodeverkId>
+                <innsendingsvalg>SENDES_IKKE</innsendingsvalg>
                 <hovedskjema>false</hovedskjema>
             </dokumentforventning>
             <dokumentforventning>
-                <skjemaId>skjema2</skjemaId>
-                <egendefinertTittel></egendefinertTittel>
-                <innsendingsvalg>DIGITAL</innsendingsvalg>
+                <kodeverkId>13</kodeverkId>
+                <innsendingsvalg>LASTET_OPP</innsendingsvalg>
                 <hovedskjema>true</hovedskjema>
             </dokumentforventning>
         </dokumentforventninger>
-    </Behandling>
-</ser:Behandlinger>
+    </brukerbehandling>
+</inf:brukerbehandlingerResponse>

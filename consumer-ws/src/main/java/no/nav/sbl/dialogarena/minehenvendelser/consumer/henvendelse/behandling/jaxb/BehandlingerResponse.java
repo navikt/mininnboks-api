@@ -5,10 +5,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlRootElement(name = "Behandlinger", namespace = "http://service.provider.henvendelse.dialogarena.sbl.nav.no")
-public class Behandlinger {
+@XmlRootElement(name = "brukerbehandlingerResponse", namespace = "http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon")
+public class BehandlingerResponse {
 
-    @XmlElement(name = "Behandling")
+    @XmlElement(name = "brukerbehandling")
     private List<Behandling> behandlinger = new ArrayList<>();
 
     public List<Behandling> getBehandlinger() {

@@ -2,7 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandlinger;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.BehandlingerResponse;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.Innsendingsvalg.SENDES_AV_ANDRE;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -26,27 +27,23 @@ public class BehandlingUnmarshallingIntegrationTest {
 
     @Test
     public void shouldUnmarshall() {
-        InputStream inputStream = getClass().getResourceAsStream("/xsd/behandlingsinformasjon.xsd.xml");
-        Behandlinger behandlinger = (Behandlinger) jaxb2Marshaller.unmarshal(new StreamSource(inputStream));
+        InputStream inputStream = getClass().getResourceAsStream("/xsd/henvendelse.xsd.xml");
+        BehandlingerResponse behandlingerResponse = (BehandlingerResponse) jaxb2Marshaller.unmarshal(new StreamSource(inputStream));
 
-        assertThat(getFirstBehandlingFromList(behandlinger).getBehandlingstype(), equalTo("type-ETTERINNSENDING"));
-        assertThat(getFirstBehandlingFromList(behandlinger).getStatus(), equalTo("STATUS-FERDIG"));
-        assertThat(getFirstBehandlingFromList(behandlinger).getHovedkravskjemaId(), equalTo("hid-DAGP"));
-        assertThat(getFirstBehandlingFromList(behandlinger).getBehandlingstype(), equalTo("type-ETTERINNSENDING"));
-        assertThat(getFirstBehandlingFromList(behandlinger).getSistEndret(), equalTo(new DateTime("2008-09-29T03:49:45")));
-        assertThat(getFirstBehandlingFromList(behandlinger).getInnsendtDato(), equalTo(new DateTime("2014-09-19T01:18:33")));
+        Behandling forsteBehandling = behandlingerResponse.getBehandlinger().get(0);
 
-        assertThat(behandlinger.getBehandlinger().size(), equalTo(1));
-        assertThat(getFirstBehandlingFromList(behandlinger).getDokumentforventninger().size(), equalTo(1));
+        assertThat(forsteBehandling.getBehandlingstype(), equalTo("DOKUMENT_BEHANDLING"));
+        assertThat(forsteBehandling.getStatus(), equalTo("FERDIG"));
+        assertThat(forsteBehandling.getBehandlingstype(), equalTo("DOKUMENT_BEHANDLING"));
+        assertThat(forsteBehandling.getSistEndret(), equalTo(new DateTime("2014-09-19T01:18:33+02:00")));
+        assertThat(forsteBehandling.getInnsendtDato(), equalTo(new DateTime("2006-08-19T19:27:14+02:00")));
 
-        assertThat(getFirstBehandlingFromList(behandlinger).getDokumentforventninger().get(0).getSkjemaId(), equalTo("skjemaID-LEGE"));
-        assertThat(getFirstBehandlingFromList(behandlinger).getDokumentforventninger().get(0).getEgendefinertTittel(), equalTo("tittel-CV"));
-        assertThat(getFirstBehandlingFromList(behandlinger).getDokumentforventninger().get(0).getInnsendingsvalg(), equalTo("type-ELEK"));
-        assertThat(getFirstBehandlingFromList(behandlinger).getDokumentforventninger().get(0).isHovedskjema(), equalTo(true));
+        assertThat(behandlingerResponse.getBehandlinger().size(), equalTo(1));
+        assertThat(forsteBehandling.getDokumentforventninger().size(), equalTo(1));
+
+        assertThat(forsteBehandling.getDokumentforventninger().get(0).getKodeverkId(), equalTo("kodeverk33"));
+        assertThat(forsteBehandling.getDokumentforventninger().get(0).getInnsendingsvalg(), equalTo(SENDES_AV_ANDRE));
+        assertThat(forsteBehandling.getDokumentforventninger().get(0).isHovedskjema(), equalTo(true));
+        assertThat(forsteBehandling.getDokumentforventninger().get(0).getEgendefinertTittel(), equalTo("CV"));
     }
-
-    private Behandling getFirstBehandlingFromList(Behandlinger behandlinger) {
-        return behandlinger.getBehandlinger().get(0);
-    }
-
 }

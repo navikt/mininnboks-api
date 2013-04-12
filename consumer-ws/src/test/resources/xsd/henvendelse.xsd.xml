@@ -1,22 +1,22 @@
-<inf:bb xmlns:inf="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon">
+<inf:brukerbehandlingerResponse xmlns:inf="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon">
     <!--Zero or more repetitions:-->
-    <brukerBehandling>
+    <brukerbehandling>
         <behandlingsId>string</behandlingsId>
-        <brukerBehandlingType>DOKUMENT_BEHANDLING</brukerBehandlingType>
-        <dokumentBehandlingType>SOKNADSINNSENDING</dokumentBehandlingType>
-        <status>IKKE_SPESIFISERT</status>
+        <brukerbehandlingType>DOKUMENT_BEHANDLING</brukerbehandlingType>
+        <dokumentbehandlingType>SOKNADSINNSENDING</dokumentbehandlingType>
+        <status>FERDIG</status>
         <sistEndret>2014-09-19T01:18:33</sistEndret>
         <!--Optional:-->
         <innsendtDato>2006-08-19T19:27:14+02:00</innsendtDato>
-        <dokumentForventninger>
+        <dokumentforventninger>
             <!--1 or more repetitions:-->
-            <dokumentForventning>
-                <kodeverkId>string</kodeverkId>
-                <innsendingsValg>SENDES_AV_ANDRE</innsendingsValg>
+            <dokumentforventning>
+                <kodeverkId>kodeverk33</kodeverkId>
+                <innsendingsvalg>SENDES_AV_ANDRE</innsendingsvalg>
                 <hovedskjema>true</hovedskjema>
                 <!--Optional:-->
-                <friTekst>string</friTekst>
-            </dokumentForventning>
-        </dokumentForventninger>
-    </brukerBehandling>
-</inf:bb>
+                <egendefinertTittel>CV</egendefinertTittel>
+            </dokumentforventning>
+        </dokumentforventninger>
+    </brukerbehandling>
+</inf:brukerbehandlingerResponse>

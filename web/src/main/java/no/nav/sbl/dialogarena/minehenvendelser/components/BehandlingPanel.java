@@ -16,7 +16,6 @@ import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_INNSENDT;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CMSLookup.lookupText;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 public class BehandlingPanel extends Panel {
 
@@ -66,7 +65,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getHeadText() {
-        return new Label("tittel", hentKodeverk(behandling.getHovedkravskjemaId()));
+        return new Label("tittel", behandling.getTittel());
     }
 
     private Label getTopText() {

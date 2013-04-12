@@ -11,26 +11,22 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOpps
 @XmlRootElement(name = "dokumentforventning")
 public class Dokumentforventning implements Serializable {
 
-    public static final String STATUS_DIGITAL = "STATUS_DIGITAL";
+    public enum Innsendingsvalg {IKKE_VALGT, SEND_SENERE, LASTET_OPP, SEND_I_POST, SENDES_AV_ANDRE, SENDES_IKKE};
 
     @XmlElement
-    private String skjemaId;
+    private String kodeverkId;
     @XmlElement
-    private String egendefinertTittel;
-    @XmlElement
-    private String innsendingsvalg;
+    private Innsendingsvalg innsendingsvalg;
     @XmlElement
     private boolean hovedskjema;
+    @XmlElement
+    private String egendefinertTittel;
 
-    public String getSkjemaId() {
-        return skjemaId;
+    public String getKodeverkId() {
+        return kodeverkId;
     }
 
-    public String getEgendefinertTittel() {
-        return egendefinertTittel;
-    }
-
-    public String getInnsendingsvalg() {
+    public Innsendingsvalg getInnsendingsvalg() {
         return innsendingsvalg;
     }
 
@@ -38,12 +34,16 @@ public class Dokumentforventning implements Serializable {
         return hovedskjema;
     }
 
+    public String getEgendefinertTittel() {
+        return egendefinertTittel;
+    }
+
     public boolean erInnsendt() {
-        return STATUS_DIGITAL.equals(innsendingsvalg);
+        return Innsendingsvalg.LASTET_OPP.equals(innsendingsvalg);
     }
 
     public String getTittel() {
-        return hentKodeverk(getSkjemaId());
+        return hentKodeverk(getKodeverkId());
     }
 
     public static final Transformer<Dokumentforventning, Boolean> STATUS_INNSENDT = new Transformer<Dokumentforventning, Boolean>() {

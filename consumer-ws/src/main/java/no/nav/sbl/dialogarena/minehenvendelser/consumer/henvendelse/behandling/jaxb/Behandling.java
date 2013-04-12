@@ -19,7 +19,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_INNSENDT;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
-@XmlRootElement(name = "Behandling" , namespace = "http://service.provider.henvendelse.dialogarena.sbl.nav.no")
+@XmlRootElement(name = "brukerbehandling" , namespace = "http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon")
 public class Behandling implements Serializable {
 
     public static final String UNDER_ARBEID = "UNDER_ARBEID";
@@ -30,16 +30,16 @@ public class Behandling implements Serializable {
     public static final boolean NOT_HOVEDSKJEMA = false;
 
     @XmlElement
-	private String brukerBehandlingsId;
+	private String behandlingsId;
+
+    @XmlElement(name = "brukerbehandlingType")
+    private String behandlingstype;
+
+    @XmlElement
+    private String dokumentbehandlingType;
 
     @XmlElement
 	private String status;
-
-    @XmlElement
-    private String hovedkravskjemaId;
-
-    @XmlElement
-    private String behandlingstype;
 
     @XmlElement
     @XmlJavaTypeAdapter(DateTimeAdapterXml.class)
@@ -53,19 +53,15 @@ public class Behandling implements Serializable {
     @XmlElement(name = "dokumentforventning")
     private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
 
-	public String getBrukerBehandlingsId() {
-		return brukerBehandlingsId;
+	public String getBehandlingsId() {
+		return behandlingsId;
 	}
 
 	public String getStatus() {
 		return status;
 	}
 
-	public String getHovedkravskjemaId() {
-		return hovedkravskjemaId;
-	}
-
-	public String getBehandlingstype() {
+    public String getBehandlingstype() {
 		return behandlingstype;
 	}
 
@@ -82,7 +78,7 @@ public class Behandling implements Serializable {
 	}
 
     public String getTittel() {
-        return hentKodeverk(getHovedkravskjemaId());
+        return hentKodeverk(fetchHoveddokument().getKodeverkId());
     }
 
     public int getAntallInnsendteDokumenter() {

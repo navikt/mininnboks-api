@@ -19,7 +19,7 @@ public class ConsumerContext {
     public Jaxb2Marshaller jaxb2Marshaller() {
         Jaxb2Marshaller jaxb2Marshaller = new Jaxb2Marshaller();
         jaxb2Marshaller.setPackagesToScan(new String[]{"no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling"});
-        jaxb2Marshaller.setSchema(new ClassPathResource("xsd/behandlingsinformasjon.xsd"));
+        jaxb2Marshaller.setSchema(new ClassPathResource("xsd/henvendelse.xsd"));
         return jaxb2Marshaller;
     }
 
