@@ -99,26 +99,16 @@
         <dependency>
             <groupId>org.fitnesse</groupId>
             <artifactId>fitnesse</artifactId>
-            <version>20121220</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.fitnesse</groupId>
-            <artifactId>fitlibrary</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-fitnesse</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>args4j</groupId>
             <artifactId>args4j</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
