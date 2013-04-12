@@ -27,7 +27,4 @@ public class PropertyPlaceholderConfiguration {
             return new PropertySourcesPlaceholderConfigurer();
         }
     }
-
-    
-    
 }
