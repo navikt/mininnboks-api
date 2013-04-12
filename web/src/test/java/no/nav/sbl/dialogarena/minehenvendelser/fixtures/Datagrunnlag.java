@@ -2,7 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.fixtures;
 
 import no.nav.modig.test.fitnesse.fixture.ObjectPerRowFixture;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.fitnesseObjects.FitBehandling;
+import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitBehandling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

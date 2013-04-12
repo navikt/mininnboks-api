@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.selftest;
 
 import no.nav.modig.wicket.test.FluentWicketTester;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
+import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplicationContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;

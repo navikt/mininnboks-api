@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.fitnesseObjects;
+package no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 
