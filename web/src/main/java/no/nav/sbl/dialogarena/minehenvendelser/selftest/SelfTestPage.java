@@ -12,10 +12,8 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import no.nav.modig.content.enonic.innholdstekst.Innholdstekst;
 import no.nav.sbl.dialogarena.minehenvendelser.config.CmsContentRetriver;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CMSLookup;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -25,7 +23,6 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 public class SelfTestPage extends WebPage {
 
@@ -47,6 +44,8 @@ public class SelfTestPage extends WebPage {
     }
 
     private CmsStatusListView getCmsStatus(){
+        
+        
         List<CmsStatus> cmsStatusList = new ArrayList<>();
         cmsStatusList.add(new CmsStatus("innsendte.dokumenter.header"));
         cmsStatusList.add(new CmsStatus("manglende.dokumenter.header"));

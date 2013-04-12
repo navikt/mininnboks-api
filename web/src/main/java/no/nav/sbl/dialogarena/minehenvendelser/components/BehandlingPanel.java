@@ -1,25 +1,23 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
-import no.nav.modig.content.ValueRetriever;
+import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_LASTET_OPP;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CMSLookup.lookupText;
+
+import java.util.List;
+
 import no.nav.sbl.dialogarena.minehenvendelser.config.CmsContentRetriver;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
+
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
-import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_LASTET_OPP;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CMSLookup.lookupText;
 
 public class BehandlingPanel extends Panel {
 
@@ -62,7 +60,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getVedleggsLabel() {
-        return new Label("vedlegg", lookupText("vedleggantall") + behandling.getAntallInnsendteDokumenter());
+        return new Label("vedlegg",behandling.getAntallInnsendteDokumenter() + " "+ innholdsTekster.hentTekst("antall.vedlegg") );
     }
 
     private PropertyListView dokumenterView(String dokumentType, boolean statusToFilter) {
