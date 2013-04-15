@@ -15,9 +15,9 @@ public class Innholdstekster {
         if (tekst != null) {
             return tekst;
         }
-        tekst = cmsContentRetriver.hentTekst(key, locale);
-        if (tekst != null) {
-            return tekst;
+        String cmsTekst = cmsContentRetriver.hentTekst(key, locale);
+        if (cmsTekst != null) {
+            return cmsTekst;
         }
         return null;
     }
