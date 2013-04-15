@@ -282,7 +282,7 @@
                             <usedDependencies>
                                 <!--usedDependency>no.nav.modig:modig-content</usedDependency-->
                                 <usedDependency>org.springframework:spring-web</usedDependency>
-                                <usedDependency>org.springframework:spring-core</usedDependency>
+                                <!--usedDependency>org.springframework:spring-core</usedDependency-->
                                 <usedDependency>no.nav.sbl.dialogarena:common-web</usedDependency>
                             </usedDependencies>
                         </configuration>

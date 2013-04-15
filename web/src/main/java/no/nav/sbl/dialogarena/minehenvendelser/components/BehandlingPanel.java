@@ -7,7 +7,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 
 import java.util.List;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriver;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.Innholdstekster;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
 
@@ -24,22 +24,15 @@ public class BehandlingPanel extends Panel {
     private static final boolean INNSENDT = true;
     private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
-    private CmsContentRetriver innholdsTekster;
+    private Innholdstekster innholdsTekster;
 
-    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriver innholdsTekster) {
+    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, Innholdstekster innholdsTekster) {
         super(id, model);
         this.model = model;
         this.behandling = behandling;
         this.innholdsTekster = innholdsTekster;
-        add(getDateText(), 
-                getVedleggsLabel(), 
-                getHeadText(), 
-                getTopText(), 
-                getInnsendteDokumenterHeader(), 
-                dokumenterView("innsendteDokumenter", INNSENDT),
-                getManglendeDokumenterHeader(), 
-                dokumenterView("manglendeDokumenter", MANGLENDE), 
-                getBottomText());
+        add(getDateText(), getVedleggsLabel(), getHeadText(), getTopText(), getInnsendteDokumenterHeader(), dokumenterView("innsendteDokumenter", INNSENDT),
+                getManglendeDokumenterHeader(), dokumenterView("manglendeDokumenter", MANGLENDE), getBottomText());
     }
 
     private Label getInnsendteDokumenterHeader() {

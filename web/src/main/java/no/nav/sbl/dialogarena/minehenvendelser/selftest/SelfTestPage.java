@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriver;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.Innholdstekster;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -27,7 +28,10 @@ import org.slf4j.LoggerFactory;
 public class SelfTestPage extends WebPage {
 
     @Inject
-    private CmsContentRetriver innholdsTekster;
+    private Innholdstekster innholdsTekster;
+
+    @Inject
+    private CmsContentRetriver cmsContentRetriver;
 
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
@@ -39,7 +43,7 @@ public class SelfTestPage extends WebPage {
         statusList.add(new ServiceStatus("Testet Appcontext", "OK, startet opp: " + startUpDate, 0));
         statusList.add(new ServiceStatus("Applikasjonsversjon", version, 0));
         add(new ServiceStatusListView("serviceStatusTable", statusList));
-        add(new Label("cmsinfo", "Cms-server: " + innholdsTekster.getCmsIp()));
+        add(new Label("cmsinfo", "Cms-server: " + cmsContentRetriver.getCmsIp()));
         add(getCmsStatus());
     }
 

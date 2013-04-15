@@ -49,7 +49,7 @@ public class HomePage extends BasePage {
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling behandling = listItem.getModelObject();
                 IModel<List<Dokumentforventning>> dokModel = new ListModel<>(behandling.fetchAlleDokumenter());
-                listItem.add(new BehandlingPanel("behandling", dokModel, behandling, innholdsTekster));
+                listItem.add(new BehandlingPanel("behandling", dokModel, behandling, innholdstekster));
             }
         };
     }
@@ -61,8 +61,8 @@ public class HomePage extends BasePage {
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
                 listItem.add(new Label("tittel", item.getTittel()));
-                listItem.add(new Label("sistEndret", innholdsTekster.hentTekst("siste.endret") + " " + item.getSistEndret()));
-                String antallDokumenter = innholdsTekster.hentTekst("antall.dokumenter");
+                listItem.add(new Label("sistEndret", innholdstekster.hentTekst("siste.endret") + " " + item.getSistEndret()));
+                String antallDokumenter = innholdstekster.hentTekst("antall.dokumenter");
                 Label antallLabel = new Label("antall", String.format(antallDokumenter, item.getAntallInnsendteDokumenter(), item.getAntallSubDokumenter()));
                 antallLabel.setEscapeModelStrings(true);
                 listItem.add(antallLabel);

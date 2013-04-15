@@ -8,7 +8,6 @@ public class CmsContentRetriver {
     private String cmsIp;
     private ValueRetriever siteTextRetriver;
     private ValueRetriever siteArticleRetriver;
-    private String defaultLocale;
 
     public String getCmsIp() {
         return cmsIp;
@@ -22,24 +21,12 @@ public class CmsContentRetriver {
         this.siteTextRetriver = siteContentRetriever;
     }
 
-    public void setDefaultLocale(String locale) {
-        this.defaultLocale = locale;
-    }
-
     public void setArtikkelRetriver(ValueRetriever siteArticleRetriver) {
         this.siteArticleRetriver = siteArticleRetriver;
     }
 
-    public String hentTekst(String key) {
-        return hentTekst(key, defaultLocale);
-    }
-
     public String hentTekst(String key, String locale) {
         return ParagraphRemover.remove(siteTextRetriver.getValueOf(key, locale));
-    }
-
-    public String hentArtikkel(String key) {
-        return hentArtikkel(key, defaultLocale);
     }
 
     public String hentArtikkel(String key, String locale) {
