@@ -62,8 +62,8 @@ public class HomePage extends BasePage {
                 Behandling item = listItem.getModelObject();
                 listItem.add(new Label("tittel", item.getTittel()));
                 listItem.add(new Label("sistEndret", innholdsTekster.hentTekst("siste.endret") + " " + item.getSistEndret()));
-                Label antallLabel =new Label("antall", item.getAntallInnsendteDokumenter() + " " + innholdsTekster.hentTekst("antall.mellom") + "  "
-                        + item.getAntallSubDokumenter());
+                String antallDokumenter = innholdsTekster.hentTekst("antall.dokumenter");
+                Label antallLabel = new Label("antall", String.format(antallDokumenter, item.getAntallInnsendteDokumenter(), item.getAntallSubDokumenter()));
                 antallLabel.setEscapeModelStrings(true);
                 listItem.add(antallLabel);
             }
