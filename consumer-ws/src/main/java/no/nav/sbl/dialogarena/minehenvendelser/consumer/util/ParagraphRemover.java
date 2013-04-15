@@ -4,6 +4,9 @@ public class ParagraphRemover {
 
     public static String remove(String input) {
         String text = input;
+        if(text == null){
+            return null;
+        }
         if (text.startsWith("<p>")) {
             text = text.substring(3);
         }

@@ -39,4 +39,18 @@ public class ParagraphRemoverTest {
         String result = ParagraphRemover.remove(test);
         Assert.assertEquals("TEST", result);
     }
+    
+    @Test
+    public void shouldWorkWithNullString(){
+        String test = null;
+        String result = ParagraphRemover.remove(test);
+        Assert.assertEquals(null, result);
+    }
+    
+    @Test
+    public void shouldWorkWithEmptyString(){
+        String test = "";
+        String result = ParagraphRemover.remove(test);
+        Assert.assertEquals("", result);
+    }
 }
