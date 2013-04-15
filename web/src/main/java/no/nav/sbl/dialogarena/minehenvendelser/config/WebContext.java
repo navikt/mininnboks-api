@@ -47,10 +47,9 @@ public class WebContext {
         CmsContentRetriver cmsContentRetriver = new CmsContentRetriver();
         cmsContentRetriver.setCmsIp(cmsBaseUrl);
         cmsContentRetriver.setDefaultLocale(DEFAULT_LOCALE);
-        cmsContentRetriver.setInnholdstekster(siteContentRetriever());
+        cmsContentRetriver.setTeksterRetriver(siteContentRetriever());
+        cmsContentRetriver.setArtikkelRetriver(siteContentRetriever());
         return cmsContentRetriver;
     }
-    
-    
 
 }

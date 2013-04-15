@@ -6,9 +6,9 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.ParagraphRemover;
 public class CmsContentRetriver {
 
     private String cmsIp;
-    private ValueRetriever siteContentRetriver;
+    private ValueRetriever siteTextRetriver;
+    private ValueRetriever siteArticleRetriver;
     private String defaultLocale;
-    
 
     public String getCmsIp() {
         return cmsIp;
@@ -18,27 +18,32 @@ public class CmsContentRetriver {
         this.cmsIp = cmsIp;
     }
 
-    public void setInnholdstekster(ValueRetriever siteContentRetriever) {
-        this.siteContentRetriver =  siteContentRetriever;
-    }
-    
-    public void setDefaultLocale(String locale){
-        this.defaultLocale = locale;
-    }
-    
-    public String hentTekst(String key){
-        return hentTekst(key,defaultLocale);
-    }
-    
-    public String hentTekst(String key, String locale){
-        return ParagraphRemover.remove(siteContentRetriver.getValueOf(key, locale));
-    }
-    
-    public String hentArtikkel(String key){
-        return hentArtikkel(key,defaultLocale);
+    public void setTeksterRetriver(ValueRetriever siteContentRetriever) {
+        this.siteTextRetriver = siteContentRetriever;
     }
 
-    public String hentArtikkel(String key, String locale){
-        return ParagraphRemover.remove(siteContentRetriver.getValueOf(key, locale));
+    public void setDefaultLocale(String locale) {
+        this.defaultLocale = locale;
     }
+
+    public void setArtikkelRetriver(ValueRetriever siteArticleRetriver) {
+        this.siteArticleRetriver = siteArticleRetriver;
+    }
+
+    public String hentTekst(String key) {
+        return hentTekst(key, defaultLocale);
+    }
+
+    public String hentTekst(String key, String locale) {
+        return ParagraphRemover.remove(siteTextRetriver.getValueOf(key, locale));
+    }
+
+    public String hentArtikkel(String key) {
+        return hentArtikkel(key, defaultLocale);
+    }
+
+    public String hentArtikkel(String key, String locale) {
+        return ParagraphRemover.remove(siteArticleRetriver.getValueOf(key, locale));
+    }
+
 }
