@@ -9,13 +9,13 @@
 !| datagrunnlag |
 | Aktør Id | Behandlings Id | Brukerbehandlingtype | dokumentbehandlingtype | Status | Sist endret dato | Innsendt Dato | Kodeverk ID | Innsendingsvalg | Hovedskjema | Egendefinert Tittel |
 | ***REMOVED*** | DA01-000000001 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | 2012-09-19T01:18:33+01:00 | 2006-08-19T19:27:14+01:00 | kodeForDagpenger,kodeForPermitteringsvarsel,kodeForArbeidsavtale,kodeForEgetVedlegg | LASTET_OPP, LASTET_OPP, LASTET_OPP, SENDES_IKKE | JA, NEI, NEI, NEI | ,,,Egendef tittel på 25 tegn |
-| ***REMOVED*** | DA01-000000002 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger , kodeForPermitteringsvarsel | LASTET_OPP, SENDES_IKKE | JA, NEI | , |
-| ***REMOVED*** | DA01-000000003 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | 2008-09-19T01:18:33+01:00 | 2008-09-19T01:18:33+01:00 | kodeForDagpenger,kodeForEgetVedlegg | LASTET_OPP, LASTET_OPP | JA, NEI | Oppsigelse, |
-| ***REMOVED*** | DA01-000000004 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | , |
-| ***REMOVED*** | DA01-000000005 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | , |
-| ***REMOVED*** | DA01-000000006 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | | JA, NEI | , |
-| ***REMOVED*** | DA01-000000007 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | 2012-09-19T01:18:33+01:00 | 2008-09-19T01:18:33+01:00 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, SENDES_IKKE | JA, NEI | Oppsigelsen min, |
-| ***REMOVED*** | DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | UNDER_ARBEID | 2012-09-09T01:18:03+01:00 | | kodeForInntektsopplysninger | IKKE_VALGT | NEI | |
+| ***REMOVED*** | DA01-000000002 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger , kodeForPermitteringsvarsel | LASTET_OPP, SENDES_IKKE | JA, NEI | ,, |
+| ***REMOVED*** | DA01-000000003 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | 2008-09-19T01:18:33+01:00 | 2008-09-19T01:18:33+01:00 | kodeForDagpenger,kodeForEgetVedlegg | LASTET_OPP, LASTET_OPP | JA, NEI | Oppsigelse,, |
+| ***REMOVED*** | DA01-000000004 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | ,, |
+| ***REMOVED*** | DA01-000000005 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | ,, |
+| ***REMOVED*** | DA01-000000006 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, SENDES_IKKE | JA, NEI | ,, |
+| ***REMOVED*** | DA01-000000007 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | 2012-09-19T01:18:33+01:00 | 2008-09-19T01:18:33+01:00 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, SENDES_IKKE | JA, NEI | Oppsigelsen min,, |
+| ***REMOVED*** | DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | UNDER_ARBEID | 2012-09-09T01:18:03+01:00 | | kodeForInntektsopplysninger | IKKE_VALGT | NEI | , |
 
 Bruker har ingen påbegynte, og 1 innsendt. 3/4 dokumenter er innsendt
 
