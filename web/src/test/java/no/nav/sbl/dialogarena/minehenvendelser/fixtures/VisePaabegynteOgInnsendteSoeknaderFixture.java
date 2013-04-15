@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.fixtures;
 
 import fit.Fixture;
 import no.nav.modig.test.fitnesse.fixture.SpringAwareDoFixture;
+import no.nav.modig.test.fitnesse.fixture.ToDoList;
 import no.nav.sbl.dialogarena.minehenvendelser.config.FitNesseApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -10,6 +11,10 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
 
     public Fixture datagrunnlag() {
         return new Datagrunnlag();
+    }
+
+    public Fixture avklaringer() {
+        return new ToDoList();
     }
 
 }

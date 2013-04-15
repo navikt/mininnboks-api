@@ -16,7 +16,7 @@
 | ***REMOVED*** | DA01-000000005 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | blank,blank |
 | ***REMOVED*** | DA01-000000006 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP,SENDES_IKKE | JA, NEI | blank,blank |
 | ***REMOVED*** | DA01-000000007 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2006-09-19T01:18:33+01:00 | 2006-09-19T01:18:33+01:00 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, SENDES_IKKE | JA, NEI | blank,Oppsigelsen min |
-| ***REMOVED*** | DA01-000000010 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2010-04-19T23:18:33+01:00 | 2010-04-19T23:18:33+01:00 | kodeForDagpenger,kodeForPermitteringsvarsel,kodeForEgetVedlegg | LASTET_OPP,LASTET_OPP, SENDES_IKKE | JA, NEI | blank,blank,Oppsigelsen min |
+| ***REMOVED*** | DA01-000000010 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2010-04-19T23:18:33+01:00 | 2010-04-19T23:18:33+01:00 | kodeForDagpenger,kodeForPermitteringsvarsel,kodeForEgetVedlegg | LASTET_OPP,LASTET_OPP, SENDES_IKKE | JA, NEI, NEI | blank,blank,Oppsigelsen min|
 | ***REMOVED*** | DA01-000000012 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForForeldrepenger | 2008-01-19T01:18:33+01:00 | 2008-01-19T01:18:33+01:00 | kodeForForeldrepenger ,kodeForInntektsopplysninger | LASTET_OPP,LASTET_OPP | JA, NEI | blank,blank |
 | ***REMOVED*** | DA01-000000011 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForKontantstoette | 2009-08-24T01:18:33+01:00 | 2009-08-24T01:18:33+01:00 | kodeForKontantstoette, kodeForEgetVedlegg | LASTET_OPP, SENDES_IKKE | JA, NEI | blank,Dokumentasjon gradert plass |
 | ***REMOVED*** | DA01-000000013 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2012-12-19T01:18:33+01:00 | 2012-12-19T01:18:33+01:00 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, LASTET_OPP | JA, NEI | blank,Oppsigelsen min |
@@ -78,6 +78,7 @@ Bruker har 1 på påbegynt Ettersending
 | kodeForOvergangsstoenad | Stønad om Overgangsstønad |
 
 | Avklaringer |
-| denne tabellen kan brukes som en huskeliste for ting som må avklares. Hver linje som ikke har "ok" i siste kolonne vil merkes rødt, slik av man ikke glemmer de | OK |
+| Denne tabellen kan brukes som en huskeliste for ting som må avklares. Hver linje som ikke har "ok" i siste kolonne vil merkes rødt, slik at man ikke glemmer de | OK |
 | Hvis ettersending - Ettersending + navn på hovedskjema. Hva skal + være (:, -, på, komma)? | |
 | Hvis ettersending - Hvor får vi navnet på søknaden som ettersending er til, feks Søknad om dagpenger - Avklart med team Grønn/Henvendelse at de sender med hovedkravskjema sin kodeverksid som del av behandlingen | OK |
+| Trenger vi feltet "dokumentbehandlingtype"? | | 
