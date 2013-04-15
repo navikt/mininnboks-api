@@ -8,7 +8,7 @@
         <status>UNDER_ARBEID</status>
         <sistEndret>2013-04-01T03:49:45</sistEndret>
         <dokumentforventninger>
-            <!--Zero or more repetitions:-->
+            <!--1 or more repetitions:-->
             <dokumentforventning>
                 <kodeverkId>1</kodeverkId>
                 <innsendingsvalg>LASTET_OPP</innsendingsvalg>
@@ -40,7 +40,7 @@
         <sistEndret>2013-03-01T03:49:45</sistEndret>
         <innsendtDato>2013-03-01T03:49:45</innsendtDato>
         <dokumentforventninger>
-            <!--Zero or more repetitions:-->
+            <!--1 or more repetitions:-->
             <dokumentforventning>
                 <kodeverkId>11</kodeverkId>
                 <innsendingsvalg>LASTET_OPP</innsendingsvalg>
