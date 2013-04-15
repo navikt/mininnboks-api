@@ -20,6 +20,8 @@ public class FitBehandling {
 
     private static final Logger logger = LoggerFactory.getLogger(FitBehandling.class);
 
+    private static final String EMPTY_PLACEHOLDER = "blank";
+
     public String aktorId;
     public String behandlingsId;
     public String dokumentbehandlingType;
@@ -67,8 +69,10 @@ public class FitBehandling {
         Dokumentforventning dokumentforventning = new Dokumentforventning();
         setInternalState(dokumentforventning, "kodeverkId", kodeverkId.get(indexOfLists));
         setInternalState(dokumentforventning, "innsendingsvalg", Dokumentforventning.Innsendingsvalg.valueOf(innsendingsvalg.get(indexOfLists)));
-//        setInternalState(dokumentforventning, "hovedskjema", (hovedskjema.get(indexOfLists) == null ? false : hovedskjema.get(indexOfLists)));
-        setInternalState(dokumentforventning, "egendefinertTittel", egendefinertTittel.get(indexOfLists));
+        setInternalState(dokumentforventning, "hovedskjema", (hovedskjema.get(indexOfLists)));
+        if (!egendefinertTittel.get(indexOfLists).equals(EMPTY_PLACEHOLDER)) {
+            setInternalState(dokumentforventning, "egendefinertTittel", egendefinertTittel.get(indexOfLists));
+        }
         return dokumentforventning;
     }
 
