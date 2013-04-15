@@ -9,6 +9,7 @@ import no.nav.modig.content.ContentRetriever;
 import no.nav.modig.content.ValueRetriever;
 import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
 import no.nav.modig.content.enonic.EnonicContentRetriever;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriver;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.util;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.util;
 
 public class ParagraphRemover {
 

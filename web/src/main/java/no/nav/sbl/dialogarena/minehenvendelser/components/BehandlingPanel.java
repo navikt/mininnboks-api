@@ -7,7 +7,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 
 import java.util.List;
 
-import no.nav.sbl.dialogarena.minehenvendelser.config.CmsContentRetriver;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriver;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
 

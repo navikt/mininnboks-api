@@ -1,4 +1,6 @@
-package no.nav.sbl.dialogarena.minehenvendelser.util;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.util;
+
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.ParagraphRemover;
 
 import org.junit.Assert;
 import org.junit.Test;

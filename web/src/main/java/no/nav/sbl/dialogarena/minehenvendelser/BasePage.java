@@ -2,7 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser;
 
 import javax.inject.Inject;
 
-import no.nav.sbl.dialogarena.minehenvendelser.config.CmsContentRetriver;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriver;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;

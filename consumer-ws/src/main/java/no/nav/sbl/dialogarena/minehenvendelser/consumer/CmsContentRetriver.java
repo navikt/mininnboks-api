@@ -1,7 +1,7 @@
-package no.nav.sbl.dialogarena.minehenvendelser.config;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 import no.nav.modig.content.ValueRetriever;
-import no.nav.sbl.dialogarena.minehenvendelser.util.ParagraphRemover;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.ParagraphRemover;
 
 public class CmsContentRetriver {
 
@@ -26,19 +26,19 @@ public class CmsContentRetriver {
         this.defaultLocale = locale;
     }
     
-    public String hentTekst(String key, String locale){
-        return ParagraphRemover.remove(siteContentRetriver.getValueOf(key, locale));
-    }
-    
     public String hentTekst(String key){
         return hentTekst(key,defaultLocale);
     }
     
-    public String hentArtikkel(String key, String locale){
+    public String hentTekst(String key, String locale){
         return ParagraphRemover.remove(siteContentRetriver.getValueOf(key, locale));
     }
     
     public String hentArtikkel(String key){
         return hentArtikkel(key,defaultLocale);
+    }
+
+    public String hentArtikkel(String key, String locale){
+        return ParagraphRemover.remove(siteContentRetriver.getValueOf(key, locale));
     }
 }
