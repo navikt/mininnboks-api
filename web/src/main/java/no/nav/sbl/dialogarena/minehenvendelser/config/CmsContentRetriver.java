@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.content.ValueRetriever;
+import no.nav.sbl.dialogarena.minehenvendelser.util.ParagraphRemover;
 
 public class CmsContentRetriver {
 
@@ -26,7 +27,7 @@ public class CmsContentRetriver {
     }
     
     public String hentTekst(String key, String locale){
-        return siteContentRetriver.getValueOf(key, locale);
+        return ParagraphRemover.remove(siteContentRetriver.getValueOf(key, locale));
     }
     
     public String hentTekst(String key){
@@ -34,7 +35,7 @@ public class CmsContentRetriver {
     }
     
     public String hentArtikkel(String key, String locale){
-        return siteContentRetriver.getValueOf(key, locale);
+        return ParagraphRemover.remove(siteContentRetriver.getValueOf(key, locale));
     }
     
     public String hentArtikkel(String key){
