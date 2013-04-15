@@ -21,11 +21,11 @@ public class FitBehandling {
     private static final Logger logger = LoggerFactory.getLogger(FitBehandling.class);
 
     public String aktorId;
-
     public String behandlingsId;
     public String dokumentbehandlingType;
     public String brukerbehandlingType;
     public String status;
+    public String hovedkravskjemaId;
     public String sistEndretDato;
     public String innsendtDato;
 
