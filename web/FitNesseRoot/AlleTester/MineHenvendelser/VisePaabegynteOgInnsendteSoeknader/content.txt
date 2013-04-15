@@ -8,37 +8,45 @@
 *!
 !| datagrunnlag | |
 | Aktør Id | Behandlings Id | Brukerbehandlingtype | dokumentbehandlingtype | Status | Hovedkravskjema ID | Sist endret dato | Innsendt Dato | Kodeverk ID | Innsendingsvalg | Hovedskjema | Egendefinert Tittel |
-| ***REMOVED*** | DA01-000000001 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | 2006-08-19T19:27:14+01:00 | kodeForDagpenger,kodeForPermitteringsvarsel,kodeForArbeidsavtale,kodeForEgetVedlegg | LASTET OPP, LASTET OPP, LASTET OPP, SENDES IKKE | JA, NEI, NEI, NEI | ,,,Egendef tittel på 25 tegn |
-| ***REMOVED*** | DA01-000000002 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger , kodeForPermitteringsvarsel | LASTET_OPP, SENDES_IKKE | JA, NEI | |
-| ***REMOVED*** | DA01-000000003 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2008-09-19T01:18:33+01:00 | 2008-09-19T01:18:33+01:00 | kodeForDagpenger,kodeForEgetVedlegg | LASTET_OPP, LASTET_OPP | JA, NEI | Oppsigelse |
-| ***REMOVED*** | DA01-000000004 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | |
-| ***REMOVED*** | DA01-000000005 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | |
-| ***REMOVED*** | DA01-000000006 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | | JA, NEI | |
-| ***REMOVED*** | DA01-000000007 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | 2008-09-19T01:18:33+01:00 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, SENDES_IKKE | JA, NEI | Oppsigelsen min |
+| ***REMOVED*** | DA01-000000001 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | 2006-08-19T19:27:14+01:00 | kodeForDagpenger,kodeForPermitteringsvarsel,kodeForArbeidsavtale,kodeForEgetVedlegg | LASTET_OPP,LASTET_OPP, LASTET_OPP, SENDES_IKKE | JA, NEI, NEI, NEI | ,,,Egendef tittel på 25 tegn |
+| ***REMOVED*** | DA01-000000002 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger , kodeForPermitteringsvarsel | LASTET_OPP, SENDES_IKKE | JA, NEI | , |
+| ***REMOVED*** | DA01-000000003 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2008-09-19T01:18:33+01:00 | 2008-09-19T01:18:33+01:00 | kodeForDagpenger,kodeForEgetVedlegg | LASTET_OPP, LASTET_OPP | JA, NEI | ,Oppsigelse |
+| ***REMOVED*** | DA01-000000004 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | , |
+| ***REMOVED*** | DA01-000000009 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForForeldrepenger | 2008-09-19T01:18:33+01:00 | 2008-09-19T01:25:33+01:00 | kodeForForeldrepenger ,kodeForInntektsopplysninger | LASTET_OPP, LASTET_OPP | JA, NEI | , |
+| ***REMOVED*** | DA01-000000005 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | , |
+| ***REMOVED*** | DA01-000000006 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | | JA, NEI | , |
+| ***REMOVED*** | DA01-000000007 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2006-09-19T01:18:33+01:00 | 2006-09-19T01:18:33+01:00 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, SENDES_IKKE | JA, NEI | ,Oppsigelsen min |
+| ***REMOVED*** | DA01-000000010 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2010-04-19T23:18:33+01:00 | 2010-04-19T23:18:33+01:00 | kodeForDagpenger,kodeForPermitteringsvarsel,kodeForEgetVedlegg | LASTET_OPP, SENDES_IKKE | JA, NEI | ,,Oppsigelsen min |
+| ***REMOVED*** | DA01-000000012 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForForeldrepenger | 2008-01-19T01:18:33+01:00 | 2008-01-19T01:18:33+01:00 | kodeForForeldrepenger ,kodeForInntektsopplysninger | LASTET_OPP, SENDES_IKKE | JA, NEI | , |
+| ***REMOVED*** | DA01-000000011 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForKontantstoette | 2009-08-24T01:18:33+01:00 | 2009-08-24T01:18:33+01:00 | kodeForKontantstoette, kodeForEgetVedlegg| LASTET_OPP, SENDES_IKKE | JA, NEI | ,Dokumentasjon gradert plass |
+| ***REMOVED*** | DA01-000000013 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2012-12-19T01:18:33+01:00 | 2012-12-19T01:18:33+01:00 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, SENDES_IKKE | JA, NEI | ,Oppsigelsen min |
+| ***REMOVED*** | DA01-000000014 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForForeldrepenger | 2011-09-19T01:18:33+01:00 | 2011-09-19T01:18:33+01:00 | kodeForForeldrepenger ,kodeForInntektsopplysninger | LASTET_OPP, SENDES_IKKE | JA, NEI | , |
+| ***REMOVED*** | DA01-000000015 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForKontantstoette | 2012-10-19T01:18:33+01:00 | 2012-10-19T01:18:33+01:00 | kodeForKontantstoette | LASTET_OPP, SENDES_IKKE | JA, NEI | |
 | ***REMOVED*** | DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | UNDER_ARBEID | kodeForForeldrepenger | 2012-09-09T01:18:03+01:00 | | kodeForInntektsopplysninger | IKKE_VALGT | NEI | |
-| ***REMOVED*** | DA01-000000009 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2008-09-19T01:18:33+01:00 | 2008-09-19T01:18:33+01:00 | kodeForForeldrepenger ,kodeForInntektsopplysninger | LASTET_OPP, LASTET_OPP | JA, NEI | Oppsigelse|
+
+
 
 Test på innsendte dokumenter:
 
 Bruker har 1 innsendt Dokumentinnsendig. 3/4 dokumenter er innsendt
 
 !| ***REMOVED*** |
-| Behandlings Id | BrukerBehandlingstype | dokumentBehandlingstype | Status | Antall vedlegg | Dato | Navn på behandling | Innsendte dokumenter | Manglende dokumenter |
-| DA01-000000001 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | 3 vedlegg | 19. august 2006, 21:27 | Søknad om dagpenger | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Egendef tittel på 25 tegn |
+| Behandlings Id | BrukerBehandlingstype | dokumentBehandlingstype | Antall vedlegg | Dato | Navn på behandling | Innsendte dokumenter | Manglende dokumenter |
+| DA01-000000001 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 3 vedlegg | 19. august 2006, 21:27 | Søknad om dagpenger | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Egendef tittel på 25 tegn |
 
 Bruker har 2 innsendte
 
 !| ***REMOVED*** |
-| Behandlings Id | BrukerBehandlingstype | dokumentBehandlingstype | Status | Antall vedlegg | Dato | Navn på behandling | Innsendte dokumenter | Manglende dokumenter |
-| DA01-000000001 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | 3 vedlegg | 19. august 2006, 21:27 | Søknad om dagpenger | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Egendef tittel på 25 tegn |
-
+| Behandlings Id | BrukerBehandlingstype | dokumentBehandlingstype | Antall vedlegg | Dato | Navn på behandling | Innsendte dokumenter | Manglende dokumenter |
+| DA01-000000003 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 1 vedlegg | 19. september 2008, 02:18 | Søknad om dagpenger | Søknad om dagpenger,  Egendef tittel på 25 tegn | |
+| DA01-000000009 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 1 vedlegg | 19. september 2008, 02:25 | Søknad om foreldrepenger | Søknad om foreldrepenger, Inntektsopplysninger | |
 
 Test på påbegynte:
 
 Bruker har 1 på påbegynt Ettersending
 
-!| ***REMOVED*** | Behandlings Id | BrukerBehandlingstype | Status | Antall vedlegg | Dato | Navn på behandling | | Manglende dokumenter |
-| DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | UNDER_ARBEID | 1 vedlegg | 9. september 2012, kl 02:18 | Ettersending på Søknad om foreldrepenger | | |
+!| ***REMOVED*** | Behandlings Id | BrukerBehandlingstype | Antall vedlegg | Dato | Navn på behandling | | Manglende dokumenter |
+| DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | 1 vedlegg | 9. september 2012, kl 02:18 | Ettersending på Søknad om foreldrepenger | | |
 
 Bruker har 1 på påbegynt, ingen innsendte
 
@@ -49,6 +57,8 @@ Bruker har 1 på påbegynt, ingen innsendte
 | kodeForEgetVedlegg | Annet |
 | kodeForForeldrepenger | Søknad om foreldrepenger |
 | kodeForInntektsopplysninger | Inntektsopplysninger |
+| kodeForKontantstoette | Søknad om kontantstøtte |
+| kodeForOvergangsstoenad | Stønad om Overgangsstønad |
 
 | Avklaringer |
 | denne tabellen kan brukes som en huskeliste for ting som må avklares. Hver linje som ikke har "ok" i siste kolonne vil merkes rødt, slik av man ikke glemmer de | OK |
