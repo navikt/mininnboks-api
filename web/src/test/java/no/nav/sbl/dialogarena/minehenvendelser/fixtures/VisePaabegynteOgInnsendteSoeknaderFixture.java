@@ -21,6 +21,14 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
         return new Datagrunnlag(mockData);
     }
 
+    public Fixture innsendt(String aktoerId) {
+        return new Innsendt(aktoerId);
+    }
+
+    public Fixture paabegynt(String aktoerId) {
+        return new Fixture();
+    }
+
     public Fixture avklaringer() {
         return new ToDoList();
     }
