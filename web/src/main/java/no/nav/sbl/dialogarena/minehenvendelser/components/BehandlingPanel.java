@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.Innholdstekster;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriver;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
 import org.apache.wicket.markup.html.basic.Label;
@@ -9,6 +9,8 @@ import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 
 import java.util.List;
 
@@ -23,9 +25,9 @@ public class BehandlingPanel extends Panel {
     private static final boolean INNSENDT = true;
     private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
-    private Innholdstekster innholdsTekster;
+    private CmsContentRetriver innholdsTekster;
 
-    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, Innholdstekster innholdsTekster) {
+    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriver innholdsTekster) {
         super(id, model);
         this.model = model;
         this.behandling = behandling;
@@ -42,21 +44,18 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getInnsendteDokumenterHeader() {
-        Label l = new Label("innsendteDokumenterHeader", innholdsTekster.hentTekst("innsendte.dokumenter.header"));
-        l.setEscapeModelStrings(false);
-        return l;
+        return new Label("innsendteDokumenterHeader", new ResourceModel("innsendte.dokumenter.header"));
     }
 
     private Label getManglendeDokumenterHeader() {
-        Label l = new Label("manglendeDokumenterHeader", innholdsTekster.hentTekst("manglende.dokumenter.header"));
-        l.setEscapeModelStrings(false);
-        return l;
+        return new Label("manglendeDokumenterHeader", new ResourceModel("manglende.dokumenter.header"));
     }
 
     private Label getVedleggsLabel() {
-        Label l = new Label("vedlegg", behandling.getAntallInnsendteDokumenter() + " " + innholdsTekster.hentTekst("antall.vedlegg"));
-        l.setEscapeModelStrings(false);
-        return l;
+        return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null,
+                new Object[]{
+                        behandling.getAntallInnsendteDokumenter()
+                }));
     }
 
     private PropertyListView<Dokumentforventning> dokumenterView(String dokumentType, boolean statusToFilter) {

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Import({ WebContext.class, PropertyPlaceholderConfiguration.class, LedeteksterConfiguration.class })
+@Import({ WebContext.class, PropertyPlaceholderConfiguration.class})
 public class ApplicationContext {
 
     @Configuration

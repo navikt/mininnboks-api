@@ -1,26 +1,25 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
-import static no.nav.modig.lang.collections.PredicateUtils.where;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling.Behandlingsstatus;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
-
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
+
+import javax.inject.Inject;
+import java.util.List;
+
+import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.where;
 
 public class HomePage extends BasePage {
 
@@ -61,19 +60,24 @@ public class HomePage extends BasePage {
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
                 listItem.add(new Label("tittel", item.getTittel()));
-                listItem.add(new Label("sistEndret", innholdstekster.hentTekst("siste.endret") + " " + item.getSistEndret()));
-                String antallDokumenter = innholdstekster.hentTekst("antall.dokumenter");
-                Label antallLabel = new Label("antall", String.format(antallDokumenter, item.getAntallInnsendteDokumenter(), item.getAntallSubDokumenter()));
-                antallLabel.setEscapeModelStrings(true);
-                listItem.add(antallLabel);
+                listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", this, null,
+                        new Object[]
+                                {
+                                        item.getSistEndret().toDate()
+                                })));
+                listItem.add(new Label("antall", new StringResourceModel("antall.dokumenter", this, null,
+                        new Object[]{
+                                item.getAntallInnsendteDokumenter(),
+                                item.getAntallSubDokumenter()
+                        })));
             }
         };
     }
 
     private static class BehandlingerLDM extends LoadableDetachableModel<List<Behandling>> {
 
-        private IModel<List<Behandling>> parentModel;
         private final Behandlingsstatus status;
+        private IModel<List<Behandling>> parentModel;
 
         BehandlingerLDM(IModel<List<Behandling>> parentModel, Behandlingsstatus status) {
             this.parentModel = parentModel;

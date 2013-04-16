@@ -1,21 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.selftest;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.jar.Manifest;
-
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriver;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.Innholdstekster;
-
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -25,10 +11,18 @@ import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SelfTestPage extends WebPage {
+import javax.inject.Inject;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.jar.Manifest;
 
-    @Inject
-    private Innholdstekster innholdsTekster;
+public class SelfTestPage extends WebPage {
 
     @Inject
     private CmsContentRetriver cmsContentRetriver;
@@ -48,7 +42,7 @@ public class SelfTestPage extends WebPage {
     }
 
     private CmsStatusListView getCmsStatus() {
-        String[] keys = { "innsendte.dokumenter.header", "manglende.dokumenter.header", "topp.tekst", "slutt.tekst", "antall.vedlegg", "antall.dokumenter" };
+        String[] keys = {"topp.tekst", "slutt.tekst" };
         List<CmsStatus> cmsStatusList = new ArrayList<>();
         for (String key : keys) {
             cmsStatusList.add(new CmsStatus(key));
@@ -137,7 +131,7 @@ public class SelfTestPage extends WebPage {
 
         public CmsStatus(String key) {
             this.key = key;
-            this.value = innholdsTekster.hentTekst(key);
+            this.value = cmsContentRetriver.hentTekst(key);
         }
 
         public String getKey() {

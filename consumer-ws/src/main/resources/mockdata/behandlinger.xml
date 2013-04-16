@@ -104,6 +104,11 @@
                 <hovedskjema>false</hovedskjema>
             </dokumentforventning>
             <dokumentforventning>
+                <kodeverkId>17</kodeverkId>
+                <innsendingsvalg>LASTET_OPP</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+            </dokumentforventning>
+            <dokumentforventning>
                 <kodeverkId>15</kodeverkId>
                 <innsendingsvalg>SENDES_IKKE</innsendingsvalg>
                 <hovedskjema>false</hovedskjema>
