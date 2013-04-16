@@ -334,11 +334,6 @@
                 <version>${reflections.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.5</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
