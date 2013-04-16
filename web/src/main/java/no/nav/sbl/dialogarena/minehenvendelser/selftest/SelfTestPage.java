@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.selftest;
 
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriver;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriever;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -25,7 +25,7 @@ import java.util.jar.Manifest;
 public class SelfTestPage extends WebPage {
 
     @Inject
-    private CmsContentRetriver cmsContentRetriver;
+    private CmsContentRetriever cmsContentRetriever;
 
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
@@ -37,7 +37,7 @@ public class SelfTestPage extends WebPage {
         statusList.add(new ServiceStatus("Testet Appcontext", "OK, startet opp: " + startUpDate, 0));
         statusList.add(new ServiceStatus("Applikasjonsversjon", version, 0));
         add(new ServiceStatusListView("serviceStatusTable", statusList));
-        add(new Label("cmsinfo", "Cms-server: " + cmsContentRetriver.getCmsIp()));
+        add(new Label("cmsinfo", "Cms-server: " + cmsContentRetriever.getCmsIp()));
         add(getCmsStatus());
     }
 
@@ -131,7 +131,7 @@ public class SelfTestPage extends WebPage {
 
         public CmsStatus(String key) {
             this.key = key;
-            this.value = cmsContentRetriver.hentTekst(key);
+            this.value = cmsContentRetriever.hentTekst(key);
         }
 
         public String getKey() {

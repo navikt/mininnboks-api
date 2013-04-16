@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriver;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriever;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning;
 import org.apache.wicket.markup.html.basic.Label;
@@ -25,9 +25,9 @@ public class BehandlingPanel extends Panel {
     private static final boolean INNSENDT = true;
     private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
-    private CmsContentRetriver innholdsTekster;
+    private CmsContentRetriever innholdsTekster;
 
-    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriver innholdsTekster) {
+    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriever innholdsTekster) {
         super(id, model);
         this.model = model;
         this.behandling = behandling;

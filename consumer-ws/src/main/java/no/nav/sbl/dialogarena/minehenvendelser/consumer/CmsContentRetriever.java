@@ -3,11 +3,11 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 import no.nav.modig.content.ValueRetriever;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.ParagraphRemover;
 
-public class CmsContentRetriver {
+public class CmsContentRetriever {
 
     private String cmsIp;
-    private ValueRetriever siteTextRetriver;
-    private ValueRetriever siteArticleRetriver;
+    private ValueRetriever siteTextRetriever;
+    private ValueRetriever siteArticleRetriever;
     private String defaultLocale;
 
     public String getCmsIp() {
@@ -18,12 +18,12 @@ public class CmsContentRetriver {
         this.cmsIp = cmsIp;
     }
 
-    public void setTeksterRetriver(ValueRetriever siteContentRetriever) {
-        this.siteTextRetriver = siteContentRetriever;
+    public void setTeksterRetriever(ValueRetriever siteContentRetriever) {
+        this.siteTextRetriever = siteContentRetriever;
     }
 
-    public void setArtikkelRetriver(ValueRetriever siteArticleRetriver) {
-        this.siteArticleRetriver = siteArticleRetriver;
+    public void setArtikkelRetriever(ValueRetriever siteArticleRetriever) {
+        this.siteArticleRetriever = siteArticleRetriever;
     }
 
     public void setDefaultLocale(String defaultLocale) {
@@ -35,7 +35,7 @@ public class CmsContentRetriver {
     }
 
     public String hentTekst(String key, String locale) {
-        return ParagraphRemover.remove(siteTextRetriver.getValueOf(key, locale));
+        return ParagraphRemover.remove(siteTextRetriever.getValueOf(key, locale));
     }
 
     public String hentArtikkel(String key){
@@ -43,6 +43,6 @@ public class CmsContentRetriver {
     }
 
     public String hentArtikkel(String key, String locale) {
-        return ParagraphRemover.remove(siteArticleRetriver.getValueOf(key, locale));
+        return ParagraphRemover.remove(siteArticleRetriever.getValueOf(key, locale));
     }
 }

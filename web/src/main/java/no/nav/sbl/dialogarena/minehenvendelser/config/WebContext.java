@@ -4,7 +4,7 @@ import no.nav.modig.content.ContentRetriever;
 import no.nav.modig.content.ValueRetriever;
 import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
 import no.nav.modig.content.enonic.EnonicContentRetriever;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriver;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriever;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,11 +42,12 @@ public class WebContext {
     }
 
     @Bean
-    public CmsContentRetriver cmsContentRetriver() throws URISyntaxException {
-        CmsContentRetriver cmsContentRetriver = new CmsContentRetriver();
-        cmsContentRetriver.setCmsIp(cmsBaseUrl);
-        cmsContentRetriver.setTeksterRetriver(siteContentRetriever());
-        cmsContentRetriver.setArtikkelRetriver(siteContentRetriever());
-        return cmsContentRetriver;
+    public CmsContentRetriever cmsContentRetriever() throws URISyntaxException {
+        CmsContentRetriever cmsContentRetriever = new CmsContentRetriever();
+        cmsContentRetriever.setDefaultLocale(DEFAULT_LOCALE);
+        cmsContentRetriever.setCmsIp(cmsBaseUrl);
+        cmsContentRetriever.setTeksterRetriever(siteContentRetriever());
+        cmsContentRetriever.setArtikkelRetriever(siteContentRetriever());
+        return cmsContentRetriever;
     }
 }
