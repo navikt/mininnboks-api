@@ -20,6 +20,16 @@ public class PropertyPlaceholderConfiguration {
     }
 
     @Configuration
+    @Profile("stub")
+    @PropertySource("classpath:environment-test.properties")
+    public static class StubPropertiesContext {
+        @Bean
+        public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+            return new PropertySourcesPlaceholderConfigurer();
+        }
+    }
+
+    @Configuration
     @Profile("default")
     public static class RealPropertiesContext {
         @Bean
