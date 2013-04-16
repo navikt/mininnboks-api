@@ -327,7 +327,6 @@
                 <groupId>org.webbitserver</groupId>
                 <artifactId>webbit</artifactId>
                 <version>${webbit.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.reflections</groupId>
