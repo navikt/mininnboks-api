@@ -34,14 +34,14 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     }
 
     public Fixture innsendt(String aktoerId) {
-        //TODO check that datagrunnlag is done setting up
+        //TODO interact with application (i.e. wicket)
         List<Behandling> behandlinger = retrieveBehandlingsList(aktoerId);
         List<FitInnsendtBehandling> fitInnsendtBehandlinger = convertListToInnsendt(behandlinger);
         return new ArrayFixture(fitInnsendtBehandlinger);
     }
 
     public Fixture paabegynt(String aktoerId) {
-        //TODO check that datagrunnlag is done setting up
+        //TODO interact with application (i.e. wicket)
         List<Behandling> behandlinger = retrieveBehandlingsList(aktoerId);
         List<FitPaabegyntBehandling> fitInnsendtBehandlinger = convertListToPaabegynt(behandlinger);
         return new ArrayFixture(fitInnsendtBehandlinger);
