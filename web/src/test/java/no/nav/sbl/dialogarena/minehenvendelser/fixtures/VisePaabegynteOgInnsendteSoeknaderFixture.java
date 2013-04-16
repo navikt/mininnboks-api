@@ -28,6 +28,8 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     private MockData mockData;
 
     public Fixture datagrunnlag() {
+        logger.info("Setting up datagrunnlag.");
+        mockData.clearResponse();
         return new Datagrunnlag(mockData);
     }
 

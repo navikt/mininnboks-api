@@ -8,13 +8,17 @@ import java.util.List;
 public class MockData {
 
     private BehandlingerResponse behandlingerResponse;
+    private boolean responseCleared = false;
 
     public MockData() {
         //TODO instantiate behandlingerResponse with static data
     }
 
     public void clearResponse() {
-        this.behandlingerResponse = new BehandlingerResponse();
+        if (!responseCleared) {
+            this.behandlingerResponse = new BehandlingerResponse();
+            responseCleared = true;
+        }
     }
 
     public void addBehandlingerToResponse(List<Behandling> behandlinger) {

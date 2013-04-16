@@ -32,7 +32,7 @@ public class HentBehandlingerWebServiceMock implements HttpHandler {
         StringWriter writer = new StringWriter();
         jaxb2Marshaller.marshal(mockData.getBehandlingerResponse(), new StreamResult(writer));
         String message = writer.toString();
-        logger.info("marshalled the response object");
+        logger.info("Marshalled the response object. Amount of behandlinger: " + mockData.getBehandlingerResponse().getBehandlinger().size());
         response.charset(Charset.forName("UTF-8"))
                 .header("Content-Type", "text/xml; charset=UTF-8")
                 .content(message)
