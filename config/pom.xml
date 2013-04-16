@@ -27,6 +27,7 @@
                     <password>admin</password>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-content-maven-plugin</artifactId>

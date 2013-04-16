@@ -315,6 +315,12 @@
                 <version>${cxf.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.webbitserver</groupId>
+                <artifactId>webbit</artifactId>
+                <version>${webbit.version}</version>
+            </dependency>
+
             <!-- Test dependencies -->
             <dependency>
                 <groupId>no.nav.modig</groupId>
@@ -373,9 +379,10 @@
             </dependency>
 
             <dependency>
-                <groupId>org.webbitserver</groupId>
-                <artifactId>webbit</artifactId>
-                <version>${webbit.version}</version>
+                <groupId>org.eclipse.jetty.orbit</groupId>
+                <artifactId>javax.servlet</artifactId>
+                <version>3.0.0.v201112011016</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>

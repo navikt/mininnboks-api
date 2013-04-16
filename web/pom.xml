@@ -229,7 +229,6 @@
         <dependency>
             <groupId>org.eclipse.jetty.orbit</groupId>
             <artifactId>javax.servlet</artifactId>
-            <version>3.0.0.v201112011016</version>
             <scope>test</scope>
         </dependency>
 
@@ -286,7 +285,6 @@
                         </goals>
                         <configuration>
                             <usedDependencies>
-                                <!--usedDependency>no.nav.modig:modig-content</usedDependency-->
                                 <usedDependency>org.springframework:spring-web</usedDependency>
                                 <usedDependency>org.springframework:spring-core</usedDependency>
                                 <usedDependency>no.nav.sbl.dialogarena:common-web</usedDependency>
