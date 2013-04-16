@@ -67,7 +67,7 @@ Bruker har 1 på påbegynt Ettersending
 | DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | 1 vedlegg | 9. september 2012, kl 02:18 | Ettersending på Søknad om foreldrepenger | |
 
 !| Tabell for kodeverk |
-| Kodeverk ID | Navn på dokumentet |
+| Kodeverk ID | Navn paa dokumentet |
 | kodeForDagpenger | Søknad om dagpenger |
 | kodeForPermitteringsvarsel | Permitteringsvarsel |
 | kodeForArbeidsavtale | Arbeidsavtale |
