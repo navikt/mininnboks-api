@@ -33,6 +33,37 @@
         </dokumentforventninger>
     </brukerbehandling>
     <brukerbehandling>
+        <behandlingsId>11</behandlingsId>
+        <brukerbehandlingType>DOKUMENT_BEHANDLING</brukerbehandlingType>
+        <dokumentbehandlingType>SOKNADSINNSENDING</dokumentbehandlingType>
+        <status>UNDER_ARBEID</status>
+        <sistEndret>2013-04-01T03:49:45</sistEndret>
+        <dokumentforventninger>
+            <!--1 or more repetitions:-->
+            <dokumentforventning>
+                <kodeverkId>5</kodeverkId>
+                <innsendingsvalg>LASTET_OPP</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+            </dokumentforventning>
+            <dokumentforventning>
+                <kodeverkId>6</kodeverkId>
+                <innsendingsvalg>LASTET_OPP</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+            </dokumentforventning>
+            <dokumentforventning>
+                <kodeverkId>7</kodeverkId>
+                <innsendingsvalg>SENDES_IKKE</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+                <egendefinertTittel>CV</egendefinertTittel>
+            </dokumentforventning>
+            <dokumentforventning>
+                <kodeverkId>8</kodeverkId>
+                <innsendingsvalg>LASTET_OPP</innsendingsvalg>
+                <hovedskjema>true</hovedskjema>
+            </dokumentforventning>
+        </dokumentforventninger>
+    </brukerbehandling>
+    <brukerbehandling>
         <behandlingsId>2</behandlingsId>
         <brukerbehandlingType>DOKUMENT_BEHANDLING</brukerbehandlingType>
         <dokumentbehandlingType>ETTERSENDING</dokumentbehandlingType>
@@ -53,6 +84,32 @@
             </dokumentforventning>
             <dokumentforventning>
                 <kodeverkId>13</kodeverkId>
+                <innsendingsvalg>LASTET_OPP</innsendingsvalg>
+                <hovedskjema>true</hovedskjema>
+            </dokumentforventning>
+        </dokumentforventninger>
+    </brukerbehandling>
+    <brukerbehandling>
+        <behandlingsId>3</behandlingsId>
+        <brukerbehandlingType>DOKUMENT_BEHANDLING</brukerbehandlingType>
+        <dokumentbehandlingType>ETTERSENDING</dokumentbehandlingType>
+        <status>FERDIG</status>
+        <sistEndret>2013-03-01T03:49:45</sistEndret>
+        <innsendtDato>2013-04-01T03:49:45</innsendtDato>
+        <dokumentforventninger>
+            <!--1 or more repetitions:-->
+            <dokumentforventning>
+                <kodeverkId>16</kodeverkId>
+                <innsendingsvalg>LASTET_OPP</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+            </dokumentforventning>
+            <dokumentforventning>
+                <kodeverkId>15</kodeverkId>
+                <innsendingsvalg>SENDES_IKKE</innsendingsvalg>
+                <hovedskjema>false</hovedskjema>
+            </dokumentforventning>
+            <dokumentforventning>
+                <kodeverkId>14</kodeverkId>
                 <innsendingsvalg>LASTET_OPP</innsendingsvalg>
                 <hovedskjema>true</hovedskjema>
             </dokumentforventning>

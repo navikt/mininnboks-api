@@ -1,30 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org" lang="no">
 <wicket:head>
-    <title></title>
+	<title></title>
 </wicket:head>
 <wicket:extend>
-    <h1>SØKNADER</h1>
-    FORTSETT INNSENDING
+	<h1>Dine søknader</h1>
+    PÅBEGYNTE INNSENDINGER
     <ul>
-        <li wicket:id="behandlingerUnderArbeid">
-            <section>
-                <span wicket:id="tittel"></span>
-                <br>
-                <span wicket:id="antall"></span>
-                <br>
-                <span wicket:id="sistEndret"></span>
-            </section>
-        </li>
+		<li wicket:id="behandlingerUnderArbeid">
+			<section>
+				<span wicket:id="tittel"></span> <br> <span wicket:id="antall"></span>
+				<br> <span wicket:id="sistEndret"></span>
+			</section>
+		</li>
 
 
-    </ul>
-    Ferdige henvendelser
-    <ul>
-        <li wicket:id="behandlingerFerdig">
-            <span wicket:id="behandling"></span>
-        </li>
-    </ul>
-
+	</ul>
+	<div >
+		<ul>
+			<li wicket:id="behandlingerFerdig" ><span wicket:id="behandling"></span>
+			</li>
+		</ul>
+	</div>
 </wicket:extend>
 </html>
