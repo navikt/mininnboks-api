@@ -33,8 +33,9 @@ public class HomePage extends BasePage {
                 return behandlingService.hentBehandlinger(hentAktorId());
             }
         };
-        add(createUnderArbeidView(new BehandlingerLDM(model, Behandlingsstatus.UNDER_ARBEID)), createFerdigView(new BehandlingerLDM(model,
-                Behandlingsstatus.FERDIG)));
+        add(
+                createUnderArbeidView(new BehandlingerLDM(model, Behandlingsstatus.UNDER_ARBEID)),
+                createFerdigView(new BehandlingerLDM(model, Behandlingsstatus.FERDIG)));
     }
 
     private String hentAktorId() {
@@ -60,16 +61,8 @@ public class HomePage extends BasePage {
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
                 listItem.add(new Label("tittel", item.getTittel()));
-                listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", this, null,
-                        new Object[]
-                                {
-                                        item.getSistEndret().toDate()
-                                })));
-                listItem.add(new Label("antall", new StringResourceModel("antall.dokumenter", this, null,
-                        new Object[]{
-                                item.getAntallInnsendteDokumenter(),
-                                item.getAntallSubDokumenter()
-                        })));
+                listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", this, null, item.getSistEndret().toDate())));
+                listItem.add(new Label("antall", new StringResourceModel("antall.dokumenter", this, null, item.getAntallInnsendteDokumenter(), item.getAntallSubDokumenter())));
             }
         };
     }
