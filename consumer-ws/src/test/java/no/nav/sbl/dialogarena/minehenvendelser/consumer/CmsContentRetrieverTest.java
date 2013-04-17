@@ -12,16 +12,15 @@ import static org.mockito.Mockito.when;
 
 public class CmsContentRetrieverTest {
 
-    private CmsContentRetriever cmsContentRetriever;
-    private ValueRetriever valueRetriever;
     private static final String CMS_IP = "10.0.0.1";
-    private static final String DEFAULT_LOCALE ="nb";
+    private static final String DEFAULT_LOCALE = "nb";
+    private CmsContentRetriever cmsContentRetriever;
 
     @Before
-    public void setup(){
+    public void setup() {
         cmsContentRetriever = new CmsContentRetriever();
-        valueRetriever = Mockito.mock(ValueRetriever.class);
-        when(valueRetriever.getValueOf("TEXT","nb")).thenReturn("Test text");
+        ValueRetriever valueRetriever = Mockito.mock(ValueRetriever.class);
+        when(valueRetriever.getValueOf("TEXT", "nb")).thenReturn("Test text");
         cmsContentRetriever.setDefaultLocale(DEFAULT_LOCALE);
         cmsContentRetriever.setArtikkelRetriever(valueRetriever);
         cmsContentRetriever.setTeksterRetriever(valueRetriever);
@@ -30,17 +29,17 @@ public class CmsContentRetrieverTest {
     }
 
     @Test
-    public void getCmsIpShouldReturnCmsIp(){
+    public void getCmsIpShouldReturnCmsIp() {
         assertThat(cmsContentRetriever.getCmsIp(), is(CMS_IP));
     }
 
     @Test
-    public void hentTekstShouldGetCorrectText(){
+    public void hentTekstShouldGetCorrectText() {
         assertThat(cmsContentRetriever.hentTekst("TEXT"), equalTo("Test text"));
     }
 
     @Test
-    public void hentArtikkelShouldGetCorrectText(){
+    public void hentArtikkelShouldGetCorrectText() {
         assertThat(cmsContentRetriever.hentArtikkel("TEXT"), equalTo("Test text"));
     }
 }
