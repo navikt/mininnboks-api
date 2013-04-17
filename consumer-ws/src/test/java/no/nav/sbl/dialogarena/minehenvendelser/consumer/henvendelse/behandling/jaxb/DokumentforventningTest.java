@@ -2,9 +2,8 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.internal.util.reflection.Whitebox;
-import static org.hamcrest.core.Is.is;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
@@ -13,10 +12,9 @@ public class DokumentforventningTest {
     private Dokumentforventning dokumentforventning;
 
     @Before
-    public void setup(){
+    public void setup() {
         dokumentforventning = new Dokumentforventning();
     }
-
 
     @Test
     public void testIsLastetOpp() throws Exception {
