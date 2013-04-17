@@ -86,7 +86,8 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getDateText() {
-        return new Label("innsendtDato", behandling.getInnsendtDato());
+        StringResourceModel srm =  new StringResourceModel("innsendt", this, null,behandling.getInnsendtDato().toDate());
+        return new Label("innsendtDato",srm);
     }
 
     private static class DokumentforventningModel extends LoadableDetachableModel<List<Dokumentforventning>> {
