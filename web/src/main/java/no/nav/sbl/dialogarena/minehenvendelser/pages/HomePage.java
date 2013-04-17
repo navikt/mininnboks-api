@@ -15,6 +15,9 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
@@ -79,7 +82,18 @@ public class HomePage extends BasePage {
 
         @Override
         protected List<Behandling> load() {
-            return on(parentModel.getObject()).filter(where(Behandling.STATUS, equalTo(status))).collect();
+            List<Behandling> behandlinger = new ArrayList<>(on(parentModel.getObject()).filter(where(Behandling.STATUS, equalTo(status))).collect());
+            Collections.sort(behandlinger, new Comparator<Behandling>() {
+                @Override
+                public int compare(Behandling o1, Behandling o2) {
+                    if (status == Behandlingsstatus.UNDER_ARBEID) {
+                        return o1.getSistEndret().compareTo(o2.getSistEndret());
+                    }
+                    return o1.getInnsendtDato().compareTo(o2.getInnsendtDato());
+                }
+            });
+            return behandlinger;
+
         }
 
         @Override
