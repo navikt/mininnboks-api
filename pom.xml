@@ -436,15 +436,6 @@
                     <artifactId>jboss-maven-plugin</artifactId>
                     <version>2.1.1</version>
                 </plugin>
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <environmentVariables>
-                            <JAVA_TOOL_OPTIONS>${jacoco.agent.argLine}</JAVA_TOOL_OPTIONS>
-                        </environmentVariables>
-                    </configuration>
-                </plugin>
-
             </plugins>
         </pluginManagement>
 
@@ -511,6 +502,27 @@
     </scm>
 
     <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <configuration>
+                                <environmentVariables>
+                                    <JAVA_TOOL_OPTIONS>${jacoco.agent.argLine}</JAVA_TOOL_OPTIONS>
+                                </environmentVariables>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+
+        </profile>
         <profile>
             <id>sonar</id>
             <activation>
