@@ -72,6 +72,27 @@
                 <scope>test</scope>
             </dependency>
 
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>common-footer</artifactId>
+                <version>1.0.7-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>common-innstillinger</artifactId>
+                <version>1.0.7-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>common-navigasjon</artifactId>
+                <version>1.0.7-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>common-tilbakemelding</artifactId>
+                <version>1.0.7-SNAPSHOT</version>
+            </dependency>
+
             <!-- Modig dependencies -->
             <dependency>
                 <groupId>no.nav.modig</groupId>

@@ -1,5 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
+import no.nav.sbl.dialogarena.common.footer.FooterPanel;
+import no.nav.sbl.dialogarena.common.innstillinger.InnstillingerPanel;
+import no.nav.sbl.dialogarena.common.navigasjon.NavigasjonPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriever;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import org.apache.wicket.devutils.debugbar.DebugBar;
@@ -17,26 +20,14 @@ public class BasePage extends WebPage {
     public static final JavaScriptResourceReference JS_RESOURCE = new JavaScriptResourceReference(HomePage.class, "lokal.js");
     public static final CssResourceReference CSS_RESOURCE = new CssResourceReference(HomePage.class, "lokal.css");
 
-    private final WebMarkupContainer body;
-    private FeedbackPanel feedback;
-
     @Inject
     protected CmsContentRetriever innholdstekster;
 
     public BasePage() {
-        feedback = new FeedbackPanel("feedback");
-        body = new TransparentWebMarkupContainer("body");
-        body.setOutputMarkupId(true);
-        add(body);
-
-        body.add(new DebugBar("debug"), feedback);
-    }
-
-    public WebMarkupContainer getBody() {
-        return body;
-    }
-
-    public FeedbackPanel getFeedback() {
-        return feedback;
+        add(
+                new InnstillingerPanel("innstillinger"),
+                new NavigasjonPanel("navigasjon"),
+                new FooterPanel("footer")
+        );
     }
 }
