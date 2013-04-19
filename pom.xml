@@ -52,7 +52,7 @@
         <reflections.version>0.9.8</reflections.version>
         <junit.dep.version>4.10</junit.dep.version>
         <joda.time.version>2.2</joda.time.version>
-        <dialogarena.common.version>1.0.7-SNAPSHOT</dialogarena.common.version>
+        <dialogarena.common.version>1.0.7</dialogarena.common.version>
         <minehenvendelser.cms.url>http://10.51.9.185:8080</minehenvendelser.cms.url>
     </properties>
 
