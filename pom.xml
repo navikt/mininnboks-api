@@ -52,8 +52,12 @@
         <reflections.version>0.9.8</reflections.version>
         <junit.dep.version>4.10</junit.dep.version>
         <joda.time.version>2.2</joda.time.version>
-        <dialogarena.common.version>1.0.7</dialogarena.common.version>
         <minehenvendelser.cms.url>http://10.51.9.185:8080</minehenvendelser.cms.url>
+        <dialogarena.common.version>1.0.7</dialogarena.common.version>
+        <common.footer.version>1.0.7</common.footer.version>
+        <common.innstillinger.version>1.0.7</common.innstillinger.version>
+        <common.navigasjon.version>1.0.7</common.navigasjon.version>
+        <common.tilbakemelding.version>1.0.7</common.tilbakemelding.version>
     </properties>
 
     <dependencyManagement>
@@ -75,22 +79,22 @@
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>common-footer</artifactId>
-                <version>1.0.7-SNAPSHOT</version>
+                <version>${common.footer.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>common-innstillinger</artifactId>
-                <version>1.0.7-SNAPSHOT</version>
+                <version>${common.innstillinger.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>common-navigasjon</artifactId>
-                <version>1.0.7-SNAPSHOT</version>
+                <version>${common.navigasjon.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>common-tilbakemelding</artifactId>
-                <version>1.0.7-SNAPSHOT</version>
+                <version>${common.tilbakemelding.version}</version>
             </dependency>
 
             <!-- Modig dependencies -->
