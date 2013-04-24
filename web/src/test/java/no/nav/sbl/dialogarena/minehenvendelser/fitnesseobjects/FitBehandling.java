@@ -67,7 +67,7 @@ public class FitBehandling {
     }
 
     private Dokumentforventning createNewDokumentForventningBasedOnLists(int indexOfLists) {
-        Dokumentforventning dokumentforventning = new Dokumentforventning();
+        Dokumentforventning dokumentforventning = Dokumentforventning.transformToDokumentforventing(null);
         setInternalState(dokumentforventning, "kodeverkId", kodeverkId.get(indexOfLists));
         setInternalState(dokumentforventning, "innsendingsvalg", Dokumentforventning.Innsendingsvalg.valueOf(innsendingsvalg.get(indexOfLists)));
         setInternalState(dokumentforventning, "hovedskjema", (hovedskjema.get(indexOfLists)));

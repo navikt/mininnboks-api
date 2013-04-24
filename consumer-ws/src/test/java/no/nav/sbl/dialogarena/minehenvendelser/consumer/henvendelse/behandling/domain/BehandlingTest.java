@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
@@ -11,12 +12,11 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
 
 public class BehandlingTest {
 
-    private static final boolean IS_INNSENDT = true;
-    private static final boolean NOT_INNSENDT = false;
+    private static final WSInnsendingsValg IS_INNSENDT = WSInnsendingsValg.LASTET_OPP;
+    private static final WSInnsendingsValg NOT_INNSENDT = WSInnsendingsValg.SENDES_IKKE;
     private static final boolean IS_HOVEDSKJEMA = true;
     private static final boolean NOT_HOVEDSKJEMA = false;
 
@@ -99,7 +99,7 @@ public class BehandlingTest {
     public void getTittelShouldReturnKodeverkIdFromHovedskjema() {
         List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
         Dokumentforventning hovedSkjema = createMock(IS_HOVEDSKJEMA, IS_INNSENDT);
-        when(hovedSkjema.getKodeverkId()).thenReturn("kodeverkId");
+        Whitebox.setInternalState(hovedSkjema, "kodeverkId", "kodeverkId");
         dokumentforventningList.add(hovedSkjema);
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
