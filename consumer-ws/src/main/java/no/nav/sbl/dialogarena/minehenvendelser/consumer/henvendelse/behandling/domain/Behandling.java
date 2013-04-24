@@ -16,7 +16,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOpps
 /**
  * Domeneobjekt som representerer en behandling
  */
-public class Behandling implements Serializable {
+public final class Behandling implements Serializable {
 
     private String behandlingsId;
 
