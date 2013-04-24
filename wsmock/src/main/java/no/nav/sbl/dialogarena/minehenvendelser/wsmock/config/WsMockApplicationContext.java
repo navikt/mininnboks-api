@@ -32,7 +32,7 @@ public class WsMockApplicationContext {
         MockData mockData = new MockData();
         mockData.clearResponse();
         logger.info(":::: Response cleared");
-        InputStream inputStream = getClass().getResourceAsStream("/mockdata/behandlinger.xml");
+        InputStream inputStream = getClass().getResourceAsStream("/mockdata/behandlinger___.xml");
         BehandlingerResponse behandlingerResponse = (BehandlingerResponse)jaxb2Marshaller.unmarshal(new StreamSource(inputStream));
         logger.info(":::: BehandlingerResponse retrieved! Amount: " + behandlingerResponse.getBehandlinger().size());
         mockData.addBehandlingerToResponse(behandlingerResponse.getBehandlinger());

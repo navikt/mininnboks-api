@@ -18,5 +18,13 @@ public class DateAdapterXml extends XmlAdapter<String, DateMidnight> {
     public String marshal(DateMidnight v) {
         return v.toString();
     }
+
+    public static DateMidnight staticUnmarshal(String v) {
+        return new DateMidnight(v);
+    }
+
+    public static String staticMarshal(DateMidnight v) {
+        return v.toString();
+    }
 }
 

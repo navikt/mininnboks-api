@@ -8,6 +8,10 @@
     </parent>
     <artifactId>minehenvendelser-consumer-ws</artifactId>
     <name>${project.artifactId}</name>
+
+    <properties>
+        <wsdl.directory>${project.build.directory}/classes</wsdl.directory>
+    </properties>
     <dependencies>
 
         <dependency>
@@ -33,21 +37,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-oxm</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
         </dependency>
 
         <!-- test dependencies -->
@@ -90,6 +79,63 @@
     </dependencies>
     <build>
         <plugins>
+
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>fetch-wsdls</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>no.nav.sbl.dialogarena</groupId>
+                                    <artifactId>henvendelse-informasjon-tjenestespesifikasjon</artifactId>
+                                    <version>1.0.11</version>
+                                    <type>zip</type>
+                                    <outputDirectory>${wsdl.directory}/henvendelse</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <usedDependencies>
+                                <!--<usedDependency>no.nav.modig:modig-security-ws</usedDependency>-->
+                            </usedDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--<plugin>-->
+                <!--<artifactId>maven-resources-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>copy-bindings-file</id>-->
+                        <!--<phase>initialize</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>copy-resources</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<resources>-->
+                                <!--<resource>-->
+                                    <!--<directory>src/main/wsdl</directory>-->
+                                <!--</resource>-->
+                            <!--</resources>-->
+                            <!--<outputDirectory>${wsdl.directory}</outputDirectory>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
@@ -104,11 +150,21 @@
                             <defaultOptions>
                                 <extraargs>
                                     <extraarg>-xjc-Xfluent-api</extraarg>
-                                    <extraarg>-xjc-XhashCode</extraarg>
-                                    <extraarg>-xjc-Xequals</extraarg>
-                                    <extraart>-xjc-mark-generated</extraart>
+                                    <!--<extraarg>-xjc-XhashCode</extraarg>-->
+                                    <!--<extraarg>-xjc-Xequals</extraarg>-->
+                                    <!--<extraart>-xjc-mark-generated</extraart>-->
                                 </extraargs>
                             </defaultOptions>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>${wsdl.directory}/henvendelse/HenvendelsesBehandling.wsdl
+                                    </wsdl>
+                                    <!--<bindingFiles>-->
+                                        <!--<bindingFile>${wsdl.directory}/henvendelse/bindings.xml-->
+                                        <!--</bindingFile>-->
+                                    <!--</bindingFiles>-->
+                                </wsdlOption>
+                            </wsdlOptions>
                         </configuration>
                     </execution>
                 </executions>

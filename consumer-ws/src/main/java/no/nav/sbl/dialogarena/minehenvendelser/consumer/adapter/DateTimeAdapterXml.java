@@ -18,5 +18,13 @@ public class DateTimeAdapterXml extends XmlAdapter<String, DateTime> {
     public String marshal(DateTime v) {
         return v.toString();
     }
+
+    public static DateTime staticUnmarshal(String v)  {
+        return new DateTime(v);
+    }
+
+    public static String staticMarshal(DateTime v) {
+        return v.toString();
+    }
 }
 

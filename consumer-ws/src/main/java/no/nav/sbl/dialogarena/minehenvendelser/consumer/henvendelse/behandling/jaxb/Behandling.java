@@ -21,43 +21,28 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_LASTET_OPP;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
-@XmlRootElement(name = "brukerbehandling" , namespace = "http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon")
 public class Behandling implements Serializable {
 
-    @XmlEnum
-    @XmlType(name = "brukerbehandlingType")
+    private String behandlingsId;
+
+    private String hovedskjemaId;
+
     public enum BrukerbehandlingType {DOKUMENT_BEHANDLING};
 
-    @XmlEnum
-    @XmlType(name = "dokumentbehandlingType")
     public enum DokumentbehandlingType {SOKNADSINNSENDING, ETTERSENDING};
 
-    @XmlEnum
-    @XmlType(name = "behandlingsstatus")
     public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG};
 
-    @XmlElement
-	private String behandlingsId;
-
-    @XmlElement(name = "brukerbehandlingType")
-    private BrukerbehandlingType behandlingstype;
-
-    @XmlElement
-    private DokumentbehandlingType dokumentbehandlingType;
-
-    @XmlElement
-	private Behandlingsstatus status;
-
-    @XmlElement
-    @XmlJavaTypeAdapter(DateTimeAdapterXml.class)
     private DateTime sistEndret;
 
-    @XmlElement
-    @XmlJavaTypeAdapter(DateTimeAdapterXml.class)
     private DateTime innsendtDato;
 
-    @XmlElementWrapper(name="dokumentforventninger")
-    @XmlElement(name = "dokumentforventning")
+    private BrukerbehandlingType behandlingstype;
+
+    private DokumentbehandlingType dokumentbehandlingType;
+
+	private Behandlingsstatus status;
+
     private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
 
 	public String getBehandlingsId() {
@@ -99,7 +84,6 @@ public class Behandling implements Serializable {
     public int getAntallSubDokumenter() {
         return fetchAlleDokumenter().size();
     }
-
 
     public List<Dokumentforventning> fetchInnsendteDokumenter() {
         return on(dokumentforventninger)

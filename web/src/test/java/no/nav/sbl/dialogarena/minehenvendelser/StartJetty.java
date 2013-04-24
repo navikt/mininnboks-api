@@ -1,15 +1,14 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
+import no.nav.sbl.dialogarena.common.jetty.Jetty;
+
+import java.io.IOException;
+
 import static no.nav.modig.lang.collections.FactoryUtils.gotKeypress;
 import static no.nav.modig.lang.collections.RunnableUtils.first;
 import static no.nav.modig.lang.collections.RunnableUtils.waitFor;
 import static no.nav.modig.test.util.FilesAndDirs.WEBAPP_SOURCE;
 import static no.nav.sbl.dialogarena.common.jetty.Jetty.usingWar;
-
-import java.io.IOException;
-
-import no.nav.sbl.dialogarena.common.jetty.Jetty;
-
 
 public final class StartJetty {
 
