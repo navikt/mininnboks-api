@@ -1,15 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.adapter.DateTimeAdapterXml;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +38,11 @@ public class Behandling implements Serializable {
 
     private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
 
-	public String getBehandlingsId() {
+    public String getHovedskjemaId() {
+        return hovedskjemaId;
+    }
+
+    public String getBehandlingsId() {
 		return behandlingsId;
 	}
 
