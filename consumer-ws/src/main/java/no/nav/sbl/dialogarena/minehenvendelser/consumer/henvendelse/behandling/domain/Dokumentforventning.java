@@ -30,10 +30,15 @@ public final class Dokumentforventning implements Serializable {
         public Dokumentforventning transform(WSDokumentForventning wsDokumentForventning) {
             Dokumentforventning dokumentforventning = new Dokumentforventning();
             dokumentforventning.friTekst = optional(wsDokumentForventning.getFriTekst()).map(stringValueTransformer()).getOrElse(null);
-
+            dokumentforventning.kodeverkId = wsDokumentForventning.getKodeverkId();
             dokumentforventning.hovedskjema =  wsDokumentForventning.isHovedskjema();
+            assignToInnsendingsvalg(dokumentforventning, wsDokumentForventning);
 
-            switch (wsDokumentForventning.getInnsendingsValg()){
+            return dokumentforventning;
+        }
+
+        private void assignToInnsendingsvalg(Dokumentforventning dokumentforventning, WSDokumentForventning wsDokumentForventning) {
+            switch (wsDokumentForventning.getInnsendingsValg()) {
                 case LASTET_OPP: dokumentforventning.innsendingsvalg = Innsendingsvalg.LASTET_OPP; break;
                 case SENDES_IKKE: dokumentforventning.innsendingsvalg = Innsendingsvalg.SENDES_IKKE; break;
                 case IKKE_VALGT: dokumentforventning.innsendingsvalg = Innsendingsvalg.IKKE_VALGT; break;
@@ -42,11 +47,6 @@ public final class Dokumentforventning implements Serializable {
                 case SENDES_AV_ANDRE: dokumentforventning.innsendingsvalg = Innsendingsvalg.SENDES_AV_ANDRE; break;
                 default: throw new ApplicationException("Ukjent verdi for innsendingsvalg");
             }
-
-          //  dokumentforventning.innsendingsvalg = wsDokumentForventning.getInnsendingsValg();
-
-
-            return dokumentforventning;
         }
     };
 

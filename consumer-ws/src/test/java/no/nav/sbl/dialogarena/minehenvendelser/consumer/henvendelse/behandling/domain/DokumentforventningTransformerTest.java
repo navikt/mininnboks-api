@@ -21,6 +21,9 @@ public class DokumentforventningTransformerTest {
         Dokumentforventning dokumentforventning = Dokumentforventning.transformToDokumentforventing(wsDokumentForventning);
 
         Assert.assertThat(dokumentforventning.getFriTekst(), equalTo("fritekst"));
+        Assert.assertThat(dokumentforventning.getInnsendingsvalg(), equalTo(Dokumentforventning.Innsendingsvalg.SENDES_IKKE));
+        Assert.assertThat(dokumentforventning.isHovedskjema(), equalTo(true));
+        Assert.assertThat(dokumentforventning.getKodeverkId(),equalTo("kodeverk"));
     }
 
 }
