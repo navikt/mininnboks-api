@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,8 @@ public class BehandlingTest {
 
     @Before
     public void setup() {
-        behandling = transformToBehandling(null);
+        WSBrukerBehandling wsBrukerBehandling = new WSBrukerBehandling();
+        behandling = transformToBehandling(wsBrukerBehandling);
     }
 
     @Test

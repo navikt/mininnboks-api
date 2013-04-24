@@ -45,7 +45,10 @@ public final class Behandling implements Serializable {
     private static Transformer<WSBrukerBehandling, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandling, Behandling>() {
         @Override
         public Behandling transform(WSBrukerBehandling wsBrukerBehandling) {
-            return new Behandling();
+            Behandling behandling = new Behandling();
+            behandling.behandlingsId = wsBrukerBehandling.getBehandlingsId();
+            behandling.hovedskjemaId = wsBrukerBehandling.getHovedskjemaId();
+            return behandling;
         }
     };
 
