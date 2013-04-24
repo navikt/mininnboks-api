@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -6,7 +6,7 @@ import org.mockito.internal.util.reflection.Whitebox;
 
 import java.util.List;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.util.MockCreationUtil.createMock;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createMock;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;

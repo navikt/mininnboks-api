@@ -39,6 +39,17 @@
             <artifactId>spring-context</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
+
+
         <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>
@@ -159,10 +170,9 @@
                                 <wsdlOption>
                                     <wsdl>${wsdl.directory}/henvendelse/HenvendelsesBehandling.wsdl
                                     </wsdl>
-                                    <!--<bindingFiles>-->
-                                        <!--<bindingFile>${wsdl.directory}/henvendelse/bindings.xml-->
-                                        <!--</bindingFile>-->
-                                    <!--</bindingFiles>-->
+                                    <bindingFiles>
+                                        <bindingFile>src/main/resources/bindings.xml</bindingFile>
+                                    </bindingFiles>
                                 </wsdlOption>
                             </wsdlOptions>
                         </configuration>

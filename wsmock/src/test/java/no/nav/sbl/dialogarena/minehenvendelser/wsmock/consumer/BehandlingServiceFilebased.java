@@ -1,7 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.wsmock.consumer;
 
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
 
 import java.util.ArrayList;
 import java.util.List;

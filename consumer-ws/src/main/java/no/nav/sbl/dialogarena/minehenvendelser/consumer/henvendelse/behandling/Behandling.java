@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
@@ -10,8 +10,6 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.HOVEDSKJEMA;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb.Dokumentforventning.STATUS_LASTET_OPP;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 public class Behandling implements Serializable {
@@ -84,20 +82,20 @@ public class Behandling implements Serializable {
 
     public List<Dokumentforventning> fetchInnsendteDokumenter() {
         return on(dokumentforventninger)
-                .filter(where(STATUS_LASTET_OPP, equalTo(true)))
-                .filter(where(HOVEDSKJEMA, equalTo(false)))
+                .filter(where(Dokumentforventning.STATUS_LASTET_OPP, equalTo(true)))
+                .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(false)))
                 .collect();
     }
 
     public List<Dokumentforventning> fetchAlleDokumenter() {
         return on(dokumentforventninger)
-                .filter(where(HOVEDSKJEMA, equalTo(false)))
+                .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(false)))
                 .collect();
     }
 
     public Dokumentforventning fetchHoveddokument() {
         return on(dokumentforventninger)
-                .filter(where(HOVEDSKJEMA, equalTo(true)))
+                .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(true)))
                 .head().get();
     }
 

@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.jaxb;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
 import java.util.ArrayList;
 import java.util.List;
