@@ -1,5 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+
 import java.util.List;
 
 public interface BehandlingService {

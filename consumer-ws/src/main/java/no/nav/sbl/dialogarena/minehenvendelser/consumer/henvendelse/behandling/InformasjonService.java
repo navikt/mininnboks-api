@@ -1,18 +1,26 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
+
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 
 public class InformasjonService implements BehandlingService {
 
     @Inject
-    private HenvendelsesBehandlingPortType  service;
+    private HenvendelsesBehandlingPortType service;
 
     public List<Behandling> hentBehandlinger(String aktoerId){
-        return null;
+        List<Behandling> behandlinger = new ArrayList<>();
+        for (WSBrukerBehandling wsBrukerBehandling : service.hentBrukerBehandlinger(aktoerId)) {
+            behandlinger.add(transformToBehandling(wsBrukerBehandling));
+        }
+        return behandlinger;
     }
 
 }

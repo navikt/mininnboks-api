@@ -2,12 +2,10 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Dokumentforventning;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling.Behandlingsstatus;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Dokumentforventning;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;

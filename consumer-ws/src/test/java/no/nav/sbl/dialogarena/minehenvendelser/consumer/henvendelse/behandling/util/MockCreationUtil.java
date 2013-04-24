@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Dokumentforventning;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

@@ -1,9 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Dokumentforventning;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Dokumentforventning;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
@@ -12,9 +10,10 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling.Behandlingsstatus;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling.BrukerbehandlingType.valueOf;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling.DokumentbehandlingType;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.BrukerbehandlingType.valueOf;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.DokumentbehandlingType;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static org.codehaus.plexus.util.StringUtils.isNotEmpty;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
@@ -39,7 +38,7 @@ public class FitBehandling {
     public List<String> egendefinertTittel;
 
     public Behandling asBehandling() {
-        Behandling behandling = new Behandling();
+        Behandling behandling = transformToBehandling(null);
         populateSimpleFields(behandling);
         populateFieldsFromLists(behandling);
         logger.info("Behandling created from fitnesse object, toString as follows: " + behandling.toString());

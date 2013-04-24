@@ -1,10 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriever;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Dokumentforventning;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Dokumentforventning;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -19,7 +17,7 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Dokumentforventning.STATUS_LASTET_OPP;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.STATUS_LASTET_OPP;
 
 public class BehandlingPanel extends Panel {
 

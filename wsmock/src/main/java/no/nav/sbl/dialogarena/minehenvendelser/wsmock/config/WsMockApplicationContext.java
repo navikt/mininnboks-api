@@ -1,8 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.wsmock.config;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerContext;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingerResponse;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingerResponse;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.BehandlingerResponse;
 import no.nav.sbl.dialogarena.minehenvendelser.wsmock.HentBehandlingerWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.wsmock.MockData;
 import org.slf4j.Logger;

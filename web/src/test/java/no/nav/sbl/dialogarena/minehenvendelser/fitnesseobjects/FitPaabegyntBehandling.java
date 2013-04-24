@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 
 public class FitPaabegyntBehandling {
 
