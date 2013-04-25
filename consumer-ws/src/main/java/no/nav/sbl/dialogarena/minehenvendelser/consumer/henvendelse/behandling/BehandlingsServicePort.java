@@ -10,7 +10,11 @@ import java.util.List;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 
-public class BehandlingsServiceImpl implements BehandlingService {
+/**
+ * Dette er en standardimplementasjon av grensesnittet som benytter seg av en {@link HenvendelsesBehandlingPortType} implementasjon for å spørre
+ * om behandlinger for en aktørId.
+ */
+public class BehandlingsServicePort implements BehandlingService {
 
     @Inject
     private HenvendelsesBehandlingPortType service;
