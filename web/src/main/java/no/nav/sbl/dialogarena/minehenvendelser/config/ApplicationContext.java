@@ -12,12 +12,12 @@ import org.springframework.context.annotation.Profile;
 public class ApplicationContext {
 
     @Configuration
-    @Profile("default")
+    @Profile("test")
     @Import({ ConsumerContext.class, WsMockTestContext.class })
     public static class ServiceTestContext {}
 
     @Configuration
-    @Profile("test")
+    @Profile("default")
     @Import(ConsumerContext.class)
     public static class ServiceProdContext {}
 
