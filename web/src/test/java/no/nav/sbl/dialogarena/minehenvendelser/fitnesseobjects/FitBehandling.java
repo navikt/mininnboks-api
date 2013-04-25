@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.BrukerbehandlingType.valueOf;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.DokumentbehandlingType;
+//import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.BrukerbehandlingType.valueOf;
+//import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.DokumentbehandlingType;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static org.codehaus.plexus.util.StringUtils.isNotEmpty;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
@@ -47,8 +47,8 @@ public class FitBehandling {
 
     private void populateSimpleFields(Behandling behandling) {
         setInternalState(behandling, "behandlingsId", behandlingsId);
-        setInternalState(behandling, "behandlingstype", valueOf(brukerbehandlingType));
-        setInternalState(behandling, "dokumentbehandlingType", DokumentbehandlingType.valueOf(dokumentbehandlingType));
+//        setInternalState(behandling, "behandlingstype", valueOf(brukerbehandlingType));
+//        setInternalState(behandling, "dokumentbehandlingType", DokumentbehandlingType.valueOf(dokumentbehandlingType));
         setInternalState(behandling, "status", Behandlingsstatus.valueOf(status));
         if (isNotEmpty(sistEndretDato)) {
             setInternalState(behandling, "sistEndret", new DateTime(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(sistEndretDato)));

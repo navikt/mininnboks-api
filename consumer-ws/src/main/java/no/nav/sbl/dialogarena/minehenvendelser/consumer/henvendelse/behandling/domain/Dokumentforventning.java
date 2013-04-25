@@ -91,4 +91,5 @@ public final class Dokumentforventning implements Serializable {
             return dokumentforventning.isHovedskjema();
         }
     };
+
 }

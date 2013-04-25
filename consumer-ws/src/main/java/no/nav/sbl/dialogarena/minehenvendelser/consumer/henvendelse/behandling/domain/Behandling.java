@@ -22,19 +22,11 @@ public final class Behandling implements Serializable {
 
     private String hovedskjemaId;
 
-    public enum BrukerbehandlingType {DOKUMENT_BEHANDLING};
-
-    public enum DokumentbehandlingType {SOKNADSINNSENDING, ETTERSENDING};
-
     public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG};
 
     private DateTime sistEndret;
 
     private DateTime innsendtDato;
-
-    private BrukerbehandlingType behandlingstype;
-
-    private DokumentbehandlingType dokumentbehandlingType;
 
 	private Behandlingsstatus status;
 
@@ -63,14 +55,6 @@ public final class Behandling implements Serializable {
     public String getBehandlingsId() {
 		return behandlingsId;
 	}
-
-    public BrukerbehandlingType getBehandlingstype() {
-		return behandlingstype;
-	}
-
-    public DokumentbehandlingType getDokumentbehandlingType() {
-        return dokumentbehandlingType;
-    }
 
     public Behandlingsstatus getStatus() {
         return status;

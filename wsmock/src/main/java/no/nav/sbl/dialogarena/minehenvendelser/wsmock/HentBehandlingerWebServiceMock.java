@@ -25,6 +25,8 @@ public class HentBehandlingerWebServiceMock implements HttpHandler {
         logger.info("entered handleHttpRequest");
         StringWriter writer = new StringWriter();
         String message = writer.toString();
+        //TODO interact with mockdata
+        mockData.clearResponse();
         response.charset(Charset.forName("UTF-8"))
                 .header("Content-Type", "text/xml; charset=UTF-8")
                 .content(message)
