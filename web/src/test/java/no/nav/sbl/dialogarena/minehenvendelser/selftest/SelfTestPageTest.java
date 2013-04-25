@@ -1,10 +1,10 @@
 package no.nav.sbl.dialogarena.minehenvendelser.selftest;
 
-import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.AbstractWicketTest;
-
 import org.junit.Test;
+
+import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
 
 public class SelfTestPageTest extends AbstractWicketTest<WicketApplication> {
 

@@ -1,15 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 
-import no.nav.modig.lang.option.Optional;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingType;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbehandlingType;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
-import org.jsoup.Jsoup;
-import org.jsoup.parser.Parser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.webbitserver.HttpControl;
 import org.webbitserver.HttpHandler;
 import org.webbitserver.HttpRequest;

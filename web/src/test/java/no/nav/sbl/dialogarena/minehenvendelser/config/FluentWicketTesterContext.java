@@ -1,11 +1,10 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
-import javax.inject.Inject;
-
 import no.nav.modig.wicket.test.FluentWicketTester;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.inject.Inject;
 
 @Configuration
 public class FluentWicketTesterContext {

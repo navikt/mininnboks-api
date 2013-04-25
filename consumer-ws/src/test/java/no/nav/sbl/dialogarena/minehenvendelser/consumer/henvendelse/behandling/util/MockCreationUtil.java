@@ -1,11 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBehandlingsstatus;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.*;
 import org.joda.time.DateTime;
 
 public class MockCreationUtil {

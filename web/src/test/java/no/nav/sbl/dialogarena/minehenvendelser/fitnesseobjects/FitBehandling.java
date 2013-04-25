@@ -11,11 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
-//import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.BrukerbehandlingType.valueOf;
-//import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.DokumentbehandlingType;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static org.codehaus.plexus.util.StringUtils.isNotEmpty;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
+
+//import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.BrukerbehandlingType.valueOf;
+//import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.DokumentbehandlingType;
 
 public class FitBehandling {
 

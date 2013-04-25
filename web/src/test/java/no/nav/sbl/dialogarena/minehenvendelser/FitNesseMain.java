@@ -1,10 +1,10 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
-import static org.kohsuke.args4j.ExampleMode.ALL;
 import no.nav.modig.test.fitnesse.run.FitnesseTestRunner;
-
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
+
+import static org.kohsuke.args4j.ExampleMode.ALL;
 
 public final class FitNesseMain {
 
