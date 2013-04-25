@@ -27,6 +27,10 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus.UNDER_ARBEID;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.STATUS;
 
+/**
+ * Hovedside for applikasjonen. Laster inn behandlinger via. en service og
+ * instansierer wicketmodellene med lister av innsendte og uferdige søknader
+ */
 public class HomePage extends BasePage {
 
     @Inject
@@ -54,8 +58,8 @@ public class HomePage extends BasePage {
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling behandling = listItem.getModelObject();
-                IModel<List<Dokumentforventning>> dokModel = new ListModel<>(behandling.fetchAlleDokumenter());
-                listItem.add(new BehandlingPanel("behandling", dokModel, behandling, innholdstekster));
+                IModel<List<Dokumentforventning>> dokumentforventningListModel = new ListModel<>(behandling.fetchAlleDokumenter());
+                listItem.add(new BehandlingPanel("behandling", dokumentforventningListModel, behandling, innholdstekster));
             }
         };
     }

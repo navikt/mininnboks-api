@@ -4,7 +4,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.request.http.WebResponse;
 
-
 public abstract class BaseErrorPage extends WebPage {
 
     public BaseErrorPage() {
