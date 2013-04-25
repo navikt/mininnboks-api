@@ -2,7 +2,11 @@ package no.nav.sbl.dialogarena.minehenvendelser.wsmock.consumer;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.*;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBehandlingsstatus;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 
 import java.util.ArrayList;
 import java.util.List;

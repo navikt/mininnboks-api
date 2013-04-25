@@ -6,7 +6,7 @@ import org.joda.time.DateTime;
 
 public class MockCreationUtil {
 
-    public static Dokumentforventning createMock(boolean isHovedskjema, WSInnsendingsValg innsendingsValg){
+    public static Dokumentforventning createMock(boolean isHovedskjema, WSInnsendingsValg innsendingsValg) {
         WSDokumentForventningOppsummering wsDokumentForventning = new WSDokumentForventningOppsummering()
                 .withHovedskjema(isHovedskjema)
                 .withInnsendingsValg(innsendingsValg);

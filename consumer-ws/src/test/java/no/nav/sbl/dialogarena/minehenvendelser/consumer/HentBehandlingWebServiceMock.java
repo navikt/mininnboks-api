@@ -22,8 +22,8 @@ public class HentBehandlingWebServiceMock implements HttpHandler {
 
     @Override
     public void handleHttpRequest(HttpRequest httpRequest, HttpResponse response, HttpControl control) throws Exception {
-        String request = httpRequest.body();
-//        String ident = Jsoup.parse(request, "", Parser.xmlParser()).select("ident").get(0).text();
+        //        String request = httpRequest.body();
+        //        String ident = Jsoup.parse(request, "", Parser.xmlParser()).select("ident").get(0).text();
 
         String message = marshaller.transform(createMockRespone());
 
@@ -33,9 +33,9 @@ public class HentBehandlingWebServiceMock implements HttpHandler {
                 .end();
     }
 
-    private HentBrukerBehandlingerResponse createMockRespone(){
+    private HentBrukerBehandlingerResponse createMockRespone() {
         HentBrukerBehandlingerResponse response = new HentBrukerBehandlingerResponse();
-        WSBrukerBehandling behandling = createWsBehandlingMock( );
+        WSBrukerBehandling behandling = createWsBehandlingMock();
         response.withBrukerBehandlinger(behandling);
         return response;
     }
