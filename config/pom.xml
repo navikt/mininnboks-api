@@ -10,7 +10,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>no.nav.sbl.dialogarena</groupId>
 	<artifactId>minehenvendelser-config</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId} metadata artifact</name>
