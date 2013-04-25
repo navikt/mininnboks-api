@@ -4,6 +4,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.B
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +13,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ConsumerContext {
+
+    @Value("${henvendelser.ws.endpoint}")
+    private String endpoint;
 
     @Bean
     public BehandlingService behandlingService() {
@@ -22,7 +26,7 @@ public class ConsumerContext {
     public HenvendelsesBehandlingPortType jaxWsClientFactoryBean(){
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
-        proxyFactoryBean.setAddress("DUMMY_ENDPOINT");
+        proxyFactoryBean.setAddress(endpoint);
         return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
     }
 
