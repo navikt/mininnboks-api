@@ -15,7 +15,7 @@ import java.util.Locale;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WicketApplicationContext.class)
-@ActiveProfiles("test")
+@ActiveProfiles("default")
 public abstract class AbstractWicketTest<T extends WebApplication> {
 
     @Inject
