@@ -1,7 +1,6 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.util;
 
 import no.nav.modig.content.ValueRetriever;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -26,7 +25,6 @@ public class CmsContentRetrieverTest {
         cmsContentRetriever.setArtikkelRetriever(valueRetriever);
         cmsContentRetriever.setTeksterRetriever(valueRetriever);
         cmsContentRetriever.setCmsIp(CMS_IP);
-
     }
 
     @Test

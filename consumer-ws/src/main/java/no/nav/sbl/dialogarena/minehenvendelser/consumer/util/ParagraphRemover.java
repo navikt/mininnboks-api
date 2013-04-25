@@ -1,10 +1,13 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.util;
 
+/**
+ * Utilklasse for å fjerne HTML-tags for paragrafer
+ */
 public class ParagraphRemover {
 
     public static String remove(String input) {
         String text = input;
-        if(text == null){
+        if (text == null) {
             return null;
         }
         if (text.startsWith("<p>")) {

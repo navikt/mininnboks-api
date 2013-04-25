@@ -113,10 +113,4 @@ public class BehandlingTest {
         assertThat(behandling.getTittel(), equalTo("KodeverkData kodeverkId"));
     }
 
-    @Test
-    public void statusTransformerWorks() {
-        Whitebox.setInternalState(behandling,"status", Behandling.Behandlingsstatus.FERDIG);
-        assertThat(Behandling.STATUS.transform(behandling), equalTo(Behandling.Behandlingsstatus.FERDIG));
-    }
-
 }
