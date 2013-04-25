@@ -10,6 +10,7 @@ import java.util.List;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createMock;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWsBehandlingMock;
 import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg.LASTET_OPP;
 import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg.SENDES_IKKE;
 import static org.hamcrest.core.Is.is;
@@ -27,7 +28,7 @@ public class BehandlingTest {
 
     @Before
     public void setup() {
-        WSBrukerBehandling wsBrukerBehandling = new WSBrukerBehandling();
+        WSBrukerBehandling wsBrukerBehandling = createWsBehandlingMock();
         behandling = transformToBehandling(wsBrukerBehandling);
     }
 

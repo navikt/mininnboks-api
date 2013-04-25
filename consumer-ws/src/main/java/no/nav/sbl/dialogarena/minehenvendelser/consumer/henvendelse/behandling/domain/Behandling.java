@@ -11,6 +11,7 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static no.nav.modig.lang.option.Optional.optional;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 /**
@@ -40,9 +41,23 @@ public final class Behandling implements Serializable {
             Behandling behandling = new Behandling();
             behandling.behandlingsId = wsBrukerBehandling.getBehandlingsId();
             behandling.hovedskjemaId = wsBrukerBehandling.getHovedskjemaId();
+            behandling.status = Behandlingsstatus.valueOf(wsBrukerBehandling.getStatus().name());
+            behandling.sistEndret = wsBrukerBehandling.getSistEndret();
+            behandling.innsendtDato = optional(wsBrukerBehandling.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
             return behandling;
         }
+
+
     };
+
+    private static Transformer<DateTime, DateTime> dateTimeValueTransformer() {
+        return new Transformer<DateTime, DateTime>() {
+            @Override
+            public DateTime transform(DateTime dateTime) {
+                return dateTime;
+            }
+        };
+    }
 
     public static Behandling transformToBehandling(WSBrukerBehandling wsBrukerBehandling) {
         return behandlingTransformer.transform(wsBrukerBehandling);
