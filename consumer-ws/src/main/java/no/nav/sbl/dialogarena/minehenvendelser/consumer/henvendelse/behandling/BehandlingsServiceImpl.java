@@ -10,7 +10,7 @@ import java.util.List;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 
-public class InformasjonService implements BehandlingService {
+public class BehandlingsServiceImpl implements BehandlingService {
 
     @Inject
     private HenvendelsesBehandlingPortType service;

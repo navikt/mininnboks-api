@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.InformasjonService;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServiceImpl;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ public class ConsumerContext {
 
     @Bean
     public BehandlingService behandlingService() {
-        return new InformasjonService();
+        return new BehandlingsServiceImpl();
     }
 
     @Bean

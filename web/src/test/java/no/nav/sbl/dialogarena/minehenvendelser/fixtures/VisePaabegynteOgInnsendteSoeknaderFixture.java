@@ -73,7 +73,8 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
 
     private List<Behandling> retrieveBehandlingsList(String aktoerId) {
         logger.info("Entered WebService interaction method! AktoerId: " + aktoerId);
-        return new ArrayList<Behandling>();
+        //TODO call WS
+        return new ArrayList<>();
     }
 
 }

@@ -10,14 +10,16 @@ import java.util.List;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createMock;
+import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg.LASTET_OPP;
+import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg.SENDES_IKKE;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class BehandlingTest {
 
-    private static final WSInnsendingsValg IS_INNSENDT = WSInnsendingsValg.LASTET_OPP;
-    private static final WSInnsendingsValg NOT_INNSENDT = WSInnsendingsValg.SENDES_IKKE;
+    private static final WSInnsendingsValg IS_INNSENDT = LASTET_OPP;
+    private static final WSInnsendingsValg NOT_INNSENDT = SENDES_IKKE;
     private static final boolean IS_HOVEDSKJEMA = true;
     private static final boolean NOT_HOVEDSKJEMA = false;
 

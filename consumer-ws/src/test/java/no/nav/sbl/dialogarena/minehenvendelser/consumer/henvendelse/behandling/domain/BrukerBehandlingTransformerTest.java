@@ -4,10 +4,10 @@ import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingType;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbehandlingType;
 import org.joda.time.DateTime;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 public class BrukerBehandlingTransformerTest {
 
@@ -23,8 +23,8 @@ public class BrukerBehandlingTransformerTest {
 
         Behandling behandling = Behandling.transformToBehandling(wsBrukerBehandling);
 
-        Assert.assertThat(behandling.getBehandlingsId(), equalTo("behandlingId"));
-        Assert.assertThat(behandling.getHovedskjemaId(), equalTo("hovedSkjemaId"));
+        assertThat(behandling.getBehandlingsId(), equalTo("behandlingId"));
+        assertThat(behandling.getHovedskjemaId(), equalTo("hovedSkjemaId"));
 
     }
 }

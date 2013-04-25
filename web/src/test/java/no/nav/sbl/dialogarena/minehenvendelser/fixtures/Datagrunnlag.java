@@ -19,12 +19,11 @@ public class Datagrunnlag extends ObjectPerRowFixture<FitBehandling> {
     @Override
     protected void perRow(Row<FitBehandling> row) throws Exception {
         logger.info("entered perRow for datagrunnlag. Row object info: " + row.expected.toString());
-        mockDataInteraction();
-        mockData.getBehandlingerResponse().getBehandlinger().add(row.expected.asBehandling());
+        mockDataInteraction(row.expected);
     }
 
-    private void mockDataInteraction() {
+    private void mockDataInteraction(FitBehandling fitBehandling) {
         logger.info("entered mockdatainteraction!");
-        logger.info("amount of behandlinger: " + mockData.getBehandlingerResponse().getBehandlinger().size());
+        mockData.addBehandlingToMockData(fitBehandling.asBehandling());
     }
 }
