@@ -27,7 +27,7 @@ public class BehandlingServiceDummy implements BehandlingService {
         return behandlinger;
     }
 
-    private Behandling createDummyBehandling(WSBehandlingsstatus status,String hovedskjemaKodeverkId, String[] dokumenterKodeverk, WSInnsendingsValg[] valg ) {
+    private Behandling createDummyBehandling(WSBehandlingsstatus status,String hovedskjemaKodeverkId, String[] dokumenterKodeverk, WSInnsendingsValg[] valg) {
         WSBrukerBehandling wsBrukerBehandling = createWsBehandlingMock();
         wsBrukerBehandling.withStatus(status);
         WSDokumentForventningOppsummeringer wsDokumentForventningOppsummeringer = new WSDokumentForventningOppsummeringer();
@@ -35,7 +35,7 @@ public class BehandlingServiceDummy implements BehandlingService {
         wsDokumentForventningOppsummeringer.getDokumentForventningOppsummering().add(
                 new WSDokumentForventningOppsummering().withKodeverkId(hovedskjemaKodeverkId).withHovedskjema(true).withInnsendingsValg(WSInnsendingsValg.LASTET_OPP)
         );
-        for(int i = 0 ;i < dokumenterKodeverk.length; i++ ){
+        for (int i = 0; i < dokumenterKodeverk.length; i++) {
             wsDokumentForventningOppsummeringer.getDokumentForventningOppsummering().add(
                     new WSDokumentForventningOppsummering().withInnsendingsValg(valg[i])
                     .withKodeverkId(dokumenterKodeverk[i]));
