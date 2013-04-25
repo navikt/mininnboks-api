@@ -14,14 +14,12 @@ public class ApplicationContext {
     @Configuration
     @Profile("test")
     @Import({ ConsumerContext.class, WsMockTestContext.class })
-    public static class ServiceTestContext {
-    }
+    public static class ServiceTestContext {}
 
     @Configuration
     @Profile("default")
     @Import(ConsumerContext.class)
-    public static class ServiceRealContext {
-    }
+    public static class ServiceProdContext {}
 
     @Configuration
     @Profile("stub")
