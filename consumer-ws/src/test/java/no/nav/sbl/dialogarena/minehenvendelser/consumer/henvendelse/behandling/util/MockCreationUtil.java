@@ -7,9 +7,6 @@ import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventni
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 import org.joda.time.DateTime;
 
-import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingType.DOKUMENT_BEHANDLING;
-import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbehandlingType.SOKNADSINNSENDING;
-
 public class MockCreationUtil {
 
     public static Dokumentforventning createMock(boolean isHovedskjema, WSInnsendingsValg innsendingsValg){
@@ -29,9 +26,7 @@ public class MockCreationUtil {
         DateTime sistEndret = new DateTime(2013, 01, 02, 01, 01);
         return new WSBrukerBehandling()
                 .withStatus(WSBehandlingsstatus.FERDIG)
-                .withBrukerBehandlingType(DOKUMENT_BEHANDLING)
                 .withBehandlingsId("behandlingId")
-                .withDokumentbehandlingType(SOKNADSINNSENDING)
                 .withHovedskjemaId("hovedSkjemaId")
                 .withInnsendtDato(innsendtDato)
                 .withSistEndret(sistEndret);
