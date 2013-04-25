@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
-import no.nav.modig.core.exception.ApplicationException;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import org.apache.commons.collections15.Transformer;
 
@@ -32,22 +31,10 @@ public final class Dokumentforventning implements Serializable {
             dokumentforventning.friTekst = optional(wsDokumentForventningOppsummering.getFriTekst()).map(stringValueTransformer()).getOrElse(null);
             dokumentforventning.kodeverkId = wsDokumentForventningOppsummering.getKodeverkId();
             dokumentforventning.hovedskjema =  wsDokumentForventningOppsummering.isHovedskjema();
-            assignToInnsendingsvalg(dokumentforventning, wsDokumentForventningOppsummering);
-
+            dokumentforventning.innsendingsvalg = Innsendingsvalg.valueOf(wsDokumentForventningOppsummering.getInnsendingsValg().value());
             return dokumentforventning;
         }
 
-        private void assignToInnsendingsvalg(Dokumentforventning dokumentforventning, WSDokumentForventningOppsummering wsDokumentForventning) {
-            switch (wsDokumentForventning.getInnsendingsValg()) {
-                case LASTET_OPP: dokumentforventning.innsendingsvalg = Innsendingsvalg.LASTET_OPP; break;
-                case SENDES_IKKE: dokumentforventning.innsendingsvalg = Innsendingsvalg.SENDES_IKKE; break;
-                case IKKE_VALGT: dokumentforventning.innsendingsvalg = Innsendingsvalg.IKKE_VALGT; break;
-                case SEND_I_POST: dokumentforventning.innsendingsvalg = Innsendingsvalg.SEND_I_POST; break;
-                case SEND_SENERE: dokumentforventning.innsendingsvalg = Innsendingsvalg.SEND_SENERE; break;
-                case SENDES_AV_ANDRE: dokumentforventning.innsendingsvalg = Innsendingsvalg.SENDES_AV_ANDRE; break;
-                default: throw new ApplicationException("Ukjent verdi for innsendingsvalg");
-            }
-        }
     };
 
     public static Dokumentforventning transformToDokumentforventing(WSDokumentForventningOppsummering wsDokumentForventningOppsummering) {

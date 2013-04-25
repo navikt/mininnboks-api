@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 import no.nav.modig.content.ValueRetriever;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

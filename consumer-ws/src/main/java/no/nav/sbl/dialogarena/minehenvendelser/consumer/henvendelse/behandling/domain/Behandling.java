@@ -19,23 +19,19 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOpps
  */
 public final class Behandling implements Serializable {
 
-    private String behandlingsId;
-
-    private String hovedskjemaId;
-
     public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG};
 
+    private String behandlingsId;
+    private String hovedskjemaId;
     private DateTime sistEndret;
-
     private DateTime innsendtDato;
-
 	private Behandlingsstatus status;
-
     private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
 
     private Behandling() {}
 
     private static Transformer<WSBrukerBehandling, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandling, Behandling>() {
+
         @Override
         public Behandling transform(WSBrukerBehandling wsBrukerBehandling) {
             Behandling behandling = new Behandling();
@@ -46,7 +42,6 @@ public final class Behandling implements Serializable {
             behandling.innsendtDato = optional(wsBrukerBehandling.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
             return behandling;
         }
-
 
     };
 

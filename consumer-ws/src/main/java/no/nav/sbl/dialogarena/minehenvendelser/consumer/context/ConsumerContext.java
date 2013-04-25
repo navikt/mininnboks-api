@@ -21,11 +21,9 @@ public class ConsumerContext {
     @Bean
     public HenvendelsesBehandlingPortType jaxWsClientFactoryBean(){
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
-
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
         proxyFactoryBean.setAddress("DUMMY_ENDPOINT");
         return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
-
     }
 
 }

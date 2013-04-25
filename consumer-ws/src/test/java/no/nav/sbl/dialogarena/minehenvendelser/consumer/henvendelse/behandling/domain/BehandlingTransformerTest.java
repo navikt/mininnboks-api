@@ -8,10 +8,10 @@ import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBehandling
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class BrukerBehandlingTransformerTest {
+public class BehandlingTransformerTest {
 
     @Test
-    public void shouldTransformCorrectly() {
+    public void shouldTransformCorrectlyWithBasicFields() {
         DateTime innsendtDato = new DateTime(2013, 01, 01, 01, 01);
         DateTime sistEndret = new DateTime(2013, 01, 02, 01, 01);
         WSBrukerBehandling wsBrukerBehandling = new WSBrukerBehandling()
@@ -28,6 +28,9 @@ public class BrukerBehandlingTransformerTest {
         assertThat(behandling.getHovedskjemaId(), equalTo("hovedSkjemaId"));
         assertThat(behandling.getInnsendtDato(), equalTo(innsendtDato));
         assertThat(behandling.getSistEndret(), equalTo(sistEndret));
-
     }
+
+//    @Test
+//    public void shouldTransformCorrectlyWithListOfForventninger() {}
+
 }

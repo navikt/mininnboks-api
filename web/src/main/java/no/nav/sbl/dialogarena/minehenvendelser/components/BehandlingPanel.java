@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriever;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 import org.apache.wicket.markup.html.basic.Label;

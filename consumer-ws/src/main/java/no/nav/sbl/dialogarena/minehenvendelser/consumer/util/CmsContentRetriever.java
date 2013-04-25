@@ -1,7 +1,6 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.util;
 
 import no.nav.modig.content.ValueRetriever;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.ParagraphRemover;
 
 public class CmsContentRetriever {
 

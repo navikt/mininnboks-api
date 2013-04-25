@@ -5,6 +5,7 @@ import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 import org.junit.Before;
 import org.junit.Test;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.Innsendingsvalg.LASTET_OPP;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
@@ -15,14 +16,14 @@ public class DokumentforventningTest {
 
     @Before
     public void setup() {
-        WSDokumentForventningOppsummering wsDokumentForventning = new WSDokumentForventningOppsummering()
+        WSDokumentForventningOppsummering wsDokumentForventningOppsummering = new WSDokumentForventningOppsummering()
                 .withInnsendingsValg(WSInnsendingsValg.LASTET_OPP);
-        dokumentforventning = Dokumentforventning.transformToDokumentforventing(wsDokumentForventning);
+        dokumentforventning = Dokumentforventning.transformToDokumentforventing(wsDokumentForventningOppsummering);
     }
 
     @Test
     public void testIsLastetOpp() throws Exception {
-        setInternalState(dokumentforventning, "innsendingsvalg", Dokumentforventning.Innsendingsvalg.LASTET_OPP);
+        setInternalState(dokumentforventning, "innsendingsvalg", LASTET_OPP);
         assertThat(dokumentforventning.isLastetOpp(), is(true));
     }
 

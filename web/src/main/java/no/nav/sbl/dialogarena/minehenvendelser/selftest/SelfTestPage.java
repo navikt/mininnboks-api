@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.selftest;
 
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.CmsContentRetriever;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
