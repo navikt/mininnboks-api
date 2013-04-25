@@ -91,6 +91,18 @@
         <plugins>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
@@ -118,33 +130,11 @@
                         </goals>
                         <configuration>
                             <usedDependencies>
-                                <!--<usedDependency>no.nav.modig:modig-security-ws</usedDependency>-->
                             </usedDependencies>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
-            <!--<plugin>-->
-                <!--<artifactId>maven-resources-plugin</artifactId>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>copy-bindings-file</id>-->
-                        <!--<phase>initialize</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>copy-resources</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<resources>-->
-                                <!--<resource>-->
-                                    <!--<directory>src/main/wsdl</directory>-->
-                                <!--</resource>-->
-                            <!--</resources>-->
-                            <!--<outputDirectory>${wsdl.directory}</outputDirectory>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
 
             <plugin>
                 <groupId>org.apache.cxf</groupId>
@@ -160,9 +150,6 @@
                             <defaultOptions>
                                 <extraargs>
                                     <extraarg>-xjc-Xfluent-api</extraarg>
-                                    <!--<extraarg>-xjc-XhashCode</extraarg>-->
-                                    <!--<extraarg>-xjc-Xequals</extraarg>-->
-                                    <!--<extraart>-xjc-mark-generated</extraart>-->
                                 </extraargs>
                             </defaultOptions>
                             <wsdlOptions>

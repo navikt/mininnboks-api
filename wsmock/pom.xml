@@ -38,6 +38,13 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>minehenvendelser-consumer-ws</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

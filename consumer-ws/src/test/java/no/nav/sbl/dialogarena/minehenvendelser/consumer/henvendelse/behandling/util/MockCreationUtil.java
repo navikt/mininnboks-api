@@ -16,10 +16,6 @@ public class MockCreationUtil {
                 .withInnsendingsValg(innsendingsValg);
         Dokumentforventning dokumentforventning = Dokumentforventning.transformToDokumentforventing(wsDokumentForventning);
         return dokumentforventning;
-//        Dokumentforventning dokumentforventning = mock(Dokumentforventning.class);
-//        when(dokumentforventning.isHovedskjema()).thenReturn(isHovedskjema);
-//        when(dokumentforventning.isLastetOpp()).thenReturn(isLastetOpp);
-//        return dokumentforventning;
     }
 
     public static WSBrukerBehandling createWsBehandlingMock() {

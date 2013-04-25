@@ -23,6 +23,9 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus.FERDIG;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus.UNDER_ARBEID;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.STATUS;
 
 public class HomePage extends BasePage {
 
@@ -37,8 +40,8 @@ public class HomePage extends BasePage {
             }
         };
         add(
-                createUnderArbeidView(new BehandlingerLDM(model, Behandlingsstatus.UNDER_ARBEID)),
-                createFerdigView(new BehandlingerLDM(model, Behandlingsstatus.FERDIG)));
+                createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
+                createFerdigView(new BehandlingerLDM(model, FERDIG)));
     }
 
     private String hentAktorId() {
@@ -82,11 +85,11 @@ public class HomePage extends BasePage {
 
         @Override
         protected List<Behandling> load() {
-            List<Behandling> behandlinger = new ArrayList<>(on(parentModel.getObject()).filter(where(Behandling.STATUS, equalTo(status))).collect());
+            List<Behandling> behandlinger = new ArrayList<>(on(parentModel.getObject()).filter(where(STATUS, equalTo(status))).collect());
             Collections.sort(behandlinger, new Comparator<Behandling>() {
                 @Override
                 public int compare(Behandling o1, Behandling o2) {
-                    if (status == Behandlingsstatus.UNDER_ARBEID) {
+                    if (status == UNDER_ARBEID) {
                         return o1.getSistEndret().compareTo(o2.getSistEndret());
                     }
                     return o1.getInnsendtDato().compareTo(o2.getInnsendtDato());
