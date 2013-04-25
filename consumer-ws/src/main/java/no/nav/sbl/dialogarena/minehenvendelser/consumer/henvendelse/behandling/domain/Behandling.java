@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
@@ -40,6 +41,9 @@ public final class Behandling implements Serializable {
             behandling.status = Behandlingsstatus.valueOf(wsBrukerBehandling.getStatus().name());
             behandling.sistEndret = wsBrukerBehandling.getSistEndret();
             behandling.innsendtDato = optional(wsBrukerBehandling.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
+            for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering :  wsBrukerBehandling.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
+               behandling.dokumentforventninger.add(Dokumentforventning.transformToDokumentforventing(wsDokumentForventningOppsummering));
+            }
             return behandling;
         }
 
