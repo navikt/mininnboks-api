@@ -1,8 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
-import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 import org.webbitserver.HttpControl;
@@ -11,8 +9,6 @@ import org.webbitserver.HttpRequest;
 import org.webbitserver.HttpResponse;
 
 import java.nio.charset.Charset;
-
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWsBehandlingMock;
 
 public class HentBehandlingWebServiceMock implements HttpHandler {
 

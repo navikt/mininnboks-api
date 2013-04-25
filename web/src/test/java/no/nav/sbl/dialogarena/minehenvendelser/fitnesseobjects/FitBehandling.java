@@ -1,26 +1,19 @@
 package no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.*;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBehandlingsstatus;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static org.codehaus.plexus.util.StringUtils.isNotEmpty;
-import static org.codehaus.plexus.util.StringUtils.repeat;
-import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
 public class FitBehandling {
-
-    private static final Logger logger = LoggerFactory.getLogger(FitBehandling.class);
 
     private static final String EMPTY_PLACEHOLDER = "blank";
 
