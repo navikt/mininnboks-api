@@ -2,6 +2,8 @@ package no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.*;
+import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
@@ -13,10 +15,8 @@ import java.util.List;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static org.codehaus.plexus.util.StringUtils.isNotEmpty;
+import static org.codehaus.plexus.util.StringUtils.repeat;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
-
-//import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.BrukerbehandlingType.valueOf;
-//import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.DokumentbehandlingType;
 
 public class FitBehandling {
 
@@ -38,42 +38,39 @@ public class FitBehandling {
     public List<Boolean> hovedskjema;
     public List<String> egendefinertTittel;
 
-    public Behandling asBehandling() {
-        Behandling behandling = transformToBehandling(null);
-        populateSimpleFields(behandling);
-        populateFieldsFromLists(behandling);
-        logger.info("Behandling created from fitnesse object, toString as follows: " + behandling.toString());
+    public HentBrukerBehandlingerResponse asHentBrukerBehandlingResponse(){
+        return new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createNewBrukerBehandling());
+    }
+
+    private WSBrukerBehandling createNewBrukerBehandling() {
+        WSBrukerBehandling behandling = new WSBrukerBehandling();
+        behandling.withBehandlingsId(behandlingsId);
+        behandling.withStatus(WSBehandlingsstatus.fromValue(status));
+        if (isNotEmpty(sistEndretDato)) {
+            behandling.withSistEndret(new DateTime(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(sistEndretDato)));
+        }
+        if (isNotEmpty(innsendtDato)) {
+            behandling.withInnsendtDato(new DateTime(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(innsendtDato)));
+        }
+        behandling.withDokumentForventningOppsummeringer(createNewDokumentForventninger());
         return behandling;
     }
 
-    private void populateSimpleFields(Behandling behandling) {
-        setInternalState(behandling, "behandlingsId", behandlingsId);
-//        setInternalState(behandling, "behandlingstype", valueOf(brukerbehandlingType));
-//        setInternalState(behandling, "dokumentbehandlingType", DokumentbehandlingType.valueOf(dokumentbehandlingType));
-        setInternalState(behandling, "status", Behandlingsstatus.valueOf(status));
-        if (isNotEmpty(sistEndretDato)) {
-            setInternalState(behandling, "sistEndret", new DateTime(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(sistEndretDato)));
-        }
-        if (isNotEmpty(innsendtDato)) {
-            setInternalState(behandling, "innsendtDato", new DateTime(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(innsendtDato)));
-        }
-    }
-
-    private void populateFieldsFromLists(Behandling behandling) {
-        List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
+    private WSDokumentForventningOppsummeringer createNewDokumentForventninger() {
+        WSDokumentForventningOppsummeringer oppsummeringer = new WSDokumentForventningOppsummeringer();
         for (int i = 0; i < kodeverkId.size(); i++) {
-            dokumentforventninger.add(createNewDokumentForventningBasedOnLists(i));
+            oppsummeringer.getDokumentForventningOppsummering().add(createNewWSDokumentForventningOppsunmmeringBasedOnLists(i));
         }
-        setInternalState(behandling, "dokumentforventninger", dokumentforventninger);
+        return oppsummeringer;
     }
 
-    private Dokumentforventning createNewDokumentForventningBasedOnLists(int indexOfLists) {
-        Dokumentforventning dokumentforventning = Dokumentforventning.transformToDokumentforventing(null);
-        setInternalState(dokumentforventning, "kodeverkId", kodeverkId.get(indexOfLists));
-        setInternalState(dokumentforventning, "innsendingsvalg", Dokumentforventning.Innsendingsvalg.valueOf(innsendingsvalg.get(indexOfLists)));
-        setInternalState(dokumentforventning, "hovedskjema", (hovedskjema.get(indexOfLists)));
+    private WSDokumentForventningOppsummering createNewWSDokumentForventningOppsunmmeringBasedOnLists(int indexOfLists) {
+        WSDokumentForventningOppsummering dokumentforventning = new WSDokumentForventningOppsummering();
+        dokumentforventning.withHovedskjema(hovedskjema.get(indexOfLists));
+        dokumentforventning.withInnsendingsValg(WSInnsendingsValg.fromValue(innsendingsvalg.get(indexOfLists)));
+        dokumentforventning.withKodeverkId(kodeverkId.get(indexOfLists));
         if (!egendefinertTittel.get(indexOfLists).equals(EMPTY_PLACEHOLDER)) {
-            setInternalState(dokumentforventning, "egendefinertTittel", egendefinertTittel.get(indexOfLists));
+            dokumentforventning.withFriTekst(egendefinertTittel.get(indexOfLists));
         }
         return dokumentforventning;
     }

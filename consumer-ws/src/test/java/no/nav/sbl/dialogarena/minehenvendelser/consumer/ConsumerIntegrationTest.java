@@ -27,12 +27,17 @@ import static org.junit.Assert.assertThat;
 public class ConsumerIntegrationTest {
 
     private WebServer server;
+
     @Inject
     private BehandlingService service;
     @Value("${henvendelser.ws.url}")
     private URL endpoint;
+
     @Inject
     private BehandlingResponseMarshaller marshaller;
+
+    @Inject
+    private MockData mockData;
 
     @Test
     public void shouldIntegrateWithHenvendelserViaWebService() {
@@ -44,7 +49,7 @@ public class ConsumerIntegrationTest {
     @Before
     public void startWebbit() throws ExecutionException, InterruptedException {
         server = WebServers.createWebServer(endpoint.getPort())
-                .add(endpoint.getPath(), new HentBehandlingWebServiceMock(marshaller));
+                .add(endpoint.getPath(), new HentBehandlingWebServiceMock(marshaller, mockData));
         server.start().get();
     }
 

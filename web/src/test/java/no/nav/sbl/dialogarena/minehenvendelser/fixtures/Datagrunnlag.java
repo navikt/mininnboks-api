@@ -2,7 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.fixtures;
 
 import no.nav.modig.test.fitnesse.fixture.ObjectPerRowFixture;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitBehandling;
-import no.nav.sbl.dialogarena.minehenvendelser.wsmock.MockData;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +24,6 @@ public class Datagrunnlag extends ObjectPerRowFixture<FitBehandling> {
 
     private void mockDataInteraction(FitBehandling fitBehandling) {
         logger.info("entered mockdatainteraction!");
-        mockData.addBehandlingToMockData(fitBehandling.asBehandling());
+        mockData.addResponse(fitBehandling.aktorId, fitBehandling.asHentBrukerBehandlingResponse());
     }
 }

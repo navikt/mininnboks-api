@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.BehandlingResponseMarshaller;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,12 @@ public class ConsumerTestContext {
     @Bean
     public BehandlingResponseMarshaller behandlingResponseMarshaller(){
         return new BehandlingResponseMarshaller(jaxb2Marshaller());
+    }
+
+    @Bean
+    public MockData mockData() {
+        MockData mockData = new MockData();
+        return mockData;
     }
 
 

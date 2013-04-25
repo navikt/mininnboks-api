@@ -8,7 +8,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.config.ApplicationContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitInnsendtBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitPaabegyntBehandling;
-import no.nav.sbl.dialogarena.minehenvendelser.wsmock.MockData;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ActiveProfiles;
@@ -29,7 +29,7 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
 
     public Fixture datagrunnlag() {
         logger.info("Setting up datagrunnlag.");
-        mockData.clearResponse();
+        mockData.clear();
         return new Datagrunnlag(mockData);
     }
 
