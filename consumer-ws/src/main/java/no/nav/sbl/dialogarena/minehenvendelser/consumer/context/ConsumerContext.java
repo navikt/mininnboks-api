@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ConsumerContext {
 
-    @Value("${henvendelser.ws.endpoint}")
+    @Value("${henvendelser.ws.url}")
     private String endpoint;
 
     @Bean

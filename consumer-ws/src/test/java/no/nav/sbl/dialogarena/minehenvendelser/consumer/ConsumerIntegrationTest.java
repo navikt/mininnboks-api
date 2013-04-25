@@ -29,7 +29,7 @@ public class ConsumerIntegrationTest {
     private WebServer server;
     @Inject
     private BehandlingService service;
-    @Value("${henvendelser.ws.endpoint}")
+    @Value("${henvendelser.ws.url}")
     private URL endpoint;
     @Inject
     private BehandlingResponseMarshaller marshaller;
