@@ -1,50 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>no.nav.sbl.dialogarena</groupId>
-        <artifactId>minehenvendelser</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>no.nav.sbl.dialogarena</groupId>
+		<artifactId>minehenvendelser</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
-    <groupId>no.nav.sbl.dialogarena</groupId>
-    <artifactId>minehenvendelser-config</artifactId>
-    <packaging>jar</packaging>
-    <name>${project.artifactId} metadata artifact</name>
+	<groupId>no.nav.sbl.dialogarena</groupId>
+	<artifactId>minehenvendelser-config</artifactId>
+	<packaging>jar</packaging>
+	<name>${project.artifactId} metadata artifact</name>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>no.nav.maven.plugins</groupId>
-                <artifactId>jboss-maven-plugin</artifactId>
-                <configuration>
-                    <apps>${project.parent.artifactId}:${project.version}</apps>
-                    <envConfigUrl>http://envconfig.adeo.no:8080/conf</envConfigUrl>
-                    <username>admin</username>
-                    <password>admin</password>
-                </configuration>
-            </plugin>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>no.nav.maven.plugins</groupId>
+				<artifactId>jboss-maven-plugin</artifactId>
+				<configuration>
+					<apps>${project.parent.artifactId}:${project.version}</apps>
+					<envConfigUrl>http://envconfig.adeo.no:8080/conf</envConfigUrl>
+					<username>admin</username>
+					<password>admin</password>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-content-maven-plugin</artifactId>
-                <version>0.0.2-SNAPSHOT</version>
-                <configuration>
-                    <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
-                    <propertiesFiler>
-                        <nb>innholdstekster_nb.properties</nb>
-                        <en>innholdstekster_en.properties</en>
-                    </propertiesFiler>
-                    <menyPunktPaths>
-                        <nb>/site/16/minehenvendelser/nb/tekster</nb>
-                        <en>/site/16/minehenvendelser/en/tekster</en>
-                    </menyPunktPaths>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+			<plugin>
+				<groupId>no.nav.modig</groupId>
+				<artifactId>modig-content-maven-plugin</artifactId>
+				<version>0.0.2-SNAPSHOT</version>
+				<configuration>
+					<propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
+					<propertiesFiler>
+						<nb>innholdstekster_nb.properties</nb>
+						<en>innholdstekster_en.properties</en>
+					</propertiesFiler>
+					<menyPunktPaths>
+						<nb>/site/16/minehenvendelser/nb/tekster</nb>
+						<en>/site/16/minehenvendelser/en/tekster</en>
+					</menyPunktPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
