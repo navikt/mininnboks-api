@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
 import no.nav.modig.core.exception.ApplicationException;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventning;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import org.apache.commons.collections15.Transformer;
 
 import java.io.Serializable;
@@ -24,20 +24,20 @@ public final class Dokumentforventning implements Serializable {
 
     private Dokumentforventning() { }
 
-    private static Transformer<WSDokumentForventning, Dokumentforventning> dokumentforventningTransformer = new Transformer<WSDokumentForventning, Dokumentforventning>() {
+    private static Transformer<WSDokumentForventningOppsummering, Dokumentforventning> dokumentforventningTransformer = new Transformer<WSDokumentForventningOppsummering, Dokumentforventning>() {
 
         @Override
-        public Dokumentforventning transform(WSDokumentForventning wsDokumentForventning) {
+        public Dokumentforventning transform(WSDokumentForventningOppsummering wsDokumentForventningOppsummering) {
             Dokumentforventning dokumentforventning = new Dokumentforventning();
-            dokumentforventning.friTekst = optional(wsDokumentForventning.getFriTekst()).map(stringValueTransformer()).getOrElse(null);
-            dokumentforventning.kodeverkId = wsDokumentForventning.getKodeverkId();
-            dokumentforventning.hovedskjema =  wsDokumentForventning.isHovedskjema();
-            assignToInnsendingsvalg(dokumentforventning, wsDokumentForventning);
+            dokumentforventning.friTekst = optional(wsDokumentForventningOppsummering.getFriTekst()).map(stringValueTransformer()).getOrElse(null);
+            dokumentforventning.kodeverkId = wsDokumentForventningOppsummering.getKodeverkId();
+            dokumentforventning.hovedskjema =  wsDokumentForventningOppsummering.isHovedskjema();
+            assignToInnsendingsvalg(dokumentforventning, wsDokumentForventningOppsummering);
 
             return dokumentforventning;
         }
 
-        private void assignToInnsendingsvalg(Dokumentforventning dokumentforventning, WSDokumentForventning wsDokumentForventning) {
+        private void assignToInnsendingsvalg(Dokumentforventning dokumentforventning, WSDokumentForventningOppsummering wsDokumentForventning) {
             switch (wsDokumentForventning.getInnsendingsValg()) {
                 case LASTET_OPP: dokumentforventning.innsendingsvalg = Innsendingsvalg.LASTET_OPP; break;
                 case SENDES_IKKE: dokumentforventning.innsendingsvalg = Innsendingsvalg.SENDES_IKKE; break;
@@ -50,8 +50,8 @@ public final class Dokumentforventning implements Serializable {
         }
     };
 
-    public static Dokumentforventning transformToDokumentforventing(WSDokumentForventning wsDokumentForventning) {
-        return dokumentforventningTransformer.transform(wsDokumentForventning);
+    public static Dokumentforventning transformToDokumentforventing(WSDokumentForventningOppsummering wsDokumentForventningOppsummering) {
+        return dokumentforventningTransformer.transform(wsDokumentForventningOppsummering);
     }
 
     public String getKodeverkId() {

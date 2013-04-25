@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventning;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class DokumentforventningTest {
 
     @Before
     public void setup() {
-        WSDokumentForventning wsDokumentForventning = new WSDokumentForventning()
+        WSDokumentForventningOppsummering wsDokumentForventning = new WSDokumentForventningOppsummering()
                 .withInnsendingsValg(WSInnsendingsValg.LASTET_OPP);
         dokumentforventning = Dokumentforventning.transformToDokumentforventing(wsDokumentForventning);
     }

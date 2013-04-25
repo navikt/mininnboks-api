@@ -3,14 +3,14 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBehandlingsstatus;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventning;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 import org.joda.time.DateTime;
 
 public class MockCreationUtil {
 
     public static Dokumentforventning createMock(boolean isHovedskjema, WSInnsendingsValg innsendingsValg){
-        WSDokumentForventning wsDokumentForventning = new WSDokumentForventning()
+        WSDokumentForventningOppsummering wsDokumentForventning = new WSDokumentForventningOppsummering()
                 .withHovedskjema(isHovedskjema)
                 .withInnsendingsValg(innsendingsValg);
         Dokumentforventning dokumentforventning = Dokumentforventning.transformToDokumentforventing(wsDokumentForventning);

@@ -21,7 +21,6 @@ public class BrukerBehandlingTransformerTest {
                 .withInnsendtDato(innsendtDato)
                 .withSistEndret(sistEndret);
 
-
         Behandling behandling = Behandling.transformToBehandling(wsBrukerBehandling);
 
         assertThat(behandling.getStatus().name(), equalTo(FERDIG.name()));
