@@ -31,7 +31,7 @@ public class ConsumerIntegrationTest {
     @Inject
     private BehandlingService service;
 
-    @Value("henvendelser.ws.endpoint")
+    @Value("henvendelser.ws.url")
     private URL endpoint;
 
     @Test
