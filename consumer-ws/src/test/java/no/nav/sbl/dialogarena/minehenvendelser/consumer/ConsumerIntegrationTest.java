@@ -5,10 +5,9 @@ import javax.inject.Inject;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import org.hamcrest.CoreMatchers;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,6 +20,13 @@ import org.webbitserver.WebServer;
 import org.webbitserver.WebServers;
 
 import java.net.URL;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ConsumerTestContext.class})
@@ -31,34 +37,28 @@ public class ConsumerIntegrationTest {
     @Inject
     private BehandlingService service;
 
-    @Value("henvendelser.ws.url")
+    @Value("${henvendelser.ws.endpoint}")
     private URL endpoint;
 
+    @Inject
+    private BehandlingResponseMarshaller marshaller;
+
     @Test
-    @Ignore
     public void shouldIntegrateWithHenvendelserViaWebService() {
-        service.hentBehandlinger("test");
+        List<Behandling> behandlingList = service.hentBehandlinger("test");
+        assertNotNull(behandlingList);
+        assertThat(behandlingList.size(), equalTo(1));
     }
 
-
     @Before
-    public void startWebbit(){
-
-        server = WebServers.createWebServer(41001)
-                .add(endpoint.getPath(), new HttpHandler() {
-                    @Override
-                    public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
-
-
-                    }
-                });
-
+    public void startWebbit() throws ExecutionException, InterruptedException {
+        server = WebServers.createWebServer(endpoint.getPort())
+                .add(endpoint.getPath(),new HentBehandlingWebServiceMock(marshaller )  );
+        server.start().get();
     }
 
     @After
     public void stopWebbit(){
         server.stop();
     }
-
-
 }
