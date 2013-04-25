@@ -30,4 +30,6 @@ public class ConsumerContext {
         return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
     }
 
+
+
 }

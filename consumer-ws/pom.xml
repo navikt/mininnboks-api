@@ -104,6 +104,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.webbitserver</groupId>
+            <artifactId>webbit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
