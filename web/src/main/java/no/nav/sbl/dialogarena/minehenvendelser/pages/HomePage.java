@@ -13,7 +13,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
-import org.apache.wicket.request.Request;
 import org.apache.wicket.util.string.StringValue;
 
 import javax.inject.Inject;
