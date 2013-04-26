@@ -51,11 +51,8 @@ public class HomePage extends BasePage {
     }
 
     private String hentAktorId() {
-        Request request = getRequest();
-        StringValue aktorId = request.getQueryParameters().getParameterValue("aktorId");
-        System.out.println("Aktor :: " + aktorId.toString());
+        StringValue aktorId = getRequest().getQueryParameters().getParameterValue("aktorId");
         return aktorId.toString();
-        //return "aktor";
     }
 
     private PropertyListView<Behandling> createFerdigView(final IModel<List<Behandling>> ferdig) {
