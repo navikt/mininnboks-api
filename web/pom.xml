@@ -245,6 +245,11 @@
 			<scope>test</scope>
 		</dependency>
 
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-util</artifactId>
+        </dependency>
+
 		<!-- Test dependency -->
 
 		<dependency>
