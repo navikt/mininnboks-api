@@ -1,17 +1,21 @@
 package no.nav.sbl.dialogarena.minehenvendelser.selftest;
 
-import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
+import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.AbstractWicketTest;
+
 import org.junit.Test;
 
-import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
+public class SelfTestPageTest extends AbstractWicketTest {
 
-public class SelfTestPageTest extends AbstractWicketTest<WicketApplication> {
+    @Override
+    protected void setup() {
+        mock(CmsContentRetriever.class);
+    }
 
     @Test
     public void shouldRenderSelfTestPage() {
-        wicketTester.goTo(SelfTestPage.class)
-                .should().containComponent(withId("serviceStatusTable"));
+        wicketTester.goTo(SelfTestPage.class).should().containComponent(withId("serviceStatusTable"));
     }
 
 }

@@ -19,6 +19,14 @@ public class MockData {
         responses.put("test", response);
     }
 
+    public MockData createDummyData() {
+        HentBrukerBehandlingerResponse response = new HentBrukerBehandlingerResponse();
+        WSBrukerBehandling behandling = createWsBehandlingMock();
+        response.withBrukerBehandlinger(behandling);
+        responses.put("test", response);
+        return this;
+    }
+
     public HentBrukerBehandlingerResponse getData(String aktorId){
         if(responses.containsKey(aktorId)){
             return responses.get(aktorId);

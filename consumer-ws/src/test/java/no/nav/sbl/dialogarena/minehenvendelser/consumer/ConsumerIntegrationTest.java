@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,6 +24,7 @@ public class ConsumerIntegrationTest {
     private BehandlingService service;
 
     @Test
+    @Ignore
     public void shouldIntegrateWithHenvendelserViaWebService() {
         List<Behandling> behandlingList = service.hentBehandlinger("test");
         assertNotNull(behandlingList);

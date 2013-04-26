@@ -1,29 +1,56 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.modig.wicket.test.FluentWicketTester;
-import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplicationContext;
-import org.apache.wicket.protocol.http.WebApplication;
+import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
+
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.spring.test.ApplicationContextMock;
 import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.BeforeClass;
+import org.mockito.Mockito;
+import org.springframework.context.ApplicationContext;
 
-import javax.inject.Inject;
-import java.util.Locale;
+public abstract class AbstractWicketTest {
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WicketApplicationContext.class)
-@ActiveProfiles("test")
-public abstract class AbstractWicketTest<T extends WebApplication> {
-
-    @Inject
-    protected FluentWicketTester<T> wicketTester;
+    protected ApplicationContextMock applicationContext;
+    protected FluentWicketTester<WicketApplication> wicketTester;
 
     @Before
     public void before() {
-        wicketTester.tester.getSession().setLocale(new Locale("NO"));
+        applicationContext = new ApplicationContextMock() {
+            @Override
+            public long getStartupDate() {
+                return System.currentTimeMillis();
+            }
+        };
+
+        WicketApplication wicketApplication = new WicketApplication() {
+            @Override
+            protected void setSpringComponentInjector() {
+                getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
+            }
+
+            @Override
+            public ApplicationContext getApplicationContext() {
+                return applicationContext;
+            }
+        };
+        wicketTester = new FluentWicketTester<WicketApplication>(wicketApplication);
+        setup();
     }
+
+    protected <T> T mock(Class<T> clazz) {
+        T mock = Mockito.mock(clazz);
+        applicationContext.putBean(mock);
+        return mock;
+    }
+
+    protected <T> T mock(String beanName, Class<T> clazz) {
+        T mock = Mockito.mock(clazz);
+        applicationContext.putBean(beanName, mock);
+        return mock;
+    }
+
+    protected abstract void setup();
 
 }

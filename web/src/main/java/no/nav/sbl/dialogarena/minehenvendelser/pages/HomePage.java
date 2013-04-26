@@ -49,7 +49,7 @@ public class HomePage extends BasePage {
     }
 
     private String hentAktorId() {
-        return "aktor";
+        return "test";
     }
 
     private PropertyListView<Behandling> createFerdigView(final IModel<List<Behandling>> ferdig) {

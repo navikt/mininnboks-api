@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.webbitserver.HttpControl;
 import org.webbitserver.HttpHandler;
 import org.webbitserver.HttpRequest;
@@ -15,10 +16,18 @@ public class HentBehandlingWebServiceMock implements HttpHandler {
     private final BehandlingResponseMarshaller marshaller;
     private final MockData mockData;
 
-    public HentBehandlingWebServiceMock(BehandlingResponseMarshaller marshaller, MockData mockData) {
+    public HentBehandlingWebServiceMock(MockData mockData) {
         this.mockData = mockData;
-        this.marshaller = marshaller;
+        this.marshaller = new BehandlingResponseMarshaller(createMarshaller());
+    }
 
+    private Jaxb2Marshaller createMarshaller() {
+        Jaxb2Marshaller jaxb2Marshaller = new Jaxb2Marshaller();
+        jaxb2Marshaller.setClassesToBeBound(
+                no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.ObjectFactory.class,
+                no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.ObjectFactory.class,
+                no.nav.sbl.dialogarena.minehenvendelser.consumer.soap.ObjectFactory.class);
+        return jaxb2Marshaller;
     }
 
     @Override

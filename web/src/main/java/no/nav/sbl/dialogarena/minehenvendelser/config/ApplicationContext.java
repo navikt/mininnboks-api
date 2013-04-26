@@ -1,29 +1,19 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerContext;
-import no.nav.sbl.dialogarena.minehenvendelser.wsmock.config.WsMockApplicationContext;
-import no.nav.sbl.dialogarena.minehenvendelser.wsmock.consumer.context.WsMockTestContext;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-@Import({ WebContext.class, PropertyPlaceholderConfiguration.class})
+@Import({ WebContext.class, ConsumerContext.class})
 public class ApplicationContext {
 
-    @Configuration
-    @Profile("test")
-    @Import({ ConsumerContext.class, WsMockTestContext.class })
-    public static class ServiceTestContext {}
-
-    @Configuration
-    @Profile("default")
-    @Import(ConsumerContext.class)
-    public static class ServiceProdContext {}
-
-    @Configuration
-    @Profile("stub")
-    @Import({ WsMockApplicationContext.class })
-    public static class ServiceStubContext {}
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
 }

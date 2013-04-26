@@ -84,4 +84,5 @@ public class WicketApplication extends WebApplication {
     public ApplicationContext getApplicationContext() {
         return applicationContext;
     }
+
 }
