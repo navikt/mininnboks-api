@@ -26,18 +26,10 @@ import static org.junit.Assert.assertThat;
 @ContextConfiguration(classes = {ConsumerTestContext.class})
 public class ConsumerIntegrationTest {
 
-    private WebServer server;
+    private int numTestStarted = 0;
 
     @Inject
     private BehandlingService service;
-    @Value("${henvendelser.ws.url}")
-    private URL endpoint;
-
-    @Inject
-    private BehandlingResponseMarshaller marshaller;
-
-    @Inject
-    private MockData mockData;
 
     @Test
     public void shouldIntegrateWithHenvendelserViaWebService() {
@@ -46,15 +38,10 @@ public class ConsumerIntegrationTest {
         assertThat(behandlingList.size(), equalTo(1));
     }
 
-    @Before
-    public void startWebbit() throws ExecutionException, InterruptedException {
-        server = WebServers.createWebServer(endpoint.getPort())
-                .add(endpoint.getPath(), new HentBehandlingWebServiceMock(marshaller, mockData));
-        server.start().get();
-    }
-
-    @After
-    public void stopWebbit() {
-        server.stop();
+    @Test
+    public void ukjentBrukerSkalGiTomListe() {
+        List<Behandling> behandlingList = service.hentBehandlinger("test1");
+        assertNotNull(behandlingList);
+        assertThat(behandlingList.size(), equalTo(0));
     }
 }

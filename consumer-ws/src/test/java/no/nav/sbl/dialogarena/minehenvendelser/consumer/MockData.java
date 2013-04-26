@@ -23,7 +23,11 @@ public class MockData {
         if(responses.containsKey(aktorId)){
             return responses.get(aktorId);
         }
-        return null;
+        return emptyResponse();
+    }
+
+    private HentBrukerBehandlingerResponse emptyResponse() {
+        return new HentBrukerBehandlingerResponse();
     }
 
     public void addResponse(String aktorId ,HentBrukerBehandlingerResponse response) {
