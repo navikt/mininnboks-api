@@ -3,10 +3,14 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
+import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.xml.namespace.QName;
 
 /**
  * Springkontekst for consumermodulen
@@ -23,13 +27,22 @@ public class ConsumerContext {
     }
 
     @Bean
-    public HenvendelsesBehandlingPortType jaxWsClientFactoryBean(){
+    public HenvendelsesBehandlingPortType jaxWsClientFactoryBean() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
+//        proxyFactoryBean.setWsdlURL("henvendelse/HenvendelsesBehandling.wsdl");
+        proxyFactoryBean.setServiceName(new QName("https://d26jbsl00007.test.local:8443/henvendelse/services/informasjon/v1/HenvendelsesBehandlingService/", "henvendelsesbehandlingservice"));
+        proxyFactoryBean.setEndpointName(new QName("https://d26jbsl00007.test.local:8443/henvendelse/services/informasjon/v1/HenvendelsesBehandlingService/", "henvendelsesbehandlingservice"));
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
         proxyFactoryBean.setAddress(endpoint);
-        return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
-    }
+        proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
+        proxyFactoryBean.getFeatures().add(new LoggingFeature());
 
+//        proxyFactoryBean.getOutInterceptors().add(new SecurityContextOutInterceptor());
+
+        HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
+        System.out.println("asdfg");
+        return henvendelsesBehandlingPortType;
+    }
 
 
 }
