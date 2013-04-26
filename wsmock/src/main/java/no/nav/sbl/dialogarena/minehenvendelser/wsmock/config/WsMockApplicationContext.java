@@ -24,6 +24,6 @@ public class WsMockApplicationContext {
     @Bean
     public WebServer mockSoapServer() {
         return WebServers.createWebServer(41001)
-                .add("/wsmock/behandlinger", new HentBehandlingWebServiceMock(marshaller, mockData));
+                .add("/wsmock/behandlinger", new HentBehandlingWebServiceMock(mockData));
     }
 }
