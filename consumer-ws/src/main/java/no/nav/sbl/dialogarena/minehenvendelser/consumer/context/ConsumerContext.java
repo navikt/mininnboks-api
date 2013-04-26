@@ -38,7 +38,6 @@ public class ConsumerContext {
     @Bean
     public HenvendelsesBehandlingPortType jaxWsClientFactoryBean() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
-//        proxyFactoryBean.setWsdlURL("henvendelse/HenvendelsesBehandling.wsdl");
         proxyFactoryBean.setServiceName(new QName("https://d26jbsl00007.test.local:8443/henvendelse/services/informasjon/v1/HenvendelsesBehandlingService/", "henvendelsesbehandlingservice"));
         proxyFactoryBean.setEndpointName(new QName("https://d26jbsl00007.test.local:8443/henvendelse/services/informasjon/v1/HenvendelsesBehandlingService/", "henvendelsesbehandlingservice"));
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
