@@ -24,7 +24,6 @@ public class ConsumerIntegrationTest {
     private BehandlingService service;
 
     @Test
-    @Ignore
     public void shouldIntegrateWithHenvendelserViaWebService() {
         List<Behandling> behandlingList = service.hentBehandlinger("test");
         assertNotNull(behandlingList);
