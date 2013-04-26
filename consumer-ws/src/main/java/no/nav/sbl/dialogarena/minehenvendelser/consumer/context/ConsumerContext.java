@@ -26,7 +26,7 @@ public class ConsumerContext {
     @Bean
     public static PropertyPlaceholderConfigurer placeholderConfigurer() {
         PropertyPlaceholderConfigurer placeholderConfigurer = new PropertyPlaceholderConfigurer();
-        placeholderConfigurer.setLocation(new ClassPathResource("environment-prod.properties"));
+        placeholderConfigurer.setLocation(new ClassPathResource("environment-test.properties"));
         return placeholderConfigurer;
     }
 
