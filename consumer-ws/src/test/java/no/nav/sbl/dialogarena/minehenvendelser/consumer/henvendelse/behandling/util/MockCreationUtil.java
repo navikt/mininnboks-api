@@ -19,7 +19,7 @@ public class MockCreationUtil {
     }
 
     public static WSBrukerBehandling createWsBehandlingMock() {
-        return createWsBehandlingMock(new DateTime(2013, 01, 01, 01, 01),new DateTime(2013, 01, 02, 01, 01), WSBehandlingsstatus.FERDIG )
+        return createWsBehandlingMock(new DateTime(2013, 01, 01, 01, 01), new DateTime(2013, 01, 02, 01, 01), WSBehandlingsstatus.FERDIG)
                 .withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer());
     }
 

@@ -4,7 +4,6 @@ import no.nav.sbl.dialogarena.common.jetty.Jetty;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HentBehandlingWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
-import org.joda.time.DateTime;
 import org.webbitserver.WebServer;
 import org.webbitserver.WebServers;
 
@@ -40,7 +39,7 @@ public final class StartJetty {
 
     public static MockData createMockData() {
         MockData mockdata = new MockData();
-        mockdata.addResponse("test",new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createUnderArbeidBehandling()));
+        mockdata.addResponse("test", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createUnderArbeidBehandling()));
         return mockdata;
     }
 
