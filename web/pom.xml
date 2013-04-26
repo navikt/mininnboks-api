@@ -111,6 +111,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <scope>test</scope>
@@ -309,6 +314,7 @@
                                 <usedDependency>org.springframework:spring-web</usedDependency>
                                 <usedDependency>org.springframework:spring-core</usedDependency>
                                 <usedDependency>no.nav.sbl.dialogarena:common-web</usedDependency>
+                                <usedDependency>org.apache.httpcomponents:httpcore</usedDependency>
                             </usedDependencies>
                         </configuration>
                     </execution>
