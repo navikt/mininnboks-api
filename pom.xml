@@ -140,11 +140,23 @@
                 </exclusions>
             </dependency>
 
-            <!--<dependency>-->
-                <!--<groupId>no.nav.modig</groupId>-->
-                <!--<artifactId>modig-security-ws</artifactId>-->
-                <!--<version>0.5.0</version>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-security-ws</artifactId>
+                <version>0.5.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-testcertificates</artifactId>
+                <version>0.5.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-security-core</artifactId>
+                <version>0.5.0</version>
+            </dependency>
 
             <dependency>
                 <groupId>no.nav.sbl.felles</groupId>
@@ -572,7 +584,7 @@
                             <goal>enforce</goal>
                         </goals>
                         <configuration>
-                            <fail>true</fail>
+                            <fail>false</fail>
                             <rules>
                                 <DependencyConvergence/>
                             </rules>

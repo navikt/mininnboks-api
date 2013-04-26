@@ -1,5 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
+import no.nav.modig.core.context.Principal;
+import no.nav.modig.core.context.SecurityContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
@@ -20,6 +22,7 @@ public class BehandlingsServicePort implements BehandlingService {
     private HenvendelsesBehandlingPortType service;
 
     public List<Behandling> hentBehandlinger(String aktoerId){
+        SecurityContext.getCurrent().setPrincipal(new Principal.Builder().userId("mann").authenticationLevel("4").consumerId("minehenvendelser").identType("eksternBruker").build());
         List<Behandling> behandlinger = new ArrayList<>();
         for (WSBrukerBehandling wsBrukerBehandling : service.hentBrukerBehandlinger(aktoerId)) {
             behandlinger.add(transformToBehandling(wsBrukerBehandling));
