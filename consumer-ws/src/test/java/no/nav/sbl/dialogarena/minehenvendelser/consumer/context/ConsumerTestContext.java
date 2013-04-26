@@ -32,7 +32,6 @@ public class ConsumerTestContext {
     @Bean
     public MockData mockData() {
         MockData mockData = new MockData();
-        mockData.createDummyData();
         return mockData;
     }
 

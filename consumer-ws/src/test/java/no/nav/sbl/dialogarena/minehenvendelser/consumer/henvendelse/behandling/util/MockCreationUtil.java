@@ -19,14 +19,7 @@ public class MockCreationUtil {
     }
 
     public static WSBrukerBehandling createWsBehandlingMock() {
-        DateTime innsendtDato = new DateTime(2013, 01, 01, 01, 01);
-        DateTime sistEndret = new DateTime(2013, 01, 02, 01, 01);
-        return new WSBrukerBehandling()
-                .withStatus(WSBehandlingsstatus.FERDIG)
-                .withBehandlingsId("behandlingId")
-                .withHovedskjemaId("hovedSkjemaId")
-                .withInnsendtDato(innsendtDato)
-                .withSistEndret(sistEndret)
+        return createWsBehandlingMock(new DateTime(2013, 01, 01, 01, 01),new DateTime(2013, 01, 02, 01, 01), WSBehandlingsstatus.FERDIG )
                 .withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer());
     }
 

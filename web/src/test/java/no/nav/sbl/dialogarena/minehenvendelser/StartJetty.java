@@ -4,6 +4,7 @@ import no.nav.sbl.dialogarena.common.jetty.Jetty;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HentBehandlingWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
+import org.joda.time.DateTime;
 import org.webbitserver.WebServer;
 import org.webbitserver.WebServers;
 
@@ -30,20 +31,17 @@ public final class StartJetty {
         Properties properties = SystemProperties.load("/environment-test.properties");
         URL url = new URL((String) properties.get("henvendelser.ws.url"));
 
-        MockData mockData = new MockData();
-
-
-        mockData.addResponse("test", createMockData());
-
-        WebServer server = WebServers.createWebServer(url.getPort()).add(url.getPath(), new HentBehandlingWebServiceMock(mockData));
+        WebServer server = WebServers.createWebServer(url.getPort()).add(url.getPath(), new HentBehandlingWebServiceMock(createMockData()));
         server.start().get();
 
         Jetty jetty = usingWar(WEBAPP_SOURCE).at("minehenvendelser").port(PORT).buildJetty();
         jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));
     }
 
-    public static HentBrukerBehandlingerResponse createMockData() {
-        return new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createUnderArbeidBehandling());
+    public static MockData createMockData() {
+        MockData mockdata = new MockData();
+        mockdata.addResponse("test",new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createUnderArbeidBehandling()));
+        return mockdata;
     }
 
 }
