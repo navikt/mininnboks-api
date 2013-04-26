@@ -6,7 +6,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.spring.test.ApplicationContextMock;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
