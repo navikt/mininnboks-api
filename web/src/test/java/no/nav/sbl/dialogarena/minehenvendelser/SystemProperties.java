@@ -5,15 +5,16 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
+
 public final class SystemProperties {
 
     private SystemProperties() {
     }
 
+    // CHECKSTYLE:OFF
     public static Properties load(String resourcePath) throws IOException {
         Properties properties = new Properties();
-        Class<? extends Properties> propertiesClass = properties.getClass();
-        try (InputStream inputStream =  propertiesClass.getResourceAsStream(resourcePath)) {
+        try (InputStream inputStream =  Properties.class.getResourceAsStream(resourcePath)) {
             properties.load(inputStream);
             inputStream.close();
         } catch (IOException e) {
