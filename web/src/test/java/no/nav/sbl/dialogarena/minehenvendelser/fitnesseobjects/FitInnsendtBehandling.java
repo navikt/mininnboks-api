@@ -5,9 +5,9 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.d
 public class FitInnsendtBehandling {
 
     public String behandlingsId;
-    public String brukerbehandlingstype;
-    public String dokumentbehandlingstype;
-    public String antallvedlegg;
+    public String brukerBehandlingstype;
+    public String dokumentBehandlingstype;
+    public String antallVedlegg;
     public String navnPaaBehandling;
     public String dato;
     public String innsendteDokumenter;
@@ -17,7 +17,19 @@ public class FitInnsendtBehandling {
 
     public FitInnsendtBehandling(Behandling behandling) {
         behandlingsId = behandling.getBehandlingsId();
+        antallVedlegg = new Integer(behandling.fetchAlleDokumenter().size()).toString();
+        navnPaaBehandling = behandling.getTittel();
+        dato = behandling.getInnsendtDato().toString();
+
+
         //TODO
     }
 
+    public FitInnsendtBehandling(String antallVedlegg, String innsendtDato, String tittel, String innsendte, String manglende) {
+        this.antallVedlegg = antallVedlegg;
+        this.dato = innsendtDato;
+        this.navnPaaBehandling =  tittel;
+        this.innsendteDokumenter = innsendte;
+        this.manglendeDokumenter = manglende;
+    }
 }

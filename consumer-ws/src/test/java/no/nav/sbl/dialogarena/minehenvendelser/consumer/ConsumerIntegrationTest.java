@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ConsumerTestContext.class})
+@ContextConfiguration(classes = {ConsumerTestContext.class, ConsumerContext.class})
 public class ConsumerIntegrationTest {
 
     @Inject

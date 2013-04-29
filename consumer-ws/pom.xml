@@ -190,6 +190,7 @@
                         </goals>
                         <configuration>
                             <usedDependencies>
+                                <usedDependency>no.nav.modig:modig-security-ws</usedDependency>
                             </usedDependencies>
                         </configuration>
                     </execution>

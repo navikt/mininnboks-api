@@ -31,15 +31,14 @@ public class ConsumerTestContext {
         return placeholderConfigurer;
     }
 
-    @Bean
-    public BehandlingService behandlingService() {
-        return new BehandlingsServicePort();
-    }
+//    @Bean
+//    public BehandlingService behandlingService() {
+//        return new BehandlingsServicePort();
+//    }
 
     @Bean
     public MockData mockData() {
-        MockData mockData = new MockData();
-        return mockData;
+        return new MockData();
     }
 
     @Bean

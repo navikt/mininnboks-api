@@ -4,12 +4,17 @@ import no.nav.modig.test.fitnesse.run.FitnesseTestRunner;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
+import java.util.Properties;
+
 import static org.kohsuke.args4j.ExampleMode.ALL;
 
 public final class FitNesseMain {
 
-    @SuppressWarnings({ "PMD.SystemPrintln" })
-    public static void main(String ... args) throws Exception {
+    private FitNesseMain() {
+    }
+
+    @SuppressWarnings({"PMD.SystemPrintln"})
+    public static void main(String... args) throws Exception {
         FitnesseTestRunner fitnesse = new FitnesseTestRunner();
         CmdLineParser parser = new CmdLineParser(fitnesse);
         try {
@@ -23,7 +28,5 @@ public final class FitNesseMain {
         }
         fitnesse.start();
     }
-
-    private FitNesseMain() { }
 
 }

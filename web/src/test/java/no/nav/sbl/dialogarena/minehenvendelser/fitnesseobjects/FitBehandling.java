@@ -28,14 +28,18 @@ public class FitBehandling {
 
     public List<String> kodeverkId;
     public List<String> innsendingsvalg;
-    public List<Boolean> hovedskjema;
+    public List<String> hovedskjema;
     public List<String> egendefinertTittel;
 
     public HentBrukerBehandlingerResponse asHentBrukerBehandlingResponse(){
-        return new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createNewBrukerBehandling());
+        return new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createBrukerBehandling());
     }
 
-    private WSBrukerBehandling createNewBrukerBehandling() {
+    public WSBrukerBehandling asBrukerBehandling(){
+        return createBrukerBehandling();
+    }
+
+    private WSBrukerBehandling createBrukerBehandling() {
         WSBrukerBehandling behandling = new WSBrukerBehandling();
         behandling.withBehandlingsId(behandlingsId);
         behandling.withStatus(WSBehandlingsstatus.fromValue(status));
@@ -59,7 +63,7 @@ public class FitBehandling {
 
     private WSDokumentForventningOppsummering createNewWSDokumentForventningOppsunmmeringBasedOnLists(int indexOfLists) {
         WSDokumentForventningOppsummering dokumentforventning = new WSDokumentForventningOppsummering();
-        dokumentforventning.withHovedskjema(hovedskjema.get(indexOfLists));
+        dokumentforventning.withHovedskjema(hovedskjema.get(indexOfLists).equals("JA") ? true : false);
         dokumentforventning.withInnsendingsValg(WSInnsendingsValg.fromValue(innsendingsvalg.get(indexOfLists)));
         dokumentforventning.withKodeverkId(kodeverkId.get(indexOfLists));
         if (!egendefinertTittel.get(indexOfLists).equals(EMPTY_PLACEHOLDER)) {

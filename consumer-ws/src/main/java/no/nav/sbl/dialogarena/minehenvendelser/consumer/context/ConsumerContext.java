@@ -37,7 +37,7 @@ public class ConsumerContext {
         proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
         proxyFactoryBean.getFeatures().add(new LoggingFeature());
 
-        proxyFactoryBean.getOutInterceptors().add(new SecurityContextOutInterceptor());
+        //proxyFactoryBean.getOutInterceptors().add(new SecurityContextOutInterceptor());
 
         HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
         return henvendelsesBehandlingPortType;

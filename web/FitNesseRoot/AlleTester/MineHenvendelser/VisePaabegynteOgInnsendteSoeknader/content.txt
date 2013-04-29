@@ -8,7 +8,7 @@
 *!
 !| datagrunnlag |
 | Aktør Id | Behandlings Id | Brukerbehandlingtype | dokumentbehandlingtype | Status | Hovedkravskjema ID | Sist endret dato | Innsendt Dato | Kodeverk ID | Innsendingsvalg | Hovedskjema | Egendefinert Tittel |
-| ***REMOVED*** | DA01-000000001 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | 2006-08-19T19:27:14+01:00 | kodeForDagpenger,kodeForPermitteringsvarsel,kodeForArbeidsavtale,kodeForEgetVedlegg | LASTET_OPP,LASTET_OPP, LASTET_OPP, SENDES_IKKE | JA, NEI, NEI, NEI | blank,blank,blank,Egendef tittel på 25 tegn |
+| ***REMOVED*** | DA01-000000001 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | 2006-08-19T19:27:14+00:00 | kodeForDagpenger,kodeForPermitteringsvarsel,kodeForArbeidsavtale,kodeForEgetVedlegg | LASTET_OPP,LASTET_OPP, LASTET_OPP, SENDES_IKKE | JA, NEI, NEI, NEI | blank,blank,blank,Egendef tittel på 25 tegn |
 | ***REMOVED*** | DA01-000000002 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger , kodeForPermitteringsvarsel | LASTET_OPP, SENDES_IKKE | JA, NEI | blank,blank |
 | ***REMOVED*** | DA01-000000003 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2008-09-19T01:18:33+01:00 | 2008-09-19T01:18:33+01:00 | kodeForDagpenger,kodeForEgetVedlegg | LASTET_OPP, LASTET_OPP | JA, NEI | blank,Oppsigelse |
 | ***REMOVED*** | DA01-000000004 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | UNDER_ARBEID | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | | kodeForDagpenger, kodeForPermitteringsvarsel | LASTET_OPP, LASTET_OPP | JA, NEI | blank,blank |
@@ -29,8 +29,15 @@
 Bruker har 1 innsendt Dokumentinnsendig. 3/4 dokumenter er innsendt
 
 !| Innsendt | ***REMOVED*** |
+| Antall vedlegg | Navn paa behandling | Dato | Innsendte dokumenter | Manglende dokumenter |
+| 2 vedlegg | Søknad om dagpenger | Sendt 19. august 2006, kl 21:27 | Permitteringsvarsel, Arbeidsavtale | Egendef tittel på 25 tegn |
+
+
+Bruker har 1 innsendt Dokumentinnsendig. 3/4 dokumenter er innsendt
+
+!| Innsendt | ***REMOVED*** |
 | Behandlings Id | BrukerBehandlingstype | dokumentBehandlingstype | Antall vedlegg | Navn paa behandling | Dato | Innsendte dokumenter | Manglende dokumenter |
-| DA01-000000001 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 3 vedlegg | Søknad om dagpenger | 19. august 2006, 21:27 | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Egendef tittel på 25 tegn |
+| DA01-000000001 |DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 3 vedlegg | Søknad om dagpenger | 19. august 2006, 21:27 | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Egendef tittel på 25 tegn |
 
 Bruker har 2 innsendte
 

@@ -24,6 +24,6 @@ public class Datagrunnlag extends ObjectPerRowFixture<FitBehandling> {
 
     private void mockDataInteraction(FitBehandling fitBehandling) {
         logger.info("entered mockdatainteraction!");
-        mockData.addResponse(fitBehandling.aktorId, fitBehandling.asHentBrukerBehandlingResponse());
+        mockData.addBehandlingToAktor(fitBehandling.aktorId, fitBehandling.asBrukerBehandling());
     }
 }
