@@ -11,11 +11,14 @@ public final class SystemProperties {
 
     public static Properties load(String resourcePath) throws IOException {
         Properties properties = new Properties();
-        InputStream inputStream = properties.getClass().getResourceAsStream(resourcePath);
-        properties.load(inputStream);
-
+        try (InputStream inputStream = properties.getClass().getResourceAsStream(resourcePath)) {
+            properties.load(inputStream);
+            inputStream.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-           System.setProperty((String) entry.getKey(), (String) entry.getValue());
+            System.setProperty((String) entry.getKey(), (String) entry.getValue());
         }
         return properties;
     }

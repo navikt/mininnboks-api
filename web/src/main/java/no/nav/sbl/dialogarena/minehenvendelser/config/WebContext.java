@@ -24,10 +24,7 @@ public class WebContext {
     @Value("${minehenvendelser.cms.url}")
     private String cmsBaseUrl;
 
-    @Bean
-    public WicketApplication minehenvendelserApplication() {
-        return new WicketApplication();
-    }
+
 
     @Bean
     public ValueRetriever siteContentRetriever() throws URISyntaxException {

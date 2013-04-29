@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
@@ -20,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ConsumerTestContext.class, ConsumerContext.class})
+@ContextConfiguration(classes = {ConsumerTestContext.class})
 public class ConsumerIntegrationTest {
 
     @Inject
@@ -30,8 +29,8 @@ public class ConsumerIntegrationTest {
 
     @Test
     public void shouldIntegrateWithHenvendelserViaWebService() {
-        mockdata.addResponse("tester", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling()));
-        List<Behandling> behandlingList = service.hentBehandlinger("tester");
+        mockdata.addResponse("svein", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling()));
+        List<Behandling> behandlingList = service.hentBehandlinger("svein");
         assertNotNull(behandlingList);
         assertThat(behandlingList.size(), equalTo(1));
     }

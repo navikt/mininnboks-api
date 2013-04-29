@@ -57,6 +57,14 @@
 			<version>${project.version}</version>
 		</dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>minehenvendelser-consumer-ws</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-core</artifactId>
@@ -101,12 +109,6 @@
 			<groupId>no.nav.modig</groupId>
 			<artifactId>modig-content</artifactId>
 		</dependency>
-
-        <dependency>
-            <groupId>no.nav.modig</groupId>
-            <artifactId>modig-testcertificates</artifactId>
-            <scope>runtime</scope>
-        </dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -191,11 +193,6 @@
 
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 		</dependency>
 
@@ -234,6 +231,26 @@
 			<artifactId>spring-beans</artifactId>
 		</dependency>
 
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-security-ws</artifactId>
+        </dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -257,10 +274,6 @@
 			<scope>test</scope>
 		</dependency>
 
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-util</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>commons-lang</groupId>
@@ -332,7 +345,6 @@
 						<configuration>
 							<usedDependencies>
 								<usedDependency>org.springframework:spring-web</usedDependency>
-								<usedDependency>org.springframework:spring-core</usedDependency>
 								<usedDependency>no.nav.sbl.dialogarena:common-web</usedDependency>
 								<usedDependency>org.apache.httpcomponents:httpcore</usedDependency>
 							</usedDependencies>

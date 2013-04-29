@@ -4,6 +4,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.HentBehandlingWebService
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
+import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,9 @@ import javax.xml.namespace.QName;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidBehandling;
+
 @Configuration
 public class ConsumerTestContext {
 
@@ -31,14 +35,16 @@ public class ConsumerTestContext {
         return placeholderConfigurer;
     }
 
-//    @Bean
-//    public BehandlingService behandlingService() {
-//        return new BehandlingsServicePort();
-//    }
+    @Bean
+    public BehandlingService behandlingService() {
+        return new BehandlingsServicePort();
+    }
 
     @Bean
     public MockData mockData() {
-        return new MockData();
+        MockData mockData = new MockData();
+        mockData.addResponse("svein", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createUnderArbeidBehandling()));
+        return mockData;
     }
 
     @Bean

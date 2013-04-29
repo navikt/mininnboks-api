@@ -13,7 +13,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
-import org.apache.wicket.util.string.StringValue;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -50,8 +49,9 @@ public class HomePage extends BasePage {
     }
 
     private String hentAktorId() {
-        StringValue aktorId = getRequest().getQueryParameters().getParameterValue("aktorId");
-        return aktorId.toString();
+//        StringValue aktorId = getRequest().getQueryParameters().getParameterValue("aktorId");
+//        return aktorId.toString();
+        return "svein";
     }
 
     private PropertyListView<Behandling> createFerdigView(final IModel<List<Behandling>> ferdig) {

@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
+package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.security.ws.SecurityContextOutInterceptor;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
@@ -10,17 +10,20 @@ import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import javax.xml.namespace.QName;
+import java.net.URL;
 
-/**
- * Springkontekst for consumermodulen
- */
+@Profile("default")
 @Configuration
-public class ConsumerContext {
+@Import({WebContext.class})
+public class ProductionApplicationContext implements SystemConfiguration {
 
     @Value("${henvendelser.ws.url}")
-    private String endpoint;
+    protected URL endpoint;
 
     @Bean
     public BehandlingService behandlingService() {
@@ -28,16 +31,16 @@ public class ConsumerContext {
     }
 
     @Bean
-    public HenvendelsesBehandlingPortType jaxWsClientFactoryBean() {
+    public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
-        proxyFactoryBean.setServiceName(new QName("https://d26jbsl00007.test.local:8443/henvendelse/services/informasjon/v1/HenvendelsesBehandlingService/", "henvendelsesbehandlingservice"));
-        proxyFactoryBean.setEndpointName(new QName("https://d26jbsl00007.test.local:8443/henvendelse/services/informasjon/v1/HenvendelsesBehandlingService/", "henvendelsesbehandlingservice"));
+        proxyFactoryBean.setServiceName(new QName(endpoint.getPath()));
+        proxyFactoryBean.setEndpointName(new QName(endpoint.getPath()));
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
-        proxyFactoryBean.setAddress(endpoint);
+        proxyFactoryBean.setAddress(endpoint.toString());
         proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
         proxyFactoryBean.getFeatures().add(new LoggingFeature());
 
-        //proxyFactoryBean.getOutInterceptors().add(new SecurityContextOutInterceptor());
+        proxyFactoryBean.getOutInterceptors().add(new SecurityContextOutInterceptor());
 
         HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
         return henvendelsesBehandlingPortType;
