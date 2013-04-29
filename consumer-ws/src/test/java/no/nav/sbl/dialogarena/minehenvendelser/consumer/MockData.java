@@ -32,11 +32,10 @@ public class MockData {
             response = new HentBrukerBehandlingerResponse();
         }
         response.getBrukerBehandlinger().add(behandling);
-        responses.put(aktorId,response);
+        responses.put(aktorId, response);
     }
 
     public void addResponse(String aktorId, HentBrukerBehandlingerResponse response) {
-        System.out.println(response.toString());
         responses.put(aktorId, response);
     }
 

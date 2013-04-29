@@ -17,7 +17,7 @@ public class FitInnsendtBehandling {
 
     public FitInnsendtBehandling(Behandling behandling) {
         behandlingsId = behandling.getBehandlingsId();
-        antallVedlegg = new Integer(behandling.fetchAlleDokumenter().size()).toString();
+        antallVedlegg = Integer.valueOf(behandling.fetchAlleDokumenter().size()).toString();
         navnPaaBehandling = behandling.getTittel();
         dato = behandling.getInnsendtDato().toString();
 

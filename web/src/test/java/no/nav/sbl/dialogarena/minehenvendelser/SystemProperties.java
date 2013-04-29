@@ -7,7 +7,8 @@ import java.util.Properties;
 
 public final class SystemProperties {
 
-    private SystemProperties() {}
+    private SystemProperties() {
+    }
 
     public static Properties load(String resourcePath) throws IOException {
         Properties properties = new Properties();

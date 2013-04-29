@@ -26,10 +26,6 @@ public final class StartJetty {
 
         System.setProperty("spring.profiles.active", "test");
         Properties properties = SystemProperties.load("/environment-test.properties");
-        URL url = new URL((String) properties.get("henvendelser.ws.url"));
-
-//        WebServer server = WebServers.createWebServer(url.getPort()).add(url.getPath(), new HentBehandlingWebServiceMock(createMockData()));
-//        server.start().get();
 
         Jetty jetty = usingWar(WEBAPP_SOURCE).at("minehenvendelser").port(PORT).buildJetty();
         jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));

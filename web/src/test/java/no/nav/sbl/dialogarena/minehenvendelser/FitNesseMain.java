@@ -4,8 +4,6 @@ import no.nav.modig.test.fitnesse.run.FitnesseTestRunner;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
-import java.util.Properties;
-
 import static org.kohsuke.args4j.ExampleMode.ALL;
 
 public final class FitNesseMain {
