@@ -1,0 +1,12 @@
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+    <deployment>
+        <exclusions>
+            <module name="org.slf4j" />
+        </exclusions>
+    </deployment>
+    <sub-deployment name="minehenvendelser-web.war">
+        <exclusions>
+            <module name="org.slf4j" />
+        </exclusions>
+    </sub-deployment>
+</jboss-deployment-structure>
