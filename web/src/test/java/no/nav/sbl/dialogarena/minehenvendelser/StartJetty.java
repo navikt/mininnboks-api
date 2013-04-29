@@ -4,9 +4,6 @@ import no.nav.sbl.dialogarena.common.jetty.Jetty;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
 
-import java.net.URL;
-import java.util.Properties;
-
 import static no.nav.modig.lang.collections.FactoryUtils.gotKeypress;
 import static no.nav.modig.lang.collections.RunnableUtils.first;
 import static no.nav.modig.lang.collections.RunnableUtils.waitFor;
@@ -25,7 +22,7 @@ public final class StartJetty {
     public static void main(String[] args) throws Exception {
 
         System.setProperty("spring.profiles.active", "test");
-        Properties properties = SystemProperties.load("/environment-test.properties");
+        SystemProperties.load("/environment-test.properties");
 
         Jetty jetty = usingWar(WEBAPP_SOURCE).at("minehenvendelser").port(PORT).buildJetty();
         jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));

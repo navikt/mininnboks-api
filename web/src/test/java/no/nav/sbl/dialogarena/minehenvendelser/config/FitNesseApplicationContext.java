@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.wicket.test.FluentWicketTester;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;

@@ -12,7 +12,8 @@ public final class SystemProperties {
 
     public static Properties load(String resourcePath) throws IOException {
         Properties properties = new Properties();
-        try (InputStream inputStream = properties.getClass().getResourceAsStream(resourcePath)) {
+        Class<? extends Properties> propertiesClass = properties.getClass();
+        try (InputStream inputStream =  propertiesClass.getResourceAsStream(resourcePath)) {
             properties.load(inputStream);
             inputStream.close();
         } catch (IOException e) {
