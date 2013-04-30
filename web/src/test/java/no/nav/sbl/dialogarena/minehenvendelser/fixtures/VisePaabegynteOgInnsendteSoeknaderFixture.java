@@ -6,11 +6,13 @@ import no.nav.modig.test.fitnesse.fixture.SpringAwareDoFixture;
 import no.nav.modig.test.fitnesse.fixture.ToDoList;
 import no.nav.modig.wicket.test.FluentWicketTester;
 import no.nav.modig.wicket.test.internal.Parameters;
+import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdDummy;
+import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.config.FitNesseApplicationContext;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitInnsendtBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitPaabegyntBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
@@ -29,8 +31,8 @@ import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComp
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
 import static org.hamcrest.Matchers.equalTo;
 
-@ContextConfiguration(classes = {FitNesseApplicationContext.class, ConsumerTestContext.class})
-@ActiveProfiles("stub")
+@ContextConfiguration(classes = {FitNesseApplicationContext.class})
+@ActiveProfiles("test")
 public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixture {
 
     private static final Logger logger = LoggerFactory.getLogger(VisePaabegynteOgInnsendteSoeknaderFixture.class);
@@ -38,6 +40,10 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     private MockData mockData;
     @Inject
     private FluentWicketTester<WicketApplication> wicketTester;
+    @Inject
+    private KodeverkOppslag kodeverkOppslag;
+    @Inject
+    private AktoerIdService aktoerIdService;
 
     public Fixture datagrunnlag() {
         logger.info("Setting up datagrunnlag.");
@@ -46,10 +52,8 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     }
 
     public Fixture innsendt(String aktoerId) {
-        //TODO interact with application (i.e. wicket)
-        Parameters parameters = new Parameters();
-        parameters.pageParameters.add("aktorId", aktoerId);
-        wicketTester.goTo(HomePage.class, parameters);
+        ((AktoerIdDummy) aktoerIdService).setAktoerId(aktoerId);
+        wicketTester.goTo(HomePage.class);
 
         List<String> antallVedlegg = retriveFerdigAntallVedlegg();
         List<String> innsendtDato = retriveFerdigInnsendtDato();
@@ -57,46 +61,37 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
         List<String> innsendteDokumenter = retriveFerdigInnsendteDokumenter();
         List<String> manglendeDokumenter = retriveFerdigMangledeDokumenter();
         List<FitInnsendtBehandling> fitInnsendtBehandlinger = convertListToInnsendt(antallVedlegg, innsendtDato, behandlingTittler, innsendteDokumenter, manglendeDokumenter);
+
         return new ArrayFixture(fitInnsendtBehandlinger);
     }
 
     public Fixture paabegynt(String aktoerId) {
-        Parameters parameters = new Parameters();
-        parameters.pageParameters.add("aktorId", aktoerId);
-        wicketTester.goTo(HomePage.class, parameters);
-        List<String> behandlingTittler = retriveUnderArbeidBehandlingTittel();
-        List<String> behandlingAntall = retriveUnderArbeidBehandlingAntall();
-        List<String> behandlingSistEndret = retriveUnderArbeidBehandlingSistEndret();
-
-
-        List<FitPaabegyntBehandling> fitInnsendtBehandlinger = convertListToPaabegynt(behandlingTittler, behandlingAntall, behandlingSistEndret);
-
-
+        ((AktoerIdDummy) aktoerIdService).setAktoerId(aktoerId);
+        wicketTester.goTo(HomePage.class);
+        List<FitPaabegyntBehandling> fitInnsendtBehandlinger = retriveUnderArbeidBehandlinger();
         return new ArrayFixture(fitInnsendtBehandlinger);
     }
 
-    private List<String> retriveUnderArbeidBehandlingSistEndret() {
-        List<String> sistEndret = new ArrayList<>();
-        for (Component component : wicketTester.get().components(withId("sistEndret"))) {
-            sistEndret.add(component.getDefaultModelObjectAsString());
+
+    private List<FitPaabegyntBehandling> retriveUnderArbeidBehandlinger() {
+        List<FitPaabegyntBehandling> fitPaabegyntBehandlinger = new ArrayList<>();
+        List<Component> behandlingerUnderArbeid = wicketTester.get().components(withId("behandlingerUnderArbeid"));
+        Component behandlingUnderArbeid = behandlingerUnderArbeid.get(0);
+        //Henter ut antall på denne måten da listen med behandlingerUnderArbeid ikke alltid har riktig antall elementer
+        int antallBehandlinger = wicketTester.get().components(withId("tittel").and(containedInComponent(equalTo(behandlingUnderArbeid)))).size();
+        for (int i = 0; i < antallBehandlinger; i++) {
+            String tittel = retriveTekst("tittel", i, behandlingUnderArbeid);
+            String antall = retriveTekst("antall", i, behandlingUnderArbeid);
+            String sistEndret = retriveTekst("sistEndret", i, behandlingUnderArbeid);
+            fitPaabegyntBehandlinger.add(new FitPaabegyntBehandling(tittel, antall, sistEndret));
         }
-        return sistEndret;
+        return fitPaabegyntBehandlinger;
     }
 
-    private List<String> retriveUnderArbeidBehandlingAntall() {
-        List<String> antall = new ArrayList<>();
-        for (Component component : wicketTester.get().components(withId("antall"))) {
-            antall.add(component.getDefaultModelObjectAsString());
-        }
-        return antall;
-    }
-
-    private List<String> retriveUnderArbeidBehandlingTittel() {
-        List<String> tittler = new ArrayList<>();
-        for (Component component : wicketTester.get().components(withId("tittel"))) {
-            tittler.add(component.getDefaultModelObjectAsString());
-        }
-        return tittler;
+    private String retriveTekst(String id, int i, Component enclosingComponent) {
+        List<Component> components = wicketTester.get().components(withId(id).and(containedInComponent(equalTo(enclosingComponent))));
+        Component component = components.get(i);
+        return component.getDefaultModelObjectAsString();
     }
 
     private List<String> retriveFerdigMangledeDokumenter() {
@@ -150,7 +145,7 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     }
 
     public Fixture tabellForKodeverk() {
-        return new TabellForKodeverk();
+        return new TabellForKodeverk(kodeverkOppslag);
     }
 
     public Fixture avklaringer() {
@@ -164,22 +159,4 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
         }
         return fitInnsendtBehandlinger;
     }
-
-    private List<FitPaabegyntBehandling> convertListToPaabegynt(List<String> behandlingTittler, List<String> behandlingAntall, List<String> behandlingSistEndret) {
-        List<FitPaabegyntBehandling> fitPaabegyntBehandlinger = new ArrayList<>();
-        for (int i = 0; i < behandlingTittler.size(); i++) {
-            String tittel = behandlingTittler.get(i);
-            String antall = behandlingAntall.get(i);
-            String dato = behandlingSistEndret.get(i);
-            fitPaabegyntBehandlinger.add(new FitPaabegyntBehandling(tittel, antall, dato));
-        }
-        return fitPaabegyntBehandlinger;
-    }
-
-    private List<Behandling> retrieveBehandlingsList(String aktoerId) {
-        logger.info("Entered WebService interaction method! AktoerId: " + aktoerId);
-        //TODO hent info fra app
-        return new ArrayList<>();
-    }
-
 }

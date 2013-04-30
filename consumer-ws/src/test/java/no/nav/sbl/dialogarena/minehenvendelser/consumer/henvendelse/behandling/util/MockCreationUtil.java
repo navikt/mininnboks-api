@@ -8,6 +8,9 @@ import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventni
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MockCreationUtil {
 
     public static Dokumentforventning createMock(boolean isHovedskjema, WSInnsendingsValg innsendingsValg) {
@@ -52,6 +55,27 @@ public class MockCreationUtil {
                 createDokumentForventningMock(false, "2", WSInnsendingsValg.IKKE_VALGT));
         return wsBehandlingMock;
     }
+
+    public static List<WSBrukerBehandling> createFitnesseTestData(){
+        List<WSBrukerBehandling> behandlinger = new ArrayList<>();
+        WSBrukerBehandling behandling1 = createWsBehandlingMock(null, new DateTime(2012, 9, 19, 1, 18), WSBehandlingsstatus.UNDER_ARBEID);
+        WSBrukerBehandling behandling2 = createWsBehandlingMock(null, new DateTime(2012, 9, 19, 1, 18), WSBehandlingsstatus.UNDER_ARBEID);
+
+        behandling1.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
+                createDokumentForventningMock(true, "kodeForDagpenger", WSInnsendingsValg.LASTET_OPP),
+                createDokumentForventningMock(false,"kodeForPermitteringsvarsel", WSInnsendingsValg.SENDES_IKKE)
+        );
+
+        behandling2.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
+                createDokumentForventningMock(true, "kodeForDagpenger", WSInnsendingsValg.LASTET_OPP),
+                createDokumentForventningMock(false,"kodeForPermitteringsvarsel", WSInnsendingsValg.LASTET_OPP)
+        );
+
+        behandlinger.add(behandling1);
+        behandlinger.add(behandling2);
+        return behandlinger;
+    }
+
 
 
 }

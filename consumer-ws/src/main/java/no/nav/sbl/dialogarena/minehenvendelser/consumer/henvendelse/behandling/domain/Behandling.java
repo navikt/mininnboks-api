@@ -13,24 +13,18 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.modig.lang.option.Optional.optional;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag.hentKodeverk;
 
 /**
  * Domeneobjekt som representerer en behandling
  */
 public final class Behandling implements Serializable {
 
-    public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG};
-
-    private String behandlingsId;
-    private String hovedskjemaId;
-    private DateTime sistEndret;
-    private DateTime innsendtDato;
-	private Behandlingsstatus status;
-    private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
-
-    private Behandling() {}
-
+    public static final Transformer<Behandling, Behandlingsstatus> STATUS = new Transformer<Behandling, Behandlingsstatus>() {
+        @Override
+        public Behandlingsstatus transform(Behandling behandling) {
+            return behandling.getStatus();
+        }
+    };
     private static Transformer<WSBrukerBehandling, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandling, Behandling>() {
 
         @Override
@@ -41,13 +35,22 @@ public final class Behandling implements Serializable {
             behandling.status = Behandlingsstatus.valueOf(wsBrukerBehandling.getStatus().name());
             behandling.sistEndret = wsBrukerBehandling.getSistEndret();
             behandling.innsendtDato = optional(wsBrukerBehandling.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
-            for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering :  wsBrukerBehandling.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
-               behandling.dokumentforventninger.add(Dokumentforventning.transformToDokumentforventing(wsDokumentForventningOppsummering));
+            for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering : wsBrukerBehandling.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
+                behandling.dokumentforventninger.add(Dokumentforventning.transformToDokumentforventing(wsDokumentForventningOppsummering));
             }
             return behandling;
         }
 
     };
+    private String behandlingsId;
+    private String hovedskjemaId;
+    private DateTime sistEndret;
+    private DateTime innsendtDato;
+    private Behandlingsstatus status;
+    private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
+
+    private Behandling() {
+    }
 
     private static Transformer<DateTime, DateTime> dateTimeValueTransformer() {
         return new Transformer<DateTime, DateTime>() {
@@ -67,27 +70,27 @@ public final class Behandling implements Serializable {
     }
 
     public String getBehandlingsId() {
-		return behandlingsId;
-	}
+        return behandlingsId;
+    }
 
     public Behandlingsstatus getStatus() {
         return status;
     }
 
-	public DateTime getSistEndret() {
-		return sistEndret;
-	}
+    public DateTime getSistEndret() {
+        return sistEndret;
+    }
 
-	public DateTime getInnsendtDato() {
-		return innsendtDato;
-	}
+    public DateTime getInnsendtDato() {
+        return innsendtDato;
+    }
 
-	public List<Dokumentforventning> getDokumentforventninger() {
-		return dokumentforventninger;
-	}
+    public List<Dokumentforventning> getDokumentforventninger() {
+        return dokumentforventninger;
+    }
 
     public String getTittel() {
-        return hentKodeverk(fetchHoveddokument().getKodeverkId());
+        return fetchHoveddokument().getKodeverkId();
     }
 
     public int getAntallInnsendteDokumenter() {
@@ -117,11 +120,8 @@ public final class Behandling implements Serializable {
                 .head().get();
     }
 
-    public static final Transformer<Behandling, Behandlingsstatus> STATUS = new Transformer<Behandling, Behandlingsstatus>() {
-        @Override
-        public Behandlingsstatus transform(Behandling behandling) {
-            return behandling.getStatus();
-        }
-    };
+    public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG}
+
+    ;
 
 }

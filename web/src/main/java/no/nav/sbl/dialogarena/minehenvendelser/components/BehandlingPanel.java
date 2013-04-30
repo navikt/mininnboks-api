@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.components;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -30,12 +31,14 @@ public class BehandlingPanel extends Panel {
     private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
     private CmsContentRetriever innholdsTekster;
+    private KodeverkOppslag kodeverkOppslag;
 
-    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriever innholdsTekster) {
+    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriever innholdsTekster, KodeverkOppslag kodeverkOppslag) {
         super(id, model);
         this.model = model;
         this.behandling = behandling;
         this.innholdsTekster = innholdsTekster;
+        this.kodeverkOppslag = kodeverkOppslag;
         add(
                 getDateText(),
                 getVedleggsLabel(),
@@ -65,13 +68,13 @@ public class BehandlingPanel extends Panel {
             @Override
             protected void populateItem(ListItem<Dokumentforventning> listItem) {
                 Dokumentforventning dokumentforventning = listItem.getModelObject();
-                listItem.add(new Label("dokument", dokumentforventning.getTittel()));
+                listItem.add(new Label("dokument", kodeverkOppslag.hentKodeverk(dokumentforventning.getTittel())));
             }
         };
     }
 
     private Label getHeadText() {
-        return new Label("tittel", behandling.getTittel());
+        return new Label("tittel", kodeverkOppslag.hentKodeverk( behandling.getTittel()));
     }
 
     private Label getTopText() {

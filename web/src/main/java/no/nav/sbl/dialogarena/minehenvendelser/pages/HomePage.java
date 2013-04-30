@@ -7,6 +7,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.B
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -14,6 +15,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
+import org.apache.wicket.util.string.StringValue;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -38,7 +40,10 @@ public class HomePage extends BasePage {
     private BehandlingService behandlingService;
 
     @Inject
+    protected KodeverkOppslag kodeverkOppslag;
+    @Inject
     private AktoerIdService aktoerIdService;
+
 
     public HomePage() {
         IModel<List<Behandling>> model = new LoadableDetachableModel<List<Behandling>>() {
@@ -59,7 +64,7 @@ public class HomePage extends BasePage {
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling behandling = listItem.getModelObject();
                 IModel<List<Dokumentforventning>> dokumentforventningListModel = new ListModel<>(behandling.fetchAlleDokumenter());
-                listItem.add(new BehandlingPanel("behandling", dokumentforventningListModel, behandling, innholdstekster));
+                listItem.add(new BehandlingPanel("behandling", dokumentforventningListModel, behandling, innholdstekster, kodeverkOppslag));
             }
         };
     }
@@ -70,7 +75,7 @@ public class HomePage extends BasePage {
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
-                listItem.add(new Label("tittel", item.getTittel()));
+                listItem.add(new Label("tittel", kodeverkOppslag.hentKodeverk(item.getTittel())));
                 listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", this, null, item.getSistEndret().toDate())));
                 listItem.add(new Label("antall", new StringResourceModel("antall.dokumenter", this, null, item.getAntallInnsendteDokumenter(), item.getAntallSubDokumenter())));
             }
