@@ -24,6 +24,7 @@ public class ConsumerIntegrationTest {
 
     @Inject
     private BehandlingService service;
+
     @Inject
     private MockData mockdata;
 
