@@ -6,6 +6,20 @@
 !brukerhistorie MOD-3558
 !brukerhistorie MOD-3559
 *!
+'''Husk å sette UTC lik + 1 (vintertid) Slik at testene ikke feiler ved overgang vintertid/sommertid.'''
+
+Tabellen, datagrunnlag, viser dataene vi forventer å få fra Henvendelse:
+
+De fire siste kollonnene i tabellen må leses i sammenheng:
+
+KodeverkID viser hvilke dokumenter som er i denne innsendingen.
+
+Innsendingsvalg viser om dokumentene er latet opp, om det ikke sendes og om innsendingsmåte ikke er valgt.
+
+Hovedskjema viser hvilket dokument som er hovedskjema i innsendingen
+
+Egendef.Tittel viser tittel på vedlegg som er type Annet.
+
 !| datagrunnlag |
 | Aktør Id | Behandlings Id | Brukerbehandlingtype | dokumentbehandlingtype | Status | Hovedkravskjema ID | Sist endret dato | Innsendt Dato | Kodeverk ID | Innsendingsvalg | Hovedskjema | Egendefinert Tittel |
 | ***REMOVED*** | DA01-000000001 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2012-09-19T01:18:33+01:00 | 2006-08-19T19:27:14+00:00 | kodeForDagpenger,kodeForPermitteringsvarsel,kodeForArbeidsavtale,kodeForEgetVedlegg | LASTET_OPP,LASTET_OPP, LASTET_OPP, SENDES_IKKE | JA, NEI, NEI, NEI | blank,blank,blank,Egendef tittel på 25 tegn |
@@ -22,7 +36,9 @@
 | ***REMOVED*** | DA01-000000013 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2012-12-19T01:18:33+01:00 | 2012-12-19T01:18:33+01:00 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, LASTET_OPP | JA, NEI | blank,Oppsigelsen min |
 | ***REMOVED*** | DA01-000000014 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForForeldrepenger | 2011-09-19T01:18:33+01:00 | 2011-09-19T01:18:33+01:00 | kodeForForeldrepenger ,kodeForInntektsopplysninger | LASTET_OPP, LASTET_OPP | JA, NEI | blank,blank |
 | ***REMOVED*** | DA01-000000015 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForKontantstoette | 2012-10-19T01:18:33+01:00 | 2012-10-19T01:18:33+01:00 | kodeForKontantstoette | LASTET_OPP | JA, NEI | blank |
-| ***REMOVED*** | DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | UNDER_ARBEID | kodeForForeldrepenger | 2012-09-09T01:18:03+01:00 | | kodeForForeldrepenger , kodeForInntektsopplysninger | IKKE_VALGT, IKKE_VALGT | JA, NEI | blank , blank|
+| ***REMOVED*** | DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | UNDER_ARBEID | kodeForForeldrepenger | 2012-09-09T01:18:03+01:00 | | kodeForForeldrepenger , kodeForInntektsopplysninger | IKKE_VALGT, IKKE_VALGT | JA, NEI | blank , blank |
+
+Tabell for kodeverk viser hvilke verdier vi forventer å få fra kodeverk
 
 !| Tabell for kodeverk |
 | Kodeverk ID | Navn paa dokumentet |
@@ -35,55 +51,45 @@
 | kodeForKontantstoette | Søknad om kontantstøtte |
 | kodeForOvergangsstoenad | Stønad om Overgangsstønad |
 
-
 '''Test på innsendte dokumenter:'''
 
-Bruker har 1 innsendt Dokumentinnsendig. 3/4 dokumenter er innsendt
+Bruker har 1 innsendt Dokumentinnsendig. 3 av 4 dokumenter er innsendt
 
 !| Innsendt | ***REMOVED*** |
 | Antall vedlegg | Navn paa behandling | Dato | Innsendte dokumenter | Manglende dokumenter |
 | 2 vedlegg | Søknad om dagpenger | Sendt 19. august 2006, kl 21:27 | Permitteringsvarsel,Arbeidsavtale | Egendef tittel på 25 tegn |
 
-
-Bruker har 1 innsendt Dokumentinnsendig. 3/4 dokumenter er innsendt
-
-!| Innsendt | ***REMOVED*** |
-| Behandlings Id | BrukerBehandlingstype | dokumentBehandlingstype | Antall vedlegg | Navn paa behandling | Dato | Innsendte dokumenter | Manglende dokumenter |
-| DA01-000000001 |DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 3 vedlegg | Søknad om dagpenger | 19. august 2006, 21:27 | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Egendef tittel på 25 tegn |
-
 Bruker har 2 innsendte
 
 !| Innsendt | ***REMOVED*** |
-| Behandlings Id | BrukerBehandlingstype | dokumentBehandlingstype | Antall vedlegg | Navn paa behandling | Dato | Innsendte dokumenter | Manglende dokumenter |
-| DA01-000000003 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 1 vedlegg | Søknad om dagpenger | 19. september 2008, 02:18 | Søknad om dagpenger,  Egendef tittel på 25 tegn | |
-| DA01-000000009 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 1 vedlegg | Søknad om foreldrepenger | 19. september 2008, 02:25 | Søknad om foreldrepenger, Inntektsopplysninger | |
+| Antall vedlegg | Navn paa behandling | Dato | Innsendte dokumenter | Manglende dokumenter |
+| 1 vedlegg | Søknad om dagpenger | 19. september 2008, 02:18 | Søknad om dagpenger,  Egendef tittel på 25 tegn | |
+| 1 vedlegg | Søknad om foreldrepenger | 19. september 2008, 02:25 | Søknad om foreldrepenger, Inntektsopplysninger | |
 
 Bruker har flere innsendte
 
 !| Innsendt | ***REMOVED*** |
-| Behandlings Id | BrukerBehandlingstype | dokumentBehandlingstype | Antall vedlegg | Navn paa behandling | Dato | Innsendte dokumenter | Manglende dokumenter |
-| DA01-000000007 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 1 vedlegg | Søknad om dagpenger | 19. september 2006, 02:18 | Søknad om dagpenger | Oppsigelsen min |
-| DA01-000000010 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 2 vedlegg | Søknad om dagpenger | 2010-04-19T23:18:33+01:00 | Søknad om dagpenger,Permitteringsvarsel | Oppsigelsen min |
-| DA01-000000012 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 1 vedlegg | Søknad om foreldrepenger | 2008-01-19T01:18:33+01:00 | Søknad om foreldrepenger ,Inntektsopplysninger | |
-| DA01-000000011 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 1 vedlegg | Søknad om kontantstøtte | 2009-08-24T01:18:33+01:00 | Søknad om kontantstøtte | Dokumentasjon gradert plass |
-| DA01-000000013 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 1 vedlegg | Søknad om dagpenger | 2012-12-19T01:18:33+01:00 | Søknad om dagpenger,Oppsigelsen min | |
-| DA01-000000014 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 1 vedlegg | Søknad om foreldrepenger | 2011-09-19T01:18:33+01:00 | Søknad om foreldrepenger ,Inntektsopplysninger | |
-| DA01-000000015 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | 0 vedlegg | Søknad om kontantstøtte | 2012-10-19T01:18:33+01:00 | Søknad om kontantstøtte | |
+| Antall vedlegg | Navn paa behandling | Dato | Innsendte dokumenter | Manglende dokumenter |
+| 1 vedlegg | Søknad om dagpenger | 19. september 2006, 02:18 | Søknad om dagpenger | Oppsigelsen min |
+| 2 vedlegg | Søknad om dagpenger | 2010-04-19T23:18:33+01:00 | Søknad om dagpenger,Permitteringsvarsel | Oppsigelsen min |
+| 1 vedlegg | Søknad om foreldrepenger | 2008-01-19T01:18:33+01:00 | Søknad om foreldrepenger ,Inntektsopplysninger | |
+| 1 vedlegg | Søknad om kontantstøtte | 2009-08-24T01:18:33+01:00 | Søknad om kontantstøtte | Dokumentasjon gradert plass |
+| 1 vedlegg | Søknad om dagpenger | 2012-12-19T01:18:33+01:00 | Søknad om dagpenger,Oppsigelsen min | |
+| 1 vedlegg | Søknad om foreldrepenger | 2011-09-19T01:18:33+01:00 | Søknad om foreldrepenger ,Inntektsopplysninger | |
+| 0 vedlegg | Søknad om kontantstøtte | 2012-10-19T01:18:33+01:00 | Søknad om kontantstøtte | |
 
-'''Test på påbegynte:'''
-Bruker har 2 påbegynte søknader:
+'''Test på påbegynte:''' Bruker har 2 påbegynte søknader:
 
 !| Paabegynt | ***REMOVED*** |
 | Navn paa behandling | Dato | Antall dokumenter lastet opp |
-| Søknad om dagpenger | Sist lagret 19. september 2012 kl 02:18 | 0 av 1 dokumenter lastet opp|
-| Søknad om dagpenger | Sist lagret 19. september 2012 kl 02:18 | 1 av 1 dokumenter lastet opp|
+| Søknad om dagpenger | Sist lagret 19. september 2012 kl 02:18 | 0 av 1 dokumenter lastet opp |
+| Søknad om dagpenger | Sist lagret 19. september 2012 kl 02:18 | 1 av 1 dokumenter lastet opp |
 
-Bruker har 1 på påbegynt Ettersending
+Bruker har påbegynt Ettersending
 
 !| Paabegynt | ***REMOVED*** |
 | Dato | Navn paa behandling | Antall dokumenter lastet opp |
-| Sist lagret 9. september 2012 kl 02:18 | Ettersending på Søknad om foreldrepenger | 0 av 1 dokumenter lastet opp |
-
+| Sist lagret 9. september 2012 kl 02:18 | Ettersending til Søknad om foreldrepenger | 0 av 1 dokumenter lastet opp |
 
 Bruker har 2 påbegynte søknader:
 
@@ -96,10 +102,10 @@ Bruker har 1 på påbegynt Ettersending
 
 !| Paabegynt | ***REMOVED*** |
 | Behandlings Id | BrukerBehandlingstype | Antall vedlegg | Dato | Navn på behandling | Antall dokumenter lastet opp | Manglende dokumenter |
-| DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | 1 vedlegg | 9. september 2012, kl 02:18 | Ettersending på Søknad om foreldrepenger | |
+| DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | 1 vedlegg | 9. september 2012, kl 02:18 | Ettersending til Søknad om foreldrepenger | |
 
 !| Avklaringer |
 | Denne tabellen kan brukes som en huskeliste for ting som må avklares. Hver linje som ikke har "ok" i siste kolonne vil merkes rødt, slik at man ikke glemmer de | OK |
-| Hvis ettersending - Ettersending + navn på hovedskjema. Hva skal + være (:, -, på, komma)? | |
+| Hvis ettersending - Ettersending + navn på hovedskjema. Hva skal + være (:, -, på, til,komma)? + skal være til (gjennbruker ettersending slik det er i dag) | OK  |
 | Hvis ettersending - Hvor får vi navnet på søknaden som ettersending er til, feks Søknad om dagpenger - Avklart med team Grønn/Henvendelse at de sender med hovedkravskjema sin kodeverksid som del av behandlingen | OK |
 | Trenger vi feltet "dokumentbehandlingtype"? | |
