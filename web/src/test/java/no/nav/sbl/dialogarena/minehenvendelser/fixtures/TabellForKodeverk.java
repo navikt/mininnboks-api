@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.fixtures;
 
 import no.nav.modig.test.fitnesse.fixture.ObjectPerRowFixture;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.KodeverkOppslag;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.Kodeverk;
 
 public class TabellForKodeverk extends ObjectPerRowFixture<Kodeverk> {

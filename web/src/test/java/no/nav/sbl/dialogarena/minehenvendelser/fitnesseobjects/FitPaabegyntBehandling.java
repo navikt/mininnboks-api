@@ -13,6 +13,5 @@ public class FitPaabegyntBehandling {
         this.antallDokumenterLastetOpp = antall;
         this.navnPaaBehandling = tittel;
         this.dato = sistEndret;
-
     }
 }

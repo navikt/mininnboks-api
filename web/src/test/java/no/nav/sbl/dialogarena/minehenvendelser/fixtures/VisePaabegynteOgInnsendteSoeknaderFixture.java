@@ -9,8 +9,8 @@ import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdDummy;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.config.FitNesseApplicationContext;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.KodeverkOppslag;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitInnsendtBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitPaabegyntBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
@@ -68,6 +68,14 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
         wicketTester.goTo(HomePage.class);
         List<FitPaabegyntBehandling> fitInnsendtBehandlinger = retriveUnderArbeidBehandlinger();
         return new ArrayFixture(fitInnsendtBehandlinger);
+    }
+
+    public Fixture tabellForKodeverk() {
+        return new TabellForKodeverk(kodeverkOppslag);
+    }
+
+    public Fixture avklaringer() {
+        return new ToDoList();
     }
 
     private List<FitPaabegyntBehandling> retriveUnderArbeidBehandlinger() {
@@ -139,14 +147,6 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
             antallVedlegg.add(component.getDefaultModelObjectAsString());
         }
         return antallVedlegg;
-    }
-
-    public Fixture tabellForKodeverk() {
-        return new TabellForKodeverk(kodeverkOppslag);
-    }
-
-    public Fixture avklaringer() {
-        return new ToDoList();
     }
 
     private List<FitInnsendtBehandling> convertListToInnsendt(List<String> antallVedlegg, List<String> innsendtDato, List<String> behandlingTittler, List<String> innsendteDokumenter, List<String> manglendeDokumenter) {

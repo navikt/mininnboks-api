@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer.util;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 import java.util.HashMap;
 import java.util.Map;
