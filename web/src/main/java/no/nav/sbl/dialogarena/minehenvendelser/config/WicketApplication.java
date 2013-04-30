@@ -2,24 +2,24 @@ package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.frontend.MetaTag;
+import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
-import no.nav.sbl.dialogarena.minehenvendelser.pages.error.DeniedPage;
-import no.nav.sbl.dialogarena.minehenvendelser.pages.error.ErrorPage;
-import no.nav.sbl.dialogarena.minehenvendelser.pages.error.NotFoundPage;
-import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.settings.IApplicationSettings;
-import org.apache.wicket.settings.IExceptionSettings;
-import org.apache.wicket.settings.IMarkupSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
 
 import javax.inject.Inject;
 
-import static no.nav.modig.frontend.FrontendModules.ALL;
+import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_ACCORDION;
+import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_BUTTON;
+import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_CORE;
+import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_LABELS_AND_BADGES;
+import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_NAVIGATION;
+import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_TOOLTIP;
+import static no.nav.modig.frontend.FrontendModules.UNDERSCORE;
 
 /**
  * Kontekst for wicket
@@ -44,7 +44,7 @@ public class WicketApplication extends WebApplication {
         super.init();
 
         new FrontendConfigurator()
-                .withModules(ALL)
+                .withModules(UNDERSCORE, BOOTSTRAP_CORE, BOOTSTRAP_BUTTON, BOOTSTRAP_LABELS_AND_BADGES, BOOTSTRAP_NAVIGATION, BOOTSTRAP_TOOLTIP, BOOTSTRAP_ACCORDION)
                 .addMetas(
                         MetaTag.CHARSET_UTF8,
                         MetaTag.VIEWPORT_SCALE_1,
@@ -54,27 +54,9 @@ public class WicketApplication extends WebApplication {
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
 
-        // Innstillinger vi bør ha
-        getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
-        IMarkupSettings markupSettings = getMarkupSettings();
-        markupSettings.setStripWicketTags(true);
-        markupSettings.setStripComments(true);
-        markupSettings.setCompressWhitespace(true);
-        markupSettings.setDefaultMarkupEncoding("UTF-8");
+        new ApplicationSettingsConfig().configure(this);
 
-        // Innstillinger vi kan ha
-        IApplicationSettings applicationSettings = getApplicationSettings();
-        applicationSettings.setInternalErrorPage(ErrorPage.class);
-        applicationSettings.setPageExpiredErrorPage(getHomePage());
-        applicationSettings.setAccessDeniedPage(DeniedPage.class);
-
-        getExceptionSettings().setUnexpectedExceptionDisplay(IExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
-
-        mountPage("internal/selftest", SelfTestPage.class);
-        mountPage("error/ikke-adgang", DeniedPage.class);
-        mountPage("error/server-feil", ErrorPage.class);
-        mountPage("error/ikke-funnet", NotFoundPage.class);
 
         setSpringComponentInjector();
     }
