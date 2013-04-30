@@ -19,8 +19,6 @@
         <module>consumer-ws</module>
         <module>web</module>
         <module>jee</module>
-        <module>wsmock</module>
-        <module>wsmock-web</module>
     </modules>
 
     <properties>

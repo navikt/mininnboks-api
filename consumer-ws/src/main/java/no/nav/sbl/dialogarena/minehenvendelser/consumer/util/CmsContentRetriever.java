@@ -2,6 +2,9 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.util;
 
 import no.nav.modig.content.ValueRetriever;
 
+/**
+ * Utilklasse for interaksjon med CMS
+ */
 public class CmsContentRetriever {
 
     private String cmsIp;
