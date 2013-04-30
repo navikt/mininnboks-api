@@ -11,10 +11,6 @@ public class FitPaabegyntBehandling {
     public FitPaabegyntBehandling() {
     }
 
-    public FitPaabegyntBehandling(Behandling behandling) {
-
-    }
-
     public FitPaabegyntBehandling(String tittel, String antall, String sistEndret) {
         this.antallDokumenterLastetOpp = antall;
         this.navnPaaBehandling = tittel;

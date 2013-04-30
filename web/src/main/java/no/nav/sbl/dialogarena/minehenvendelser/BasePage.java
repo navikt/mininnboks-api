@@ -4,7 +4,6 @@ import no.nav.sbl.dialogarena.common.footer.FooterPanel;
 import no.nav.sbl.dialogarena.common.innstillinger.InnstillingerPanel;
 import no.nav.sbl.dialogarena.common.navigasjon.NavigasjonPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.resource.CssResourceReference;
@@ -18,8 +17,6 @@ public class BasePage extends WebPage {
     public static final CssResourceReference CSS_RESOURCE = new CssResourceReference(HomePage.class, "lokal.css");
     @Inject
     protected CmsContentRetriever innholdstekster;
-
-
 
 
     public BasePage() {

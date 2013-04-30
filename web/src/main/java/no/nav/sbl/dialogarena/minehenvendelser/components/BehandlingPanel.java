@@ -27,7 +27,6 @@ public class BehandlingPanel extends Panel {
 
     private static final boolean MANGLENDE = false;
     private static final boolean INNSENDT = true;
-
     private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
     private CmsContentRetriever innholdsTekster;
@@ -74,7 +73,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getHeadText() {
-        return new Label("tittel", kodeverkOppslag.hentKodeverk( behandling.getTittel()));
+        return new Label("tittel", kodeverkOppslag.hentKodeverk(behandling.getTittel()));
     }
 
     private Label getTopText() {
@@ -90,8 +89,8 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getDateText() {
-        StringResourceModel stringResourceModel =  new StringResourceModel("innsendt", this, null,behandling.getInnsendtDato().toDate());
-        return new Label("innsendtDato",stringResourceModel);
+        StringResourceModel stringResourceModel = new StringResourceModel("innsendt", this, null, behandling.getInnsendtDato().toDate());
+        return new Label("innsendtDato", stringResourceModel);
     }
 
     private static class DokumentforventningModel extends LoadableDetachableModel<List<Dokumentforventning>> {

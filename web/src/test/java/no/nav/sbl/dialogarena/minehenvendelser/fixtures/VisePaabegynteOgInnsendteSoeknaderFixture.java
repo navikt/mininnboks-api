@@ -5,13 +5,11 @@ import fitlibrary.ArrayFixture;
 import no.nav.modig.test.fitnesse.fixture.SpringAwareDoFixture;
 import no.nav.modig.test.fitnesse.fixture.ToDoList;
 import no.nav.modig.wicket.test.FluentWicketTester;
-import no.nav.modig.wicket.test.internal.Parameters;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdDummy;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.config.FitNesseApplicationContext;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.KodeverkOppslag;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitInnsendtBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitPaabegyntBehandling;
@@ -71,7 +69,6 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
         List<FitPaabegyntBehandling> fitInnsendtBehandlinger = retriveUnderArbeidBehandlinger();
         return new ArrayFixture(fitInnsendtBehandlinger);
     }
-
 
     private List<FitPaabegyntBehandling> retriveUnderArbeidBehandlinger() {
         List<FitPaabegyntBehandling> fitPaabegyntBehandlinger = new ArrayList<>();
