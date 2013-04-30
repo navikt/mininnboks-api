@@ -9,5 +9,6 @@
     <resources>
         <baseUrl alias="minehenvendelser.cms" mapToProperty="minehenvendelser.cms" />
         <baseUrl alias="henvendelser.ws" mapToProperty="henvendelser.ws" />
+        <applicationCertificate alias="srvMinehenvendelser"/>
     </resources>
 </application>
