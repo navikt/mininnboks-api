@@ -37,11 +37,12 @@ public class HomePage extends BasePage {
 
     @Inject
     protected KodeverkService kodeverkOppslag;
+
     @Inject
     private BehandlingService behandlingService;
+
     @Inject
     private AktoerIdService aktoerIdService;
-
 
     public HomePage() {
         IModel<List<Behandling>> model = new LoadableDetachableModel<List<Behandling>>() {

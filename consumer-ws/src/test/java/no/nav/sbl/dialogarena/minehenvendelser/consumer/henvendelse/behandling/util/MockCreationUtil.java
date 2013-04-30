@@ -14,6 +14,9 @@ import java.util.List;
 
 public class MockCreationUtil {
 
+    public static final String KODEVERK_ID_1 = "KODEVERK1";
+    public static final String KODEVERK_ID_2 = "KDOEVERK2";
+
     public static Dokumentforventning createMock(boolean isHovedskjema, WSInnsendingsValg innsendingsValg) {
         WSDokumentForventningOppsummering wsDokumentForventning = new WSDokumentForventningOppsummering()
                 .withHovedskjema(isHovedskjema)
@@ -45,16 +48,16 @@ public class MockCreationUtil {
     public static WSBrukerBehandling createFerdigBehandling() {
         WSBrukerBehandling wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 01, 01, 01, 01), new DateTime(2013, 01, 01, 01, 01), WSBehandlingsstatus.FERDIG);
         wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
-                createDokumentForventningMock(true, "1", WSInnsendingsValg.LASTET_OPP),
-                createDokumentForventningMock(false, "2", WSInnsendingsValg.LASTET_OPP));
+                createDokumentForventningMock(true, KODEVERK_ID_1, WSInnsendingsValg.LASTET_OPP),
+                createDokumentForventningMock(false, KODEVERK_ID_2, WSInnsendingsValg.LASTET_OPP));
         return wsBehandlingMock;
     }
 
     public static WSBrukerBehandling createUnderArbeidBehandling() {
         WSBrukerBehandling wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 01, 01, 01, 01), new DateTime(2013, 01, 01, 01, 01), WSBehandlingsstatus.UNDER_ARBEID);
         wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
-                createDokumentForventningMock(true, "1", WSInnsendingsValg.IKKE_VALGT),
-                createDokumentForventningMock(false, "2", WSInnsendingsValg.IKKE_VALGT));
+                createDokumentForventningMock(true, KODEVERK_ID_1, WSInnsendingsValg.IKKE_VALGT),
+                createDokumentForventningMock(false, KODEVERK_ID_2, WSInnsendingsValg.IKKE_VALGT));
         return wsBehandlingMock;
     }
 
