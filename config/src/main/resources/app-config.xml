@@ -8,7 +8,7 @@
 
     <resources>
         <baseUrl alias="minehenvendelser.cms" mapToProperty="minehenvendelser.cms" />
-        <baseUrl alias="henvendelser.ws" mapToProperty="henvendelser.ws" />
+        <webservice alias="domene.Brukerdialog:henvendelsesbehandlingservice_v1" mapToProperty="henvendelser.ws" />
         <applicationCertificate alias="srvMinehenvendelser"/>
     </resources>
 </application>
