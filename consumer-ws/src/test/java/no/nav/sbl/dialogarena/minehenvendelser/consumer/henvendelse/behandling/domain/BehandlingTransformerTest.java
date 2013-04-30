@@ -4,6 +4,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.u
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbehandlingType;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -26,11 +27,12 @@ public class BehandlingTransformerTest {
                 .withHovedskjemaId("hovedSkjemaId")
                 .withInnsendtDato(innsendtDato)
                 .withSistEndret(sistEndret)
+                .withDokumentbehandlingType(WSDokumentbehandlingType.SOKNADSINNSENDING)
                 .withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer());
 
         Behandling behandling = transformToBehandling(wsBrukerBehandling);
 
-        assertThat(behandling.getStatus().name(), equalTo(FERDIG.name()));
+        assertThat(behandling.getBehandlingsstatus().name(), equalTo(FERDIG.name()));
         assertThat(behandling.getBehandlingsId(), equalTo("behandlingId"));
         assertThat(behandling.getHovedskjemaId(), equalTo("hovedSkjemaId"));
         assertThat(behandling.getInnsendtDato(), equalTo(innsendtDato));

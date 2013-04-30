@@ -4,6 +4,7 @@ import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBehandlingsstatus
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbehandlingType;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
 import org.joda.time.DateTime;
@@ -19,7 +20,7 @@ public class FitBehandling {
 
     public String aktorId;
     public String behandlingsId;
-    public String dokumentbehandlingType;
+    public String dokumentbehandlingtype;
     public String brukerbehandlingType;
     public String status;
     public String hovedkravskjemaId;
@@ -43,6 +44,7 @@ public class FitBehandling {
         WSBrukerBehandling behandling = new WSBrukerBehandling();
         behandling.withBehandlingsId(behandlingsId);
         behandling.withStatus(WSBehandlingsstatus.fromValue(status));
+        behandling.withDokumentbehandlingType(WSDokumentbehandlingType.fromValue(dokumentbehandlingtype));
         if (isNotEmpty(sistEndretDato)) {
             behandling.withSistEndret(new DateTime(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(sistEndretDato)));
         }

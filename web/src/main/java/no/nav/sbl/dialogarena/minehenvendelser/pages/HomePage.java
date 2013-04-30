@@ -73,9 +73,17 @@ public class HomePage extends BasePage {
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
-                listItem.add(new Label("tittel", kodeverkOppslag.hentKodeverk(item.getTittel())));
+                listItem.add(new Label("tittel", getTittel(item)));
                 listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", this, null, item.getSistEndret().toDate())));
                 listItem.add(new Label("antall", new StringResourceModel("antall.dokumenter", this, null, item.getAntallInnsendteDokumenter(), item.getAntallSubDokumenter())));
+            }
+
+            private String getTittel(Behandling item) {
+                if (item.getDokumentbehandlingstatus() == Behandling.Dokumentbehandlingstatus.ETTERSENDING) {
+                    // TODO: Flytt "Ettersending på" tekst til property-fil eller CMS
+                    return "Ettersending på "+ kodeverkOppslag.hentKodeverk(item.getTittel());
+                }
+                return kodeverkOppslag.hentKodeverk(item.getTittel());
             }
         };
     }

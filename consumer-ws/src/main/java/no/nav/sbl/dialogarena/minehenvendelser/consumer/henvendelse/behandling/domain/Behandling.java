@@ -22,7 +22,7 @@ public final class Behandling implements Serializable {
     public static final Transformer<Behandling, Behandlingsstatus> STATUS = new Transformer<Behandling, Behandlingsstatus>() {
         @Override
         public Behandlingsstatus transform(Behandling behandling) {
-            return behandling.getStatus();
+            return behandling.getBehandlingsstatus();
         }
     };
     private static Transformer<WSBrukerBehandling, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandling, Behandling>() {
@@ -30,9 +30,10 @@ public final class Behandling implements Serializable {
         @Override
         public Behandling transform(WSBrukerBehandling wsBrukerBehandling) {
             Behandling behandling = new Behandling();
+            behandling.dokumentbehandlingstatus = Dokumentbehandlingstatus.valueOf(wsBrukerBehandling.getDokumentbehandlingType().name());
             behandling.behandlingsId = wsBrukerBehandling.getBehandlingsId();
             behandling.hovedskjemaId = wsBrukerBehandling.getHovedskjemaId();
-            behandling.status = Behandlingsstatus.valueOf(wsBrukerBehandling.getStatus().name());
+            behandling.behandlingsstatus = Behandlingsstatus.valueOf(wsBrukerBehandling.getStatus().name());
             behandling.sistEndret = wsBrukerBehandling.getSistEndret();
             behandling.innsendtDato = optional(wsBrukerBehandling.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
             for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering : wsBrukerBehandling.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
@@ -46,7 +47,8 @@ public final class Behandling implements Serializable {
     private String hovedskjemaId;
     private DateTime sistEndret;
     private DateTime innsendtDato;
-    private Behandlingsstatus status;
+    private Behandlingsstatus behandlingsstatus;
+    private Dokumentbehandlingstatus dokumentbehandlingstatus;
     private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
 
     private Behandling() {
@@ -73,8 +75,8 @@ public final class Behandling implements Serializable {
         return behandlingsId;
     }
 
-    public Behandlingsstatus getStatus() {
-        return status;
+    public Behandlingsstatus getBehandlingsstatus() {
+        return behandlingsstatus;
     }
 
     public DateTime getSistEndret() {
@@ -120,7 +122,15 @@ public final class Behandling implements Serializable {
                 .head().get();
     }
 
+    public Dokumentbehandlingstatus getDokumentbehandlingstatus() {
+        return dokumentbehandlingstatus;
+    }
+
     public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG}
+
+    ;
+
+    public enum Dokumentbehandlingstatus {SOKNADSINNSENDING, ETTERSENDING}
 
     ;
 
