@@ -14,6 +14,9 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Produksjonskontekst for webmodulen
+ */
 @Configuration
 public class WebContext {
 

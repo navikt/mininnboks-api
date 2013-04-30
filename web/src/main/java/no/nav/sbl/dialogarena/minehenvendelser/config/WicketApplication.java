@@ -21,7 +21,9 @@ import javax.inject.Inject;
 
 import static no.nav.modig.frontend.FrontendModules.ALL;
 
-
+/**
+ * Kontekst for wicket
+ */
 public class WicketApplication extends WebApplication {
 
     @Inject

@@ -16,6 +16,9 @@ import org.springframework.context.annotation.Profile;
 import javax.xml.namespace.QName;
 import java.net.URL;
 
+/**
+ * Hovedprofil for produksjonsapplikasjonskonteksten
+ */
 @Profile("default")
 @Configuration
 @Import({WebContext.class})
