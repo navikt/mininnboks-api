@@ -7,6 +7,6 @@ public class AktoerIdSecurityContext implements AktoerIdService {
 
     @Override
     public String getAktoerId() {
-        return "svein";
+        return "***REMOVED***";
     }
 }

@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="henvendelse" resourceRoot="" soapui-version="4.5.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="OppdatereHenvendelsesBehandlingServiceSoapBinding" type="wsdl" bindingName="{http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1}OppdatereHenvendelsesBehandlingServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8081/henvendelse/services/oppdatere/v1?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8081/henvendelse/services/oppdatere/v1?wsdl"><con:part><con:url>http://localhost:8081/henvendelse/services/oppdatere/v1?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="OppdatereHenvendelsesBehandlingService" targetNamespace="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+<con:soapui-project activeEnvironment="Default" name="henvendelse" resourceRoot="" soapui-version="3.6.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="OppdatereHenvendelsesBehandlingServiceSoapBinding" type="wsdl" bindingName="{http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1}OppdatereHenvendelsesBehandlingServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1?wsdl"><con:part><con:url>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="OppdatereHenvendelsesBehandlingService" targetNamespace="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
   <wsdl:types>
     <xs:schema targetNamespace="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon">
       <xs:import namespace="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon"/>
       <xs:element name="avbrytHenvendelse" type="tns:avbrytHenvendelse"/>
+      <xs:element name="avbrytHenvendelseResponse" type="tns:avbrytHenvendelseResponse"/>
       <xs:element name="oppdaterBrukerBehandling" type="tns:oppdaterBrukerBehandling"/>
+      <xs:element name="oppdaterBrukerBehandlingFault">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="oppdaterBrukerBehandlingFault" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="oppdaterBrukerBehandlingResponse" type="tns:oppdaterBrukerBehandlingResponse"/>
       <xs:element name="oppdaterDokumentForventning" type="tns:oppdaterDokumentForventning"/>
       <xs:element name="oppdaterDokumentForventningBeskrivelse" type="tns:oppdaterDokumentForventningBeskrivelse"/>
@@ -26,8 +34,8 @@
       <xs:element name="slettDokumentResponse" type="tns:slettDokumentResponse"/>
       <xs:complexType name="oppdaterBrukerBehandling">
         <xs:sequence>
-          <xs:element minOccurs="0" name="behandlingsId" type="xs:string"/>
-          <xs:element minOccurs="0" name="aktorId" type="xs:string"/>
+          <xs:element name="behandlingsId" type="xs:string"/>
+          <xs:element name="aktorId" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="oppdaterBrukerBehandlingResponse">
@@ -35,7 +43,7 @@
       </xs:complexType>
       <xs:complexType name="slettDokument">
         <xs:sequence>
-          <xs:element minOccurs="0" name="dokumentId" type="xs:long"/>
+          <xs:element name="dokumentId" type="xs:long"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="slettDokumentResponse">
@@ -43,7 +51,7 @@
       </xs:complexType>
       <xs:complexType name="sendHenvendelse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="behandlingsId" type="xs:string"/>
+          <xs:element name="behandlingsId" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="sendHenvendelseResponse">
@@ -53,7 +61,7 @@
       </xs:complexType>
       <xs:complexType name="oppdaterDokumentForventningBeskrivelse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="dokumentForventningId" type="xs:long"/>
+          <xs:element name="dokumentForventningId" type="xs:long"/>
           <xs:element minOccurs="0" name="beskrivelse" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
@@ -62,8 +70,8 @@
       </xs:complexType>
       <xs:complexType name="opprettDokumentForventning">
         <xs:sequence>
-          <xs:element minOccurs="0" name="dokumentForventning" type="ns1:dokumentForventning"/>
-          <xs:element minOccurs="0" name="behandlingsId" type="xs:string"/>
+          <xs:element name="dokumentForventning" type="ns1:dokumentForventning"/>
+          <xs:element name="behandlingsId" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="opprettDokumentForventningResponse">
@@ -83,8 +91,8 @@
       </xs:complexType>
       <xs:complexType name="oppdaterDokumentForventning">
         <xs:sequence>
-          <xs:element minOccurs="0" name="dokumentForventningId" type="xs:long"/>
-          <xs:element minOccurs="0" name="innsendingsValg" type="ns1:innsendingsValg"/>
+          <xs:element name="dokumentForventningId" type="xs:long"/>
+          <xs:element name="innsendingsValg" type="ns1:innsendingsValg"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="oppdaterDokumentForventningResponse">
@@ -92,7 +100,7 @@
       </xs:complexType>
       <xs:complexType name="slettDokumentForventning">
         <xs:sequence>
-          <xs:element minOccurs="0" name="dokumentForventningId" type="xs:long"/>
+          <xs:element name="dokumentForventningId" type="xs:long"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="slettDokumentForventningResponse">
@@ -100,12 +108,16 @@
       </xs:complexType>
       <xs:complexType name="avbrytHenvendelse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="behandlingsId" type="xs:string"/>
+          <xs:element name="behandlingsId" type="xs:string"/>
         </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="avbrytHenvendelseResponse">
+        <xs:sequence/>
       </xs:complexType>
       <xs:complexType name="opprettDokumentBehandling">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="dokumentForventninger" nillable="true" type="ns1:dokumentForventning"/>
+          <xs:element default="DOKUMENT_BEHANDLING" minOccurs="0" name="type" type="ns1:brukerBehandlingType"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="opprettDokumentBehandlingResponse">
@@ -115,8 +127,8 @@
       </xs:complexType>
       <xs:complexType name="opprettDokument">
         <xs:sequence>
-          <xs:element minOccurs="0" name="dokument" type="ns1:dokument"/>
-          <xs:element minOccurs="0" name="dokumentForventningId" type="xs:long"/>
+          <xs:element name="dokument" type="ns1:dokument"/>
+          <xs:element name="dokumentForventningId" type="xs:long"/>
           <xs:element minOccurs="0" name="behandlingsId" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
@@ -183,12 +195,17 @@
           <xs:element name="status" type="tns:behandlingsstatus"/>
           <xs:element name="sistEndret" type="xs:dateTime"/>
           <xs:element minOccurs="0" name="innsendtDato" type="xs:dateTime"/>
-          <xs:element name="dokumentForventningOppsummeringer" type="tns:dokumentForventningOppsummeringer"/>
+          <xs:element name="dokumentForventninger" type="tns:dokumentForventninger"/>
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="dokumentForventningOppsummeringer">
+      <xs:complexType name="dokumentForventninger">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="dokumentForventningOppsummering" type="tns:dokumentForventningOppsummering"/>
+          <xs:element maxOccurs="unbounded" name="dokumentForventning" type="tns:dokumentForventning"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pingResponse">
+        <xs:sequence>
+          <xs:element name="return" type="xs:boolean"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="dokumentForventningOppsummering">
@@ -199,9 +216,21 @@
           <xs:element minOccurs="0" name="friTekst" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="pingResponse">
+      <xs:complexType name="brukerBehandlingOppsummering">
         <xs:sequence>
-          <xs:element name="return" type="xs:boolean"/>
+          <xs:element name="behandlingsId" type="xs:string"/>
+          <xs:element name="hovedskjemaId" type="xs:string"/>
+          <xs:element name="brukerBehandlingType" type="tns:brukerBehandlingType"/>
+          <xs:element name="dokumentbehandlingType" type="tns:dokumentbehandlingType"/>
+          <xs:element name="status" type="tns:behandlingsstatus"/>
+          <xs:element name="sistEndret" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="innsendtDato" type="xs:dateTime"/>
+          <xs:element name="dokumentForventningOppsummeringer" type="tns:dokumentForventningOppsummeringer"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="dokumentForventningOppsummeringer">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="dokumentForventningOppsummering" type="tns:dokumentForventningOppsummering"/>
         </xs:sequence>
       </xs:complexType>
       <xs:simpleType name="innsendingsValg">
@@ -212,17 +241,18 @@
           <xs:enumeration value="SEND_I_POST"/>
           <xs:enumeration value="SENDES_AV_ANDRE"/>
           <xs:enumeration value="SENDES_IKKE"/>
+          <xs:enumeration value="INNSENDT"/>
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType name="brukerBehandlingType">
         <xs:restriction base="xs:string">
           <xs:enumeration value="DOKUMENT_BEHANDLING"/>
+          <xs:enumeration value="DOKUMENT_ETTERSENDING"/>
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType name="dokumentbehandlingType">
         <xs:restriction base="xs:string">
           <xs:enumeration value="SOKNADSINNSENDING"/>
-          <xs:enumeration value="ETTERSENDING"/>
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType name="behandlingsstatus">
@@ -262,6 +292,9 @@
   </wsdl:message>
   <wsdl:message name="sendHenvendelse">
     <wsdl:part element="tns:sendHenvendelse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="avbrytHenvendelseResponse">
+    <wsdl:part element="tns:avbrytHenvendelseResponse" name="parameters"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="slettDokumentForventningResponse">
     <wsdl:part element="tns:slettDokumentForventningResponse" name="parameters"></wsdl:part>
@@ -331,6 +364,7 @@
     </wsdl:operation>
     <wsdl:operation name="avbrytHenvendelse">
       <wsdl:input message="tns:avbrytHenvendelse" name="avbrytHenvendelse"></wsdl:input>
+      <wsdl:output message="tns:avbrytHenvendelseResponse" name="avbrytHenvendelseResponse"></wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="opprettDokumentBehandling">
       <wsdl:input message="tns:opprettDokumentBehandling" name="opprettDokumentBehandling"></wsdl:input>
@@ -411,6 +445,9 @@
       <wsdl:input name="avbrytHenvendelse">
         <soap:body use="literal"/>
       </wsdl:input>
+      <wsdl:output name="avbrytHenvendelseResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="slettDokumentForventning">
       <soap:operation soapAction="" style="document"/>
@@ -442,10 +479,10 @@
   </wsdl:binding>
   <wsdl:service name="OppdatereHenvendelsesBehandlingService">
     <wsdl:port binding="tns:OppdatereHenvendelsesBehandlingServiceSoapBinding" name="OppdatereHenvendelsesBehandlingPort">
-      <soap:address location="http://localhost:8081/henvendelse/services/oppdatere/v1"/>
+      <soap:address location="http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/oppdatere/v1</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="avbrytHenvendelse" bindingOperationName="avbrytHenvendelse" type="One-Way" inputName="avbrytHenvendelse" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="avbrytHenvendelse" bindingOperationName="avbrytHenvendelse" type="Request-Response" inputName="avbrytHenvendelse" sendsAttachments="false" anonymous="optional" outputName="avbrytHenvendelseResponse" receivesAttachments="false"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header/>
    <soapenv:Body>
       <v1:avbrytHenvendelse>
@@ -453,7 +490,7 @@
          <behandlingsId>?</behandlingsId>
       </v1:avbrytHenvendelse>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/avbrytHenvendelse"/></con:call></con:operation><con:operation isOneWay="false" action="" name="oppdaterBrukerBehandling" bindingOperationName="oppdaterBrukerBehandling" type="Request-Response" outputName="oppdaterBrukerBehandlingResponse" inputName="oppdaterBrukerBehandling" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/avbrytHenvendelse"/></con:call></con:operation><con:operation isOneWay="false" action="" name="oppdaterBrukerBehandling" bindingOperationName="oppdaterBrukerBehandling" type="Request-Response" outputName="oppdaterBrukerBehandlingResponse" inputName="oppdaterBrukerBehandling" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header>
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
            <saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema" ID="1231231231231231321" IssueInstant="2013-03-20T14:25:04.100Z" Version="2.0"><saml2:Issuer>dokumentinnsending</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI="#1231231231231231321"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="xs"/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>J9TmtdknZ/Ro0H98vHdIVXGQG6Y=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>cXQRf0APJLNweCCl0hHvayg/gDZOunzJpxFwke/FvIdeYE/AT35/CeQIFgEUR3gEdM7qun6OcjEtGd6yXlF/Rr3JA05QkdcdRNUAqUaI9+/vjgdynB++cL8lVKfEuwhpSiiu6fWcXScLye4m6m8aefnxp0F1Arb0tY2/FKyWRHapISPRMqf4gIil9CIs0y3+PplVxJPVvZC3QPedhaZJ6AOLj3a3zwy2ndsZS4U2/JE/UJJYaHbC4L4VJ/VM2Efk7UKS+/hsWOQwO9B8Avj7xsqxmdXl43/C0PkEUDOtob9kIBijOWVYtZ7Z4rw+U05RCTxRak7kfQ5HJ6SI9mz3SQ==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIGdTCCBV2gAwIBAgIKFYRkaQAAAAAByTANBgkqhkiG9w0BAQUFADBSMRUwEwYKCZImiZPyLGQB
@@ -497,7 +534,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <aktorId>jens</aktorId>
       </v1:oppdaterBrukerBehandling>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/oppdaterBrukerBehandling"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="oppdaterDokumentForventning" bindingOperationName="oppdaterDokumentForventning" type="Request-Response" outputName="oppdaterDokumentForventningResponse" inputName="oppdaterDokumentForventning" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/oppdaterBrukerBehandling"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="oppdaterDokumentForventning" bindingOperationName="oppdaterDokumentForventning" type="Request-Response" outputName="oppdaterDokumentForventningResponse" inputName="oppdaterDokumentForventning" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header/>
    <soapenv:Body>
       <v1:oppdaterDokumentForventning>
@@ -507,7 +544,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <innsendingsValg>?</innsendingsValg>
       </v1:oppdaterDokumentForventning>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/oppdaterDokumentForventning"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="oppdaterDokumentForventningBeskrivelse" bindingOperationName="oppdaterDokumentForventningBeskrivelse" type="Request-Response" outputName="oppdaterDokumentForventningBeskrivelseResponse" inputName="oppdaterDokumentForventningBeskrivelse" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/oppdaterDokumentForventning"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="oppdaterDokumentForventningBeskrivelse" bindingOperationName="oppdaterDokumentForventningBeskrivelse" type="Request-Response" outputName="oppdaterDokumentForventningBeskrivelseResponse" inputName="oppdaterDokumentForventningBeskrivelse" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header/>
    <soapenv:Body>
       <v1:oppdaterDokumentForventningBeskrivelse>
@@ -517,7 +554,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <beskrivelse>?</beskrivelse>
       </v1:oppdaterDokumentForventningBeskrivelse>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/oppdaterDokumentForventningBeskrivelse"/></con:call></con:operation><con:operation isOneWay="false" action="" name="opprettDokument" bindingOperationName="opprettDokument" type="Request-Response" outputName="opprettDokumentResponse" inputName="opprettDokument" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/oppdaterDokumentForventningBeskrivelse"/></con:call></con:operation><con:operation isOneWay="false" action="" name="opprettDokument" bindingOperationName="opprettDokument" type="Request-Response" outputName="opprettDokumentResponse" inputName="opprettDokument" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header/>
    <soapenv:Body>
       <v1:opprettDokument>
@@ -537,7 +574,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <behandlingsId>?</behandlingsId>
       </v1:opprettDokument>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/opprettDokument"/></con:call></con:operation><con:operation isOneWay="false" action="" name="opprettDokumentBehandling" bindingOperationName="opprettDokumentBehandling" type="Request-Response" outputName="opprettDokumentBehandlingResponse" inputName="opprettDokumentBehandling" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/opprettDokument"/></con:call></con:operation><con:operation isOneWay="false" action="" name="opprettDokumentBehandling" bindingOperationName="opprettDokumentBehandling" type="Request-Response" outputName="opprettDokumentBehandlingResponse" inputName="opprettDokumentBehandling" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header>
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
            <saml2:Assertion ID="1231231231231231321" IssueInstant="2013-03-20T14:25:04.100Z" Version="2.0" xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema"><saml2:Issuer>dokumentinnsending</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI="#1231231231231231321"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces PrefixList="xs" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>J9TmtdknZ/Ro0H98vHdIVXGQG6Y=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>cXQRf0APJLNweCCl0hHvayg/gDZOunzJpxFwke/FvIdeYE/AT35/CeQIFgEUR3gEdM7qun6OcjEtGd6yXlF/Rr3JA05QkdcdRNUAqUaI9+/vjgdynB++cL8lVKfEuwhpSiiu6fWcXScLye4m6m8aefnxp0F1Arb0tY2/FKyWRHapISPRMqf4gIil9CIs0y3+PplVxJPVvZC3QPedhaZJ6AOLj3a3zwy2ndsZS4U2/JE/UJJYaHbC4L4VJ/VM2Efk7UKS+/hsWOQwO9B8Avj7xsqxmdXl43/C0PkEUDOtob9kIBijOWVYtZ7Z4rw+U05RCTxRak7kfQ5HJ6SI9mz3SQ==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIGdTCCBV2gAwIBAgIKFYRkaQAAAAAByTANBgkqhkiG9w0BAQUFADBSMRUwEwYKCZImiZPyLGQB
@@ -575,16 +612,18 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
  </soapenv:Header>
    <soapenv:Body>
       <v1:opprettDokumentBehandling>
-
-      <!--Zero or more repetitions:-->
          <dokumentForventninger>
+
             <kodeverkId>ja</kodeverkId>
+
             <innsendingsValg>IKKE_VALGT</innsendingsValg>
             <hovedskjema>true</hovedskjema>
          </dokumentForventninger>
+         <!--Optional:-->
+         <type>DOKUMENT_BEHANDLING</type>
       </v1:opprettDokumentBehandling>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/opprettDokumentBehandling"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="opprettDokumentForventning" bindingOperationName="opprettDokumentForventning" type="Request-Response" outputName="opprettDokumentForventningResponse" inputName="opprettDokumentForventning" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/opprettDokumentBehandling"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="opprettDokumentForventning" bindingOperationName="opprettDokumentForventning" type="Request-Response" outputName="opprettDokumentForventningResponse" inputName="opprettDokumentForventning" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header/>
    <soapenv:Body>
       <v1:opprettDokumentForventning>
@@ -605,7 +644,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <behandlingsId>?</behandlingsId>
       </v1:opprettDokumentForventning>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/opprettDokumentForventning"/></con:call></con:operation><con:operation isOneWay="false" action="" name="opprettElektroniskSamtykke" bindingOperationName="opprettElektroniskSamtykke" type="Request-Response" outputName="opprettElektroniskSamtykkeResponse" inputName="opprettElektroniskSamtykke" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/opprettDokumentForventning"/></con:call></con:operation><con:operation isOneWay="false" action="" name="opprettElektroniskSamtykke" bindingOperationName="opprettElektroniskSamtykke" type="Request-Response" outputName="opprettElektroniskSamtykkeResponse" inputName="opprettElektroniskSamtykke" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header>
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
            <saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema" ID="1231231231231231321" IssueInstant="2013-03-20T14:25:04.100Z" Version="2.0"><saml2:Issuer>dokumentinnsending</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI="#1231231231231231321"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="xs"/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>J9TmtdknZ/Ro0H98vHdIVXGQG6Y=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>cXQRf0APJLNweCCl0hHvayg/gDZOunzJpxFwke/FvIdeYE/AT35/CeQIFgEUR3gEdM7qun6OcjEtGd6yXlF/Rr3JA05QkdcdRNUAqUaI9+/vjgdynB++cL8lVKfEuwhpSiiu6fWcXScLye4m6m8aefnxp0F1Arb0tY2/FKyWRHapISPRMqf4gIil9CIs0y3+PplVxJPVvZC3QPedhaZJ6AOLj3a3zwy2ndsZS4U2/JE/UJJYaHbC4L4VJ/VM2Efk7UKS+/hsWOQwO9B8Avj7xsqxmdXl43/C0PkEUDOtob9kIBijOWVYtZ7Z4rw+U05RCTxRak7kfQ5HJ6SI9mz3SQ==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIGdTCCBV2gAwIBAgIKFYRkaQAAAAAByTANBgkqhkiG9w0BAQUFADBSMRUwEwYKCZImiZPyLGQB
@@ -646,7 +685,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <behandlingsId>DA01-000-000-002</behandlingsId>
       </v1:opprettElektroniskSamtykke>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/opprettElektroniskSamtykke"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="sendHenvendelse" bindingOperationName="sendHenvendelse" type="Request-Response" outputName="sendHenvendelseResponse" inputName="sendHenvendelse" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/opprettElektroniskSamtykke"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="sendHenvendelse" bindingOperationName="sendHenvendelse" type="Request-Response" outputName="sendHenvendelseResponse" inputName="sendHenvendelse" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header>
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
            <saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema" ID="1231231231231231321" IssueInstant="2013-03-20T14:25:04.100Z" Version="2.0"><saml2:Issuer>dokumentinnsending</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI="#1231231231231231321"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="xs"/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>J9TmtdknZ/Ro0H98vHdIVXGQG6Y=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>cXQRf0APJLNweCCl0hHvayg/gDZOunzJpxFwke/FvIdeYE/AT35/CeQIFgEUR3gEdM7qun6OcjEtGd6yXlF/Rr3JA05QkdcdRNUAqUaI9+/vjgdynB++cL8lVKfEuwhpSiiu6fWcXScLye4m6m8aefnxp0F1Arb0tY2/FKyWRHapISPRMqf4gIil9CIs0y3+PplVxJPVvZC3QPedhaZJ6AOLj3a3zwy2ndsZS4U2/JE/UJJYaHbC4L4VJ/VM2Efk7UKS+/hsWOQwO9B8Avj7xsqxmdXl43/C0PkEUDOtob9kIBijOWVYtZ7Z4rw+U05RCTxRak7kfQ5HJ6SI9mz3SQ==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIGdTCCBV2gAwIBAgIKFYRkaQAAAAAByTANBgkqhkiG9w0BAQUFADBSMRUwEwYKCZImiZPyLGQB
@@ -688,7 +727,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <behandlingsId>DA01-000-000-002</behandlingsId>
       </v1:sendHenvendelse>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/sendHenvendelse"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="slettDokument" bindingOperationName="slettDokument" type="Request-Response" outputName="slettDokumentResponse" inputName="slettDokument" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/sendHenvendelse"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="slettDokument" bindingOperationName="slettDokument" type="Request-Response" outputName="slettDokumentResponse" inputName="slettDokument" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header/>
    <soapenv:Body>
       <v1:slettDokument>
@@ -696,7 +735,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <dokumentId>?</dokumentId>
       </v1:slettDokument>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/slettDokument"/></con:call></con:operation><con:operation isOneWay="false" action="" name="slettDokumentForventning" bindingOperationName="slettDokumentForventning" type="Request-Response" outputName="slettDokumentForventningResponse" inputName="slettDokumentForventning" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/slettDokument"/></con:call></con:operation><con:operation isOneWay="false" action="" name="slettDokumentForventning" bindingOperationName="slettDokumentForventning" type="Request-Response" outputName="slettDokumentForventningResponse" inputName="slettDokumentForventning" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header/>
    <soapenv:Body>
       <v1:slettDokumentForventning>
@@ -704,10 +743,12 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <dokumentForventningId>?</dokumentForventningId>
       </v1:slettDokumentForventning>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/slettDokumentForventning"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="HenvendelsesBehandlingServiceSoapBinding" type="wsdl" bindingName="{http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1}HenvendelsesBehandlingServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8081/henvendelse/services/informasjon/v1?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8081/henvendelse/services/informasjon/v1?wsdl"><con:part><con:url>http://localhost:8081/henvendelse/services/informasjon/v1?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="HenvendelsesBehandlingService" targetNamespace="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1/OppdatereHenvendelsesBehandlingPortType/slettDokumentForventning"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="HenvendelsesBehandlingServiceSoapBinding" type="wsdl" bindingName="{http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1}HenvendelsesBehandlingServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1?wsdl"><con:part><con:url>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="HenvendelsesBehandlingService" targetNamespace="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
   <wsdl:types>
-    <xs:schema targetNamespace="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon">
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon">
       <xs:import namespace="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon"/>
+      <xs:element name="hentBrukerBehandling" type="tns:hentBrukerBehandling"/>
+      <xs:element name="hentBrukerBehandlingResponse" type="tns:hentBrukerBehandlingResponse"/>
       <xs:element name="hentBrukerBehandlinger" type="tns:hentBrukerBehandlinger"/>
       <xs:element name="hentBrukerBehandlingerResponse" type="tns:hentBrukerBehandlingerResponse"/>
       <xs:element name="hentDokument" type="tns:hentDokument"/>
@@ -716,14 +757,14 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
       <xs:element name="hentDokumentResponse" type="tns:hentDokumentResponse"/>
       <xs:element name="ping" type="tns:ping"/>
       <xs:element name="pingResponse" type="tns:pingResponse"/>
-      <xs:complexType name="hentDokument">
+      <xs:complexType name="hentBrukerBehandling">
         <xs:sequence>
-          <xs:element minOccurs="0" name="dokumentId" type="xs:long"/>
+          <xs:element name="behandlingsId" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="hentDokumentResponse">
+      <xs:complexType name="hentBrukerBehandlingResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="dokument" type="ns1:dokument"/>
+          <xs:element minOccurs="0" name="brukerBehandling" type="ns1:brukerBehandling"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType final="extension restriction" name="dateTime">
@@ -750,6 +791,26 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
       <xs:complexType abstract="true" name="abstractInstant">
         <xs:sequence/>
       </xs:complexType>
+      <xs:complexType name="hentBrukerBehandlinger">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="aktorId" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="hentBrukerBehandlingerResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="brukerBehandlinger" nillable="true" type="ns1:brukerBehandlingOppsummering"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="hentDokument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="dokumentId" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="hentDokumentResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="dokument" type="ns1:dokument"/>
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="ping">
         <xs:sequence/>
       </xs:complexType>
@@ -758,19 +819,9 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
           <xs:element name="return" type="xs:boolean"/>
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="hentBrukerBehandlinger">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="aktorId" type="xs:string"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="hentBrukerBehandlingerResponse">
-        <xs:sequence>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="brukerBehandlinger" nillable="true" type="ns1:brukerBehandling"/>
-        </xs:sequence>
-      </xs:complexType>
       <xs:complexType name="hentDokumentForventninger">
         <xs:sequence>
-          <xs:element minOccurs="0" name="behandlingsId" type="xs:string"/>
+          <xs:element name="behandlingsId" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="hentDokumentForventningerResponse">
@@ -782,15 +833,34 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
     <xs:schema targetNamespace="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:tns="http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon">
       <xs:import namespace="http://www.w3.org/2005/05/xmlmime"/>
       <xs:element name="bb" type="tns:brukerBehandling"/>
-      <xs:complexType name="dokument">
+      <xs:complexType name="brukerBehandling">
         <xs:sequence>
-          <xs:element name="id" type="xs:long"/>
-          <xs:element minOccurs="0" name="filnavn" type="xs:string"/>
-          <xs:element minOccurs="0" name="innhold" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
-          <xs:element minOccurs="0" name="opplastetDato" type="xs:dateTime"/>
+          <xs:element name="behandlingsId" type="xs:string"/>
+          <xs:element name="hovedskjemaId" type="xs:string"/>
+          <xs:element name="brukerBehandlingType" type="tns:brukerBehandlingType"/>
+          <xs:element name="dokumentbehandlingType" type="tns:dokumentbehandlingType"/>
+          <xs:element name="status" type="tns:behandlingsstatus"/>
+          <xs:element name="sistEndret" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="innsendtDato" type="xs:dateTime"/>
+          <xs:element name="dokumentForventninger" type="tns:dokumentForventninger"/>
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="brukerBehandling">
+      <xs:complexType name="dokumentForventninger">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="dokumentForventning" type="tns:dokumentForventning"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="dokumentForventning">
+        <xs:sequence>
+          <xs:element name="id" type="xs:long"/>
+          <xs:element minOccurs="0" name="dokumentId" type="xs:long"/>
+          <xs:element minOccurs="0" name="kodeverkId" type="xs:string"/>
+          <xs:element minOccurs="0" name="innsendingsValg" type="tns:innsendingsValg"/>
+          <xs:element name="hovedskjema" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="friTekst" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="brukerBehandlingOppsummering">
         <xs:sequence>
           <xs:element name="behandlingsId" type="xs:string"/>
           <xs:element name="hovedskjemaId" type="xs:string"/>
@@ -815,14 +885,12 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
           <xs:element minOccurs="0" name="friTekst" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="dokumentForventning">
+      <xs:complexType name="dokument">
         <xs:sequence>
           <xs:element name="id" type="xs:long"/>
-          <xs:element minOccurs="0" name="dokumentId" type="xs:long"/>
-          <xs:element minOccurs="0" name="kodeverkId" type="xs:string"/>
-          <xs:element minOccurs="0" name="innsendingsValg" type="tns:innsendingsValg"/>
-          <xs:element name="hovedskjema" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="friTekst" type="xs:string"/>
+          <xs:element minOccurs="0" name="filnavn" type="xs:string"/>
+          <xs:element minOccurs="0" name="innhold" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+          <xs:element minOccurs="0" name="opplastetDato" type="xs:dateTime"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="ping">
@@ -836,12 +904,12 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
       <xs:simpleType name="brukerBehandlingType">
         <xs:restriction base="xs:string">
           <xs:enumeration value="DOKUMENT_BEHANDLING"/>
+          <xs:enumeration value="DOKUMENT_ETTERSENDING"/>
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType name="dokumentbehandlingType">
         <xs:restriction base="xs:string">
           <xs:enumeration value="SOKNADSINNSENDING"/>
-          <xs:enumeration value="ETTERSENDING"/>
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType name="behandlingsstatus">
@@ -858,6 +926,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
           <xs:enumeration value="SEND_I_POST"/>
           <xs:enumeration value="SENDES_AV_ANDRE"/>
           <xs:enumeration value="SENDES_IKKE"/>
+          <xs:enumeration value="INNSENDT"/>
         </xs:restriction>
       </xs:simpleType>
     </xs:schema>
@@ -868,11 +937,17 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
   <wsdl:message name="hentDokument">
     <wsdl:part element="tns:hentDokument" name="parameters"></wsdl:part>
   </wsdl:message>
+  <wsdl:message name="hentBrukerBehandling">
+    <wsdl:part element="tns:hentBrukerBehandling" name="parameters"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="hentBrukerBehandlinger">
     <wsdl:part element="tns:hentBrukerBehandlinger" name="parameters"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="pingResponse">
     <wsdl:part element="tns:pingResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="hentBrukerBehandlingResponse">
+    <wsdl:part element="tns:hentBrukerBehandlingResponse" name="parameters"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="hentDokumentForventninger">
     <wsdl:part element="tns:hentDokumentForventninger" name="parameters"></wsdl:part>
@@ -880,13 +955,21 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
   <wsdl:message name="ping">
     <wsdl:part element="tns:ping" name="parameters"></wsdl:part>
   </wsdl:message>
-  <wsdl:message name="hentBrukerBehandlingerResponse">
-    <wsdl:part element="tns:hentBrukerBehandlingerResponse" name="parameters"></wsdl:part>
-  </wsdl:message>
   <wsdl:message name="hentDokumentResponse">
     <wsdl:part element="tns:hentDokumentResponse" name="parameters"></wsdl:part>
   </wsdl:message>
+  <wsdl:message name="hentBrukerBehandlingerResponse">
+    <wsdl:part element="tns:hentBrukerBehandlingerResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
   <wsdl:portType name="HenvendelsesBehandlingPortType">
+    <wsdl:operation name="hentBrukerBehandling">
+      <wsdl:input message="tns:hentBrukerBehandling" name="hentBrukerBehandling"></wsdl:input>
+      <wsdl:output message="tns:hentBrukerBehandlingResponse" name="hentBrukerBehandlingResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="hentBrukerBehandlinger">
+      <wsdl:input message="tns:hentBrukerBehandlinger" name="hentBrukerBehandlinger"></wsdl:input>
+      <wsdl:output message="tns:hentBrukerBehandlingerResponse" name="hentBrukerBehandlingerResponse"></wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="hentDokument">
       <wsdl:input message="tns:hentDokument" name="hentDokument"></wsdl:input>
       <wsdl:output message="tns:hentDokumentResponse" name="hentDokumentResponse"></wsdl:output>
@@ -895,10 +978,6 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
       <wsdl:input message="tns:ping" name="ping"></wsdl:input>
       <wsdl:output message="tns:pingResponse" name="pingResponse"></wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="hentBrukerBehandlinger">
-      <wsdl:input message="tns:hentBrukerBehandlinger" name="hentBrukerBehandlinger"></wsdl:input>
-      <wsdl:output message="tns:hentBrukerBehandlingerResponse" name="hentBrukerBehandlingerResponse"></wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="hentDokumentForventninger">
       <wsdl:input message="tns:hentDokumentForventninger" name="hentDokumentForventninger"></wsdl:input>
       <wsdl:output message="tns:hentDokumentForventningerResponse" name="hentDokumentForventningerResponse"></wsdl:output>
@@ -906,12 +985,12 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
   </wsdl:portType>
   <wsdl:binding name="HenvendelsesBehandlingServiceSoapBinding" type="tns:HenvendelsesBehandlingPortType">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="hentDokument">
+    <wsdl:operation name="hentBrukerBehandling">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="hentDokument">
+      <wsdl:input name="hentBrukerBehandling">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="hentDokumentResponse">
+      <wsdl:output name="hentBrukerBehandlingResponse">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -921,6 +1000,15 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="hentBrukerBehandlingerResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="hentDokument">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="hentDokument">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="hentDokumentResponse">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -945,10 +1033,10 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
   </wsdl:binding>
   <wsdl:service name="HenvendelsesBehandlingService">
     <wsdl:port binding="tns:HenvendelsesBehandlingServiceSoapBinding" name="HenvendelsesBehandlingPort">
-      <soap:address location="http://localhost:8081/henvendelse/services/informasjon/v1"/>
+      <soap:address location="http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/informasjon/v1</con:endpoint><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/informasjon/v1</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="hentBrukerBehandlinger" bindingOperationName="hentBrukerBehandlinger" type="Request-Response" outputName="hentBrukerBehandlingerResponse" inputName="hentBrukerBehandlinger" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/informasjon/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/informasjon/v1</con:endpoint><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1</con:endpoint><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="hentBrukerBehandlinger" bindingOperationName="hentBrukerBehandlinger" type="Request-Response" outputName="hentBrukerBehandlingerResponse" inputName="hentBrukerBehandlinger" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
    <soapenv:Header>
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
            <saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema" ID="1231231231231231321" IssueInstant="2013-03-20T14:25:04.100Z" Version="2.0"><saml2:Issuer>dokumentinnsending</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI="#1231231231231231321"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="xs"/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>J9TmtdknZ/Ro0H98vHdIVXGQG6Y=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>cXQRf0APJLNweCCl0hHvayg/gDZOunzJpxFwke/FvIdeYE/AT35/CeQIFgEUR3gEdM7qun6OcjEtGd6yXlF/Rr3JA05QkdcdRNUAqUaI9+/vjgdynB++cL8lVKfEuwhpSiiu6fWcXScLye4m6m8aefnxp0F1Arb0tY2/FKyWRHapISPRMqf4gIil9CIs0y3+PplVxJPVvZC3QPedhaZJ6AOLj3a3zwy2ndsZS4U2/JE/UJJYaHbC4L4VJ/VM2Efk7UKS+/hsWOQwO9B8Avj7xsqxmdXl43/C0PkEUDOtob9kIBijOWVYtZ7Z4rw+U05RCTxRak7kfQ5HJ6SI9mz3SQ==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIGdTCCBV2gAwIBAgIKFYRkaQAAAAAByTANBgkqhkiG9w0BAQUFADBSMRUwEwYKCZImiZPyLGQB
@@ -990,7 +1078,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <aktorId>Marte</aktorId>
       </v1:hentBrukerBehandlinger>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1/HenvendelsesBehandlingPortType/hentBrukerBehandlinger"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="hentDokument" bindingOperationName="hentDokument" type="Request-Response" outputName="hentDokumentResponse" inputName="hentDokument" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/informasjon/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1/HenvendelsesBehandlingPortType/hentBrukerBehandlinger"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="hentDokument" bindingOperationName="hentDokument" type="Request-Response" outputName="hentDokumentResponse" inputName="hentDokument" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
    <soapenv:Header/>
    <soapenv:Body>
       <v1:hentDokument>
@@ -998,7 +1086,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <dokumentId>?</dokumentId>
       </v1:hentDokument>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1/HenvendelsesBehandlingPortType/hentDokument"/></con:call></con:operation><con:operation isOneWay="false" action="" name="hentDokumentForventninger" bindingOperationName="hentDokumentForventninger" type="Request-Response" outputName="hentDokumentForventningerResponse" inputName="hentDokumentForventninger" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/informasjon/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1/HenvendelsesBehandlingPortType/hentDokument"/></con:call></con:operation><con:operation isOneWay="false" action="" name="hentDokumentForventninger" bindingOperationName="hentDokumentForventninger" type="Request-Response" outputName="hentDokumentForventningerResponse" inputName="hentDokumentForventninger" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
    <soapenv:Header>
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
            <saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema" ID="1231231231231231321" IssueInstant="2013-03-20T14:25:04.100Z" Version="2.0"><saml2:Issuer>dokumentinnsending</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI="#1231231231231231321"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="xs"/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>J9TmtdknZ/Ro0H98vHdIVXGQG6Y=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>cXQRf0APJLNweCCl0hHvayg/gDZOunzJpxFwke/FvIdeYE/AT35/CeQIFgEUR3gEdM7qun6OcjEtGd6yXlF/Rr3JA05QkdcdRNUAqUaI9+/vjgdynB++cL8lVKfEuwhpSiiu6fWcXScLye4m6m8aefnxp0F1Arb0tY2/FKyWRHapISPRMqf4gIil9CIs0y3+PplVxJPVvZC3QPedhaZJ6AOLj3a3zwy2ndsZS4U2/JE/UJJYaHbC4L4VJ/VM2Efk7UKS+/hsWOQwO9B8Avj7xsqxmdXl43/C0PkEUDOtob9kIBijOWVYtZ7Z4rw+U05RCTxRak7kfQ5HJ6SI9mz3SQ==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIGdTCCBV2gAwIBAgIKFYRkaQAAAAAByTANBgkqhkiG9w0BAQUFADBSMRUwEwYKCZImiZPyLGQB
@@ -1040,12 +1128,19 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <behandlingsId>DA01-000-000-002</behandlingsId>
       </v1:hentDokumentForventninger>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1/HenvendelsesBehandlingPortType/hentDokumentForventninger"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="ping" bindingOperationName="ping" type="Request-Response" outputName="pingResponse" inputName="ping" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://e34jbsl00065.devillo.no:8080/henvendelse/services/informasjon/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1/HenvendelsesBehandlingPortType/hentDokumentForventninger"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="ping" bindingOperationName="ping" type="Request-Response" outputName="pingResponse" inputName="ping" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
    <soapenv:Header/>
    <soapenv:Body>
       <v1:ping/>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1/HenvendelsesBehandlingPortType/ping"/></con:call></con:operation></con:interface><con:testSuite name="Test: Henvendelse"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="OpprettTestData" searchProperties="true" id="c16c9848-e85d-4d84-94cf-04d058d7f623"><con:settings/><con:testStep type="request" name="OpprettDokumentBehandling"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>OppdatereHenvendelsesBehandlingServiceSoapBinding</con:interface><con:operation>opprettDokumentBehandling</con:operation><con:request name="OpprettDokumentBehandling"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1/HenvendelsesBehandlingPortType/ping"/></con:call></con:operation><con:operation isOneWay="false" action="" name="hentBrukerBehandling" bindingOperationName="hentBrukerBehandling" type="Request-Response" outputName="hentBrukerBehandlingResponse" inputName="hentBrukerBehandling" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <v1:hentBrukerBehandling>
+         <behandlingsId>?</behandlingsId>
+      </v1:hentBrukerBehandling>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1/HenvendelsesBehandlingPortType/hentBrukerBehandling"/></con:call></con:operation></con:interface><con:testSuite name="Test: Henvendelse"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="OpprettTestData" searchProperties="true" id="c16c9848-e85d-4d84-94cf-04d058d7f623"><con:settings/><con:testStep type="request" name="OpprettDokumentBehandling"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>OppdatereHenvendelsesBehandlingServiceSoapBinding</con:interface><con:operation>opprettDokumentBehandling</con:operation><con:request name="OpprettDokumentBehandling"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header>
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
            <saml2:Assertion ID="1231231231231231321" IssueInstant="2013-03-20T14:25:04.100Z" Version="2.0" xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema"><saml2:Issuer>dokumentinnsending</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI="#1231231231231231321"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces PrefixList="xs" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>J9TmtdknZ/Ro0H98vHdIVXGQG6Y=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>cXQRf0APJLNweCCl0hHvayg/gDZOunzJpxFwke/FvIdeYE/AT35/CeQIFgEUR3gEdM7qun6OcjEtGd6yXlF/Rr3JA05QkdcdRNUAqUaI9+/vjgdynB++cL8lVKfEuwhpSiiu6fWcXScLye4m6m8aefnxp0F1Arb0tY2/FKyWRHapISPRMqf4gIil9CIs0y3+PplVxJPVvZC3QPedhaZJ6AOLj3a3zwy2ndsZS4U2/JE/UJJYaHbC4L4VJ/VM2Efk7UKS+/hsWOQwO9B8Avj7xsqxmdXl43/C0PkEUDOtob9kIBijOWVYtZ7Z4rw+U05RCTxRak7kfQ5HJ6SI9mz3SQ==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIGdTCCBV2gAwIBAgIKFYRkaQAAAAAByTANBgkqhkiG9w0BAQUFADBSMRUwEwYKCZImiZPyLGQB
@@ -1083,9 +1178,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
  </soapenv:Header>
    <soapenv:Body>
       <v1:opprettDokumentBehandling>
-
-      <!--Zero or more repetitions:-->
-         <dokumentForventninger>
+	<dokumentForventninger>
             <kodeverkId>ja</kodeverkId>
             <innsendingsValg>IKKE_VALGT</innsendingsValg>
             <hovedskjema>true</hovedskjema>
@@ -1100,9 +1193,10 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
             <innsendingsValg>IKKE_VALGT</innsendingsValg>
             <hovedskjema>false</hovedskjema>
          </dokumentForventninger>
+         <type>DOKUMENT_BEHANDLING</type>
       </v1:opprettDokumentBehandling>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="transfer" name="BehandlingsId-transfer"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" useXQuery="false" entitize="false" transferChildNodes="false"><con:name>behandlingsid</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>OpprettDokumentBehandling</con:sourceStep><con:sourcePath>//behandlingsId</con:sourcePath><con:targetType>behandlingsId</con:targetType><con:targetStep>#TestCase#</con:targetStep><con:targetPath/></con:transfers></con:config></con:testStep><con:testStep type="request" name="OppdaterBrukerbehandling"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>OppdatereHenvendelsesBehandlingServiceSoapBinding</con:interface><con:operation>oppdaterBrukerBehandling</con:operation><con:request name="OppdaterBrukerbehandling"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/oppdatere/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="transfer" name="BehandlingsId-transfer"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" useXQuery="false" entitize="false" transferChildNodes="false"><con:name>behandlingsid</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>OpprettDokumentBehandling</con:sourceStep><con:sourcePath>//behandlingsId</con:sourcePath><con:targetType>behandlingsId</con:targetType><con:targetStep>#TestCase#</con:targetStep><con:targetPath/></con:transfers></con:config></con:testStep><con:testStep type="request" name="OppdaterBrukerbehandling"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>OppdatereHenvendelsesBehandlingServiceSoapBinding</con:interface><con:operation>oppdaterBrukerBehandling</con:operation><con:request name="OppdaterBrukerbehandling"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/OppdatereHenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/oppdaterehenvendelsesbehandling/v1">
    <soapenv:Header>
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
            <saml2:Assertion ID="1231231231231231321" IssueInstant="2013-03-20T14:25:04.100Z" Version="2.0" xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema"><saml2:Issuer>dokumentinnsending</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI="#1231231231231231321"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces PrefixList="xs" xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>J9TmtdknZ/Ro0H98vHdIVXGQG6Y=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>cXQRf0APJLNweCCl0hHvayg/gDZOunzJpxFwke/FvIdeYE/AT35/CeQIFgEUR3gEdM7qun6OcjEtGd6yXlF/Rr3JA05QkdcdRNUAqUaI9+/vjgdynB++cL8lVKfEuwhpSiiu6fWcXScLye4m6m8aefnxp0F1Arb0tY2/FKyWRHapISPRMqf4gIil9CIs0y3+PplVxJPVvZC3QPedhaZJ6AOLj3a3zwy2ndsZS4U2/JE/UJJYaHbC4L4VJ/VM2Efk7UKS+/hsWOQwO9B8Avj7xsqxmdXl43/C0PkEUDOtob9kIBijOWVYtZ7Z4rw+U05RCTxRak7kfQ5HJ6SI9mz3SQ==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIGdTCCBV2gAwIBAgIKFYRkaQAAAAAByTANBgkqhkiG9w0BAQUFADBSMRUwEwYKCZImiZPyLGQB
@@ -1146,7 +1240,7 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <aktorId>${#TestCase#aktorId}</aktorId>
       </v1:oppdaterBrukerBehandling>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="HentBrukerbehandling"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>HenvendelsesBehandlingServiceSoapBinding</con:interface><con:operation>hentBrukerBehandlinger</con:operation><con:request name="HentBrukerbehandling"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/informasjon/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="HentBrukerbehandling"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>HenvendelsesBehandlingServiceSoapBinding</con:interface><con:operation>hentBrukerBehandlinger</con:operation><con:request name="HentBrukerbehandling"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://d26jbsl00007.test.local:8080/henvendelse/services/domene.BrukerDialog/HenvendelsesBehandlingService_v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1">
    <soapenv:Header>
 <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
            <saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema" ID="1231231231231231321" IssueInstant="2013-03-20T14:25:04.100Z" Version="2.0"><saml2:Issuer>dokumentinnsending</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI="#1231231231231231321"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="xs"/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>J9TmtdknZ/Ro0H98vHdIVXGQG6Y=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>cXQRf0APJLNweCCl0hHvayg/gDZOunzJpxFwke/FvIdeYE/AT35/CeQIFgEUR3gEdM7qun6OcjEtGd6yXlF/Rr3JA05QkdcdRNUAqUaI9+/vjgdynB++cL8lVKfEuwhpSiiu6fWcXScLye4m6m8aefnxp0F1Arb0tY2/FKyWRHapISPRMqf4gIil9CIs0y3+PplVxJPVvZC3QPedhaZJ6AOLj3a3zwy2ndsZS4U2/JE/UJJYaHbC4L4VJ/VM2Efk7UKS+/hsWOQwO9B8Avj7xsqxmdXl43/C0PkEUDOtob9kIBijOWVYtZ7Z4rw+U05RCTxRak7kfQ5HJ6SI9mz3SQ==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIGdTCCBV2gAwIBAgIKFYRkaQAAAAAByTANBgkqhkiG9w0BAQUFADBSMRUwEwYKCZImiZPyLGQB
@@ -1188,4 +1282,4 @@ iXn/Vg==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Su
          <aktorId>${#TestCase#aktorId}</aktorId>
       </v1:hentBrukerBehandlinger>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>${#TestCase#behandlingsId}</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>aktorId</con:name><con:value>jens</con:value></con:property><con:property><con:name>behandlingsId</con:name><con:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DA01-000-200-003</con:value></con:property><con:property><con:name>behandlingsId2</con:name><con:value/></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>${#TestCase#behandlingsId}</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>aktorId</con:name><con:value>***REMOVED***</con:value></con:property><con:property><con:name>behandlingsId</con:name><con:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">DA01-000-000-005</con:value></con:property><con:property><con:name>behandlingsId2</con:name><con:value/></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/></con:soapui-project>

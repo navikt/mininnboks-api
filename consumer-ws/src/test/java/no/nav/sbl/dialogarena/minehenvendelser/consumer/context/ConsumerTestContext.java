@@ -43,7 +43,7 @@ public class ConsumerTestContext {
     @Bean
     public MockData mockData() {
         MockData mockData = new MockData();
-        mockData.addResponse("svein", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createUnderArbeidBehandling()));
+        mockData.addResponse("***REMOVED***", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createUnderArbeidBehandling()));
         return mockData;
     }
 

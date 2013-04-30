@@ -7,7 +7,7 @@ public class AktoerIdDummy implements AktoerIdService {
 
     @Override
     public String getAktoerId() {
-        return aktoerId == null ? "svein" : aktoerId;
+        return aktoerId == null ? "***REMOVED***" : aktoerId;
     }
 
     public void setAktoerId(String aktoerId) {

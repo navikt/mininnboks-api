@@ -30,8 +30,8 @@ public class ConsumerIntegrationTest {
 
     @Test
     public void shouldIntegrateWithHenvendelserViaWebService() {
-        mockdata.addResponse("svein", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling()));
-        List<Behandling> behandlingList = service.hentBehandlinger("svein");
+        mockdata.addResponse("***REMOVED***", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling()));
+        List<Behandling> behandlingList = service.hentBehandlinger("***REMOVED***");
         assertNotNull(behandlingList);
         assertThat(behandlingList.size(), equalTo(1));
     }

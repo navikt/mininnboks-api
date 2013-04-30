@@ -30,7 +30,7 @@ public final class StartJetty {
 
     public static MockData createMockData() {
         MockData mockdata = new MockData();
-        mockdata.addResponse("svein", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createUnderArbeidBehandling()));
+        mockdata.addResponse("***REMOVED***", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createUnderArbeidBehandling()));
         return mockdata;
     }
 
