@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
+import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
@@ -36,20 +37,19 @@ public class HomePage extends BasePage {
     @Inject
     private BehandlingService behandlingService;
 
+    @Inject
+    private AktoerIdService aktoerIdService;
+
     public HomePage() {
         IModel<List<Behandling>> model = new LoadableDetachableModel<List<Behandling>>() {
             @Override
             protected List<Behandling> load() {
-                return behandlingService.hentBehandlinger(hentAktorId());
+                return behandlingService.hentBehandlinger(aktoerIdService.getAktoerId());
             }
         };
         add(
                 createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
                 createFerdigView(new BehandlingerLDM(model, FERDIG)));
-    }
-
-    private String hentAktorId() {
-        return "svein";
     }
 
     private PropertyListView<Behandling> createFerdigView(final IModel<List<Behandling>> ferdig) {

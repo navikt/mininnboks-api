@@ -1,6 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.security.ws.SecurityContextOutInterceptor;
+import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdSecurityContext;
+import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
@@ -46,6 +48,11 @@ public class ProductionApplicationContext {
 
         HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
         return henvendelsesBehandlingPortType;
+    }
+
+    @Bean
+    public AktoerIdService aktoerIdService() {
+        return new AktoerIdSecurityContext();
     }
 
 }

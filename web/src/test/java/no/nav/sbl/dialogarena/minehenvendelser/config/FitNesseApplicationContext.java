@@ -11,6 +11,7 @@ import java.util.Locale;
 @Import(value = {ApplicationContext.class})
 @PropertySource({"/environment-test.properties"})
 public class FitNesseApplicationContext {
+
     @Inject
     private WicketApplication application;
 
