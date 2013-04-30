@@ -24,8 +24,6 @@ public class WebContext {
     @Value("${minehenvendelser.cms.url}")
     private String cmsBaseUrl;
 
-
-
     @Bean
     public ValueRetriever siteContentRetriever() throws URISyntaxException {
         Map<String, URI> uris = new HashMap<>();

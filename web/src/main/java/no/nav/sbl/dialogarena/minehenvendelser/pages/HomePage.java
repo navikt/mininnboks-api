@@ -49,8 +49,6 @@ public class HomePage extends BasePage {
     }
 
     private String hentAktorId() {
-//        StringValue aktorId = getRequest().getQueryParameters().getParameterValue("aktorId");
-//        return aktorId.toString();
         return "svein";
     }
 

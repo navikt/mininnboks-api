@@ -19,7 +19,7 @@ import java.net.URL;
 @Profile("default")
 @Configuration
 @Import({WebContext.class})
-public class ProductionApplicationContext implements SystemConfiguration {
+public class ProductionApplicationContext {
 
     @Value("${henvendelser.ws.url}")
     protected URL endpoint;
