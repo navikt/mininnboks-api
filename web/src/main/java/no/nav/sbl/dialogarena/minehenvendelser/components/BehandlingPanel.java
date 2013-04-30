@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.KodeverkOppslag;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
@@ -30,9 +30,9 @@ public class BehandlingPanel extends Panel {
     private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
     private CmsContentRetriever innholdsTekster;
-    private KodeverkOppslag kodeverkOppslag;
+    private KodeverkService kodeverkOppslag;
 
-    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriever innholdsTekster, KodeverkOppslag kodeverkOppslag) {
+    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriever innholdsTekster, KodeverkService kodeverkOppslag) {
         super(id, model);
         this.model = model;
         this.behandling = behandling;

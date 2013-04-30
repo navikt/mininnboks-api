@@ -5,6 +5,8 @@ import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdSecurityContext;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServicePort;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -32,6 +34,11 @@ public class ProductionApplicationContext {
     @Bean
     public BehandlingService behandlingService() {
         return new BehandlingsServicePort();
+    }
+
+    @Bean
+    public KodeverkService kodeverkService(){
+        return new KodeverkServicePort();
     }
 
     @Bean

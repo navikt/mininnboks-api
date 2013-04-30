@@ -9,8 +9,8 @@ import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdDummy;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.config.FitNesseApplicationContext;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.KodeverkOppslag;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitInnsendtBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitPaabegyntBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
@@ -39,7 +39,7 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     @Inject
     private FluentWicketTester<WicketApplication> wicketTester;
     @Inject
-    private KodeverkOppslag kodeverkOppslag;
+    private KodeverkService kodeverkService;
     @Inject
     private AktoerIdService aktoerIdService;
 
@@ -71,7 +71,7 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     }
 
     public Fixture tabellForKodeverk() {
-        return new TabellForKodeverk(kodeverkOppslag);
+        return new TabellForKodeverk(kodeverkService);
     }
 
     public Fixture avklaringer() {

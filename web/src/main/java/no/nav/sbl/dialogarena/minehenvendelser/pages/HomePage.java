@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.KodeverkOppslag;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
@@ -36,7 +36,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 public class HomePage extends BasePage {
 
     @Inject
-    protected KodeverkOppslag kodeverkOppslag;
+    protected KodeverkService kodeverkOppslag;
     @Inject
     private BehandlingService behandlingService;
     @Inject
