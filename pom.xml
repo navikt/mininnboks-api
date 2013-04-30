@@ -248,6 +248,12 @@
             </dependency>
 
             <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.5</version>
+            </dependency>
+
+            <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
@@ -388,6 +394,7 @@
             </dependency>
 
             <!-- Test dependencies -->
+
             <dependency>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-wicket-test</artifactId>

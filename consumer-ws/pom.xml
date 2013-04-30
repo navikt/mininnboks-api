@@ -24,7 +24,6 @@
             <artifactId>modig-content</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-core</artifactId>
