@@ -281,16 +281,6 @@
             <version>2.5</version>
         </dependency>
 
-		<!-- Test dependency -->
-
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>minehenvendelser-consumer-ws</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-			<type>test-jar</type>
-		</dependency>
-
 	</dependencies>
 
 	<build>
