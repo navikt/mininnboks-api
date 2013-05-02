@@ -68,7 +68,7 @@
     height: 100px;
     text-align: center;
     vertical-align: middle;
-    background: url(../../img/logo.png) no-repeat center center;
+    background: url(../img/logo.png) no-repeat center center;
 }
 /* midlertidig css for meny - ferdig */
 
@@ -148,23 +148,23 @@
 }
 
 .under {
-    background: url(../../img/under-dark.png) no-repeat bottom center;
+    background: url(../img/under-dark.png) no-repeat bottom center;
     padding-bottom: 12px;
     margin-bottom: 12px !important;
 }
 
 .under.ikon-roed {
-    background-image: url(../../img/under-dark.png), url(../../img/sirkel-roed.png);
+    background-image: url(../img/sirkel-roed.png);
     background-position: bottom center, center top;
 }
 
 .under.ikon-blaa {
-    background-image: url(../../img/under-dark.png), url(../../img/sirkel-blaa.png);
+    background-image: url(../img/sirkel-blaa.png);
     background-position: bottom center, center top;
 }
 
 .ikon-graa {
-    background-image: url(../../img/sirkel-graa.png);
+    background-image: url(../img/sirkel-graa.png);
 }
 
 [class*="ikon-"] {
@@ -323,3 +323,153 @@ body {
 }
 
 /* Slutt - tilbakemelding-panel */
+
+/* Homepage css */
+
+h1.senterHeading{
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 17px;
+    font-family: Modus, Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    line-height: 1.2em;
+    margin: 10px 0;
+    color: inherit;
+    display: block;
+}
+
+.panel-mini {
+    padding: 28px 20px 38px;
+    text-align: center;
+}
+
+
+.ikon-oransje{
+    background-image: url(../img/sirkel-oransje.png);
+}
+
+
+ul.valgliste{
+    margin: 20px 0;
+    text-align: left;
+}
+
+.valgliste a{
+    text-decoration: none;
+    color: #333;
+}
+
+
+
+.valgliste a:hover{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+
+.valgliste li{
+    position: relative;
+    list-style: none;
+    padding: 20px;
+    background: #e0e0e0;
+    color: #333;
+    border: 1px solid #eee;
+}
+
+.valgliste li h2 {
+    margin-bottom: 4px;
+}
+
+.valgliste li p {
+    margin: 0;
+}
+
+.valgliste li:hover{
+    background: #00a9e0;
+    color: #fff;
+}
+
+.valgliste li:hover .arrow-right{
+    border-left: 12px solid #ffffff;
+}
+
+.arrow-right  {
+    border-left: 12px solid #00a9e0;
+}
+
+.arrow-right :hover{
+    border-left: 12px solid #ffffff;
+}
+
+.nettobunn{
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.arrow-right{
+    position: absolute;
+    right: 30px;
+    top: 40px;
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-left: 12px solid #00A9E0;
+}
+
+.standalone{
+    float: none;
+    margin: 0 auto;
+    margin-left: 160px;
+}
+
+.span6{
+    width: 570px;
+}
+
+.panel-standard{
+    float: none;
+    max-width: 650px;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 30px auto 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+}
+
+.status {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+}
+
+.pipe {
+    padding: 0 6px;
+    margin: 0 6px;
+}
+
+.ingress {
+    text-align: left;
+    margin: 0 auto;
+    font-size: 17px;
+    line-height: 1.5em;
+}
+.panel-standard header h1 {
+    font-size: 17px;
+}
+
+.panel-standard section h2 {
+    font-size: 17px;
+    text-transform: uppercase;
+    margin: 40px 0 5px;
+}
+
+
+.status section h2{
+    font-size: 17px;
+    text-transform: uppercase;
+}
+

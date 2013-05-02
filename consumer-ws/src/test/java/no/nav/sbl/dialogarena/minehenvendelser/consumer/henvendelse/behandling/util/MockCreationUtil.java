@@ -15,7 +15,8 @@ import java.util.List;
 public class MockCreationUtil {
 
     public static final String KODEVERK_ID_1 = "KODEVERK1";
-    public static final String KODEVERK_ID_2 = "KDOEVERK2";
+    public static final String KODEVERK_ID_2 = "KODEVERK2";
+    public static final String KODEVERK_ID_3 = "KODEVERK3";
 
     public static Dokumentforventning createMock(boolean isHovedskjema, WSInnsendingsValg innsendingsValg) {
         WSDokumentForventningOppsummering wsDokumentForventning = new WSDokumentForventningOppsummering()
@@ -49,7 +50,8 @@ public class MockCreationUtil {
         WSBrukerBehandling wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 01, 01, 01, 01), new DateTime(2013, 01, 01, 01, 01), WSBehandlingsstatus.FERDIG);
         wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
                 createDokumentForventningMock(true, KODEVERK_ID_1, WSInnsendingsValg.LASTET_OPP),
-                createDokumentForventningMock(false, KODEVERK_ID_2, WSInnsendingsValg.LASTET_OPP));
+                createDokumentForventningMock(false, KODEVERK_ID_2, WSInnsendingsValg.LASTET_OPP),
+                createDokumentForventningMock(false, KODEVERK_ID_3, WSInnsendingsValg.SENDES_IKKE));
         return wsBehandlingMock;
     }
 

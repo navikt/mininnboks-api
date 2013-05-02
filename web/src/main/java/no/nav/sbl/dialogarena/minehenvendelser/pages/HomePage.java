@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
 
@@ -53,7 +54,9 @@ public class HomePage extends BasePage {
         };
         add(
                 createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
-                createFerdigView(new BehandlingerLDM(model, FERDIG)));
+                createFerdigView(new BehandlingerLDM(model, FERDIG)) ,
+                new Label("hovedTittel",new ResourceModel("hoved.tittel")),
+                new Label("underArbeidTittel", new ResourceModel("under.arbeid.tittel")));
     }
 
     private PropertyListView<Behandling> createFerdigView(final IModel<List<Behandling>> ferdig) {

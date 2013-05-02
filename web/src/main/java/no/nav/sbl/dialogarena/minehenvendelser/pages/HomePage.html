@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org" lang="no">
 <wicket:head>
-	<title></title>
+    <title></title>
 </wicket:head>
 <wicket:extend>
-	<h1>Dine søknader</h1>
-    PÅBEGYNTE INNSENDINGER
-    <ul>
-		<li wicket:id="behandlingerUnderArbeid">
-			<section>
-				<span wicket:id="tittel">[]</span>
-                <br>
-                <span wicket:id="antall">[]</span>
-				<br>
-                <span wicket:id="sistEndret">[]</span>
-			</section>
-		</li>
-	</ul>
-    <hr style="border-bottom: 1px solid"/>
-	<div >
-		<ul>
-			<li wicket:id="behandlingerFerdig" >
-                <span wicket:id="behandling">[]</span>
-			</li>
-		</ul>
-	</div>
+    <div class="container">
+        <h1 wicket:id="hovedTittel" class="senterHeading">[]</h1>
+
+        <div class="row standalone">
+            <section class="panel-mini span6">
+                <h2 wicket:id="underArbeidTittel" class="ikon-oransje">[]</h2>
+                <ul class="valgliste nettobunn">
+                    <a href="#">
+                        <li wicket:id="behandlingerUnderArbeid">
+                            <h2 wicket:id="tittel">[]</h2>
+
+                            <span wicket:id="antall">[]</span> -
+                            <span wicket:id="sistEndret">[]</span>
+
+                            <div class="arrow-right"></div>
+                        </li>
+                    </a>
+                </ul>
+            </section>
+        </div>
+        <div wicket:id="behandlingerFerdig">
+            <article wicket:id="behandling" class="panel-standard">[]</article>
+        </div>
+    </div>
 </wicket:extend>
 </html>

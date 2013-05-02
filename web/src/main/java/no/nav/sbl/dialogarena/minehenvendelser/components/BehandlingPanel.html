@@ -6,25 +6,22 @@
 <body>
 
 <wicket:panel>
-    <article>
-        <p wicket:id="innsendtDato">[]</p>
-        <p wicket:id="vedlegg">[]</p>
-        <section>
-
-            <h1 wicket:id="tittel">[]</h1>
-
-            <p wicket:id="forTekst">[]</p>
-            <h2 wicket:id="innsendteDokumenterHeader">[]</h2>
-            <ul wicket:id="innsendteDokumenter">
-                <li wicket:id="dokument">[]</li>
-            </ul>
-            <h2 wicket:id="manglendeDokumenterHeader">[]</h2>
-            <ul wicket:id="manglendeDokumenter">
-                <li wicket:id="dokument">[]</li>
-            </ul>
-            <p wicket:id="etterTekst">[]</p>
-        </section>
-    </article>
+    <header>
+        <span class="status" wicket:id="innsendtDato" >[]</span><span class="pipe">|</span><span wicket:id="vedlegg">[]</span>
+        <h1 wicket:id="tittel">[]</h1>
+        <p class="ingress" wicket:id="forTekst">[]</p>
+    </header>
+    <section>
+        <h2 wicket:id="innsendteDokumenterHeader">[]</h2>
+        <ul wicket:id="innsendteDokumenter">
+            <li wicket:id="dokument">[]</li>
+        </ul>
+        <h2 wicket:id="manglendeDokumenterHeader">[]</h2>
+        <ul wicket:id="manglendeDokumenter">
+            <li wicket:id="dokument">[]</li>
+        </ul>
+        <p wicket:id="etterTekst">[]</p>
+    </section>
 </wicket:panel>
 </body>
 </html>

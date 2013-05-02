@@ -57,6 +57,7 @@ public class WicketApplication extends WebApplication {
         mountPage("internal/selftest", SelfTestPage.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         setSpringComponentInjector();
+
     }
 
     protected void setSpringComponentInjector() {
