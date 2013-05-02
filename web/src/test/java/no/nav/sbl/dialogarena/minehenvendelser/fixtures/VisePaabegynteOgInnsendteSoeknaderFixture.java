@@ -127,24 +127,33 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
 
     private List<String> retriveFerdigBehandlingTittel() {
         List<String> tittler = new ArrayList<>();
-        for (Component component : wicketTester.get().components(withId("tittel"))) {
-            tittler.add(component.getDefaultModelObjectAsString());
+        List<Component> behandlingerFerdig = wicketTester.get().components(withId("behandlingerFerdig"));
+        for (Component behandlingFerdig : behandlingerFerdig) {
+            for (Component component : wicketTester.get().components(withId("tittel").and(containedInComponent(equalTo(behandlingFerdig))))) {
+                tittler.add(component.getDefaultModelObjectAsString());
+            }
         }
         return tittler;
     }
 
     private List<String> retriveFerdigInnsendtDato() {
         List<String> innSendtDato = new ArrayList<>();
-        for (Component component : wicketTester.get().components(withId("innsendtDato"))) {
-            innSendtDato.add(component.getDefaultModelObjectAsString());
+        List<Component> behandlingerFerdig = wicketTester.get().components(withId("behandlingerFerdig"));
+        for (Component behandlingFerdig : behandlingerFerdig) {
+            for (Component component : wicketTester.get().components(withId("innsendtDato").and(containedInComponent(equalTo(behandlingFerdig))))) {
+                innSendtDato.add(component.getDefaultModelObjectAsString());
+            }
         }
         return innSendtDato;
     }
 
     private List<String> retriveFerdigAntallVedlegg() {
         List<String> antallVedlegg = new ArrayList<>();
-        for (Component component : wicketTester.get().components(withId("vedlegg"))) {
-            antallVedlegg.add(component.getDefaultModelObjectAsString());
+        List<Component> behandlingerFerdig = wicketTester.get().components(withId("behandlingerFerdig"));
+        for (Component behandlingFerdig : behandlingerFerdig) {
+            for (Component component : wicketTester.get().components(withId("vedlegg").and(containedInComponent(equalTo(behandlingFerdig))))) {
+                antallVedlegg.add(component.getDefaultModelObjectAsString());
+            }
         }
         return antallVedlegg;
     }

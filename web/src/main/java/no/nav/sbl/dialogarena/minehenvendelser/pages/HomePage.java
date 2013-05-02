@@ -82,7 +82,7 @@ public class HomePage extends BasePage {
             private String getTittel(Behandling item) {
                 if (item.getDokumentbehandlingstatus() == Behandling.Dokumentbehandlingstatus.ETTERSENDING) {
                     // TODO: Flytt "Ettersending på" tekst til property-fil eller CMS
-                    return "Ettersending på "+ kodeverkOppslag.hentKodeverk(item.getTittel());
+                    return "Ettersending til "+ kodeverkOppslag.hentKodeverk(item.getTittel());
                 }
                 return kodeverkOppslag.hentKodeverk(item.getTittel());
             }
