@@ -41,9 +41,7 @@ public class WicketApplication extends WebApplication {
 
     @Override
     protected void init() {
-
         super.init();
-
         new FrontendConfigurator()
                 .withModules(UNDERSCORE, BOOTSTRAP_CORE, BOOTSTRAP_BUTTON, BOOTSTRAP_LABELS_AND_BADGES, BOOTSTRAP_NAVIGATION, BOOTSTRAP_TOOLTIP, BOOTSTRAP_ACCORDION)
                 .addMetas(
@@ -54,13 +52,10 @@ public class WicketApplication extends WebApplication {
                 .addScripts(BasePage.JS_RESOURCE)
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
-
         new ApplicationSettingsConfig().configure(this);
 
         mountPage("internal/selftest", SelfTestPage.class);
-
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
-
         setSpringComponentInjector();
     }
 
