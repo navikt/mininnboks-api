@@ -22,6 +22,7 @@ public final class StartJetty {
     public static void main(String[] args) throws Exception {
 
         System.setProperty("spring.profiles.active", "test");
+        System.setProperty("wicket.configuration", "development");
         SystemProperties.load("/environment-test.properties");
 
         Jetty jetty = usingWar(WEBAPP_SOURCE).at("minehenvendelser").port(PORT).buildJetty();
