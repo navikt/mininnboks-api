@@ -8,8 +8,11 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.B
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServicePort;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
+import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
+import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
-import javax.xml.namespace.QName;
 import java.net.URL;
 
 /**
@@ -27,6 +29,8 @@ import java.net.URL;
 @Configuration
 @Import({WebContext.class})
 public class ProductionApplicationContext {
+
+    private static final int WS_CLIENT_TIMEOUT = 10000;
 
     @Value("${henvendelser.ws.url}")
     protected URL endpoint;
@@ -44,8 +48,6 @@ public class ProductionApplicationContext {
     @Bean
     public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
-        proxyFactoryBean.setServiceName(new QName(endpoint.getPath()));
-        proxyFactoryBean.setEndpointName(new QName(endpoint.getPath()));
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
         proxyFactoryBean.setAddress(endpoint.toString());
         proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
@@ -54,6 +56,9 @@ public class ProductionApplicationContext {
         proxyFactoryBean.getOutInterceptors().add(new SecurityContextOutInterceptor());
 
         HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
+        Client client = ClientProxy.getClient(henvendelsesBehandlingPortType);
+        HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
+        httpConduit.getClient().setReceiveTimeout(WS_CLIENT_TIMEOUT);
         return henvendelsesBehandlingPortType;
     }
 

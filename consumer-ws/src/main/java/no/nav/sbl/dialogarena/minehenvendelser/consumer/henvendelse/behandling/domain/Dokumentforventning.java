@@ -76,6 +76,4 @@ public final class Dokumentforventning implements Serializable {
 
     public enum Innsendingsvalg {IKKE_VALGT, SEND_SENERE, LASTET_OPP, SEND_I_POST, SENDES_AV_ANDRE, SENDES_IKKE}
 
-    ;
-
 }

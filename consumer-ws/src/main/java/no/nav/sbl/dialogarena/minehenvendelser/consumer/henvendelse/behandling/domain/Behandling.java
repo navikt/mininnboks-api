@@ -128,10 +128,5 @@ public final class Behandling implements Serializable {
 
     public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG}
 
-    ;
-
     public enum Dokumentbehandlingstatus {SOKNADSINNSENDING, ETTERSENDING}
-
-    ;
-
 }

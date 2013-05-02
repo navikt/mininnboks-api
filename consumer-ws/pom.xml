@@ -187,6 +187,30 @@
             </plugin>
 
             <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-bindings-file</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>bindings.xml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${wsdl.directory}/henvendelse</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
                 <executions>
@@ -207,7 +231,7 @@
                                     <wsdl>${wsdl.directory}/henvendelse/HenvendelsesBehandling.wsdl
                                     </wsdl>
                                     <bindingFiles>
-                                        <bindingFile>src/main/resources/bindings.xml</bindingFile>
+                                        <bindingFile>${wsdl.directory}/henvendelse/bindings.xml</bindingFile>
                                     </bindingFiles>
                                 </wsdlOption>
                             </wsdlOptions>

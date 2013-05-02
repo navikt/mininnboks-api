@@ -15,7 +15,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.webbitserver.WebServer;
 import org.webbitserver.WebServers;
 
-import javax.xml.namespace.QName;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
@@ -60,8 +59,7 @@ public class ConsumerTestContext {
     @Bean
     public HenvendelsesBehandlingPortType jaxWsClientFactoryBean() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
-        proxyFactoryBean.setServiceName(new QName(endpoint.getPath()));
-        proxyFactoryBean.setEndpointName(new QName(endpoint.getPath()));
+        proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
         proxyFactoryBean.setAddress(endpoint.toString());
         return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
     }
