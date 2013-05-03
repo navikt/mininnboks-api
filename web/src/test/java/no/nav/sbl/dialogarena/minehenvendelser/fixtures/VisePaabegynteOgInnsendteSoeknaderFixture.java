@@ -14,7 +14,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitInnsendtBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitPaabegyntBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
-import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +26,7 @@ import java.util.List;
 
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComponent;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
+import static org.apache.commons.lang.StringUtils.join;
 import static org.hamcrest.Matchers.equalTo;
 
 @ContextConfiguration(classes = {FitNesseApplicationContext.class})
@@ -34,12 +34,16 @@ import static org.hamcrest.Matchers.equalTo;
 public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixture {
 
     private static final Logger logger = LoggerFactory.getLogger(VisePaabegynteOgInnsendteSoeknaderFixture.class);
+
     @Inject
     private MockData mockData;
+
     @Inject
     private FluentWicketTester<WicketApplication> wicketTester;
+
     @Inject
     private KodeverkService kodeverkService;
+
     @Inject
     private AktoerIdService aktoerIdService;
 
@@ -51,13 +55,14 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
 
     public Fixture innsendt(String aktoerId) {
         ((AktoerIdDummy) aktoerIdService).setAktoerId(aktoerId);
+        logger.info("interacting with webservicemock, setting up page for innsendt");
         wicketTester.goTo(HomePage.class);
 
-        List<String> antallVedlegg = retriveFerdigAntallVedlegg();
-        List<String> innsendtDato = retriveFerdigInnsendtDato();
-        List<String> behandlingTittler = retriveFerdigBehandlingTittel();
-        List<String> innsendteDokumenter = retriveFerdigInnsendteDokumenter();
-        List<String> manglendeDokumenter = retriveFerdigMangledeDokumenter();
+        List<String> antallVedlegg = retrieveSubComponentsBasedOnFilterString("vedlegg");
+        List<String> innsendtDato = retrieveSubComponentsBasedOnFilterString("innsendtDato");
+        List<String> behandlingTittler = retrieveSubComponentsBasedOnFilterString("tittel");
+        List<String> innsendteDokumenter = retrieveFerdigMangledeOrInnsendteDokumenter("innsendteDokumenter");
+        List<String> manglendeDokumenter = retrieveFerdigMangledeOrInnsendteDokumenter("manglendeDokumenter");
         List<FitInnsendtBehandling> fitInnsendtBehandlinger = convertListToInnsendt(antallVedlegg, innsendtDato, behandlingTittler, innsendteDokumenter, manglendeDokumenter);
 
         return new ArrayFixture(fitInnsendtBehandlinger);
@@ -65,9 +70,9 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
 
     public Fixture paabegynt(String aktoerId) {
         ((AktoerIdDummy) aktoerIdService).setAktoerId(aktoerId);
+        logger.info("interacting with webservicemock, setting up page for paabegynt");
         wicketTester.goTo(HomePage.class);
-        List<FitPaabegyntBehandling> fitInnsendtBehandlinger = retriveUnderArbeidBehandlinger();
-        return new ArrayFixture(fitInnsendtBehandlinger);
+        return new ArrayFixture(retriveUnderArbeidBehandlinger());
     }
 
     public Fixture tabellForKodeverk() {
@@ -78,90 +83,60 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
         return new ToDoList();
     }
 
+    // Helper methods
+
     private List<FitPaabegyntBehandling> retriveUnderArbeidBehandlinger() {
         List<FitPaabegyntBehandling> fitPaabegyntBehandlinger = new ArrayList<>();
-        List<Component> behandlingerUnderArbeid = wicketTester.get().components(withId("behandlingerUnderArbeid"));
-        Component behandlingUnderArbeid = behandlingerUnderArbeid.get(0);
+        Component behandlingUnderArbeid  = wicketTester.get().components(withId("behandlingerUnderArbeid")).get(0);
+
         //Henter ut antall på denne måten da listen med behandlingerUnderArbeid ikke alltid har riktig antall elementer
         int antallBehandlinger = wicketTester.get().components(withId("tittel").and(containedInComponent(equalTo(behandlingUnderArbeid)))).size();
         for (int i = 0; i < antallBehandlinger; i++) {
-            String tittel = retriveTekst("tittel", i, behandlingUnderArbeid);
-            String antall = retriveTekst("antall", i, behandlingUnderArbeid);
-            String sistEndret = retriveTekst("sistEndret", i, behandlingUnderArbeid);
-            fitPaabegyntBehandlinger.add(new FitPaabegyntBehandling(tittel, antall, sistEndret));
+            fitPaabegyntBehandlinger.add(
+                    new FitPaabegyntBehandling(
+                            retrieveTekst("tittel", i, behandlingUnderArbeid),
+                            retrieveTekst("antall", i, behandlingUnderArbeid),
+                            retrieveTekst("sistEndret", i, behandlingUnderArbeid)));
         }
         return fitPaabegyntBehandlinger;
     }
 
-    private String retriveTekst(String id, int i, Component enclosingComponent) {
-        List<Component> components = wicketTester.get().components(withId(id).and(containedInComponent(equalTo(enclosingComponent))));
-        Component component = components.get(i);
-        return component.getDefaultModelObjectAsString();
+    private String retrieveTekst(String id, int i, Component enclosingComponent) {
+        return wicketTester.get().components(withId(id).and(containedInComponent(equalTo(enclosingComponent)))).get(i).getDefaultModelObjectAsString();
     }
 
-    private List<String> retriveFerdigMangledeDokumenter() {
+    private List<String> retrieveFerdigMangledeOrInnsendteDokumenter(String filterString) {
         List<String> manglendeDokumenter = new ArrayList<>();
-        for (Component manglendeDokumenterComponent : wicketTester.get().components(withId("manglendeDokumenter"))) {
-            List<Component> dokumenterComponent = wicketTester.get().components(containedInComponent(equalTo(manglendeDokumenterComponent)).and(withId("dokument")));
+        for (Component component : wicketTester.get().components(withId(filterString))) {
             List<String> doktitler = new ArrayList<>();
-            for (Component component : dokumenterComponent) {
-                doktitler.add(component.getDefaultModelObjectAsString());
+            for (Component subComponent : wicketTester.get().components(containedInComponent(equalTo(component)).and(withId("dokument")))) {
+                doktitler.add(subComponent.getDefaultModelObjectAsString());
             }
-            manglendeDokumenter.add(StringUtils.join(doktitler, ","));
+            manglendeDokumenter.add(join(doktitler, ","));
         }
         return manglendeDokumenter;
     }
 
-    private List<String> retriveFerdigInnsendteDokumenter() {
-        List<String> innsendteDokumenter = new ArrayList<>();
-        for (Component innsendteDokumenterComponent : wicketTester.get().components(withId("innsendteDokumenter"))) {
-            List<Component> dokumenterComponent = wicketTester.get().components(containedInComponent(equalTo(innsendteDokumenterComponent)).and(withId("dokument")));
-            List<String> doktitler = new ArrayList<>();
-            for (Component component : dokumenterComponent) {
-                doktitler.add(component.getDefaultModelObjectAsString());
-            }
-            innsendteDokumenter.add(StringUtils.join(doktitler, ","));
-        }
-        return innsendteDokumenter;
-    }
-
-    private List<String> retriveFerdigBehandlingTittel() {
-        List<String> tittler = new ArrayList<>();
-        List<Component> behandlingerFerdig = wicketTester.get().components(withId("behandlingerFerdig"));
-        for (Component behandlingFerdig : behandlingerFerdig) {
-            for (Component component : wicketTester.get().components(withId("tittel").and(containedInComponent(equalTo(behandlingFerdig))))) {
-                tittler.add(component.getDefaultModelObjectAsString());
+    private List<String> retrieveSubComponentsBasedOnFilterString(String filterString) {
+        List<String> subComponents = new ArrayList<>();
+        for (Component behandlingFerdig : wicketTester.get().components(withId("behandlingerFerdig"))) {
+            for (Component component : wicketTester.get().components(withId(filterString).and(containedInComponent(equalTo(behandlingFerdig))))) {
+                subComponents.add(component.getDefaultModelObjectAsString());
             }
         }
-        return tittler;
-    }
-
-    private List<String> retriveFerdigInnsendtDato() {
-        List<String> innSendtDato = new ArrayList<>();
-        List<Component> behandlingerFerdig = wicketTester.get().components(withId("behandlingerFerdig"));
-        for (Component behandlingFerdig : behandlingerFerdig) {
-            for (Component component : wicketTester.get().components(withId("innsendtDato").and(containedInComponent(equalTo(behandlingFerdig))))) {
-                innSendtDato.add(component.getDefaultModelObjectAsString());
-            }
-        }
-        return innSendtDato;
-    }
-
-    private List<String> retriveFerdigAntallVedlegg() {
-        List<String> antallVedlegg = new ArrayList<>();
-        List<Component> behandlingerFerdig = wicketTester.get().components(withId("behandlingerFerdig"));
-        for (Component behandlingFerdig : behandlingerFerdig) {
-            for (Component component : wicketTester.get().components(withId("vedlegg").and(containedInComponent(equalTo(behandlingFerdig))))) {
-                antallVedlegg.add(component.getDefaultModelObjectAsString());
-            }
-        }
-        return antallVedlegg;
+        return subComponents;
     }
 
     private List<FitInnsendtBehandling> convertListToInnsendt(List<String> antallVedlegg, List<String> innsendtDato, List<String> behandlingTittler, List<String> innsendteDokumenter, List<String> manglendeDokumenter) {
         List<FitInnsendtBehandling> fitInnsendtBehandlinger = new ArrayList<>();
         for (int i = 0; i < antallVedlegg.size(); i++) {
-            fitInnsendtBehandlinger.add(new FitInnsendtBehandling(antallVedlegg.get(i), innsendtDato.get(i), behandlingTittler.get(i), innsendteDokumenter.get(i), manglendeDokumenter.get(i)));
+            fitInnsendtBehandlinger.add(
+                    new FitInnsendtBehandling(
+                            antallVedlegg.get(i),
+                            innsendtDato.get(i),
+                            behandlingTittler.get(i),
+                            innsendteDokumenter.get(i),
+                            manglendeDokumenter.get(i)));
         }
         return fitInnsendtBehandlinger;
     }
