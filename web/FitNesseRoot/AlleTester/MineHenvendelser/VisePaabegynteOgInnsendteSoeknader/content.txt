@@ -1,4 +1,4 @@
-!***> Oppsett
+!***> ppsett
 
 !define TEST_RUNNER {fitlibrary.suite.FitLibraryServer}
 | no.nav.sbl.dialogarena.minehenvendelser.fixtures.VisePaabegynteOgInnsendteSoeknaderFixture |
@@ -51,34 +51,36 @@ Tabell for kodeverk viser hvilke verdier vi forventer å få fra kodeverk
 | kodeForKontantstoette | Søknad om kontantstøtte |
 | kodeForOvergangsstoenad | Stønad om Overgangsstønad |
 
-'''Test på innsendte dokumenter:'''
+'''Test på innsendte dokumenter, skal vises i samme rekkefølge som i tabellen:'''
 
-Bruker har 1 innsendt Dokumentinnsendig. 3 av 4 dokumenter er innsendt
-
-!| Innsendt | ***REMOVED*** |
-| Antall vedlegg | Navn paa behandling | Dato | Innsendte dokumenter | Manglende dokumenter |
-| 2 vedlegg | Søknad om dagpenger | Sendt 19. august 2006, kl 21:27 | Permitteringsvarsel,Arbeidsavtale | Egendef tittel på 25 tegn |
-
-Bruker har 2 innsendte
+Bruker har 1 innsendt Dokumentinnsending. 3 av 4 dokumenter er innsendt:
 
 !| Innsendt | ***REMOVED*** |
-| Antall vedlegg | Navn paa behandling | Dato | Innsendte dokumenter | Manglende dokumenter |
-| 1 vedlegg | Søknad om dagpenger | Sendt 19. september 2008, kl 02:18 | Egendef tittel på 25 tegn | |
-| 1 vedlegg | Søknad om foreldrepenger | Sendt 19. september 2008, kl 02:25 | Inntektsopplysninger | |
+| Navn paa behandling | Antall sendte av totalt antall dokumenter | Dato og tidspunkt  | Innsendte dokumenter | Manglende dokumenter |
+| Søknad om dagpenger | 1 av 2 dokumenter sendt til NAV | 19. august 2006, 21:27  | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Annet: Egendef tittel på 25 tegn |
 
-Bruker har flere innsendte
+Bruker har 2 innsendte Dokumentinnsending:
 
 !| Innsendt | ***REMOVED*** |
-| Dato | Antall vedlegg | Navn paa behandling | Innsendte dokumenter | Manglende dokumenter |
-| Sendt 10. september 2006, kl 02:18 | 1 vedlegg | Søknad om dagpenger | Oppsigelsen min |  |
-| Sendt 12. januar 2008, kl 01:18 | 1 vedlegg | Søknad om foreldrepenger |  Inntektsopplysninger | |
-| Sendt 13. august 2009, kl 02:18 | 0 vedlegg | Søknad om kontantstøtte |  | Dokumentasjon gradert plass |
-| Sendt 11. april 2010, kl 22:18 | 2 vedlegg | Søknad om dagpenger |  Permitteringsvarsel,Oppsigelsen min |  |
-| Sendt 15. september 2011, kl 02:18 | 1 vedlegg | Søknad om foreldrepenger  | Inntektsopplysninger | |
-| Sendt 16. oktober 2012, kl 02:18 | 0 vedlegg | Søknad om kontantstøtte  | | |
-| Sendt 14. desember 2012, kl 01:18 | 1 vedlegg | Søknad om dagpenger |  Oppsigelsen min | |
+| Navn paa behandling | Antall sendte av totalt antall dokumenter |  Dato og tidspunkt  | Innsendte dokumenter | Manglende dokumenter |
+| Søknad om foreldrepenger | 2 av 2 dokumenter sendt til NAV |  19. september 2008, 02:25   | Søknad om foreldrepenger, Inntektsopplysninger | |
+| Søknad om dagpenger | | 2 av 2 dokumenter sendt til NAV 19. september 2008, 02:18 | Søknad om dagpenger, Annet: Egendef tittel på 25 tegn | |
 
-'''Test på påbegynte:'''  Bruker har 2 påbegynte søknader:
+Bruker har flere innsendte Dokumentinnsendinger:
+
+!| Innsendt | ***REMOVED*** |
+| Navn paa behandling | Antall innsendte dokumenter og dato og tidspunkt sendt | Innsendte dokumenter | Manglende dokumenter |
+| Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV 10. september 2006, 02:18 | Søknad om dagpenger,Annet: Oppsigelsen min | |
+| Søknad om foreldrepenger | Sendt 12. januar 2008, kl 01:18 | Søknad om foreldrepenger,Inntektsopplysninger | |
+| Søknad om kontantstøtte | Sendt 13. august 2009, kl 02:18 | Søknad om kontantstøtte | Annet: Dokumentasjon gradert plass |
+| Søknad om dagpenger | Sendt 11. april 2010, kl 22:18 | Søknad om dagpenger,Permitteringsvarsel,Annet: Oppsigelsen min | |
+| Søknad om foreldrepenger | Sendt 15. september 2011, kl 02:18 | Søknad om foreldrepenger,Inntektsopplysninger | |
+| Søknad om kontantstøtte | Sendt 16. oktober 2012, kl 02:18 | Søknad om kontantstøtte | |
+| Søknad om dagpenger | Sendt 14. desember 2012, kl 01:18 | Søknad om dagpenger,Annet: Oppsigelsen min | |
+
+'''Test på påbegynte:'''
+
+Bruker har 2 påbegynte søknader:
 
 !| Paabegynt | ***REMOVED*** |
 | Navn paa behandling | Dato | Antall dokumenter lastet opp |
