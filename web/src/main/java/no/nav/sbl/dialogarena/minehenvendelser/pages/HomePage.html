@@ -6,26 +6,20 @@
 <wicket:extend>
     <div class="container">
         <h1 wicket:id="hovedTittel" class="senterHeading">[]</h1>
-
         <div class="row standalone">
             <section class="panel-mini span6">
-                <h2 wicket:id="underArbeidTittel" class="ikon-oransje">[]</h2>
                 <ul class="valgliste nettobunn">
-                    <a href="#">
                         <li wicket:id="behandlingerUnderArbeid">
                             <h2 wicket:id="tittel">[]</h2>
-
-                            <span wicket:id="antall">[]</span> -
+                            <div class="link-right"><a href=#>Fortsett/slett innsending</a></div>
+                            <!--<span wicket:id="antall">[]</span>-->
                             <span wicket:id="sistEndret">[]</span>
-
-                            <div class="arrow-right"></div>
                         </li>
-                    </a>
                 </ul>
             </section>
         </div>
-        <div wicket:id="behandlingerFerdig">
-            <article wicket:id="behandling" class="panel-standard">[]</article>
+        <div wicket:id="behandlingerFerdig" class="left-mover">
+            <div wicket:id="behandling">[]</div>
         </div>
     </div>
 </wicket:extend>

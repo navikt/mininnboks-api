@@ -326,52 +326,35 @@ body {
 
 /* Homepage css */
 
+/* Ikke innsendte CSS */
+
 h1.senterHeading{
     text-align: center;
     box-sizing: border-box;
-    font-size: 17px;
+    font-size: 38px;
     font-family: Modus, Arial, Helvetica, sans-serif;
     font-weight: 600;
     line-height: 1.2em;
     margin: 10px 0;
-    color: inherit;
+    color: #3A3633;
     display: block;
+    padding-top: 50px;
 }
 
 .panel-mini {
-    padding: 28px 20px 38px;
     text-align: center;
 }
 
-
-.ikon-oransje{
-    background-image: url(../img/sirkel-oransje.png);
-}
-
-
 ul.valgliste{
-    margin: 20px 0;
     text-align: left;
+    background-color: #eeebe4;
+    border:1px solid #cfcbc3;
 }
-
-.valgliste a{
-    text-decoration: none;
-    color: #333;
-}
-
-
-
-.valgliste a:hover{
-    text-decoration: none;
-    color: #ffffff;
-}
-
 
 .valgliste li{
+    margin:  15px;
     position: relative;
     list-style: none;
-    padding: 20px;
-    background: #e0e0e0;
     color: #333;
     border: 1px solid #eee;
 }
@@ -384,66 +367,58 @@ ul.valgliste{
     margin: 0;
 }
 
-.valgliste li:hover{
-    background: #00a9e0;
-    color: #fff;
+.link-right{
+    position: absolute;
+    right: 30px;
+    top: 20px;
 }
 
-.valgliste li:hover .arrow-right{
-    border-left: 12px solid #ffffff;
+.kvittering-link-right{
+    position: absolute;
+    right: 30px;
+    top: 20px;
 }
 
-.arrow-right  {
-    border-left: 12px solid #00a9e0;
-}
-
-.arrow-right :hover{
-    border-left: 12px solid #ffffff;
-}
 
 .nettobunn{
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
 }
 
-.arrow-right{
-    position: absolute;
-    right: 30px;
-    top: 40px;
-    width: 0;
-    height: 0;
-    border-top: 12px solid transparent;
-    border-bottom: 12px solid transparent;
-    border-left: 12px solid #00A9E0;
-}
-
 .standalone{
     float: none;
     margin: 0 auto;
-    margin-left: 160px;
+    margin-left: 50px;
 }
 
 .span6{
-    width: 570px;
+    width: 776px;
 }
+
+/* Slutt ikke innsendte CSS */
 
 .panel-standard{
     float: none;
-    max-width: 650px;
+    max-width: 711px;
     padding-left: 0;
     padding-right: 0;
-    margin: 30px auto 0;
+    margin: 30px 15px 15px 15px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
-    line-height: 20px;
+    line-height: 0px;
     color: #333;
+    background-color: #ffffff;
+    position: relative;
+    -webkit-transition: height 2s;
+    transition: height 2s;
 }
 
 .status {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 20px;
-    color: #333;
+    margin-left: 15px;
+    color: darkgrey;
 }
 
 .pipe {
@@ -453,23 +428,49 @@ ul.valgliste{
 
 .ingress {
     text-align: left;
-    margin: 0 auto;
-    font-size: 17px;
+    font-size: 16px;
     line-height: 1.5em;
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-bottom: 15px;
 }
+
 .panel-standard header h1 {
     font-size: 17px;
+    margin-left: 15px;
+    text-transform: uppercase;
 }
 
 .panel-standard section h2 {
     font-size: 17px;
-    text-transform: uppercase;
-    margin: 40px 0 5px;
+    margin: 10px 15px 5px;
 }
-
 
 .status section h2{
     font-size: 17px;
     text-transform: uppercase;
+    margin-left: 15px;
 }
 
+[class*='innsendt'] {
+    list-style: none;
+}
+.innsendt li:before {
+    content: '✔';
+    padding-right: 5px;
+    color: green;
+}
+
+.ikke-innsendt li:before{
+    content: '✔';
+    padding-right: 5px;
+    color: red;
+}
+
+.left-mover{
+    margin-left: 100px;
+}
+
+.kvittering {
+    display: none;
+}

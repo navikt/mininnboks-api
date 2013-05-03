@@ -55,8 +55,7 @@ public class HomePage extends BasePage {
         add(
                 createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
                 createFerdigView(new BehandlingerLDM(model, FERDIG)) ,
-                new Label("hovedTittel",new ResourceModel("hoved.tittel")),
-                new Label("underArbeidTittel", new ResourceModel("under.arbeid.tittel")));
+                new Label("hovedTittel",new ResourceModel("hoved.tittel")));
     }
 
     private PropertyListView<Behandling> createFerdigView(final IModel<List<Behandling>> ferdig) {
@@ -79,7 +78,6 @@ public class HomePage extends BasePage {
                 Behandling item = listItem.getModelObject();
                 listItem.add(new Label("tittel", getTittel(item)));
                 listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", this, null, item.getSistEndret().toDate())));
-                listItem.add(new Label("antall", new StringResourceModel("antall.dokumenter", this, null, item.getAntallInnsendteDokumenter(), item.getAntallSubDokumenter())));
             }
 
             private String getTittel(Behandling item) {

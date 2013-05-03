@@ -6,22 +6,26 @@
 <body>
 
 <wicket:panel>
-    <header>
-        <span class="status" wicket:id="innsendtDato" >[]</span><span class="pipe">|</span><span wicket:id="vedlegg">[]</span>
-        <h1 wicket:id="tittel">[]</h1>
-        <p class="ingress" wicket:id="forTekst">[]</p>
-    </header>
-    <section>
-        <h2 wicket:id="innsendteDokumenterHeader">[]</h2>
-        <ul wicket:id="innsendteDokumenter">
-            <li wicket:id="dokument">[]</li>
-        </ul>
-        <h2 wicket:id="manglendeDokumenterHeader">[]</h2>
-        <ul wicket:id="manglendeDokumenter">
-            <li wicket:id="dokument">[]</li>
-        </ul>
-        <p wicket:id="etterTekst">[]</p>
-    </section>
+    <article class="panel-standard">
+        <div class="kvittering-link-right"><a href="#">Vis kvittering</a></div>
+        <header>
+            <h1 wicket:id="tittel">[]</h1>
+            <span class="status" wicket:id="innsendtDato">[]</span><span class="pipe">|</span><span wicket:id="vedlegg" class="status">[]</span>
+        </header>
+        <section class="kvittering">
+            <hr/>
+            <p class="ingress" wicket:id="forTekst">[]</p>
+            <h2 wicket:id="innsendteDokumenterHeader">[]</h2>
+            <ul wicket:id="innsendteDokumenter" class="innsendt">
+                <li wicket:id="dokument">[]</li>
+            </ul>
+            <h2 wicket:id="manglendeDokumenterHeader">[]</h2>
+            <ul wicket:id="manglendeDokumenter" class="ikke-innsendt">
+                <li wicket:id="dokument">[]</li>
+            </ul>
+            <p wicket:id="etterTekst" class="ingress">[]</p>
+        </section>
+    </article>
 </wicket:panel>
 </body>
 </html>
