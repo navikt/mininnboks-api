@@ -13,7 +13,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
@@ -46,10 +45,10 @@ public class HomePage extends BasePage {
     @Inject
     private AktoerIdService aktoerIdService;
 
-    private HomePage homePage;
+    private HomePage page;
 
     public HomePage() {
-        homePage = this;
+        page = this;
         IModel<List<Behandling>> model = new LoadableDetachableModel<List<Behandling>>() {
             @Override
             protected List<Behandling> load() {
@@ -81,12 +80,12 @@ public class HomePage extends BasePage {
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
                 listItem.add(getTittel(item));
-                listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", homePage, null, item.getSistEndret().toDate())));
+                listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", page, null, item.getSistEndret().toDate())));
             }
 
             private Label getTittel(Behandling item) {
                 if (item.getDokumentbehandlingstatus() == Behandling.Dokumentbehandlingstatus.ETTERSENDING) {
-                    return new Label("tittel", new StringResourceModel("ettersending.tekst", homePage, null,null, kodeverkOppslag.hentKodeverk(item.getTittel())));
+                    return new Label("tittel", new StringResourceModel("ettersending.tekst", page, null,null, kodeverkOppslag.hentKodeverk(item.getTittel())));
                 }
                 return new Label("tittel", kodeverkOppslag.hentKodeverk(item.getTittel()));
             }
