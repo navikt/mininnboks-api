@@ -474,3 +474,11 @@ ul.valgliste{
 .kvittering {
     display: none;
 }
+
+.kvittering hr{
+    width: 20px;
+    margin-left : 15px;
+    background-color : #333;
+    color: #333;
+    height: 3px;
+}
