@@ -10,13 +10,13 @@
 
 Tabellen, datagrunnlag, viser dataene vi forventer å få fra Henvendelse:
 
-De fire siste kollonnene i tabellen må leses i sammenheng:
+De fire siste kolonnene i tabellen må leses i sammenheng:
 
 KodeverkID viser hvilke dokumenter som er i denne innsendingen.
 
-Innsendingsvalg viser om dokumentene er latet opp, om det ikke sendes og om innsendingsmåte ikke er valgt.
+Innsendingsvalg viser om dokumentene er lastet opp, om det ikke sendes og om innsendingsmåte ikke er valgt.
 
-Hovedskjema viser hvilket dokument som er hovedskjema i innsendingen
+Hovedskjema viser hvilket dokument som er hovedskjema i innsendingen.
 
 Egendef.Tittel viser tittel på vedlegg som er type Annet.
 
@@ -34,11 +34,12 @@ Egendef.Tittel viser tittel på vedlegg som er type Annet.
 | ***REMOVED*** | DA01-000000012 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForForeldrepenger | 2008-01-12T01:18:33+01:00 | 2008-01-12T01:18:33+01:00 | kodeForForeldrepenger ,kodeForInntektsopplysninger | LASTET_OPP,LASTET_OPP | JA, NEI | blank,blank |
 | ***REMOVED*** | DA01-000000011 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForKontantstoette | 2009-08-13T01:18:33+01:00 | 2009-08-13T01:18:33+01:00 | kodeForKontantstoette, kodeForEgetVedlegg | LASTET_OPP, SENDES_IKKE | JA, NEI | blank,Dokumentasjon gradert plass |
 | ***REMOVED*** | DA01-000000013 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForDagpenger | 2012-12-14T01:18:33+01:00 | 2012-12-14T01:18:33+01:00 | kodeForDagpenger, kodeForEgetVedlegg | LASTET_OPP, LASTET_OPP | JA, NEI | blank,Oppsigelsen min |
-| ***REMOVED*** | DA01-000000014 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForForeldrepenger | 2011-09-15T01:18:33+01:00 | 2011-09-15T01:18:33+01:00 | kodeForForeldrepenger ,kodeForInntektsopplysninger | LASTET_OPP, LASTET_OPP | JA, NEI | blank,blank |
+| ***REMOVED*** | DA01-000000014 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForForeldrepenger | 2011-09-15T01:18:33+01:00 | 2011-09-15T01:18:33+01:00 | kodeForForeldrepenger ,kodeForInntektsopplysninger | LASTET_OPP, SENDES_IKKE | JA, NEI | blank,blank |
 | ***REMOVED*** | DA01-000000015 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForKontantstoette | 2012-10-16T01:18:33+01:00 | 2012-10-16T01:18:33+01:00 | kodeForKontantstoette | LASTET_OPP | JA | blank |
-| ***REMOVED*** | DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | UNDER_ARBEID | kodeForForeldrepenger | 2012-09-09T01:18:03+01:00 | | kodeForForeldrepenger , kodeForInntektsopplysninger | IKKE_VALGT, IKKE_VALGT | JA, NEI | blank , blank |
+| ***REMOVED*** | DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | UNDER_ARBEID | kodeForForeldrepenger | 2012-09-09T01:18:03+01:00 | | kodeForInntektsopplysninger | IKKE_VALGT | NEI | blank |
+| ***REMOVED*** | DA01-000000016 | DOKUMENT_BEHANDLING | ETTERSENDING | FERDIG | kodeForKontantstoette | 2012-11-21T01:18:33+01:00 | 2012-11-21T01:18:33+01:00 | kodeForAvtaleOmDeltBosted | LASTET_OPP | NEI | blank |
 
-Tabell for kodeverk viser hvilke verdier vi forventer å få fra kodeverk
+Tabell for kodeverk viser hvilke verdier vi forventer å få fra kodeverk:
 
 !| Tabell for kodeverk |
 | Kodeverk ID | Navn paa dokumentet |
@@ -50,51 +51,67 @@ Tabell for kodeverk viser hvilke verdier vi forventer å få fra kodeverk
 | kodeForInntektsopplysninger | Inntektsopplysninger |
 | kodeForKontantstoette | Søknad om kontantstøtte |
 | kodeForOvergangsstoenad | Stønad om Overgangsstønad |
+| kodeForAvtaleOmDeltBosted | Avtale om delt bosted |
 
-'''Test på innsendte dokumenter, skal vises i samme rekkefølge som i tabellen:'''
+'''Test på innsendte dokumenter, skal vises i samme rekkefølge som i tabellen, dvs nyeste øverst:'''
 
 Bruker har 1 innsendt Dokumentinnsending. 3 av 4 dokumenter er innsendt:
 
 !| Innsendt | ***REMOVED*** |
 | Navn paa behandling | Antall sendte av totalt antall dokumenter | Dato og tidspunkt | Innsendte dokumenter | Manglende dokumenter |
-| Søknad om dagpenger | 1 av 2 dokumenter sendt til NAV | 19. august 2006, 21:27 | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Annet: Egendef tittel på 25 tegn |
+| Søknad om dagpenger | 3 av 4 dokumenter sendt til NAV | 19. august 2006, 21:27 | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Annet: Egendef tittel på 25 tegn |
 
-Bruker har 2 innsendte Dokumentinnsending:
+Bruker har 2 innsendte Dokumentinnsendinger:
 
 !| Innsendt | ***REMOVED*** |
 | Navn paa behandling | Antall sendte av totalt antall dokumenter | Dato og tidspunkt | Innsendte dokumenter | Manglende dokumenter |
 | Søknad om foreldrepenger | 2 av 2 dokumenter sendt til NAV | 19. september 2008, 02:25 | Søknad om foreldrepenger, Inntektsopplysninger | |
 | Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV | 19. september 2008, 02:18 | Søknad om dagpenger, Annet: Egendef tittel på 25 tegn | |
 
-Bruker har flere innsendte Dokumentinnsendinger:
+Bruker har flere innsendte Dokumentinnsendinger og 1 Ettersendelse:
 
-!| Innsendt | ***REMOVED*** | |
-| Navn paa behandling | Antall sendte av totalt antall dokumenter | Dato og tidspunkt | Innsendte dokumenter | Manglende dokumenter |
+!| Innsendt | ***REMOVED*** |
+| Navn paa behandling | Antall sendte av totalt antall dokumenter | Antall innsendte dokumenter og dato og tidspunkt sendt | Innsendte dokumenter | Manglende dokumenter |
+| Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV | 14. desember 2012, 01:18 | Søknad om dagpenger,Annet: Oppsigelsen min | |
+| Ettersendelse til søknad om kontantstøtte | 1 av 1 dokumenter sendt til NAV | 21. november 2012, 02:18 | Avtale om delt bosted | |
+| Søknad om kontantstøtte | 1 av 1 dokumenter sendt til NAV | 16. oktober 2012, 02:18 | Søknad om kontantstøtte | |
+| Søknad om foreldrepenger | 1 av 2 dokumenter sendt til NAV | 15. september 2011, 02:18 | Søknad om foreldrepenge | Inntektsopplysninger |
+| Søknad om dagpenger | 3 av 3 dokumenter sendt til NAV | 11. april 2010, 22:18 | Søknad om dagpenger,Permitteringsvarsel,Annet: Oppsigelsen min | |
+| Søknad om kontantstøtte | 1 av 2 dokumenter sendt til NAV | 13. august 2009, 02:18 | Søknad om kontantstøtte | Annet: Dokumentasjon gradert plass |
+| Søknad om foreldrepenger | 2 av 2 dokumenter sendt til NAV | 12. januar 2008, 01:18 | Søknad om foreldrepenger,Inntektsopplysninger | |
 | Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV | 10. september 2006, 02:18 | Søknad om dagpenger,Annet: Oppsigelsen min | |
-| Søknad om foreldrepenger | 2 av 2 dokumenter sendt til NAV | 12. januar 2008, kl 01:18 | Søknad om foreldrepenger,Inntektsopplysninger | |
-| Søknad om kontantstøtte | 1 av 2 dokumenter sendt til NAV     | 13. august 2009, kl 02:18 | Søknad om kontantstøtte | Annet: Dokumentasjon gradert plass |
-| Søknad om dagpenger | 3 av 3 dokumenter sendt til NAV     | 11. april 2010, kl 22:18 | Søknad om dagpenger,Permitteringsvarsel,Annet: Oppsigelsen min | |
-| Søknad om foreldrepenge | 2 av 2 dokumenter sendt til NAV | 15. september 2011, kl 02:18 | Søknad om foreldrepenger,Inntektsopplysninger | |
-| Søknad om kontantstøtte | 1 av 1 dokumenter sendt til NAV      | 16. oktober 2012, kl 02:18 | Søknad om kontantstøtte | |
-| Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV | 14. desember 2012, kl 01:18 | Søknad om dagpenger,Annet: Oppsigelsen min | |
+
+Bruker har ingen innsendte Dokumentinnsendinger
+
+!| Innsendt | ***REMOVED*** |
+| Navn paa behandling | Antall sendte av totalt antall dokumenter | Antall innsendte dokumenter og dato og tidspunkt sendt | Innsendte dokumenter | Manglende dokumenter |
+| | | | | |
 
 '''Test på påbegynte:'''
+
+Skal sjekke at navn på behandling, riktig tekst og dato og tidspunkt vises
 
 Bruker har 2 påbegynte søknader:
 
 !| Paabegynt | ***REMOVED*** |
-| Navn paa behandling | Dato | Antall dokumenter lastet opp |
-| Søknad om dagpenger | Sist lagret 19. september 2012 kl 02:18 | 0 av 1 dokumenter lastet opp |
-| Søknad om dagpenger | Sist lagret 19. september 2012 kl 02:18 | 1 av 1 dokumenter lastet opp |
+| Navn paa behandling | Tekst | Dato og tidspunkt |
+| Søknad om dagpenger | Sist endret | 19. september 2012 kl 02:18 |
+| Søknad om dagpenger | Sist endret | 19. januar 2010 kl 13:18 |
 
-Bruker har påbegynt Ettersending
+Bruker har påbegynt Ettersending:
 
 !| Paabegynt | ***REMOVED*** |
-| Dato | Navn paa behandling | Antall dokumenter lastet opp |
-| Sist lagret 9. september 2012 kl 02:18 | Ettersending til Søknad om foreldrepenger | 0 av 1 dokumenter lastet opp |
+| Navn paa behandling | Tekst | Dato og tidspunkt |
+| Ettersendelse til Søknad om foreldrepenger | Sist endret | 9. september 2012 kl 02:18 |
+
+Bruker har ingen påbegynte innsendinger:
+
+!| Paabegynt | ***REMOVED*** |
+| Navn paa behandling | Tekst | Dato og tidspunkt |
+| | | |
 
 !| Avklaringer |
 | Denne tabellen kan brukes som en huskeliste for ting som må avklares. Hver linje som ikke har "ok" i siste kolonne vil merkes rødt, slik at man ikke glemmer de | OK |
 | Hvis ettersending - Ettersending + navn på hovedskjema. Hva skal + være (:, -, på, til,komma)? + skal være til (gjennbruker ettersending slik det er i dag) | OK |
 | Hvis ettersending - Hvor får vi navnet på søknaden som ettersending er til, feks Søknad om dagpenger - Avklart med team Grønn/Henvendelse at de sender med hovedkravskjema sin kodeverksid som del av behandlingen | OK |
-| Trenger vi feltet "dokumentbehandlingtype"? | |
+| Trenger vi feltet "dokumentbehandlingtype"? - JA, dette feltet brukes for å skille mellom Dokumentinnsending og Ettersendelse | OK |
