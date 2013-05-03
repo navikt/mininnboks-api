@@ -19,8 +19,10 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigEttersendingBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFitnesseTestData;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidEttersendingBehandling;
 
 @Configuration
 public class ConsumerTestContext {
@@ -43,7 +45,7 @@ public class ConsumerTestContext {
     @Bean
     public MockData mockData() {
         MockData mockData = new MockData();
-        mockData.addResponse("***REMOVED***", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createFerdigBehandling(), createUnderArbeidBehandling()));
+        mockData.addResponse("***REMOVED***", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createFerdigEttersendingBehandling(), createUnderArbeidBehandling(), createUnderArbeidEttersendingBehandling()));
         mockData.addResponse("test", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFitnesseTestData()));
         return mockData;
     }

@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
@@ -45,7 +46,10 @@ public class HomePage extends BasePage {
     @Inject
     private AktoerIdService aktoerIdService;
 
+    private HomePage homePage;
+
     public HomePage() {
+        homePage = this;
         IModel<List<Behandling>> model = new LoadableDetachableModel<List<Behandling>>() {
             @Override
             protected List<Behandling> load() {
@@ -76,16 +80,15 @@ public class HomePage extends BasePage {
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
                 Behandling item = listItem.getModelObject();
-                listItem.add(new Label("tittel", getTittel(item)));
-                listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", this, null, item.getSistEndret().toDate())));
+                listItem.add(getTittel(item));
+                listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", homePage, null, item.getSistEndret().toDate())));
             }
 
-            private String getTittel(Behandling item) {
+            private Label getTittel(Behandling item) {
                 if (item.getDokumentbehandlingstatus() == Behandling.Dokumentbehandlingstatus.ETTERSENDING) {
-                    // TODO: Flytt "Ettersending på" tekst til property-fil eller CMS
-                    return "Ettersending til "+ kodeverkOppslag.hentKodeverk(item.getTittel());
+                    return new Label("tittel", new StringResourceModel("ettersending.tekst", homePage, null,null, kodeverkOppslag.hentKodeverk(item.getTittel())));
                 }
-                return kodeverkOppslag.hentKodeverk(item.getTittel());
+                return new Label("tittel", kodeverkOppslag.hentKodeverk(item.getTittel()));
             }
         };
     }

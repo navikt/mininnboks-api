@@ -73,6 +73,9 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getHeadText() {
+        if(behandling.getDokumentbehandlingstatus() == Behandling.Dokumentbehandlingstatus.ETTERSENDING){
+            return new Label("tittel", new StringResourceModel("ettersending.tekst", this, null, null,kodeverkOppslag.hentKodeverk(behandling.getTittel())));
+        }
         return new Label("tittel", kodeverkOppslag.hentKodeverk(behandling.getTittel()));
     }
 
