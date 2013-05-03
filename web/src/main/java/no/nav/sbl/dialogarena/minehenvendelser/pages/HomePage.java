@@ -16,6 +16,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -47,8 +48,11 @@ public class HomePage extends BasePage {
 
     private HomePage page;
 
-    public HomePage() {
+    public HomePage(PageParameters pageParameters) {
         page = this;
+        if (pageParameters.get("aktoerId") != null) {
+            aktoerIdService.setAktoerId(String.valueOf(pageParameters.get("aktoerId")));
+        }
         IModel<List<Behandling>> model = new LoadableDetachableModel<List<Behandling>>() {
             @Override
             protected List<Behandling> load() {
