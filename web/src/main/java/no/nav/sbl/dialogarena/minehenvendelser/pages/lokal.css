@@ -356,11 +356,6 @@ h1.senterHeading{
     text-align: center;
 }
 
-.valgliste{
-
-
-}
-
 .valgliste li{
     text-align: left;
     margin:  15px 15px 15px 15px;
@@ -370,7 +365,6 @@ h1.senterHeading{
     color: #333;
     background-color: #eeebe4;
     border:1px solid #cfcbc3;
-
 }
 
 .valgliste li h2 {
