@@ -37,7 +37,7 @@ Egendef.Tittel viser tittel på vedlegg som er type Annet.
 | ***REMOVED*** | DA01-000000014 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForForeldrepenger | 2011-09-15T01:18:33+01:00 | 2011-09-15T01:18:33+01:00 | kodeForForeldrepenger ,kodeForInntektsopplysninger | LASTET_OPP, SENDES_IKKE | JA, NEI | blank,blank |
 | ***REMOVED*** | DA01-000000015 | DOKUMENT_BEHANDLING | SOKNADSINNSENDING | FERDIG | kodeForKontantstoette | 2012-10-16T01:18:33+01:00 | 2012-10-16T01:18:33+01:00 | kodeForKontantstoette | LASTET_OPP | JA | blank |
 | ***REMOVED*** | DA01-000000008 | DOKUMENT_BEHANDLING | ETTERSENDING | UNDER_ARBEID | kodeForForeldrepenger | 2012-09-09T01:18:03+01:00 | | kodeForForeldrepenger ,kodeForInntektsopplysninger | IKKE_VALGT, IKKE_VALGT | JA ,NEI | blank ,blank |
-| ***REMOVED*** | DA01-000000016 | DOKUMENT_BEHANDLING | ETTERSENDING | FERDIG | kodeForKontantstoette | 2012-11-21T01:18:33+01:00 | 2012-11-21T01:18:33+01:00 | kodeForKontantstoette, kodeForAvtaleOmDeltBosted |LASTET_OPP, LASTET_OPP | JA,NEI | blank ,blank |
+| ***REMOVED*** | DA01-000000016 | DOKUMENT_BEHANDLING | ETTERSENDING | FERDIG | kodeForKontantstoette | 2012-11-21T01:18:33+01:00 | 2012-11-21T01:18:33+01:00 | kodeForKontantstoette, kodeForAvtaleOmDeltBosted | LASTET_OPP, LASTET_OPP | JA,NEI | blank ,blank |
 
 Tabell for kodeverk viser hvilke verdier vi forventer å få fra kodeverk:
 
@@ -46,7 +46,7 @@ Tabell for kodeverk viser hvilke verdier vi forventer å få fra kodeverk:
 | kodeForDagpenger | Søknad om dagpenger |
 | kodeForPermitteringsvarsel | Permitteringsvarsel |
 | kodeForArbeidsavtale | Arbeidsavtale |
-| kodeForEgetVedlegg | Annet:  |
+| kodeForEgetVedlegg | Annet: |
 | kodeForForeldrepenger | Søknad om foreldrepenger |
 | kodeForInntektsopplysninger | Inntektsopplysninger |
 | kodeForKontantstoette | Søknad om kontantstøtte |
@@ -83,7 +83,7 @@ Bruker har flere innsendte Dokumentinnsendinger og 1 Ettersendelse:
 
 Bruker har ingen innsendte Dokumentinnsendinger
 
-!| Innsendt | ***REMOVED*** |
+!| Innsendt |  ***REMOVED***  |
 | Navn paa behandling | Antall sendte av totalt antall dokumenter | Dato og tidspunkt | Innsendte dokumenter | Manglende dokumenter |
 | | | | | |
 
