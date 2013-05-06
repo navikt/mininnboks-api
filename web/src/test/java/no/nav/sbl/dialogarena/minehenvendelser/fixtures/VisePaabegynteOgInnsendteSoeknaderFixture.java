@@ -28,12 +28,13 @@ import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComp
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
 import static org.apache.commons.lang.StringUtils.join;
 import static org.hamcrest.Matchers.equalTo;
+import static org.slf4j.LoggerFactory.getLogger;
 
 @ContextConfiguration(classes = {FitNesseApplicationContext.class})
 @ActiveProfiles("test")
 public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixture {
 
-    private static final Logger logger = LoggerFactory.getLogger(VisePaabegynteOgInnsendteSoeknaderFixture.class);
+    private static final Logger logger = getLogger(VisePaabegynteOgInnsendteSoeknaderFixture.class);
 
     @Inject
     private MockData mockData;
@@ -83,7 +84,7 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
         return new ToDoList();
     }
 
-    // Helper methods
+    /** Helper methods **/
 
     private List<FitPaabegyntBehandling> retriveUnderArbeidBehandlinger() {
         List<FitPaabegyntBehandling> fitPaabegyntBehandlinger = new ArrayList<>();
