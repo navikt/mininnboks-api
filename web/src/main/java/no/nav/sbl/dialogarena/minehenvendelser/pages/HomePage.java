@@ -6,7 +6,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -21,15 +20,16 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.util.Collections.sort;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus.FERDIG;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus.UNDER_ARBEID;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.ETTERSENDING;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.STATUS;
 
 /**
@@ -40,23 +40,19 @@ public class HomePage extends BasePage {
 
     @Inject
     protected KodeverkService kodeverkOppslag;
+
     @Inject
     private BehandlingService behandlingService;
+
     @Inject
     private AktoerIdService aktoerIdService;
+
     private HomePage page;
 
     public HomePage(PageParameters pageParameters) {
         page = this;
-        if (pageParameters.get("aktoerId") != null) {
-            aktoerIdService.setAktoerId(String.valueOf(pageParameters.get("aktoerId")));
-        }
-        IModel<List<Behandling>> model = new LoadableDetachableModel<List<Behandling>>() {
-            @Override
-            protected List<Behandling> load() {
-                return behandlingService.hentBehandlinger(aktoerIdService.getAktoerId());
-            }
-        };
+        checkAktoerId(pageParameters);
+        IModel<List<Behandling>> model = createBehandlingerLDM();
         add(
                 createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
                 createFerdigView(new BehandlingerLDM(model, FERDIG)),
@@ -65,12 +61,27 @@ public class HomePage extends BasePage {
         );
     }
 
+    private LoadableDetachableModel<List<Behandling>> createBehandlingerLDM() {
+        return new LoadableDetachableModel<List<Behandling>>() {
+            @Override
+            protected List<Behandling> load() {
+                return behandlingService.hentBehandlinger(aktoerIdService.getAktoerId());
+            }
+        };
+    }
+
+    private void checkAktoerId(PageParameters pageParameters) {
+        if (pageParameters.get("aktoerId") != null) {
+            aktoerIdService.setAktoerId(String.valueOf(pageParameters.get("aktoerId")));
+        }
+    }
+
     private WebMarkupContainer createIngenBehandlingerView(BehandlingerLDM behandlinger) {
-        int antall = behandlinger.getTotalAntallBehandlinger();
         WebMarkupContainer container = new WebMarkupContainer("ingenBehandlinger");
-        container.add(new Label("ingenInnsendingerTittel", new ResourceModel("ingen.innsendinger.tittel")),
+        container.add(
+                new Label("ingenInnsendingerTittel", new ResourceModel("ingen.innsendinger.tittel")),
                 new Label("ingenInnsendingerTekst", new ResourceModel("ingen.innsendinger.tekst")));
-        if(antall > 0){
+        if (behandlinger.getTotalAntallBehandlinger() > 0) {
             container.setVisible(false);
         }
         return container;
@@ -81,9 +92,7 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                Behandling behandling = listItem.getModelObject();
-                IModel<List<Dokumentforventning>> dokumentforventningListModel = new ListModel<>(behandling.fetchAlleDokumenter());
-                listItem.add(new BehandlingPanel("behandling", dokumentforventningListModel, behandling, innholdstekster, kodeverkOppslag));
+                listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleDokumenter()), listItem.getModelObject(), innholdstekster, kodeverkOppslag));
             }
         };
     }
@@ -93,13 +102,13 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                Behandling item = listItem.getModelObject();
-                listItem.add(getTittel(item));
-                listItem.add(new Label("sistEndret", new StringResourceModel("siste.endret", page, null, item.getSistEndret().toDate())));
+                listItem.add(
+                        getTittel(listItem.getModelObject()),
+                        new Label("sistEndret", new StringResourceModel("siste.endret", page, null, listItem.getModelObject().getSistEndret().toDate())));
             }
 
             private Label getTittel(Behandling item) {
-                if (item.getDokumentbehandlingstatus() == Behandling.Dokumentbehandlingstatus.ETTERSENDING) {
+                if (item.getDokumentbehandlingstatus() == ETTERSENDING) {
                     return new Label("tittel", new StringResourceModel("ettersending.tekst", page, null, null, kodeverkOppslag.hentKodeverk(item.getTittel())));
                 }
                 return new Label("tittel", kodeverkOppslag.hentKodeverk(item.getTittel()));
@@ -120,7 +129,7 @@ public class HomePage extends BasePage {
         @Override
         protected List<Behandling> load() {
             List<Behandling> behandlinger = new ArrayList<>(on(parentModel.getObject()).filter(where(STATUS, equalTo(status))).collect());
-            Collections.sort(behandlinger, new Comparator<Behandling>() {
+            sort(behandlinger, new Comparator<Behandling>() {
                 @Override
                 public int compare(Behandling o1, Behandling o2) {
                     if (status == UNDER_ARBEID) {
@@ -130,7 +139,6 @@ public class HomePage extends BasePage {
                 }
             });
             return behandlinger;
-
         }
 
         @Override
