@@ -3,11 +3,12 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -39,13 +40,10 @@ public class HomePage extends BasePage {
 
     @Inject
     protected KodeverkService kodeverkOppslag;
-
     @Inject
     private BehandlingService behandlingService;
-
     @Inject
     private AktoerIdService aktoerIdService;
-
     private HomePage page;
 
     public HomePage(PageParameters pageParameters) {
@@ -61,8 +59,21 @@ public class HomePage extends BasePage {
         };
         add(
                 createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
-                createFerdigView(new BehandlingerLDM(model, FERDIG)) ,
-                new Label("hovedTittel",new ResourceModel("hoved.tittel")));
+                createFerdigView(new BehandlingerLDM(model, FERDIG)),
+                new Label("hovedTittel", new ResourceModel("hoved.tittel")),
+                createIngenBehandlingerView(new BehandlingerLDM(model, UNDER_ARBEID))
+        );
+    }
+
+    private WebMarkupContainer createIngenBehandlingerView(BehandlingerLDM behandlinger) {
+        int antall = behandlinger.getTotalAntallBehandlinger();
+        WebMarkupContainer container = new WebMarkupContainer("ingenBehandlinger");
+        container.add(new Label("ingenInnsendingerTittel", new ResourceModel("ingen.innsendinger.tittel")),
+                new Label("ingenInnsendingerTekst", new ResourceModel("ingen.innsendinger.tekst")));
+        if(antall > 0){
+            container.setVisible(false);
+        }
+        return container;
     }
 
     private PropertyListView<Behandling> createFerdigView(final IModel<List<Behandling>> ferdig) {
@@ -89,7 +100,7 @@ public class HomePage extends BasePage {
 
             private Label getTittel(Behandling item) {
                 if (item.getDokumentbehandlingstatus() == Behandling.Dokumentbehandlingstatus.ETTERSENDING) {
-                    return new Label("tittel", new StringResourceModel("ettersending.tekst", page, null,null, kodeverkOppslag.hentKodeverk(item.getTittel())));
+                    return new Label("tittel", new StringResourceModel("ettersending.tekst", page, null, null, kodeverkOppslag.hentKodeverk(item.getTittel())));
                 }
                 return new Label("tittel", kodeverkOppslag.hentKodeverk(item.getTittel()));
             }
@@ -113,9 +124,9 @@ public class HomePage extends BasePage {
                 @Override
                 public int compare(Behandling o1, Behandling o2) {
                     if (status == UNDER_ARBEID) {
-                        return o1.getSistEndret().compareTo(o2.getSistEndret());
+                        return o2.getSistEndret().compareTo(o1.getSistEndret());
                     }
-                    return o1.getInnsendtDato().compareTo(o2.getInnsendtDato());
+                    return o2.getInnsendtDato().compareTo(o1.getInnsendtDato());
                 }
             });
             return behandlinger;
@@ -126,6 +137,10 @@ public class HomePage extends BasePage {
         public void detach() {
             super.detach();
             parentModel.detach();
+        }
+
+        public int getTotalAntallBehandlinger() {
+            return parentModel.getObject().size();
         }
     }
 }

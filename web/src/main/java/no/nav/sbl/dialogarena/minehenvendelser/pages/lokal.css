@@ -341,22 +341,36 @@ h1.senterHeading{
     padding-top: 50px;
 }
 
+.senterHeading:after {
+    content: '?';
+    font-size: 16px;
+    vertical-align: middle;
+    background-size: contain;
+    background: url(../img/sirkel-blaa.png) no-repeat;
+    padding: 15px 15px 15px 15px;
+    margin-left: 5px;
+    color: white;
+}
+
 .panel-mini {
     text-align: center;
 }
 
-ul.valgliste{
-    text-align: left;
-    background-color: #eeebe4;
-    border:1px solid #cfcbc3;
+.valgliste{
+
+
 }
 
 .valgliste li{
-    margin:  15px;
+    text-align: left;
+    margin:  15px 15px 15px 15px;
+    padding: 10px 10px 10px 10px;
     position: relative;
     list-style: none;
     color: #333;
-    border: 1px solid #eee;
+    background-color: #eeebe4;
+    border:1px solid #cfcbc3;
+
 }
 
 .valgliste li h2 {
@@ -397,6 +411,55 @@ ul.valgliste{
 
 /* Slutt ikke innsendte CSS */
 
+.panel-ingen-innsendte{
+    float: none;
+    max-width: 711px;
+    padding-bottom: 50px;
+    margin: 30px 15px 15px 15px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 0px;
+    color: #333;
+    background-color: #ffffff;
+    position: relative;
+}
+
+.panel-ingen-innsendte h1{
+    margin: 30px 15px 15px 15px;
+    padding-top: 40px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.panel-ingen-innsendte hr{
+    width: 20px;
+    margin-left: 341px;
+    background-color : #333;
+    color: #333;
+    height: 3px;
+    text-align: center;
+}
+
+.panel-ingen-innsendte p{
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.5em;
+    margin-left: 180px;
+    margin-right: 15px;
+    padding-bottom: 15px;
+    color: #d3d3d3;
+    width: 340px ;
+}
+
+.panel-ingen-innsendte a{
+    text-align: center;
+    margin-left: 340px;
+}
+
+
+
 .panel-standard{
     float: none;
     max-width: 711px;
@@ -409,8 +472,6 @@ ul.valgliste{
     color: #333;
     background-color: #ffffff;
     position: relative;
-    -webkit-transition: height 2s;
-    transition: height 2s;
 }
 
 .status {
