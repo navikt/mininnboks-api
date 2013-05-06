@@ -85,7 +85,7 @@ Bruker har ingen innsendte Dokumentinnsendinger
 
 !| Innsendt |  ***REMOVED***  |
 | Navn paa behandling | Antall sendte av totalt antall dokumenter | Dato og tidspunkt | Innsendte dokumenter | Manglende dokumenter |
-| | | | | |
+#| | | | | |
 
 '''Test på påbegynte:'''
 
@@ -108,7 +108,7 @@ Bruker har ingen påbegynte innsendinger:
 
 !| Paabegynt | ***REMOVED*** |
 | Navn paa behandling | Tekst | Dato og tidspunkt |
-| | | |
+#| | | |
 
 !| Avklaringer |
 | Denne tabellen kan brukes som en huskeliste for ting som må avklares. Hver linje som ikke har "ok" i siste kolonne vil merkes rødt, slik at man ikke glemmer de | OK |
