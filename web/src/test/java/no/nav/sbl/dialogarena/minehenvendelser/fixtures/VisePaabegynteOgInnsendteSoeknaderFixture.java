@@ -16,7 +16,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitPaabegyntBehan
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import org.apache.wicket.Component;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
