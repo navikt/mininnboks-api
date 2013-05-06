@@ -18,6 +18,8 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.*;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.STATUS_LASTET_OPP;
 
 /**
@@ -58,7 +60,11 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getVedleggsLabel() {
-        return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenter(), behandling.getDokumentforventninger().size()));
+        if(behandling.getDokumentbehandlingstatus() == ETTERSENDING) {
+            return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenterUnntattHovedSkjema()  , behandling.getAntallDokumenterUnntattHovedSkjema()));
+        }   else{
+            return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenter(), behandling.getAntallDokumenter()));
+        }
     }
 
     private PropertyListView<Dokumentforventning> dokumenterView(String dokumentType, boolean statusToFilter) {
@@ -73,7 +79,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getHeadText() {
-        if(behandling.getDokumentbehandlingstatus() == Behandling.Dokumentbehandlingstatus.ETTERSENDING){
+        if(behandling.getDokumentbehandlingstatus() == ETTERSENDING){
             return new Label("tittel", new StringResourceModel("ettersending.tekst", this, null, null,kodeverkOppslag.hentKodeverk(behandling.getTittel())));
         }
         return new Label("tittel", kodeverkOppslag.hentKodeverk(behandling.getTittel()));

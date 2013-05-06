@@ -92,7 +92,12 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleDokumenter()), listItem.getModelObject(), innholdstekster, kodeverkOppslag));
+                if(listItem.getModelObject().getDokumentbehandlingstatus() == ETTERSENDING){
+                    listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleIkkeHovedDokumenter()), listItem.getModelObject(), innholdstekster, kodeverkOppslag));
+                }else{
+                    listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleDokumenter()), listItem.getModelObject(), innholdstekster, kodeverkOppslag));
+                }
+
             }
         };
     }

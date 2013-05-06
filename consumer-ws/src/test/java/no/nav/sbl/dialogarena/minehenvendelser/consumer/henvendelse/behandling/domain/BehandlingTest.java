@@ -49,7 +49,7 @@ public class BehandlingTest {
         behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getAntallSubDokumenter(), is(3));
+        assertThat(behandling.getAntallDokumenter(), is(4));
     }
 
     @Test
@@ -62,18 +62,6 @@ public class BehandlingTest {
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
         assertThat(behandling.fetchInnsendteDokumenter().size(), equalTo(3));
-    }
-
-    @Test
-    public void filterDokumenterShouldReturnAlleDokumenterWhichAreNotHovedskjema() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-
-        assertThat(behandling.fetchAlleDokumenter().size(), equalTo(3));
     }
 
     @Test
