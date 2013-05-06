@@ -99,12 +99,12 @@ public final class Behandling implements Serializable {
         return fetchInnsendteDokumenter().size();
     }
 
-    public int getAntallInnsendteDokumenterUnntattHovedSkjema() {
-        return fetchInnsendteDokumenterUnntattHovedkskjema().size();
+    public int getAntallInnsendteDokumenterUnntattHovedDokument() {
+        return fetchInnsendteDokumenterUnntattHovedDokmument().size();
     }
 
-    public int getAntallDokumenterUnntattHovedSkjema() {
-        return fetchAlleIkkeHovedDokumenter().size();
+    public int getAntallDokumenterUnntattHovedDokument() {
+        return fetchAlleUnntattHovedDokument().size();
     }
 
     public int getAntallDokumenter() {
@@ -117,7 +117,7 @@ public final class Behandling implements Serializable {
                 .collect();
     }
 
-    public List<Dokumentforventning> fetchInnsendteDokumenterUnntattHovedkskjema() {
+    public List<Dokumentforventning> fetchInnsendteDokumenterUnntattHovedDokmument() {
         return on(dokumentforventninger)
                 .filter(where(Dokumentforventning.STATUS_LASTET_OPP, equalTo(true)))
                 .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(false)))
@@ -129,7 +129,7 @@ public final class Behandling implements Serializable {
                 .collect();
     }
 
-    public List<Dokumentforventning> fetchAlleIkkeHovedDokumenter() {
+    public List<Dokumentforventning> fetchAlleUnntattHovedDokument() {
         return on(dokumentforventninger)
                 .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(false)))
                 .collect();

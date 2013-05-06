@@ -23,7 +23,7 @@ public class KodeverkServiceMock implements KodeverkService {
 
     @Override
     public boolean isEgendefKode(String kodeverkId) {
-        if (kodeverkId.equals("kodeForEgetVedlegg")) {
+        if ("kodeForEgetVedlegg".equals(kodeverkId)) {
             return true;
         }
         return false;

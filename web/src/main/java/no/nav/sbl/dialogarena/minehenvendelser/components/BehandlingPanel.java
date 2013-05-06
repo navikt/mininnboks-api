@@ -60,7 +60,7 @@ public class BehandlingPanel extends Panel {
 
     private Label getVedleggsLabel() {
         if (behandling.getDokumentbehandlingstatus() == ETTERSENDING) {
-            return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenterUnntattHovedSkjema(), behandling.getAntallDokumenterUnntattHovedSkjema()));
+            return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenterUnntattHovedDokument(), behandling.getAntallDokumenterUnntattHovedDokument()));
         } else {
             return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenter(), behandling.getAntallDokumenter()));
         }
