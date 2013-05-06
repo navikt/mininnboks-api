@@ -3,8 +3,9 @@ package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdDummy;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
-import no.nav.sbl.dialogarena.minehenvendelser.KodeverkServiceMock;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.KodeverkServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,9 @@ public class TestApplicationContext {
 
     @Bean
     public KodeverkService kodeverkOppslag() {
-        return new KodeverkServiceMock();
+        KodeverkServiceMock kodeverkServiceMock = new KodeverkServiceMock();
+        MockCreationUtil.insertKodeverk(kodeverkServiceMock);
+        return kodeverkServiceMock;
     }
 
     @Bean

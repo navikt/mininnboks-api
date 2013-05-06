@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 
@@ -19,5 +19,14 @@ public class KodeverkServiceMock implements KodeverkService {
             return koder.get(kodeverkId);
         }
         return "Kodeverk mangler: " + kodeverkId;
+    }
+
+    @Override
+    public boolean isEgendefKode(String kodeverkId) {
+        if (kodeverkId.equals("kodeForEgetVedlegg")) {
+            return true;
+        }
+        return false;
+
     }
 }

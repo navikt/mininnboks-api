@@ -72,7 +72,11 @@ public class BehandlingPanel extends Panel {
             @Override
             protected void populateItem(ListItem<Dokumentforventning> listItem) {
                 Dokumentforventning dokumentforventning = listItem.getModelObject();
-                listItem.add(new Label("dokument", kodeverkOppslag.hentKodeverk(dokumentforventning.getTittel())));
+                if(kodeverkOppslag.isEgendefKode(dokumentforventning.getTittel())){
+                    listItem.add(new Label("dokument", kodeverkOppslag.hentKodeverk(dokumentforventning.getTittel()) + dokumentforventning.getFriTekst()));
+                }else{
+                    listItem.add(new Label("dokument", kodeverkOppslag.hentKodeverk(dokumentforventning.getTittel())));
+                }
             }
         };
     }

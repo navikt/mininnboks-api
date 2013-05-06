@@ -6,4 +6,5 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk;
  */
 public interface KodeverkService {
     String hentKodeverk(String kodeverkId);
+    boolean isEgendefKode(String kodeverkId);
 }

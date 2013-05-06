@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.fixtures;
 
 import no.nav.modig.test.fitnesse.fixture.ObjectPerRowFixture;
-import no.nav.sbl.dialogarena.minehenvendelser.KodeverkServiceMock;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.KodeverkServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.Kodeverk;
 
