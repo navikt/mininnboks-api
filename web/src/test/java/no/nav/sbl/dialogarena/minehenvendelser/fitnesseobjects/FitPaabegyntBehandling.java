@@ -3,15 +3,15 @@ package no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects;
 public class FitPaabegyntBehandling {
 
     public String navnPaaBehandling;
-    public String dato;
-    public String antallDokumenterLastetOpp;
+    public String datoOgTidspunkt;
+    public String tekst;
 
     public FitPaabegyntBehandling() {
     }
 
-    public FitPaabegyntBehandling(String tittel, String antall, String sistEndret) {
-        this.antallDokumenterLastetOpp = antall;
+    public FitPaabegyntBehandling(String tittel, String tekst, String sistEndret) {
+        this.tekst = tekst.substring(13, 24);
         this.navnPaaBehandling = tittel;
-        this.dato = sistEndret;
+        this.datoOgTidspunkt = sistEndret.substring(25,sistEndret.length());
     }
 }

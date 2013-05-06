@@ -106,7 +106,6 @@ public final class Behandling implements Serializable {
     public List<Dokumentforventning> fetchInnsendteDokumenter() {
         return on(dokumentforventninger)
                 .filter(where(Dokumentforventning.STATUS_LASTET_OPP, equalTo(true)))
-                .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(false)))
                 .collect();
     }
 

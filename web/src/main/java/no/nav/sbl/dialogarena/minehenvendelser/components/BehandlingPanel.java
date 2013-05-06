@@ -58,7 +58,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getVedleggsLabel() {
-        return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenter(), behandling.getAntallSubDokumenter()));
+        return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenter(), behandling.getDokumentforventninger().size()));
     }
 
     private PropertyListView<Dokumentforventning> dokumenterView(String dokumentType, boolean statusToFilter) {
