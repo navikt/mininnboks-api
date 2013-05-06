@@ -1,8 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -18,8 +18,7 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.*;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.ETTERSENDING;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.STATUS_LASTET_OPP;
 
 /**
@@ -60,9 +59,9 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getVedleggsLabel() {
-        if(behandling.getDokumentbehandlingstatus() == ETTERSENDING) {
-            return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenterUnntattHovedSkjema()  , behandling.getAntallDokumenterUnntattHovedSkjema()));
-        }   else{
+        if (behandling.getDokumentbehandlingstatus() == ETTERSENDING) {
+            return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenterUnntattHovedSkjema(), behandling.getAntallDokumenterUnntattHovedSkjema()));
+        } else {
             return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenter(), behandling.getAntallDokumenter()));
         }
     }
@@ -79,8 +78,8 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getHeadText() {
-        if(behandling.getDokumentbehandlingstatus() == ETTERSENDING){
-            return new Label("tittel", new StringResourceModel("ettersending.tekst", this, null, null,kodeverkOppslag.hentKodeverk(behandling.getTittel())));
+        if (behandling.getDokumentbehandlingstatus() == ETTERSENDING) {
+            return new Label("tittel", new StringResourceModel("ettersending.tekst", this, null, null, kodeverkOppslag.hentKodeverk(behandling.getTittel())));
         }
         return new Label("tittel", kodeverkOppslag.hentKodeverk(behandling.getTittel()));
     }
