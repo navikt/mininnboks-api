@@ -328,7 +328,7 @@ body {
 
 /* Ikke innsendte CSS */
 
-h1.senterHeading{
+h1.senterHeading {
     text-align: center;
     box-sizing: border-box;
     font-size: 38px;
@@ -341,16 +341,19 @@ h1.senterHeading{
     padding-top: 50px;
 }
 
-.senterHeading:after {
+h1.senterHeading:after {
     content: '?';
     font-size: 16px;
     vertical-align: middle;
-    background-size: contain;
-    background: url(../img/sirkel-blaa.png) no-repeat;
+    background: url(../img/sirkel-blaa.png);
+    background-position: 0 0;
+    background-size: 39px 39px ;
+    background-repeat: no-repeat;
     padding: 15px 15px 15px 15px;
     margin-left: 5px;
     color: white;
 }
+
 
 .panel-mini {
     text-align: center;
