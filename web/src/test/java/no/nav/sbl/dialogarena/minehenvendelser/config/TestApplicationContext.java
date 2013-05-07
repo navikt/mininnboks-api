@@ -3,10 +3,9 @@ package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdDummy;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

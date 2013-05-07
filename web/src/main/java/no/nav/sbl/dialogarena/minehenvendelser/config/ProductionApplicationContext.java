@@ -7,7 +7,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.B
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServicePort;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
@@ -32,7 +31,6 @@ import java.net.URL;
 public class ProductionApplicationContext {
 
     private static final int WS_CLIENT_TIMEOUT = 10000;
-
     @Value("${henvendelser.ws.url}")
     protected URL endpoint;
 
@@ -42,7 +40,7 @@ public class ProductionApplicationContext {
     }
 
     @Bean
-    public KodeverkService kodeverkService(){
+    public KodeverkService kodeverkService() {
         //return new KodeverkServicePort();
         return new KodeverkServiceMock().createMockKodeverk();
     }
