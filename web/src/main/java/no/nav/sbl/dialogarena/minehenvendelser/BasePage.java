@@ -1,17 +1,19 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
-import no.nav.sbl.dialogarena.common.footer.FooterPanel;
-import no.nav.sbl.dialogarena.common.innstillinger.InnstillingerPanel;
-import no.nav.sbl.dialogarena.common.navigasjon.NavigasjonPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
+import no.nav.sbl.dialogarena.webkomponent.footer.FooterPanel;
+import no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel;
+import no.nav.sbl.dialogarena.webkomponent.navigasjon.NavigasjonPanel;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
 import javax.inject.Inject;
+import java.util.Map;
 
 public class BasePage extends WebPage {
 
@@ -44,7 +46,6 @@ public class BasePage extends WebPage {
 
     public static final CssResourceReference SHTHEMEDEFAULT_CSS
             = new CssResourceReference(WicketApplication.class, "js/syntaxhighlighter_3.0.83/styles/shThemeDefault.css");
-
 
     public static final PackageResourceReference KORRIGERINGER_LESS
             = new PackageResourceReference(WicketApplication.class, "css/bootstrap-korrigeringer.less");
@@ -85,15 +86,30 @@ public class BasePage extends WebPage {
 
     public static final JavaScriptResourceReference JS_RESOURCE = new JavaScriptResourceReference(HomePage.class, "lokal.js");
     public static final CssResourceReference CSS_RESOURCE = new CssResourceReference(HomePage.class, "lokal.css");
+
     @Inject
     protected CmsContentRetriever innholdstekster;
 
+    @Inject
+    private String navigasjonsLink;
+
+    @Inject
+    private Map<String, String> footerLinks;
 
     public BasePage() {
         add(
-                new InnstillingerPanel("innstillinger"),
-                new NavigasjonPanel("navigasjon"),
-                new FooterPanel("footer")
+                new InnstillingerPanel("innstillinger", getInnloggetIsTrueModel()),
+                new NavigasjonPanel("navigasjon", navigasjonsLink),
+                new FooterPanel("footer", footerLinks, getInnloggetIsTrueModel())
         );
+    }
+
+    private AbstractReadOnlyModel<Boolean> getInnloggetIsTrueModel() {
+        return new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                return true;
+            }
+        };
     }
 }

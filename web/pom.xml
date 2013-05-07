@@ -30,17 +30,20 @@
 			<groupId>no.nav.sbl.dialogarena</groupId>
 			<artifactId>common-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>no.nav.sbl.dialogarena</groupId>
-			<artifactId>common-footer</artifactId>
+			<artifactId>sbl-webkomponent-footer</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>no.nav.sbl.dialogarena</groupId>
-			<artifactId>common-innstillinger</artifactId>
+			<artifactId>sbl-webkomponent-innstillinger</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>no.nav.sbl.dialogarena</groupId>
-			<artifactId>common-navigasjon</artifactId>
+			<artifactId>sbl-webkomponent-navigasjon</artifactId>
 		</dependency>
 
 		<dependency>

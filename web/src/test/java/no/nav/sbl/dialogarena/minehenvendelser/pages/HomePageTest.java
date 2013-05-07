@@ -10,14 +10,15 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.ofType;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_1;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_2;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_1;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_2;
 import static org.mockito.Mockito.when;
 
 public class HomePageTest extends AbstractWicketTest {
@@ -32,6 +33,7 @@ public class HomePageTest extends AbstractWicketTest {
         aktoerIdServiceMock = mock(AktoerIdService.class);
         kodeverkServiceMock = mock(KodeverkService.class);
         mock(CmsContentRetriever.class);
+        mock("footerLinks", Map.class);
     }
 
     @Test

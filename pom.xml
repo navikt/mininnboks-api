@@ -51,15 +51,29 @@
         <joda.time.version>2.2</joda.time.version>
         <minehenvendelser.cms.url>http://10.51.9.185:8080</minehenvendelser.cms.url>
         <dialogarena.common.version>1.0.7</dialogarena.common.version>
-        <common.footer.version>1.0.7</common.footer.version>
-        <common.innstillinger.version>1.0.7</common.innstillinger.version>
-        <common.navigasjon.version>1.0.7</common.navigasjon.version>
-        <common.tilbakemelding.version>1.0.7</common.tilbakemelding.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <!-- Dialogarena dependencies -->
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>sbl-webkomponent-footer</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>sbl-webkomponent-navigasjon</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>sbl-webkomponent-innstillinger</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>common-web</artifactId>
@@ -71,27 +85,6 @@
                 <artifactId>common-jetty</artifactId>
                 <version>${dialogarena.common.version}</version>
                 <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>common-footer</artifactId>
-                <version>${common.footer.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>common-innstillinger</artifactId>
-                <version>${common.innstillinger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>common-navigasjon</artifactId>
-                <version>${common.navigasjon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>common-tilbakemelding</artifactId>
-                <version>${common.tilbakemelding.version}</version>
             </dependency>
 
             <!-- Modig dependencies -->

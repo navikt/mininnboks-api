@@ -1,8 +1,10 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
@@ -10,7 +12,11 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  */
 @ComponentScan("no.nav.sbl.dialogarena.minehenvendelser.config")
 @Configuration
+@Import(FooterConfig.class)
 public class ApplicationContext {
+
+    @Value("${minehenvendelser.navigasjonslink.url}")
+    private String navigasjonslink;
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
@@ -20,6 +26,11 @@ public class ApplicationContext {
     @Bean
     public WicketApplication minehenvendelserApplication() {
         return new WicketApplication();
+    }
+
+    @Bean
+    public String navigasjonslink() {
+        return navigasjonslink;
     }
 
 }
