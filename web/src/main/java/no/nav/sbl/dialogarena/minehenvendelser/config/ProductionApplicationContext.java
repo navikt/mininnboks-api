@@ -6,6 +6,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServicePort;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.endpoint.Client;
@@ -42,7 +43,8 @@ public class ProductionApplicationContext {
 
     @Bean
     public KodeverkService kodeverkService(){
-        return new KodeverkServicePort();
+        //return new KodeverkServicePort();
+        return new KodeverkServiceMock().createMockKodeverk();
     }
 
     @Bean

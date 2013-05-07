@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.KodeverkServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBehandlingsstatus;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
@@ -13,29 +12,19 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_1;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_2;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_3;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_4;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_5;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_6;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_7;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_8;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_9;
+
+
 public class MockCreationUtil {
 
-    public static final String KODEVERK_ID_1 = "kodeForDagpenger";
-    public static final String KODEVERK_ID_2 = "kodeForPermitteringsvarsel";
-    public static final String KODEVERK_ID_3 = "kodeForArbeidsavtale";
-    public static final String KODEVERK_ID_4 = "kodeForEgetVedlegg";
-    public static final String KODEVERK_ID_5 = "kodeForForeldrepenger";
-    public static final String KODEVERK_ID_6 = "kodeForInntektsopplysninger";
-    public static final String KODEVERK_ID_7 = "kodeForKontantstoette";
-    public static final String KODEVERK_ID_8 = "kodeForOvergangsstoenad";
-    public static final String KODEVERK_ID_9 = "kodeForAvtaleOmDeltBosted";
-
-    public static void insertKodeverk(KodeverkServiceMock kodeverk) {
-        kodeverk.insertKodeverk(KODEVERK_ID_1, "Søknad om dagpenger");
-        kodeverk.insertKodeverk(KODEVERK_ID_2, "Permitteringsvarsel");
-        kodeverk.insertKodeverk(KODEVERK_ID_3, "Arbeidsavtale");
-        kodeverk.insertKodeverk(KODEVERK_ID_4, "Annet: ");
-        kodeverk.insertKodeverk(KODEVERK_ID_5, "Søknad om foreldrepenger");
-        kodeverk.insertKodeverk(KODEVERK_ID_6, "Inntektsopplysninger");
-        kodeverk.insertKodeverk(KODEVERK_ID_7, "Søknad om kontantstøtte");
-        kodeverk.insertKodeverk(KODEVERK_ID_8, "Stønad om Overgangsstønad");
-        kodeverk.insertKodeverk(KODEVERK_ID_9, "Avtale om delt bosted");
-    }
 
     public static Dokumentforventning createMock(boolean isHovedskjema, WSInnsendingsValg innsendingsValg) {
         WSDokumentForventningOppsummering wsDokumentForventning = new WSDokumentForventningOppsummering()
