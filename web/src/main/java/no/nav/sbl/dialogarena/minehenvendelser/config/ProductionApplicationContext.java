@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
+import javax.xml.namespace.QName;
 import java.net.URL;
 
 /**
@@ -49,6 +50,8 @@ public class ProductionApplicationContext {
     public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
+        proxyFactoryBean.setServiceName(new QName(endpoint.getProtocol() + "://" + endpoint.getAuthority() + endpoint.getPath(), "henvendelsesbehandlingservice"));
+        proxyFactoryBean.setEndpointName(new QName(endpoint.getProtocol() + "://" + endpoint.getAuthority() + endpoint.getPath(), "henvendelsesbehandlingservice"));
         proxyFactoryBean.setAddress(endpoint.toString());
         proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
         proxyFactoryBean.getFeatures().add(new LoggingFeature());
