@@ -1,9 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.frontend.FrontendConfigurator;
-import no.nav.modig.frontend.MetaTag;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
-import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
 import org.apache.wicket.Application;
@@ -21,6 +19,11 @@ import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_LABELS_AND_BADGES;
 import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_NAVIGATION;
 import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_TOOLTIP;
 import static no.nav.modig.frontend.FrontendModules.UNDERSCORE;
+import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
+import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
+import static no.nav.modig.frontend.MetaTag.XUA_IE_EDGE;
+import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.CSS_RESOURCE;
+import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.JS_RESOURCE;
 
 /**
  * Kontekst for wicket
@@ -45,11 +48,11 @@ public class WicketApplication extends WebApplication {
         new FrontendConfigurator()
                 .withModules(UNDERSCORE, BOOTSTRAP_CORE, BOOTSTRAP_BUTTON, BOOTSTRAP_LABELS_AND_BADGES, BOOTSTRAP_NAVIGATION, BOOTSTRAP_TOOLTIP, BOOTSTRAP_ACCORDION)
                 .addMetas(
-                        MetaTag.CHARSET_UTF8,
-                        MetaTag.VIEWPORT_SCALE_1,
-                        MetaTag.XUA_IE_EDGE)
-                .addCss(BasePage.CSS_RESOURCE)
-                .addScripts(BasePage.JS_RESOURCE)
+                        CHARSET_UTF8,
+                        VIEWPORT_SCALE_1,
+                        XUA_IE_EDGE)
+                .addCss(CSS_RESOURCE)
+                .addScripts(JS_RESOURCE)
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);

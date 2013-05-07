@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.lang.String.valueOf;
 import static java.util.Collections.sort;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
@@ -72,7 +73,7 @@ public class HomePage extends BasePage {
 
     private void checkAktoerId(PageParameters pageParameters) {
         if (pageParameters.get("aktoerId") != null) {
-            aktoerIdService.setAktoerId(String.valueOf(pageParameters.get("aktoerId")));
+            aktoerIdService.setAktoerId(valueOf(pageParameters.get("aktoerId")));
         }
     }
 
@@ -92,9 +93,9 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                if(listItem.getModelObject().getDokumentbehandlingstatus() == ETTERSENDING){
+                if (listItem.getModelObject().getDokumentbehandlingstatus() == ETTERSENDING) {
                     listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleUnntattHovedDokument()), listItem.getModelObject(), innholdstekster, kodeverkOppslag));
-                }else{
+                } else {
                     listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleDokumenter()), listItem.getModelObject(), innholdstekster, kodeverkOppslag));
                 }
 

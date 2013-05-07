@@ -13,6 +13,9 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.modig.lang.option.Optional.optional;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.HOVEDSKJEMA;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.STATUS_LASTET_OPP;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.transformToDokumentforventing;
 
 /**
  * Domeneobjekt som representerer en behandling
@@ -25,6 +28,7 @@ public final class Behandling implements Serializable {
             return behandling.getBehandlingsstatus();
         }
     };
+
     private static Transformer<WSBrukerBehandling, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandling, Behandling>() {
 
         @Override
@@ -37,12 +41,13 @@ public final class Behandling implements Serializable {
             behandling.sistEndret = wsBrukerBehandling.getSistEndret();
             behandling.innsendtDato = optional(wsBrukerBehandling.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
             for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering : wsBrukerBehandling.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
-                behandling.dokumentforventninger.add(Dokumentforventning.transformToDokumentforventing(wsDokumentForventningOppsummering));
+                behandling.dokumentforventninger.add(transformToDokumentforventing(wsDokumentForventningOppsummering));
             }
             return behandling;
         }
 
     };
+
     private String behandlingsId;
     private String hovedskjemaId;
     private DateTime sistEndret;
@@ -51,8 +56,7 @@ public final class Behandling implements Serializable {
     private Dokumentbehandlingstatus dokumentbehandlingstatus;
     private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
 
-    private Behandling() {
-    }
+    private Behandling() { }
 
     private static Transformer<DateTime, DateTime> dateTimeValueTransformer() {
         return new Transformer<DateTime, DateTime>() {
@@ -113,14 +117,14 @@ public final class Behandling implements Serializable {
 
     public List<Dokumentforventning> fetchInnsendteDokumenter() {
         return on(dokumentforventninger)
-                .filter(where(Dokumentforventning.STATUS_LASTET_OPP, equalTo(true)))
+                .filter(where(STATUS_LASTET_OPP, equalTo(true)))
                 .collect();
     }
 
     public List<Dokumentforventning> fetchInnsendteDokumenterUnntattHovedDokmument() {
         return on(dokumentforventninger)
-                .filter(where(Dokumentforventning.STATUS_LASTET_OPP, equalTo(true)))
-                .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(false)))
+                .filter(where(STATUS_LASTET_OPP, equalTo(true)))
+                .filter(where(HOVEDSKJEMA, equalTo(false)))
                 .collect();
     }
 
@@ -131,13 +135,13 @@ public final class Behandling implements Serializable {
 
     public List<Dokumentforventning> fetchAlleUnntattHovedDokument() {
         return on(dokumentforventninger)
-                .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(false)))
+                .filter(where(HOVEDSKJEMA, equalTo(false)))
                 .collect();
     }
 
     public Dokumentforventning fetchHoveddokument() {
         return on(dokumentforventninger)
-                .filter(where(Dokumentforventning.HOVEDSKJEMA, equalTo(true)))
+                .filter(where(HOVEDSKJEMA, equalTo(true)))
                 .head().get();
     }
 
