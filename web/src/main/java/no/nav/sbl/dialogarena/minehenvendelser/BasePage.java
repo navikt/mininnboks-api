@@ -13,6 +13,7 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.Map;
 
 public class BasePage extends WebPage {
@@ -94,6 +95,7 @@ public class BasePage extends WebPage {
     private String navigasjonsLink;
 
     @Inject
+    @Named("footerLinks")
     private Map<String, String> footerLinks;
 
     public BasePage() {
