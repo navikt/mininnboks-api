@@ -2,11 +2,13 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
 import no.nav.modig.core.context.Principal;
 import no.nav.modig.core.context.SecurityContext;
+import no.nav.modig.core.exception.ApplicationException;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 
 import javax.inject.Inject;
+import javax.xml.ws.soap.SOAPFaultException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +31,15 @@ public class BehandlingsServicePort implements BehandlingService {
                 .identType("eksternBruker")
                 .build());
         List<Behandling> behandlinger = new ArrayList<>();
-        for (WSBrukerBehandling wsBrukerBehandling : service.hentBrukerBehandlinger(aktoerId)) {
-            behandlinger.add(transformToBehandling(wsBrukerBehandling));
+
+        try{
+            for (WSBrukerBehandling wsBrukerBehandling : service.hentBrukerBehandlinger(aktoerId)) {
+                behandlinger.add(transformToBehandling(wsBrukerBehandling));
+            }
+        }catch (SOAPFaultException ex){
+            throw new ApplicationException("Feil ved kall til henvendelse", ex);
         }
+
         return behandlinger;
     }
 
