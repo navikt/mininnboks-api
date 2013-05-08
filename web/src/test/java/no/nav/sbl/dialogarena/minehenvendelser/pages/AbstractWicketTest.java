@@ -2,7 +2,6 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.modig.wicket.test.FluentWicketTester;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
-
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.spring.test.ApplicationContextMock;
 import org.junit.Before;
@@ -48,6 +47,11 @@ public abstract class AbstractWicketTest {
         T mock = Mockito.mock(clazz);
         applicationContext.putBean(beanName, mock);
         return mock;
+    }
+
+    protected String mock(String beanName, String value) {
+        applicationContext.putBean(beanName, value);
+        return value;
     }
 
     protected abstract void setup();

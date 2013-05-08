@@ -9,6 +9,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.d
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
@@ -41,13 +42,10 @@ public class HomePage extends BasePage {
 
     @Inject
     protected KodeverkService kodeverkOppslag;
-
     @Inject
     private BehandlingService behandlingService;
-
     @Inject
     private AktoerIdService aktoerIdService;
-
     private HomePage page;
 
     public HomePage(PageParameters pageParameters) {
@@ -108,9 +106,11 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
+                String dokumentInnsendingUrl = dokumentInnsendingBaseUrl + "oversikt/" + listItem.getModelObject().getBehandlingsId();
                 listItem.add(
                         getTittel(listItem.getModelObject()),
-                        new Label("sistEndret", new StringResourceModel("siste.endret", page, null, listItem.getModelObject().getSistEndret().toDate())));
+                        new Label("sistEndret", new StringResourceModel("siste.endret", page, null, listItem.getModelObject().getSistEndret().toDate())),
+                        new ExternalLink("fortsettLink", dokumentInnsendingUrl, "Fortsett/slett innsending"));
             }
 
             private Label getTittel(Behandling item) {

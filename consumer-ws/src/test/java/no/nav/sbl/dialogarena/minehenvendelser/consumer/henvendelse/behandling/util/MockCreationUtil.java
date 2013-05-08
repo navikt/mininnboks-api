@@ -42,7 +42,7 @@ public class MockCreationUtil {
     public static WSBrukerBehandling createWsBehandlingMock(DateTime innsendtDato, DateTime sistEndret, WSBehandlingsstatus status, boolean ettersending) {
         return new WSBrukerBehandling()
                 .withStatus(status)
-                .withBehandlingsId("behandlingId")
+                .withBehandlingsId("DA01-000-000-029")
                 .withHovedskjemaId("hovedSkjemaId")
                 .withInnsendtDato(innsendtDato)
                 .withSistEndret(sistEndret)

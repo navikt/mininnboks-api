@@ -38,6 +38,8 @@ public class HomePageTest extends AbstractWicketTest {
         kodeverkServiceMock = mock(KodeverkService.class);
         mock(CmsContentRetriever.class);
         mock("footerLinks", Map.class);
+        mock("navigasjonslink", "");
+        mock("dokumentInnsendingBaseUrl", "");
     }
 
     @Test
@@ -110,8 +112,8 @@ public class HomePageTest extends AbstractWicketTest {
 
     private List<Behandling> createListWithTwoNotSent() {
         List<Behandling> behandlinger = new ArrayList<>();
-        behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2010,1,1,12,0), KODEVERK_ID_1)));
-        behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2012,1,1,12,0), KODEVERK_ID_2)));
+        behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2010, 1, 1, 12, 0), KODEVERK_ID_1)));
+        behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2012, 1, 1, 12, 0), KODEVERK_ID_2)));
         return behandlinger;
     }
 

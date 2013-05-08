@@ -92,7 +92,12 @@ public class BasePage extends WebPage {
     protected CmsContentRetriever innholdstekster;
 
     @Inject
+    @Named("navigasjonslink")
     private String navigasjonsLink;
+
+    @Inject
+    @Named("dokumentInnsendingBaseUrl")
+    protected String dokumentInnsendingBaseUrl;
 
     @Inject
     @Named("footerLinks")

@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
+import no.nav.modig.testcertificates.TestCertificates;
 import no.nav.sbl.dialogarena.common.jetty.Jetty;
 
 import static java.lang.System.setProperty;
@@ -20,6 +21,7 @@ public final class StartJetty {
         load("/environment-test.properties");
 
         Jetty jetty = usingWar(WEBAPP_SOURCE).at("minehenvendelser").port(PORT).buildJetty();
+        TestCertificates.setupKeyAndTrustStore();
         jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));
     }
 

@@ -14,6 +14,7 @@
         <baseUrl alias="minehenvendelser.footer.tilgjengelighet" mapToProperty="minehenvendelser.footer.tilgjengelighet" />
         <baseUrl alias="minehenvendelser.footer.nettstedskart" mapToProperty="minehenvendelser.footer.nettstedskart" />
         <baseUrl alias="minehenvendelser.navigasjonslink" mapToProperty="minehenvendelser.navigasjonslink" />
+        <baseUrl alias="dokumentinnsending.link" mapToProperty="dokumentinnsending.link" />
 
         <webservice alias="domene.Brukerdialog:henvendelsesbehandlingservice_v1" mapToProperty="henvendelser.ws" />
         <applicationCertificate alias="srvMinehenvendelser"/>
