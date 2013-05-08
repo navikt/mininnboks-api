@@ -70,8 +70,10 @@ public class HomePage extends BasePage {
     }
 
     private void checkAktoerId(PageParameters pageParameters) {
-        if (pageParameters.get("aktoerId") != null) {
+        if (pageParameters.get("aktoerId") != null && !pageParameters.get("aktoerId").isEmpty()) {
             aktoerIdService.setAktoerId(valueOf(pageParameters.get("aktoerId")));
+        } else {
+            aktoerIdService.setAktoerId("dings");
         }
     }
 

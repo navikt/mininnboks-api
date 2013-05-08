@@ -1,17 +1,26 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
 
-public class AktoerIdDummy implements AktoerIdService {
+import no.nav.modig.core.context.Principal;
 
-    private String aktoerId;
+import static no.nav.modig.core.context.SecurityContext.getCurrent;
+
+public class AktoerIdDummy implements AktoerIdService {
 
     @Override
     public String getAktoerId() {
-        return aktoerId == null ? "***REMOVED***" : aktoerId;
+       return getCurrent().getPrincipal().getUserId();
     }
 
     public void setAktoerId(String aktoerId) {
-        this.aktoerId = aktoerId;
+        getCurrent().removeAll();
+        Principal principal = new Principal.Builder()
+                .userId(aktoerId)
+                .identType("EksternBruker")
+                .authenticationLevel("4")
+                .consumerId("minehenvendelser")
+                .build();
+        getCurrent().setPrincipal(principal);
     }
 
 }

@@ -1,19 +1,28 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
+import no.nav.modig.core.context.Principal;
+
+import static no.nav.modig.core.context.SecurityContext.getCurrent;
+
 /**
  * Implementasjon som henter AktørID fra sikkerhetskontekst.
  */
 public class AktoerIdSecurityContext implements AktoerIdService {
 
-    private String aktoerId;
-
     @Override
     public String getAktoerId() {
-        return aktoerId == null ? "***REMOVED***" : aktoerId;
+        return getCurrent().getPrincipal().getUserId();
     }
 
     @Override
     public void setAktoerId(String aktoerId) {
-        this.aktoerId = aktoerId;
+        getCurrent().removeAll();
+        Principal principal = new Principal.Builder()
+                .userId(aktoerId)
+                .identType("EksternBruker")
+                .authenticationLevel("4")
+                .consumerId("minehenvendelser")
+                .build();
+        getCurrent().setPrincipal(principal);
     }
 }
