@@ -67,15 +67,6 @@ public class MockCreationUtil {
         return wsBehandlingMock;
     }
 
-    public static WSBrukerBehandling createUnderArbeidBehandling(DateTime innsendtDato, String hovedSkjemaId) {
-        WSBrukerBehandling wsBehandlingMock = createWsBehandlingMock(innsendtDato, innsendtDato, WSBehandlingsstatus.UNDER_ARBEID, false);
-        wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
-                createDokumentForventningMock(true, hovedSkjemaId, WSInnsendingsValg.LASTET_OPP),
-                createDokumentForventningMock(false, KODEVERK_ID_2, WSInnsendingsValg.LASTET_OPP),
-                createDokumentForventningMock(false, KODEVERK_ID_3, WSInnsendingsValg.SENDES_IKKE));
-        return wsBehandlingMock;
-    }
-
     public static WSBrukerBehandling createFerdigEttersendingBehandling() {
         WSBrukerBehandling wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 1, 3, 1, 1), new DateTime(2013, 1, 3, 1, 1), WSBehandlingsstatus.FERDIG, true);
         wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
@@ -90,6 +81,15 @@ public class MockCreationUtil {
         wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
                 createDokumentForventningMock(true, KODEVERK_ID_7, WSInnsendingsValg.IKKE_VALGT),
                 createDokumentForventningMock(false, KODEVERK_ID_8, WSInnsendingsValg.IKKE_VALGT));
+        return wsBehandlingMock;
+    }
+
+    public static WSBrukerBehandling createUnderArbeidBehandling(DateTime innsendtDato, String hovedSkjemaId) {
+        WSBrukerBehandling wsBehandlingMock = createWsBehandlingMock(innsendtDato, innsendtDato, WSBehandlingsstatus.UNDER_ARBEID, false);
+        wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
+                createDokumentForventningMock(true, hovedSkjemaId, WSInnsendingsValg.LASTET_OPP),
+                createDokumentForventningMock(false, KODEVERK_ID_2, WSInnsendingsValg.LASTET_OPP),
+                createDokumentForventningMock(false, KODEVERK_ID_3, WSInnsendingsValg.SENDES_IKKE));
         return wsBehandlingMock;
     }
 

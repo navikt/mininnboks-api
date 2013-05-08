@@ -19,8 +19,6 @@ public class ApplicationContext {
 
     @Value("${minehenvendelser.navigasjonslink.url}")
     private String navigasjonslink;
-    @Value("${dokumentinnsending.link.url}")
-    private String dokumentInnsendingBaseUrl;
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
@@ -35,11 +33,6 @@ public class ApplicationContext {
     @Bean
     public String navigasjonslink() {
         return navigasjonslink;
-    }
-
-    @Bean
-    public String dokumentInnsendingBaseUrl() {
-        return dokumentInnsendingBaseUrl;
     }
 
 }
