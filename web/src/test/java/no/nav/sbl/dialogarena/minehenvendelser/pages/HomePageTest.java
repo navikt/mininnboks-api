@@ -16,9 +16,12 @@ import static no.nav.modig.wicket.test.matcher.ComponentMatchers.ofType;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigEttersendingBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidEttersendingBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_1;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_2;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock.KODEVERK_ID_5;
 import static org.mockito.Mockito.when;
 
 public class HomePageTest extends AbstractWicketTest {
@@ -59,10 +62,33 @@ public class HomePageTest extends AbstractWicketTest {
                 .should().containComponent(withId("behandlingerFerdig").and(ofType(PropertyListView.class))).should().containLabelsSaying(testTittel2);
     }
 
+    @Test
+    public void shouldRenderHomePageWithViewofCompleteEttersendingBehandlingAndNotSentEtterbehandlingBehandling() {
+        String testAktoerId = "svein";
+        String testTittel1 = KODEVERK_ID_5;
+        String testTittel2 = KODEVERK_ID_1;
+        List<Behandling> behandlinger = createListWithOneCompleteEttersendingAndOneNotSentEttersending();
+        when(aktoerIdServiceMock.getAktoerId()).thenReturn(testAktoerId);
+        when(behandlingServiceMock.hentBehandlinger(testAktoerId)).thenReturn(behandlinger);
+        when(kodeverkServiceMock.hentKodeverk(testTittel1)).thenReturn(testTittel1);
+        when(kodeverkServiceMock.hentKodeverk(testTittel2)).thenReturn(testTittel2);
+
+        wicketTester.goTo(HomePage.class)
+                .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying("Ettersendelse til " + testTittel1)
+                .should().containComponent(withId("behandlingerFerdig").and(ofType(PropertyListView.class))).should().containLabelsSaying("Ettersendelse til " + testTittel2);
+    }
+
     private List<Behandling> createListWithOneCompleteAndOneNotSent() {
         List<Behandling> behandlinger = new ArrayList<>();
         behandlinger.add(transformToBehandling(createFerdigBehandling()));
         behandlinger.add(transformToBehandling(createUnderArbeidBehandling()));
+        return behandlinger;
+    }
+
+    private List<Behandling> createListWithOneCompleteEttersendingAndOneNotSentEttersending() {
+        List<Behandling> behandlinger = new ArrayList<>();
+        behandlinger.add(transformToBehandling(createFerdigEttersendingBehandling()));
+        behandlinger.add(transformToBehandling(createUnderArbeidEttersendingBehandling()));
         return behandlinger;
     }
 
