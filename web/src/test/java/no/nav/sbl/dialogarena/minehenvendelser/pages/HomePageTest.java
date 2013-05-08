@@ -6,6 +6,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.d
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import org.apache.wicket.markup.html.list.PropertyListView;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -63,6 +64,21 @@ public class HomePageTest extends AbstractWicketTest {
     }
 
     @Test
+    public void shouldRenderHomePageWithSortedViewOfNotSentBehandling() {
+        String testAktoerId = "svein";
+        String testTittel1 = KODEVERK_ID_1;
+        String testTittel2 = KODEVERK_ID_2;
+        List<Behandling> behandlinger = createListWithTwoNotSent();
+        when(aktoerIdServiceMock.getAktoerId()).thenReturn(testAktoerId);
+        when(behandlingServiceMock.hentBehandlinger(testAktoerId)).thenReturn(behandlinger);
+        when(kodeverkServiceMock.hentKodeverk(testTittel1)).thenReturn(testTittel1);
+        when(kodeverkServiceMock.hentKodeverk(testTittel2)).thenReturn(testTittel2);
+
+        wicketTester.goTo(HomePage.class)
+                .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying(testTittel2, testTittel1);
+    }
+
+    @Test
     public void shouldRenderHomePageWithViewofCompleteEttersendingBehandlingAndNotSentEtterbehandlingBehandling() {
         String testAktoerId = "svein";
         String testTittel1 = KODEVERK_ID_5;
@@ -89,6 +105,13 @@ public class HomePageTest extends AbstractWicketTest {
         List<Behandling> behandlinger = new ArrayList<>();
         behandlinger.add(transformToBehandling(createFerdigEttersendingBehandling()));
         behandlinger.add(transformToBehandling(createUnderArbeidEttersendingBehandling()));
+        return behandlinger;
+    }
+
+    private List<Behandling> createListWithTwoNotSent() {
+        List<Behandling> behandlinger = new ArrayList<>();
+        behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2010,1,1,12,0), KODEVERK_ID_1)));
+        behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2012,1,1,12,0), KODEVERK_ID_2)));
         return behandlinger;
     }
 
