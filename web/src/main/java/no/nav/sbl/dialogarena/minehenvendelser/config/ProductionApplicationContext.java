@@ -42,7 +42,6 @@ public class ProductionApplicationContext {
 
     @Bean
     public KodeverkService kodeverkService() {
-        //return new KodeverkServicePort();
         return new KodeverkServiceMock().createMockKodeverk();
     }
 

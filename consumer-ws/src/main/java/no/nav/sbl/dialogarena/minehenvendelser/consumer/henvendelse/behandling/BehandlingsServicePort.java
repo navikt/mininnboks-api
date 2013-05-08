@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
 import no.nav.modig.core.context.Principal;
-import no.nav.modig.core.context.SecurityContext;
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
@@ -12,6 +11,7 @@ import javax.xml.ws.soap.SOAPFaultException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static no.nav.modig.core.context.SecurityContext.getCurrent;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 
 /**
@@ -24,7 +24,7 @@ public class BehandlingsServicePort implements BehandlingService {
     private HenvendelsesBehandlingPortType service;
 
     public List<Behandling> hentBehandlinger(String aktoerId){
-        SecurityContext.getCurrent().setPrincipal(new Principal.Builder()
+        getCurrent().setPrincipal(new Principal.Builder()
                 .userId(aktoerId)
                 .authenticationLevel("4")
                 .consumerId("minehenvendelser")
@@ -32,11 +32,11 @@ public class BehandlingsServicePort implements BehandlingService {
                 .build());
         List<Behandling> behandlinger = new ArrayList<>();
 
-        try{
+        try {
             for (WSBrukerBehandling wsBrukerBehandling : service.hentBrukerBehandlinger(aktoerId)) {
                 behandlinger.add(transformToBehandling(wsBrukerBehandling));
             }
-        }catch (SOAPFaultException ex){
+        } catch (SOAPFaultException ex){
             throw new ApplicationException("Feil ved kall til henvendelse", ex);
         }
 

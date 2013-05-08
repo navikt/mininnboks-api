@@ -40,6 +40,8 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
  */
 public class HomePage extends BasePage {
 
+    private static final String NULL_AKTOER_ID = "nullAktoer";
+
     @Inject
     protected KodeverkService kodeverkOppslag;
     @Inject
@@ -50,7 +52,7 @@ public class HomePage extends BasePage {
 
     public HomePage(PageParameters pageParameters) {
         page = this;
-        checkAktoerId(pageParameters);
+        checkPageParametersAndSetAktoerId(pageParameters);
         IModel<List<Behandling>> model = createBehandlingerLDM();
         add(
                 createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
@@ -69,12 +71,16 @@ public class HomePage extends BasePage {
         };
     }
 
-    private void checkAktoerId(PageParameters pageParameters) {
-        if (pageParameters.get("aktoerId") != null && !pageParameters.get("aktoerId").isEmpty()) {
+    private void checkPageParametersAndSetAktoerId(PageParameters pageParameters) {
+        if (pageParametersContainAktoerId(pageParameters)) {
             aktoerIdService.setAktoerId(valueOf(pageParameters.get("aktoerId")));
         } else {
-            aktoerIdService.setAktoerId("dings");
+            aktoerIdService.setAktoerId(NULL_AKTOER_ID);
         }
+    }
+
+    private boolean pageParametersContainAktoerId(PageParameters pageParameters) {
+        return pageParameters.get("aktoerId") != null && !pageParameters.get("aktoerId").isEmpty();
     }
 
     private WebMarkupContainer createIngenBehandlingerView(BehandlingerLDM behandlinger) {
@@ -140,7 +146,7 @@ public class HomePage extends BasePage {
             sort(behandlinger, new Comparator<Behandling>() {
                 @Override
                 public int compare(Behandling o1, Behandling o2) {
-                    if (status == UNDER_ARBEID) {
+                    if (UNDER_ARBEID == status) {
                         return o2.getSistEndret().compareTo(o1.getSistEndret());
                     }
                     return o2.getInnsendtDato().compareTo(o1.getInnsendtDato());

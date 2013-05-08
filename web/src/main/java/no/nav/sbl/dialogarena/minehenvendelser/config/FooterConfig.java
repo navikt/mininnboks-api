@@ -13,6 +13,9 @@ import static no.nav.sbl.dialogarena.webkomponent.footer.FooterPanel.FOOTER_NETT
 import static no.nav.sbl.dialogarena.webkomponent.footer.FooterPanel.FOOTER_PERSONVERN_URL;
 import static no.nav.sbl.dialogarena.webkomponent.footer.FooterPanel.FOOTER_TILGJENGELIGHET_URL;
 
+/**
+ * Konfigurasjonsklasse for footer
+ */
 @Configuration
 public class FooterConfig {
 

@@ -3,8 +3,10 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mockimplementasjon av kodeverk, midlertidig inntil man kan gå mot reell tjeneste
+ */
 public class KodeverkServiceMock implements KodeverkService {
-
 
     public static final String KODEVERK_ID_1 = "kodeForDagpenger";
     public static final String KODEVERK_ID_2 = "kodeForPermitteringsvarsel";
@@ -35,7 +37,6 @@ public class KodeverkServiceMock implements KodeverkService {
             return true;
         }
         return false;
-
     }
 
     public KodeverkService createMockKodeverk() {
@@ -50,6 +51,5 @@ public class KodeverkServiceMock implements KodeverkService {
         insertKodeverk(KodeverkServiceMock.KODEVERK_ID_9, "Avtale om delt bosted");
 
         return this;
-
     }
 }
