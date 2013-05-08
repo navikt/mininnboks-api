@@ -8,7 +8,7 @@
 
     <resources>
         <baseUrl alias="minehenvendelser.cms" mapToProperty="minehenvendelser.cms" />
-        <baseUrl alias="minehenvendelser.footer.kontakt" mapToProperty="minehenvendelser.footer.kontakt.url" />
+        <baseUrl alias="minehenvendelser.footer.kontakt" mapToProperty="minehenvendelser.footer.kontakt" />
         <baseUrl alias="minehenvendelser.footer.personvern" mapToProperty="minehenvendelser.footer.personvern" />
         <baseUrl alias="minehenvendelser.footer.feilOgMangler" mapToProperty="minehenvendelser.footer.feilOgMangler" />
         <baseUrl alias="minehenvendelser.footer.tilgjengelighet" mapToProperty="minehenvendelser.footer.tilgjengelighet" />
