@@ -92,6 +92,7 @@ public class BasePage extends WebPage {
     protected CmsContentRetriever innholdstekster;
 
     @Inject
+    @Named("navigasjonslink")
     private String navigasjonsLink;
 
     @Inject
