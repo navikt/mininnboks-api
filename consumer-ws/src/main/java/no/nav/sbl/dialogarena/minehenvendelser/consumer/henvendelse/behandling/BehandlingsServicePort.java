@@ -22,7 +22,12 @@ public class BehandlingsServicePort implements BehandlingService {
     private HenvendelsesBehandlingPortType service;
 
     public List<Behandling> hentBehandlinger(String aktoerId){
-        SecurityContext.getCurrent().setPrincipal(new Principal.Builder().userId(aktoerId).authenticationLevel("4").consumerId("minehenvendelser").identType("eksternBruker").build());
+        SecurityContext.getCurrent().setPrincipal(new Principal.Builder()
+                .userId(aktoerId)
+                .authenticationLevel("4")
+                .consumerId("minehenvendelser")
+                .identType("eksternBruker")
+                .build());
         List<Behandling> behandlinger = new ArrayList<>();
         for (WSBrukerBehandling wsBrukerBehandling : service.hentBrukerBehandlinger(aktoerId)) {
             behandlinger.add(transformToBehandling(wsBrukerBehandling));
