@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
+import no.nav.modig.core.exception.ApplicationException;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HentBehandlingWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
@@ -51,10 +52,14 @@ public class ConsumerTestContext {
     }
 
     @Bean
-    public WebServer webbitWebserver() throws ExecutionException, InterruptedException {
+    public WebServer webbitWebserver() throws InterruptedException {
         WebServer server = WebServers.createWebServer(endpoint.getPort())
                 .add(endpoint.getPath(), new HentBehandlingWebServiceMock(mockData()));
-        server.start().get();
+        try {
+            server.start().get();
+        } catch (ExecutionException e) {
+            throw new ApplicationException("Stopp Jetty!!!");
+        }
         return server;
     }
 
