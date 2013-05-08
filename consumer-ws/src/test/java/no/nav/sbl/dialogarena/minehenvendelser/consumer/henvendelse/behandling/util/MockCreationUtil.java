@@ -67,6 +67,23 @@ public class MockCreationUtil {
         return wsBehandlingMock;
     }
 
+    public static WSBrukerBehandling createFerdigBehandlingMedAlleInnsendt() {
+        WSBrukerBehandling wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 1, 2, 1, 1), new DateTime(2013, 1, 2, 1, 1), WSBehandlingsstatus.FERDIG, false);
+        wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
+                createDokumentForventningMock(true, KODEVERK_ID_1, WSInnsendingsValg.LASTET_OPP),
+                createDokumentForventningMock(false, KODEVERK_ID_2, WSInnsendingsValg.LASTET_OPP),
+                createDokumentForventningMock(false, KODEVERK_ID_3, WSInnsendingsValg.LASTET_OPP));
+        return wsBehandlingMock;
+    }
+    public static WSBrukerBehandling createFerdigBehandlingMedIngenInnsendt() {
+        WSBrukerBehandling wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 1, 2, 1, 1), new DateTime(2013, 1, 2, 1, 1), WSBehandlingsstatus.FERDIG, false);
+        wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
+                createDokumentForventningMock(true, KODEVERK_ID_1, WSInnsendingsValg.SENDES_IKKE),
+                createDokumentForventningMock(false, KODEVERK_ID_2, WSInnsendingsValg.SENDES_IKKE),
+                createDokumentForventningMock(false, KODEVERK_ID_3, WSInnsendingsValg.SENDES_IKKE));
+        return wsBehandlingMock;
+    }
+
     public static WSBrukerBehandling createFerdigEttersendingBehandling() {
         WSBrukerBehandling wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 1, 3, 1, 1), new DateTime(2013, 1, 3, 1, 1), WSBehandlingsstatus.FERDIG, true);
         wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(

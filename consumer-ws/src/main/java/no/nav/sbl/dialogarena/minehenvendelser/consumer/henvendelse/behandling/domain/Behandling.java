@@ -28,7 +28,6 @@ public final class Behandling implements Serializable {
             return behandling.getBehandlingsstatus();
         }
     };
-
     private static Transformer<WSBrukerBehandling, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandling, Behandling>() {
 
         @Override
@@ -47,7 +46,6 @@ public final class Behandling implements Serializable {
         }
 
     };
-
     private String behandlingsId;
     private String hovedskjemaId;
     private DateTime sistEndret;
@@ -56,7 +54,8 @@ public final class Behandling implements Serializable {
     private Dokumentbehandlingstatus dokumentbehandlingstatus;
     private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
 
-    private Behandling() { }
+    private Behandling() {
+    }
 
     private static Transformer<DateTime, DateTime> dateTimeValueTransformer() {
         return new Transformer<DateTime, DateTime>() {
@@ -103,6 +102,10 @@ public final class Behandling implements Serializable {
         return fetchInnsendteDokumenter().size();
     }
 
+    public int getAntallManglendeDokumenter() {
+        return fetchManglendeDokumenter().size();
+    }
+
     public int getAntallInnsendteDokumenterUnntattHovedDokument() {
         return fetchInnsendteDokumenterUnntattHovedDokmument().size();
     }
@@ -118,6 +121,12 @@ public final class Behandling implements Serializable {
     public List<Dokumentforventning> fetchInnsendteDokumenter() {
         return on(dokumentforventninger)
                 .filter(where(STATUS_LASTET_OPP, equalTo(true)))
+                .collect();
+    }
+
+    public List<Dokumentforventning> fetchManglendeDokumenter() {
+        return on(dokumentforventninger)
+                .filter(where(STATUS_LASTET_OPP, equalTo(false)))
                 .collect();
     }
 

@@ -51,11 +51,19 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getInnsendteDokumenterHeader() {
-        return new Label("innsendteDokumenterHeader", new ResourceModel("innsendte.dokumenter.header"));
+        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader", new ResourceModel("innsendte.dokumenter.header"));
+        if (behandling.getAntallInnsendteDokumenter() == 0) {
+            innsendteDokumenterHeader.setVisible(false);
+        }
+        return innsendteDokumenterHeader;
     }
 
     private Label getManglendeDokumenterHeader() {
-        return new Label("manglendeDokumenterHeader", new ResourceModel("manglende.dokumenter.header"));
+        Label manglendeDokumenterHeader = new Label("manglendeDokumenterHeader", new ResourceModel("manglende.dokumenter.header"));
+        if (behandling.getAntallManglendeDokumenter() == 0) {
+            manglendeDokumenterHeader.setVisible(false);
+        }
+        return manglendeDokumenterHeader;
     }
 
     private Label getVedleggsLabel() {
@@ -72,9 +80,9 @@ public class BehandlingPanel extends Panel {
             @Override
             protected void populateItem(ListItem<Dokumentforventning> listItem) {
                 Dokumentforventning dokumentforventning = listItem.getModelObject();
-                if(kodeverkOppslag.isEgendefKode(dokumentforventning.getTittel())){
+                if (kodeverkOppslag.isEgendefKode(dokumentforventning.getTittel())) {
                     listItem.add(new Label("dokument", kodeverkOppslag.hentKodeverk(dokumentforventning.getTittel()) + dokumentforventning.getFriTekst()));
-                }else{
+                } else {
                     listItem.add(new Label("dokument", kodeverkOppslag.hentKodeverk(dokumentforventning.getTittel())));
                 }
             }
