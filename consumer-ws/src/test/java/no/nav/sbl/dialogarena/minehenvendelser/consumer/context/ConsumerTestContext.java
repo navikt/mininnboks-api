@@ -51,6 +51,7 @@ public class ConsumerTestContext {
         return mockData;
     }
 
+    @SuppressWarnings({"PMD.PreserveStackTrace"})
     @Bean
     public WebServer webbitWebserver() throws InterruptedException {
         WebServer server = WebServers.createWebServer(endpoint.getPort())
