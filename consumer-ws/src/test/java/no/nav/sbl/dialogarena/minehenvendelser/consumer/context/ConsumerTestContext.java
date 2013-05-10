@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.webbitserver.WebServer;
-import org.webbitserver.WebServers;
 
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
@@ -26,6 +25,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFitnesseTestData;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidEttersendingBehandling;
+import static org.webbitserver.WebServers.createWebServer;
 
 @Configuration
 public class ConsumerTestContext {
@@ -57,7 +57,7 @@ public class ConsumerTestContext {
     @SuppressWarnings({"PMD.PreserveStackTrace"})
     @Bean
     public WebServer webbitWebserver() throws InterruptedException {
-        WebServer server = WebServers.createWebServer(endpoint.getPort())
+        WebServer server = createWebServer(endpoint.getPort())
                 .add(endpoint.getPath(), new HentBehandlingWebServiceMock(mockData()));
         try {
             server.start().get();
