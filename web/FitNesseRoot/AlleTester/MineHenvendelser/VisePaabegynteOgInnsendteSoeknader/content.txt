@@ -1,4 +1,4 @@
-!***> ppsett
+!***> Oppsett
 
 !define TEST_RUNNER {fitlibrary.suite.FitLibraryServer}
 | no.nav.sbl.dialogarena.minehenvendelser.fixtures.VisePaabegynteOgInnsendteSoeknaderFixture |

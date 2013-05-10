@@ -6,7 +6,7 @@
 	<RecentChanges>true</RecentChanges>
 	<Refactor>true</Refactor>
 	<Search>true</Search>
-	<Suites>MOD-3558, MOD-3559</Suites>
+	<Suites>MOD-3558, MOD-3559, godkjent</Suites>
 	<Test/>
 	<Versions>true</Versions>
 	<WhereUsed>true</WhereUsed>
