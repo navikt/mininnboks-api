@@ -6,3 +6,4 @@ target
 .settings
 *.log
 web/FitNesseRoot/files
+web/FitNesseRoot/ErrorLogs

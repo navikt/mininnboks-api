@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.selftest;
 
-import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
+import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -17,31 +17,70 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.jar.Manifest;
 
+import static java.lang.String.format;
+import static java.lang.System.currentTimeMillis;
+import static java.net.HttpURLConnection.HTTP_OK;
+
 public class SelfTestPage extends WebPage {
+
+    private static final String CMS_OK = "UNI_CMS_CONTENT_RETRIEVER_OK";
+    private static final String CMS_ERROR = "UNI_CMS_CONTENT_RETRIEVER_ERROR";
+    private static final String HENVENDELSE_OK = "UNI_HENVENDELSECONSUMER_OK";
+    private static final String HENVENDELSE_ERROR = "UNI_HENVENDELSECONSUMER_ERROR";
 
     @Inject
     private CmsContentRetriever cmsContentRetriever;
+
+    @Inject
+    private HenvendelsesBehandlingPortType service;
 
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
     public SelfTestPage() throws IOException {
         logger.info("entered SelfTestPage!");
-        String version = getApplicationVersion();
-        String startUpDate = new Date(WicketApplication.get().getApplicationContext().getStartupDate()).toString();
         List<ServiceStatus> statusList = new ArrayList<>();
-        statusList.add(new ServiceStatus("Testet Appcontext", "OK, startet opp: " + startUpDate, 0));
-        statusList.add(new ServiceStatus("Applikasjonsversjon", version, 0));
+        statusList.add(getCmsStatus());
+        statusList.add(getHenvendelseWSStatus());
         add(new ServiceStatusListView("serviceStatusTable", statusList));
         add(new Label("cmsinfo", "Cms-server: " + cmsContentRetriever.getCmsIp()));
-        add(getCmsStatus());
+        add(getCmsKeys());
+        add(new Label("application", getApplicationVersion()));
     }
 
-    private CmsStatusListView getCmsStatus() {
+    private ServiceStatus getCmsStatus() {
+        long start = currentTimeMillis();
+        int statusCode = 0;
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) new URL(cmsContentRetriever.getCmsIp()).openConnection();
+            connection.setConnectTimeout(5000);
+            statusCode = connection.getResponseCode();
+        } catch (IOException e) {
+            logger.warn("Cms not reachable on " + cmsContentRetriever.getCmsIp());
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+
+        String status = statusCode == HTTP_OK ? CMS_OK : CMS_ERROR;
+        return new ServiceStatus(format("Enonic CMS (%s)", cmsContentRetriever.getCmsIp()), status, currentTimeMillis() - start);
+    }
+
+    private ServiceStatus getHenvendelseWSStatus() {
+        long start = currentTimeMillis();
+        boolean available = service.ping();
+        String status = available ? HENVENDELSE_OK : HENVENDELSE_ERROR;
+        return new ServiceStatus("Henvendelse WS", status, currentTimeMillis() - start);
+    }
+
+    private CmsStatusListView getCmsKeys() {
         String[] keys = {"topp.tekst", "slutt.tekst" };
         List<CmsStatus> cmsStatusList = new ArrayList<>();
         for (String key : keys) {
@@ -51,7 +90,7 @@ public class SelfTestPage extends WebPage {
     }
 
     private String getApplicationVersion() throws IOException {
-        String version = "unknown version";
+        String version;
         WebRequest req = (WebRequest) RequestCycle.get().getRequest();
         ServletContext servletContext = ((HttpServletRequest) req.getContainerRequest()).getServletContext();
         InputStream inputStream = servletContext.getResourceAsStream(("/META-INF/MANIFEST.MF"));

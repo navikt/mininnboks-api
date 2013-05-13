@@ -33,14 +33,30 @@ public class HentBehandlingWebServiceMock implements HttpHandler {
     @Override
     public void handleHttpRequest(HttpRequest httpRequest, HttpResponse response, HttpControl control) throws Exception {
         String request = httpRequest.body();
-        String aktorId = Jsoup.parse(request, "", Parser.xmlParser()).select("aktorId").get(0).text();
 
-        String message = marshaller.transform(mockData.getData(aktorId));
+        String message;
+        if (request.contains("ping")) {
+            message = getPingResponse();
+        } else {
+            String aktorId = Jsoup.parse(request, "", Parser.xmlParser()).select("aktorId").get(0).text();
+            message = marshaller.transform(mockData.getData(aktorId));
+        }
 
         response.charset(Charset.forName("UTF-8"))
                 .header("Content-Type", "text/xml; charset=UTF-8")
                 .content(message)
                 .end();
+    }
+
+    private String getPingResponse() {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
+                "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                "   <soap:Body>\n" +
+                "      <ns3:pingResponse xmlns:ns3=\"http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1\" xmlns:ns2=\"http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon\">\n" +
+                "         <return>true</return>\n" +
+                "      </ns3:pingResponse>\n" +
+                "   </soap:Body>\n" +
+                "</soap:Envelope>\n";
     }
 
 }
