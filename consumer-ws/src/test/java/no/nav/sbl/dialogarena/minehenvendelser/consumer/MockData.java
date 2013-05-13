@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
 
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class MockData {
         return new HentBrukerBehandlingerResponse();
     }
 
-    public void addBehandlingToAktor(String aktorId, WSBrukerBehandling behandling) {
+    public void addBehandlingToAktor(String aktorId, WSBrukerBehandlingOppsummering behandling) {
         HentBrukerBehandlingerResponse response;
         if (responses.containsKey(aktorId)) {
             response = responses.get(aktorId);

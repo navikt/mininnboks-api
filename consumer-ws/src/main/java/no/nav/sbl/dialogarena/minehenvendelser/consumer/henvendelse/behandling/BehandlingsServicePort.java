@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 import no.nav.modig.core.context.Principal;
 import no.nav.modig.core.exception.SystemException;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 
 import javax.inject.Inject;
@@ -33,8 +33,8 @@ public class BehandlingsServicePort implements BehandlingService {
         List<Behandling> behandlinger = new ArrayList<>();
 
         try {
-            for (WSBrukerBehandling wsBrukerBehandling : service.hentBrukerBehandlinger(aktoerId)) {
-                behandlinger.add(transformToBehandling(wsBrukerBehandling));
+            for (WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering : service.hentBrukerBehandlinger(aktoerId)) {
+                behandlinger.add(transformToBehandling(wsBrukerBehandlingOppsummering));
             }
         } catch (SOAPFaultException ex){
             throw new SystemException("Feil ved kall til henvendelse", ex);

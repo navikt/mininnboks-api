@@ -31,7 +31,7 @@ import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus.FERDIG;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus.UNDER_ARBEID;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.ETTERSENDING;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.STATUS;
 
 /**
@@ -99,7 +99,7 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                if (listItem.getModelObject().getDokumentbehandlingstatus() == ETTERSENDING) {
+                if (listItem.getModelObject().getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
                     listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleUnntattHovedDokument()), listItem.getModelObject(), innholdstekster, kodeverkOppslag));
                 } else {
                     listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleDokumenter()), listItem.getModelObject(), innholdstekster, kodeverkOppslag));
@@ -122,7 +122,7 @@ public class HomePage extends BasePage {
             }
 
             private Label getTittel(Behandling item) {
-                if (item.getDokumentbehandlingstatus() == ETTERSENDING) {
+                if (item.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
                     return new Label("tittel", new StringResourceModel("ettersending.tekst", page, null, null, kodeverkOppslag.hentKodeverk(item.getTittel())));
                 }
                 return new Label("tittel", kodeverkOppslag.hentKodeverk(item.getTittel()));

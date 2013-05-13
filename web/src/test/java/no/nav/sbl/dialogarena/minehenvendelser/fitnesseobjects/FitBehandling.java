@@ -1,7 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects;
 
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBehandlingsstatus;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingType;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbehandlingType;
@@ -36,15 +37,16 @@ public class FitBehandling {
         return new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createBrukerBehandling());
     }
 
-    public WSBrukerBehandling asBrukerBehandling(){
+    public WSBrukerBehandlingOppsummering asBrukerBehandling(){
         return createBrukerBehandling();
     }
 
-    private WSBrukerBehandling createBrukerBehandling() {
-        WSBrukerBehandling behandling = new WSBrukerBehandling();
+    private WSBrukerBehandlingOppsummering createBrukerBehandling() {
+        WSBrukerBehandlingOppsummering behandling = new WSBrukerBehandlingOppsummering();
         behandling.withBehandlingsId(behandlingsId);
         behandling.withStatus(WSBehandlingsstatus.fromValue(status));
         behandling.withDokumentbehandlingType(WSDokumentbehandlingType.fromValue(dokumentbehandlingtype));
+        behandling.withBrukerBehandlingType(WSBrukerBehandlingType.fromValue(brukerbehandlingType));
         if (isNotEmpty(sistEndretDato)) {
             behandling.withSistEndret(new DateTime(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(sistEndretDato)));
         }

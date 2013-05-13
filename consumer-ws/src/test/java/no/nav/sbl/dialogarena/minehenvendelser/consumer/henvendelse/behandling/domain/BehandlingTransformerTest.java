@@ -1,7 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingType;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbehandlingType;
@@ -21,12 +22,13 @@ public class BehandlingTransformerTest {
     public void shouldTransformCorrectlyWithBasicFields() {
         DateTime innsendtDato = new DateTime(2013, 01, 01, 01, 01);
         DateTime sistEndret = new DateTime(2013, 01, 02, 01, 01);
-        WSBrukerBehandling wsBrukerBehandling = new WSBrukerBehandling()
+        WSBrukerBehandlingOppsummering wsBrukerBehandling = new WSBrukerBehandlingOppsummering()
                 .withStatus(FERDIG)
                 .withBehandlingsId("behandlingId")
                 .withHovedskjemaId("hovedSkjemaId")
                 .withInnsendtDato(innsendtDato)
                 .withSistEndret(sistEndret)
+                .withBrukerBehandlingType(WSBrukerBehandlingType.DOKUMENT_BEHANDLING)
                 .withDokumentbehandlingType(WSDokumentbehandlingType.SOKNADSINNSENDING)
                 .withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer());
 
@@ -51,7 +53,7 @@ public class BehandlingTransformerTest {
                 .withHovedskjema(false)
                 .withInnsendingsValg(LASTET_OPP)
                 .withKodeverkId("id2");
-        WSBrukerBehandling wsBrukerBehandling = MockCreationUtil.createWsBehandlingMock();
+        WSBrukerBehandlingOppsummering wsBrukerBehandling = MockCreationUtil.createWsBehandlingMock();
         wsBrukerBehandling.withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer().withDokumentForventningOppsummering(wsDokumentForventningOppsummering, wsDokumentForventningOppsummering1));
 
         Behandling behandling = transformToBehandling(wsBrukerBehandling);

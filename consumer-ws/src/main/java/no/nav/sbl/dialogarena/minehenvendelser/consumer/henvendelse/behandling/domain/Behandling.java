@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandling;
+import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
@@ -28,18 +28,18 @@ public final class Behandling implements Serializable {
             return behandling.getBehandlingsstatus();
         }
     };
-    private static Transformer<WSBrukerBehandling, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandling, Behandling>() {
+    private static Transformer<WSBrukerBehandlingOppsummering, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandlingOppsummering, Behandling>() {
 
         @Override
-        public Behandling transform(WSBrukerBehandling wsBrukerBehandling) {
+        public Behandling transform(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering) {
             Behandling behandling = new Behandling();
-            behandling.dokumentbehandlingstatus = Dokumentbehandlingstatus.valueOf(wsBrukerBehandling.getDokumentbehandlingType().name());
-            behandling.behandlingsId = wsBrukerBehandling.getBehandlingsId();
-            behandling.hovedskjemaId = wsBrukerBehandling.getHovedskjemaId();
-            behandling.behandlingsstatus = Behandlingsstatus.valueOf(wsBrukerBehandling.getStatus().name());
-            behandling.sistEndret = wsBrukerBehandling.getSistEndret();
-            behandling.innsendtDato = optional(wsBrukerBehandling.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
-            for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering : wsBrukerBehandling.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
+            behandling.behandlingsId = wsBrukerBehandlingOppsummering.getBehandlingsId();
+            behandling.hovedskjemaId = wsBrukerBehandlingOppsummering.getHovedskjemaId();
+            behandling.behandlingsstatus = Behandlingsstatus.valueOf(wsBrukerBehandlingOppsummering.getStatus().name());
+            behandling.dokumentbehandlingstatus = Dokumentbehandlingstatus.valueOf(wsBrukerBehandlingOppsummering.getBrukerBehandlingType().name());
+            behandling.sistEndret = wsBrukerBehandlingOppsummering.getSistEndret();
+            behandling.innsendtDato = optional(wsBrukerBehandlingOppsummering.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
+            for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering : wsBrukerBehandlingOppsummering.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
                 behandling.dokumentforventninger.add(transformToDokumentforventing(wsDokumentForventningOppsummering));
             }
             return behandling;
@@ -66,8 +66,8 @@ public final class Behandling implements Serializable {
         };
     }
 
-    public static Behandling transformToBehandling(WSBrukerBehandling wsBrukerBehandling) {
-        return behandlingTransformer.transform(wsBrukerBehandling);
+    public static Behandling transformToBehandling(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering) {
+        return behandlingTransformer.transform(wsBrukerBehandlingOppsummering);
     }
 
     public String getHovedskjemaId() {
@@ -160,5 +160,5 @@ public final class Behandling implements Serializable {
 
     public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG}
 
-    public enum Dokumentbehandlingstatus {SOKNADSINNSENDING, ETTERSENDING}
+    public enum Dokumentbehandlingstatus {DOKUMENT_BEHANDLING, DOKUMENT_ETTERSENDING}
 }
