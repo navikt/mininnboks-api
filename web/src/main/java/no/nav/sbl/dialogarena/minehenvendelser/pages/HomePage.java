@@ -114,7 +114,7 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                String dokumentInnsendingUrl = System.getProperty("dokumentinnsending.link.url") + "oversikt/" + listItem.getModelObject().getBehandlingsId();
+                String dokumentInnsendingUrl = System.getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId();
                 listItem.add(
                         getTittel(listItem.getModelObject()),
                         new Label("sistEndret", new StringResourceModel("siste.endret", page, null, listItem.getModelObject().getSistEndret().toDate())),
