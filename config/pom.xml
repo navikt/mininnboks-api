@@ -41,7 +41,7 @@
 			<plugin>
 				<groupId>no.nav.modig</groupId>
 				<artifactId>modig-content-maven-plugin</artifactId>
-				<version>0.0.2-SNAPSHOT</version>
+				<version>0.0.2</version>
 				<configuration>
 					<propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
 					<propertiesFiler>
