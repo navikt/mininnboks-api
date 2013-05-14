@@ -49,10 +49,11 @@ public class SelfTestPage extends WebPage {
         List<ServiceStatus> statusList = new ArrayList<>();
         statusList.add(getCmsStatus());
         statusList.add(getHenvendelseWSStatus());
-        add(new ServiceStatusListView("serviceStatusTable", statusList));
-        add(new Label("cmsinfo", "Cms-server: " + cmsContentRetriever.getCmsIp()));
-        add(getCmsKeys());
-        add(new Label("application", getApplicationVersion()));
+        add(
+                new ServiceStatusListView("serviceStatusTable", statusList),
+                new Label("cmsinfo", "Cms-server: " + cmsContentRetriever.getCmsIp()),
+                getCmsKeys(),
+                new Label("application", getApplicationVersion()));
     }
 
     private ServiceStatus getCmsStatus() {
