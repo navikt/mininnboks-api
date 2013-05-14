@@ -23,45 +23,12 @@ public class BehandlingTest {
     private static final WSInnsendingsValg NOT_INNSENDT = SENDES_IKKE;
     private static final boolean IS_HOVEDSKJEMA = true;
     private static final boolean NOT_HOVEDSKJEMA = false;
-
     private Behandling behandling;
 
     @Before
     public void setup() {
         WSBrukerBehandlingOppsummering wsBrukerBehandling = createWsBehandlingMock();
         behandling = transformToBehandling(wsBrukerBehandling);
-    }
-
-    @Test
-    public void shouldCountCorrectAmountOfInnsendteDokumenter() {
-        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-        behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
-
-        assertThat(behandling.getAntallInnsendteDokumenter(), is(2));
-    }
-
-    @Test
-    public void shouldCountCorrectAmountOfDokumenter() {
-        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-        behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
-
-        assertThat(behandling.getAntallDokumenter(), is(4));
-    }
-
-    @Test
-    public void filterDokumenterShouldReturnAllInsendteDokumenter() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-
-        assertThat(behandling.fetchInnsendteDokumenter().size(), equalTo(3));
     }
 
     @Test
@@ -87,6 +54,64 @@ public class BehandlingTest {
 
         assertThat(behandling.getDokumentforventninger().size(), equalTo(5));
     }
+
+    @Test
+    public void shouldCountCorrectAmountOfInnsendteDokumenter() {
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
+
+        assertThat(behandling.getAntallInnsendteDokumenter(), is(2));
+    }
+
+    @Test
+    public void shouldCountCorrectAmountOfDokumenter() {
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+        behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
+
+        assertThat(behandling.getAntallDokumenter(), is(4));
+    }
+
+    @Test
+    public void shouldReturnAntallDokumenterUnntattHovedskjema() {
+        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
+        Dokumentforventning hovedSkjema = createMock(IS_HOVEDSKJEMA, IS_INNSENDT);
+        dokumentforventningList.add(hovedSkjema);
+        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+
+        assertThat(behandling.getAntallDokumenterUnntattHovedDokument(), equalTo(3));
+    }
+
+    @Test
+    public void shouldReturnNumberOfMissingDokumenter() {
+        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
+        Dokumentforventning hovedSkjema = createMock(IS_HOVEDSKJEMA, IS_INNSENDT);
+        Whitebox.setInternalState(hovedSkjema, "kodeverkId", "kodeverkId");
+        dokumentforventningList.add(hovedSkjema);
+        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+
+        assertThat(behandling.getAntallManglendeDokumenter(), equalTo(2));
+    }
+
+    @Test
+    public void shouldReturnNumberOfMissingDokumenterExceptHoveddokument() {
+        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
+        Dokumentforventning hovedSkjema = createMock(IS_HOVEDSKJEMA, NOT_INNSENDT);
+        dokumentforventningList.add(hovedSkjema);
+        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+        dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+
+        assertThat(behandling.getAntallInnsendteDokumenterUnntattHovedDokument(), equalTo(1));
+    }
+
 
     @Test
     public void getTittelShouldReturnKodeverkIdFromHovedskjema() {
