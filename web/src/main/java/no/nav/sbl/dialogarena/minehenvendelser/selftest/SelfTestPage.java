@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.selftest;
 
+import no.nav.modig.core.context.Principal;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.wicket.markup.html.WebPage;
@@ -26,6 +27,7 @@ import java.util.jar.Manifest;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
 import static java.net.HttpURLConnection.HTTP_OK;
+import static no.nav.modig.core.context.SecurityContext.getCurrent;
 
 public class SelfTestPage extends WebPage {
 
@@ -74,6 +76,12 @@ public class SelfTestPage extends WebPage {
     }
 
     private ServiceStatus getHenvendelseWSStatus() {
+        getCurrent().setPrincipal(new Principal.Builder()
+                .userId("12121211111")
+                .authenticationLevel("4")
+                .consumerId("minehenvendelser")
+                .identType("eksternBruker")
+                .build());
         long start = currentTimeMillis();
         boolean available = service.ping();
         String status = available ? HENVENDELSE_OK : HENVENDELSE_ERROR;
