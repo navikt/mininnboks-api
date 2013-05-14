@@ -9,7 +9,7 @@
 
     <name>Dialogarena - minehenvendelser</name>
     <artifactId>minehenvendelser</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -624,9 +624,9 @@
         </plugins>
     </build>
     <scm>
-        <developerConnection>scm:svn:https://versjonskontroll.adeo.no/svn/nav-sbl/dialogarena/minehenvendelser/tags/20131405_1.0.0
+        <developerConnection>scm:svn:https://versjonskontroll.adeo.no/svn/nav-sbl/dialogarena/minehenvendelser/trunk
         </developerConnection>
-        <url>https://versjonskontroll.adeo.no/wsvn/nav-sbl/dialogarena/minehenvendelser/tags/20131405_1.0.0</url>
+        <url>https://versjonskontroll.adeo.no/wsvn/nav-sbl/dialogarena/minehenvendelser/trunk</url>
     </scm>
 
     <profiles>
