@@ -28,6 +28,7 @@ public final class Behandling implements Serializable {
             return behandling.getBehandlingsstatus();
         }
     };
+
     private static Transformer<WSBrukerBehandlingOppsummering, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandlingOppsummering, Behandling>() {
 
         @Override
@@ -39,13 +40,18 @@ public final class Behandling implements Serializable {
             behandling.dokumentbehandlingstatus = Dokumentbehandlingstatus.valueOf(wsBrukerBehandlingOppsummering.getBrukerBehandlingType().name());
             behandling.sistEndret = wsBrukerBehandlingOppsummering.getSistEndret();
             behandling.innsendtDato = optional(wsBrukerBehandlingOppsummering.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
-            for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering : wsBrukerBehandlingOppsummering.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
-                behandling.dokumentforventninger.add(transformToDokumentforventing(wsDokumentForventningOppsummering));
-            }
+            addForventningerToBehandling(wsBrukerBehandlingOppsummering, behandling);
             return behandling;
         }
 
+        private void addForventningerToBehandling(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering, Behandling behandling) {
+            for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering : wsBrukerBehandlingOppsummering.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
+                behandling.dokumentforventninger.add(transformToDokumentforventing(wsDokumentForventningOppsummering));
+            }
+        }
+
     };
+
     private String behandlingsId;
     private String hovedskjemaId;
     private DateTime sistEndret;
@@ -54,8 +60,7 @@ public final class Behandling implements Serializable {
     private Dokumentbehandlingstatus dokumentbehandlingstatus;
     private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
 
-    private Behandling() {
-    }
+    private Behandling() { }
 
     private static Transformer<DateTime, DateTime> dateTimeValueTransformer() {
         return new Transformer<DateTime, DateTime>() {

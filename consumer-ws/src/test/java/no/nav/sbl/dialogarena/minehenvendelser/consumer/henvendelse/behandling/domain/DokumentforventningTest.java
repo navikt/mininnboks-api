@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.Innsendingsvalg.LASTET_OPP;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.transformToDokumentforventing;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
@@ -16,9 +17,7 @@ public class DokumentforventningTest {
 
     @Before
     public void setup() {
-        WSDokumentForventningOppsummering wsDokumentForventningOppsummering = new WSDokumentForventningOppsummering()
-                .withInnsendingsValg(WSInnsendingsValg.LASTET_OPP);
-        dokumentforventning = Dokumentforventning.transformToDokumentforventing(wsDokumentForventningOppsummering);
+        dokumentforventning = transformToDokumentforventing(new WSDokumentForventningOppsummering().withInnsendingsValg(WSInnsendingsValg.LASTET_OPP));
     }
 
     @Test

@@ -1,16 +1,16 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingType;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
-import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbehandlingType;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWsBehandlingMock;
 import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBehandlingsstatus.FERDIG;
+import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingType.DOKUMENT_BEHANDLING;
+import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbehandlingType.SOKNADSINNSENDING;
 import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg.LASTET_OPP;
 import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg.SENDES_IKKE;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -28,8 +28,8 @@ public class BehandlingTransformerTest {
                 .withHovedskjemaId("hovedSkjemaId")
                 .withInnsendtDato(innsendtDato)
                 .withSistEndret(sistEndret)
-                .withBrukerBehandlingType(WSBrukerBehandlingType.DOKUMENT_BEHANDLING)
-                .withDokumentbehandlingType(WSDokumentbehandlingType.SOKNADSINNSENDING)
+                .withBrukerBehandlingType(DOKUMENT_BEHANDLING)
+                .withDokumentbehandlingType(SOKNADSINNSENDING)
                 .withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer());
 
         Behandling behandling = transformToBehandling(wsBrukerBehandling);
@@ -53,7 +53,7 @@ public class BehandlingTransformerTest {
                 .withHovedskjema(false)
                 .withInnsendingsValg(LASTET_OPP)
                 .withKodeverkId("id2");
-        WSBrukerBehandlingOppsummering wsBrukerBehandling = MockCreationUtil.createWsBehandlingMock();
+        WSBrukerBehandlingOppsummering wsBrukerBehandling = createWsBehandlingMock();
         wsBrukerBehandling.withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer().withDokumentForventningOppsummering(wsDokumentForventningOppsummering, wsDokumentForventningOppsummering1));
 
         Behandling behandling = transformToBehandling(wsBrukerBehandling);

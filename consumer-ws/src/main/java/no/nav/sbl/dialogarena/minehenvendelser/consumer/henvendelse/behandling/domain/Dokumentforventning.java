@@ -6,6 +6,8 @@ import org.apache.commons.collections15.Transformer;
 import java.io.Serializable;
 
 import static no.nav.modig.lang.option.Optional.optional;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.Innsendingsvalg.LASTET_OPP;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.Innsendingsvalg.valueOf;
 import static org.apache.commons.collections15.TransformerUtils.stringValueTransformer;
 
 /**
@@ -19,12 +21,14 @@ public final class Dokumentforventning implements Serializable {
             return dokumentforventning.isLastetOpp();
         }
     };
+
     public static final Transformer<Dokumentforventning, Boolean> HOVEDSKJEMA = new Transformer<Dokumentforventning, Boolean>() {
         @Override
         public Boolean transform(Dokumentforventning dokumentforventning) {
             return dokumentforventning.isHovedskjema();
         }
     };
+
     private static Transformer<WSDokumentForventningOppsummering, Dokumentforventning> dokumentforventningTransformer = new Transformer<WSDokumentForventningOppsummering, Dokumentforventning>() {
 
         @Override
@@ -33,18 +37,18 @@ public final class Dokumentforventning implements Serializable {
             dokumentforventning.friTekst = optional(wsDokumentForventningOppsummering.getFriTekst()).map(stringValueTransformer()).getOrElse(null);
             dokumentforventning.kodeverkId = wsDokumentForventningOppsummering.getKodeverkId();
             dokumentforventning.hovedskjema = wsDokumentForventningOppsummering.isHovedskjema();
-            dokumentforventning.innsendingsvalg = Innsendingsvalg.valueOf(wsDokumentForventningOppsummering.getInnsendingsValg().value());
+            dokumentforventning.innsendingsvalg = valueOf(wsDokumentForventningOppsummering.getInnsendingsValg().value());
             return dokumentforventning;
         }
 
     };
+
     private String kodeverkId;
     private Innsendingsvalg innsendingsvalg;
     private boolean hovedskjema;
     private String friTekst;
 
-    private Dokumentforventning() {
-    }
+    private Dokumentforventning() { }
 
     public static Dokumentforventning transformToDokumentforventing(WSDokumentForventningOppsummering wsDokumentForventningOppsummering) {
         return dokumentforventningTransformer.transform(wsDokumentForventningOppsummering);
@@ -67,7 +71,7 @@ public final class Dokumentforventning implements Serializable {
     }
 
     public boolean isLastetOpp() {
-        return Innsendingsvalg.LASTET_OPP.equals(innsendingsvalg);
+        return LASTET_OPP.equals(innsendingsvalg);
     }
 
     public String getTittel() {
