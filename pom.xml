@@ -153,16 +153,11 @@
                 <version>${hamcrest.version}</version>
             </dependency>
 
+            <!--har med denne i dependency-management, hvis ikke blir det dependency convergence warnings herifra til Lillestrøm-->
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-core</artifactId>
                 <version>${hamcrest.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.jvnet.jaxb2_commons</groupId>
-                <artifactId>jaxb2-basics-runtime</artifactId>
-                <version>${jaxb2.basics.runtime.version}</version>
             </dependency>
 
             <dependency>
@@ -179,19 +174,7 @@
 
             <dependency>
                 <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-devutils</artifactId>
-                <version>${wicket.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-util</artifactId>
-                <version>${wicket.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-datetime</artifactId>
                 <version>${wicket.version}</version>
             </dependency>
 
@@ -213,18 +196,6 @@
 	            <version>1.0.11</version>
 	            <scope>runtime</scope>
 	        </dependency>
-
-            <dependency>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-utils</artifactId>
-                <version>2.0.6</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>2.2.2</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -294,48 +265,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>${spring.security.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-config</artifactId>
-                <version>${spring.security.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-web</artifactId>
-                <version>${spring.security.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-expression</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <scope>test</scope>
@@ -395,12 +324,6 @@
                 <groupId>xml-apis</groupId>
                 <artifactId>xml-apis</artifactId>
                 <version>1.4.01</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.santuario</groupId>
-                <artifactId>xmlsec</artifactId>
-                <version>1.5.2</version>
             </dependency>
 
             <!-- Test dependencies -->
@@ -520,6 +443,13 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.6</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

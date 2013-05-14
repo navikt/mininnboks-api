@@ -13,7 +13,7 @@ import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBeha
 import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbehandlingType.SOKNADSINNSENDING;
 import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg.LASTET_OPP;
 import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg.SENDES_IKKE;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class BehandlingTransformerTest {

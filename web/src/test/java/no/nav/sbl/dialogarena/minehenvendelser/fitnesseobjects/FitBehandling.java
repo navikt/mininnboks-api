@@ -13,7 +13,7 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import java.util.List;
 
-import static org.codehaus.plexus.util.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class FitBehandling {
 
