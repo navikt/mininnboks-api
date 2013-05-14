@@ -24,7 +24,7 @@ import java.util.List;
 
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComponent;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
-import static org.apache.commons.lang.StringUtils.join;
+import static org.apache.commons.lang3.StringUtils.join;
 import static org.hamcrest.Matchers.equalTo;
 import static org.slf4j.LoggerFactory.getLogger;
 
