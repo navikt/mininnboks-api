@@ -40,7 +40,7 @@ public class SelfTestPage extends WebPage {
     private CmsContentRetriever cmsContentRetriever;
 
     @Inject
-    private HenvendelsesBehandlingPortType service;
+    private HenvendelsesBehandlingPortType henvendelsesBehandlingService;
 
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
@@ -62,7 +62,7 @@ public class SelfTestPage extends WebPage {
         HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) new URL(cmsContentRetriever.getCmsIp()).openConnection();
-            connection.setConnectTimeout(5000);
+            connection.setConnectTimeout(10000);
             statusCode = connection.getResponseCode();
         } catch (IOException e) {
             logger.warn("Cms not reachable on " + cmsContentRetriever.getCmsIp());
@@ -84,7 +84,7 @@ public class SelfTestPage extends WebPage {
                 .identType("eksternBruker")
                 .build());
         long start = currentTimeMillis();
-        boolean available = service.ping();
+        boolean available = henvendelsesBehandlingService.ping();
         String status = available ? HENVENDELSE_OK : HENVENDELSE_ERROR;
         return new ServiceStatus("Henvendelse WS", status, currentTimeMillis() - start);
     }

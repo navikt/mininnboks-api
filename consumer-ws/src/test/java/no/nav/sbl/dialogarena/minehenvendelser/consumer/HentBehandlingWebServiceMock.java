@@ -32,13 +32,13 @@ public class HentBehandlingWebServiceMock implements HttpHandler {
 
     @Override
     public void handleHttpRequest(HttpRequest httpRequest, HttpResponse response, HttpControl control) throws Exception {
-        String request = httpRequest.body();
+        String body = httpRequest.body();
 
         String message;
-        if (request.contains("ping")) {
+        if (body.contains("ping")) {
             message = getPingResponse();
         } else {
-            String aktorId = Jsoup.parse(request, "", Parser.xmlParser()).select("aktorId").get(0).text();
+            String aktorId = Jsoup.parse(body, "", Parser.xmlParser()).select("aktorId").get(0).text();
             message = marshaller.transform(mockData.getData(aktorId));
         }
 
