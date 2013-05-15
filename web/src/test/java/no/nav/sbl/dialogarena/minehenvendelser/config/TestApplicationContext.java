@@ -1,11 +1,10 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 
+import no.nav.sbl.dialogarena.common.kodeverk.config.KodeverkConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdDummy;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -14,14 +13,9 @@ import org.springframework.context.annotation.PropertySource;
 
 @Profile("test")
 @Configuration
-@Import(ConsumerTestContext.class)
+@Import({ConsumerTestContext.class, KodeverkConfig.class})
 @PropertySource("classpath:environment-test.properties")
 public class TestApplicationContext {
-
-    @Bean
-    public KodeverkService kodeverkOppslag() {
-        return new KodeverkServiceMock().createMockKodeverk();
-    }
 
     @Bean
     public AktoerIdService aktoerIdService() {

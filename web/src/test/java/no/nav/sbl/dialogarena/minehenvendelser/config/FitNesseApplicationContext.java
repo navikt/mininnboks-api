@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.wicket.test.FluentWicketTester;
+import no.nav.sbl.dialogarena.common.kodeverk.config.KodeverkConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
@@ -8,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import javax.inject.Inject;
 import java.util.Locale;
 
-@Import(value = {ApplicationContext.class})
+@Import(value = {ApplicationContext.class, KodeverkConfig.class})
 @PropertySource({"/environment-test.properties"})
 public class FitNesseApplicationContext {
 

@@ -1,8 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
+import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -31,9 +31,9 @@ public class BehandlingPanel extends Panel {
     private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
     private CmsContentRetriever innholdsTekster;
-    private KodeverkService kodeverkOppslag;
+    private Kodeverk kodeverkOppslag;
 
-    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriever innholdsTekster, KodeverkService kodeverkOppslag) {
+    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriever innholdsTekster, Kodeverk kodeverkOppslag) {
         super(id, model);
         this.model = model;
         this.behandling = behandling;
@@ -80,10 +80,10 @@ public class BehandlingPanel extends Panel {
             @Override
             protected void populateItem(ListItem<Dokumentforventning> listItem) {
                 Dokumentforventning dokumentforventning = listItem.getModelObject();
-                if (kodeverkOppslag.isEgendefKode(dokumentforventning.getTittel())) {
-                    listItem.add(new Label("dokument", kodeverkOppslag.hentKodeverk(dokumentforventning.getTittel()) + dokumentforventning.getFriTekst()));
+                if (kodeverkOppslag.isEgendefinert(dokumentforventning.getKodeverId())) {
+                    listItem.add(new Label("dokument", kodeverkOppslag.getTittel(dokumentforventning.getKodeverId()) + dokumentforventning.getFriTekst()));
                 } else {
-                    listItem.add(new Label("dokument", kodeverkOppslag.hentKodeverk(dokumentforventning.getTittel())));
+                    listItem.add(new Label("dokument", kodeverkOppslag.getTittel(dokumentforventning.getKodeverId())));
                 }
             }
         };
@@ -91,9 +91,9 @@ public class BehandlingPanel extends Panel {
 
     private Label getHeadText() {
         if (behandling.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
-            return new Label("tittel", new StringResourceModel("ettersending.tekst", this, null, null, kodeverkOppslag.hentKodeverk(behandling.getTittel())));
+            return new Label("tittel", new StringResourceModel("ettersending.tekst", this, null, null, kodeverkOppslag.getTittel(behandling.getKodeverkId())));
         }
-        return new Label("tittel", kodeverkOppslag.hentKodeverk(behandling.getTittel()));
+        return new Label("tittel", kodeverkOppslag.getTittel(behandling.getKodeverkId()));
     }
 
     private Label getTopText() {

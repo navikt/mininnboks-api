@@ -99,7 +99,7 @@ public final class Behandling implements Serializable {
         return dokumentforventninger;
     }
 
-    public String getTittel() {
+    public String getKodeverkId() {
         return fetchHoveddokument().getKodeverkId();
     }
 

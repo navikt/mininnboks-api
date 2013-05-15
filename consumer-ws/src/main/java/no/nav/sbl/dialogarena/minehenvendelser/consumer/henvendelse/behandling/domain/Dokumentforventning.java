@@ -74,7 +74,7 @@ public final class Dokumentforventning implements Serializable {
         return LASTET_OPP.equals(innsendingsvalg);
     }
 
-    public String getTittel() {
+    public String getKodeverId() {
         return getKodeverkId();
     }
 

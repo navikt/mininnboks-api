@@ -1,12 +1,12 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
+import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -43,7 +43,7 @@ public class HomePage extends BasePage {
     private static final String NULL_AKTOER_ID = "nullAktoer";
 
     @Inject
-    protected KodeverkService kodeverkOppslag;
+    protected Kodeverk kodeverkOppslag;
     @Inject
     private BehandlingService behandlingService;
     @Inject
@@ -123,9 +123,9 @@ public class HomePage extends BasePage {
 
             private Label getTittel(Behandling item) {
                 if (item.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
-                    return new Label("tittel", new StringResourceModel("ettersending.tekst", page, null, null, kodeverkOppslag.hentKodeverk(item.getTittel())));
+                    return new Label("tittel", new StringResourceModel("ettersending.tekst", page, null, null, kodeverkOppslag.getTittel(item.getKodeverkId())));
                 }
-                return new Label("tittel", kodeverkOppslag.hentKodeverk(item.getTittel()));
+                return new Label("tittel", kodeverkOppslag.getTittel(item.getKodeverkId()));
             }
         };
     }

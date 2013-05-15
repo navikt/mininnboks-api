@@ -1,12 +1,11 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.security.ws.SecurityContextOutInterceptor;
+import no.nav.sbl.dialogarena.common.kodeverk.config.KodeverkConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdSecurityContext;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkServiceMock;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
@@ -28,7 +27,7 @@ import java.net.URL;
  */
 @Profile("default")
 @Configuration
-@Import({WebContext.class})
+@Import({WebContext.class, KodeverkConfig.class})
 public class ProductionApplicationContext {
 
     private static final int WS_CLIENT_TIMEOUT = 10000;
@@ -40,10 +39,10 @@ public class ProductionApplicationContext {
         return new BehandlingsServicePort();
     }
 
-    @Bean
-    public KodeverkService kodeverkService() {
-        return new KodeverkServiceMock().createMockKodeverk();
-    }
+//    @Bean
+//    public KodeverkService kodeverkService() {
+//        return new KodeverkServiceMock().createMockKodeverk();
+//    }
 
     @Bean
     public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {

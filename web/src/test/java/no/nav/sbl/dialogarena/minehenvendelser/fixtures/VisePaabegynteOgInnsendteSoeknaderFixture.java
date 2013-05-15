@@ -9,7 +9,6 @@ import no.nav.modig.wicket.test.internal.Parameters;
 import no.nav.sbl.dialogarena.minehenvendelser.config.FitNesseApplicationContext;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.kodeverk.KodeverkService;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitInnsendtBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitPaabegyntBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
@@ -37,8 +36,6 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     private MockData mockData;
     @Inject
     private FluentWicketTester<WicketApplication> wicketTester;
-    @Inject
-    private KodeverkService kodeverkService;
 
     public Fixture datagrunnlag() {
         logger.info("Setting up datagrunnlag.");
@@ -66,10 +63,6 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
         parameters.pageParameters.add("aktoerId", aktoerId);
         wicketTester.goTo(HomePage.class, parameters);
         return new ArrayFixture(retriveUnderArbeidBehandlinger());
-    }
-
-    public Fixture tabellForKodeverk() {
-        return new TabellForKodeverk(kodeverkService);
     }
 
     public Fixture avklaringer() {

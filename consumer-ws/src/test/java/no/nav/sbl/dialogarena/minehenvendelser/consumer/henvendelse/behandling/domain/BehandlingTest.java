@@ -123,7 +123,7 @@ public class BehandlingTest {
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getTittel(), equalTo("kodeverkId"));
+        assertThat(behandling.getHovedskjemaId(), equalTo("hovedSkjemaId"));
     }
 
 }
