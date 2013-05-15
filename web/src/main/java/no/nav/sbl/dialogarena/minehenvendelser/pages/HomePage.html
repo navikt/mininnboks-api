@@ -5,7 +5,15 @@
 </wicket:head>
 <wicket:extend>
     <div class="container">
-        <h1 wicket:id="hovedTittel" class="senterHeading">[]</h1>
+        <div class="headerwrapper">
+            <h1 wicket:id="hovedTittel" class="senterHeading">[]</h1>
+            <a href="#" title="tooltipdisplay" data-toggle="tooltipdisplay" class="tooltiplink">?</a>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $(".tooltiplink").tooltip();
+            });
+        </script>
         <div wicket:id="ingenBehandlinger"  class="panel-ingen-innsendte right-mover">
             <h1 wicket:id="ingenInnsendingerTittel">[]</h1>
             <hr />

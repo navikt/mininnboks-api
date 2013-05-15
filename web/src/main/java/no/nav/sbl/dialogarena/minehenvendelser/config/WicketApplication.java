@@ -18,6 +18,7 @@ import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_CORE;
 import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_LABELS_AND_BADGES;
 import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_NAVIGATION;
 import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_TOOLTIP;
+import static no.nav.modig.frontend.FrontendModules.SCULPTOR;
 import static no.nav.modig.frontend.FrontendModules.UNDERSCORE;
 import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
 import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
@@ -46,7 +47,15 @@ public class WicketApplication extends WebApplication {
     protected void init() {
         super.init();
         new FrontendConfigurator()
-                .withModules(UNDERSCORE, BOOTSTRAP_CORE, BOOTSTRAP_BUTTON, BOOTSTRAP_LABELS_AND_BADGES, BOOTSTRAP_NAVIGATION, BOOTSTRAP_TOOLTIP, BOOTSTRAP_ACCORDION)
+                .withModules(
+                        SCULPTOR,
+                        UNDERSCORE,
+                        BOOTSTRAP_CORE,
+                        BOOTSTRAP_BUTTON,
+                        BOOTSTRAP_LABELS_AND_BADGES,
+                        BOOTSTRAP_NAVIGATION,
+                        BOOTSTRAP_TOOLTIP,
+                        BOOTSTRAP_ACCORDION)
                 .addMetas(
                         CHARSET_UTF8,
                         VIEWPORT_SCALE_1,

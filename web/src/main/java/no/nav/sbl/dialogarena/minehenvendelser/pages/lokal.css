@@ -329,31 +329,38 @@ body {
 /* Ikke innsendte CSS */
 
 h1.senterHeading {
-    text-align: center;
-    box-sizing: border-box;
     font-size: 38px;
     font-family: Modus, Arial, Helvetica, sans-serif;
     font-weight: 600;
     line-height: 1.2em;
-    margin: 10px 0;
     color: #3A3633;
-    display: block;
-    padding-top: 50px;
+    float: left;
 }
 
-h1.senterHeading:after {
+.tooltiplink {
     content: '?';
     font-size: 16px;
-    vertical-align: middle;
     background: url(../img/sirkel-blaa.png);
     background-position: 0 0;
     background-size: 39px 39px ;
     background-repeat: no-repeat;
     padding: 15px 15px 15px 15px;
-    margin-left: 5px;
     color: white;
+    float: left;
+    margin-left: 10px;
 }
 
+.tooltiplink:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.headerwrapper {
+    width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 20px;
+}
 
 .panel-mini {
     text-align: center;
@@ -412,7 +419,7 @@ h1.senterHeading:after {
     float: none;
     max-width: 711px;
     padding-bottom: 50px;
-    margin: 30px 15px 15px 15px;
+    margin-top: 100px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 0px;
@@ -422,17 +429,17 @@ h1.senterHeading:after {
 }
 
 .panel-ingen-innsendte h1{
-    margin: 30px 15px 15px 15px;
     padding-top: 40px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     text-transform: uppercase;
     text-align: center;
+    margin-left: 30px;
 }
 
 .panel-ingen-innsendte hr{
     width: 20px;
-    margin-left: 341px;
+    margin-left: 190px;
     background-color : #333;
     color: #333;
     height: 3px;
@@ -443,8 +450,7 @@ h1.senterHeading:after {
     text-align: center;
     font-size: 16px;
     line-height: 1.5em;
-    margin-left: 180px;
-    margin-right: 15px;
+    margin-left: 35px;
     padding-bottom: 15px;
     color: #d3d3d3;
     width: 340px ;
@@ -452,7 +458,7 @@ h1.senterHeading:after {
 
 .panel-ingen-innsendte a{
     text-align: center;
-    margin-left: 340px;
+    margin-left: 175px;
 }
 
 
@@ -533,7 +539,7 @@ h1.senterHeading:after {
 }
 
 .right-mover{
-    margin-left: 100px;
+    margin-left: 275px;
 }
 
 .kvittering {
