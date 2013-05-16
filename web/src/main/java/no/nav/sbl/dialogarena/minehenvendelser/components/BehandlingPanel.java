@@ -10,8 +10,6 @@ import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -52,7 +50,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getInnsendteDokumenterHeader() {
-        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader",innholdsTekster.hentArtikkel("behandling.innsendte.dokumenter.header"));
+        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader", innholdsTekster.hentArtikkel("behandling.innsendte.dokumenter.header"));
         if (behandling.getAntallInnsendteDokumenter() == 0) {
             innsendteDokumenterHeader.setVisible(false);
         }
@@ -70,14 +68,14 @@ public class BehandlingPanel extends Panel {
     private Label getVedleggsLabel() {
         if (behandling.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
             return createFormattedLabel("vedlegg",
-                                        innholdsTekster.hentArtikkel("behandling.antall.vedlegg"),
-                                        behandling.getAntallInnsendteDokumenterUnntattHovedDokument(),
-                                        behandling.getAntallDokumenterUnntattHovedDokument());
+                    innholdsTekster.hentArtikkel("behandling.antall.vedlegg"),
+                    behandling.getAntallInnsendteDokumenterUnntattHovedDokument(),
+                    behandling.getAntallDokumenterUnntattHovedDokument());
         } else {
             return createFormattedLabel("vedlegg",
-                                        innholdsTekster.hentArtikkel("behandling.antall.vedlegg"),
-                                        behandling.getAntallInnsendteDokumenter(),
-                                        behandling.getAntallDokumenter());
+                    innholdsTekster.hentArtikkel("behandling.antall.vedlegg"),
+                    behandling.getAntallInnsendteDokumenter(),
+                    behandling.getAntallDokumenter());
         }
     }
 
@@ -99,13 +97,13 @@ public class BehandlingPanel extends Panel {
     private Label getHeadText() {
         if (behandling.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
             return createFormattedLabel("tittel",
-                                        innholdsTekster.hentArtikkel("behandling.ettersending.tekst"),
-                                        kodeverkOppslag.getTittel(behandling.getKodeverkId()));
+                    innholdsTekster.hentArtikkel("behandling.ettersending.tekst"),
+                    kodeverkOppslag.getTittel(behandling.getKodeverkId()));
         }
         return new Label("tittel", kodeverkOppslag.getTittel(behandling.getKodeverkId()));
     }
 
-    private Label createFormattedLabel(String wicketId, String unformattedText, Object... args){
+    private Label createFormattedLabel(String wicketId, String unformattedText, Object... args) {
         String formattedText = String.format(unformattedText, args);
         Label formattedLabel = new Label(wicketId, formattedText);
         formattedLabel.setEscapeModelStrings(false);

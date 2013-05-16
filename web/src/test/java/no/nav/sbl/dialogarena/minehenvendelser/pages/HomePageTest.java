@@ -65,6 +65,7 @@ public class HomePageTest extends AbstractWicketTest {
         when(behandlingServiceMock.hentBehandlinger(testAktoerId)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
+        when(innholdstekster.hentArtikkel("ettersending.tekst")).thenReturn("Ettersendelse til %s");
 
         wicketTester.goTo(HomePage.class)
                 .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying(testTittel1)

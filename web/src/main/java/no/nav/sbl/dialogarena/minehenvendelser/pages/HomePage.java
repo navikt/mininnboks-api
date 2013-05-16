@@ -48,10 +48,8 @@ public class HomePage extends BasePage {
     private BehandlingService behandlingService;
     @Inject
     private AktoerIdService aktoerIdService;
-    private HomePage page;
 
     public HomePage(PageParameters pageParameters) {
-        page = this;
         checkPageParametersAndSetAktoerId(pageParameters);
         IModel<List<Behandling>> model = createBehandlingerLDM();
         add(
