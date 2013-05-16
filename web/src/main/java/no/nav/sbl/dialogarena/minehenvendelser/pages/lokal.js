@@ -19,4 +19,5 @@ $(function () {
             event.preventDefault();
         });
     });
+    $(".tooltiplink").tooltip();
 });
