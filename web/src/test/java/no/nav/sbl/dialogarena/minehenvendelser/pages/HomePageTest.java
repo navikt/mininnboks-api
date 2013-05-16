@@ -30,13 +30,19 @@ public class HomePageTest extends AbstractWicketTest {
     private BehandlingService behandlingServiceMock;
     private AktoerIdService aktoerIdServiceMock;
     private Kodeverk kodeverkServiceMock;
+    private CmsContentRetriever innholdstekster;
 
     @Override
     protected void setup() {
         behandlingServiceMock = mock(BehandlingService.class);
         aktoerIdServiceMock = mock(AktoerIdService.class);
         kodeverkServiceMock = mock(Kodeverk.class);
-        mock(CmsContentRetriever.class);
+        innholdstekster = mock(CmsContentRetriever.class);
+        when(innholdstekster.hentArtikkel("ettersending.tekst")).thenReturn("Ettersendelse til %s");
+        when(innholdstekster.hentArtikkel("siste.endret")).thenReturn("Ikke sendt • Sist endret %s");
+        when(innholdstekster.hentArtikkel("behandling.antall.vedlegg")).thenReturn("%d av %d dokumenter sendt til NAV");
+        when(innholdstekster.hentArtikkel("behandling.ettersending.tekst")).thenReturn("Ettersendelse til %s");
+
         mock("footerLinks", Map.class);
         mock("navigasjonslink", "");
         mock("dokumentInnsendingBaseUrl", "");
@@ -76,6 +82,7 @@ public class HomePageTest extends AbstractWicketTest {
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
 
+
         wicketTester.goTo(HomePage.class)
                 .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying(testTittel2, testTittel1);
     }
@@ -90,6 +97,8 @@ public class HomePageTest extends AbstractWicketTest {
         when(behandlingServiceMock.hentBehandlinger(testAktoerId)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
+
+
 
         wicketTester.goTo(HomePage.class)
                 .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying("Ettersendelse til " + testTittel1)

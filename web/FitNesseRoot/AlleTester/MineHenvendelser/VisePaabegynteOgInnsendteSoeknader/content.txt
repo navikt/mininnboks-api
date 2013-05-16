@@ -59,27 +59,27 @@ Bruker har 1 innsendt Dokumentinnsending. 3 av 4 dokumenter er innsendt:
 
 !| Innsendt | ***REMOVED*** |
 | Navn paa behandling | Antall sendte av totalt antall dokumenter | Dato og tidspunkt | Innsendte dokumenter | Manglende dokumenter |
-| Søknad om dagpenger | 3 av 4 dokumenter sendt til NAV | 19. august 2006, 21:27 | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Annet: Egendef tittel på 25 tegn |
+| Søknad om dagpenger | 3 av 4 dokumenter sendt til NAV | 19. August 2006, 21:27 | Søknad om dagpenger, Permitteringsvarsel, Arbeidsavtale | Annet: Egendef tittel på 25 tegn |
 
 Bruker har 2 innsendte Dokumentinnsendinger:
 
 !| Innsendt | ***REMOVED*** |
 | Navn paa behandling | Antall sendte av totalt antall dokumenter | Dato og tidspunkt | Innsendte dokumenter | Manglende dokumenter |
-| Søknad om foreldrepenger | 2 av 2 dokumenter sendt til NAV | 19. september 2008, 02:25 | Søknad om foreldrepenger, Inntektsopplysninger | |
-| Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV | 19. september 2008, 02:18 | Søknad om dagpenger, Annet: Oppsigelse | |
+| Søknad om foreldrepenger | 2 av 2 dokumenter sendt til NAV | 19. September 2008, 02:25 | Søknad om foreldrepenger, Inntektsopplysninger | |
+| Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV | 19. September 2008, 02:18 | Søknad om dagpenger, Annet: Oppsigelse | |
 
 Bruker har flere innsendte Dokumentinnsendinger og 1 Ettersendelse:
 
 !| Innsendt | ***REMOVED*** |
 | Navn paa behandling | Antall sendte av totalt antall dokumenter | Dato og tidspunkt | Innsendte dokumenter | Manglende dokumenter |
-| Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV | 14. desember 2012, 01:18 | Søknad om dagpenger, Annet: Oppsigelsen min | |
-| Ettersendelse til Søknad om kontantstøtte | 1 av 1 dokumenter sendt til NAV | 21. november 2012, 01:18 | Avtale om delt bosted | |
-| Søknad om kontantstøtte | 1 av 1 dokumenter sendt til NAV | 16. oktober 2012, 02:18 | Søknad om kontantstøtte | |
-| Søknad om foreldrepenger | 1 av 2 dokumenter sendt til NAV | 15. september 2011, 02:18 | Søknad om foreldrepenger | Inntektsopplysninger |
-| Søknad om dagpenger | 3 av 3 dokumenter sendt til NAV | 11. april 2010, 22:18 | Søknad om dagpenger, Permitteringsvarsel, Annet: Oppsigelsen min | |
-| Søknad om kontantstøtte | 1 av 2 dokumenter sendt til NAV | 13. august 2009, 02:18 | Søknad om kontantstøtte | Annet: Dokumentasjon gradert plass |
-| Søknad om foreldrepenger | 2 av 2 dokumenter sendt til NAV | 12. januar 2008, 01:18 | Søknad om foreldrepenger, Inntektsopplysninger | |
-| Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV | 10. september 2006, 02:18 | Søknad om dagpenger, Annet: Oppsigelsen min | |
+| Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV | 14. December 2012, 01:18 | Søknad om dagpenger, Annet: Oppsigelsen min | |
+| Ettersendelse til Søknad om kontantstøtte | 1 av 1 dokumenter sendt til NAV | 21. November 2012, 01:18 | Avtale om delt bosted | |
+| Søknad om kontantstøtte | 1 av 1 dokumenter sendt til NAV | 16. October 2012, 02:18 | Søknad om kontantstøtte | |
+| Søknad om foreldrepenger | 1 av 2 dokumenter sendt til NAV | 15. September 2011, 02:18 | Søknad om foreldrepenger | Inntektsopplysninger |
+| Søknad om dagpenger | 3 av 3 dokumenter sendt til NAV | 11. April 2010, 22:18 | Søknad om dagpenger, Permitteringsvarsel, Annet: Oppsigelsen min | |
+| Søknad om kontantstøtte | 1 av 2 dokumenter sendt til NAV | 13. August 2009, 02:18 | Søknad om kontantstøtte | Annet: Dokumentasjon gradert plass |
+| Søknad om foreldrepenger | 2 av 2 dokumenter sendt til NAV | 12. January 2008, 01:18 | Søknad om foreldrepenger, Inntektsopplysninger | |
+| Søknad om dagpenger | 2 av 2 dokumenter sendt til NAV | 10. September 2006, 02:18 | Søknad om dagpenger, Annet: Oppsigelsen min | |
 
 Bruker har ingen innsendte Dokumentinnsendinger
 
@@ -97,14 +97,14 @@ Bruker har 2 påbegynte søknader:
 
 !| Paabegynt | ***REMOVED*** |
 | Navn paa behandling | Tekst | Dato og tidspunkt |
-| Søknad om dagpenger | Sist endret | 19. september 2012, 02:18 |
-| Søknad om dagpenger | Sist endret | 19. januar 2010, 01:18 |
+| Søknad om dagpenger | Sist endret | 19. September 2012, 02:18 |
+| Søknad om dagpenger | Sist endret | 19. January 2010, 01:18 |
 
 Bruker har påbegynt Ettersending:
 
 !| Paabegynt | ***REMOVED*** |
 | Navn paa behandling | Tekst | Dato og tidspunkt |
-| Ettersendelse til Søknad om foreldrepenger | Sist endret | 9. september 2012, 02:18 |
+| Ettersendelse til Søknad om foreldrepenger | Sist endret | 9. September 2012, 02:18 |
 
 Bruker har ingen påbegynte innsendinger:
 

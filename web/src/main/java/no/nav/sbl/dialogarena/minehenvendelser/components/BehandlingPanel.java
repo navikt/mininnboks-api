@@ -125,7 +125,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getDateText() {
-        String formattedDate = new SimpleDateFormat("d. MMMM YYYY , HH:mm", getRequest().getLocale()).format(behandling.getInnsendtDato().toDate());
+        String formattedDate = new SimpleDateFormat("d. MMMM YYYY, HH:mm", getRequest().getLocale()).format(behandling.getInnsendtDato().toDate());
         return new Label("innsendtDato", formattedDate);
     }
 

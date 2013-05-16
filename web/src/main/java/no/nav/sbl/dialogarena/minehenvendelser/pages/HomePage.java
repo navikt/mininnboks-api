@@ -122,7 +122,7 @@ public class HomePage extends BasePage {
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
                 String dokumentInnsendingUrl = System.getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId();
-                String formattedDate = new SimpleDateFormat("d. MMMM YYYY , HH:mm", getRequest().getLocale()).format(listItem.getModelObject().getSistEndret().toDate());
+                String formattedDate = new SimpleDateFormat("d. MMMM YYYY, HH:mm", getRequest().getLocale()).format(listItem.getModelObject().getSistEndret().toDate());
                 listItem.add(
                         getTittel(listItem.getModelObject()),
                         createFormattedLabel("sistEndret", innholdstekster.hentArtikkel("siste.endret"), formattedDate),
