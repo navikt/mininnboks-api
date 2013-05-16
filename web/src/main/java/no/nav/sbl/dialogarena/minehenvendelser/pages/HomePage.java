@@ -15,12 +15,11 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import javax.inject.Inject;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -43,7 +42,6 @@ import static org.apache.wicket.model.Model.of;
 public class HomePage extends BasePage {
 
     private static final String NULL_AKTOER_ID = "nullAktoer";
-
     @Inject
     protected Kodeverk kodeverkOppslag;
     @Inject
@@ -60,7 +58,7 @@ public class HomePage extends BasePage {
                 createTooltipLink(),
                 createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
                 createFerdigView(new BehandlingerLDM(model, FERDIG)),
-                new Label("hovedTittel", new ResourceModel("hoved.tittel")),
+                new Label("hovedTittel", innholdstekster.hentArtikkel("hoved.tittel")),
                 createIngenBehandlingerView(new BehandlingerLDM(model, UNDER_ARBEID))
         );
     }
@@ -95,8 +93,8 @@ public class HomePage extends BasePage {
     private WebMarkupContainer createIngenBehandlingerView(BehandlingerLDM behandlinger) {
         WebMarkupContainer container = new WebMarkupContainer("ingenBehandlinger");
         container.add(
-                new Label("ingenInnsendingerTittel", new ResourceModel("ingen.innsendinger.tittel")),
-                new Label("ingenInnsendingerTekst", new ResourceModel("ingen.innsendinger.tekst")));
+                new Label("ingenInnsendingerTittel", innholdstekster.hentArtikkel("ingen.innsendinger.tittel")),
+                new Label("ingenInnsendingerTekst", innholdstekster.hentArtikkel("ingen.innsendinger.tekst")));
         if (behandlinger.getTotalAntallBehandlinger() > 0) {
             container.setVisible(false);
         }
@@ -124,19 +122,27 @@ public class HomePage extends BasePage {
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
                 String dokumentInnsendingUrl = System.getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId();
+                String formattedDate = new SimpleDateFormat("d. MMMM YYYY , HH:mm", getRequest().getLocale()).format(listItem.getModelObject().getSistEndret().toDate());
                 listItem.add(
                         getTittel(listItem.getModelObject()),
-                        new Label("sistEndret", new StringResourceModel("siste.endret", page, null, listItem.getModelObject().getSistEndret().toDate())),
+                        createFormattedLabel("sistEndret", innholdstekster.hentArtikkel("siste.endret"), formattedDate),
                         new ExternalLink("fortsettLink", dokumentInnsendingUrl, "Fortsett/slett innsending"));
             }
 
             private Label getTittel(Behandling item) {
                 if (item.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
-                    return new Label("tittel", new StringResourceModel("ettersending.tekst", page, null, null, kodeverkOppslag.getTittel(item.getKodeverkId())));
+                    return createFormattedLabel("tittel", innholdstekster.hentArtikkel("ettersending.tekst"), kodeverkOppslag.getTittel(item.getKodeverkId()));
                 }
                 return new Label("tittel", kodeverkOppslag.getTittel(item.getKodeverkId()));
             }
         };
+    }
+
+    private Label createFormattedLabel(String wicketId, String unformattedText, Object... args) {
+        String formattedText = String.format(unformattedText, args);
+        Label formattedLabel = new Label(wicketId, formattedText);
+        formattedLabel.setEscapeModelStrings(false);
+        return formattedLabel;
     }
 
     private static class BehandlingerLDM extends LoadableDetachableModel<List<Behandling>> {

@@ -13,6 +13,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
@@ -51,7 +52,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getInnsendteDokumenterHeader() {
-        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader", new ResourceModel("innsendte.dokumenter.header"));
+        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader",innholdsTekster.hentArtikkel("behandling.innsendte.dokumenter.header"));
         if (behandling.getAntallInnsendteDokumenter() == 0) {
             innsendteDokumenterHeader.setVisible(false);
         }
@@ -59,7 +60,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getManglendeDokumenterHeader() {
-        Label manglendeDokumenterHeader = new Label("manglendeDokumenterHeader", new ResourceModel("manglende.dokumenter.header"));
+        Label manglendeDokumenterHeader = new Label("manglendeDokumenterHeader", innholdsTekster.hentArtikkel("behandling.manglende.dokumenter.header"));
         if (behandling.getAntallManglendeDokumenter() == 0) {
             manglendeDokumenterHeader.setVisible(false);
         }
@@ -68,9 +69,15 @@ public class BehandlingPanel extends Panel {
 
     private Label getVedleggsLabel() {
         if (behandling.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
-            return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenterUnntattHovedDokument(), behandling.getAntallDokumenterUnntattHovedDokument()));
+            return createFormattedLabel("vedlegg",
+                                        innholdsTekster.hentArtikkel("behandling.antall.vedlegg"),
+                                        behandling.getAntallInnsendteDokumenterUnntattHovedDokument(),
+                                        behandling.getAntallDokumenterUnntattHovedDokument());
         } else {
-            return new Label("vedlegg", new StringResourceModel("antall.vedlegg", this, null, behandling.getAntallInnsendteDokumenter(), behandling.getAntallDokumenter()));
+            return createFormattedLabel("vedlegg",
+                                        innholdsTekster.hentArtikkel("behandling.antall.vedlegg"),
+                                        behandling.getAntallInnsendteDokumenter(),
+                                        behandling.getAntallDokumenter());
         }
     }
 
@@ -91,26 +98,35 @@ public class BehandlingPanel extends Panel {
 
     private Label getHeadText() {
         if (behandling.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
-            return new Label("tittel", new StringResourceModel("ettersending.tekst", this, null, null, kodeverkOppslag.getTittel(behandling.getKodeverkId())));
+            return createFormattedLabel("tittel",
+                                        innholdsTekster.hentArtikkel("behandling.ettersending.tekst"),
+                                        kodeverkOppslag.getTittel(behandling.getKodeverkId()));
         }
         return new Label("tittel", kodeverkOppslag.getTittel(behandling.getKodeverkId()));
     }
 
+    private Label createFormattedLabel(String wicketId, String unformattedText, Object... args){
+        String formattedText = String.format(unformattedText, args);
+        Label formattedLabel = new Label(wicketId, formattedText);
+        formattedLabel.setEscapeModelStrings(false);
+        return formattedLabel;
+    }
+
     private Label getTopText() {
-        Label topTextLabel = new Label("forTekst", innholdsTekster.hentArtikkel("topp.tekst"));
+        Label topTextLabel = new Label("forTekst", innholdsTekster.hentArtikkel("behandling.topp.tekst"));
         topTextLabel.setEscapeModelStrings(false);
         return topTextLabel;
     }
 
     private Label getBottomText() {
-        Label bottomTextLabel = new Label("etterTekst", innholdsTekster.hentArtikkel("slutt.tekst"));
+        Label bottomTextLabel = new Label("etterTekst", innholdsTekster.hentArtikkel("behandling.slutt.tekst"));
         bottomTextLabel.setEscapeModelStrings(false);
         return bottomTextLabel;
     }
 
     private Label getDateText() {
-        StringResourceModel stringResourceModel = new StringResourceModel("innsendt", this, null, behandling.getInnsendtDato().toDate());
-        return new Label("innsendtDato", stringResourceModel);
+        String formattedDate = new SimpleDateFormat("d. MMMM YYYY , HH:mm", getRequest().getLocale()).format(behandling.getInnsendtDato().toDate());
+        return new Label("innsendtDato", formattedDate);
     }
 
     private static class DokumentforventningModel extends LoadableDetachableModel<List<Dokumentforventning>> {
