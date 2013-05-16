@@ -80,10 +80,10 @@ public class BehandlingPanel extends Panel {
             @Override
             protected void populateItem(ListItem<Dokumentforventning> listItem) {
                 Dokumentforventning dokumentforventning = listItem.getModelObject();
-                if (kodeverkOppslag.isEgendefinert(dokumentforventning.getKodeverId())) {
-                    listItem.add(new Label("dokument", kodeverkOppslag.getTittel(dokumentforventning.getKodeverId()) + dokumentforventning.getFriTekst()));
+                if (kodeverkOppslag.isEgendefinert(dokumentforventning.getKodeverkId())) {
+                    listItem.add(new Label("dokument", kodeverkOppslag.getTittel(dokumentforventning.getKodeverkId()) + dokumentforventning.getFriTekst()));
                 } else {
-                    listItem.add(new Label("dokument", kodeverkOppslag.getTittel(dokumentforventning.getKodeverId())));
+                    listItem.add(new Label("dokument", kodeverkOppslag.getTittel(dokumentforventning.getKodeverkId())));
                 }
             }
         };

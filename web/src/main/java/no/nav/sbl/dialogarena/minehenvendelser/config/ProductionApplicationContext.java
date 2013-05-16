@@ -39,11 +39,6 @@ public class ProductionApplicationContext {
         return new BehandlingsServicePort();
     }
 
-//    @Bean
-//    public KodeverkService kodeverkService() {
-//        return new KodeverkServiceMock().createMockKodeverk();
-//    }
-
     @Bean
     public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();

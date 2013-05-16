@@ -74,10 +74,6 @@ public final class Dokumentforventning implements Serializable {
         return LASTET_OPP.equals(innsendingsvalg);
     }
 
-    public String getKodeverId() {
-        return getKodeverkId();
-    }
-
     public enum Innsendingsvalg {IKKE_VALGT, SEND_SENERE, LASTET_OPP, SEND_I_POST, SENDES_AV_ANDRE, SENDES_IKKE}
 
 }

@@ -29,6 +29,6 @@ public class DokumentforventningTest {
     @Test
     public void testGetTittel() throws Exception {
         setInternalState(dokumentforventning, "kodeverkId", "kodeverkId");
-        assertThat(dokumentforventning.getKodeverId(), is("kodeverkId"));
+        assertThat(dokumentforventning.getKodeverkId(), is("kodeverkId"));
     }
 }
