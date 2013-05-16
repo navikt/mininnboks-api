@@ -7,6 +7,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -33,6 +34,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus.UNDER_ARBEID;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.STATUS;
+import static org.apache.wicket.model.Model.of;
 
 /**
  * Hovedside for applikasjonen. Laster inn behandlinger via. en service og
@@ -55,11 +57,18 @@ public class HomePage extends BasePage {
         checkPageParametersAndSetAktoerId(pageParameters);
         IModel<List<Behandling>> model = createBehandlingerLDM();
         add(
+                createTooltipLink(),
                 createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
                 createFerdigView(new BehandlingerLDM(model, FERDIG)),
                 new Label("hovedTittel", new ResourceModel("hoved.tittel")),
                 createIngenBehandlingerView(new BehandlingerLDM(model, UNDER_ARBEID))
         );
+    }
+
+    private WebMarkupContainer createTooltipLink() {
+        WebMarkupContainer webMarkupContainer = new WebMarkupContainer("tooltip");
+        webMarkupContainer.add(new AttributeAppender("title", of(innholdstekster.hentTekst("tooltip.tekst"))));
+        return webMarkupContainer;
     }
 
     private LoadableDetachableModel<List<Behandling>> createBehandlingerLDM() {
