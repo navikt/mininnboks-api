@@ -90,7 +90,7 @@ public class SelfTestPage extends WebPage {
     }
 
     private CmsStatusListView getCmsKeys() {
-        String[] keys = {"topp.tekst", "slutt.tekst" };
+        String[] keys = {"behandling.topp.tekst", "behandling.slutt.tekst" };
         List<CmsStatus> cmsStatusList = new ArrayList<>();
         for (String key : keys) {
             cmsStatusList.add(new CmsStatus(key));
