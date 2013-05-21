@@ -60,7 +60,7 @@ public class HomePage extends BasePage {
                 createFerdigView(new BehandlingerLDM(model, FERDIG)),
                 new Label("hovedTittel", innholdstekster.hentTekst("hoved.tittel")),
                 createIngenBehandlingerView(new BehandlingerLDM(model, UNDER_ARBEID)),
-                new ExternalLink("forsiden", "#", innholdstekster.hentTekst("link.tekst.forsiden"))
+                new ExternalLink("forsiden", getProperty("inngangsporten.link.url"), innholdstekster.hentTekst("link.tekst.forsiden"))
         );
     }
 
@@ -123,7 +123,7 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                String dokumentInnsendingUrl = System.getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId();
+                String dokumentInnsendingUrl = getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId();
                 String formattedDate = new SimpleDateFormat("d. MMMM YYYY, HH:mm", DEFAULT_LOCALE).format(listItem.getModelObject().getSistEndret().toDate());
                 listItem.add(
                         getTittel(listItem.getModelObject()),

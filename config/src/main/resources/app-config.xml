@@ -19,6 +19,7 @@
         <baseUrl alias="minehenvendelser.footer.nettstedskart" mapToProperty="minehenvendelser.footer.nettstedskart" />
         <baseUrl alias="minehenvendelser.navigasjonslink" mapToProperty="minehenvendelser.navigasjonslink" />
         <baseUrl alias="dokumentinnsending.link" mapToProperty="dokumentinnsending.link" />
+        <baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link" />
 
         <webservice alias="domene.Brukerdialog:henvendelsesbehandlingservice_v1" mapToProperty="henvendelser.ws" />
         <applicationCertificate alias="srvMinehenvendelser"/>
