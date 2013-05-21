@@ -84,7 +84,6 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
             fitPaabegyntBehandlinger.add(
                     new FitPaabegyntBehandling(
                             retrieveTekst("tittel", i, behandlingUnderArbeid),
-                            retrieveTekst("sistEndret", i, behandlingUnderArbeid),
                             retrieveTekst("sistEndret", i, behandlingUnderArbeid)));
         }
         return fitPaabegyntBehandlinger;
