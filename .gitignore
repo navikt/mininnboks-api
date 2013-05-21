@@ -7,3 +7,4 @@ target
 *.log
 web/FitNesseRoot/files
 web/FitNesseRoot/ErrorLogs
+web/FitNesseRoot/RecentChanges

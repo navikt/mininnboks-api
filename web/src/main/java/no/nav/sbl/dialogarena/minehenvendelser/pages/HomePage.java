@@ -58,8 +58,9 @@ public class HomePage extends BasePage {
                 createTooltipLink(),
                 createUnderArbeidView(new BehandlingerLDM(model, UNDER_ARBEID)),
                 createFerdigView(new BehandlingerLDM(model, FERDIG)),
-                new Label("hovedTittel", innholdstekster.hentArtikkel("hoved.tittel")),
-                createIngenBehandlingerView(new BehandlingerLDM(model, UNDER_ARBEID))
+                new Label("hovedTittel", innholdstekster.hentTekst("hoved.tittel")),
+                createIngenBehandlingerView(new BehandlingerLDM(model, UNDER_ARBEID)),
+                new ExternalLink("forsiden", "#", innholdstekster.hentTekst("link.tekst.forsiden"))
         );
     }
 
@@ -93,8 +94,9 @@ public class HomePage extends BasePage {
     private WebMarkupContainer createIngenBehandlingerView(BehandlingerLDM behandlinger) {
         WebMarkupContainer container = new WebMarkupContainer("ingenBehandlinger");
         container.add(
-                new Label("ingenInnsendingerTittel", innholdstekster.hentArtikkel("ingen.innsendinger.tittel")),
-                new Label("ingenInnsendingerTekst", innholdstekster.hentArtikkel("ingen.innsendinger.tekst")));
+                new Label("ingenInnsendingerTittel", innholdstekster.hentTekst("ingen.innsendinger.tittel")),
+                new Label("ingenInnsendingerTekst", innholdstekster.hentTekst("ingen.innsendinger.tekst")),
+                new ExternalLink("skjemaerLink", "#", innholdstekster.hentTekst("ingen.innsendinger.link.tekst.skjemaer")));
         if (behandlinger.getTotalAntallBehandlinger() > 0) {
             container.setVisible(false);
         }
@@ -107,9 +109,9 @@ public class HomePage extends BasePage {
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
                 if (listItem.getModelObject().getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
-                    listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleUnntattHovedDokument()), listItem.getModelObject(), innholdstekster, kodeverkOppslag));
+                    listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleUnntattHovedDokument()), listItem.getModelObject(), innholdstekster, kodeverkOppslag, DEFAULT_LOCALE));
                 } else {
-                    listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleDokumenter()), listItem.getModelObject(), innholdstekster, kodeverkOppslag));
+                    listItem.add(new BehandlingPanel("behandling", new ListModel<>(listItem.getModelObject().fetchAlleDokumenter()), listItem.getModelObject(), innholdstekster, kodeverkOppslag, DEFAULT_LOCALE));
                 }
 
             }
@@ -121,17 +123,17 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                String dokumentInnsendingUrl = getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId();
-                String formattedDate = new SimpleDateFormat("d. MMMM YYYY, HH:mm", getRequest().getLocale()).format(listItem.getModelObject().getSistEndret().toDate());
+                String dokumentInnsendingUrl = System.getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId();
+                String formattedDate = new SimpleDateFormat("d. MMMM YYYY, HH:mm", DEFAULT_LOCALE).format(listItem.getModelObject().getSistEndret().toDate());
                 listItem.add(
                         getTittel(listItem.getModelObject()),
-                        createFormattedLabel("sistEndret", innholdstekster.hentArtikkel("siste.endret"), formattedDate),
-                        new ExternalLink("fortsettLink", dokumentInnsendingUrl));
+                        createFormattedLabel("sistEndret", innholdstekster.hentTekst("behandling.siste.endret"), formattedDate),
+                        new ExternalLink("fortsettLink", dokumentInnsendingUrl, innholdstekster.hentTekst("behandling.fortsett.innsending.link.tekst")));
             }
 
             private Label getTittel(Behandling item) {
                 if (item.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
-                    return createFormattedLabel("tittel", innholdstekster.hentArtikkel("ettersending.tekst"), kodeverkOppslag.getTittel(item.getKodeverkId()));
+                    return createFormattedLabel("tittel", innholdstekster.hentTekst("behandling.ettersending.tekst"), kodeverkOppslag.getTittel(item.getKodeverkId()));
                 }
                 return new Label("tittel", kodeverkOppslag.getTittel(item.getKodeverkId()));
             }

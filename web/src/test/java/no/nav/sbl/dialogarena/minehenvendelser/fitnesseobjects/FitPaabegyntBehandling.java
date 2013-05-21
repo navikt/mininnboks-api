@@ -10,8 +10,8 @@ public class FitPaabegyntBehandling {
     }
 
     public FitPaabegyntBehandling(String tittel, String tekst, String sistEndret) {
-        this.tekst = tekst.substring(13, 24);
+        this.tekst = tekst.substring(26, 37);
         this.navnPaaBehandling = tittel;
-        this.datoOgTidspunkt = sistEndret.substring(25,sistEndret.length());
+        this.datoOgTidspunkt = sistEndret.substring(38,sistEndret.length());
     }
 }

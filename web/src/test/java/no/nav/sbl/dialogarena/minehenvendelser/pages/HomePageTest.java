@@ -1,5 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
+import no.nav.modig.content.ValueRetriever;
+import no.nav.modig.utils.UTF8Control;
 import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
@@ -11,7 +13,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.ofType;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
@@ -30,22 +34,17 @@ public class HomePageTest extends AbstractWicketTest {
     private BehandlingService behandlingServiceMock;
     private AktoerIdService aktoerIdServiceMock;
     private Kodeverk kodeverkServiceMock;
-    private CmsContentRetriever innholdstekster;
 
     @Override
     protected void setup() {
         behandlingServiceMock = mock(BehandlingService.class);
         aktoerIdServiceMock = mock(AktoerIdService.class);
         kodeverkServiceMock = mock(Kodeverk.class);
-        innholdstekster = mock(CmsContentRetriever.class);
-        when(innholdstekster.hentArtikkel("ettersending.tekst")).thenReturn("Ettersendelse til %s");
-        when(innholdstekster.hentArtikkel("siste.endret")).thenReturn("Ikke sendt • Sist endret %s");
-        when(innholdstekster.hentArtikkel("behandling.antall.vedlegg")).thenReturn("%d av %d dokumenter sendt til NAV");
-        when(innholdstekster.hentArtikkel("behandling.ettersending.tekst")).thenReturn("Ettersendelse til %s");
-
         mock("footerLinks", Map.class);
         mock("navigasjonslink", "");
         mock("dokumentInnsendingBaseUrl", "");
+
+        setupFakeCms();
     }
 
     @Test
@@ -54,6 +53,7 @@ public class HomePageTest extends AbstractWicketTest {
                 .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class)))
                 .should().containComponent(withId("behandlingerFerdig").and(ofType(PropertyListView.class)));
     }
+
 
     @Test
     public void shouldRenderHomePageWithViewOfCompleteBehandlingAndNotSentBehandling() {
@@ -65,7 +65,6 @@ public class HomePageTest extends AbstractWicketTest {
         when(behandlingServiceMock.hentBehandlinger(testAktoerId)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
-        when(innholdstekster.hentArtikkel("ettersending.tekst")).thenReturn("Ettersendelse til %s");
 
         wicketTester.goTo(HomePage.class)
                 .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying(testTittel1)
@@ -125,6 +124,21 @@ public class HomePageTest extends AbstractWicketTest {
         behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2010, 1, 1, 12, 0), KODEVERK_ID_1)));
         behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2012, 1, 1, 12, 0), KODEVERK_ID_2)));
         return behandlinger;
+    }
+
+    private void setupFakeCms() {
+        ValueRetriever tekstValueRetriever = new ValueRetriever() {
+            private ResourceBundle bundle = ResourceBundle.getBundle("content/innholdstekster", new Locale("nb"), new UTF8Control());
+
+            @Override
+            public String getValueOf(String key, String language) {
+                return bundle.getString(key);
+            }
+        };
+        CmsContentRetriever innholdstekster = new CmsContentRetriever();
+        innholdstekster.setTeksterRetriever(tekstValueRetriever);
+        innholdstekster.setDefaultLocale("no");
+        applicationContext.putBean(innholdstekster);
     }
 
 }

@@ -7,6 +7,7 @@ import no.nav.sbl.dialogarena.webkomponent.footer.FooterPanel;
 import no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel;
 import no.nav.sbl.dialogarena.webkomponent.navigasjon.NavigasjonPanel;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -14,6 +15,7 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Locale;
 import java.util.Map;
 
 public class BasePage extends WebPage {
@@ -88,6 +90,8 @@ public class BasePage extends WebPage {
     public static final JavaScriptResourceReference JS_RESOURCE = new JavaScriptResourceReference(HomePage.class, "lokal.js");
     public static final CssResourceReference CSS_RESOURCE = new CssResourceReference(HomePage.class, "lokal.css");
 
+    protected static final Locale DEFAULT_LOCALE = new Locale("no");
+
     @Inject
     protected CmsContentRetriever innholdstekster;
 
@@ -101,6 +105,7 @@ public class BasePage extends WebPage {
 
     public BasePage() {
         add(
+                new Label("tittel", innholdstekster.hentTekst("hoved.tittel")),
                 new InnstillingerPanel("innstillinger", getInnloggetIsTrueModel()),
                 new NavigasjonPanel("navigasjon", navigasjonsLink),
                 new FooterPanel("footer", footerLinks, getInnloggetIsTrueModel())

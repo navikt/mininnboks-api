@@ -13,14 +13,14 @@
             <h1 wicket:id="ingenInnsendingerTittel">[]</h1>
             <hr />
             <p wicket:id="ingenInnsendingerTekst">[]</p>
-            <a href="#"><wicket:message key="skjemaer"/></a>
+            <a wicket:id="skjemaerLink" href="#">[[Skjemaer]]</a>
         </div>
         <div class="row standalone">
             <section class="panel-mini span6">
                 <ul class="valgliste nettobunn">
                         <li wicket:id="behandlingerUnderArbeid" >
                             <h2 wicket:id="tittel">[]</h2>
-                                <div class="link-right"><a href=# wicket:id="fortsettLink"><wicket:message key="dokumentinnsending.link"/></a></div>
+                                <div class="link-right"><a href=# wicket:id="fortsettLink">[]</a></div>
                             <span wicket:id="sistEndret">[]</span>
                         </li>
                 </ul>
@@ -30,7 +30,7 @@
             <div wicket:id="behandling">[]</div>
         </div>
         <div class="bottom-link">
-            <a href="#" ><wicket:message key="til.forsiden"/></a>
+            <a wicket:id="forsiden" href="#" >[[Til forsiden]]</a>
         </div>
     </div>
 </wicket:extend>
