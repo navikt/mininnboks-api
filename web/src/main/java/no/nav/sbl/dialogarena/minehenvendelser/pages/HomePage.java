@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.lang.String.format;
 import static java.lang.String.valueOf;
+import static java.lang.System.getProperty;
 import static java.util.Collections.sort;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
@@ -119,12 +121,12 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                String dokumentInnsendingUrl = System.getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId();
+                String dokumentInnsendingUrl = getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId();
                 String formattedDate = new SimpleDateFormat("d. MMMM YYYY, HH:mm", getRequest().getLocale()).format(listItem.getModelObject().getSistEndret().toDate());
                 listItem.add(
                         getTittel(listItem.getModelObject()),
                         createFormattedLabel("sistEndret", innholdstekster.hentArtikkel("siste.endret"), formattedDate),
-                        new ExternalLink("fortsettLink", dokumentInnsendingUrl, "Fortsett/slett innsending"));
+                        new ExternalLink("fortsettLink", dokumentInnsendingUrl));
             }
 
             private Label getTittel(Behandling item) {
@@ -137,7 +139,7 @@ public class HomePage extends BasePage {
     }
 
     private Label createFormattedLabel(String wicketId, String unformattedText, Object... args) {
-        String formattedText = String.format(unformattedText, args);
+        String formattedText = format(unformattedText, args);
         Label formattedLabel = new Label(wicketId, formattedText);
         formattedLabel.setEscapeModelStrings(false);
         return formattedLabel;

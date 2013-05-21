@@ -14,6 +14,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import static java.lang.String.format;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
@@ -104,7 +105,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label createFormattedLabel(String wicketId, String unformattedText, Object... args) {
-        String formattedText = String.format(unformattedText, args);
+        String formattedText = format(unformattedText, args);
         Label formattedLabel = new Label(wicketId, formattedText);
         formattedLabel.setEscapeModelStrings(false);
         return formattedLabel;
