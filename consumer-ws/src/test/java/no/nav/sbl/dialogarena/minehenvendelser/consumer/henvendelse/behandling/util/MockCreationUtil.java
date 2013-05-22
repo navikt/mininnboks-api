@@ -18,15 +18,15 @@ import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSDokumentbe
 
 public class MockCreationUtil {
 
-    public static final String KODEVERK_ID_1 = "kodeForDagpenger";
-    public static final String KODEVERK_ID_2 = "kodeForPermitteringsvarsel";
-    public static final String KODEVERK_ID_3 = "kodeForArbeidsavtale";
-    public static final String KODEVERK_ID_4 = "kodeForDagpenger";
-    public static final String KODEVERK_ID_5 = "kodeForForeldrepenger";
-    public static final String KODEVERK_ID_6 = "kodeForInntektsopplysninger";
-    public static final String KODEVERK_ID_7 = "kodeForKontantstoette";
-    public static final String KODEVERK_ID_8 = "kodeForOvergangsstoenad";
-    public static final String KODEVERK_ID_9 = "kodeForAvtaleOmDeltBosted";
+    public static final String KODEVERK_ID_1 = "NAV 00-01.00";
+    public static final String KODEVERK_ID_2 = "NAV 76-08.03";
+    public static final String KODEVERK_ID_3 = "NAV 00-02.00";
+    public static final String KODEVERK_ID_4 = "NAV 04-01.03";
+    public static final String KODEVERK_ID_5 = "NAV 08-30.02";
+    public static final String KODEVERK_ID_6 = "NAV 08-47.05";
+    public static final String KODEVERK_ID_7 = "NAV 34-00.08";
+    public static final String KODEVERK_ID_8 = "NAV 15-00.01";
+    public static final String KODEVERK_ID_9 = "NAV 76-13.16";
 
     public static Dokumentforventning createMock(boolean isHovedskjema, WSInnsendingsValg innsendingsValg) {
         WSDokumentForventningOppsummering wsDokumentForventning = new WSDokumentForventningOppsummering()

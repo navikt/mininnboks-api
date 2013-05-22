@@ -84,7 +84,7 @@ public class HomePageTest extends AbstractWicketTest {
 
 
         wicketTester.goTo(HomePage.class)
-                .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying(testTittel2, testTittel1);
+                .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying(testTittel1, testTittel2);
     }
 
     @Test
