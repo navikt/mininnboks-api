@@ -20,8 +20,8 @@
     </modules>
 
     <properties>
-        <wicket.version>6.7.0</wicket.version>
-        <spring.version>3.2.2.RELEASE</spring.version>
+        <wicket.version>6.8.0</wicket.version>
+        <spring.version>3.2.3.RELEASE</spring.version>
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
         <nav.sbl.commons.version>3.19</nav.sbl.commons.version>
         <modig.wicket.test.version>1.0.0-alpha.1</modig.wicket.test.version>
