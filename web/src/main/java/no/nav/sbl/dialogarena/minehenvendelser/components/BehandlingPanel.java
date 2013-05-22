@@ -52,7 +52,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getInnsendteDokumenterHeader() {
-        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader", innholdsTekster.hentTekst("behandling.innsendte.dokumenter.header"));
+        Label innsendteDokumenterHeader = createCmsTekstLabel("innsendteDokumenterHeader","behandling.innsendte.dokumenter.header");
         if (behandling.getAntallInnsendteDokumenter() == 0) {
             innsendteDokumenterHeader.setVisible(false);
         }
@@ -60,7 +60,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getManglendeDokumenterHeader() {
-        Label manglendeDokumenterHeader = new Label("manglendeDokumenterHeader", innholdsTekster.hentTekst("behandling.manglende.dokumenter.header"));
+        Label manglendeDokumenterHeader = createCmsTekstLabel("manglendeDokumenterHeader","behandling.manglende.dokumenter.header");
         if (behandling.getAntallManglendeDokumenter() == 0) {
             manglendeDokumenterHeader.setVisible(false);
         }
@@ -113,15 +113,17 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getTopText() {
-        Label topTextLabel = new Label("forTekst", innholdsTekster.hentTekst("behandling.topp.tekst"));
-        topTextLabel.setEscapeModelStrings(false);
-        return topTextLabel;
+        return createCmsTekstLabel("forTekst","behandling.topp.tekst");
     }
 
     private Label getBottomText() {
-        Label bottomTextLabel = new Label("etterTekst", innholdsTekster.hentTekst("behandling.slutt.tekst"));
-        bottomTextLabel.setEscapeModelStrings(false);
-        return bottomTextLabel;
+        return createCmsTekstLabel("etterTekst", "behandling.slutt.tekst");
+    }
+
+    private Label createCmsTekstLabel(String wicketId, String cmsKey){
+        Label label = new Label(wicketId, innholdsTekster.hentTekst(cmsKey));
+        label.setEscapeModelStrings(false);
+        return label;
     }
 
     private Label getDateText(Locale locale) {
