@@ -630,6 +630,21 @@
             </activation>
             <properties>
             </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.6.2.201302030002</version>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/SelfTestPage.*</exclude>
+                            </excludes>
+                            <check/>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
