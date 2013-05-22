@@ -123,7 +123,7 @@ public class HomePage extends BasePage {
 
             @Override
             public void populateItem(final ListItem<Behandling> listItem) {
-                String dokumentInnsendingUrl = getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId();
+                String dokumentInnsendingUrl = getProperty("dokumentinnsending.link.url") + listItem.getModelObject().getBehandlingsId() + "/" + aktoerIdService.getAktoerId();
                 String formattedDate = new SimpleDateFormat("d. MMMM YYYY, HH:mm", DEFAULT_LOCALE).format(listItem.getModelObject().getSistEndret().toDate());
                 listItem.add(
                         getTittel(listItem.getModelObject()),
