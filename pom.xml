@@ -600,7 +600,6 @@
         </plugins>
     </reporting>
 
-
     <profiles>
         <profile>
             <id>default</id>
