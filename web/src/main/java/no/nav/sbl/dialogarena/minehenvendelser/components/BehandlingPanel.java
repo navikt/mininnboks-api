@@ -41,6 +41,8 @@ public class BehandlingPanel extends Panel {
         this.innholdsTekster = innholdsTekster;
         this.kodeverkOppslag = kodeverkOppslag;
         add(
+                new Label("visKvittering", innholdsTekster.hentTekst("behandling.vis.kvittering")),
+                new Label("skjulKvittering", innholdsTekster.hentTekst("behandling.skjul.kvittering")),
                 getDateText(locale),
                 getVedleggsLabel(),
                 getHeadText(),
