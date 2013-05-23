@@ -164,9 +164,7 @@ public class SelfTestPage extends WebPage {
 
         @Override
         protected void populateItem(ListItem<CmsStatus> listItem) {
-            Label valueLabel = new Label("value");
-            valueLabel.setEscapeModelStrings(true);
-            listItem.add(new Label("key"), valueLabel);
+            listItem.add(new Label("key"),  new Label("value"));
         }
     }
 

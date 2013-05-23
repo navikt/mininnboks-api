@@ -35,7 +35,7 @@
         <jsoup.version>1.7.2</jsoup.version>
         <mockito.core.version>1.9.5</mockito.core.version>
         <modig-core.version>1.0.0-alpha.1</modig-core.version>
-        <modig-content.version>1.0.0-alpha.1</modig-content.version>
+        <modig-content.version>1.0.0-alpha.2</modig-content.version>
         <modig.fitnesse.version>1.0.0-alpha.1</modig.fitnesse.version>
         <modig.frontend.bootstrap.version>1.0.0-alpha.1</modig.frontend.bootstrap.version>
         <modig.frontend.wicket.version>1.0.0-alpha.1</modig.frontend.wicket.version>

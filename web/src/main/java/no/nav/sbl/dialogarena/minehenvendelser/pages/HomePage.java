@@ -141,10 +141,7 @@ public class HomePage extends BasePage {
     }
 
     private Label createFormattedLabel(String wicketId, String unformattedText, Object... args) {
-        String formattedText = format(unformattedText, args);
-        Label formattedLabel = new Label(wicketId, formattedText);
-        formattedLabel.setEscapeModelStrings(false);
-        return formattedLabel;
+        return new Label(wicketId, format(unformattedText, args));
     }
 
     private static class BehandlingerLDM extends LoadableDetachableModel<List<Behandling>> {

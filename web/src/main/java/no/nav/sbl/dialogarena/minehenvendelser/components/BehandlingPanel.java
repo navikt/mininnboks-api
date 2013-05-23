@@ -54,7 +54,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getInnsendteDokumenterHeader() {
-        Label innsendteDokumenterHeader = createCmsTekstLabel("innsendteDokumenterHeader","behandling.innsendte.dokumenter.header");
+        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader","behandling.innsendte.dokumenter.header");
         if (behandling.getAntallInnsendteDokumenter() == 0) {
             innsendteDokumenterHeader.setVisible(false);
         }
@@ -62,7 +62,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getManglendeDokumenterHeader() {
-        Label manglendeDokumenterHeader = createCmsTekstLabel("manglendeDokumenterHeader","behandling.manglende.dokumenter.header");
+        Label manglendeDokumenterHeader = new Label("manglendeDokumenterHeader","behandling.manglende.dokumenter.header");
         if (behandling.getAntallManglendeDokumenter() == 0) {
             manglendeDokumenterHeader.setVisible(false);
         }
@@ -108,24 +108,15 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label createFormattedLabel(String wicketId, String unformattedText, Object... args) {
-        String formattedText = format(unformattedText, args);
-        Label formattedLabel = new Label(wicketId, formattedText);
-        formattedLabel.setEscapeModelStrings(false);
-        return formattedLabel;
+        return new Label(wicketId, format(unformattedText, args));
     }
 
     private Label getTopText() {
-        return createCmsTekstLabel("forTekst","behandling.topp.tekst");
+        return new Label("forTekst","behandling.topp.tekst");
     }
 
     private Label getBottomText() {
-        return createCmsTekstLabel("etterTekst", "behandling.slutt.tekst");
-    }
-
-    private Label createCmsTekstLabel(String wicketId, String cmsKey){
-        Label label = new Label(wicketId, innholdsTekster.hentTekst(cmsKey));
-        label.setEscapeModelStrings(false);
-        return label;
+        return new Label("etterTekst", "behandling.slutt.tekst");
     }
 
     private Label getDateText(Locale locale) {
