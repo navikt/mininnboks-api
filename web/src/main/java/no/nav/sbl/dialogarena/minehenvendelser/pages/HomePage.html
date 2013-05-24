@@ -4,33 +4,37 @@
     <title></title>
 </wicket:head>
 <wicket:extend>
-    <div class="container">
+    <div class="rad">
         <div class="headerwrapper">
             <h1 wicket:id="hovedTittel" class="senterHeading">[]</h1>
             <div wicket:id="tooltip" class="tooltiplink">?</div>
         </div>
-        <div wicket:id="ingenBehandlinger"  class="panel-ingen-innsendte right-mover">
+    </div>
+    <div wicket:id="ingenBehandlinger" class="rad">
+        <div class="begrensning sak-halv ">
             <h1 wicket:id="ingenInnsendingerTittel">[]</h1>
-            <hr />
+            <hr class="ingen-innsendte-hr"/>
             <p wicket:id="ingenInnsendingerTekst">[]</p>
             <a wicket:id="skjemaerLink" href="#">[[Skjemaer]]</a>
         </div>
-        <div class="row standalone">
-            <section class="panel-mini span6">
-                <ul class="valgliste nettobunn">
-                        <li wicket:id="behandlingerUnderArbeid" >
-                            <h2 wicket:id="tittel">[]</h2>
-                                <div class="link-right"><a href=# wicket:id="fortsettLink">[]</a></div>
-                            <span wicket:id="sistEndret">[]</span>
-                        </li>
-                </ul>
-            </section>
+    </div>
+    <div class="rad">
+        <div class="begrensning sak-halv">
+            <ul class="valgliste nettobunn">
+                <li wicket:id="behandlingerUnderArbeid">
+                    <h2 wicket:id="tittel">[]</h2>
+                    <div class="link-right"><a href=# wicket:id="fortsettLink">[]</a></div>
+                    <span wicket:id="sistEndret">[]</span>
+                </li>
+            </ul>
         </div>
-        <div wicket:id="behandlingerFerdig" class="right-mover">
-            <div wicket:id="behandling">[]</div>
-        </div>
-        <div class="bottom-link">
-            <a wicket:id="forsiden" href="#" >[[Til forsiden]]</a>
+    </div>
+    <div wicket:id="behandlingerFerdig" class="rad">
+        <div wicket:id="behandling" class="begrensning sak-halv ferdig-panel">[]</div>
+    </div>
+    <div class="rad">
+        <div class="begrensning sak-kvart">
+            <a wicket:id="forsiden" href="#">[[Til forsiden]]</a>
         </div>
         <wicket:container wicket:id="panel-tilbakemelding"/>
     </div>

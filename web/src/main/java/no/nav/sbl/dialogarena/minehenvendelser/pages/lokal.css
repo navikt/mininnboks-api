@@ -1,333 +1,3 @@
-
-/* midlertidig css for innstillinger - start */
-.navbar-fixed-top {
-    position: static;
-}
-
-.nav-collapse.collapse {
-    text-align: center;
-    height: 0;
-}
-
-.navbar .nav {
-    display: inline-block;
-    float: none;
-}
-
-.navbar .nav li a {
-    white-space: nowrap;
-    padding: 10px 6px 4px;
-}
-
-.navbar .nav li a:before {
-    list-style-type: none;
-    content: '\2022';
-    color: white;
-    padding-right: 10px;
-}
-
-.navbar .nav li:first-child a::before {
-    content: '';
-}
-/* midlertidig css for innstillinger - ferdig */
-
-/* midlertidig css for meny - start */
-.meny-nav {
-    background: white;
-    text-align: center;
-    margin-bottom: 0;
-}
-
-.meny-nav .navbar-inner {
-    background: white;
-    background-color: rgb(255, 255, 255);
-}
-
-.navbar-inner {
-    border: none;
-    -webkit-border-radius: none;
-    -moz-border-radius: none;
-    border-radius: 0;
-    -webkit-box-shadow: none !important;
-    -moz-box-shadow: none !important;
-    -box-shadow: none !important;
-    background-image: none !important;
-    background: white;
-    filter: none !important;
-}
-
-.navbar-fixed-top .navbar-inner {
-    background-color: #C30000 !important;
-}
-
-.navbar .nav li a {
-    color: white;
-}
-
-.logo {
-    height: 100px;
-    text-align: center;
-    vertical-align: middle;
-    background: url(../img/logo.png) no-repeat center center;
-}
-/* midlertidig css for meny - ferdig */
-
-/* midlertidig css for hero-unit - start */
-.hero-unit {
-    font-size: inherit;
-    line-height: inherit;
-    position: relative;
-    box-sizing: border-box;
-    border-radius: 0;
-    height: 272px;
-    border: 1px solid #DDD;
-    background-size: 1870px 270px;
-    background: url(../../img/illustrasjonen.png) no-repeat -425px 0;
-    margin-bottom: 0;
-}
-
-.hero-unit .panel-mini {
-    position: absolute;
-    top: 25px;
-    right: 100px;
-    width: 280px;
-}
-
-.hero-unit .panel-mini h1 {
-    letter-spacing: 0;
-}
-/* midlertidig css for hero-unit -ferdig */
-
-/* midelrtidig css for highlight - start */
-.highlight {
-    background: white;
-    margin-left: 0;
-}
-
-.highlight.row .panel-mini {
-    float: none;
-    margin: 25px auto 12px;
-}
-
-.highlight.panel-mini {
-    border: 1px solid #DDD;
-}
-
-.highlight.row .panel-mini.highlight {
-    margin-top: 50px;
-}
-
-/* midelrtidig css for highlight - ferdig */
-
-/* Egenmekk for å få profil og soknad til å stå side ved side */
-.highlight.row .sidebyside {
-    float: left;
-    margin-right: 30px;
-}
-
-.highlight.row .sidebyside:last-child {
-    margin-right: 0;
-}
-
-.tokolonne {
-    width: 630px;
-    margin: 0 auto;
-}
-/* egenmekk ferdig */
-
-/* midlertidig css for panel-mini - start */
-.panel-mini {
-    padding: 28px 20px 38px;
-    text-align: center;
-}
-
-.panel-mini h1,.panel-mini h2,.panel-mini h3,.panel-mini h4,.panel-mini h5,.panel-mini h6
-{
-    font-size: 17px;
-    text-transform: uppercase;
-}
-
-.under {
-    background: url(../img/under-dark.png) no-repeat bottom center;
-    padding-bottom: 12px;
-    margin-bottom: 12px !important;
-}
-
-.under.ikon-roed {
-    background-image: url(../img/sirkel-roed.png);
-    background-position: bottom center, center top;
-}
-
-.under.ikon-blaa {
-    background-image: url(../img/sirkel-blaa.png);
-    background-position: bottom center, center top;
-}
-
-.ikon-graa {
-    background-image: url(../img/sirkel-graa.png);
-}
-
-[class*="ikon-"] {
-    text-align: center;
-    padding: 48px 0 0;
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: 32px;
-}
-
-.ingress {
-    text-align: left;
-    margin: 0 auto;
-    font-size: 17px;
-    line-height: 1.5em;
-}
-
-.panel-mini .ingress {
-    text-align: center;
-}
-
-h1,h2 {
-    font-family: Modus, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 600;
-}
-
-body * {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-}
-
-body {
-    background: whiteSmoke;
-}
-/* midlertidig css for panel-mini - ferdig */
-
-/* midlertidig css for knapper - start */
-.btn-single {
-    display: block;
-    margin: 30px auto 10px;
-    text-transform: uppercase;
-    width: 230px;
-    font-size: 15px;
-}
-
-.btn {
-    border-radius: 0;
-    padding: 15px 28px 12px;
-}
-/* midlertidig css for panel-mini - ferdig */
-
-/* Start - footer */
-[class*="footer"] .navbar-inner ul.fotlenker {
-    display: inline-block;
-    margin: 0 auto;
-}
-
-[class*="footer"] .navbar-inner ul.fotlenker li {
-    float: left;
-    list-style-type: none;
-}
-
-[class*="footer"] .navbar-inner ul.fotlenker li a {
-    color: #DDD;
-}
-
-.navbar-fixed-bottom .container {
-    text-align: center;
-}
-
-.navbar-fixed-bottom {
-    bottom: 0;
-    position: static;
-    margin-top: 10px;
-}
-
-[class*="footer"] .navbar-inner ul.fotlenker li:first-child a::before {
-    content: '';
-}
-
-[class*="footer"] .navbar-inner ul.fotlenker li a::before {
-    content: '\2022 ';
-    color: #999;
-    padding: 10px;
-}
-
-[class*="footer"] .navbar-inner ul.fotlenker li a:hover {
-    text-decoration: none;
-}
-
-[class*="footer"] .navbar-inner p.name {
-    margin: 30px auto 20px;
-    color: #999;
-    position: relative;
-    text-align: center;
-    width: 30px;
-    padding-bottom: 8px;
-}
-
-[class*="footer"] .navbar-inner {
-    padding-bottom: 20px;
-}
-
-[class*="footer"] .navbar-inner p.copy {
-    color: #999;
-    margin-top: 10px;
-}
-
-/* Slutt - footer */
-
-/* Start - tilbakemelding-panel */
-.oppfordring {
-    position: relative;
-    float: none;
-    margin: 48px auto 50px;
-    background: #B7B1A9;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    z-index: 1000;
-}
-
-.oppfordring h1 {
-    font-size: 17px;
-    text-transform: uppercase;
-}
-
-.nav-collapse.collapse {
-    text-align: center;
-    height: 0;
-}
-
-#tilbakemelding-expanded-style {
-    background-color: #222222;
-    text-align: center;
-    color: #DDD;
-    padding: 20px;
-}
-
-#tilbakemelding-expanded-style a{
-    color: #DDD;
-}
-
-#tilbakemelding-expanded-style a:hover{
-    text-decoration: none;
-}
-
-#tilbakemelding-expanded-style h1 {
-    font-size: 20px;
-}
-
-#tilbakemelding-expanded-style input[type=text] {
-    width: 300px;
-    height: 150px;
-    vertical-align: top;
-}
-
-/* Slutt - tilbakemelding-panel */
-
-/* Homepage css */
-
-/* Ikke innsendte CSS */
-
 h1.senterHeading {
     font-size: 35px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -363,10 +33,6 @@ h1.senterHeading {
     height: 20px;
 }
 
-.panel-mini {
-    text-align: center;
-}
-
 .valgliste li{
     text-align: left;
     margin:  15px 15px 15px 15px;
@@ -393,9 +59,9 @@ h1.senterHeading {
 }
 
 .kvittering-link-right{
-    position: absolute;
-    right: 30px;
-    top: 20px;
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
 }
 
 .nettobunn{
@@ -403,41 +69,7 @@ h1.senterHeading {
     padding-bottom: 0 !important;
 }
 
-.standalone{
-    float: none;
-    margin: 0 auto;
-    margin-left: 50px;
-}
-
-.span6{
-    width: 776px;
-}
-
-/* Slutt ikke innsendte CSS */
-
-.panel-ingen-innsendte{
-    float: none;
-    max-width: 711px;
-    padding-bottom: 50px;
-    margin-top: 50px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 0px;
-    color: #333;
-    background-color: #ffffff;
-    position: relative;
-}
-
-.panel-ingen-innsendte h1{
-    padding-top: 40px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-left: 30px;
-}
-
-.panel-ingen-innsendte hr{
+.ingen-innsendte-hr {
     width: 20px;
     margin-left: 190px;
     background-color : #333;
@@ -446,79 +78,12 @@ h1.senterHeading {
     text-align: center;
 }
 
-.panel-ingen-innsendte p{
-    text-align: center;
-    font-size: 16px;
-    line-height: 1.5em;
-    margin-left: 35px;
-    padding-bottom: 15px;
-    color: #d3d3d3;
-    width: 340px ;
-}
-
-.panel-ingen-innsendte a{
-    text-align: center;
-    margin-left: 175px;
-}
-
-.panel-standard{
-    float: none;
-    width: 711px;
-    padding-left: 0;
-    padding-right: 0;
-    margin: 30px 15px 15px -160px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 0px;
-    color: #333;
-    background-color: #ffffff;
-    position: relative;
-}
-
 .status {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 20px;
     margin-left: 15px;
     color: darkgrey;
-}
-
-.pipe {
-    padding: 0 6px;
-    margin: 0 6px;
-}
-
-.ingress {
-    text-align: left;
-    font-size: 16px;
-    line-height: 1.5em;
-    margin-left: 15px;
-    margin-right: 15px;
-    padding-bottom: 15px;
-}
-
-.panel-standard header h1 {
-    font-size: 17px;
-    margin-left: 15px;
-    text-transform: uppercase;
-}
-
-.panel-standard section h2 {
-    font-size: 17px;
-    margin: 10px 15px 5px;
-}
-
-.status section h2{
-    font-size: 17px;
-    text-transform: uppercase;
-    margin-left: 15px;
-}
-
-.bottom-link {
-    text-align: center;
-    box-sizing: border-box;
-    padding-top: 40px;
-    padding-bottom: 40px;
 }
 
 [class*='innsendt'] {
@@ -536,8 +101,8 @@ h1.senterHeading {
     color: red;
 }
 
-.right-mover{
-    margin-left: 275px;
+.ferdig-panel {
+    background-color: white;
 }
 
 .kvittering {
