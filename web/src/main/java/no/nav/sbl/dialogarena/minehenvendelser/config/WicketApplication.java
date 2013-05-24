@@ -12,12 +12,6 @@ import org.springframework.context.ApplicationContext;
 
 import javax.inject.Inject;
 
-import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_ACCORDION;
-import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_BUTTON;
-import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_CORE;
-import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_LABELS_AND_BADGES;
-import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_NAVIGATION;
-import static no.nav.modig.frontend.FrontendModules.BOOTSTRAP_TOOLTIP;
 import static no.nav.modig.frontend.FrontendModules.SCULPTOR;
 import static no.nav.modig.frontend.FrontendModules.UNDERSCORE;
 import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
@@ -49,13 +43,7 @@ public class WicketApplication extends WebApplication {
         new FrontendConfigurator()
                 .withModules(
                         SCULPTOR,
-                        UNDERSCORE,
-                        BOOTSTRAP_CORE,
-                        BOOTSTRAP_BUTTON,
-                        BOOTSTRAP_LABELS_AND_BADGES,
-                        BOOTSTRAP_NAVIGATION,
-                        BOOTSTRAP_TOOLTIP,
-                        BOOTSTRAP_ACCORDION)
+                        UNDERSCORE)
                 .addMetas(
                         CHARSET_UTF8,
                         VIEWPORT_SCALE_1,
