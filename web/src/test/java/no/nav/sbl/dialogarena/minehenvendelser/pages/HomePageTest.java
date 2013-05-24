@@ -7,6 +7,8 @@ import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
+import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
+
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -43,6 +45,8 @@ public class HomePageTest extends AbstractWicketTest {
         mock("footerLinks", Map.class);
         mock("navigasjonslink", "");
         mock("dokumentInnsendingBaseUrl", "");
+        mock(TilbakemeldingService.class);
+        applicationContext.putBean("tilbakemeldingEnabled", true);
 
         setupFakeCms();
     }

@@ -1,20 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
-import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.PropertyListView;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
-
 import static java.lang.String.format;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
@@ -22,21 +7,36 @@ import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.STATUS_LASTET_OPP;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
+
+import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
+
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.PropertyListView;
+import org.apache.wicket.markup.html.panel.GenericPanel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.util.ListModel;
+
 /**
  * Hovedpanel som inneholder samtlige dokumentforventninger knyttet til en behandling.
  */
-public class BehandlingPanel extends Panel {
+public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
 
     private static final boolean MANGLENDE = false;
     private static final boolean INNSENDT = true;
-    private final IModel<List<Dokumentforventning>> model;
     private Behandling behandling;
     private CmsContentRetriever innholdsTekster;
     private Kodeverk kodeverkOppslag;
 
-    public BehandlingPanel(String id, IModel<List<Dokumentforventning>> model, Behandling behandling, CmsContentRetriever innholdsTekster, Kodeverk kodeverkOppslag, Locale locale) {
-        super(id, model);
-        this.model = model;
+    public BehandlingPanel(Behandling behandling, CmsContentRetriever innholdsTekster, Kodeverk kodeverkOppslag, Locale locale) {
+        super("behandling", new ListModel<>(behandling.getRelevanteDokumenter()));
         this.behandling = behandling;
         this.innholdsTekster = innholdsTekster;
         this.kodeverkOppslag = kodeverkOppslag;
@@ -54,7 +54,8 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getInnsendteDokumenterHeader() {
-        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader","behandling.innsendte.dokumenter.header");
+        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader",
+                innholdsTekster.hentTekst("behandling.innsendte.dokumenter.header"));
         if (behandling.getAntallInnsendteDokumenter() == 0) {
             innsendteDokumenterHeader.setVisible(false);
         }
@@ -62,7 +63,8 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getManglendeDokumenterHeader() {
-        Label manglendeDokumenterHeader = new Label("manglendeDokumenterHeader","behandling.manglende.dokumenter.header");
+        Label manglendeDokumenterHeader = new Label("manglendeDokumenterHeader",
+                innholdsTekster.hentTekst("behandling.manglende.dokumenter.header"));
         if (behandling.getAntallManglendeDokumenter() == 0) {
             manglendeDokumenterHeader.setVisible(false);
         }
@@ -84,7 +86,7 @@ public class BehandlingPanel extends Panel {
     }
 
     private PropertyListView<Dokumentforventning> dokumenterView(String dokumentType, boolean statusToFilter) {
-        IModel<List<Dokumentforventning>> dokumenterLDM = new DokumentforventningModel(model, statusToFilter);
+        IModel<List<Dokumentforventning>> dokumenterLDM = new DokumentforventningModel(getModel(), statusToFilter);
         return new PropertyListView<Dokumentforventning>(dokumentType, dokumenterLDM) {
             @Override
             protected void populateItem(ListItem<Dokumentforventning> listItem) {
@@ -112,11 +114,11 @@ public class BehandlingPanel extends Panel {
     }
 
     private Label getTopText() {
-        return new Label("forTekst","behandling.topp.tekst");
+        return new Label("forTekst", innholdsTekster.hentTekst("behandling.topp.tekst"));
     }
 
     private Label getBottomText() {
-        return new Label("etterTekst", "behandling.slutt.tekst");
+        return (Label) new Label("etterTekst", innholdsTekster.hentTekst("behandling.slutt.tekst")).setEscapeModelStrings(false);
     }
 
     private Label getDateText(Locale locale) {

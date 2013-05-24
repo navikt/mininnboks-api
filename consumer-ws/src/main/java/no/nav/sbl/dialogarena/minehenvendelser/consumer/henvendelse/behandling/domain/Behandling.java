@@ -166,4 +166,12 @@ public final class Behandling implements Serializable {
     public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG}
 
     public enum Dokumentbehandlingstatus {DOKUMENT_BEHANDLING, DOKUMENT_ETTERSENDING}
+
+    public List<Dokumentforventning> getRelevanteDokumenter() {
+        if (dokumentbehandlingstatus == Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING) {
+            return fetchAlleUnntattHovedDokument();
+        } else {
+            return fetchAlleDokumenter();
+        }
+    }
 }

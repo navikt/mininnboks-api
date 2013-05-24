@@ -78,6 +78,12 @@
             </dependency>
 
             <dependency>
+	            <groupId>no.nav.sbl.dialogarena</groupId>
+	            <artifactId>sbl-webkomponent-tilbakemelding</artifactId>
+	            <version>1.0.1</version>
+	        </dependency>
+
+            <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>common-web</artifactId>
                 <version>1.0.13</version>

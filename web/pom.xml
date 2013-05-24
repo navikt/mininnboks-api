@@ -35,6 +35,12 @@
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>sbl-webkomponent-innstillinger</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>sbl-webkomponent-tilbakemelding</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>sbl-webkomponent-navigasjon</artifactId>
