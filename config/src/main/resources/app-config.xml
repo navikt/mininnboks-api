@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application xmlns="http://appconfig.aura.nav.no" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://appconfig.aura.nav.no http://maven.adeo.no/xsd/appconfig.xsd">
+	xsi:schemaLocation="http://appconfig.aura.nav.no http://maven.adeo.no/xsd/appconfig.xsd">
 
-    <name>minehenvendelser</name>
+	<name>minehenvendelser</name>
 
-    <selftestPagePath>/minehenvendelser/internal/selftest</selftestPagePath>
+	<selftestPagePath>/minehenvendelser/internal/selftest</selftestPagePath>
 
-    <artifacts>
-        <ear groupId="no.nav.sbl.dialogarena" artifactId="minehenvendelser-jee" />
-    </artifacts>
+	<artifacts>
+		<ear groupId="no.nav.sbl.dialogarena" artifactId="minehenvendelser-jee" />
+	</artifacts>
 
-    <resources>
-        <baseUrl alias="minehenvendelser.cms" mapToProperty="minehenvendelser.cms" />
-        <baseUrl alias="minehenvendelser.footer.kontakt" mapToProperty="minehenvendelser.footer.kontakt" />
-        <baseUrl alias="minehenvendelser.footer.personvern" mapToProperty="minehenvendelser.footer.personvern" />
-        <baseUrl alias="minehenvendelser.footer.feilOgMangler" mapToProperty="minehenvendelser.footer.feilOgMangler" />
-        <baseUrl alias="minehenvendelser.footer.tilgjengelighet" mapToProperty="minehenvendelser.footer.tilgjengelighet" />
-        <baseUrl alias="minehenvendelser.footer.nettstedskart" mapToProperty="minehenvendelser.footer.nettstedskart" />
-        <baseUrl alias="minehenvendelser.navigasjonslink" mapToProperty="minehenvendelser.navigasjonslink" />
-        <baseUrl alias="dokumentinnsending.link" mapToProperty="dokumentinnsending.link" />
-        <baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link" />
+	<resources>
+		<baseUrl alias="minehenvendelser.cms" mapToProperty="minehenvendelser.cms" />
+		<baseUrl alias="minehenvendelser.footer.kontakt" mapToProperty="minehenvendelser.footer.kontakt" />
+		<baseUrl alias="minehenvendelser.footer.personvern" mapToProperty="minehenvendelser.footer.personvern" />
+		<baseUrl alias="minehenvendelser.footer.feilOgMangler" mapToProperty="minehenvendelser.footer.feilOgMangler" />
+		<baseUrl alias="minehenvendelser.footer.tilgjengelighet" mapToProperty="minehenvendelser.footer.tilgjengelighet" />
+		<baseUrl alias="minehenvendelser.footer.nettstedskart" mapToProperty="minehenvendelser.footer.nettstedskart" />
+		<baseUrl alias="minehenvendelser.navigasjonslink" mapToProperty="minehenvendelser.navigasjonslink" />
+		<baseUrl alias="dokumentinnsending.link" mapToProperty="dokumentinnsending.link" />
+		<baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link" />
 
-        <webservice alias="domene.Brukerdialog:henvendelsesbehandlingservice_v1" mapToProperty="henvendelser.ws" />
-        <applicationCertificate alias="srvMinehenvendelser"/>
-    </resources>
+		<webservice alias="domene.Brukerdialog:henvendelsesbehandlingservice_v1" mapToProperty="henvendelser.ws" />
+		<applicationCertificate alias="srvMinehenvendelser" />
+
+		<smtpServer alias="tilbakemelding.smtp" mapToProperty="tilbakemelding.smtp" />
+		<emailAddress alias="tilbakemelding.email" mapToProperty="tilbakemelding.email" />
+	</resources>
 </application>
