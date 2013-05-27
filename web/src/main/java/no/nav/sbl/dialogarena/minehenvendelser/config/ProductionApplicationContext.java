@@ -28,7 +28,7 @@ import java.net.URL;
  */
 @Profile("default")
 @Configuration
-@PropertySource("environment-prod.properties")
+@PropertySource("environment.properties")
 @Import({WebContext.class, KodeverkConfig.class})
 public class ProductionApplicationContext {
 

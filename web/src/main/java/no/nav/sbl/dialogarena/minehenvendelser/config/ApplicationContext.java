@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.cache.CacheConfig;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,7 +14,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  */
 @ComponentScan("no.nav.sbl.dialogarena.minehenvendelser.config")
 @Configuration
-@Import({FooterConfig.class, CacheConfig.class})
+@Import({CacheConfig.class})
 public class ApplicationContext {
 
     @Value("${minehenvendelser.navigasjonslink.url}")
