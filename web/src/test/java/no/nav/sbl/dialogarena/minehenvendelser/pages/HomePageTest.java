@@ -8,7 +8,8 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.B
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
-
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -19,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComponent;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.ofType;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
@@ -29,6 +31,8 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigEttersendingBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidEttersendingBehandling;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
 
 public class HomePageTest extends AbstractWicketTest {
@@ -58,7 +62,6 @@ public class HomePageTest extends AbstractWicketTest {
                 .should().containComponent(withId("behandlingerFerdig").and(ofType(PropertyListView.class)));
     }
 
-
     @Test
     public void shouldRenderHomePageWithViewOfCompleteBehandlingAndNotSentBehandling() {
         String testAktoerId = "svein";
@@ -86,9 +89,11 @@ public class HomePageTest extends AbstractWicketTest {
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
 
+        Component behandlingerUnderArbeid = wicketTester.goTo(HomePage.class).get().component(withId("behandlingerUnderArbeid"));
 
-        wicketTester.goTo(HomePage.class)
-                .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying(testTittel1, testTittel2);
+        List<Component> labels = wicketTester.get().components(withId("tittel").and(ofType(Label.class)).and(containedInComponent(equalTo(behandlingerUnderArbeid))));
+        assertThat(labels.get(0).getDefaultModelObjectAsString(), equalTo(testTittel2));
+        assertThat(labels.get(1).getDefaultModelObjectAsString(), equalTo(testTittel1));
     }
 
     @Test
@@ -101,7 +106,6 @@ public class HomePageTest extends AbstractWicketTest {
         when(behandlingServiceMock.hentBehandlinger(testAktoerId)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
-
 
 
         wicketTester.goTo(HomePage.class)
