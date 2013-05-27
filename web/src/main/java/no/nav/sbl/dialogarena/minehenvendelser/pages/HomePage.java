@@ -1,16 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
-import static java.lang.String.valueOf;
-import static java.lang.System.getProperty;
-import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
-import static no.nav.modig.wicket.model.ModelUtils.isEmpty;
-import static no.nav.sbl.dialogarena.minehenvendelser.ApplicationConstants.APPLICATION_NAME;
-import static org.apache.wicket.model.Model.of;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingerUnderArbeidListView;
@@ -19,12 +8,21 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.B
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer;
-
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import javax.inject.Inject;
+import java.util.List;
+
+import static java.lang.String.valueOf;
+import static java.lang.System.getProperty;
+import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
+import static no.nav.modig.wicket.model.ModelUtils.isEmpty;
+import static no.nav.sbl.dialogarena.minehenvendelser.ApplicationConstants.APPLICATION_NAME;
+import static org.apache.wicket.model.Model.of;
 
 /**
  * Hovedside for applikasjonen. Laster inn behandlinger via. en service og
@@ -80,7 +78,6 @@ public class HomePage extends BasePage {
             super(id);
 
             add(visibleIf(isEmpty(behandlinger)));
-
             add(
                     new Label("ingenInnsendingerTittel", innholdstekster.hentTekst("ingen.innsendinger.tittel")),
                     new Label("ingenInnsendingerTekst", innholdstekster.hentTekst("ingen.innsendinger.tekst")),
