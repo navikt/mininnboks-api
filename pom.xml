@@ -99,7 +99,7 @@
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>common-lokalt-kodeverk</artifactId>
-                <version>1.0.16</version>
+                <version>1.0.18</version>
             </dependency>
 
 
