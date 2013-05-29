@@ -51,9 +51,20 @@ public class SelfTestPage extends WebPage {
         statusList.add(getHenvendelseWSStatus());
         add(
                 new ServiceStatusListView("serviceStatusTable", statusList),
-                new Label("cmsinfo", "Cms-server: " + cmsContentRetriever.getCmsIp()),
+                getCmsLabel(),
                 getCmsKeys(),
                 new Label("application", getApplicationVersion()));
+    }
+
+    private Label getCmsLabel() {
+        String cmsServerIp = "Not Available";
+        try {
+            cmsServerIp = cmsContentRetriever.getCmsIp();
+        } catch (Exception e) {
+            logger.warn("CmsIp not retrievable: " + e.getMessage());
+        }
+        return new Label("cmsinfo", "Cms-server: " + cmsServerIp);
+
     }
 
     private ServiceStatus getCmsStatus() {
@@ -77,15 +88,22 @@ public class SelfTestPage extends WebPage {
     }
 
     private ServiceStatus getHenvendelseWSStatus() {
-        getCurrent().setPrincipal(new Principal.Builder()
-                .userId("12121211111")
-                .authenticationLevel("4")
-                .consumerId("minehenvendelser")
-                .identType("eksternBruker")
-                .build());
         long start = currentTimeMillis();
-        boolean available = henvendelsesBehandlingService.ping();
-        String status = available ? HENVENDELSE_OK : HENVENDELSE_ERROR;
+        String status = HENVENDELSE_ERROR;
+        try {
+            getCurrent().setPrincipal(new Principal.Builder()
+                    .userId("12121211111")
+                    .authenticationLevel("4")
+                    .consumerId("minehenvendelser")
+                    .identType("eksternBruker")
+                    .build());
+            boolean available = henvendelsesBehandlingService.ping();
+            if (available) {
+                status = HENVENDELSE_OK;
+            }
+        } catch (Exception e) {
+            logger.warn("<<<<<<Error Contacting Henvendelse WS: " + e.getMessage());
+        }
         return new ServiceStatus("Henvendelse WS", status, currentTimeMillis() - start);
     }
 
