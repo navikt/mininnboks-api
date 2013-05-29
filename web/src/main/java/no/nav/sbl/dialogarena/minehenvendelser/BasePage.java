@@ -1,22 +1,25 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
+import java.util.Locale;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import no.nav.sbl.dialogarena.webkomponent.footer.FooterPanel;
 import no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel;
 import no.nav.sbl.dialogarena.webkomponent.navigasjon.NavigasjonPanel;
+
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.Locale;
-import java.util.Map;
 
 public class BasePage extends WebPage {
 
@@ -108,7 +111,7 @@ public class BasePage extends WebPage {
                 new Label("tittel", innholdstekster.hentTekst("hoved.tittel")),
                 new InnstillingerPanel("innstillinger", getInnloggetIsTrueModel()),
                 new NavigasjonPanel("navigasjon", navigasjonsLink),
-                new FooterPanel("footer", footerLinks, getInnloggetIsTrueModel())
+                new FooterPanel("footer", footerLinks, getInnloggetIsTrueModel(), Model.of(false))
         );
     }
 
