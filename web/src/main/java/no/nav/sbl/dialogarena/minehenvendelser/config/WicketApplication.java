@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 
 import javax.inject.Inject;
 
-import static no.nav.modig.frontend.FrontendModules.SCULPTOR;
+import static no.nav.modig.frontend.FrontendModules.EKSTERNFLATE;
 import static no.nav.modig.frontend.FrontendModules.UNDERSCORE;
 import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
 import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
@@ -42,7 +42,7 @@ public class WicketApplication extends WebApplication {
         super.init();
         new FrontendConfigurator()
                 .withModules(
-                        SCULPTOR,
+                        EKSTERNFLATE,
                         UNDERSCORE)
                 .addMetas(
                         CHARSET_UTF8,
