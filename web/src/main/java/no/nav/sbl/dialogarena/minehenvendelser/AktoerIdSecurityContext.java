@@ -9,6 +9,8 @@ import static no.nav.modig.core.context.SecurityContext.getCurrent;
  */
 public class AktoerIdSecurityContext implements AktoerIdService {
 
+    private static final String APPLICATION_ID = "BD04";
+
     @Override
     public String getAktoerId() {
         return getCurrent().getPrincipal().getUserId();
@@ -21,7 +23,7 @@ public class AktoerIdSecurityContext implements AktoerIdService {
                 .userId(aktoerId)
                 .identType("EksternBruker")
                 .authenticationLevel("4")
-                .consumerId("minehenvendelser")
+                .consumerId(APPLICATION_ID)
                 .build();
         getCurrent().setPrincipal(principal);
     }

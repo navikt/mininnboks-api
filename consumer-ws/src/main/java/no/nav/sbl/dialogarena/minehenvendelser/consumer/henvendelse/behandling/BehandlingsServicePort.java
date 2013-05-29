@@ -20,6 +20,8 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
  */
 public class BehandlingsServicePort implements BehandlingService {
 
+    public static final String APPLICATION_ID = "BD04";
+
     @Inject
     private HenvendelsesBehandlingPortType service;
 
@@ -27,8 +29,8 @@ public class BehandlingsServicePort implements BehandlingService {
         getCurrent().setPrincipal(new Principal.Builder()
                 .userId(aktoerId)
                 .authenticationLevel("4")
-                .consumerId("minehenvendelser")
-                .identType("eksternBruker")
+                .consumerId(APPLICATION_ID)
+                .identType("EksternBruker")
                 .build());
         List<Behandling> behandlinger = new ArrayList<>();
 

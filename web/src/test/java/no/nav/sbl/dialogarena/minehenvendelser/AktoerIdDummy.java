@@ -18,7 +18,7 @@ public class AktoerIdDummy implements AktoerIdService {
                 .userId(aktoerId)
                 .identType("EksternBruker")
                 .authenticationLevel("4")
-                .consumerId("minehenvendelser")
+                .consumerId("tull")
                 .build();
         getCurrent().setPrincipal(principal);
     }
