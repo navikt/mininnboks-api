@@ -24,8 +24,7 @@
 		<webservice alias="domene.Brukerdialog:henvendelsesbehandlingservice_v1" mapToProperty="henvendelser.ws" />
 		<applicationCertificate alias="srvMinehenvendelser" />
 
-		<!-- TODO: venter på ny versjon av jboss-maven-plugin -->
-		<!-- <smtpServer alias="tilbakemelding.smtp" mapToProperty="tilbakemelding.smtp" /> -->
-		<!-- <emailAddress alias="tilbakemelding.email" mapToProperty="tilbakemelding.email" /> -->
+		<smtpServer alias="tilbakemelding.smtp" mapToProperty="tilbakemelding.smtp" />
+		<emailAddress alias="tilbakemelding.email" mapToProperty="tilbakemelding.email" />
 	</resources>
 </application>

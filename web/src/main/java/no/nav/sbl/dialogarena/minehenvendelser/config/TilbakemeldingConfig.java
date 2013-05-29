@@ -16,24 +16,25 @@ import org.springframework.context.annotation.Configuration;
 public class TilbakemeldingConfig {
 
     @Value("${tilbakemelding.email.address}")
-    private String tilbakemeldingEmail;
+    private String email;
 
-    @Value("${tilbakemelding.smtp.url}")
-    private URL tilbakemeldingUrl;
+    @Value("${tilbakemelding.smtp.host}")
+    private URL host;
+
+    @Value("${tilbakemelding.smtp.port}")
+    private int port;
 
     @Value("${panel.tilbakemelding.enabled:true}")
-    private String tilbakemeldingEnabled;
+    private String isEnabled;
 
     @Bean
     public Boolean tilbakemeldingEnabled() {
-        return tilbakemeldingEnabled.equalsIgnoreCase("false") ? false : true;
+        return isEnabled.equalsIgnoreCase("false") ? false : true;
     }
 
     @Bean
     public TilbakemeldingService tilbakemeldingService() throws MalformedURLException {
-        String host = tilbakemeldingUrl.getHost();
-        int port = tilbakemeldingUrl.getPort();
-        return new Epostsender(host, port, APPLICATION_NAME, tilbakemeldingEmail);
+        return new Epostsender(host.getHost(), port, APPLICATION_NAME, email);
     }
 
 }
