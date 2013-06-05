@@ -26,22 +26,22 @@ public class BehandlingsServicePort implements BehandlingService {
     private HenvendelsesBehandlingPortType service;
 
     public List<Behandling> hentBehandlinger(String aktoerId){
-        getCurrent().setPrincipal(new Principal.Builder()
-                .userId(aktoerId)
-                .authenticationLevel("4")
-                .consumerId(APPLICATION_ID)
-                .identType("EksternBruker")
-                .build());
         List<Behandling> behandlinger = new ArrayList<>();
-
-        try {
-            for (WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering : service.hentBrukerBehandlinger(aktoerId)) {
-                behandlinger.add(transformToBehandling(wsBrukerBehandlingOppsummering));
+        if (aktoerId != null) {
+            getCurrent().setPrincipal(new Principal.Builder()
+                    .userId(aktoerId)
+                    .authenticationLevel("4")
+                    .consumerId(APPLICATION_ID)
+                    .identType("EksternBruker")
+                    .build());
+            try {
+                for (WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering : service.hentBrukerBehandlinger(aktoerId)) {
+                    behandlinger.add(transformToBehandling(wsBrukerBehandlingOppsummering));
+                }
+            } catch (SOAPFaultException ex){
+                throw new SystemException("Feil ved kall til henvendelse", ex);
             }
-        } catch (SOAPFaultException ex){
-            throw new SystemException("Feil ved kall til henvendelse", ex);
         }
-
         return behandlinger;
     }
 

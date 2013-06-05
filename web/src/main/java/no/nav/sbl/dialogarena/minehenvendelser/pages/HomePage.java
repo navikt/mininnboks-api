@@ -30,8 +30,6 @@ import static org.apache.wicket.model.Model.of;
  */
 public class HomePage extends BasePage {
 
-    private static final String NULL_AKTOER_ID = "nullAktoer";
-
     @Inject
     private BehandlingService behandlingService;
 
@@ -46,7 +44,6 @@ public class HomePage extends BasePage {
 
     public HomePage(PageParameters pageParameters) {
         checkPageParametersAndSetAktoerId(pageParameters);
-
         List<Behandling> behandlinger = behandlingService.hentBehandlinger(aktoerIdService.getAktoerId());
 
         add(
@@ -64,7 +61,7 @@ public class HomePage extends BasePage {
         if (pageParametersContainAktoerId(pageParameters)) {
             aktoerIdService.setAktoerId(valueOf(pageParameters.get("aktoerId")));
         } else {
-            aktoerIdService.setAktoerId(NULL_AKTOER_ID);
+            aktoerIdService.setAktoerId(null);
         }
     }
 

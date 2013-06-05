@@ -45,6 +45,7 @@ public class HomePageTest extends AbstractWicketTest {
     protected void setup() {
         behandlingServiceMock = mock(BehandlingService.class);
         aktoerIdServiceMock = mock(AktoerIdService.class);
+        when(aktoerIdServiceMock.getAktoerId()).thenReturn("svein");
         kodeverkServiceMock = mock(Kodeverk.class);
         mock("footerLinks", Map.class);
         mock("navigasjonslink", "");
