@@ -1,118 +1,39 @@
-h1.senterHeading {
-    font-size: 35px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 550px;
-    line-height: 1.2em;
-    color: #3A3633;
-    float: left;
-}
-
-.tooltiplink {
+.minehenvendelser .tooltiplink {
     content: '?';
-    font-size: 16px;
-    background: url(../img/sirkel-blaa.png);
-    background-position: 0 0;
-    background-size: 39px 39px ;
-    background-repeat: no-repeat;
-    padding: 15px 15px 15px 15px;
+    font-size: 1.2rem;
     color: white;
-    float: left;
+    background: url(../img/sirkel-blaa.png) no-repeat;
+    background-size: 39px;
+    padding: 12px 15px;
     margin-left: 14px;
 }
 
-.tooltiplink:hover {
-    color: white;
-    text-decoration: none;
-}
-
-.headerwrapper {
-    width: 350px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
-    height: 20px;
-}
-
-.valgliste li{
-    text-align: left;
-    margin:  15px 15px 15px 15px;
-    padding: 10px 10px 10px 10px;
-    position: relative;
-    list-style: none;
-    color: #333;
-    background-color: #eeebe4;
-    border:1px solid #cfcbc3;
-}
-
-.valgliste li h2 {
-    margin-bottom: 4px;
-}
-
-.valgliste li p {
-    margin: 0;
-}
-
-.link-right{
-    position: absolute;
-    right: 30px;
-    top: 20px;
-}
-
-.kvittering-link-right{
-    float: right;
-    margin-top: 20px;
-    margin-right: 20px;
-}
-
-.nettobunn{
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-}
-
-.ingen-innsendte-hr {
-    width: 20px;
-    margin-left: 190px;
-    background-color : #333;
-    color: #333;
-    height: 3px;
-    text-align: center;
-}
-
-.status {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 20px;
-    margin-left: 15px;
-    color: darkgrey;
-}
-
-[class*='innsendt'] {
+.minehenvendelser [class*='innsendt'] {
     list-style: none;
 }
-.innsendt li:before {
+.minehenvendelser [class*='innsendt'] li:before {
     content: '✔';
     padding-right: 5px;
     color: green;
 }
 
-.ikke-innsendt li:before{
-    content: '✔';
-    padding-right: 5px;
+.minehenvendelser .ikke-innsendt li:before{
     color: red;
 }
 
-.ferdig-panel {
-    background-color: white;
-}
-
-.kvittering {
+.minehenvendelser .kvittering {
     display: none;
+    border-top: none;
 }
 
-.kvittering hr{
-    width: 20px;
-    margin-left : 15px;
-    background-color : #333;
-    color: #333;
-    height: 3px;
+
+/* midlertidig fiks -  start*/
+.minehenvendelser [class*="panel-mini"]:last-child {
+    margin-right: 2.4% !important;
 }
+
+.minehenvendelser h1 {
+    display: inline;
+}
+
+/* midlertidig fiks - slutt*/

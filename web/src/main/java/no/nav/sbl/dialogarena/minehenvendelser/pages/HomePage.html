@@ -1,42 +1,38 @@
-<!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org" lang="no">
-<wicket:head>
-    <title></title>
-</wicket:head>
 <wicket:extend>
     <div class="rad">
-        <div class="headerwrapper">
-            <h1 wicket:id="hovedTittel" class="senterHeading">[]</h1>
-            <div wicket:id="tooltip" class="tooltiplink">?</div>
+        <div class="begrensning">
+            <h1 wicket:id="hovedTittel">[]</h1>
+            <span wicket:id="tooltip" class="tooltiplink">?</span>
         </div>
     </div>
-    <div wicket:id="ingenBehandlinger" class="rad">
+    <div class="rad nettotopp" wicket:id="ingenBehandlinger">
         <div class="begrensning sak-halv ">
-            <h1 wicket:id="ingenInnsendingerTittel">[]</h1>
-            <hr class="ingen-innsendte-hr"/>
-            <p wicket:id="ingenInnsendingerTekst">[]</p>
-            <a wicket:id="skjemaerLink" href="#">[[Skjemaer]]</a>
+            <section class="panel-mini-dus">
+                <h2 class="robust-strek" wicket:id="ingenInnsendingerTittel">[]</h2>
+                <p wicket:id="ingenInnsendingerTekst">[]</p>
+                <a wicket:id="skjemaerLink" href="#">[[Skjemaer]]</a>
+            </section>
         </div>
     </div>
-    <div class="rad">
+    <div class="rad nettotopp" wicket:id="behandlingerUnderArbeid">
         <div class="begrensning sak-halv">
-            <ul class="valgliste nettobunn">
-                <li wicket:id="behandlingerUnderArbeid">
-                    <h2 wicket:id="tittel">[]</h2>
-                    <div class="link-right"><a href=# wicket:id="fortsettLink">[]</a></div>
-                    <span wicket:id="sistEndret">[]</span>
-                </li>
-            </ul>
+            <section class="panel-mini-dus">
+                <h2 class="robust-strek-ikon-utrop" wicket:id="tittel">[]</h2>
+
+                <p wicket:id="sistEndret">[]</p>
+                <a href=# wicket:id="fortsettLink">[]</a>
+            </section>
         </div>
     </div>
-    <div wicket:id="behandlingerFerdig" class="rad">
-        <div wicket:id="behandling" class="begrensning sak-halv ferdig-panel">[]</div>
+    <div class="rad nettotopp" wicket:id="behandlingerFerdig">
+        <div wicket:id="behandling" class="begrensning sak-halv">[]</div>
     </div>
     <div class="rad">
         <div class="begrensning sak-kvart">
             <a wicket:id="forsiden" href="#">[[Til forsiden]]</a>
         </div>
-        <wicket:container wicket:id="panel-tilbakemelding"/>
     </div>
+    <div wicket:id="panel-tilbakemelding"></div>
 </wicket:extend>
 </html>

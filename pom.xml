@@ -37,12 +37,11 @@
         <modig-core.version>1.0.0-alpha.1</modig-core.version>
         <modig-content.version>1.0.0-alpha.2</modig-content.version>
         <modig.fitnesse.version>1.0.0-alpha.1</modig.fitnesse.version>
-        <modig.frontend.wicket.version>1.0.0-alpha.7</modig.frontend.wicket.version>
+        <modig.frontend.version>1.0.0-SNAPSHOT</modig.frontend.version>
         <modig.lang.version>1.0.0-alpha.1</modig.lang.version>
         <modig-security-ws.version>1.0.0-alpha.1</modig-security-ws.version>
         <modig-security-core.version>1.0.0-alpha.1</modig-security-core.version>
         <modig.wicket.test.version>1.0.0-alpha.1</modig.wicket.test.version>
-        <modig.frontend.ressurser.version>1.0.0-alpha.4</modig.frontend.ressurser.version>
         <modig.wicket.version>1.0.0-alpha.1</modig.wicket.version>
         <nav.sbl.commons.version>3.19</nav.sbl.commons.version>
         <nav.sbl.felles.commons.security.version>3.24</nav.sbl.felles.commons.security.version>
@@ -80,7 +79,7 @@
             <dependency>
 	            <groupId>no.nav.sbl.dialogarena</groupId>
 	            <artifactId>sbl-webkomponent-tilbakemelding</artifactId>
-	            <version>1.0.2</version>
+	            <version>1.0.3-SNAPSHOT</version>
 	        </dependency>
 
             <dependency>
@@ -119,13 +118,13 @@
             <dependency>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-frontend-wicket</artifactId>
-                <version>${modig.frontend.wicket.version}</version>
+                <version>${modig.frontend.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-frontend-ressurser</artifactId>
-                <version>${modig.frontend.ressurser.version}</version>
+                <version>${modig.frontend.version}</version>
             </dependency>
 
             <dependency>

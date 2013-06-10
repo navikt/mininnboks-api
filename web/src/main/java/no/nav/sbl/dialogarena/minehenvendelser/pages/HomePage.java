@@ -21,7 +21,6 @@ import static java.lang.String.valueOf;
 import static java.lang.System.getProperty;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.isEmpty;
-import static no.nav.sbl.dialogarena.minehenvendelser.ApplicationConstants.APPLICATION_NAME;
 import static org.apache.wicket.model.Model.of;
 
 /**
@@ -53,7 +52,7 @@ public class HomePage extends BasePage {
                 new BehandlingerUnderArbeidListView("behandlingerUnderArbeid", behandlinger),
                 new IngenBehandlingerView("ingenBehandlinger", behandlinger),
                 new ExternalLink("forsiden", getProperty("inngangsporten.link.url"), innholdstekster.hentTekst("link.tekst.forsiden")),
-                new TilbakemeldingContainer("panel-tilbakemelding", APPLICATION_NAME, tilbakemeldingService, tilbakemeldingEnabled)
+                new TilbakemeldingContainer("panel-tilbakemelding", tilbakemeldingService, tilbakemeldingEnabled)
         );
     }
 

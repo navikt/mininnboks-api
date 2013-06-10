@@ -1,34 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org">
-<head>
-</head>
-<body>
-
 <wicket:panel>
-        <div class="kvittering-link-right">
-            <a id="vis" href="#" wicket:id="visKvittering">[[Vis kvittering]]</a>
-            <a id="skjul" href="#" wicket:id="skjulKvittering" style="display:none;">[[Skjul kvittering]]</a>
-        </div>
-        <header>
-            <h1 wicket:id="tittel">[]</h1>
-            <div class="status">
-                <span wicket:id="vedlegg" >[]</span>&nbsp;&nbsp;<span wicket:id="innsendtDato">[]</span>
-            </div>
-        </header>
-        <section class="kvittering">
-            <hr/>
-            <p class="ingress" wicket:id="forTekst">[]</p>
-            <h2 wicket:id="innsendteDokumenterHeader">[]</h2>
-            <ul wicket:id="innsendteDokumenter" class="innsendt">
-                <li wicket:id="dokument">[]</li>
-            </ul>
-            <h2 wicket:id="manglendeDokumenterHeader">[]</h2>
-            <ul wicket:id="manglendeDokumenter" class="ikke-innsendt">
-                <li wicket:id="dokument">[]</li>
-            </ul>
-            <p wicket:id="etterTekst" class="ingress">[]</p>
-        </section>
+    <section class="panel-mini-belyst">
+        <h2 class="robust-strek" wicket:id="tittel">[]</h2>
+        <p><wicket:fragment wicket:id="vedlegg">[]</wicket:fragment>&nbsp;&nbsp;<wicket:fragment wicket:id="innsendtDato">[]</wicket:fragment></p>
+        <a id="vis" href="#" wicket:id="visKvittering">[[Vis kvittering]]</a>
+        <a id="skjul" href="#" wicket:id="skjulKvittering" style="display:none;">[[Skjul kvittering]]</a>
+    </section>
+    <br/>
+    <section class="panel-mini-belyst kvittering">
+        <p wicket:id="forTekst">[]</p>
+        <h2 class="robust" wicket:id="innsendteDokumenterHeader">[]</h2>
+        <ul class="innsendt" wicket:id="innsendteDokumenter">
+            <li wicket:id="dokument">[]</li>
+        </ul>
+        <h2 class="robust" wicket:id="manglendeDokumenterHeader">[]</h2>
+        <ul class="ikke-innsendt" wicket:id="manglendeDokumenter">
+            <li wicket:id="dokument">[]</li>
+        </ul>
+
+        <p wicket:id="etterTekst">[]</p>
+    </section>
 </wicket:panel>
-</body>
 </html>
