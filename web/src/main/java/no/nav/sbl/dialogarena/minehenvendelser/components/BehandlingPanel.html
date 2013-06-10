@@ -2,7 +2,7 @@
 <wicket:panel>
     <section class="panel-mini-belyst">
         <h2 class="robust-strek" wicket:id="tittel">[]</h2>
-        <p><wicket:fragment wicket:id="vedlegg">[]</wicket:fragment>&nbsp;&nbsp;<wicket:fragment wicket:id="innsendtDato">[]</wicket:fragment></p>
+        <p><wicket:container wicket:id="vedlegg">[]</wicket:container>&nbsp;&nbsp;<wicket:container wicket:id="innsendtDato">[]</wicket:container></p>
         <a id="vis" href="#" wicket:id="visKvittering">[[Vis kvittering]]</a>
         <a id="skjul" href="#" wicket:id="skjulKvittering" style="display:none;">[[Skjul kvittering]]</a>
     </section>
@@ -10,12 +10,16 @@
     <section class="panel-mini-belyst kvittering">
         <p wicket:id="forTekst">[]</p>
         <h2 class="robust" wicket:id="innsendteDokumenterHeader">[]</h2>
-        <ul class="innsendt" wicket:id="innsendteDokumenter">
-            <li wicket:id="dokument">[]</li>
+        <ul class="innsendt">
+            <li wicket:id="innsendteDokumenter">
+                <wicket:container wicket:id="dokument"/>
+            </li>
         </ul>
         <h2 class="robust" wicket:id="manglendeDokumenterHeader">[]</h2>
-        <ul class="ikke-innsendt" wicket:id="manglendeDokumenter">
-            <li wicket:id="dokument">[]</li>
+        <ul class="ikke-innsendt">
+            <li wicket:id="manglendeDokumenter">
+                <wicket:container wicket:id="dokument" />
+            </li>
         </ul>
 
         <p wicket:id="etterTekst">[]</p>
