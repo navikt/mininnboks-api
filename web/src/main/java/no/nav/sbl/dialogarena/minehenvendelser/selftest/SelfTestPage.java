@@ -89,8 +89,7 @@ public class SelfTestPage extends WebPage {
         long start = currentTimeMillis();
         String status = HENVENDELSE_ERROR;
         try {
-            boolean available = henvendelsesBehandlingService.ping();
-            if (available) {
+            if (henvendelsesBehandlingService.ping()) {
                 status = HENVENDELSE_OK;
             }
         } catch (Exception e) {
