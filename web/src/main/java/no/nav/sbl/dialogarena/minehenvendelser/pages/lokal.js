@@ -8,6 +8,14 @@ $(function () {
         $linkSkjul.on('click', toggleKvittering($linkVis, $linkSkjul, $kvittering));
     });
 
+    $('h2[class*=robust]').each(function() {
+        if ($(this).height() > 17) {
+            $(this).addClass('lang');
+        }
+    });
+
+    $('.tooltiplink').tooltip();
+
     function toggleKvittering($linkVis, $linkSkjul, $kvittering) {
         return function (event) {
             $linkVis.css('display', 'inline');
@@ -18,5 +26,4 @@ $(function () {
             event.preventDefault();
         };
     }
-    $('.tooltiplink').tooltip();
 });

@@ -1,39 +1,73 @@
 .minehenvendelser .tooltiplink {
-    content: '?';
-    font-size: 1.2rem;
-    color: white;
-    background: url(../img/sirkel-blaa.png) no-repeat;
-    background-size: 39px;
-    padding: 12px 15px;
-    margin-left: 14px;
+    background: url('../img/tips.svg') no-repeat;
+    position: absolute;
+    width: 32px;
+    height: 34px;
+    margin-left: 160px;
 }
 
-.minehenvendelser [class*='innsendt'] {
-    list-style: none;
-}
-.minehenvendelser [class*='innsendt'] li:before {
-    content: '✔';
-    padding-right: 5px;
-    color: green;
-}
-
-.minehenvendelser .ikke-innsendt li:before{
-    color: red;
+.minehenvendelser .tooltiplink:hover {
+    background: url('../img/tips_hover.svg') no-repeat;
 }
 
 .minehenvendelser .kvittering {
     display: none;
     border-top: none;
+    padding-top: 3.5%;
+    padding-bottom: 4%;
 }
 
+.minehenvendelser .lang {
+    text-transform: lowercase;
+}
 
-/* midlertidig fiks -  start*/
-.minehenvendelser [class*="panel-mini"]:last-child {
-    margin-right: 2.4% !important;
+.minehenvendelser .lang:first-letter {
+    text-transform: capitalize;
+}
+
+.minehenvendelser [class*="panel-mini"] p {
+    margin-bottom: 10px;
+}
+.minehenvendelser [class*="panel-"] {
+    margin-right: 0;
+}
+
+.minehenvendelser .netto {
+    padding-bottom: 10px !important;
 }
 
 .minehenvendelser .overskrift {
     display: inline;
 }
 
-/* midlertidig fiks - slutt*/
+/* potensiell felles -  start*/
+
+.minehenvendelser .rad-overskrift {
+    margin-top: 60px;
+    margin-bottom: 50px;
+}
+
+.minehenvendelser .sjekk {
+    list-style: none;
+    margin-left: -40px;
+}
+
+.minehenvendelser .sjekk li {
+    background: url('../img/sjekk.svg') no-repeat;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.minehenvendelser .kule {
+    list-style: none;
+    margin-left: -40px;
+}
+
+.minehenvendelser .kule li {
+    background: url('../img/sirkel-svart.png') no-repeat left center;
+    background-size: 0.45rem;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+/* potensiell felles -  slutt*/

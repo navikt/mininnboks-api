@@ -1,32 +1,32 @@
 <html xmlns:wicket="http://wicket.apache.org" lang="no">
 <wicket:extend>
-    <div class="rad">
+    <div class="rad-overskrift">
         <div class="begrensning">
             <h1 class="overskrift" wicket:id="hovedTittel">[]</h1>
-            <span wicket:id="tooltip" class="tooltiplink">?</span>
+            <span wicket:id="tooltip" class="tooltiplink"></span>
         </div>
     </div>
-    <div class="rad nettotopp" wicket:id="ingenBehandlinger">
-        <div class="begrensning sak-halv ">
-            <section class="panel-mini-dus">
+    <div class="rad netto" wicket:id="ingenBehandlinger">
+        <div class="begrensning sak-totredel ">
+            <section class="panel-mini">
                 <h2 class="robust-strek" wicket:id="ingenInnsendingerTittel">[]</h2>
                 <p wicket:id="ingenInnsendingerTekst">[]</p>
                 <a wicket:id="skjemaerLink" href="#">[[Skjemaer]]</a>
             </section>
         </div>
     </div>
-    <div class="rad nettotopp" wicket:id="behandlingerUnderArbeid">
-        <div class="begrensning sak-halv">
-            <section class="panel-mini-dus">
-                <h2 class="robust-strek-ikon-utrop" wicket:id="tittel">[]</h2>
+    <div class="rad netto" wicket:id="behandlingerUnderArbeid">
+        <div class="begrensning sak-totredel">
+            <section class="panel-mini">
+                <h2 class="robust-strek-ikon-feil" wicket:id="tittel">[]</h2>
 
                 <p wicket:id="sistEndret">[]</p>
                 <a href=# wicket:id="fortsettLink">[]</a>
             </section>
         </div>
     </div>
-    <div class="rad nettotopp" wicket:id="behandlingerFerdig">
-        <div wicket:id="behandling" class="begrensning sak-halv">[]</div>
+    <div class="rad netto" wicket:id="behandlingerFerdig">
+        <div wicket:id="behandling" class="begrensning sak-totredel">[]</div>
     </div>
     <div class="rad">
         <div class="begrensning sak-kvart">
