@@ -10,7 +10,7 @@ $(function () {
 
     $('h2[class*=robust]').each(function() {
         if ($(this).height() > 17) {
-            $(this).addClass('lang');
+            $(this).addClass('overskrift-lang');
         }
     });
 
@@ -23,6 +23,7 @@ $(function () {
             $kvittering
                 .animate({height: 'toggle'}, 500)
                 .css('display', 'inline-block');
+            $kvittering.parent().children(':first').toggleClass('uten-ramme');
             event.preventDefault();
         };
     }

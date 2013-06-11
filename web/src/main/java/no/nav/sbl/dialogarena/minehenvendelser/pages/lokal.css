@@ -10,26 +10,40 @@
     background: url('../img/tips_hover.svg') no-repeat;
 }
 
+.minehenvendelser .uten-ramme {
+    border: none;
+}
+
 .minehenvendelser .kvittering {
     display: none;
     border-top: none;
-    padding-top: 3.5%;
+    padding-top: 0;
     padding-bottom: 4%;
 }
 
-.minehenvendelser .lang {
+.minehenvendelser .kvittering hr {
+    border: 0;
+    background-color: #ddd;
+    height: 1px;
+    margin-top: 0;
+    margin-bottom: 5%;
+}
+
+.minehenvendelser .overskrift-lang {
     text-transform: lowercase;
 }
 
-.minehenvendelser .lang:first-letter {
+.minehenvendelser .overskrift-lang:first-letter {
     text-transform: capitalize;
 }
+
+/* Overstyring av felles styling - start */
 
 .minehenvendelser [class*="panel-mini"] p {
     margin-bottom: 10px;
 }
 .minehenvendelser [class*="panel-"] {
-    margin-right: 0;
+    margin-right: -4px;
 }
 
 .minehenvendelser .netto {
@@ -39,6 +53,8 @@
 .minehenvendelser .overskrift {
     display: inline;
 }
+
+/* Overstyring av felles styling - slutt */
 
 /* potensiell felles -  start*/
 
