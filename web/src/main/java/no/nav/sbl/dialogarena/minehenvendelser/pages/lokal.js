@@ -9,8 +9,8 @@ $(function () {
     });
 
     $('h2[class*=robust]').each(function() {
-        if ($(this).height() > 17) {
-            $(this).addClass('overskrift-lang');
+        if ($(this).height() > 20) {
+            $(this).removeClass('robust-strek').addClass('robust-lang-strek');
         }
     });
 

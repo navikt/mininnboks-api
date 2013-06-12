@@ -1,23 +1,23 @@
 <html xmlns:wicket="http://wicket.apache.org" lang="no">
 <wicket:extend>
-    <div class="rad-overskrift">
+    <div class="rad-overskrift uten-ramme">
         <div class="begrensning">
             <h1 class="overskrift" wicket:id="hovedTittel">[]</h1>
             <span wicket:id="tooltip" class="tooltiplink"></span>
         </div>
     </div>
-    <div class="rad netto" wicket:id="ingenBehandlinger">
+    <div class="rad netto uten-ramme" wicket:id="ingenBehandlinger">
         <div class="begrensning sak-totredel ">
-            <section class="panel-mini">
+            <section class="panel-mini-hendelse">
                 <h2 class="robust-strek" wicket:id="ingenInnsendingerTittel">[]</h2>
                 <p wicket:id="ingenInnsendingerTekst">[]</p>
                 <a wicket:id="skjemaerLink" href="#">[[Skjemaer]]</a>
             </section>
         </div>
     </div>
-    <div class="rad netto" wicket:id="behandlingerUnderArbeid">
+    <div class="rad netto uten-ramme" wicket:id="behandlingerUnderArbeid">
         <div class="begrensning sak-totredel">
-            <section class="panel-mini">
+            <section class="panel-mini-hendelse">
                 <h2 class="robust-strek-ikon-feil" wicket:id="tittel">[]</h2>
 
                 <p wicket:id="sistEndret">[]</p>
@@ -25,10 +25,10 @@
             </section>
         </div>
     </div>
-    <div class="rad netto" wicket:id="behandlingerFerdig">
+    <div class="rad netto uten-ramme" wicket:id="behandlingerFerdig">
         <div wicket:id="behandling" class="begrensning sak-totredel">[]</div>
     </div>
-    <div class="rad">
+    <div class="rad uten-ramme">
         <div class="begrensning sak-kvart">
             <a wicket:id="forsiden" href="#">[[Til forsiden]]</a>
         </div>

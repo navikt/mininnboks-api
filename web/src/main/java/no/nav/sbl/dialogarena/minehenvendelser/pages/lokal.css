@@ -10,6 +10,10 @@
     background: url('../img/tips_hover.svg') no-repeat;
 }
 
+.tooltip {
+    font-size: 1em;
+}
+
 .minehenvendelser .uten-ramme {
     border: none;
 }
@@ -29,20 +33,24 @@
     margin-bottom: 5%;
 }
 
-.minehenvendelser .overskrift-lang {
+.minehenvendelser [class*="-lang"] {
     text-transform: lowercase;
 }
 
-.minehenvendelser .overskrift-lang:first-letter {
+.minehenvendelser [class*="-lang"]:first-letter {
     text-transform: capitalize;
 }
 
 /* Overstyring av felles styling - start */
 
-.minehenvendelser [class*="panel-mini"] p {
+.minehenvendelser [class*="-hendelse"] p {
     margin-bottom: 10px;
 }
-.minehenvendelser [class*="panel-"] {
+.minehenvendelser [class*="-hendelse"] {
+    margin-right: 0;
+}
+
+.minehenvendelser [class*="-hendelse"]:first-child {
     margin-right: -4px;
 }
 
