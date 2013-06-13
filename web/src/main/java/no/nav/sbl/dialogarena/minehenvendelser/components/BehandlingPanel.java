@@ -1,21 +1,9 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
-import static java.lang.String.format;
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
-import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.STATUS_LASTET_OPP;
-
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
-
 import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
-
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -23,6 +11,17 @@ import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.util.ListModel;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
+
+import static java.lang.String.format;
+import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.STATUS_LASTET_OPP;
 
 /**
  * Hovedpanel som inneholder samtlige dokumentforventninger knyttet til en behandling.
@@ -54,8 +53,7 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
     }
 
     private Label getInnsendteDokumenterHeader() {
-        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader",
-                innholdsTekster.hentTekst("behandling.innsendte.dokumenter.header"));
+        Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader", innholdsTekster.hentTekst("behandling.innsendte.dokumenter.header"));
         if (behandling.getAntallInnsendteDokumenter() == 0) {
             innsendteDokumenterHeader.setVisible(false);
         }
@@ -63,8 +61,7 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
     }
 
     private Label getManglendeDokumenterHeader() {
-        Label manglendeDokumenterHeader = new Label("manglendeDokumenterHeader",
-                innholdsTekster.hentTekst("behandling.manglende.dokumenter.header"));
+        Label manglendeDokumenterHeader = new Label("manglendeDokumenterHeader", innholdsTekster.hentTekst("behandling.manglende.dokumenter.header"));
         if (behandling.getAntallManglendeDokumenter() == 0) {
             manglendeDokumenterHeader.setVisible(false);
         }
