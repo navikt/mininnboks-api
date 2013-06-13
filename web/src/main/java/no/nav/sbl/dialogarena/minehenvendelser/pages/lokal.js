@@ -8,7 +8,7 @@ $(function () {
         $linkSkjul.on('click', toggleKvittering($linkVis, $linkSkjul, $kvittering));
     });
 
-    $('h2[class*=robust]').each(function() {
+    $('article h1[class*=robust]').each(function() {
         if ($(this).height() > 20) {
             $(this).removeClass('robust-strek').addClass('robust-lang-strek');
         }

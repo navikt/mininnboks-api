@@ -45,7 +45,8 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
                 getDateText(locale),
                 getVedleggsLabel(),
                 getHeadText(),
-                getTopText(),
+                new Label("skjultOverskriftKvittering", innholdsTekster.hentTekst("skjult.overskrift.kvittering")),
+                new Label("forTekst", this.innholdsTekster.hentTekst("behandling.topp.tekst")),
                 getInnsendteDokumenterHeader(),
                 dokumenterView("innsendteDokumenter", INNSENDT),
                 getManglendeDokumenterHeader(),
@@ -108,10 +109,6 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
 
     private Label createFormattedLabel(String wicketId, String unformattedText, Object... args) {
         return new Label(wicketId, format(unformattedText, args));
-    }
-
-    private Label getTopText() {
-        return new Label("forTekst", innholdsTekster.hentTekst("behandling.topp.tekst"));
     }
 
     private Label getBottomText() {

@@ -48,8 +48,10 @@ public class HomePage extends BasePage {
         add(
                 new Label("hovedTittel", innholdstekster.hentTekst("hoved.tittel")),
                 new WebMarkupContainer("tooltip").add(new AttributeAppender("title", of(innholdstekster.hentTekst("tooltip.tekst")))),
-                new FerdigeBehandlingerListView("behandlingerFerdig", behandlinger),
+                new Label("skjultOverskriftPaabegynte", innholdstekster.hentTekst("skjult.overskrift.paabegynte")),
                 new BehandlingerUnderArbeidListView("behandlingerUnderArbeid", behandlinger),
+                new Label("skjultOverskriftKvitteringer", innholdstekster.hentTekst("skjult.overskrift.kvitteringer")),
+                new FerdigeBehandlingerListView("behandlingerFerdig", behandlinger),
                 new IngenBehandlingerView("ingenBehandlinger", behandlinger),
                 new ExternalLink("forsiden", getProperty("inngangsporten.link.url"), innholdstekster.hentTekst("link.tekst.forsiden")),
                 new TilbakemeldingContainer("panel-tilbakemelding", tilbakemeldingService, tilbakemeldingEnabled)
@@ -77,7 +79,7 @@ public class HomePage extends BasePage {
             add(
                     new Label("ingenInnsendingerTittel", innholdstekster.hentTekst("ingen.innsendinger.tittel")),
                     new Label("ingenInnsendingerTekst", innholdstekster.hentTekst("ingen.innsendinger.tekst")),
-                    new ExternalLink("skjemaerLink", "#", innholdstekster.hentTekst("ingen.innsendinger.link.tekst.skjemaer")));
+                    new ExternalLink("skjemaerLink", innholdstekster.hentTekst("ingen.innsendinger.link.skjemaer"), innholdstekster.hentTekst("ingen.innsendinger.link.tekst.skjemaer")));
         }
 
     }

@@ -1,17 +1,17 @@
 .minehenvendelser .tooltiplink {
-    background: url('../img/tips.svg') no-repeat;
+    background: url('../img/hjelp.svg') no-repeat;
     position: absolute;
     width: 32px;
     height: 34px;
-    margin-left: 160px;
+    margin-left: 158px;
 }
 
 .minehenvendelser .tooltiplink:hover {
-    background: url('../img/tips_hover.svg') no-repeat;
+    background: url('../img/hjelp_hover.svg') no-repeat;
 }
 
 .tooltip {
-    font-size: 1em;
+    font-size: 1rem;
 }
 
 .minehenvendelser .uten-ramme {
@@ -33,8 +33,19 @@
     margin-bottom: 5%;
 }
 
+.minehenvendelser .kvittering .medium {
+    padding-top: 16px;
+}
+
+.minehenvendelser .kvittering ul:last-of-type {
+    padding-bottom: 1px;
+}
+
 .minehenvendelser [class*="-lang"] {
     text-transform: lowercase;
+    font-weight: 600;
+    font-size: 1.21rem;
+    line-height: 1.4rem;
 }
 
 .minehenvendelser [class*="-lang"]:first-letter {
@@ -43,13 +54,16 @@
 
 /* Overstyring av felles styling - start */
 
-.minehenvendelser [class*="-hendelse"] p {
-    margin-bottom: 10px;
-}
 .minehenvendelser [class*="-hendelse"] {
     margin-right: 0;
 }
-
+.minehenvendelser [class*="-hendelse"] p {
+    margin-bottom: 10px;
+}
+.minehenvendelser [class*="-hendelse"] h1 {
+    padding-left: 35px;
+    padding-right: 35px;
+}
 .minehenvendelser [class*="-hendelse"]:first-child {
     margin-right: -4px;
 }
