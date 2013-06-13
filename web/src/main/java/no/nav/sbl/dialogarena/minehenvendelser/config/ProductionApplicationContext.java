@@ -57,6 +57,7 @@ public class ProductionApplicationContext {
         Client client = ClientProxy.getClient(henvendelsesBehandlingPortType);
         HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
         httpConduit.getClient().setReceiveTimeout(WS_CLIENT_TIMEOUT);
+        httpConduit.getClient().setConnectionTimeout(WS_CLIENT_TIMEOUT);
         return henvendelsesBehandlingPortType;
     }
 
