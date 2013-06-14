@@ -125,7 +125,7 @@ public final class Behandling implements Serializable {
     }
 
     public List<Dokumentforventning> fetchInnsendteDokumenterUnntattHovedDokument() {
-        return on(dokumentforventninger)
+        return on(fetchInnsendteDokumenter())
                 .filter(where(STATUS_LASTET_OPP, equalTo(true)))
                 .filter(where(HOVEDSKJEMA, equalTo(false)))
                 .collect();
@@ -151,12 +151,14 @@ public final class Behandling implements Serializable {
     public enum Dokumentbehandlingstatus {DOKUMENT_BEHANDLING, DOKUMENT_ETTERSENDING}
 
     public List<Dokumentforventning> getRelevanteDokumenter() {
+        List<Dokumentforventning> returnList;
         if (dokumentbehandlingstatus == DOKUMENT_ETTERSENDING) {
-            return on(dokumentforventninger)
+            returnList = on(dokumentforventninger)
                     .filter(where(HOVEDSKJEMA, equalTo(false)))
                     .collect();
         } else {
-            return fetchAlleDokumenter();
+            returnList = fetchAlleDokumenter();
         }
+        return returnList;
     }
 }
