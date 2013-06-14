@@ -65,7 +65,7 @@ public class BehandlingTest {
         behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.fetchInnsendteDokumenter().size(), is(2));
+        assertThat(behandling.fetchInnsendteDokumenter(false).size(), is(2));
     }
 
     @Test
@@ -113,9 +113,8 @@ public class BehandlingTest {
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.fetchInnsendteDokumenterUnntattHovedDokument().size(), equalTo(1));
+        assertThat(behandling.fetchInnsendteDokumenter(true).size(), equalTo(1));
     }
-
 
     @Test
     public void getTittelShouldReturnKodeverkIdFromHovedskjema() {

@@ -105,24 +105,10 @@ public final class Behandling implements Serializable {
         return fetchHoveddokument().getKodeverkId();
     }
 
-    public List<Dokumentforventning> fetchInnsendteDokumenter() {
-        List<Dokumentforventning> dokumentforventningsList = on(clearKvittering())
-                .filter(where(STATUS_LASTET_OPP, equalTo(true)))
-                .collect();
-        return dokumentforventningsList;
-    }
-
     public boolean hasManglendeDokumenter() {
         return on(dokumentforventninger)
                 .filter(where(STATUS_LASTET_OPP, equalTo(false)))
                 .collect().size() != 0;
-    }
-
-    public List<Dokumentforventning> fetchInnsendteDokumenterUnntattHovedDokument() {
-        return on(fetchInnsendteDokumenter())
-                .filter(where(STATUS_LASTET_OPP, equalTo(true)))
-                .filter(where(HOVEDSKJEMA, equalTo(false)))
-                .collect();
     }
 
     public Dokumentforventning fetchHoveddokument() {
@@ -131,13 +117,15 @@ public final class Behandling implements Serializable {
                 .head().get();
     }
 
-    public Dokumentbehandlingstatus getDokumentbehandlingstatus() {
-        return dokumentbehandlingstatus;
+    public List<Dokumentforventning> fetchInnsendteDokumenter(boolean excludeHoveddokument) {
+        List<Dokumentforventning> dokumentforventningsList = on(clearKvittering())
+                .filter(where(STATUS_LASTET_OPP, equalTo(true)))
+                .collect();
+        if (excludeHoveddokument) {
+               return listwithoutHoveddokument(dokumentforventningsList);
+        }
+        return dokumentforventningsList;
     }
-
-    public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG}
-
-    public enum Dokumentbehandlingstatus {DOKUMENT_BEHANDLING, DOKUMENT_ETTERSENDING}
 
     public List<Dokumentforventning> getRelevanteDokumenter() {
         List<Dokumentforventning> returnList = clearKvittering();
@@ -147,6 +135,12 @@ public final class Behandling implements Serializable {
                     .collect();
         }
         return returnList;
+    }
+
+    private List<Dokumentforventning> listwithoutHoveddokument(List<Dokumentforventning> dokumentforventningsList) {
+        return on(dokumentforventningsList)
+                .filter(where(HOVEDSKJEMA, equalTo(false)))
+                .collect();
     }
 
     private List<Dokumentforventning> clearKvittering() {
@@ -159,5 +153,13 @@ public final class Behandling implements Serializable {
         }
         return dokumentforventningsList;
     }
+
+    public Dokumentbehandlingstatus getDokumentbehandlingstatus() {
+        return dokumentbehandlingstatus;
+    }
+
+    public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG}
+
+    public enum Dokumentbehandlingstatus {DOKUMENT_BEHANDLING, DOKUMENT_ETTERSENDING}
 
 }
