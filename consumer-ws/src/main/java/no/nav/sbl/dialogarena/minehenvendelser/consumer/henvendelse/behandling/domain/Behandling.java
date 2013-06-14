@@ -13,6 +13,7 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.modig.lang.option.Optional.optional;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.HOVEDSKJEMA;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.STATUS_LASTET_OPP;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.transformToDokumentforventing;
@@ -111,10 +112,6 @@ public final class Behandling implements Serializable {
         return fetchManglendeDokumenter().size();
     }
 
-    public int getAntallInnsendteDokumenterUnntattHovedDokument() {
-        return fetchInnsendteDokumenterUnntattHovedDokmument().size();
-    }
-
     public int getAntallDokumenterUnntattHovedDokument() {
         return fetchAlleUnntattHovedDokument().size();
     }
@@ -142,7 +139,7 @@ public final class Behandling implements Serializable {
                 .collect();
     }
 
-    public List<Dokumentforventning> fetchInnsendteDokumenterUnntattHovedDokmument() {
+    public List<Dokumentforventning> fetchInnsendteDokumenterUnntattHovedDokument() {
         return on(dokumentforventninger)
                 .filter(where(STATUS_LASTET_OPP, equalTo(true)))
                 .filter(where(HOVEDSKJEMA, equalTo(false)))
@@ -175,7 +172,7 @@ public final class Behandling implements Serializable {
     public enum Dokumentbehandlingstatus {DOKUMENT_BEHANDLING, DOKUMENT_ETTERSENDING}
 
     public List<Dokumentforventning> getRelevanteDokumenter() {
-        if (dokumentbehandlingstatus == Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING) {
+        if (dokumentbehandlingstatus == DOKUMENT_ETTERSENDING) {
             return fetchAlleUnntattHovedDokument();
         } else {
             return fetchAlleDokumenter();

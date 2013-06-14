@@ -109,7 +109,7 @@ public class BehandlingTest {
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getAntallInnsendteDokumenterUnntattHovedDokument(), equalTo(1));
+        assertThat(behandling.fetchInnsendteDokumenterUnntattHovedDokument().size(), equalTo(1));
     }
 
 

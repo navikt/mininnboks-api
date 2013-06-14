@@ -73,7 +73,7 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
         if (behandling.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
             return createFormattedLabel("vedlegg",
                     innholdsTekster.hentTekst("behandling.antall.vedlegg"),
-                    behandling.getAntallInnsendteDokumenterUnntattHovedDokument(),
+                    behandling.fetchInnsendteDokumenterUnntattHovedDokument().size(),
                     behandling.getAntallDokumenterUnntattHovedDokument());
         } else {
             return createFormattedLabel("vedlegg",
