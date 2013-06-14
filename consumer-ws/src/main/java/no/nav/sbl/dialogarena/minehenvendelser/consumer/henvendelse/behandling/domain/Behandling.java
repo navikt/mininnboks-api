@@ -29,6 +29,7 @@ public final class Behandling implements Serializable {
             return behandling.getBehandlingsstatus();
         }
     };
+    private static final String KODEVERKSID_FOR_KVITTERING = "L7";
 
     private static Transformer<WSBrukerBehandlingOppsummering, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandlingOppsummering, Behandling>() {
 
@@ -109,7 +110,7 @@ public final class Behandling implements Serializable {
                 .filter(where(STATUS_LASTET_OPP, equalTo(true)))
                 .collect();
         for (int i = 0; i < dokumentforventningsList.size(); i++) {
-            if ("L7".equals(dokumentforventningsList.get(i).getKodeverkId())) {
+            if (KODEVERKSID_FOR_KVITTERING.equals(dokumentforventningsList.get(i).getKodeverkId())) {
                 dokumentforventningsList.remove(i);
                 break;
             }
@@ -135,12 +136,6 @@ public final class Behandling implements Serializable {
                 .collect();
     }
 
-    public List<Dokumentforventning> fetchAlleUnntattHovedDokument() {
-        return on(dokumentforventninger)
-                .filter(where(HOVEDSKJEMA, equalTo(false)))
-                .collect();
-    }
-
     public Dokumentforventning fetchHoveddokument() {
         return on(dokumentforventninger)
                 .filter(where(HOVEDSKJEMA, equalTo(true)))
@@ -157,7 +152,9 @@ public final class Behandling implements Serializable {
 
     public List<Dokumentforventning> getRelevanteDokumenter() {
         if (dokumentbehandlingstatus == DOKUMENT_ETTERSENDING) {
-            return fetchAlleUnntattHovedDokument();
+            return on(dokumentforventninger)
+                    .filter(where(HOVEDSKJEMA, equalTo(false)))
+                    .collect();
         } else {
             return fetchAlleDokumenter();
         }

@@ -4,10 +4,10 @@ import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingO
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.internal.util.reflection.Whitebox;
 
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createMock;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWsBehandlingMock;
@@ -16,6 +16,7 @@ import static no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsending
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
 public class BehandlingTest {
 
@@ -79,19 +80,20 @@ public class BehandlingTest {
     public void shouldReturnAntallDokumenterUnntattHovedskjema() {
         List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
         Dokumentforventning hovedSkjema = createMock(IS_HOVEDSKJEMA, IS_INNSENDT);
+        setInternalState(behandling, "dokumentbehandlingstatus", DOKUMENT_ETTERSENDING);
         dokumentforventningList.add(hovedSkjema);
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.fetchAlleUnntattHovedDokument().size(), equalTo(3));
+        assertThat(behandling.getRelevanteDokumenter().size(), equalTo(3));
     }
 
     @Test
     public void shouldReturnNumberOfMissingDokumenter() {
         List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
         Dokumentforventning hovedSkjema = createMock(IS_HOVEDSKJEMA, IS_INNSENDT);
-        Whitebox.setInternalState(hovedSkjema, "kodeverkId", "kodeverkId");
+        setInternalState(hovedSkjema, "kodeverkId", "kodeverkId");
         dokumentforventningList.add(hovedSkjema);
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
@@ -117,7 +119,7 @@ public class BehandlingTest {
     public void getTittelShouldReturnKodeverkIdFromHovedskjema() {
         List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
         Dokumentforventning hovedSkjema = createMock(IS_HOVEDSKJEMA, IS_INNSENDT);
-        Whitebox.setInternalState(hovedSkjema, "kodeverkId", "kodeverkId");
+        setInternalState(hovedSkjema, "kodeverkId", "kodeverkId");
         dokumentforventningList.add(hovedSkjema);
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));

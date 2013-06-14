@@ -74,7 +74,7 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
             return createFormattedLabel("vedlegg",
                     innholdsTekster.hentTekst("behandling.antall.vedlegg"),
                     behandling.fetchInnsendteDokumenterUnntattHovedDokument().size(),
-                    behandling.fetchAlleUnntattHovedDokument().size());
+                    behandling.getRelevanteDokumenter().size());
         } else {
             return createFormattedLabel("vedlegg",
                     innholdsTekster.hentTekst("behandling.antall.vedlegg"),
