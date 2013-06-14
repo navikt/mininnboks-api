@@ -62,7 +62,7 @@ public class BehandlingTest {
         behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getAntallInnsendteDokumenter(), is(2));
+        assertThat(behandling.fetchInnsendteDokumenter().size(), is(2));
     }
 
     @Test
