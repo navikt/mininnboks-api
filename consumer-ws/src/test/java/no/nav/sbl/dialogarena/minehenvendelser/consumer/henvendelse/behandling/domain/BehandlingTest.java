@@ -2,11 +2,13 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.
 
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSInnsendingsValg;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_BEHANDLING;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createMock;
@@ -73,7 +75,7 @@ public class BehandlingTest {
         behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.fetchAlleDokumenter().size(), is(4));
+        assertThat(behandling.getRelevanteDokumenter().size(), is(4));
     }
 
     @Test
@@ -126,6 +128,11 @@ public class BehandlingTest {
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
         assertThat(behandling.getHovedskjemaId(), equalTo("hovedSkjemaId"));
+    }
+
+    @After
+    public void resetData() {
+        setInternalState(behandling, "dokumentbehandlingstatus", DOKUMENT_BEHANDLING);
     }
 
 }

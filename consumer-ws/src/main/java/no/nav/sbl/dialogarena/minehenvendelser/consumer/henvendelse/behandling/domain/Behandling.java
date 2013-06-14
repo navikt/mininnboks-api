@@ -106,15 +106,9 @@ public final class Behandling implements Serializable {
     }
 
     public List<Dokumentforventning> fetchInnsendteDokumenter() {
-        List<Dokumentforventning> dokumentforventningsList = on(dokumentforventninger)
+        List<Dokumentforventning> dokumentforventningsList = on(clearKvittering())
                 .filter(where(STATUS_LASTET_OPP, equalTo(true)))
                 .collect();
-        for (int i = 0; i < dokumentforventningsList.size(); i++) {
-            if (KODEVERKSID_FOR_KVITTERING.equals(dokumentforventningsList.get(i).getKodeverkId())) {
-                dokumentforventningsList.remove(i);
-                break;
-            }
-        }
         return dokumentforventningsList;
     }
 
@@ -128,11 +122,6 @@ public final class Behandling implements Serializable {
         return on(fetchInnsendteDokumenter())
                 .filter(where(STATUS_LASTET_OPP, equalTo(true)))
                 .filter(where(HOVEDSKJEMA, equalTo(false)))
-                .collect();
-    }
-
-    public List<Dokumentforventning> fetchAlleDokumenter() {
-        return on(dokumentforventninger)
                 .collect();
     }
 
@@ -151,14 +140,24 @@ public final class Behandling implements Serializable {
     public enum Dokumentbehandlingstatus {DOKUMENT_BEHANDLING, DOKUMENT_ETTERSENDING}
 
     public List<Dokumentforventning> getRelevanteDokumenter() {
-        List<Dokumentforventning> returnList;
+        List<Dokumentforventning> returnList = clearKvittering();
         if (dokumentbehandlingstatus == DOKUMENT_ETTERSENDING) {
-            returnList = on(dokumentforventninger)
+            returnList = on(returnList)
                     .filter(where(HOVEDSKJEMA, equalTo(false)))
                     .collect();
-        } else {
-            returnList = fetchAlleDokumenter();
         }
         return returnList;
     }
+
+    private List<Dokumentforventning> clearKvittering() {
+        List<Dokumentforventning> dokumentforventningsList = dokumentforventninger;
+        for (int i = 0; i < dokumentforventningsList.size(); i++) {
+            if (KODEVERKSID_FOR_KVITTERING.equals(dokumentforventningsList.get(i).getKodeverkId())) {
+                dokumentforventningsList.remove(i);
+                break;
+            }
+        }
+        return dokumentforventningsList;
+    }
+
 }
