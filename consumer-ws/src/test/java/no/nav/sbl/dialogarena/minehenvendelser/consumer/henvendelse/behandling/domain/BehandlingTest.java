@@ -72,7 +72,7 @@ public class BehandlingTest {
         behandling.getDokumentforventninger().add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         behandling.getDokumentforventninger().add(createMock(IS_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getAntallDokumenter(), is(4));
+        assertThat(behandling.fetchAlleDokumenter().size(), is(4));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class BehandlingTest {
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getAntallDokumenterUnntattHovedDokument(), equalTo(3));
+        assertThat(behandling.fetchAlleUnntattHovedDokument().size(), equalTo(3));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class BehandlingTest {
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getAntallManglendeDokumenter(), equalTo(2));
+        assertThat(behandling.hasManglendeDokumenter(), equalTo(true));
     }
 
     @Test

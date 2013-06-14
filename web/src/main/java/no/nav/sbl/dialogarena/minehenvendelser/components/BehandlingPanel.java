@@ -63,7 +63,7 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
 
     private Label getManglendeDokumenterHeader() {
         Label manglendeDokumenterHeader = new Label("manglendeDokumenterHeader", innholdsTekster.hentTekst("behandling.manglende.dokumenter.header"));
-        if (behandling.getAntallManglendeDokumenter() == 0) {
+        if (!behandling.hasManglendeDokumenter()) {
             manglendeDokumenterHeader.setVisible(false);
         }
         return manglendeDokumenterHeader;
@@ -74,12 +74,12 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
             return createFormattedLabel("vedlegg",
                     innholdsTekster.hentTekst("behandling.antall.vedlegg"),
                     behandling.fetchInnsendteDokumenterUnntattHovedDokument().size(),
-                    behandling.getAntallDokumenterUnntattHovedDokument());
+                    behandling.fetchAlleUnntattHovedDokument().size());
         } else {
             return createFormattedLabel("vedlegg",
                     innholdsTekster.hentTekst("behandling.antall.vedlegg"),
                     behandling.getAntallInnsendteDokumenter(),
-                    behandling.getAntallDokumenter());
+                    behandling.fetchAlleDokumenter().size());
         }
     }
 
