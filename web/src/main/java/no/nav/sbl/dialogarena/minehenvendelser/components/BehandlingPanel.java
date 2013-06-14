@@ -90,7 +90,7 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
             protected void populateItem(ListItem<Dokumentforventning> listItem) {
                 Dokumentforventning dokumentforventning = listItem.getModelObject();
                 if (kodeverkOppslag.isEgendefinert(dokumentforventning.getKodeverkId())) {
-                    listItem.add(new Label("dokument", kodeverkOppslag.getTittel(dokumentforventning.getKodeverkId()) + dokumentforventning.getFriTekst()));
+                    listItem.add(new Label("dokument", kodeverkOppslag.getTittel(dokumentforventning.getKodeverkId()) + ": " + dokumentforventning.getFriTekst()));
                 } else {
                     listItem.add(new Label("dokument", kodeverkOppslag.getTittel(dokumentforventning.getKodeverkId())));
                 }

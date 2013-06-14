@@ -39,25 +39,6 @@ Egendef.Tittel viser tittel på vedlegg som er type Annet.
 | ***REMOVED*** | DA01-000000008 | DOKUMENT_ETTERSENDING | SOKNADSINNSENDING | UNDER_ARBEID |NAV 14-05.09 | 2012-09-09T01:18:03+01:00 | | NAV 14-05.09, NAV 25-02.03 | LASTET_OPP,IKKE_VALGT |JA,NEI | blank ,blank |
 | ***REMOVED*** | DA01-000000016 | DOKUMENT_ETTERSENDING | SOKNADSINNSENDING | FERDIG | NAV 34-00.08  | 2012-11-21T01:18:33+01:00 | 2012-11-21T01:18:33+01:00 | NAV 34-00.08,NAV 55-00.60,L7 | INNSENDT,LASTET_OPP,INNSENDT |JA,NEI,NEI | blank ,blank,blank |
 
-Tabell for kodeverk viser hvilke verdier vi forventer å få fra kodeverk:
-
-#!
-
-| Tabell for kodeverk |
-| Kodeverk ID | Navn paa dokumentet |
-| NAV 04-01.03 | Krav om dagpenger |
-| NAV 76-08.03 | Arbeidsgivers meldeplikt til NAV ved masseoppsigelser, permitteringer uten lønn og innskrenking i arbeidstiden |
-| NAV 25-02.03 | Rapport om oppfølging av sykmeldt arbeidstaker |
-| NAV 30-02.06 | Egenvurdering |
-| NAV 14-05.09 | Søknad om foreldrepenger eller fedrekvote ved fødsel |
-| NAV 08-47.05 | Krav om sykepenger – midlertidig ute av inntektsgivende arbeid |
-| NAV 34-00.08 | Krav om kontantstøtte til småbarnsforeldre |
-| NAV 15-00.01 | Søknad om Overgangsstønad |
-| NAV 55-00.60 | Avtale om underholdsbidrag til barn |
-| L7 | Kvitteringsside for dokumentinnsending |
-| T6 | Permitteringsvarsel |
-| N6 | Annet |
-
 '''Test på innsendte dokumenter, skal vises i samme rekkefølge som i tabellen, dvs nyeste øverst:'''
 
 Bruker har 1 innsendt Dokumentinnsending. 3 av 4 dokumenter er innsendt:
