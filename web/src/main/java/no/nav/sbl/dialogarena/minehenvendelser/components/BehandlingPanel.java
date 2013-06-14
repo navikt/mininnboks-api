@@ -55,7 +55,7 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
 
     private Label getInnsendteDokumenterHeader() {
         Label innsendteDokumenterHeader = new Label("innsendteDokumenterHeader", innholdsTekster.hentTekst("behandling.innsendte.dokumenter.header"));
-        if (behandling.fetchInnsendteDokumenter(false).isEmpty()) {
+        if (behandling.getInnsendteDokumenter(false).isEmpty()) {
             innsendteDokumenterHeader.setVisible(false);
         }
         return innsendteDokumenterHeader;
@@ -73,12 +73,12 @@ public class BehandlingPanel extends GenericPanel<List<Dokumentforventning>> {
         if (behandling.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
             return createFormattedLabel("vedlegg",
                     innholdsTekster.hentTekst("behandling.antall.vedlegg"),
-                    behandling.fetchInnsendteDokumenter(true).size(),
+                    behandling.getInnsendteDokumenter(true).size(),
                     behandling.getRelevanteDokumenter().size());
         } else {
             return createFormattedLabel("vedlegg",
                     innholdsTekster.hentTekst("behandling.antall.vedlegg"),
-                    behandling.fetchInnsendteDokumenter(false).size(),
+                    behandling.getInnsendteDokumenter(false).size(),
                     behandling.getRelevanteDokumenter().size());
         }
     }

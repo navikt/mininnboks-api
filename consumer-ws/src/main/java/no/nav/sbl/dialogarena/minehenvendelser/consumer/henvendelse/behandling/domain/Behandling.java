@@ -106,41 +106,27 @@ public final class Behandling implements Serializable {
     }
 
     public boolean hasManglendeDokumenter() {
-        return on(dokumentforventninger)
-                .filter(where(STATUS_LASTET_OPP, equalTo(false)))
-                .collect().size() != 0;
+        return on(dokumentforventninger).filter(where(STATUS_LASTET_OPP, equalTo(false))).collect().size() != 0;
     }
 
     public Dokumentforventning fetchHoveddokument() {
-        return on(dokumentforventninger)
-                .filter(where(HOVEDSKJEMA, equalTo(true)))
-                .head().get();
+        return on(dokumentforventninger).filter(where(HOVEDSKJEMA, equalTo(true))).head().get();
     }
 
-    public List<Dokumentforventning> fetchInnsendteDokumenter(boolean excludeHoveddokument) {
-        List<Dokumentforventning> dokumentforventningsList = on(clearKvittering())
-                .filter(where(STATUS_LASTET_OPP, equalTo(true)))
-                .collect();
+    public List<Dokumentforventning> getInnsendteDokumenter(boolean excludeHoveddokument) {
+        List<Dokumentforventning> returnList = on(clearKvittering()).filter(where(STATUS_LASTET_OPP, equalTo(true))).collect();
         if (excludeHoveddokument) {
-               return listwithoutHoveddokument(dokumentforventningsList);
+               returnList = on(returnList).filter(where(HOVEDSKJEMA, equalTo(false))).collect();
         }
-        return dokumentforventningsList;
+        return returnList;
     }
 
     public List<Dokumentforventning> getRelevanteDokumenter() {
         List<Dokumentforventning> returnList = clearKvittering();
         if (dokumentbehandlingstatus == DOKUMENT_ETTERSENDING) {
-            returnList = on(returnList)
-                    .filter(where(HOVEDSKJEMA, equalTo(false)))
-                    .collect();
+            returnList = on(returnList).filter(where(HOVEDSKJEMA, equalTo(false))).collect();
         }
         return returnList;
-    }
-
-    private List<Dokumentforventning> listwithoutHoveddokument(List<Dokumentforventning> dokumentforventningsList) {
-        return on(dokumentforventningsList)
-                .filter(where(HOVEDSKJEMA, equalTo(false)))
-                .collect();
     }
 
     private List<Dokumentforventning> clearKvittering() {
