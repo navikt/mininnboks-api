@@ -12,7 +12,6 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -40,7 +39,7 @@ public class HomePage extends BasePage {
     @Inject
     private Boolean tilbakemeldingEnabled;
 
-    public HomePage(PageParameters pageParameters) {
+    public HomePage() {
         List<Behandling> behandlinger = behandlingService.hentBehandlinger(aktoerIdService.getAktoerId());
 
         add(
