@@ -39,8 +39,7 @@
         <modig.fitnesse.version>1.0.0-alpha.1</modig.fitnesse.version>
         <modig.frontend.version>1.0.0-alpha.10</modig.frontend.version>
         <modig.lang.version>1.0.1</modig.lang.version>
-        <modig-security-ws.version>1.0.0-alpha.1</modig-security-ws.version>
-        <modig-security-core.version>1.0.0-alpha.1</modig-security-core.version>
+        <modig-security.version>1.0.0-alpha.4</modig-security.version>
         <modig.wicket.test.version>1.0.0</modig.wicket.test.version>
         <modig.wicket.version>1.0.0-alpha.6</modig.wicket.version>
         <nav.sbl.commons.version>3.19</nav.sbl.commons.version>
@@ -148,13 +147,26 @@
             <dependency>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-security-ws</artifactId>
-                <version>${modig-security-ws.version}</version>
+                <version>${modig-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-security-core</artifactId>
-                <version>${modig-security-core.version}</version>
+                <version>${modig-security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-security-filter</artifactId>
+                <version>${modig-security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-security-loginmodule</artifactId>
+                <version>${modig-security.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <dependency>
@@ -331,6 +343,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jaxrs</artifactId>
+                <version>2.3.5.Final</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.webbitserver</groupId>
                 <artifactId>webbit</artifactId>
                 <version>${webbit.version}</version>
@@ -361,6 +379,22 @@
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-testcertificates</artifactId>
                 <version>0.5.0</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-security-filter</artifactId>
+                <version>${modig-security.version}</version>
+                <type>test-jar</type>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-security-core</artifactId>
+                <version>${modig-security.version}</version>
+                <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
 

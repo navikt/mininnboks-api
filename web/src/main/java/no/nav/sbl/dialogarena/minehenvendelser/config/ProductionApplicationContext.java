@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
-import no.nav.modig.security.ws.SecurityContextOutInterceptor;
 import no.nav.sbl.dialogarena.common.kodeverk.config.KodeverkConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdSecurityContext;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
@@ -51,7 +50,6 @@ public class ProductionApplicationContext {
         proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
         proxyFactoryBean.getFeatures().add(new LoggingFeature());
 
-        proxyFactoryBean.getOutInterceptors().add(new SecurityContextOutInterceptor());
 
         HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
         Client client = ClientProxy.getClient(henvendelsesBehandlingPortType);

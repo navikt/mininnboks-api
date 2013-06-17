@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.fixtures;
 
 import fit.Fixture;
 import fitlibrary.ArrayFixture;
+import no.nav.modig.core.context.ThreadLocalSubjectHandler;
 import no.nav.modig.test.fitnesse.fixture.SpringAwareDoFixture;
 import no.nav.modig.test.fitnesse.fixture.ToDoList;
 import no.nav.modig.wicket.test.FluentWicketTester;
@@ -21,6 +22,8 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.setProperty;
+import static no.nav.modig.core.context.SubjectHandler.SUBJECTHANDLER_KEY;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComponent;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
 import static org.apache.commons.lang3.StringUtils.join;
@@ -38,6 +41,7 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     private FluentWicketTester<WicketApplication> wicketTester;
 
     public Fixture datagrunnlag() {
+        setProperty(SUBJECTHANDLER_KEY, ThreadLocalSubjectHandler.class.getName());
         logger.info("Setting up datagrunnlag.");
         mockData.clear();
         return new Datagrunnlag(mockData);

@@ -1,26 +1,22 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
 
-import no.nav.modig.core.context.Principal;
+import no.nav.modig.core.context.SubjectHandler;
+import no.nav.modig.core.domain.IdentType;
 
-import static no.nav.modig.core.context.SecurityContext.getCurrent;
+import static no.nav.modig.core.context.SubjectHandlerUtils.SubjectBuilder;
+import static no.nav.modig.core.context.SubjectHandlerUtils.setSubject;
+
 
 public class AktoerIdDummy implements AktoerIdService {
 
     @Override
     public String getAktoerId() {
-       return getCurrent().getPrincipal().getUserId();
+       return SubjectHandler.getSubjectHandler().getUid();
     }
 
     public void setAktoerId(String aktoerId) {
-        getCurrent().removeAll();
-        Principal principal = new Principal.Builder()
-                .userId(aktoerId)
-                .identType("EksternBruker")
-                .authenticationLevel("4")
-                .consumerId("tull")
-                .build();
-        getCurrent().setPrincipal(principal);
+        setSubject(new SubjectBuilder(aktoerId, IdentType.EksternBruker).withAuthLevel(4).getSubject());
     }
 
 }
