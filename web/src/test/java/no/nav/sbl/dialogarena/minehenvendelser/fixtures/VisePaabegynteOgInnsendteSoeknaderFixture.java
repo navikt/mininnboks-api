@@ -2,11 +2,12 @@ package no.nav.sbl.dialogarena.minehenvendelser.fixtures;
 
 import fit.Fixture;
 import fitlibrary.ArrayFixture;
+import no.nav.modig.core.context.SubjectHandlerUtils;
 import no.nav.modig.core.context.ThreadLocalSubjectHandler;
+import no.nav.modig.core.domain.IdentType;
 import no.nav.modig.test.fitnesse.fixture.SpringAwareDoFixture;
 import no.nav.modig.test.fitnesse.fixture.ToDoList;
 import no.nav.modig.wicket.test.FluentWicketTester;
-import no.nav.modig.wicket.test.internal.Parameters;
 import no.nav.sbl.dialogarena.minehenvendelser.config.FitNesseApplicationContext;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
@@ -48,9 +49,8 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     }
 
     public Fixture innsendt(String aktoerId) {
-        Parameters parameters = new Parameters();
-        parameters.pageParameters.add("aktoerId", aktoerId);
-        wicketTester.goTo(HomePage.class, parameters);
+        SubjectHandlerUtils.setSubject(new SubjectHandlerUtils.SubjectBuilder(aktoerId, IdentType.EksternBruker).withAuthLevel(4).getSubject());
+        wicketTester.goTo(HomePage.class);
 
         List<String> antallVedlegg = retrieveSubComponentsBasedOnFilterString("vedlegg");
         List<String> innsendtDato = retrieveSubComponentsBasedOnFilterString("innsendtDato");
@@ -63,9 +63,8 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     }
 
     public Fixture paabegynt(String aktoerId) {
-        Parameters parameters = new Parameters();
-        parameters.pageParameters.add("aktoerId", aktoerId);
-        wicketTester.goTo(HomePage.class, parameters);
+        SubjectHandlerUtils.setSubject(new SubjectHandlerUtils.SubjectBuilder(aktoerId, IdentType.EksternBruker).withAuthLevel(4).getSubject());
+        wicketTester.goTo(HomePage.class);
         return new ArrayFixture(retriveUnderArbeidBehandlinger());
     }
 

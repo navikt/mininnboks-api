@@ -17,7 +17,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import javax.inject.Inject;
 import java.util.List;
 
-import static java.lang.String.valueOf;
 import static java.lang.System.getProperty;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.isEmpty;
@@ -42,7 +41,6 @@ public class HomePage extends BasePage {
     private Boolean tilbakemeldingEnabled;
 
     public HomePage(PageParameters pageParameters) {
-        checkPageParametersAndSetAktoerId(pageParameters);
         List<Behandling> behandlinger = behandlingService.hentBehandlinger(aktoerIdService.getAktoerId());
 
         add(
@@ -56,18 +54,6 @@ public class HomePage extends BasePage {
                 new ExternalLink("forsiden", getProperty("inngangsporten.link.url"), innholdstekster.hentTekst("link.tekst.forsiden")),
                 new TilbakemeldingContainer("panel-tilbakemelding", tilbakemeldingService, tilbakemeldingEnabled)
         );
-    }
-
-    private void checkPageParametersAndSetAktoerId(PageParameters pageParameters) {
-        if (pageParametersContainAktoerId(pageParameters)) {
-            aktoerIdService.setAktoerId(valueOf(pageParameters.get("aktoerId")));
-        } else {
-            aktoerIdService.setAktoerId(null);
-        }
-    }
-
-    private boolean pageParametersContainAktoerId(PageParameters pageParameters) {
-        return pageParameters.get("aktoerId") != null && !pageParameters.get("aktoerId").isEmpty();
     }
 
     private class IngenBehandlingerView extends WebMarkupContainer {
