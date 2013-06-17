@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
+import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.common.kodeverk.config.KodeverkConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdSecurityContext;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
@@ -8,7 +9,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.B
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
-import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
@@ -21,6 +21,8 @@ import org.springframework.context.annotation.PropertySource;
 
 import javax.xml.namespace.QName;
 import java.net.URL;
+
+import static org.apache.cxf.frontend.ClientProxy.getClient;
 
 /**
  * Hovedprofil for produksjonsapplikasjonskonteksten
@@ -50,9 +52,9 @@ public class ProductionApplicationContext {
         proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
         proxyFactoryBean.getFeatures().add(new LoggingFeature());
 
-
         HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
-        Client client = ClientProxy.getClient(henvendelsesBehandlingPortType);
+        Client client = getClient(henvendelsesBehandlingPortType);
+        STSConfigurationUtility.configureStsForSystemUser(client);
         HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
         httpConduit.getClient().setReceiveTimeout(WS_CLIENT_TIMEOUT);
         httpConduit.getClient().setConnectionTimeout(WS_CLIENT_TIMEOUT);
