@@ -26,10 +26,10 @@
 
 		<smtpServer alias="tilbakemelding.smtp" mapToProperty="tilbakemelding.smtp" />
 		<emailAddress alias="tilbakemelding.email" mapToProperty="tilbakemelding.email" />
-        <security serviceUserResourceAlias="srvMinehenvendelser">
-            <openAm>
-                <contextRoot>minehenvendelser</contextRoot>
-            </openAm>
-        </security>
 	</resources>
+    <security serviceUserResourceAlias="srvMinehenvendelser">
+        <openAm>
+            <contextRoot>minehenvendelser</contextRoot>
+        </openAm>
+    </security>
 </application>
