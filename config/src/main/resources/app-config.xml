@@ -28,8 +28,10 @@
 		<emailAddress alias="tilbakemelding.email" mapToProperty="tilbakemelding.email" />
 	</resources>
     <security serviceUserResourceAlias="srvMinehenvendelser">
-        <openAm>
-            <contextRoot>minehenvendelser</contextRoot>
-        </openAm>
+        <logins>
+            <openAm>
+                <contextRoot>minehenvendelser</contextRoot>
+            </openAm>
+        </logins>
     </security>
 </application>
