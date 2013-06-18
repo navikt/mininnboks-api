@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class SelfTestPage extends WebPage {
     private CmsContentRetriever cmsContentRetriever;
 
     @Inject
+    @Named("selfTestHenvendelsesBehandlingPortType")
     private HenvendelsesBehandlingPortType henvendelsesBehandlingService;
 
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);

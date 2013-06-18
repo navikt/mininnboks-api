@@ -68,7 +68,7 @@ public class ConsumerTestContext {
     }
 
     @Bean
-    public HenvendelsesBehandlingPortType jaxWsClientFactoryBean() {
+    public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
         proxyFactoryBean.setAddress(endpoint.toString());
