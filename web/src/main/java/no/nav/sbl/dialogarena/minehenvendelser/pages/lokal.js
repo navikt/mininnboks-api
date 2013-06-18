@@ -18,8 +18,10 @@ $(function () {
 
     function toggleKvittering($linkVis, $linkSkjul, $kvittering) {
         return function (event) {
-            $linkVis.css('display', 'inline');
-            $linkSkjul.css('display', 'none');
+            $linkVis.removeAttr('hidden');
+            $linkVis.attr('aria-hidden','false');
+            $linkSkjul.attr('hidden', true);
+            $linkSkjul.prop('aria-hidden','true');
             $kvittering
                 .animate({height: 'toggle'}, 500)
                 .css('display', 'inline-block');
