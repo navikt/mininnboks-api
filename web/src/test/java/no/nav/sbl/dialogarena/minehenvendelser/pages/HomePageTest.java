@@ -1,12 +1,12 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
+import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.content.ValueRetriever;
 import no.nav.modig.utils.UTF8Control;
 import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;

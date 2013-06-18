@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
+import no.nav.modig.content.CmsContentRetriever;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import no.nav.sbl.dialogarena.webkomponent.footer.FooterPanel;
 import no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel;

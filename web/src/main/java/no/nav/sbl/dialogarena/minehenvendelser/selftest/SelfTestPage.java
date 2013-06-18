@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.selftest;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
+import no.nav.modig.content.CmsContentRetriever;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -34,15 +34,14 @@ public class SelfTestPage extends WebPage {
     private static final String CMS_ERROR = "UNI_CMS_CONTENT_RETRIEVER_ERROR";
     private static final String HENVENDELSE_OK = "UNI_HENVENDELSECONSUMER_OK";
     private static final String HENVENDELSE_ERROR = "UNI_HENVENDELSECONSUMER_ERROR";
-
+    private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
+    @Inject
+    private String cmsBaseUrl;
     @Inject
     private CmsContentRetriever cmsContentRetriever;
-
     @Inject
     @Named("selfTestHenvendelsesBehandlingPortType")
     private HenvendelsesBehandlingPortType henvendelsesBehandlingService;
-
-    private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
     public SelfTestPage() throws IOException {
         logger.info("entered SelfTestPage!");
@@ -57,13 +56,7 @@ public class SelfTestPage extends WebPage {
     }
 
     private Label getCmsLabel() {
-        String cmsServerIp = "Not Available";
-        try {
-            cmsServerIp = cmsContentRetriever.getCmsIp();
-        } catch (Exception e) {
-            logger.warn("CmsIp not retrievable: " + e.getMessage());
-        }
-        return new Label("cmsinfo", "Cms-server: " + cmsServerIp);
+        return new Label("cmsinfo", "Cms-server: " + cmsBaseUrl);
 
     }
 
@@ -72,11 +65,11 @@ public class SelfTestPage extends WebPage {
         int statusCode = 0;
         HttpURLConnection connection = null;
         try {
-            connection = (HttpURLConnection) new URL(cmsContentRetriever.getCmsIp()).openConnection();
+            connection = (HttpURLConnection) new URL(cmsBaseUrl).openConnection();
             connection.setConnectTimeout(10000);
             statusCode = connection.getResponseCode();
         } catch (IOException e) {
-            logger.warn("Cms not reachable on " + cmsContentRetriever.getCmsIp());
+            logger.warn("Cms not reachable on " + cmsBaseUrl);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -84,7 +77,7 @@ public class SelfTestPage extends WebPage {
         }
 
         String status = statusCode == HTTP_OK ? CMS_OK : CMS_ERROR;
-        return new ServiceStatus(format("Enonic CMS (%s)", cmsContentRetriever.getCmsIp()), status, currentTimeMillis() - start);
+        return new ServiceStatus(format("Enonic CMS (%s)", cmsBaseUrl), status, currentTimeMillis() - start);
     }
 
     private ServiceStatus getHenvendelseWSStatus() {
@@ -101,7 +94,7 @@ public class SelfTestPage extends WebPage {
     }
 
     private CmsStatusListView getCmsKeys() {
-        String[] keys = {"behandling.topp.tekst", "behandling.slutt.tekst" };
+        String[] keys = {"behandling.topp.tekst", "behandling.slutt.tekst"};
         List<CmsStatus> cmsStatusList = new ArrayList<>();
         for (String key : keys) {
             cmsStatusList.add(new CmsStatus(key));
@@ -140,7 +133,6 @@ public class SelfTestPage extends WebPage {
     private static class ServiceStatus implements Serializable {
 
         private static final long serialVersionUID = 1L;
-
         private final String name;
         private final String status;
         private final long durationMilis;
@@ -175,14 +167,13 @@ public class SelfTestPage extends WebPage {
 
         @Override
         protected void populateItem(ListItem<CmsStatus> listItem) {
-            listItem.add(new Label("key"),  new Label("value"));
+            listItem.add(new Label("key"), new Label("value"));
         }
     }
 
     private class CmsStatus implements Serializable {
 
         private static final long serialVersionUID = 1L;
-
         private final String key;
         private final String value;
 

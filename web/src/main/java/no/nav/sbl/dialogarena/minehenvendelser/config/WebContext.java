@@ -1,10 +1,10 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
+import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.content.ContentRetriever;
 import no.nav.modig.content.ValueRetriever;
 import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
 import no.nav.modig.content.enonic.EnonicContentRetriever;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ public class WebContext {
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innholdstekster";
 
     @Value("${minehenvendelser.cms.url}")
-    private String cmsBaseUrl;
+    public String cmsBaseUrl;
 
     @Bean
     public ValueRetriever siteContentRetriever() throws URISyntaxException {
@@ -46,7 +46,6 @@ public class WebContext {
     public CmsContentRetriever cmsContentRetriever() throws URISyntaxException {
         CmsContentRetriever cmsContentRetriever = new CmsContentRetriever();
         cmsContentRetriever.setDefaultLocale(DEFAULT_LOCALE);
-        cmsContentRetriever.setCmsIp(cmsBaseUrl);
         cmsContentRetriever.setTeksterRetriever(siteContentRetriever());
         cmsContentRetriever.setArtikkelRetriever(siteContentRetriever());
         return cmsContentRetriever;

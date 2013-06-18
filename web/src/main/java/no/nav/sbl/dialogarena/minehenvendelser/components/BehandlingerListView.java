@@ -1,15 +1,13 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
+import no.nav.modig.content.CmsContentRetriever;
 import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.util.CmsContentRetriever;
-
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.LoadableDetachableModel;
+
+import javax.inject.Inject;
+import java.util.List;
 
 public abstract class BehandlingerListView extends PropertyListView<Behandling> {
 
