@@ -5,7 +5,8 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.d
 import no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.xml.ws.soap.SOAPFaultException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,8 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
  */
 public class BehandlingsServicePort implements BehandlingService {
 
-    @Resource
-//    @Named("henvendelsesBehandlingPortType")
+    @Inject
+    @Named("getHenvendelsesBehandlingPortType")
     private HenvendelsesBehandlingPortType service;
 
     public List<Behandling> hentBehandlinger(String aktoerId){
