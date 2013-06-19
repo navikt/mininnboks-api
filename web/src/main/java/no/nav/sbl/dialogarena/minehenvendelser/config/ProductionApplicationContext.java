@@ -42,8 +42,8 @@ public class ProductionApplicationContext {
         return new BehandlingsServicePort();
     }
 
-    @Bean
-    public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
+    @Bean(name="henvendelsesBehandlingPortType")
+    public HenvendelsesBehandlingPortType henvendelsesBehandlingPortType() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
         proxyFactoryBean.setServiceName(new QName(endpoint.getPath()));

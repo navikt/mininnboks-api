@@ -10,8 +10,8 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
@@ -41,8 +41,9 @@ public class SelfTestPage extends WebPage {
     private String cmsBaseUrl;
     @Inject
     private CmsContentRetriever cmsContentRetriever;
-    @Inject
-    @Qualifier(value = "selfTestHenvendelsesBehandlingPortType")
+
+    @Resource
+    @Named(value = "selfTestHenvendelsesBehandlingPortType")
     private HenvendelsesBehandlingPortType selfTestHenvendelsesBehandlingPortType;
 
     public SelfTestPage() throws IOException {
