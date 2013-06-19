@@ -6,14 +6,6 @@
 
     <display-name>minehenvendelser</display-name>
 
-    <!--<filter>-->
-        <!--<filter-name>HttpSessionSecurityIntegrationFilter</filter-name>-->
-        <!--<filter-class>no.nav.modig.presentation.security.session.HttpSessionSecurityIntegrationFilter</filter-class>-->
-    <!--</filter>-->
-    <!--<filter-mapping>-->
-        <!--<filter-name>HttpSessionSecurityIntegrationFilter</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
 
     <session-config>
         <session-timeout>60</session-timeout>
@@ -46,10 +38,33 @@
         <param-value>no.nav.sbl.dialogarena.minehenvendelser.config.ApplicationContext</param-value>
     </context-param>
 
+    <!-- sessioncreator MÅ ligge først i filter-rekken slik at man unngår url-rewriting på jboss -->
+    <filter>
+        <filter-name>sessioncreator</filter-name>
+        <filter-class>no.nav.modig.filters.SessionCreatorFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>sessioncreator</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--<filter>-->
+        <!--<filter-name>HttpSessionSecurityIntegrationFilter</filter-name>-->
+        <!--<filter-class>no.nav.modig.presentation.security.session.HttpSessionSecurityIntegrationFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>HttpSessionSecurityIntegrationFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
     <filter>
         <filter-name>xframeoptions</filter-name>
         <filter-class>no.nav.sbl.dialogarena.common.web.security.XFrameOptionsFilter</filter-class>
     </filter>
+    <filter-mapping>
+        <filter-name>xframeoptions</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <filter>
         <filter-name>wicket</filter-name>
@@ -63,12 +78,6 @@
             <param-value>deployment</param-value>
         </init-param>
     </filter>
-
-    <filter-mapping>
-        <filter-name>xframeoptions</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
     <filter-mapping>
         <filter-name>wicket</filter-name>
         <url-pattern>/*</url-pattern>
