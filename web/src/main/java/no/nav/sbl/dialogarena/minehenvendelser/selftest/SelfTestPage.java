@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -35,13 +34,14 @@ public class SelfTestPage extends WebPage {
     private static final String HENVENDELSE_OK = "UNI_HENVENDELSECONSUMER_OK";
     private static final String HENVENDELSE_ERROR = "UNI_HENVENDELSECONSUMER_ERROR";
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
+
     @Inject
     private String cmsBaseUrl;
     @Inject
     private CmsContentRetriever cmsContentRetriever;
+
     @Inject
-    @Named("selfTestHenvendelsesBehandlingPortType")
-    private HenvendelsesBehandlingPortType henvendelsesBehandlingService;
+    private HenvendelsesBehandlingPortType selfTestHenvendelsesBehandlingPortType;
 
     public SelfTestPage() throws IOException {
         logger.info("entered SelfTestPage!");
@@ -84,7 +84,7 @@ public class SelfTestPage extends WebPage {
         long start = currentTimeMillis();
         String status = HENVENDELSE_ERROR;
         try {
-            if (henvendelsesBehandlingService.ping()) {
+            if (selfTestHenvendelsesBehandlingPortType.ping()) {
                 status = HENVENDELSE_OK;
             }
         } catch (Exception e) {
