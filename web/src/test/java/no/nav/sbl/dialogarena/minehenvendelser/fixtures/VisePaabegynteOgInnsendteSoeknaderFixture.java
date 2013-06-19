@@ -43,6 +43,7 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
 
     public Fixture datagrunnlag() {
         setProperty(SUBJECTHANDLER_KEY, ThreadLocalSubjectHandler.class.getName());
+        setProperty("no.nav.modig.security.systemuser.username", "BD01");
         logger.info("Setting up datagrunnlag.");
         mockData.clear();
         return new Datagrunnlag(mockData);
