@@ -31,7 +31,7 @@
 				<artifactId>jboss-maven-plugin</artifactId>
 				<configuration>
 					<apps>${project.parent.artifactId}:${project.version}</apps>
-					<envConfigUrl>https://envconfig.adeo.no</envConfigUrl>
+					<envConfigUrl>https://envconfig.adeo.no/conf</envConfigUrl>
 					<username>admin</username>
 					<password>admin</password>
 				</configuration>
