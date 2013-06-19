@@ -1,9 +1,8 @@
 .minehenvendelser .tooltiplink {
     background: url('../img/hjelp.svg') no-repeat;
-    position: absolute;
     width: 32px;
-    height: 34px;
-    margin-left: 158px;
+    height: 32px;
+    float: right;
 }
 
 .minehenvendelser .tooltiplink:hover {
@@ -53,8 +52,8 @@
 
 /* Overstyring av felles styling - start */
 
-.minehenvendelser [class*="panel-mini-"] {
-    margin-right: 0;
+.minehenvendelser [class*="panel-"] {
+    margin: 0;
 }
 .minehenvendelser [class*="-hendelse"] p {
     margin-bottom: 10px;
@@ -62,9 +61,6 @@
 .minehenvendelser [class*="-hendelse"] h1 {
     padding-left: 35px;
     padding-right: 35px;
-}
-.minehenvendelser [class*="-hendelse"]:first-child {
-    margin-right: -4px;
 }
 
 .minehenvendelser .netto {
@@ -80,13 +76,18 @@
     margin-bottom: 50px;
 }
 
+.minehenvendelser .rad-overskrift .panel-mini {
+    border: none;
+    padding: 0;
+}
+
 /* Overstyring av felles styling - slutt */
 
 /* potensiell felles -  start*/
 
 .minehenvendelser .sjekk {
     list-style: none;
-    margin-left: -40px;
+    padding-left: 0;
 }
 
 .minehenvendelser .sjekk li {
@@ -97,7 +98,7 @@
 
 .minehenvendelser .kule {
     list-style: none;
-    margin-left: -40px;
+    padding-left: 0;
 }
 
 .minehenvendelser .kule li {
