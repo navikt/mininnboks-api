@@ -20,7 +20,6 @@
 
 .minehenvendelser .kvittering {
     display: none;
-    border-top: none;
     padding-top: 0;
     padding-bottom: 4%;
 }
@@ -54,7 +53,7 @@
 
 /* Overstyring av felles styling - start */
 
-.minehenvendelser [class*="-hendelse"] {
+.minehenvendelser [class*="panel-mini-"] {
     margin-right: 0;
 }
 .minehenvendelser [class*="-hendelse"] p {
@@ -76,14 +75,14 @@
     display: inline;
 }
 
-/* Overstyring av felles styling - slutt */
-
-/* potensiell felles -  start*/
-
 .minehenvendelser .rad-overskrift {
     margin-top: 60px;
     margin-bottom: 50px;
 }
+
+/* Overstyring av felles styling - slutt */
+
+/* potensiell felles -  start*/
 
 .minehenvendelser .sjekk {
     list-style: none;
