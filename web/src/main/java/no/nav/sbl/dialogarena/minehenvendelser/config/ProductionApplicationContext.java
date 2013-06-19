@@ -61,7 +61,7 @@ public class ProductionApplicationContext {
         return henvendelsesBehandlingPortType;
     }
 
-    @Bean
+    @Bean(name = "selfTestHenvendelsesBehandlingPortType")
     //Duplikat bønne for å få selftest til å kjøre med username-token (system-SAML). Skal fjernes når dette konfigureres gjennom wsdl
     public HenvendelsesBehandlingPortType selfTestHenvendelsesBehandlingPortType() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();

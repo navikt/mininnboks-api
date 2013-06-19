@@ -25,9 +25,8 @@ public class WebContext {
     private static final String DEFAULT_LOCALE = "nb";
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/site/16/minehenvendelser/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innholdstekster";
-
     @Value("${minehenvendelser.cms.url}")
-    public String cmsBaseUrl;
+    private String cmsBaseUrl;
 
     @Bean
     public ValueRetriever siteContentRetriever() throws URISyntaxException {
@@ -35,6 +34,11 @@ public class WebContext {
         uris.put(DEFAULT_LOCALE, new URI(cmsBaseUrl + INNHOLDSTEKSTER_NB_NO_REMOTE));
         return new ValuesFromContentWithResourceBundleFallback(INNHOLDSTEKSTER_NB_NO_LOCAL, enonicContentRetriever(),
                 uris, DEFAULT_LOCALE);
+    }
+
+    @Bean(name = "cmsBaseUrl")
+    public String cmsBaseUrl() {
+        return cmsBaseUrl;
     }
 
     @Bean

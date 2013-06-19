@@ -10,8 +10,10 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -34,13 +36,13 @@ public class SelfTestPage extends WebPage {
     private static final String HENVENDELSE_OK = "UNI_HENVENDELSECONSUMER_OK";
     private static final String HENVENDELSE_ERROR = "UNI_HENVENDELSECONSUMER_ERROR";
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
-
     @Inject
+    @Named(value = "cmsBaseUrl")
     private String cmsBaseUrl;
     @Inject
     private CmsContentRetriever cmsContentRetriever;
-
     @Inject
+    @Qualifier(value = "selfTestHenvendelsesBehandlingPortType")
     private HenvendelsesBehandlingPortType selfTestHenvendelsesBehandlingPortType;
 
     public SelfTestPage() throws IOException {
