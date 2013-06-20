@@ -108,4 +108,10 @@
     margin-bottom: 10px;
 }
 
+[class*="strek-ikon-under-arbeid"], [class*="ikon-under-arbeid-strek"] {
+    background-image: url(../img/under-dark.png), url(../img/under_arbeid.svg);
+    background-position: bottom center, center 0;
+    padding-bottom: 15px;
+    margin-bottom: 15px !important;
+}
 /* potensiell felles -  slutt*/
