@@ -23,11 +23,11 @@ public class BehandlingsServicePort implements BehandlingService {
     @Named("getHenvendelsesBehandlingPortType")
     private HenvendelsesBehandlingPortType service;
 
-    public List<Behandling> hentBehandlinger(String aktoerId){
+    public List<Behandling> hentBehandlinger(String foedselsnummer){
         List<Behandling> behandlinger = new ArrayList<>();
-        if (aktoerId != null) {
+        if (foedselsnummer != null) {
             try {
-                for (WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering : service.hentBrukerBehandlinger(aktoerId)) {
+                for (WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering : service.hentBrukerBehandlinger(foedselsnummer)) {
                     behandlinger.add(transformToBehandling(wsBrukerBehandlingOppsummering));
                 }
             } catch (SOAPFaultException ex){

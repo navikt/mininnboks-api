@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
-import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
+import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingerUnderArbeidListView;
 import no.nav.sbl.dialogarena.minehenvendelser.components.FerdigeBehandlingerListView;
@@ -31,7 +31,7 @@ public class HomePage extends BasePage {
     private BehandlingService behandlingService;
 
     @Inject
-    private AktoerIdService aktoerIdService;
+    private FoedselsnummerService foedselsnummerService;
 
     @Inject
     private TilbakemeldingService tilbakemeldingService;
@@ -40,7 +40,7 @@ public class HomePage extends BasePage {
     private Boolean tilbakemeldingEnabled;
 
     public HomePage() {
-        List<Behandling> behandlinger = behandlingService.hentBehandlinger(aktoerIdService.getAktoerId());
+        List<Behandling> behandlinger = behandlingService.hentBehandlinger(foedselsnummerService.getFoedselsnummer());
 
         add(
                 new Label("hovedTittel", innholdstekster.hentTekst("hoved.tittel")),

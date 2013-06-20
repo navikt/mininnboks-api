@@ -2,8 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.common.kodeverk.config.KodeverkConfig;
-import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdSecurityContext;
-import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
+import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
@@ -82,8 +81,8 @@ public class ProductionApplicationContext {
     }
 
     @Bean
-    public AktoerIdService aktoerIdService() {
-        return new AktoerIdSecurityContext();
+    public FoedselsnummerService foedselsnummerService() {
+        return new FoedselsnummerService();
     }
 
 }

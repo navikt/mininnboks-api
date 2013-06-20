@@ -4,7 +4,7 @@ import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.content.ValueRetriever;
 import no.nav.modig.utils.UTF8Control;
 import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
-import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
+import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
@@ -37,15 +37,16 @@ import static org.mockito.Mockito.when;
 
 public class HomePageTest extends AbstractWicketTest {
 
+    private static final String TEST_FNR = "***REMOVED***";
     private BehandlingService behandlingServiceMock;
-    private AktoerIdService aktoerIdServiceMock;
+    private FoedselsnummerService foedselsnummerServiceMock;
     private Kodeverk kodeverkServiceMock;
 
     @Override
     protected void setup() {
         behandlingServiceMock = mock(BehandlingService.class);
-        aktoerIdServiceMock = mock(AktoerIdService.class);
-        when(aktoerIdServiceMock.getAktoerId()).thenReturn("svein");
+        foedselsnummerServiceMock = mock(FoedselsnummerService.class);
+        when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(TEST_FNR);
         kodeverkServiceMock = mock(Kodeverk.class);
         mock("footerLinks", Map.class);
         mock("navigasjonslink", "");
@@ -65,12 +66,10 @@ public class HomePageTest extends AbstractWicketTest {
 
     @Test
     public void shouldRenderHomePageWithViewOfCompleteBehandlingAndNotSentBehandling() {
-        String testAktoerId = "svein";
         String testTittel1 = KODEVERK_ID_1;
         String testTittel2 = KODEVERK_ID_2;
         List<Behandling> behandlinger = createListWithOneCompleteAndOneNotSent();
-        when(aktoerIdServiceMock.getAktoerId()).thenReturn(testAktoerId);
-        when(behandlingServiceMock.hentBehandlinger(testAktoerId)).thenReturn(behandlinger);
+        when(behandlingServiceMock.hentBehandlinger(TEST_FNR)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
 
@@ -81,12 +80,10 @@ public class HomePageTest extends AbstractWicketTest {
 
     @Test
     public void shouldRenderHomePageWithSortedViewOfNotSentBehandling() {
-        String testAktoerId = "svein";
         String testTittel1 = KODEVERK_ID_1;
         String testTittel2 = KODEVERK_ID_2;
         List<Behandling> behandlinger = createListWithTwoNotSent();
-        when(aktoerIdServiceMock.getAktoerId()).thenReturn(testAktoerId);
-        when(behandlingServiceMock.hentBehandlinger(testAktoerId)).thenReturn(behandlinger);
+        when(behandlingServiceMock.hentBehandlinger(TEST_FNR)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
 
@@ -99,12 +96,12 @@ public class HomePageTest extends AbstractWicketTest {
 
     @Test
     public void shouldRenderHomePageWithViewofCompleteEttersendingBehandlingAndNotSentEtterbehandlingBehandling() {
-        String testAktoerId = "svein";
+        String testFnr = "svein";
         String testTittel1 = KODEVERK_ID_5;
         String testTittel2 = KODEVERK_ID_1;
         List<Behandling> behandlinger = createListWithOneCompleteEttersendingAndOneNotSentEttersending();
-        when(aktoerIdServiceMock.getAktoerId()).thenReturn(testAktoerId);
-        when(behandlingServiceMock.hentBehandlinger(testAktoerId)).thenReturn(behandlinger);
+        when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(testFnr);
+        when(behandlingServiceMock.hentBehandlinger(testFnr)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
 

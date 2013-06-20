@@ -5,10 +5,9 @@ import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 /**
  * Implementasjon som henter AktørID fra sikkerhetskontekst.
  */
-public class AktoerIdSecurityContext implements AktoerIdService {
+public class FoedselsnummerService {
 
-    @Override
-    public String getAktoerId() {
+    public String getFoedselsnummer() {
         return getSubjectHandler().getUid();
     }
 

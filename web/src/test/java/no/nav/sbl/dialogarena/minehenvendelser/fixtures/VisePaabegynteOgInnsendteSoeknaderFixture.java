@@ -49,8 +49,8 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
         return new Datagrunnlag(mockData);
     }
 
-    public Fixture innsendt(String aktoerId) {
-        SubjectHandlerUtils.setSubject(new SubjectHandlerUtils.SubjectBuilder(aktoerId, IdentType.EksternBruker).withAuthLevel(4).getSubject());
+    public Fixture innsendt(String fnr) {
+        SubjectHandlerUtils.setSubject(new SubjectHandlerUtils.SubjectBuilder(fnr, IdentType.EksternBruker).withAuthLevel(4).getSubject());
         wicketTester.goTo(HomePage.class);
 
         List<String> antallVedlegg = retrieveSubComponentsBasedOnFilterString("vedlegg");
@@ -63,8 +63,8 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
         return new ArrayFixture(fitInnsendtBehandlinger);
     }
 
-    public Fixture paabegynt(String aktoerId) {
-        SubjectHandlerUtils.setSubject(new SubjectHandlerUtils.SubjectBuilder(aktoerId, IdentType.EksternBruker).withAuthLevel(4).getSubject());
+    public Fixture paabegynt(String fnr) {
+        SubjectHandlerUtils.setSubject(new SubjectHandlerUtils.SubjectBuilder(fnr, IdentType.EksternBruker).withAuthLevel(4).getSubject());
         wicketTester.goTo(HomePage.class);
         return new ArrayFixture(retriveUnderArbeidBehandlinger());
     }
