@@ -1,12 +1,10 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components;
 
-import no.nav.sbl.dialogarena.minehenvendelser.AktoerIdService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 
-import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.List;
@@ -23,9 +21,6 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.STATUS;
 
 public class BehandlingerUnderArbeidListView extends BehandlingerListView {
-
-    @Inject
-    private AktoerIdService aktoerIdService;
 
     public BehandlingerUnderArbeidListView(String id, List<? extends Behandling> behandlinger) {
         super(id, filterAndSort(behandlinger));
