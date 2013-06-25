@@ -25,7 +25,8 @@ public class BasePage extends WebPage {
     protected static final Locale DEFAULT_LOCALE = new Locale("no");
 
     @Inject
-    protected CmsContentRetriever innholdstekster;
+    protected CmsContentRetriever cmsContentRetriever;
+
 
     @Inject
     @Named("navigasjonslink")
@@ -37,10 +38,10 @@ public class BasePage extends WebPage {
 
     public BasePage() {
         add(
-                new Label("tittel", innholdstekster.hentTekst("hoved.tittel")),
-                new InnstillingerPanel("innstillinger", getInnloggetIsTrueModel()),
+                new Label("tittel", cmsContentRetriever.hentTekst("hoved.tittel")),
+                new InnstillingerPanel("innstillinger", getInnloggetIsTrueModel(), cmsContentRetriever, System.getProperty("openam.logoutUrl")),
                 new NavigasjonPanel("navigasjon", navigasjonsLink),
-                new FooterPanel("footer", footerLinks, getInnloggetIsTrueModel(), Model.of(false))
+                new FooterPanel("footer", footerLinks, getInnloggetIsTrueModel(), Model.of(false), cmsContentRetriever)
         );
     }
 

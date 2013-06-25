@@ -43,22 +43,22 @@ public class HomePage extends BasePage {
         List<Behandling> behandlinger = behandlingService.hentBehandlinger(foedselsnummerService.getFoedselsnummer());
 
         add(
-                new Label("hovedTittel", innholdstekster.hentTekst("hoved.tittel")),
+                new Label("hovedTittel", cmsContentRetriever.hentTekst("hoved.tittel")),
                 createTooltip(),
-                new Label("skjultOverskriftPaabegynte", innholdstekster.hentTekst("skjult.overskrift.paabegynte")),
+                new Label("skjultOverskriftPaabegynte", cmsContentRetriever.hentTekst("skjult.overskrift.paabegynte")),
                 new BehandlingerUnderArbeidListView("behandlingerUnderArbeid", behandlinger),
-                new Label("skjultOverskriftKvitteringer", innholdstekster.hentTekst("skjult.overskrift.kvitteringer")),
+                new Label("skjultOverskriftKvitteringer", cmsContentRetriever.hentTekst("skjult.overskrift.kvitteringer")),
                 new FerdigeBehandlingerListView("behandlingerFerdig", behandlinger),
                 new IngenBehandlingerView("ingenBehandlinger", behandlinger),
-                new ExternalLink("forsiden", getProperty("inngangsporten.link.url"), innholdstekster.hentTekst("link.tekst.forsiden")),
-                new TilbakemeldingContainer("panel-tilbakemelding", tilbakemeldingService, tilbakemeldingEnabled)
+                new ExternalLink("forsiden", getProperty("inngangsporten.link.url"), cmsContentRetriever.hentTekst("link.tekst.forsiden")),
+                new TilbakemeldingContainer("panel-tilbakemelding", tilbakemeldingService, tilbakemeldingEnabled, cmsContentRetriever)
         );
     }
 
     private Component createTooltip() {
         return new WebMarkupContainer("tooltip")
-                .add(new AttributeAppender("title", innholdstekster.hentTekst("tooltip.hjelpetekst")))
-                .add(new AttributeAppender("aria-label", innholdstekster.hentTekst("skjult.label.hjelpetekst")));
+                .add(new AttributeAppender("title", cmsContentRetriever.hentTekst("tooltip.hjelpetekst")))
+                .add(new AttributeAppender("aria-label", cmsContentRetriever.hentTekst("skjult.label.hjelpetekst")));
     }
 
     private class IngenBehandlingerView extends WebMarkupContainer {
@@ -68,9 +68,9 @@ public class HomePage extends BasePage {
 
             add(visibleIf(isEmpty(behandlinger)));
             add(
-                    new Label("ingenInnsendingerTittel", innholdstekster.hentTekst("ingen.innsendinger.tittel")),
-                    new Label("ingenInnsendingerTekst", innholdstekster.hentTekst("ingen.innsendinger.tekst")),
-                    new ExternalLink("skjemaerLink", innholdstekster.hentTekst("ingen.innsendinger.link.skjemaer"), innholdstekster.hentTekst("ingen.innsendinger.link.tekst.skjemaer")));
+                    new Label("ingenInnsendingerTittel", cmsContentRetriever.hentTekst("ingen.innsendinger.tittel")),
+                    new Label("ingenInnsendingerTekst", cmsContentRetriever.hentTekst("ingen.innsendinger.tekst")),
+                    new ExternalLink("skjemaerLink", cmsContentRetriever.hentTekst("ingen.innsendinger.link.skjemaer"), cmsContentRetriever.hentTekst("ingen.innsendinger.link.tekst.skjemaer")));
         }
 
     }

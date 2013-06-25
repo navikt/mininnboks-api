@@ -134,11 +134,12 @@ public class HomePageTest extends AbstractWicketTest {
 
     private void setupFakeCms() {
         ValueRetriever tekstValueRetriever = new ValueRetriever() {
-            private ResourceBundle bundle = ResourceBundle.getBundle("content/innholdstekster", new Locale("nb"), new UTF8Control());
+            private ResourceBundle appBundle = ResourceBundle.getBundle("content/innholdstekster", new Locale("nb"), new UTF8Control());
+            private ResourceBundle webkomponenterBundle = ResourceBundle.getBundle("content/sbl-webkomponenter", new Locale("nb"), new UTF8Control());
 
             @Override
             public String getValueOf(String key, String language) {
-                return bundle.getString(key);
+                return appBundle.containsKey(key) ? appBundle.getString(key) : webkomponenterBundle.getString(key);
             }
         };
         CmsContentRetriever innholdstekster = new CmsContentRetriever();

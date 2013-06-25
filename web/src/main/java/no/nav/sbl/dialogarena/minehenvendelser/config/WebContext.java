@@ -12,7 +12,9 @@ import org.springframework.context.annotation.Import;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,14 +27,16 @@ public class WebContext {
     private static final String DEFAULT_LOCALE = "nb";
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/site/16/minehenvendelser/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innholdstekster";
+    private static final String SBL_WEBKOMPONENTER_NB_NO_REMOTE = "/site/16/sbl-webkomponenter/nb/tekster";
+    private static final String SBL_WEBKOMPONENTER_NB_NO_LOCAL = "content.sbl-webkomponenter";
     @Value("${minehenvendelser.cms.url}")
     private String cmsBaseUrl;
 
     @Bean
     public ValueRetriever siteContentRetriever() throws URISyntaxException {
-        Map<String, URI> uris = new HashMap<>();
-        uris.put(DEFAULT_LOCALE, new URI(cmsBaseUrl + INNHOLDSTEKSTER_NB_NO_REMOTE));
-        return new ValuesFromContentWithResourceBundleFallback(INNHOLDSTEKSTER_NB_NO_LOCAL, enonicContentRetriever(),
+        Map<String, List<URI>> uris = new HashMap<>();
+        uris.put(DEFAULT_LOCALE, Arrays.asList(new URI(cmsBaseUrl + INNHOLDSTEKSTER_NB_NO_REMOTE), new URI(cmsBaseUrl + SBL_WEBKOMPONENTER_NB_NO_REMOTE)));
+        return new ValuesFromContentWithResourceBundleFallback(Arrays.asList(INNHOLDSTEKSTER_NB_NO_LOCAL, SBL_WEBKOMPONENTER_NB_NO_LOCAL), enonicContentRetriever(),
                 uris, DEFAULT_LOCALE);
     }
 
