@@ -602,9 +602,11 @@
                     <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
                     <propertiesFiler>
                         <nb>innholdstekster_nb.properties</nb>
+                        <nb>sbl-webkomponenter_nb.properties</nb>
                     </propertiesFiler>
                     <menyPunktUrler>
                         <nb>${minehenvendelser.cms.url}/site/16/minehenvendelser/nb/tekster</nb>
+                        <nb>${minehenvendelser.cms.url}/site/16/sbl-webkomponenter/nb/tekster</nb>
                     </menyPunktUrler>
                 </configuration>
             </plugin>
