@@ -79,7 +79,7 @@ public class SelfTestPage extends WebPage {
             }
         }
 
-        String status = statusCode == HTTP_OK ? CMS_OK : CMS_ERROR;
+        String status = HTTP_OK == statusCode ? CMS_OK : CMS_ERROR;
         return new ServiceStatus(format("Enonic CMS (%s)", cmsBaseUrl), status, currentTimeMillis() - start);
     }
 
