@@ -43,44 +43,44 @@ public class ProductionApplicationContext {
 
     @Bean
     public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
-        JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
-        proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
-        proxyFactoryBean.setServiceName(new QName(endpoint.getPath()));
-        proxyFactoryBean.setEndpointName(new QName(endpoint.getPath()));
-        proxyFactoryBean.setAddress(endpoint.toString());
-        proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
-        proxyFactoryBean.getFeatures().add(new LoggingFeature());
-
-        HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
-        Client client = getClient(henvendelsesBehandlingPortType);
-        HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
-        httpConduit.getClient().setReceiveTimeout(WS_CLIENT_TIMEOUT);
-        httpConduit.getClient().setConnectionTimeout(WS_CLIENT_TIMEOUT);
+        HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = createHenvendelsesBehandlingClient();
+        Client client = configureTimeout(henvendelsesBehandlingPortType);
         STSConfigurationUtility.configureStsForExternalSSO(client);
         return henvendelsesBehandlingPortType;
     }
 
-    @Bean
     //Duplikat bønne for å få selftest til å kjøre med username-token (system-SAML). Skal fjernes når dette konfigureres gjennom wsdl
+    @Bean(name = "selfTestHenvendelsesBehandlingPortType")
     public HenvendelsesBehandlingPortType selfTestHenvendelsesBehandlingPortType() {
-        JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
-        proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
-        proxyFactoryBean.setServiceName(new QName(endpoint.getPath()));
-        proxyFactoryBean.setEndpointName(new QName(endpoint.getPath()));
-        proxyFactoryBean.setAddress(endpoint.toString());
-
-        proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
-        proxyFactoryBean.getFeatures().add(new LoggingFeature());
-
-        HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
-
-        STSConfigurationUtility.configureStsForSystemUser(getClient(henvendelsesBehandlingPortType));
+        HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = createHenvendelsesBehandlingClient();
+        Client client = configureTimeout(henvendelsesBehandlingPortType);
+        STSConfigurationUtility.configureStsForSystemUser(client);
         return henvendelsesBehandlingPortType;
     }
 
     @Bean
     public FoedselsnummerService foedselsnummerService() {
         return new FoedselsnummerService();
+    }
+
+    private HenvendelsesBehandlingPortType createHenvendelsesBehandlingClient() {
+        JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
+        proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
+        proxyFactoryBean.setServiceName(new QName(endpoint.getPath()));
+        proxyFactoryBean.setEndpointName(new QName(endpoint.getPath()));
+        proxyFactoryBean.setAddress(endpoint.toString());
+        proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
+        proxyFactoryBean.getFeatures().add(new LoggingFeature());
+
+        return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
+    }
+
+    private Client configureTimeout(HenvendelsesBehandlingPortType henvendelsesBehandlingClient) {
+        Client client = getClient(henvendelsesBehandlingClient);
+        HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
+        httpConduit.getClient().setReceiveTimeout(WS_CLIENT_TIMEOUT);
+        httpConduit.getClient().setConnectionTimeout(WS_CLIENT_TIMEOUT);
+        return client;
     }
 
 }
