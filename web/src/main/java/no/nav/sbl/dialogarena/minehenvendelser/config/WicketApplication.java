@@ -18,6 +18,7 @@ import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
 import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
 import static no.nav.modig.frontend.MetaTag.XUA_IE_EDGE;
 import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.CSS_RESOURCE;
+import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.IE8_CSS_RESOURCE;
 import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.JS_RESOURCE;
 import static no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer.TILBAKEMELDING_JS;
 import static no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer.TILBAKEMELDING_LESS;
@@ -51,6 +52,7 @@ public class WicketApplication extends WebApplication {
                         VIEWPORT_SCALE_1,
                         XUA_IE_EDGE)
                 .addCss(CSS_RESOURCE)
+                .addConditionalCss(IE8_CSS_RESOURCE)
                 .addLess(TILBAKEMELDING_LESS)
                 .addScripts(JS_RESOURCE, TILBAKEMELDING_JS)
                 .withResourcePacking(this.usesDeploymentConfig())

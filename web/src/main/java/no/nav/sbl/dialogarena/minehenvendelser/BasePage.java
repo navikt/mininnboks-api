@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
 import no.nav.modig.content.CmsContentRetriever;
+import no.nav.modig.frontend.ConditionalCssResource;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import no.nav.sbl.dialogarena.webkomponent.footer.FooterPanel;
 import no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel;
@@ -21,6 +22,7 @@ public class BasePage extends WebPage {
 
     public static final JavaScriptResourceReference JS_RESOURCE = new JavaScriptResourceReference(HomePage.class, "lokal.js");
     public static final CssResourceReference CSS_RESOURCE = new CssResourceReference(HomePage.class, "lokal.css");
+    public static final ConditionalCssResource IE8_CSS_RESOURCE = new ConditionalCssResource(new CssResourceReference(HomePage.class, "ie8-lokal.css"), "screen", "lt IE 9");
 
     protected static final Locale DEFAULT_LOCALE = new Locale("no");
 
