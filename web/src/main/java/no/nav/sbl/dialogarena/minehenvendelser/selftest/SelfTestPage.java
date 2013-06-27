@@ -11,7 +11,6 @@ import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
@@ -42,7 +41,7 @@ public class SelfTestPage extends WebPage {
     @Inject
     private CmsContentRetriever cmsContentRetriever;
 
-    @Resource
+    @Inject
     @Named(value = "selfTestHenvendelsesBehandlingPortType")
     private HenvendelsesBehandlingPortType selfTestHenvendelsesBehandlingPortType;
 
