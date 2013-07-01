@@ -346,6 +346,12 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>henvendelse-sporsmalogsvar-tjenestespesifikasjon</artifactId>
+        </dependency>
+
     </dependencies>
 
 	<build>

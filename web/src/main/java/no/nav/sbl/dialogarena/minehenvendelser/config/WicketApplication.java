@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.config;
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
+import no.nav.sbl.dialogarena.minehenvendelser.pages.SporsmalSide;
 import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
@@ -60,6 +61,7 @@ public class WicketApplication extends WebApplication {
         new ApplicationSettingsConfig().configure(this);
 
         mountPage("internal/selftest", SelfTestPage.class);
+        mountPage("sporsmal", SporsmalSide.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         setSpringComponentInjector();
 

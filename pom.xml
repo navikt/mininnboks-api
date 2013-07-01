@@ -52,6 +52,7 @@
         <webbit.version>0.4.14</webbit.version>
         <wicket.version>6.8.0</wicket.version>
         <minehenvendelser.cms.url>http://10.51.9.185:8080</minehenvendelser.cms.url>
+        <henvendelse.tjenestespesifikasjon.version.1>1.0.19-SNAPSHOT</henvendelse.tjenestespesifikasjon.version.1>
     </properties>
 
     <dependencyManagement>
@@ -515,6 +516,13 @@
                 <version>2.6</version>
                 <scope>test</scope>
             </dependency>
+
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>henvendelse-sporsmalogsvar-tjenestespesifikasjon</artifactId>
+                <version>${henvendelse.tjenestespesifikasjon.version.1}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -27,6 +27,7 @@ public final class StartJetty {
         setProperty("wicket.configuration", "development");
         load("/environment-test.properties");
 
+
         Jetty jetty = usingWar(WEBAPP_SOURCE).at("minehenvendelser").port(PORT).overrideWebXml(new File(TEST_RESOURCES, "override-web.xml")).buildJetty();
         setupKeyAndTrustStore();
         jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));
