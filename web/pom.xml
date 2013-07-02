@@ -58,7 +58,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>minehenvendelser-consumer-ws</artifactId>
+            <artifactId>minehenvendelser-consumer</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -236,7 +236,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>minehenvendelser-consumer-ws</artifactId>
+            <artifactId>minehenvendelser-consumer</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>

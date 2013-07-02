@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.wicket.test.FluentWicketTester;
 import no.nav.sbl.dialogarena.common.kodeverk.config.KodeverkConfig;
+import no.nav.sbl.dialogarena.minehenvendelser.WicketApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;

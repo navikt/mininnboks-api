@@ -6,7 +6,7 @@
         <artifactId>minehenvendelser</artifactId>
         <version>2.0-SNAPSHOT</version>
     </parent>
-    <artifactId>minehenvendelser-consumer-ws</artifactId>
+    <artifactId>minehenvendelser-consumer</artifactId>
     <name>${project.artifactId}</name>
 
     <properties>

@@ -42,6 +42,11 @@ public class ProductionApplicationContext {
     }
 
     @Bean
+    public FoedselsnummerService foedselsnummerService() {
+        return new FoedselsnummerService();
+    }
+
+    @Bean
     public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
         HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = createHenvendelsesBehandlingClient();
         Client client = configureTimeout(henvendelsesBehandlingPortType);
@@ -56,11 +61,6 @@ public class ProductionApplicationContext {
         Client client = configureTimeout(henvendelsesBehandlingPortType);
         STSConfigurationUtility.configureStsForSystemUser(client);
         return henvendelsesBehandlingPortType;
-    }
-
-    @Bean
-    public FoedselsnummerService foedselsnummerService() {
-        return new FoedselsnummerService();
     }
 
     private HenvendelsesBehandlingPortType createHenvendelsesBehandlingClient() {

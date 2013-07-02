@@ -26,6 +26,7 @@ public class BehandlingTest {
     private static final WSInnsendingsValg NOT_INNSENDT = SENDES_IKKE;
     private static final boolean IS_HOVEDSKJEMA = true;
     private static final boolean NOT_HOVEDSKJEMA = false;
+    public static final String KODEVERK_ID = "kodeverkId";
     private Behandling behandling;
 
     @Before
@@ -95,7 +96,7 @@ public class BehandlingTest {
     public void shouldReturnNumberOfMissingDokumenter() {
         List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
         Dokumentforventning hovedSkjema = createMock(IS_HOVEDSKJEMA, IS_INNSENDT);
-        setInternalState(hovedSkjema, "kodeverkId", "kodeverkId");
+        setInternalState(hovedSkjema, KODEVERK_ID, KODEVERK_ID);
         dokumentforventningList.add(hovedSkjema);
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));
@@ -120,7 +121,7 @@ public class BehandlingTest {
     public void getTittelShouldReturnKodeverkIdFromHovedskjema() {
         List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
         Dokumentforventning hovedSkjema = createMock(IS_HOVEDSKJEMA, IS_INNSENDT);
-        setInternalState(hovedSkjema, "kodeverkId", "kodeverkId");
+        setInternalState(hovedSkjema, KODEVERK_ID, KODEVERK_ID);
         dokumentforventningList.add(hovedSkjema);
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createMock(NOT_HOVEDSKJEMA, NOT_INNSENDT));

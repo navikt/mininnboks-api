@@ -50,7 +50,6 @@ public class ServicesConfig {
         JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
         Map<String, Object> properties = new HashMap<>();
         properties.put("schema-validation-enabled", true);
-//        properties.put("ws-security.mustunderstand", false);
         factoryBean.setProperties(properties);
         factoryBean.getFeatures().addAll(jaxwsFeatures.jaxwsFeatures());
         return factoryBean;

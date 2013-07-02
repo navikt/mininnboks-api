@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.config;
+package no.nav.sbl.dialogarena.minehenvendelser;
 
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
