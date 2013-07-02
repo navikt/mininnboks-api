@@ -24,7 +24,7 @@ public class SporsmalSide extends BasePage {
         add(new SporsmalForm("sporsmalForm", new CompoundPropertyModel<>(new Sporsmal())));
     }
 
-    private class SporsmalForm extends Form<Sporsmal> {
+    private final class SporsmalForm extends Form<Sporsmal> {
 
         private SporsmalForm(String id, IModel model) {
             super(id, model);

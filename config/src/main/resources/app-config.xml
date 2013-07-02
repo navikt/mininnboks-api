@@ -25,7 +25,6 @@
         <webservice alias="domene.Brukerdialog:henvendelsesbehandlingservice_v1" mapToProperty="henvendelser.ws"/>
         <webservice alias="domene.Brukerdialog:HenvendelseSporsmalOgSvarService_v1"
                     mapToProperty="henvendelser.webservice.sporsmal"/>
-        <!--<applicationCertificate alias="srvMinehenvendelser" />-->
 
         <smtpServer alias="tilbakemelding.smtp" mapToProperty="tilbakemelding.smtp"/>
         <emailAddress alias="tilbakemelding.email" mapToProperty="tilbakemelding.email"/>
