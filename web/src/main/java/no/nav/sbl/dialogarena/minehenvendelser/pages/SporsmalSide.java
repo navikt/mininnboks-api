@@ -40,14 +40,14 @@ public class SporsmalSide extends BasePage {
     }
 
     private static class Sporsmal implements Serializable {
-        private String sporsmal;
+        private String sporsmalString;
 
         private String getSporsmal() {
-            return sporsmal;
+            return sporsmalString;
         }
 
         private void setSporsmal(String sporsmal) {
-            this.sporsmal = sporsmal;
+            this.sporsmalString = sporsmal;
         }
     }
 
