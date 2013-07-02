@@ -4,12 +4,17 @@
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>HEI %date %level [%thread] - [%file:%line] - %m%n</pattern>
+            <pattern>%date %level [%thread] - [%file:%line] - %m%n</pattern>
         </encoder>
     </appender>
 
-    <!--<logger name="org.apache.cxf.services" level="DEBUG" />-->
-    <!--<logger name="org.apache.cxf" level="INFO" additivity="false" />-->
+
+    <logger name="org.eclipse" level="WARN" />
+    <logger name="no.nav.modig" level="WARN" />
+    <logger name="no.nav.sbl" level="WARN" />
+    <logger name="org.springframework" level="WARN" />
+    <logger name="org.apache.wicket" level="WARN" />
+    <logger name="org.apache.cxf.interceptor" level="INFO" />
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>

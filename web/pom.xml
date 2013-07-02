@@ -19,7 +19,12 @@
 
 	<dependencies>
 
-		<!-- Dialogarena dependencies -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+
+        <!-- Dialogarena dependencies -->
 
 		<dependency>
 			<groupId>no.nav.sbl.dialogarena</groupId>
@@ -175,11 +180,6 @@
             </exclusions>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>no.nav.modig</groupId>-->
-            <!--<artifactId>modig-security-ws</artifactId>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-core</artifactId>
@@ -195,8 +195,6 @@
             <artifactId>modig-security-loginmodule</artifactId>
             <scope>runtime</scope>
         </dependency>
-
-
 
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -240,13 +238,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>minehenvendelser-consumer-ws</artifactId>
             <version>${project.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>no.nav.modig</groupId>
-            <artifactId>modig-security-filter</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -331,12 +322,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-wicket-test</artifactId>
             <scope>test</scope>
@@ -349,7 +334,7 @@
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>henvendelse-sporsmalogsvar-tjenestespesifikasjon</artifactId>
+            <artifactId>henvendelse-sporsmalogsvar-jaxws</artifactId>
         </dependency>
 
     </dependencies>

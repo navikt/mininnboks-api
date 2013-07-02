@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>no.nav.sbl.dialogarena</groupId>
@@ -52,7 +53,7 @@
         <webbit.version>0.4.14</webbit.version>
         <wicket.version>6.8.0</wicket.version>
         <minehenvendelser.cms.url>http://10.51.9.185:8080</minehenvendelser.cms.url>
-        <henvendelse.tjenestespesifikasjon.version.1>1.0.19-SNAPSHOT</henvendelse.tjenestespesifikasjon.version.1>
+        <henvendelse.tjenestespesifikasjon.version.1>1.0.20-SNAPSHOT</henvendelse.tjenestespesifikasjon.version.1>
     </properties>
 
     <dependencyManagement>
@@ -77,10 +78,10 @@
             </dependency>
 
             <dependency>
-	            <groupId>no.nav.sbl.dialogarena</groupId>
-	            <artifactId>sbl-webkomponent-tilbakemelding</artifactId>
-	            <version>1.0.5</version>
-	        </dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>sbl-webkomponent-tilbakemelding</artifactId>
+                <version>1.0.5</version>
+            </dependency>
 
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
@@ -119,6 +120,12 @@
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-frontend-wicket</artifactId>
                 <version>${modig.frontend.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -142,6 +149,10 @@
                         <groupId>org.apache.httpcomponents</groupId>
                         <artifactId>httpcore</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
 
@@ -161,6 +172,12 @@
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-security-sts</artifactId>
                 <version>${modig-security.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -174,6 +191,12 @@
                 <artifactId>modig-security-loginmodule</artifactId>
                 <version>${modig-security.version}</version>
                 <scope>runtime</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -227,11 +250,11 @@
             </dependency>
 
             <dependency>
-	            <groupId>ch.qos.logback</groupId>
-	            <artifactId>logback-classic</artifactId>
-	            <version>1.0.11</version>
-	            <scope>runtime</scope>
-	        </dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.0.11</version>
+                <scope>runtime</scope>
+            </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -267,6 +290,12 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
                 <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -313,7 +342,7 @@
                 <version>${jsoup.version}</version>
             </dependency>
 
-			<dependency>
+            <dependency>
                 <groupId>net.sf.ehcache</groupId>
                 <artifactId>ehcache-core</artifactId>
                 <version>${ehcache.core.version}</version>
@@ -354,6 +383,12 @@
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-jaxrs</artifactId>
                 <version>2.3.5.Final</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -387,14 +422,6 @@
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-testcertificates</artifactId>
                 <version>0.5.0</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-security-filter</artifactId>
-                <version>${modig-security.version}</version>
-                <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
 
@@ -438,13 +465,6 @@
                         <artifactId>objenesis</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -519,8 +539,15 @@
 
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>henvendelse-sporsmalogsvar-tjenestespesifikasjon</artifactId>
+                <artifactId>henvendelse-sporsmalogsvar-jaxws</artifactId>
                 <version>${henvendelse.tjenestespesifikasjon.version.1}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
         </dependencies>
@@ -631,7 +658,7 @@
                         <configuration>
                             <fail>false</fail>
                             <rules>
-                                <DependencyConvergence />
+                                <DependencyConvergence/>
                             </rules>
                         </configuration>
                     </execution>
