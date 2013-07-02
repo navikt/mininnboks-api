@@ -2,14 +2,22 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.HenvendelseSporsmalOgSvarPortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.meldinger.HentAlleSporsmalOgSvarRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.meldinger.OpprettSporsmalRequest;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.meldinger.SporsmalOgSvar;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.util.ListModel;
 
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  Gir bruker mulighet til å sende inn spørsmål til NAV
@@ -19,36 +27,47 @@ public class SporsmalSide extends BasePage {
     @Inject
     private HenvendelseSporsmalOgSvarPortType sporsmalOgSvarService;
 
+    final List<Sporsmal> sporsmal = new ArrayList<>();
 
     public SporsmalSide() {
         add(new SporsmalForm("sporsmalForm", new CompoundPropertyModel<>(new Sporsmal())));
+        final List<SporsmalOgSvar> sporsmalOgSvar = sporsmalOgSvarService.hentAlleSporsmalOgSvar(new HentAlleSporsmalOgSvarRequest().withAktorId("***REMOVED***")).getSporsmalOgSvar();
+
+        ListModel<Sporsmal> sporsmalListeModell = new ListModel<>(sporsmal);
+        for (SporsmalOgSvar ss : sporsmalOgSvar) {
+            Sporsmal s = new Sporsmal();
+            s.sporsmalString = ss.getSporsmal();
+            sporsmal.add(s);
+        }
+        PropertyListView<Sporsmal> liste = new PropertyListView<Sporsmal>("sporsmalliste", sporsmalListeModell) {
+            @Override
+            protected void populateItem(ListItem<Sporsmal> item) {
+                item.add(new Label("sporsmalOgSvar", item.getModelObject().sporsmalString));
+            }
+        };
+        add(liste);
     }
 
     private final class SporsmalForm extends Form<Sporsmal> {
 
         private SporsmalForm(String id, IModel model) {
             super(id, model);
-            TextArea textArea = new TextArea("sporsmal");
+            TextArea textArea = new TextArea("sporsmalString");
             add(textArea);
+
         }
 
         @Override
         protected void onSubmit() {
             sporsmalOgSvarService.opprettSporsmal(new OpprettSporsmalRequest().
-                    withSporsmal(this.getModelObject().getSporsmal()).withTema("MittTema"));
+                    withSporsmal(this.getModelObject().sporsmalString).withTema("MittTema"));
+            sporsmal.add(this.getModelObject());
         }
     }
 
     private static class Sporsmal implements Serializable {
-        private String sporsmalString;
+        public String sporsmalString;
 
-        private String getSporsmal() {
-            return sporsmalString;
-        }
-
-        private void setSporsmal(String sporsmal) {
-            this.sporsmalString = sporsmal;
-        }
     }
 
 }

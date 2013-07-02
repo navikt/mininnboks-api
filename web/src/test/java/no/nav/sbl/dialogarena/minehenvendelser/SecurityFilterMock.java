@@ -24,7 +24,7 @@ public class SecurityFilterMock implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        SubjectHandlerUtils.setEksternBruker("123456***REMOVED***", 4, null);
+        SubjectHandlerUtils.setEksternBruker("***REMOVED***", 4, null);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

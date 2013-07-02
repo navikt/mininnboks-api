@@ -5,10 +5,16 @@
         <h1>Send inn spørsmål</h1>
 
        <form wicket:id="sporsmalForm">
-           <textarea wicket:id="sporsmal" style="display: block;"></textarea>
+           <textarea wicket:id="sporsmalString" style="display: block;"></textarea>
            <input type="submit" value="Send inn" class="knapp-hoved"/>
         </form>
     </article>
+
+    <wicket:container wicket:id="sporsmalliste">
+        <article>
+            <p wicket:id="sporsmalOgSvar"></p>
+        </article>
+    </wicket:container>
 
 </wicket:extend>
 </html>
