@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Dette grensesnittet definerer adgang til å hente ut behandlinger. Det er applikasjonens hovedgrensesnitt utad og en implementasjon
- * kontakter implisitt en ekstern webtjeneste, som definert i {@link no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType}
+ * kontakter implisitt en ekstern webtjeneste, som definert i {@link no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType}
  */
 public interface BehandlingService {
 

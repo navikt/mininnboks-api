@@ -5,7 +5,7 @@ import no.nav.sbl.dialogarena.common.kodeverk.config.KodeverkConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
-import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
-import javax.xml.namespace.QName;
 import java.net.URL;
 
 import static org.apache.cxf.frontend.ClientProxy.getClient;
@@ -66,12 +65,10 @@ public class ProductionApplicationContext {
     private HenvendelsesBehandlingPortType createHenvendelsesBehandlingClient() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
-        proxyFactoryBean.setServiceName(new QName(endpoint.getPath()));
-        proxyFactoryBean.setEndpointName(new QName(endpoint.getPath()));
+        proxyFactoryBean.setWsdlLocation(classpathUrl("henvendelse/HenvendelsesBehandling.wsdl"));
         proxyFactoryBean.setAddress(endpoint.toString());
         proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
         proxyFactoryBean.getFeatures().add(new LoggingFeature());
-
         return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
     }
 
@@ -81,6 +78,13 @@ public class ProductionApplicationContext {
         httpConduit.getClient().setReceiveTimeout(WS_CLIENT_TIMEOUT);
         httpConduit.getClient().setConnectionTimeout(WS_CLIENT_TIMEOUT);
         return client;
+    }
+
+    private String classpathUrl(String classpathLocation) {
+        if (getClass().getClassLoader().getResource(classpathLocation) == null) {
+            throw new RuntimeException(classpathLocation + " does not exist on classpath!");
+        }
+        return "classpath:" + classpathLocation;
     }
 
 }

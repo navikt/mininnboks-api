@@ -157,7 +157,7 @@
                                 <artifactItem>
                                     <groupId>no.nav.sbl.dialogarena</groupId>
                                     <artifactId>henvendelse-informasjon-tjenestespesifikasjon</artifactId>
-                                    <version>1.0.14</version>
+                                    <version>1.0.20</version>
                                     <type>zip</type>
                                     <outputDirectory>${wsdl.directory}/henvendelse</outputDirectory>
                                 </artifactItem>

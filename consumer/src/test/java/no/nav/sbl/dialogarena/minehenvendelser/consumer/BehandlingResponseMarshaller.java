@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.soap.Body;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.soap.Envelope;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.soap.Header;
-import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingerResponse;
 import org.apache.commons.collections15.Transformer;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 

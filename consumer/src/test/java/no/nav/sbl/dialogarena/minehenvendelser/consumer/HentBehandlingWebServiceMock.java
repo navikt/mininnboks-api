@@ -24,8 +24,8 @@ public class HentBehandlingWebServiceMock implements HttpHandler {
     private Jaxb2Marshaller createMarshaller() {
         Jaxb2Marshaller jaxb2Marshaller = new Jaxb2Marshaller();
         jaxb2Marshaller.setClassesToBeBound(
-                no.nav.tjeneste.virksomhet.henvendelse.v1.informasjon.ObjectFactory.class,
-                no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.ObjectFactory.class,
+                no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.ObjectFactory.class,
+                no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.ObjectFactory.class,
                 no.nav.sbl.dialogarena.minehenvendelser.consumer.soap.ObjectFactory.class);
         return jaxb2Marshaller;
     }
@@ -52,7 +52,7 @@ public class HentBehandlingWebServiceMock implements HttpHandler {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                 "   <soap:Body>\n" +
-                "      <ns3:pingResponse xmlns:ns3=\"http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1\" xmlns:ns2=\"http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon\">\n" +
+                "      <ns3:pingResponse xmlns:ns3=\"http://nav.no/tjeneste/domene/brukerdialog/henvendelsesbehandling/v1\" xmlns:ns2=\"http://nav.no/tjeneste/domene/brukerdialog/henvendelse/v1/informasjon\">\n" +
                 "         <return>true</return>\n" +
                 "      </ns3:pingResponse>\n" +
                 "   </soap:Body>\n" +

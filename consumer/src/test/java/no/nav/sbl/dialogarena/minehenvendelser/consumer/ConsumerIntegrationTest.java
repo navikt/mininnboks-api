@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
-import no.nav.tjeneste.virksomhet.henvendelsesbehandling.v1.HentBrukerBehandlingerResponse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingerResponse;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

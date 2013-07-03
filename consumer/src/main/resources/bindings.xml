@@ -4,7 +4,7 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd">
 
-    <jxb:bindings schemaLocation="no/nav/tjeneste/virksomhet/henvendelse/v1/informasjon/henvendelse.xsd" node="/xs:schema">
+    <jxb:bindings schemaLocation="no/nav/tjeneste/domene/brukerdialog/henvendelse/v1/informasjon/henvendelse.xsd" node="/xs:schema">
 
         <jxb:schemaBindings>
             <jxb:nameXmlTransform>
