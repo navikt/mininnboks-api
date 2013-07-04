@@ -37,12 +37,14 @@ public class SporsmalSide extends BasePage {
         for (SporsmalOgSvar ss : sporsmalOgSvar) {
             Sporsmal s = new Sporsmal();
             s.sporsmalString = ss.getSporsmal();
+            s.svar = ss.getSvar();
             sporsmal.add(s);
         }
         PropertyListView<Sporsmal> liste = new PropertyListView<Sporsmal>("sporsmalliste", sporsmalListeModell) {
             @Override
             protected void populateItem(ListItem<Sporsmal> item) {
-                item.add(new Label("sporsmalOgSvar", item.getModelObject().sporsmalString));
+                item.add(new Label("sporsmalString", item.getModelObject().sporsmalString));
+                item.add(new Label("svar", item.getModelObject().svar));
             }
         };
         add(liste);
@@ -67,6 +69,7 @@ public class SporsmalSide extends BasePage {
 
     private static class Sporsmal implements Serializable {
         public String sporsmalString;
+        public String svar;
 
     }
 
