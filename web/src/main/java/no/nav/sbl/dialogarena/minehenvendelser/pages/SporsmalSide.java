@@ -6,6 +6,7 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.meldinge
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.meldinger.OpprettSporsmalRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.meldinger.SporsmalOgSvar;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -19,6 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 /**
  *  Gir bruker mulighet til å sende inn spørsmål til NAV
  */
@@ -28,6 +31,8 @@ public class SporsmalSide extends BasePage {
     private HenvendelseSporsmalOgSvarPortType sporsmalOgSvarService;
 
     final List<Sporsmal> sporsmal = new ArrayList<>();
+
+    final List<String> tema = asList("Uføre", "Sykepenger", "Tjenestebasert innskuddspensjon", "Annet");
 
     public SporsmalSide() {
         add(new SporsmalForm("sporsmalForm", new CompoundPropertyModel<>(new Sporsmal())));
@@ -55,22 +60,22 @@ public class SporsmalSide extends BasePage {
         private SporsmalForm(String id, IModel model) {
             super(id, model);
             TextArea textArea = new TextArea("sporsmalString");
-            add(textArea);
-
+            DropDownChoice<String> temavelger = new DropDownChoice<>("tema", tema);
+            temavelger.setMarkupId("tema");
+            add(textArea, temavelger);
         }
 
         @Override
         protected void onSubmit() {
-            sporsmalOgSvarService.opprettSporsmal(new OpprettSporsmalRequest().
-                    withSporsmal(this.getModelObject().sporsmalString).withTema("MittTema"));
+            Sporsmal innsendt = this.getModelObject();
+            sporsmalOgSvarService.opprettSporsmal(new OpprettSporsmalRequest()
+                    .withSporsmal(innsendt.sporsmalString).withTema(innsendt.tema));
             sporsmal.add(this.getModelObject());
         }
     }
 
     private static class Sporsmal implements Serializable {
-        public String sporsmalString;
-        public String svar;
-
+        public String sporsmalString, svar, tema;
     }
 
 }
