@@ -1,24 +1,34 @@
 <html xmlns:wicket="http://wicket.apache.org" lang="no">
 <wicket:extend>
 
-    <article>
-        <h1>Send inn spørsmål</h1>
+    <div class="begrensning sporsmal-begrensning">
 
-       <form wicket:id="sporsmalForm">
-           <textarea wicket:id="sporsmalString" style="display: block;"></textarea>
-           <input type="submit" value="Send inn" class="knapp-hoved"/>
-        </form>
-    </article>
-
-
-    <h1>Spm og svar</h1>
-
-    <wicket:container wicket:id="sporsmalliste">
         <article>
-            Spm: <span wicket:id="sporsmalString"></span><br/>
-            Svar: <span wicket:id="svar"></span>
-       </article>
-    </wicket:container>
+            <h1>Send inn spørsmål</h1>
+
+           <form wicket:id="sporsmalForm" class="vertikal">
+               <div class="skjemaelementer">
+                   <textarea wicket:id="sporsmalString" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
+                   <input type="submit" value="Send inn" class="knapp-hoved"/>
+               </div>
+            </form>
+        </article>
+
+        <wicket:container wicket:id="sporsmalliste">
+            <article class="traad">
+                <section class="melding">
+                    <h1>Svar</h1>
+                    <p wicket:id="svar"></p>
+                </section>
+
+                <section class="melding">
+                    <h1>Spørsmål</h1>
+                    <p wicket:id="sporsmalString"></p>
+                </section>
+           </article>
+        </wicket:container>
+
+    </div>
 
 </wicket:extend>
 </html>

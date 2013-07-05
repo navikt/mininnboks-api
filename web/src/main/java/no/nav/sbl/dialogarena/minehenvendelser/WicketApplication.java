@@ -8,6 +8,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
 
@@ -55,6 +56,7 @@ public class WicketApplication extends WebApplication {
                 .addCss(CSS_RESOURCE)
                 .addConditionalCss(IE8_CSS_RESOURCE)
                 .addLess(TILBAKEMELDING_LESS)
+                .addLess(new PackageResourceReference(SporsmalSide.class, "sporsmal.less"))
                 .addScripts(JS_RESOURCE, TILBAKEMELDING_JS)
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
