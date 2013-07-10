@@ -3,28 +3,24 @@ package no.nav.sbl.dialogarena.minehenvendelser.fixtures;
 import fit.Fixture;
 import fitlibrary.ArrayFixture;
 import no.nav.modig.core.context.SubjectHandlerUtils;
-import no.nav.modig.core.context.ThreadLocalSubjectHandler;
 import no.nav.modig.core.domain.IdentType;
 import no.nav.modig.test.fitnesse.fixture.SpringAwareDoFixture;
 import no.nav.modig.test.fitnesse.fixture.ToDoList;
 import no.nav.modig.wicket.test.FluentWicketTester;
-import no.nav.sbl.dialogarena.minehenvendelser.config.FitNesseApplicationContext;
 import no.nav.sbl.dialogarena.minehenvendelser.WicketApplication;
+import no.nav.sbl.dialogarena.minehenvendelser.config.FitNesseApplicationContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitInnsendtBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects.FitPaabegyntBehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import org.apache.wicket.Component;
 import org.slf4j.Logger;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.System.setProperty;
-import static no.nav.modig.core.context.SubjectHandler.SUBJECTHANDLER_KEY;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComponent;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
 import static org.apache.commons.lang3.StringUtils.join;
@@ -32,7 +28,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @ContextConfiguration(classes = {FitNesseApplicationContext.class})
-@ActiveProfiles("test")
 public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixture {
 
     private static final Logger logger = getLogger(VisePaabegynteOgInnsendteSoeknaderFixture.class);
@@ -42,8 +37,6 @@ public class VisePaabegynteOgInnsendteSoeknaderFixture extends SpringAwareDoFixt
     private FluentWicketTester<WicketApplication> wicketTester;
 
     public Fixture datagrunnlag() {
-        setProperty(SUBJECTHANDLER_KEY, ThreadLocalSubjectHandler.class.getName());
-        setProperty("no.nav.modig.security.systemuser.username", "BD01");
         logger.info("Setting up datagrunnlag.");
         mockData.clear();
         return new Datagrunnlag(mockData);
