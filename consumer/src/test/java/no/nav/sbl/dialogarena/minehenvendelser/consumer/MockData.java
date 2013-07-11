@@ -1,41 +1,41 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingerResponse;
 
 import java.util.HashMap;
 import java.util.Map;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 
 public class MockData {
 
-    private Map<String, HentBrukerBehandlingerResponse> responses = new HashMap<>();
+    private Map<String, HentBrukerBehandlingListeResponse> responses = new HashMap<>();
 
     public MockData() {
     }
 
-    public HentBrukerBehandlingerResponse getData(String aktorId) {
+    public HentBrukerBehandlingListeResponse getData(String aktorId) {
         if (responses.containsKey(aktorId)) {
             return responses.get(aktorId);
         }
         return emptyResponse();
     }
 
-    private HentBrukerBehandlingerResponse emptyResponse() {
-        return new HentBrukerBehandlingerResponse();
+    private HentBrukerBehandlingListeResponse emptyResponse() {
+        return new HentBrukerBehandlingListeResponse();
     }
 
     public void addBehandlingToAktor(String aktorId, WSBrukerBehandlingOppsummering behandling) {
-        HentBrukerBehandlingerResponse response;
+        HentBrukerBehandlingListeResponse response;
         if (responses.containsKey(aktorId)) {
             response = responses.get(aktorId);
         } else {
-            response = new HentBrukerBehandlingerResponse();
+            response = new HentBrukerBehandlingListeResponse();
         }
         response.getBrukerBehandlinger().add(behandling);
         responses.put(aktorId, response);
     }
 
-    public void addResponse(String aktorId, HentBrukerBehandlingerResponse response) {
+    public void addResponse(String aktorId, HentBrukerBehandlingListeResponse response) {
         responses.put(aktorId, response);
     }
 

@@ -5,7 +5,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.HenvendelseSporsmalOgSvarPortType;
+import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -39,22 +39,22 @@ public class ServicesConfig {
     protected String spmSvarEndpoint;
 
     @Bean
-    public HenvendelseSporsmalOgSvarPortType sporsmalOgSvarService() {
-        HenvendelseSporsmalOgSvarPortType henvendelseSporsmalOgSvarPortType =
-                henvendelseSporsmalOgSvarPortTypeFactory().create(HenvendelseSporsmalOgSvarPortType.class);
-        Client client = getClient(henvendelseSporsmalOgSvarPortType);
+    public SporsmalOgSvarPortType sporsmalOgSvarService() {
+        SporsmalOgSvarPortType sporsmalOgSvarPortType =
+                sporsmalOgSvarPortTypeFactory().create(SporsmalOgSvarPortType.class);
+        Client client = getClient(sporsmalOgSvarPortType);
         HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
         httpConduit.setTlsClientParameters(jaxwsFeatures.tlsClientParameters());
         STSConfigurationUtility.configureStsForExternalSSO(client);
-        return henvendelseSporsmalOgSvarPortType;
+        return sporsmalOgSvarPortType;
     }
 
     @Bean
-    public JaxWsProxyFactoryBean henvendelseSporsmalOgSvarPortTypeFactory() {
+    public JaxWsProxyFactoryBean sporsmalOgSvarPortTypeFactory() {
         JaxWsProxyFactoryBean jaxwsClient = commonJaxWsConfig();
-        jaxwsClient.setServiceClass(HenvendelseSporsmalOgSvarPortType.class);
+        jaxwsClient.setServiceClass(SporsmalOgSvarPortType.class);
         jaxwsClient.setAddress(spmSvarEndpoint);
-        jaxwsClient.setWsdlURL(classpathUrl("HenvendelseSporsmalOgSvar.wsdl"));
+        jaxwsClient.setWsdlURL(classpathUrl("SporsmalOgSvar.wsdl"));
         return jaxwsClient;
     }
 
@@ -98,7 +98,7 @@ public class ServicesConfig {
     private HenvendelsesBehandlingPortType createHenvendelsesBehandlingClient() {
         JaxWsProxyFactoryBean proxyFactoryBean = commonJaxWsConfig();
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
-        proxyFactoryBean.setWsdlLocation(classpathUrl("henvendelse/HenvendelsesBehandling.wsdl"));
+        proxyFactoryBean.setWsdlLocation(classpathUrl("HenvendelsesBehandling.wsdl"));
         proxyFactoryBean.setAddress(endpoint.toString());
         return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
     }

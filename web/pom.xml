@@ -340,7 +340,12 @@
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>henvendelse-sporsmalogsvar-jaxws</artifactId>
+            <artifactId>sporsmalogsvar-jaxws</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>henvendelse-jaxws</artifactId>
         </dependency>
 
     </dependencies>

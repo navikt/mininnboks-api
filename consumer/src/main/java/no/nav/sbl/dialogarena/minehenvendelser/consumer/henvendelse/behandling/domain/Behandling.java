@@ -1,13 +1,12 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;

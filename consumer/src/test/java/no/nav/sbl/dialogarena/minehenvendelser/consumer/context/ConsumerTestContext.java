@@ -1,11 +1,13 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HentBehandlingWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingerResponse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,9 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.webbitserver.WebServer;
-
-import java.net.URL;
-import java.util.concurrent.ExecutionException;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandlingMedAlleInnsendt;
@@ -48,9 +47,9 @@ public class ConsumerTestContext {
     @Bean
     public MockData mockData() {
         MockData mockData = new MockData();
-        mockData.addResponse("***REMOVED***", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling(), createFerdigEttersendingBehandling(), createUnderArbeidBehandling(), createUnderArbeidEttersendingBehandling()));
-        mockData.addResponse("***REMOVED***", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandlingMedAlleInnsendt(), createFerdigBehandlingMedIngenInnsendt()));
-        mockData.addResponse("test", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFitnesseTestData()));
+        mockData.addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandling(), createFerdigEttersendingBehandling(), createUnderArbeidBehandling(), createUnderArbeidEttersendingBehandling()));
+        mockData.addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandlingMedAlleInnsendt(), createFerdigBehandlingMedIngenInnsendt()));
+        mockData.addResponse("test", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFitnesseTestData()));
         return mockData;
     }
 

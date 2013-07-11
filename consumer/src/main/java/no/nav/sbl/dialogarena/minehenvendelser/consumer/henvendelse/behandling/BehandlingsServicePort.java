@@ -27,7 +27,7 @@ public class BehandlingsServicePort implements BehandlingService {
         List<Behandling> behandlinger = new ArrayList<>();
         if (foedselsnummer != null) {
             try {
-                for (WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering : service.hentBrukerBehandlinger(foedselsnummer)) {
+                for (WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering : service.hentBrukerBehandlingListe(foedselsnummer)) {
                     behandlinger.add(transformToBehandling(wsBrukerBehandlingOppsummering));
                 }
             } catch (SOAPFaultException ex){

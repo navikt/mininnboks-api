@@ -1,10 +1,9 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.HenvendelseSporsmalOgSvarPortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.meldinger.HentAlleSporsmalOgSvarRequest;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.meldinger.OpprettSporsmalRequest;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.meldinger.SporsmalOgSvar;
+import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
+import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmal;
+import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmalOgSvar;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -28,7 +27,7 @@ import static java.util.Arrays.asList;
 public class SporsmalSide extends BasePage {
 
     @Inject
-    private HenvendelseSporsmalOgSvarPortType sporsmalOgSvarService;
+    private SporsmalOgSvarPortType sporsmalOgSvarService;
 
     final List<Sporsmal> sporsmal = new ArrayList<>();
 
@@ -36,10 +35,10 @@ public class SporsmalSide extends BasePage {
 
     public SporsmalSide() {
         add(new SporsmalForm("sporsmalForm", new CompoundPropertyModel<>(new Sporsmal())));
-        final List<SporsmalOgSvar> sporsmalOgSvar = sporsmalOgSvarService.hentAlleSporsmalOgSvar(new HentAlleSporsmalOgSvarRequest().withAktorId("***REMOVED***")).getSporsmalOgSvar();
+        final List<WSSporsmalOgSvar> sporsmalOgSvar = sporsmalOgSvarService.hentSporsmalOgSvarListe("***REMOVED***");
 
         ListModel<Sporsmal> sporsmalListeModell = new ListModel<>(sporsmal);
-        for (SporsmalOgSvar ss : sporsmalOgSvar) {
+        for (WSSporsmalOgSvar ss : sporsmalOgSvar) {
             Sporsmal s = new Sporsmal();
             s.sporsmalString = ss.getSporsmal();
             s.svar = ss.getSvar();
@@ -68,9 +67,8 @@ public class SporsmalSide extends BasePage {
         @Override
         protected void onSubmit() {
             Sporsmal innsendt = this.getModelObject();
-            sporsmalOgSvarService.opprettSporsmal(new OpprettSporsmalRequest()
-                    .withSporsmal(innsendt.sporsmalString).withTema(innsendt.tema));
-            sporsmal.add(this.getModelObject());
+            sporsmalOgSvarService.opprettSporsmal(new WSSporsmal().withFritekst(innsendt.sporsmalString).withTema(innsendt.tema));
+                    sporsmal.add(this.getModelObject());
         }
     }
 

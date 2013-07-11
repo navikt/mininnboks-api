@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.fitnesseobjects;
 
+import java.util.List;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingType;
@@ -7,11 +8,9 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokument
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentbehandlingType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingerResponse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
-
-import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -33,8 +32,8 @@ public class FitBehandling {
     public List<String> hovedskjema;
     public List<String> egendefinertTittel;
 
-    public HentBrukerBehandlingerResponse asHentBrukerBehandlingResponse(){
-        return new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createBrukerBehandling());
+    public HentBrukerBehandlingListeResponse asHentBrukerBehandlingResponse(){
+        return new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createBrukerBehandling());
     }
 
     public WSBrukerBehandlingOppsummering asBrukerBehandling(){

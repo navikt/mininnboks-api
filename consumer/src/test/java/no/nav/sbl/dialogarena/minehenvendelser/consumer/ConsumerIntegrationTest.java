@@ -1,17 +1,16 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
+import java.util.List;
+import javax.inject.Inject;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingerResponse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.inject.Inject;
-import java.util.List;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandling;
 import static org.hamcrest.Matchers.equalTo;
@@ -30,7 +29,7 @@ public class ConsumerIntegrationTest {
 
     @Test
     public void shouldIntegrateWithHenvendelserViaWebService() {
-        mockdata.addResponse("***REMOVED***", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling()));
+        mockdata.addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandling()));
         List<Behandling> behandlingList = service.hentBehandlinger("***REMOVED***");
         assertNotNull(behandlingList);
         assertThat(behandlingList.size(), equalTo(1));
@@ -38,7 +37,7 @@ public class ConsumerIntegrationTest {
 
     @Test
     public void ukjentBrukerSkalGiTomListe() {
-        mockdata.addResponse("tester", new HentBrukerBehandlingerResponse().withBrukerBehandlinger(createFerdigBehandling()));
+        mockdata.addResponse("tester", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandling()));
         List<Behandling> behandlingList = service.hentBehandlinger("test1");
         assertNotNull(behandlingList);
         assertThat(behandlingList.size(), equalTo(0));
