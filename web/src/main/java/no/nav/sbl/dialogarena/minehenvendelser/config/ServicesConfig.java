@@ -7,10 +7,8 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.B
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesporsmalogsvar.v1.HenvendelseSporsmalOgSvarPortType;
 import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
-import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +43,8 @@ public class ServicesConfig {
         HenvendelseSporsmalOgSvarPortType henvendelseSporsmalOgSvarPortType =
                 henvendelseSporsmalOgSvarPortTypeFactory().create(HenvendelseSporsmalOgSvarPortType.class);
         Client client = getClient(henvendelseSporsmalOgSvarPortType);
+        HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
+        httpConduit.setTlsClientParameters(jaxwsFeatures.tlsClientParameters());
         STSConfigurationUtility.configureStsForExternalSSO(client);
         return henvendelseSporsmalOgSvarPortType;
     }
@@ -96,12 +96,10 @@ public class ServicesConfig {
     }
 
     private HenvendelsesBehandlingPortType createHenvendelsesBehandlingClient() {
-        JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
+        JaxWsProxyFactoryBean proxyFactoryBean = commonJaxWsConfig();
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
         proxyFactoryBean.setWsdlLocation(classpathUrl("henvendelse/HenvendelsesBehandling.wsdl"));
         proxyFactoryBean.setAddress(endpoint.toString());
-        proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
-        proxyFactoryBean.getFeatures().add(new LoggingFeature());
         return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
     }
 
