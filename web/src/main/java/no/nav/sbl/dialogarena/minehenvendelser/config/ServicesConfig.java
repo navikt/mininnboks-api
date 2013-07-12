@@ -59,16 +59,6 @@ public class ServicesConfig {
     }
 
     @Bean
-    public JaxWsProxyFactoryBean commonJaxWsConfig() {
-        JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("schema-validation-enabled", true);
-        factoryBean.setProperties(properties);
-        factoryBean.getFeatures().addAll(jaxwsFeatures.jaxwsFeatures());
-        return factoryBean;
-    }
-
-    @Bean
     public BehandlingService behandlingService() {
         return new BehandlingsServicePort();
     }
@@ -95,12 +85,14 @@ public class ServicesConfig {
         return henvendelsesBehandlingPortType;
     }
 
-    private HenvendelsesBehandlingPortType createHenvendelsesBehandlingClient() {
-        JaxWsProxyFactoryBean proxyFactoryBean = commonJaxWsConfig();
-        proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
-        proxyFactoryBean.setWsdlLocation(classpathUrl("HenvendelsesBehandling.wsdl"));
-        proxyFactoryBean.setAddress(endpoint.toString());
-        return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
+    // Denne kan ikke være en spring bean
+    private JaxWsProxyFactoryBean commonJaxWsConfig() {
+        JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("schema-validation-enabled", true);
+        factoryBean.setProperties(properties);
+        factoryBean.getFeatures().addAll(jaxwsFeatures.jaxwsFeatures());
+        return factoryBean;
     }
 
     private Client configureTimeout(HenvendelsesBehandlingPortType henvendelsesBehandlingClient) {
@@ -116,6 +108,14 @@ public class ServicesConfig {
             throw new RuntimeException(classpathLocation + " does not exist on classpath!");
         }
         return "classpath:" + classpathLocation;
+    }
+
+    private HenvendelsesBehandlingPortType createHenvendelsesBehandlingClient() {
+        JaxWsProxyFactoryBean proxyFactoryBean = commonJaxWsConfig();
+        proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
+        proxyFactoryBean.setWsdlLocation(classpathUrl("HenvendelsesBehandling.wsdl"));
+        proxyFactoryBean.setAddress(endpoint.toString());
+        return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
     }
 
 }
