@@ -6,34 +6,27 @@
         <h1 class="diger main">Send inn spørsmål</h1>
 
         <article>
-           <form wicket:id="sporsmalForm" class="vertikal">
-               <div class="skjemaelementer">
-                   <label>
-                       <span class="vekk">Velg tema</span>
-                       <select wicket:id="tema" style="margin-bottom: 1em;"></select>
-                   </label>
-                   <label>
-                       <span class="vekk">Spørsmålstekst</span>
-                       <textarea wicket:id="sporsmalString" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
-                   </label>
+            <form wicket:id="sporsmalForm" class="vertikal">
+                <div class="skjemaelementer">
+                    <label>
+                        <span class="vekk">Velg tema</span>
+                        <select wicket:id="tema" style="margin-bottom: 1em;"></select>
+                    </label>
+                    <label>
+                        <span class="vekk">Spørsmålstekst</span>
+                        <textarea wicket:id="sporsmalString" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
+                    </label>
 
-                   <input type="submit" value="Send inn" class="knapp-hoved"/>
-               </div>
+                    <input type="submit" value="Send inn" class="knapp-hoved"/>
+                </div>
             </form>
         </article>
 
         <wicket:container wicket:id="sporsmalliste">
-            <article class="traad">
-                <section class="melding">
-                    <h1>Svar</h1>
-                    <p wicket:id="svar"></p>
-                </section>
-
-                <section class="melding">
-                    <h1>Spørsmål</h1>
-                    <p wicket:id="sporsmalString"></p>
-                </section>
-           </article>
+            <article class="melding">
+                <p wicket:id="type"></p>
+                <p wicket:id="fritekst"></p>
+            </article>
         </wicket:container>
 
     </div>

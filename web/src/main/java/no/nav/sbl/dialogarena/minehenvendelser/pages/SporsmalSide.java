@@ -6,8 +6,8 @@ import java.util.List;
 import javax.inject.Inject;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
+import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSMelding;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmal;
-import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmalOgSvar;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -35,19 +35,19 @@ public class SporsmalSide extends BasePage {
     public SporsmalSide() {
         add(new SporsmalForm("sporsmalForm", new CompoundPropertyModel<>(new Sporsmal())));
 
-        PropertyListView<WSSporsmalOgSvar> liste = new PropertyListView<WSSporsmalOgSvar>("sporsmalliste", new AlleSporsmalOgSvar()) {
+        PropertyListView<WSMelding> liste = new PropertyListView<WSMelding>("sporsmalliste", new AlleMeldinger()) {
             @Override
-            protected void populateItem(ListItem<WSSporsmalOgSvar> item) {
-                item.add(new Label("sporsmalString", item.getModelObject().getSporsmal()));
-                item.add(new Label("svar", item.getModelObject().getSvar()));
+            protected void populateItem(ListItem<WSMelding> item) {
+                item.add(new Label("type"));
+                item.add(new Label("fritekst"));
             }
         };
         add(liste);
     }
 
-    private class AlleSporsmalOgSvar extends LoadableDetachableModel<List<WSSporsmalOgSvar>> {
+    private class AlleMeldinger extends LoadableDetachableModel<List<WSMelding>> {
         @Override
-        protected List<WSSporsmalOgSvar> load() {
+        protected List<WSMelding> load() {
             return sporsmalOgSvarService.hentSporsmalOgSvarListe("***REMOVED***");
         }
     }
@@ -65,7 +65,7 @@ public class SporsmalSide extends BasePage {
         @Override
         protected void onSubmit() {
             Sporsmal innsendt = this.getModelObject();
-            sporsmalOgSvarService.opprettSporsmal(new WSSporsmal().withFritekst(innsendt.sporsmalString).withTema(innsendt.tema));
+            sporsmalOgSvarService.opprettSporsmal(new WSSporsmal().withFritekst(innsendt.sporsmalString).withTema(innsendt.tema), "***REMOVED***", null);
                     sporsmal.add(this.getModelObject());
         }
     }
