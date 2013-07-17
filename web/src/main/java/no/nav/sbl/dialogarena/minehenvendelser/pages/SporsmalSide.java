@@ -48,7 +48,7 @@ public class SporsmalSide extends BasePage {
     private class AlleMeldinger extends LoadableDetachableModel<List<WSMelding>> {
         @Override
         protected List<WSMelding> load() {
-            return sporsmalOgSvarService.hentSporsmalOgSvarListe("***REMOVED***");
+            return sporsmalOgSvarService.hentMeldingListe("***REMOVED***");
         }
     }
 
