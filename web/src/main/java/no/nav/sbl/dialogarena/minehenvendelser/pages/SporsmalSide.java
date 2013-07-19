@@ -65,7 +65,7 @@ public class SporsmalSide extends BasePage {
         @Override
         protected void onSubmit() {
             Sporsmal innsendt = this.getModelObject();
-            sporsmalOgSvarService.opprettSporsmal(new WSSporsmal().withFritekst(innsendt.sporsmalString).withTema(innsendt.tema), "***REMOVED***", null);
+            sporsmalOgSvarService.opprettSporsmal(new WSSporsmal().withFritekst(innsendt.sporsmalString).withTema(innsendt.tema), "***REMOVED***");
                     sporsmal.add(this.getModelObject());
         }
     }
