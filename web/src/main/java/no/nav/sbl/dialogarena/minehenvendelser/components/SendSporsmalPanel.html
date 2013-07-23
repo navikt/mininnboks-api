@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+<wicket:panel>
+    <article class="send-panel">
+        <form wicket:id="sporsmal-form" class="vertikal">
+            <div class="skjemaelementer">
+                <label>
+                    <span class="vekk">Velg tema</span>
+                    <label wicket:id="tema" style="margin-bottom: 1em;"></label>
+                </label>
+                <label>
+                    <span class="vekk">Spørsmålstekst</span>
+                    <textarea wicket:id="fritekst" class="sporsmal-felt" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
+                </label>
+
+                <input type="submit" value="Send inn" class="knapp-hoved"/>
+            </div>
+        </form>
+    </article>
+</wicket:panel>
+</body>
+</html>

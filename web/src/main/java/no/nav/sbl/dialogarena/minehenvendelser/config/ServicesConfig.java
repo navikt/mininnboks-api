@@ -4,6 +4,7 @@ import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
+import no.nav.sbl.dialogarena.sporsmalogsvar.consumer.MeldingService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 import org.apache.cxf.endpoint.Client;
@@ -37,6 +38,11 @@ public class ServicesConfig {
 
     @Value("${henvendelser.webservice.sporsmal.url}")
     protected String spmSvarEndpoint;
+
+    @Bean
+    public MeldingService meldingService() {
+        return new MeldingService();
+    }
 
     @Bean
     public SporsmalOgSvarPortType sporsmalOgSvarService() {

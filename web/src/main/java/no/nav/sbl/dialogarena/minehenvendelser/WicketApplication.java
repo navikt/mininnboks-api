@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser;
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
-import no.nav.sbl.dialogarena.minehenvendelser.pages.SporsmalSide;
+import no.nav.sbl.dialogarena.minehenvendelser.pages.SporsmalOgSvarSide;
 import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
@@ -56,14 +56,14 @@ public class WicketApplication extends WebApplication {
                 .addCss(CSS_RESOURCE)
                 .addConditionalCss(IE8_CSS_RESOURCE)
                 .addLess(TILBAKEMELDING_LESS)
-                .addLess(new PackageResourceReference(SporsmalSide.class, "sporsmal.less"))
+                .addLess(new PackageResourceReference(SporsmalOgSvarSide.class, "sporsmal.less"))
                 .addScripts(JS_RESOURCE, TILBAKEMELDING_JS)
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
 
         mountPage("internal/selftest", SelfTestPage.class);
-        mountPage("sporsmal", SporsmalSide.class);
+        mountPage("sporsmal", SporsmalOgSvarSide.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         setSpringComponentInjector();
 

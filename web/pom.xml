@@ -62,6 +62,21 @@
         </dependency>
 
         <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>sporsmal-og-svar-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>sporsmalogsvar-jaxws</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>henvendelse-jaxws</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>minehenvendelser-consumer</artifactId>
             <version>${project.version}</version>
@@ -336,16 +351,6 @@
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>sporsmalogsvar-jaxws</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>henvendelse-jaxws</artifactId>
         </dependency>
 
     </dependencies>
