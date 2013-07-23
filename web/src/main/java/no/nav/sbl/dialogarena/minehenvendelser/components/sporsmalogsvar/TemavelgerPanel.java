@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.components;
+package no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar;
 
 import java.util.List;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -10,16 +10,17 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 
 public class TemavelgerPanel extends Panel {
 
-    SporsmalOgSvarModel model;
+    IModel<Sporsmal> model;
     private final WebMarkupContainer container;
 
-    public TemavelgerPanel(String id, final List<String> alleTema, final SporsmalOgSvarModel model, final NesteSide nesteSide) {
+    public TemavelgerPanel(String id, final List<String> alleTema, final IModel<Sporsmal> model, final SideNavigerer sideNavigerer) {
         super(id, model);
         this.model = model;
         container = new WebMarkupContainer("tema-container");
@@ -28,14 +29,14 @@ public class TemavelgerPanel extends Panel {
         AjaxLink<Void> fortsettLink = new AjaxLink<Void>("fortsett") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                nesteSide.neste();
+                sideNavigerer.neste();
                 target.add(TemavelgerPanel.this.getParent());
             }
         };
         fortsettLink.add(visibleIf(new AbstractReadOnlyModel<Boolean>() {
             @Override
             public Boolean getObject() {
-                return alleTema.contains(model.getObject().tema);
+                return alleTema.contains(model.getObject().getTema());
             }
         }));
         container.add(fortsettLink);
@@ -43,8 +44,6 @@ public class TemavelgerPanel extends Panel {
     }
 
     private class TemaListe extends PropertyListView<String> {
-
-//        ListItem<String> current;
 
         public TemaListe(String id, List<String> alleTema) {
             super(id, alleTema);
@@ -56,19 +55,16 @@ public class TemavelgerPanel extends Panel {
             item.add(hasCssClassIf("valgt", new AbstractReadOnlyModel<Boolean>() {
                 @Override
                 public Boolean getObject() {
-                    return item.getModelObject().equals(model.getObject().tema);
+                    return item.getModelObject().equals(model.getObject().getTema());
                 }
             }));
             item.add(new AjaxEventBehavior("onclick") {
                 @Override
                 protected void onEvent(AjaxRequestTarget target) {
-                    model.setTema(item.getModelObject());
+                    Sporsmal sos = model.getObject();
+                    sos.setTema(item.getModelObject());
+                    model.setObject(sos);
                     target.add(container);
-//                    target.add(item);
-//                    if (current != null && current != item) {
-//                        target.add(current);
-//                    }
-//                    current = item;
                 }
             });
         }

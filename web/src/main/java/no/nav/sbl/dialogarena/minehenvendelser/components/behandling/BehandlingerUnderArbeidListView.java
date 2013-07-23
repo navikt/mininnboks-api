@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.components;
+package no.nav.sbl.dialogarena.minehenvendelser.components.behandling;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import org.apache.wicket.markup.html.basic.Label;

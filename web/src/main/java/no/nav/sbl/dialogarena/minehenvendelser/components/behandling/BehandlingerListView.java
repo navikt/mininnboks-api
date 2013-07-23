@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.components;
+package no.nav.sbl.dialogarena.minehenvendelser.components.behandling;
 
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;

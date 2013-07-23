@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.components;
+package no.nav.sbl.dialogarena.minehenvendelser.components.behandling;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;

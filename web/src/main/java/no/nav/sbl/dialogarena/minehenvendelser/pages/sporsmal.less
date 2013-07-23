@@ -107,10 +107,31 @@ h1.main {
 .send-panel {
   padding: 3em;
   overflow: hidden;
-  .skjemaelementer {
-    max-width: 500px;
-    margin: auto;
-    padding: 1em;
+  max-width: 500px;
+  margin: auto;
+  padding: 1em;
+  .tema-bar {
+    label {
+      display: inline-block;
+      margin-bottom: 1em;
+      padding: 0.2em 1em;
+      background-color: grey;
+      color: white;
+    }
+  }
+  .send-link {
+    background-color: dodgerblue;
+    color: white;
+    padding: 0.2em 0.8em;
+
+  }
+  .avbryt-link {
+    background-color: darkgrey;
+    color: black;
+    padding: 0.2em 0.8em;
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 

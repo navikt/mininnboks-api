@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+<wicket:panel>
+    <article class="send-panel">
+        <form wicket:id="sporsmal-form" class="vertikal">
+            <div wicket:id="tema-velger" class="tema-bar">
+                <label wicket:id="tema" style="margin-bottom: 1em;"></label>
+                <a wicket:id="endre-tema" href="#">Endre</a>
+            </div>
+            <textarea wicket:id="fritekst" class="sporsmal-felt" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
+            <input type="submit" value="Send inn" class="send-link"/>
+            <a wicket:id="avbryt" class="avbryt-link" href="#">Avbryt</a>
+        </form>
+    </article>
+</wicket:panel>
+</body>
+</html>

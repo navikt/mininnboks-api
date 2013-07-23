@@ -2,8 +2,8 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
-import no.nav.sbl.dialogarena.minehenvendelser.components.BehandlingerUnderArbeidListView;
-import no.nav.sbl.dialogarena.minehenvendelser.components.FerdigeBehandlingerListView;
+import no.nav.sbl.dialogarena.minehenvendelser.components.behandling.BehandlingerUnderArbeidListView;
+import no.nav.sbl.dialogarena.minehenvendelser.components.behandling.FerdigeBehandlingerListView;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;

@@ -2,12 +2,11 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
 import java.util.List;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
-import no.nav.sbl.dialogarena.minehenvendelser.components.NesteSide;
-import no.nav.sbl.dialogarena.minehenvendelser.components.SendSporsmalPanel;
-import no.nav.sbl.dialogarena.minehenvendelser.components.SporsmalBekreftelsePanel;
-import no.nav.sbl.dialogarena.minehenvendelser.components.SporsmalOgSvarModel;
-import no.nav.sbl.dialogarena.minehenvendelser.components.SporsmalOgSvarVM;
-import no.nav.sbl.dialogarena.minehenvendelser.components.TemavelgerPanel;
+import no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar.SendSporsmalPanel;
+import no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar.SideNavigerer;
+import no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar.Sporsmal;
+import no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar.SporsmalBekreftelsePanel;
+import no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar.TemavelgerPanel;
 import no.nav.sbl.dialogarena.sporsmalogsvar.panel.Innboks;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -15,6 +14,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import static java.util.Arrays.asList;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
@@ -23,18 +23,19 @@ import static no.nav.modig.wicket.model.ModelUtils.not;
 /**
  * Gir bruker mulighet til å sende inn spørsmål til NAV
  */
-public class SporsmalOgSvarSide extends BasePage implements NesteSide {
+public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
 
     private static final String FODSELSNUMMER = "***REMOVED***";
 
 
 
     private enum Side {INNBOKS_BRUKER, TEMAVELGER, SEND_SPORSMAL, SPORMSMAL_BEKREFTELSE}
+    IModel<Side> aktivSide = new Model<>();
     final List<String> alleTema = asList("Uføre", "Sykepenger", "Tjenestebasert innskuddspensjon", "Annet");
-    SporsmalOgSvarModel model = new SporsmalOgSvarModel(new SporsmalOgSvarVM().withTema("Ukjent"));
-    IModel<Side> aktivSide = new CompoundPropertyModel<>(Side.INNBOKS_BRUKER);
+    CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
 
     public SporsmalOgSvarSide() {
+        forside();
         Innboks innboks = new Innboks("innboks-bruker", FODSELSNUMMER);
         innboks.add(visibleIf(aktivSideEr(Side.INNBOKS_BRUKER)));
         TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", alleTema, model, this);
@@ -55,8 +56,7 @@ public class SporsmalOgSvarSide extends BasePage implements NesteSide {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 aktivSide.setObject(Side.TEMAVELGER);
-                model.setTema("Ukjent");
-                model.setFritekst(null);
+                model.setObject(new Sporsmal());
                 target.add(SporsmalOgSvarSide.this);
             }
         };
@@ -77,22 +77,18 @@ public class SporsmalOgSvarSide extends BasePage implements NesteSide {
 
     @Override
     public void neste() {
-        switch (aktivSide.getObject()) {
-            case INNBOKS_BRUKER:
-                aktivSide.setObject(Side.TEMAVELGER);
+        Side[] sider = Side.class.getEnumConstants();
+        for (int i = 0; i < sider.length - 1; i++) {
+            if (aktivSide.getObject() == sider[i]) {
+                aktivSide.setObject(sider[i + 1]);
                 break;
-            case TEMAVELGER:
-                aktivSide.setObject(Side.SEND_SPORSMAL);
-                break;
-            case SEND_SPORSMAL:
-                aktivSide.setObject(Side.SPORMSMAL_BEKREFTELSE);
-                break;
-            case SPORMSMAL_BEKREFTELSE:
-                aktivSide.setObject(Side.INNBOKS_BRUKER);
-                break;
-            default:
-                throw new RuntimeException("Kjenner ikke til siden " + aktivSide.getObject());
+            }
         }
+    }
+
+    @Override
+    public void forside() {
+        aktivSide.setObject(Side.class.getEnumConstants()[0]);
     }
 
 }
