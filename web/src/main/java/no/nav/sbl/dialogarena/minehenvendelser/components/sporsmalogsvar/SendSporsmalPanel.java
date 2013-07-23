@@ -1,10 +1,13 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar;
 
 import javax.inject.Inject;
+import no.nav.sbl.dialogarena.sporsmalogsvar.panel.Innboks;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmal;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -48,15 +51,20 @@ public class SendSporsmalPanel extends Panel {
                     target.add(SendSporsmalPanel.this.getParent());
                 }
             };
-            add(fritekst, temavelger, avbryt);
+            AjaxSubmitLink send = new AjaxSubmitLink("send") {
+                @Override
+                protected void onSubmit(AjaxRequestTarget target, Form form)
+                {
+                    Sporsmal spsm = getModelObject();
+                    sporsmalOgSvarService.opprettSporsmal(new WSSporsmal().withFritekst(spsm.getFritekst()).withTema(spsm.getTema()),
+                            fodselsnr);
+                    send(getPage(), Broadcast.BREADTH, Innboks.MELDINGER_OPPDATERT);
+                    sideNavigerer.neste();
+                    target.add(SendSporsmalPanel.this.getParent());
+                }
+            };
+            add(fritekst, temavelger, avbryt, send);
         }
 
-        @Override
-        protected void onSubmit() {
-            Sporsmal spsm = getModelObject();
-            sporsmalOgSvarService.opprettSporsmal(new WSSporsmal().withFritekst(spsm.getFritekst()).withTema(spsm.getTema()), fodselsnr);
-            sideNavigerer.neste();
-        }
     }
-
 }

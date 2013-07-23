@@ -28,14 +28,12 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
     private static final String FODSELSNUMMER = "***REMOVED***";
 
 
-
     private enum Side {INNBOKS_BRUKER, TEMAVELGER, SEND_SPORSMAL, SPORMSMAL_BEKREFTELSE}
-    IModel<Side> aktivSide = new Model<>();
+    IModel<Side> aktivSide = new Model<>(Side.class.getEnumConstants()[0]);
     final List<String> alleTema = asList("Uføre", "Sykepenger", "Tjenestebasert innskuddspensjon", "Annet");
     CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
 
     public SporsmalOgSvarSide() {
-        forside();
         Innboks innboks = new Innboks("innboks-bruker", FODSELSNUMMER);
         innboks.add(visibleIf(aktivSideEr(Side.INNBOKS_BRUKER)));
         TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", alleTema, model, this);
