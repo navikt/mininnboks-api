@@ -7,7 +7,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar.SideNav
 import no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar.Sporsmal;
 import no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar.SporsmalBekreftelsePanel;
 import no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar.TemavelgerPanel;
-import no.nav.sbl.dialogarena.sporsmalogsvar.panel.Innboks;
+import no.nav.sbl.dialogarena.sporsmalogsvar.innboks.Innboks;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;

@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar;
 
 import javax.inject.Inject;
-import no.nav.sbl.dialogarena.sporsmalogsvar.panel.Innboks;
+import no.nav.sbl.dialogarena.sporsmalogsvar.innboks.Innboks;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmal;
 import org.apache.wicket.ajax.AjaxRequestTarget;
