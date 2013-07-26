@@ -7,11 +7,14 @@
 <wicket:panel>
     <article class="send-panel">
         <form wicket:id="sporsmal-form" class="vertikal">
-            <div wicket:id="tema-velger" class="tema-bar">
+            <section wicket:id="tema-velger" class="tema-bar">
                 <label wicket:id="tema" style="margin-bottom: 1em;"></label>
                 <a wicket:id="endre-tema" href="#">Endre</a>
-            </div>
-            <textarea wicket:id="fritekst" class="sporsmal-felt" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
+            </section>
+            <section class="tekstfelt">
+                <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
+                <div id="antall"></div>
+            </section>
             <a wicket:id="send" class="send-link" href="#">Send inn</a>
             <a wicket:id="avbryt" class="avbryt-link" href="#">Avbryt</a>
         </form>

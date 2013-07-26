@@ -8,12 +8,15 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 public class SendSporsmalPanel extends Panel {
 
@@ -66,5 +69,11 @@ public class SendSporsmalPanel extends Panel {
             add(fritekst, temavelger, avbryt, send);
         }
 
+        @Override
+        public void renderHead(IHeaderResponse response) {
+            super.renderHead(response);
+            response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SendSporsmalPanel.class, "textarea.js")));
+
+        }
     }
 }
