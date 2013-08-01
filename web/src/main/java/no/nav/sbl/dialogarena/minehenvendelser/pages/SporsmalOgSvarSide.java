@@ -29,7 +29,7 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
 
 
     private enum Side {INNBOKS_BRUKER, TEMAVELGER, SEND_SPORSMAL, SPORMSMAL_BEKREFTELSE}
-    IModel<Side> aktivSide = new Model<>(Side.class.getEnumConstants()[0]);
+    IModel<Side> aktivSide = new Model<>(Side.values()[0]);
     final List<String> alleTema = asList("Uføre", "Sykepenger", "Tjenestebasert innskuddspensjon", "Annet");
     CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
 
@@ -75,18 +75,12 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
 
     @Override
     public void neste() {
-        Side[] sider = Side.class.getEnumConstants();
-        for (int i = 0; i < sider.length - 1; i++) {
-            if (aktivSide.getObject() == sider[i]) {
-                aktivSide.setObject(sider[i + 1]);
-                break;
-            }
-        }
+    	aktivSide.setObject(Side.values()[aktivSide.getObject().ordinal() + 1]);
     }
 
     @Override
     public void forside() {
-        aktivSide.setObject(Side.class.getEnumConstants()[0]);
+        aktivSide.setObject(Side.values()[0]);
     }
 
 }

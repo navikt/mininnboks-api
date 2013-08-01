@@ -5,6 +5,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.sbl.dialogarena.sporsmalogsvar.consumer.MeldingService;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 import org.apache.cxf.endpoint.Client;
@@ -38,6 +39,9 @@ public class ServicesConfig {
 
     @Value("${henvendelser.webservice.sporsmal.url}")
     protected String spmSvarEndpoint;
+    
+    @Value("${henvendelser.webservice.felles.url}")
+    protected String henvendelseEndpoint;
 
     @Bean
     public MeldingService meldingService() {
@@ -60,8 +64,22 @@ public class ServicesConfig {
         JaxWsProxyFactoryBean jaxwsClient = commonJaxWsConfig();
         jaxwsClient.setServiceClass(SporsmalOgSvarPortType.class);
         jaxwsClient.setAddress(spmSvarEndpoint);
-        jaxwsClient.setWsdlURL(classpathUrl("SporsmalOgSvar.wsdl"));
+        jaxwsClient.setWsdlURL("SporsmalOgSvar.wsdl");
         return jaxwsClient;
+    }
+
+    @Bean
+    public HenvendelsePortType henvendelseService() {
+    	JaxWsProxyFactoryBean jaxwsClient = commonJaxWsConfig();
+    	jaxwsClient.setServiceClass(HenvendelsePortType.class);
+    	jaxwsClient.setAddress(henvendelseEndpoint);
+    	jaxwsClient.setWsdlURL("classpath:Henvendelse.wsdl");
+        HenvendelsePortType henvendelsePortType = jaxwsClient.create(HenvendelsePortType.class);
+        Client client = getClient(henvendelsePortType);
+        HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
+        httpConduit.setTlsClientParameters(jaxwsFeatures.tlsClientParameters());
+//        STSConfigurationUtility.configureStsForExternalSSO(client);
+        return henvendelsePortType;
     }
 
     @Bean
@@ -109,17 +127,10 @@ public class ServicesConfig {
         return client;
     }
 
-    private String classpathUrl(String classpathLocation) {
-        if (getClass().getClassLoader().getResource(classpathLocation) == null) {
-            throw new RuntimeException(classpathLocation + " does not exist on classpath!");
-        }
-        return "classpath:" + classpathLocation;
-    }
-
     private HenvendelsesBehandlingPortType createHenvendelsesBehandlingClient() {
         JaxWsProxyFactoryBean proxyFactoryBean = commonJaxWsConfig();
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
-        proxyFactoryBean.setWsdlLocation(classpathUrl("HenvendelsesBehandling.wsdl"));
+        proxyFactoryBean.setWsdlLocation("classpath:HenvendelsesBehandling.wsdl");
         proxyFactoryBean.setAddress(endpoint.toString());
         return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
     }
