@@ -29,7 +29,7 @@ public class WebContext {
     @Value("${minehenvendelser.navigasjonslink.url}")
     private String navigasjonslink;
 
-    @Value("${minehenvendelser.cms.url}")
+    @Value("${dialogarena.cms.url}")
     private String cmsBaseUrl;
 
     private static final String DEFAULT_LOCALE = "nb";

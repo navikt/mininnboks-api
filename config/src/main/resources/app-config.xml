@@ -11,13 +11,8 @@
     </artifacts>
 
     <resources>
-        <baseUrl alias="minehenvendelser.cms" mapToProperty="minehenvendelser.cms"/>
-        <baseUrl alias="minehenvendelser.footer.kontakt" mapToProperty="minehenvendelser.footer.kontakt"/>
-        <baseUrl alias="minehenvendelser.footer.personvern" mapToProperty="minehenvendelser.footer.personvern"/>
-        <baseUrl alias="minehenvendelser.footer.feilOgMangler" mapToProperty="minehenvendelser.footer.feilOgMangler"/>
-        <baseUrl alias="minehenvendelser.footer.tilgjengelighet"
-                 mapToProperty="minehenvendelser.footer.tilgjengelighet"/>
-        <baseUrl alias="minehenvendelser.footer.nettstedskart" mapToProperty="minehenvendelser.footer.nettstedskart"/>
+        <baseUrl alias="dialogarena.cms" mapToProperty="dialogarena.cms"/>
+        <baseUrl alias="dialogarena.footer" mapToProperty="dialogarena.footer"/>
         <baseUrl alias="minehenvendelser.navigasjonslink" mapToProperty="minehenvendelser.navigasjonslink"/>
         <baseUrl alias="dokumentinnsending.link" mapToProperty="dokumentinnsending.link"/>
         <baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link"/>

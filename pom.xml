@@ -52,7 +52,7 @@
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
         <webbit.version>0.4.14</webbit.version>
         <wicket.version>6.8.0</wicket.version>
-        <minehenvendelser.cms.url>http://10.51.9.185:8080</minehenvendelser.cms.url>
+        <dialogarena.cms.url>http://10.51.9.185:8080</dialogarena.cms.url>
         <henvendelse.tjenestespesifikasjon.version.1>1.1.2-SNAPSHOT</henvendelse.tjenestespesifikasjon.version.1>
     </properties>
 
@@ -62,7 +62,7 @@
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>sbl-webkomponent-footer</artifactId>
-                <version>1.0.3</version>
+                <version>1.0.5</version>
             </dependency>
 
             <dependency>
@@ -659,8 +659,8 @@
                         <nb>sbl-webkomponenter_nb.properties</nb>
                     </propertiesFiler>
                     <menyPunktUrler>
-                        <nb>${minehenvendelser.cms.url}/site/16/minehenvendelser/nb/tekster</nb>
-                        <nb>${minehenvendelser.cms.url}/site/16/sbl-webkomponenter/nb/tekster</nb>
+                        <nb>${dialogarena.cms.url}/site/16/minehenvendelser/nb/tekster</nb>
+                        <nb>${dialogarena.cms.url}/site/16/sbl-webkomponenter/nb/tekster</nb>
                     </menyPunktUrler>
                 </configuration>
             </plugin>
