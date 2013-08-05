@@ -18,8 +18,8 @@
         <baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link"/>
 
         <webservice alias="domene.Brukerdialog:henvendelsesbehandlingservice_v1" mapToProperty="henvendelser.ws"/>
-        <webservice alias="domene.Brukerdialog:SporsmalOgSvarService_v1"
-                    mapToProperty="henvendelser.webservice.sporsmal"/>
+        <webservice alias="domene.Brukerdialog:SporsmalOgSvarService_v1" mapToProperty="henvendelser.webservice.sporsmal"/>
+        <webservice alias="domene.Brukerdialog:HenvendelseService_v1" mapToProperty="henvendelser.webservice.felles"/>
 
         <smtpServer alias="tilbakemelding.smtp" mapToProperty="tilbakemelding.smtp"/>
         <emailAddress alias="tilbakemelding.email" mapToProperty="tilbakemelding.email"/>
