@@ -69,15 +69,15 @@ public class SakogbehandlingTestContext {
     }
 
     private Behandlingskjede createDummyBehandlingkjede() {
-        Behandlingskjede behandlingskjede = new Behandlingskjede()
-                .withNormertBehandlingstid(new Behandlingstid()).withStartNAVtid(createDummyXMLGregorianCalendarDate())
+        return new Behandlingskjede()
+                .withNormertBehandlingstid(new Behandlingstid())
+                .withStartNAVtid(createDummyXMLGregorianCalendarDate())
                 .withBehandlingskjedetype(new Behandlingskjedetyper())
                 .withBehandlingskjedeId("id")
                 .withKjedensNAVfrist(createDummyXMLGregorianCalendarDate())
                 .withSisteBehandlingREF("sisteBehandlingref")
                 .withSisteBehandlingsstegREF("sisteBehandlingsstegref")
                 .withSisteBehandlingsstegtype(new Behandlingsstegtyper().withValue("value").withKodeRef("koderef").withKodeverksRef("kodeverksref"));
-        return behandlingskjede;
     }
 
     private XMLGregorianCalendar createDummyXMLGregorianCalendarDate() {

@@ -15,7 +15,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.d
  */
 public final class Soeknad {
 
-    public enum SoeknadsStatus { AVSLUTTET, UNDER_ARBEID;}
+    public enum SoeknadsStatus { AVSLUTTET, UNDER_ARBEID }
 
     private DateTime startNAVTid;
     private BigInteger normalBehandlingstid;

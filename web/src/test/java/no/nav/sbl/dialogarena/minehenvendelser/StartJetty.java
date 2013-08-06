@@ -20,6 +20,7 @@ public final class StartJetty {
 
     public static final int PORT = 8082;
 
+    @SuppressWarnings({ "PMD.SystemPrintln" })
     public static void main(String[] args) {
         setProperty("java.security.auth.login.config", "src/test/resources/login.conf");
         setProperty("wicket.configuration", "development");
