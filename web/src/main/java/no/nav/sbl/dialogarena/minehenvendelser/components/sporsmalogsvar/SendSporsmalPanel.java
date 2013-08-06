@@ -76,7 +76,6 @@ public class SendSporsmalPanel extends Panel {
             fritekst.add(new AjaxFormComponentUpdatingBehavior("change") {
                 @Override
                 protected void onUpdate(AjaxRequestTarget target) {
-                    System.out.println("fritekst.isValid() = " + fritekst.isValid());
                     send.setEnabled(fritekst.isValid());
                     target.add(send);
                 }
