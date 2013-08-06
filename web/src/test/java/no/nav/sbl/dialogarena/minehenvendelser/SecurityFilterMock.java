@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
-import no.nav.modig.core.context.SubjectHandlerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
+
+import static no.nav.modig.core.context.SubjectHandlerUtils.setEksternBruker;
 
 public class SecurityFilterMock implements Filter {
 
@@ -24,7 +25,7 @@ public class SecurityFilterMock implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        SubjectHandlerUtils.setEksternBruker("***REMOVED***", 4, null);
+        setEksternBruker("***REMOVED***", 4, null);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

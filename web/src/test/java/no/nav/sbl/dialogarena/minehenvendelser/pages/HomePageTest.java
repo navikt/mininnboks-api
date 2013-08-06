@@ -26,9 +26,6 @@ import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_1;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_2;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_5;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandling;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigEttersendingBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidEttersendingBehandling;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -58,28 +55,26 @@ public class HomePageTest extends AbstractWicketTest {
     }
 
     @Test
-    public void shouldRenderHomePage() {
+    public void renderHomePage() {
         wicketTester.goTo(HomePage.class)
-                .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class)))
-                .should().containComponent(withId("behandlingerFerdig").and(ofType(PropertyListView.class)));
+                .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class)));
     }
 
     @Test
-    public void shouldRenderHomePageWithViewOfCompleteBehandlingAndNotSentBehandling() {
+    public void renderHomePageWithNotSentBehandling() {
         String testTittel1 = KODEVERK_ID_1;
-        String testTittel2 = KODEVERK_ID_2;
-        List<Behandling> behandlinger = createListWithOneCompleteAndOneNotSent();
+        List<Behandling> behandlinger = createListWithOneNotSent();
         when(behandlingServiceMock.hentBehandlinger(TEST_FNR)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
-        when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
 
-        wicketTester.goTo(HomePage.class)
-                .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying(testTittel1)
-                .should().containComponent(withId("behandlingerFerdig").and(ofType(PropertyListView.class))).should().containLabelsSaying(testTittel2);
+        Component behandlingerUnderArbeid = wicketTester.goTo(HomePage.class).get().component(withId("behandlingerUnderArbeid"));
+        List<Component> labels = wicketTester.get().components(withId("tittel").and(ofType(Label.class)).and(containedInComponent(equalTo(behandlingerUnderArbeid))));
+
+        assertThat(labels.get(0).getDefaultModelObjectAsString(), equalTo(testTittel1));
     }
 
     @Test
-    public void shouldRenderHomePageWithSortedViewOfNotSentBehandling() {
+    public void renderHomePageWithSortedViewOfNotSentBehandling() {
         String testTittel1 = KODEVERK_ID_1;
         String testTittel2 = KODEVERK_ID_2;
         List<Behandling> behandlinger = createListWithTwoNotSent();
@@ -95,32 +90,28 @@ public class HomePageTest extends AbstractWicketTest {
     }
 
     @Test
-    public void shouldRenderHomePageWithViewofCompleteEttersendingBehandlingAndNotSentEtterbehandlingBehandling() {
+    public void renderHomePageWithViewofNotSentEtterbehandling() {
         String testFnr = "svein";
-        String testTittel1 = KODEVERK_ID_5;
-        String testTittel2 = KODEVERK_ID_1;
-        List<Behandling> behandlinger = createListWithOneCompleteEttersendingAndOneNotSentEttersending();
+        String testTittel1 = KODEVERK_ID_1;
+        List<Behandling> behandlinger = createListWithOneNotSentEttersending();
         when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(testFnr);
         when(behandlingServiceMock.hentBehandlinger(testFnr)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
-        when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
 
+        Component behandlingerUnderArbeid = wicketTester.goTo(HomePage.class).get().component(withId("behandlingerUnderArbeid"));
+        List<Component> labels = wicketTester.get().components(withId("tittel").and(ofType(Label.class)).and(containedInComponent(equalTo(behandlingerUnderArbeid))));
 
-        wicketTester.goTo(HomePage.class)
-                .should().containComponent(withId("behandlingerUnderArbeid").and(ofType(PropertyListView.class))).should().containLabelsSaying("Ettersendelse til " + testTittel1)
-                .should().containComponent(withId("behandlingerFerdig").and(ofType(PropertyListView.class))).should().containLabelsSaying("Ettersendelse til " + testTittel2);
+        assertThat(labels.get(0).getDefaultModelObjectAsString(), equalTo("Ettersendelse til " + testTittel1));
     }
 
-    private List<Behandling> createListWithOneCompleteAndOneNotSent() {
+    private List<Behandling> createListWithOneNotSent() {
         List<Behandling> behandlinger = new ArrayList<>();
-        behandlinger.add(transformToBehandling(createFerdigBehandling()));
-        behandlinger.add(transformToBehandling(createUnderArbeidBehandling()));
+        behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2010, 1, 1, 12, 0), KODEVERK_ID_1)));
         return behandlinger;
     }
 
-    private List<Behandling> createListWithOneCompleteEttersendingAndOneNotSentEttersending() {
+    private List<Behandling> createListWithOneNotSentEttersending() {
         List<Behandling> behandlinger = new ArrayList<>();
-        behandlinger.add(transformToBehandling(createFerdigEttersendingBehandling()));
         behandlinger.add(transformToBehandling(createUnderArbeidEttersendingBehandling()));
         return behandlinger;
     }
