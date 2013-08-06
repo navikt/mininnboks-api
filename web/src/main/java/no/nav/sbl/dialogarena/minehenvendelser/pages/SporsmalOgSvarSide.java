@@ -27,8 +27,8 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
 
     private static final String FODSELSNUMMER = "***REMOVED***";
 
-
     private enum Side {INNBOKS_BRUKER, TEMAVELGER, SEND_SPORSMAL, SPORMSMAL_BEKREFTELSE}
+
     IModel<Side> aktivSide = new Model<>(Side.values()[0]);
     final List<String> alleTema = asList("Uføre", "Sykepenger", "Tjenestebasert innskuddspensjon", "Annet");
     CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
@@ -36,13 +36,17 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
     public SporsmalOgSvarSide() {
         Innboks innboks = new Innboks("innboks-bruker", FODSELSNUMMER);
         innboks.add(visibleIf(aktivSideEr(Side.INNBOKS_BRUKER)));
+
         TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", alleTema, model, this);
         temavelger.add(visibleIf(aktivSideEr(Side.TEMAVELGER)));
+
         SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, FODSELSNUMMER, this);
         sendSporsmal.add(visibleIf(aktivSideEr(Side.SEND_SPORSMAL)));
+
         SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", this);
         sporsmalBekreftelse.add(visibleIf(aktivSideEr(Side.SPORMSMAL_BEKREFTELSE)));
-		AjaxLink<Object> innboksLink = new AjaxLink<Object>("innboks-link") {
+
+        AjaxLink<Object> innboksLink = new AjaxLink<Object>("innboks-link") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 aktivSide.setObject(Side.INNBOKS_BRUKER);
@@ -50,6 +54,7 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
             }
         };
         innboksLink.add(visibleIf(not(aktivSideEr(Side.INNBOKS_BRUKER))));
+
         AjaxLink<Object> skrivNyLink = new AjaxLink<Object>("skriv-ny-link") {
             @Override
             public void onClick(AjaxRequestTarget target) {
@@ -59,8 +64,10 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
             }
         };
         skrivNyLink.add(visibleIf(aktivSideEr(Side.INNBOKS_BRUKER)));
+
         WebMarkupContainer topBar = new WebMarkupContainer("top-bar");
         topBar.add(innboksLink, skrivNyLink);
+
         add(topBar, innboks, temavelger, sendSporsmal, sporsmalBekreftelse);
     }
 
