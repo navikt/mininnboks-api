@@ -145,15 +145,18 @@ public class SelfTestPage extends WebPage {
             this.durationMilis = durationMilis;
         }
 
-        public String getName() {
+        @SuppressWarnings("unused")
+		public String getName() {
             return name;
         }
 
-        public String getStatus() {
+        @SuppressWarnings("unused")
+		public String getStatus() {
             return status;
         }
 
-        public long getDurationMilis() {
+        @SuppressWarnings("unused")
+		public long getDurationMilis() {
             return durationMilis;
         }
 
@@ -184,11 +187,13 @@ public class SelfTestPage extends WebPage {
             this.value = cmsContentRetriever.hentTekst(key);
         }
 
-        public String getKey() {
+        @SuppressWarnings("unused")
+		public String getKey() {
             return key;
         }
 
-        public String getValue() {
+        @SuppressWarnings("unused")
+		public String getValue() {
             return value;
         }
     }

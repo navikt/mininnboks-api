@@ -42,7 +42,7 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
         sendSporsmal.add(visibleIf(aktivSideEr(Side.SEND_SPORSMAL)));
         SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", this);
         sporsmalBekreftelse.add(visibleIf(aktivSideEr(Side.SPORMSMAL_BEKREFTELSE)));
-        AjaxLink innboksLink = new AjaxLink("innboks-link") {
+		AjaxLink<Object> innboksLink = new AjaxLink<Object>("innboks-link") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 aktivSide.setObject(Side.INNBOKS_BRUKER);
@@ -50,7 +50,7 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
             }
         };
         innboksLink.add(visibleIf(not(aktivSideEr(Side.INNBOKS_BRUKER))));
-        AjaxLink skrivNyLink = new AjaxLink("skriv-ny-link") {
+        AjaxLink<Object> skrivNyLink = new AjaxLink<Object>("skriv-ny-link") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 aktivSide.setObject(Side.TEMAVELGER);

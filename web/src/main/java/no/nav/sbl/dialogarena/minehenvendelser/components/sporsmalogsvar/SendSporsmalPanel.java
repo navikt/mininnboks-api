@@ -46,7 +46,7 @@ public class SendSporsmalPanel extends Panel {
                     target.add(temavelger);
                 }
             });
-            TextArea fritekst = new TextArea("fritekst");
+            TextArea<Object> fritekst = new TextArea<Object>("fritekst");
             AjaxLink<Void> avbryt = new AjaxLink<Void>("avbryt") {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
@@ -56,7 +56,7 @@ public class SendSporsmalPanel extends Panel {
             };
             AjaxSubmitLink send = new AjaxSubmitLink("send") {
                 @Override
-                protected void onSubmit(AjaxRequestTarget target, Form form)
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form)
                 {
                     Sporsmal spsm = getModelObject();
                     sporsmalOgSvarService.opprettSporsmal(new WSSporsmal().withFritekst(spsm.getFritekst()).withTema(spsm.getTema()),
