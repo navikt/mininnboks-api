@@ -4,13 +4,17 @@ import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.sbl.dialogarena.sporsmalogsvar.consumer.MeldingService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.SakOgBehandlingPortType;
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +38,9 @@ public class ServicesConfig {
     @Inject
     private JaxWsFeatures jaxwsFeatures;
 
+    @Value("${sakogbehandling.ws.url}")
+    protected URL sakogbehandlingEndpoint;
+
     @Value("${henvendelser.ws.url}")
     protected URL endpoint;
 
@@ -46,6 +53,25 @@ public class ServicesConfig {
     @Bean
     public MeldingService meldingService() {
         return new MeldingService();
+    }
+
+    @Bean
+    public SakogbehandlingService sakogbehandlingConsumer() {
+        return new SakogbehandlingService();
+    }
+
+    @Bean
+    public SakOgBehandlingPortType sakOgBehandlingService() {
+        JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
+        proxyFactoryBean.setWsdlLocation("sakOgBehandling/no/nav/tjeneste/virksomhet/sakOgBehandling/v1/SakOgBehandling.wsdl");
+        proxyFactoryBean.setAddress(sakogbehandlingEndpoint.toString());
+        proxyFactoryBean.setServiceClass(SakOgBehandlingPortType.class);
+        proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
+        proxyFactoryBean.getFeatures().add(new LoggingFeature());
+        SakOgBehandlingPortType sakOgBehandlingPortType = proxyFactoryBean.create(SakOgBehandlingPortType.class);
+//        setUpSTSConfig(getClient(sakOgBehandlingPortType));
+        return sakOgBehandlingPortType;
+
     }
 
     @Bean
