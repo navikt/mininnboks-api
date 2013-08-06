@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.SakogbehandlingTestContext;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.MHSak;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ public class SakOgBehandlingIntegrationTest {
 
     @Test
     public void shouldIntegrateWithSakOgBehandlnigViaWebService() {
-        List<MHSak> saksList = service.hentSaker("***REMOVED***");
+        List<Soeknad> saksList = service.hentSaker("***REMOVED***");
         assertNotNull(saksList);
         assertThat(saksList.size(), equalTo(1));
     }
