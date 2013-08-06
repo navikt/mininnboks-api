@@ -7,8 +7,6 @@ import org.joda.time.DateTime;
 
 import java.math.BigInteger;
 
-import static no.nav.modig.lang.option.Optional.optional;
-
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.AVSLUTTET;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.UNDER_ARBEID;
 
@@ -56,10 +54,10 @@ public final class Soeknad {
         @Override
         public Soeknad transform(Behandlingskjede behandlingskjede) {
             Soeknad soeknad = new Soeknad();
-            soeknad.beskrivelse = optional(behandlingskjede.getBehandlingskjedetype().getKodeRef()).getOrElse("");
-            soeknad.header = optional(behandlingskjede.getBehandlingskjedeId()).getOrElse("");
-            soeknad.soeknadsStatus = optional(evaluateStatus(behandlingskjede)).getOrElse(null);
-            soeknad.normalBehandlingstid = optional(behandlingskjede.getNormertBehandlingstid().getTid()).getOrElse(null);
+            soeknad.beskrivelse = behandlingskjede.getBehandlingskjedetype().getKodeRef();
+            soeknad.header = behandlingskjede.getBehandlingskjedeId();
+            soeknad.soeknadsStatus = evaluateStatus(behandlingskjede);
+            soeknad.normalBehandlingstid = behandlingskjede.getNormertBehandlingstid().getTid();
             soeknad.startNAVTid = new DateTime(behandlingskjede.getStartNAVtid().toGregorianCalendar().getTime());
             return soeknad;
         }
