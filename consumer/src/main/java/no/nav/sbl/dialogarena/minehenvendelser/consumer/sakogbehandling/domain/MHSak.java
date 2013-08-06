@@ -35,11 +35,11 @@ public final class MHSak {
 
         @Override
         public MHSak transform(Sak sak) {
-            MHSak MHSak = new MHSak();
-            MHSak.beskrivelse = sak.getTema().getKodeRef();
-            MHSak.header = sak.getSaksId();
-            MHSak.saksStatus = evaluateStatus(sak);
-            return MHSak;
+            MHSak mhsak = new MHSak();
+            mhsak.beskrivelse = sak.getTema().getKodeRef();
+            mhsak.header = sak.getSaksId();
+            mhsak.saksStatus = evaluateStatus(sak);
+            return mhsak;
         }
 
     };

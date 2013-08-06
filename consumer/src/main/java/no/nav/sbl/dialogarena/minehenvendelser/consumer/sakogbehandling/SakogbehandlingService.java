@@ -20,11 +20,11 @@ public class SakogbehandlingService {
         if (aktoerId != null) {
             try {
                 //getSak() returnerer her en liste med saker (!). Burde hete getSakListe e.l.?
-                List<MHSak> MHSakListe = new ArrayList<>();
+                List<MHSak> mHSakListe = new ArrayList<>();
                 for (Sak sak : service.finnSakOgBehandlingskjedeListe(new FinnSakOgBehandlingskjedeListeRequest().withAktoerREF(aktoerId)).getSak()) {
-                    MHSakListe.add(MHSak.transformToIPSak(sak));
+                    mHSakListe.add(MHSak.transformToIPSak(sak));
                 }
-                return MHSakListe;
+                return mHSakListe;
             } catch (SOAPFaultException ex) {
                 throw new SystemException("Feil ved kall til sak og behandling", ex);
             }
