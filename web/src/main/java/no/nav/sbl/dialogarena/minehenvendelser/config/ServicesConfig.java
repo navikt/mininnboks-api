@@ -117,7 +117,7 @@ public class ServicesConfig {
         Client client = getClient(henvendelsePortType);
         HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
         httpConduit.setTlsClientParameters(jaxwsFeatures.tlsClientParameters());
-//        STSConfigurationUtility.configureStsForExternalSSO(client);
+        STSConfigurationUtility.configureStsForExternalSSO(client);
         return henvendelsePortType;
     }
 
