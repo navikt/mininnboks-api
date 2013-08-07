@@ -56,12 +56,12 @@ public class ServicesConfig {
     }
 
     @Bean
-    public SakogbehandlingService sakogbehandlingConsumer() {
+    public SakogbehandlingService sakogbehandlingService() {
         return new SakogbehandlingService();
     }
 
     @Bean
-    public SakOgBehandlingPortType sakOgBehandlingService() {
+    public SakOgBehandlingPortType sakOgBehandlingPortType() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setWsdlLocation("sakOgBehandling/no/nav/tjeneste/virksomhet/sakOgBehandling/v1/SakOgBehandling.wsdl");
         proxyFactoryBean.setAddress(sakogbehandlingEndpoint.toString());
@@ -69,7 +69,21 @@ public class ServicesConfig {
         proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
         proxyFactoryBean.getFeatures().add(new LoggingFeature());
         SakOgBehandlingPortType sakOgBehandlingPortType = proxyFactoryBean.create(SakOgBehandlingPortType.class);
-//        setUpSTSConfig(getClient(sakOgBehandlingPortType));
+        STSConfigurationUtility.configureStsForExternalSSO(getClient(sakOgBehandlingPortType));
+        return sakOgBehandlingPortType;
+
+    }
+
+    @Bean
+    public SakOgBehandlingPortType selfTestSakOgBehandlingPortType() {
+        JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
+        proxyFactoryBean.setWsdlLocation("sakOgBehandling/no/nav/tjeneste/virksomhet/sakOgBehandling/v1/SakOgBehandling.wsdl");
+        proxyFactoryBean.setAddress(sakogbehandlingEndpoint.toString());
+        proxyFactoryBean.setServiceClass(SakOgBehandlingPortType.class);
+        proxyFactoryBean.getFeatures().add(new WSAddressingFeature());
+        proxyFactoryBean.getFeatures().add(new LoggingFeature());
+        SakOgBehandlingPortType sakOgBehandlingPortType = proxyFactoryBean.create(SakOgBehandlingPortType.class);
+        STSConfigurationUtility.configureStsForSystemUser(getClient(sakOgBehandlingPortType));
         return sakOgBehandlingPortType;
 
     }

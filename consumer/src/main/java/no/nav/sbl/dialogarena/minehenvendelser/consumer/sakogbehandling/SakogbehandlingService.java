@@ -8,6 +8,7 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehand
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.FinnSakOgBehandlingskjedeListeRequest;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.xml.ws.soap.SOAPFaultException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.List;
 public class SakogbehandlingService {
 
     @Inject
-    private SakOgBehandlingPortType service;
+    @Named("sakOgBehandlingPortType")
+    private SakOgBehandlingPortType portType;
 
     public List<Soeknad> hentSaker(String aktoerId) {
         if (aktoerId != null) {
@@ -30,7 +32,7 @@ public class SakogbehandlingService {
 
     private List<Soeknad> getAlleSoeknader(String aktoerId) {
         List<Soeknad> soeknadListe = new ArrayList<>();
-        for (Sak sak : service.finnSakOgBehandlingskjedeListe(new FinnSakOgBehandlingskjedeListeRequest().withAktoerREF(aktoerId)).getSak()) {
+        for (Sak sak : portType.finnSakOgBehandlingskjedeListe(new FinnSakOgBehandlingskjedeListeRequest().withAktoerREF(aktoerId)).getSak()) {
             for (Behandlingskjede behandlingskjede : sak.getBehandlingskjede()) {
                 soeknadListe.add(Soeknad.transformToSoeknad(behandlingskjede));
             }
