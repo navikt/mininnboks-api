@@ -16,5 +16,6 @@ public interface BehandlingService {
      * @return En liste med behandlinger knyttet til aktøren
      */
     List<Behandling> hentBehandlinger(String foedselsnummer);
+    List<Behandling> hentPabegynteBehandlinger(String foedselsnummer);
 
 }

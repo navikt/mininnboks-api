@@ -16,9 +16,9 @@ import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.ApplicationConstants.DATO_FORMAT;
 import static no.nav.sbl.dialogarena.minehenvendelser.ApplicationConstants.DEFAULT_LOCALE;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.BEHANDLINGSSTATUS_TRANSFORMER;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus.UNDER_ARBEID;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.STATUS;
 
 public class BehandlingerUnderArbeidListView extends BehandlingerListView {
 
@@ -27,7 +27,7 @@ public class BehandlingerUnderArbeidListView extends BehandlingerListView {
     }
 
     private static List<? extends Behandling> filterAndSort(List<? extends Behandling> behandlinger) {
-        return on(behandlinger).filter(where(STATUS, equalTo(UNDER_ARBEID))).collect(new Comparator<Behandling>() {
+        return on(behandlinger).filter(where(BEHANDLINGSSTATUS_TRANSFORMER, equalTo(UNDER_ARBEID))).collect(new Comparator<Behandling>() {
             @Override
             public int compare(Behandling arg0, Behandling arg1) {
                 return arg1.getSistEndret().compareTo(arg0.getSistEndret());

@@ -1,12 +1,13 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
@@ -22,7 +23,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
  */
 public final class Behandling implements Serializable {
 
-    public static final Transformer<Behandling, Behandlingsstatus> STATUS = new Transformer<Behandling, Behandlingsstatus>() {
+    public static final Transformer<Behandling, Behandlingsstatus> BEHANDLINGSSTATUS_TRANSFORMER = new Transformer<Behandling, Behandlingsstatus>() {
         @Override
         public Behandlingsstatus transform(Behandling behandling) {
             return behandling.getBehandlingsstatus();

@@ -11,6 +11,11 @@ import javax.xml.ws.soap.SOAPFaultException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.BEHANDLINGSSTATUS_TRANSFORMER;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
 
 /**
@@ -23,6 +28,7 @@ public class BehandlingsServicePort implements BehandlingService {
     @Named("getHenvendelsesBehandlingPortType")
     private HenvendelsesBehandlingPortType portType;
 
+    @Override
     public List<Behandling> hentBehandlinger(String foedselsnummer){
         List<Behandling> behandlinger = new ArrayList<>();
         if (foedselsnummer != null) {
@@ -37,4 +43,8 @@ public class BehandlingsServicePort implements BehandlingService {
         return behandlinger;
     }
 
+    @Override
+    public List<Behandling> hentPabegynteBehandlinger(String foedselsnummer) {
+        return on(hentBehandlinger(foedselsnummer)).filter(where(BEHANDLINGSSTATUS_TRANSFORMER, equalTo(Behandlingsstatus.UNDER_ARBEID))).collect();
+    }
 }
