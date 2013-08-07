@@ -10,6 +10,7 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.SakOgBehandlingPortType;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingskjedetyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingsstegtyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstid;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstidtyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Temaer;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Behandlingskjede;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Sak;
@@ -39,13 +40,11 @@ public class SakogbehandlingTestContext {
     @SuppressWarnings({"PMD.PreserveStackTrace"})
     @Bean
     public WebServer webbitWebserver() throws InterruptedException {
-        WebServer server = createWebServer(endpoint.getPort()).add(endpoint.getPath(), new HentSakogbehandlingWebServiceMock(mockData()));
         try {
-            server.start().get();
+            return createWebServer(endpoint.getPort()).add(endpoint.getPath(), new HentSakogbehandlingWebServiceMock(mockData())).start().get();
         } catch (ExecutionException e) {
             throw new ApplicationException("Stopp Jetty!!!");
         }
-        return server;
     }
 
     @Bean
@@ -70,8 +69,9 @@ public class SakogbehandlingTestContext {
 
     private Behandlingskjede createDummyBehandlingkjede() {
         return new Behandlingskjede()
-                .withNormertBehandlingstid(new Behandlingstid())
+                .withNormertBehandlingstid(new Behandlingstid().withType(new Behandlingstidtyper()))
                 .withStartNAVtid(createDummyXMLGregorianCalendarDate())
+                .withSluttNAVtid(createDummyXMLGregorianCalendarDate())
                 .withBehandlingskjedetype(new Behandlingskjedetyper())
                 .withBehandlingskjedeId("id")
                 .withKjedensNAVfrist(createDummyXMLGregorianCalendarDate())

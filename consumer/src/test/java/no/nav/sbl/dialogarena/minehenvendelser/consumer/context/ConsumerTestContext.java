@@ -56,14 +56,11 @@ public class ConsumerTestContext {
 
     @Bean
     public WebServer webbitWebserver() throws InterruptedException {
-        WebServer server = createWebServer(endpoint.getPort())
-                .add(endpoint.getPath(), new HentBehandlingWebServiceMock(mockData()));
         try {
-            server.start().get();
+            return createWebServer(endpoint.getPort()).add(endpoint.getPath(), new HentBehandlingWebServiceMock(mockData())).start().get();
         } catch (ExecutionException e) {
             throw new ApplicationException("Stopp Jetty!!!", e);
         }
-        return server;
     }
 
     @Bean
