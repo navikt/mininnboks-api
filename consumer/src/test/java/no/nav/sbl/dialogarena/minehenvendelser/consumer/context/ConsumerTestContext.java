@@ -1,7 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
-import java.net.URL;
-import java.util.concurrent.ExecutionException;
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HentBehandlingWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
@@ -17,6 +15,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.webbitserver.WebServer;
 
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
+
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandlingMedAlleInnsendt;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFerdigBehandlingMedIngenInnsendt;
@@ -29,7 +30,7 @@ import static org.webbitserver.WebServers.createWebServer;
 @Configuration
 public class ConsumerTestContext {
 
-    @Value("${henvendelser.ws.url}")
+    @Value("${test.henvendelser.ws.url}")
     private URL endpoint;
 
     @Bean

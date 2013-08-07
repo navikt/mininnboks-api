@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
-import no.nav.modig.core.context.ThreadLocalSubjectHandler;
+import no.nav.modig.core.context.StaticSubjectHandler;
 import no.nav.sbl.dialogarena.common.jetty.Jetty;
 
 import java.io.File;
@@ -24,7 +24,7 @@ public final class StartJetty {
     public static void main(String[] args) {
         setProperty("java.security.auth.login.config", "src/test/resources/login.conf");
         setProperty("wicket.configuration", "development");
-        setProperty(SUBJECTHANDLER_KEY, ThreadLocalSubjectHandler.class.getName());
+        setProperty(SUBJECTHANDLER_KEY, StaticSubjectHandler.class.getName());
 
         load("/environment-test.properties");
         setupKeyAndTrustStore();
@@ -32,7 +32,7 @@ public final class StartJetty {
         Jetty jetty = usingWar(WEBAPP_SOURCE).at("minehenvendelser").port(PORT)
                 .overrideWebXml(new File(TEST_RESOURCES, "override-web.xml"))
                 .buildJetty();
-        System.out.print("ADDRESS: " + jetty.getBaseUrl());
+        System.out.println("ADDRESS: " + jetty.getBaseUrl());
         jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));
     }
 

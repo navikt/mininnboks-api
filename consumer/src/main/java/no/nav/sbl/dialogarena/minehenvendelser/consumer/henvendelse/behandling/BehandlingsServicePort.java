@@ -21,13 +21,13 @@ public class BehandlingsServicePort implements BehandlingService {
 
     @Inject
     @Named("getHenvendelsesBehandlingPortType")
-    private HenvendelsesBehandlingPortType service;
+    private HenvendelsesBehandlingPortType portType;
 
     public List<Behandling> hentBehandlinger(String foedselsnummer){
         List<Behandling> behandlinger = new ArrayList<>();
         if (foedselsnummer != null) {
             try {
-                for (WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering : service.hentBrukerBehandlingListe(foedselsnummer)) {
+                for (WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering : portType.hentBrukerBehandlingListe(foedselsnummer)) {
                     behandlinger.add(transformToBehandling(wsBrukerBehandlingOppsummering));
                 }
             } catch (SOAPFaultException ex){

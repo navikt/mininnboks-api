@@ -90,8 +90,7 @@ public class ServicesConfig {
 
     @Bean
     public SporsmalOgSvarPortType sporsmalOgSvarService() {
-        SporsmalOgSvarPortType sporsmalOgSvarPortType =
-                sporsmalOgSvarPortTypeFactory().create(SporsmalOgSvarPortType.class);
+        SporsmalOgSvarPortType sporsmalOgSvarPortType = sporsmalOgSvarPortTypeFactory().create(SporsmalOgSvarPortType.class);
         Client client = getClient(sporsmalOgSvarPortType);
         HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
         httpConduit.setTlsClientParameters(jaxwsFeatures.tlsClientParameters());
@@ -136,6 +135,8 @@ public class ServicesConfig {
     public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
         HenvendelsesBehandlingPortType henvendelsesBehandlingPortType = createHenvendelsesBehandlingClient();
         Client client = configureTimeout(henvendelsesBehandlingPortType);
+        HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
+        httpConduit.setTlsClientParameters(jaxwsFeatures.tlsClientParameters());
         STSConfigurationUtility.configureStsForExternalSSO(client);
         return henvendelsesBehandlingPortType;
     }
@@ -168,6 +169,7 @@ public class ServicesConfig {
     }
 
     private HenvendelsesBehandlingPortType createHenvendelsesBehandlingClient() {
+
         JaxWsProxyFactoryBean proxyFactoryBean = commonJaxWsConfig();
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
         proxyFactoryBean.setWsdlLocation("classpath:HenvendelsesBehandling.wsdl");
