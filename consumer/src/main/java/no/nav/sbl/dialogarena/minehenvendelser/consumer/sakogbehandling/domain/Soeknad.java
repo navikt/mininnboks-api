@@ -20,7 +20,6 @@ public final class Soeknad {
     private String normertBehandlingsTid;
     private String tema;
     private String beskrivelse;
-    private SoeknadsStatus soeknadsStatus;
 
     private Soeknad() {}
 
@@ -37,7 +36,12 @@ public final class Soeknad {
     }
 
     public SoeknadsStatus getSoeknadsStatus() {
-        return soeknadsStatus;
+        if (startNAVTid == null) {
+            throw new SystemException("illegal state", new RuntimeException());
+        } else if (sluttNAVTid != null) {
+            return AVSLUTTET;
+        }
+        return UNDER_ARBEID;
     }
 
     public String getNormertBehandlingsTid() {
@@ -48,6 +52,10 @@ public final class Soeknad {
         return startNAVTid;
     }
 
+    public DateTime getSluttNAVTid() {
+        return sluttNAVTid;
+    }
+
     private static Transformer<Behandlingskjede, Soeknad> soeknadTransformer = new Transformer<Behandlingskjede, Soeknad>() {
 
         @Override
@@ -55,7 +63,6 @@ public final class Soeknad {
             Soeknad soeknad = new Soeknad();
             soeknad.tema = behandlingskjede.getBehandlingskjedetype().getValue();
             soeknad.beskrivelse = behandlingskjede.getBehandlingskjedetype().getKodeverksRef();
-            soeknad.soeknadsStatus = evaluateStatus(behandlingskjede);
             soeknad.normertBehandlingsTid = getNormertTidString(behandlingskjede);
             soeknad.startNAVTid = new DateTime(behandlingskjede.getStartNAVtid().toGregorianCalendar().getTime());
             soeknad.sluttNAVTid = new DateTime(behandlingskjede.getSluttNAVtid().toGregorianCalendar().getTime());
@@ -67,13 +74,5 @@ public final class Soeknad {
     private static String getNormertTidString(Behandlingskjede behandlingskjede) {
         return behandlingskjede.getNormertBehandlingstid().getTid() + behandlingskjede.getNormertBehandlingstid().getType().getValue();
     }
-
-    private static SoeknadsStatus evaluateStatus(Behandlingskjede behandlingskjede) {
-        if (behandlingskjede.getStartNAVtid() == null) {
-            throw new SystemException("illegal state", new RuntimeException());
-        } else if (behandlingskjede.getSluttNAVtid() != null) {
-            return AVSLUTTET;
-        }
-        return UNDER_ARBEID;                                       }
 
 }
