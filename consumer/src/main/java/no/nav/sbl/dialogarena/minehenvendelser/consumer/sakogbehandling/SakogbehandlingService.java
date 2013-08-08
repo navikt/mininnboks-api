@@ -19,24 +19,51 @@ public class SakogbehandlingService {
     @Named("sakOgBehandlingPortType")
     private SakOgBehandlingPortType portType;
 
-    public List<Soeknad> hentSaker(String aktoerId) {
-        if (aktoerId != null) {
-            try {
-                return getAlleSoeknader(aktoerId);
-            } catch (SOAPFaultException ex) {
-                throw new SystemException("Feil ved kall til sak og behandling", ex);
-            }
+    public List<Soeknad> hentSoeknaderUnderArbeid(String aktoerId) {
+        try {
+            return getSoeknaderUnderArbeid(aktoerId);
+        } catch (SOAPFaultException ex) {
+            throw new SystemException("Feil ved kall til sak og behandling", ex);
         }
-        return null;
     }
 
-    private List<Soeknad> getAlleSoeknader(String aktoerId) {
+    public List<Soeknad> hentFerdigeSoeknader(String aktoerId) {
+        try {
+            return getFerdigeSoeknader(aktoerId);
+        } catch (SOAPFaultException ex) {
+            throw new SystemException("Feil ved kall til sak og behandling", ex);
+        }
+    }
+
+    private List<Soeknad> getFerdigeSoeknader(String aktoerId) {
         List<Soeknad> soeknadListe = new ArrayList<>();
         for (Sak sak : portType.finnSakOgBehandlingskjedeListe(new FinnSakOgBehandlingskjedeListeRequest().withAktoerREF(aktoerId)).getSak()) {
             for (Behandlingskjede behandlingskjede : sak.getBehandlingskjede()) {
-                soeknadListe.add(Soeknad.transformToSoeknad(behandlingskjede));
+                if (soeknadHasStatusFerdig(behandlingskjede)) {
+                    soeknadListe.add(Soeknad.transformToSoeknad(behandlingskjede));
+                }
             }
         }
         return soeknadListe;
+    }
+
+    private boolean soeknadHasStatusFerdig(Behandlingskjede behandlingskjede) {
+        return behandlingskjede.getSluttNAVtid() != null;
+    }
+
+    private List<Soeknad> getSoeknaderUnderArbeid(String aktoerId) {
+        List<Soeknad> soeknadListe = new ArrayList<>();
+        for (Sak sak : portType.finnSakOgBehandlingskjedeListe(new FinnSakOgBehandlingskjedeListeRequest().withAktoerREF(aktoerId)).getSak()) {
+            for (Behandlingskjede behandlingskjede : sak.getBehandlingskjede()) {
+                if (soeknadHasStatusUnderArbeid(behandlingskjede)) {
+                    soeknadListe.add(Soeknad.transformToSoeknad(behandlingskjede));
+                }
+            }
+        }
+        return soeknadListe;
+    }
+
+    private boolean soeknadHasStatusUnderArbeid(Behandlingskjede behandlingskjede) {
+        return behandlingskjede.getSluttNAVtid() == null && behandlingskjede.getStartNAVtid() != null;
     }
 }

@@ -27,9 +27,9 @@ public class SakOgBehandlingIntegrationTest {
 
     @Test
     public void shouldIntegrateWithSakOgBehandlnigViaWebService() {
-        List<Soeknad> saksList = service.hentSaker("***REMOVED***");
-        assertNotNull(saksList);
-        assertThat(saksList.size(), equalTo(1));
+        List<Soeknad> soeknadList = service.hentSoeknaderUnderArbeid("***REMOVED***");
+        assertNotNull(soeknadList);
+        assertThat(soeknadList.size(), equalTo(1));
     }
 
     @After

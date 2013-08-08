@@ -71,7 +71,6 @@ public class SakogbehandlingTestContext {
         return new Behandlingskjede()
                 .withNormertBehandlingstid(new Behandlingstid().withType(new Behandlingstidtyper()))
                 .withStartNAVtid(createDummyXMLGregorianCalendarDate())
-                .withSluttNAVtid(createDummyXMLGregorianCalendarDate())
                 .withBehandlingskjedetype(new Behandlingskjedetyper())
                 .withBehandlingskjedeId("id")
                 .withKjedensNAVfrist(createDummyXMLGregorianCalendarDate())

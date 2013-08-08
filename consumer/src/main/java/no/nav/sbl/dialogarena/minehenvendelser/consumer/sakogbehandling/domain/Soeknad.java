@@ -65,11 +65,15 @@ public final class Soeknad {
             soeknad.beskrivelse = behandlingskjede.getBehandlingskjedetype().getKodeverksRef();
             soeknad.normertBehandlingsTid = getNormertTidString(behandlingskjede);
             soeknad.startNAVTid = new DateTime(behandlingskjede.getStartNAVtid().toGregorianCalendar().getTime());
-            soeknad.sluttNAVTid = new DateTime(behandlingskjede.getSluttNAVtid().toGregorianCalendar().getTime());
+            soeknad.sluttNAVTid = calculateSluttNAVTid(behandlingskjede);
             return soeknad;
         }
 
     };
+
+    private static DateTime calculateSluttNAVTid(Behandlingskjede behandlingskjede) {
+        return behandlingskjede.getSluttNAVtid() == null ? null : new DateTime(behandlingskjede.getSluttNAVtid().toGregorianCalendar().getTime());
+    }
 
     private static String getNormertTidString(Behandlingskjede behandlingskjede) {
         return behandlingskjede.getNormertBehandlingstid().getTid() + behandlingskjede.getNormertBehandlingstid().getType().getValue();
