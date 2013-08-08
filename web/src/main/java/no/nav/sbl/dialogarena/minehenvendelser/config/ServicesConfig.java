@@ -15,6 +15,7 @@ import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
+import org.apache.cxf.ws.security.SecurityConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -104,6 +105,7 @@ public class ServicesConfig {
         jaxwsClient.setServiceClass(SporsmalOgSvarPortType.class);
         jaxwsClient.setAddress(spmSvarEndpoint);
         jaxwsClient.setWsdlURL("SporsmalOgSvar.wsdl");
+        jaxwsClient.getProperties().put(SecurityConstants.MUSTUNDERSTAND, false);
         return jaxwsClient;
     }
 
@@ -113,6 +115,7 @@ public class ServicesConfig {
     	jaxwsClient.setServiceClass(HenvendelsePortType.class);
     	jaxwsClient.setAddress(henvendelseEndpoint);
     	jaxwsClient.setWsdlURL("classpath:Henvendelse.wsdl");
+        jaxwsClient.getProperties().put(SecurityConstants.MUSTUNDERSTAND, false);
         HenvendelsePortType henvendelsePortType = jaxwsClient.create(HenvendelsePortType.class);
         Client client = getClient(henvendelsePortType);
         HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
