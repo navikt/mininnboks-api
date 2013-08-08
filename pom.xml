@@ -52,7 +52,7 @@
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
         <webbit.version>0.4.14</webbit.version>
         <wicket.version>6.8.0</wicket.version>
-        <dialogarena.cms.url>http://10.51.9.185:8080</dialogarena.cms.url>
+        <dialogarena.cms.url>http://e32apvl026.oera-t.local:8080</dialogarena.cms.url>
         <henvendelse.tjenestespesifikasjon.version.1>1.1.2-SNAPSHOT</henvendelse.tjenestespesifikasjon.version.1>
     </properties>
 
@@ -657,7 +657,7 @@
             <plugin>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-content-maven-plugin</artifactId>
-                <version>1.1.0</version>
+                <version>1.1.1</version>
                 <configuration>
                     <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
                     <propertiesFiler>
