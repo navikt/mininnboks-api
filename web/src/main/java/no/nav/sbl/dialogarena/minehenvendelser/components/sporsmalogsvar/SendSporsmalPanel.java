@@ -39,15 +39,7 @@ public class SendSporsmalPanel extends Panel {
 
         private SporsmalForm(String id, CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
-            final WebMarkupContainer temavelger = new WebMarkupContainer("tema-velger");
-            temavelger.setOutputMarkupId(true);
-            temavelger.add(new Label("tema"));
-            temavelger.add(new AjaxLink<Void>("endre-tema") {
-                @Override
-                public void onClick(AjaxRequestTarget target) {
-                    target.add(temavelger);
-                }
-            });
+
             final TextArea<Object> fritekst = new TextArea<>("fritekst");
             fritekst.setRequired(true);
 
@@ -87,7 +79,7 @@ public class SendSporsmalPanel extends Panel {
                 }
             });
 
-            add(fritekst, temavelger, avbryt, send);
+            add(fritekst, avbryt, send);
         }
 
         @Override
