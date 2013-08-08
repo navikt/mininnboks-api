@@ -18,6 +18,7 @@
         <module>consumer</module>
         <module>web</module>
         <module>jee</module>
+        <module>wsmock</module>
     </modules>
 
     <properties>
@@ -37,7 +38,7 @@
         <mockito.core.version>1.9.5</mockito.core.version>
         <modig-core.version>1.0.0</modig-core.version>
         <modig-content.version>1.2.0</modig-content.version>
-        <modig.fitnesse.version>1.0.0-alpha.1</modig.fitnesse.version>
+        <modig.fitnesse.version>1.0.1</modig.fitnesse.version>
         <modig.frontend.version>1.0.5</modig.frontend.version>
         <modig.lang.version>1.0.1</modig.lang.version>
         <modig-security.version>1.0.7</modig-security.version>
@@ -383,6 +384,11 @@
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-api</artifactId>
                 <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf.xjc-utils</groupId>
+                <artifactId>cxf-xjc-runtime</artifactId>
+                <version>2.6.1</version>
             </dependency>
 
             <dependency>
