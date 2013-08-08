@@ -8,7 +8,7 @@ import static no.nav.modig.lang.collections.RunnableUtils.waitFor;
 import static no.nav.modig.test.util.FilesAndDirs.WEBAPP_SOURCE;
 import static no.nav.sbl.dialogarena.common.jetty.Jetty.usingWar;
 
-public class StartJetty {
+public final class StartJetty {
 
     private static final int PORT = 8080;
 
