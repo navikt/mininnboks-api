@@ -657,17 +657,17 @@
             <plugin>
                 <groupId>no.nav.modig</groupId>
                 <artifactId>modig-content-maven-plugin</artifactId>
-                <version>0.0.1</version>
+                <version>1.1.0</version>
                 <configuration>
                     <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
                     <propertiesFiler>
                         <nb>innholdstekster_nb.properties</nb>
                         <nb>sbl-webkomponenter_nb.properties</nb>
                     </propertiesFiler>
-                    <menyPunktUrler>
+                    <menyPunktPaths>
                         <nb>${dialogarena.cms.url}/site/16/minehenvendelser/nb/tekster</nb>
                         <nb>${dialogarena.cms.url}/site/16/sbl-webkomponenter/nb/tekster</nb>
-                    </menyPunktUrler>
+                    </menyPunktPaths>
                 </configuration>
             </plugin>
             <plugin>
