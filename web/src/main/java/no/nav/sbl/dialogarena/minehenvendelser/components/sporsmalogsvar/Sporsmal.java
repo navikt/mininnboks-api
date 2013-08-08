@@ -2,8 +2,12 @@ package no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar;
 
 import java.io.Serializable;
 
+import org.joda.time.DateTime;
+
 public class Sporsmal implements Serializable {
-    private String tema, fritekst;
+    
+	private String tema, fritekst;
+	public DateTime innsendingsTidspunkt;
 
     public void setTema(String tema) {
         this.tema = tema;

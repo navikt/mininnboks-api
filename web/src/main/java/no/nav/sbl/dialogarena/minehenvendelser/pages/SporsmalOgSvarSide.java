@@ -43,7 +43,7 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
         SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, FODSELSNUMMER, this);
         sendSporsmal.add(visibleIf(aktivSideEr(Side.SEND_SPORSMAL)));
 
-        SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", this);
+        SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", model, this);
         sporsmalBekreftelse.add(visibleIf(aktivSideEr(Side.SPORMSMAL_BEKREFTELSE)));
 
         AjaxLink<Object> innboksLink = new AjaxLink<Object>("innboks-link") {

@@ -15,6 +15,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 
@@ -54,6 +55,7 @@ public class SendSporsmalPanel extends Panel {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form)
                 {
                     Sporsmal spsm = getModelObject();
+                    spsm.innsendingsTidspunkt = DateTime.now();
                     String overskrift = "Spørsmål om " + spsm.getTema();
                     sporsmalOgSvarService.opprettSporsmal(new WSSporsmal().withFritekst(spsm.getFritekst()).withTema(spsm.getTema()).withOverskrift(overskrift), fodselsnr);
                     send(getPage(), Broadcast.BREADTH, Innboks.MELDINGER_OPPDATERT);
