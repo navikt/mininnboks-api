@@ -68,19 +68,19 @@
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>sbl-webkomponent-navigasjon</artifactId>
-                <version>1.0.2</version>
+                <version>1.0.3</version>
             </dependency>
 
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>sbl-webkomponent-innstillinger</artifactId>
-                <version>1.0.5</version>
+                <version>1.0.10</version>
             </dependency>
 
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>sbl-webkomponent-tilbakemelding</artifactId>
-                <version>1.0.5</version>
+                <version>1.0.8</version>
             </dependency>
 
             <dependency>

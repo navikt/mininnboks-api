@@ -1,5 +1,20 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
+import static no.nav.modig.frontend.FrontendModules.EKSTERNFLATE;
+import static no.nav.modig.frontend.FrontendModules.UNDERSCORE;
+import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
+import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
+import static no.nav.modig.frontend.MetaTag.XUA_IE_EDGE;
+import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.CSS_RESOURCE;
+import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.IE8_CSS_RESOURCE;
+import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.JS_RESOURCE;
+import static no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel.INNSTILLINGER_JS;
+import static no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel.INNSTILLINGER_LESS;
+import static no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer.TILBAKEMELDING_JS;
+import static no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer.TILBAKEMELDING_LESS;
+
+import javax.inject.Inject;
+
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.SporsmalOgSvarSide;
@@ -12,19 +27,6 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
-
-import javax.inject.Inject;
-
-import static no.nav.modig.frontend.FrontendModules.EKSTERNFLATE;
-import static no.nav.modig.frontend.FrontendModules.UNDERSCORE;
-import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
-import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
-import static no.nav.modig.frontend.MetaTag.XUA_IE_EDGE;
-import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.CSS_RESOURCE;
-import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.IE8_CSS_RESOURCE;
-import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.JS_RESOURCE;
-import static no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer.TILBAKEMELDING_JS;
-import static no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer.TILBAKEMELDING_LESS;
 
 /**
  * Kontekst for wicket
@@ -56,9 +58,8 @@ public class WicketApplication extends WebApplication {
                         XUA_IE_EDGE)
                 .addCss(CSS_RESOURCE)
                 .addConditionalCss(IE8_CSS_RESOURCE)
-                .addLess(TILBAKEMELDING_LESS)
-                .addLess(new PackageResourceReference(SporsmalOgSvarSide.class, "sporsmal.less"))
-                .addScripts(JS_RESOURCE, TILBAKEMELDING_JS)
+                .addLess(TILBAKEMELDING_LESS, INNSTILLINGER_LESS, new PackageResourceReference(SporsmalOgSvarSide.class, "sporsmal.less"))
+                .addScripts(JS_RESOURCE, TILBAKEMELDING_JS, INNSTILLINGER_JS)
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
