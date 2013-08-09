@@ -3,8 +3,10 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.components.behandling.BehandlingerUnderArbeidListView;
+import no.nav.sbl.dialogarena.minehenvendelser.components.soeknader.SoeknaderUnderArbeidListView;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer;
 import org.apache.wicket.Component;
@@ -36,6 +38,9 @@ public class HomePage extends BasePage {
     private TilbakemeldingService tilbakemeldingService;
 
     @Inject
+    private SakogbehandlingService sakogbehandlingService;
+
+    @Inject
     private Boolean tilbakemeldingEnabled;
 
     public HomePage() {
@@ -46,6 +51,7 @@ public class HomePage extends BasePage {
                 createTooltip(),
                 new Label("skjultOverskriftPaabegynte", cmsContentRetriever.hentTekst("skjult.overskrift.paabegynte")),
                 new BehandlingerUnderArbeidListView("behandlingerUnderArbeid", behandlinger),
+                new SoeknaderUnderArbeidListView("soeknaderUnderArbeid", sakogbehandlingService.hentSoeknaderUnderArbeid(foedselsnummerService.getFoedselsnummer())),
                 new IngenBehandlingerView("ingenBehandlinger", behandlinger),
                 new ExternalLink("forsiden", getProperty("inngangsporten.link.url"), cmsContentRetriever.hentTekst("link.tekst.forsiden")),
                 new TilbakemeldingContainer("panel-tilbakemelding", tilbakemeldingService, tilbakemeldingEnabled, cmsContentRetriever)

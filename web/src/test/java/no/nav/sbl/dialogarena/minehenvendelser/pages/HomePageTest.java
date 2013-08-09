@@ -7,6 +7,7 @@ import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -38,11 +39,13 @@ public class HomePageTest extends AbstractWicketTest {
     private BehandlingService behandlingServiceMock;
     private FoedselsnummerService foedselsnummerServiceMock;
     private Kodeverk kodeverkServiceMock;
+    private SakogbehandlingService sakogbehandlingServiceMock;
 
     @Override
     protected void setup() {
         behandlingServiceMock = mock(BehandlingService.class);
         foedselsnummerServiceMock = mock(FoedselsnummerService.class);
+        sakogbehandlingServiceMock = mock(SakogbehandlingService.class);
         when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(TEST_FNR);
         kodeverkServiceMock = mock(Kodeverk.class);
         mock("footerLinks", Map.class);
