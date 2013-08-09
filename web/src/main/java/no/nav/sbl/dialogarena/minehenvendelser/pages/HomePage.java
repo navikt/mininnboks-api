@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.components.behandling.BehandlingerUnderArbeidListView;
+import no.nav.sbl.dialogarena.minehenvendelser.components.soeknader.FerdigeSoeknaderListView;
 import no.nav.sbl.dialogarena.minehenvendelser.components.soeknader.SoeknaderUnderArbeidListView;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
@@ -52,6 +53,7 @@ public class HomePage extends BasePage {
                 new Label("skjultOverskriftPaabegynte", cmsContentRetriever.hentTekst("skjult.overskrift.paabegynte")),
                 new BehandlingerUnderArbeidListView("behandlingerUnderArbeid", behandlinger),
                 new SoeknaderUnderArbeidListView("soeknaderUnderArbeid", sakogbehandlingService.hentSoeknaderUnderArbeid(foedselsnummerService.getFoedselsnummer())),
+                new FerdigeSoeknaderListView("ferdigeSoeknader", sakogbehandlingService.hentFerdigeSoeknader(foedselsnummerService.getFoedselsnummer())),
                 new IngenBehandlingerView("ingenBehandlinger", behandlinger),
                 new ExternalLink("forsiden", getProperty("inngangsporten.link.url"), cmsContentRetriever.hentTekst("link.tekst.forsiden")),
                 new TilbakemeldingContainer("panel-tilbakemelding", tilbakemeldingService, tilbakemeldingEnabled, cmsContentRetriever)
