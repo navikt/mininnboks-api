@@ -8,10 +8,12 @@ import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -39,6 +41,9 @@ public class SendSporsmalPanel extends Panel {
         private SporsmalForm(String id, CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
+            final FeedbackPanel feedbackPanel = new FeedbackPanel("validering", new ContainerFeedbackMessageFilter(this));
+            feedbackPanel.setOutputMarkupId(true);
+
             final TextArea<Object> fritekst = new TextArea<>("fritekst");
             fritekst.setRequired(true);
 
@@ -52,8 +57,7 @@ public class SendSporsmalPanel extends Panel {
 
             final AjaxSubmitLink send = new AjaxSubmitLink("send") {
                 @Override
-                protected void onSubmit(AjaxRequestTarget target, Form<?> form)
-                {
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     Sporsmal spsm = getModelObject();
                     spsm.innsendingsTidspunkt = DateTime.now();
                     String overskrift = "Spørsmål om " + spsm.getTema();
@@ -62,24 +66,14 @@ public class SendSporsmalPanel extends Panel {
                     sideNavigerer.neste();
                     target.add(SendSporsmalPanel.this.getParent());
                 }
+
+                @Override
+                protected void onError(AjaxRequestTarget target, Form<?> form) {
+                    target.add(SendSporsmalPanel.this.getParent());
+                }
             };
-            send.setEnabled(false);
 
-            fritekst.add(new AjaxFormComponentUpdatingBehavior("change") {
-                @Override
-                protected void onUpdate(AjaxRequestTarget target) {
-                    send.setEnabled(fritekst.isValid());
-                    target.add(send);
-                }
-
-                @Override
-                protected void onError(AjaxRequestTarget target, RuntimeException e) {
-                    send.setEnabled(false);
-                    target.add(send);
-                }
-            });
-
-            add(fritekst, avbryt, send);
+            add(feedbackPanel, fritekst, avbryt, send);
         }
 
         @Override
