@@ -17,7 +17,7 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SakogbehandlingTestContext.class})
-public class SakOgBehandlingIntegrationTest {
+public class SakogbehandlingServiceTest {
 
     @Inject
     private MockData mockdata;
@@ -26,11 +26,12 @@ public class SakOgBehandlingIntegrationTest {
     private SakogbehandlingService service;
 
     @Test
-    public void shouldIntegrateWithSakOgBehandlnigViaWebService() {
+    public void shouldReturnSoeknaderUnderArbeid() {
         List<Soeknad> soeknadList = service.hentSoeknaderUnderArbeid("***REMOVED***");
         assertNotNull(soeknadList);
         assertThat(soeknadList.size(), equalTo(1));
     }
+
 
     @After
     public void clearData() {

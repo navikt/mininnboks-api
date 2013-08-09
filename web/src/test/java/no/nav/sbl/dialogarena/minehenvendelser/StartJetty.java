@@ -20,8 +20,6 @@ public final class StartJetty {
 
     public static final int PORT = 8082;
 
-    public static final String AKTOR_ID = "***REMOVED***";
-
     @SuppressWarnings({ "PMD.SystemPrintln" })
     public static void main(String[] args) {
         setProperty("java.security.auth.login.config", "src/test/resources/login.conf");
@@ -38,5 +36,4 @@ public final class StartJetty {
         System.out.println("ADDRESS: " + jetty.getBaseUrl());
         jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));
     }
-
 }

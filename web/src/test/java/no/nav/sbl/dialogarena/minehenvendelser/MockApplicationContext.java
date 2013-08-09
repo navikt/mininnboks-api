@@ -3,8 +3,8 @@ package no.nav.sbl.dialogarena.minehenvendelser;
 import no.nav.modig.cache.CacheConfig;
 import no.nav.sbl.dialogarena.common.kodeverk.config.KodeverkConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.config.JaxWsFeatures;
-import no.nav.sbl.dialogarena.minehenvendelser.config.ServicesConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.config.WebContext;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.SakogbehandlingTestContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
@@ -17,9 +17,12 @@ import org.springframework.context.annotation.PropertySource;
 @Import({
         CacheConfig.class,
         JaxWsFeatures.Mock.class,
-        ServicesConfig.class,
+        ServicesConfigMock.class,
         WebContext.class,
-        KodeverkConfig.class
+        KodeverkConfig.class,
+        SakogbehandlingTestContext.class
 })
 public class MockApplicationContext {
+    public static final String AKTOR_ID = "***REMOVED***";
+
 }

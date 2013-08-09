@@ -2,8 +2,10 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.modig.core.exception.SystemException;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.HentSakogbehandlingWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.MockData;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakOgBehandlingPortTypeMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.FinnSakOgBehandlingskjedeListeResponse;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.SakOgBehandlingPortType;
@@ -14,7 +16,6 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstidt
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Temaer;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Behandlingskjede;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Sak;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,7 @@ import java.net.URL;
 import java.util.GregorianCalendar;
 import java.util.concurrent.ExecutionException;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.AKOTR_ID;
 import static org.webbitserver.WebServers.createWebServer;
 
 @Configuration
@@ -64,6 +66,7 @@ public class SakogbehandlingTestContext {
                                         withBehandlingskjede(createDummyBehandlingkjede()))));
         mockData.addResponse("***REMOVED***", new FinnSakOgBehandlingskjedeListeResponse());
         mockData.addResponse("test", new FinnSakOgBehandlingskjedeListeResponse());
+        mockData.addResponse(AKOTR_ID, MockCreationUtil.createSakOgBehandlingskjedeListeResponse());
         return mockData;
     }
 
@@ -94,9 +97,6 @@ public class SakogbehandlingTestContext {
 
     @Bean
     public SakOgBehandlingPortType sakOgBehandlingPortType() {
-        JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
-        proxyFactoryBean.setServiceClass(SakOgBehandlingPortType.class);
-        proxyFactoryBean.setAddress(endpoint.toString());
-        return proxyFactoryBean.create(SakOgBehandlingPortType.class);
+        return new SakOgBehandlingPortTypeMock();
     }
 }

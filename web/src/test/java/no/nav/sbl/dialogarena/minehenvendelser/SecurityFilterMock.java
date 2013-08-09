@@ -11,7 +11,6 @@ import javax.servlet.ServletResponse;
 import java.io.IOException;
 
 import static no.nav.modig.core.context.SubjectHandlerUtils.setEksternBruker;
-import static no.nav.sbl.dialogarena.minehenvendelser.StartJetty.AKTOR_ID;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class SecurityFilterMock implements Filter {
@@ -25,7 +24,7 @@ public class SecurityFilterMock implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        setEksternBruker(AKTOR_ID, 4, null);
+        setEksternBruker(MockApplicationContext.AKTOR_ID, 4, null);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

@@ -419,7 +419,7 @@
 							<usedDependencies>
 								<usedDependency>no.nav.sbl.dialogarena:common-web</usedDependency>
 								<usedDependency>org.apache.httpcomponents:httpcore</usedDependency>
-							</usedDependencies>
+                            </usedDependencies>
 						</configuration>
 					</execution>
 				</executions>
