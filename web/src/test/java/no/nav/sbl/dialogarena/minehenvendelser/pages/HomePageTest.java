@@ -39,8 +39,11 @@ public class HomePageTest extends AbstractWicketTest {
     private BehandlingService behandlingServiceMock;
     private FoedselsnummerService foedselsnummerServiceMock;
     private Kodeverk kodeverkServiceMock;
+
+    @SuppressWarnings({"PMD.SingularField"})
     private SakogbehandlingService sakogbehandlingServiceMock;
 
+    @SuppressWarnings({"PMD.UnusedPrivateField"})
     @Override
     protected void setup() {
         behandlingServiceMock = mock(BehandlingService.class);
