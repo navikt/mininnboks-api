@@ -11,11 +11,13 @@ import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.joda.time.DateTime;
 
@@ -43,6 +45,8 @@ public class SendSporsmalPanel extends Panel {
 
             final FeedbackPanel feedbackPanel = new FeedbackPanel("validering", new ContainerFeedbackMessageFilter(this));
             feedbackPanel.setOutputMarkupId(true);
+
+            Label hjelpetekst = new Label("hjelpetekst", new ResourceModel("still-sporsmal-hjelp"));
 
             final TextArea<Object> fritekst = new TextArea<>("fritekst");
             fritekst.setRequired(true);
@@ -73,7 +77,7 @@ public class SendSporsmalPanel extends Panel {
                 }
             };
 
-            add(feedbackPanel, fritekst, avbryt, send);
+            add(feedbackPanel, hjelpetekst, fritekst, avbryt, send);
         }
 
         @Override

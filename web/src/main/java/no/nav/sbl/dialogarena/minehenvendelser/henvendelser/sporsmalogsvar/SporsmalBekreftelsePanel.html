@@ -6,9 +6,9 @@
 <body>
 <wicket:panel>
     <article class="bekreftelse-panel">
-        <h1>Takk, du vil få svar i løpet av 2 virkedager</h1>
-        <p>Vi mottok din henvendelse <span wicket:id="tidspunkt"></span>.</p>
-        <a wicket:id="til-mine-henvendelser">Til mine henvendelser</a>
+        <h1><wicket:message key="bekreftelse-overskrift">[[Takk, du vil få svar i løpet av 2 virkedager]]</wicket:message></h1>
+        <p><wicket:message key="bekreftelse-tidspunkt">[[Vi mottok din henvendelse ]]</wicket:message> <span wicket:id="tidspunkt">[[Tidspunkt]]</span>.</p>
+        <a wicket:id="til-mine-henvendelser"><wicket:message key="til-mine-henvendelser">[[Til mine henvendelser]]</wicket:message></a>
     </article>
 </wicket:panel>
 </body>

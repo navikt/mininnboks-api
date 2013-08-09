@@ -9,14 +9,13 @@
         <form wicket:id="sporsmal-form" class="vertikal">
             <wicket:container wicket:id="validering">[[Valideringsmeldinger]]</wicket:container>
 
-        	<p>For å få raskt svar er det viktig å være konkret i det du spør om. Prøv å få med alle opplysninger du tror er relevante.
-Du kan skrive maksimalt 1000 tegn Det utgjør i underkant av en halv A4-side.</p>
+        	<p wicket:id="hjelpetekst">[[Hjelpetekst]]</p>
             <section class="tekstfelt">
                 <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
                 <div id="antall"></div>
             </section>
-            <a wicket:id="send" class="send-link" href="#">Send inn</a>
-            <a wicket:id="avbryt" class="avbryt-link" href="#">Avbryt</a>
+            <a wicket:id="send" class="send-link" href="#"><wicket:message key="send-inn">[[Send inn]]</wicket:message></a>
+            <a wicket:id="avbryt" class="avbryt-link" href="#"><wicket:message key="avbryt">[[Avbryt]]</wicket:message></a>
         </form>
     </article>
 </wicket:panel>
