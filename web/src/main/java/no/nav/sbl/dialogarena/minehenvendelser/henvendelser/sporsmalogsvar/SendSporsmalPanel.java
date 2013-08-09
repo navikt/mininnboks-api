@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar;
+package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sporsmalogsvar;
 
 import no.nav.sbl.dialogarena.sporsmalogsvar.innboks.Innboks;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;

@@ -6,6 +6,8 @@ import no.nav.modig.content.ValueRetriever;
 import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
 import no.nav.modig.content.enonic.HttpContentRetriever;
 import no.nav.sbl.dialogarena.minehenvendelser.WicketApplication;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.HenvendelserSpringContext;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +25,7 @@ import java.util.Map;
  * Produksjonskontekst for webmodulen
  */
 @Configuration
-@Import({TilbakemeldingConfig.class, FooterConfig.class})
+@Import({TilbakemeldingConfig.class, FooterConfig.class, HenvendelserSpringContext.class})
 public class WebContext {
 
     @Value("${minehenvendelser.navigasjonslink.url}")

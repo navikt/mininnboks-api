@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.components.sporsmalogsvar;
+package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sporsmalogsvar;
 
 public interface SideNavigerer {
     void neste();

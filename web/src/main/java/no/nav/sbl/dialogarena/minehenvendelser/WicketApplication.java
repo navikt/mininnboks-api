@@ -2,9 +2,10 @@ package no.nav.sbl.dialogarena.minehenvendelser;
 
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.SporsmalOgSvarSide;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
-import no.nav.sbl.dialogarena.minehenvendelser.pages.SporsmalOgSvarSide;
 import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;

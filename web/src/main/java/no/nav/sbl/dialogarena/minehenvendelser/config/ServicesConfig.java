@@ -1,31 +1,29 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
+import static org.apache.cxf.frontend.ClientProxy.getClient;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
-import no.nav.sbl.dialogarena.sporsmalogsvar.consumer.MeldingService;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.SakOgBehandlingPortType;
+
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
-import org.apache.cxf.ws.security.SecurityConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.inject.Inject;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.apache.cxf.frontend.ClientProxy.getClient;
 
 /**
  * Spring config for jaxws webservices
@@ -44,17 +42,6 @@ public class ServicesConfig {
 
     @Value("${henvendelser.ws.url}")
     protected URL endpoint;
-
-    @Value("${henvendelser.webservice.sporsmal.url}")
-    protected String spmSvarEndpoint;
-    
-    @Value("${henvendelser.webservice.felles.url}")
-    protected String henvendelseEndpoint;
-
-    @Bean
-    public MeldingService meldingService() {
-        return new MeldingService();
-    }
 
     @Bean
     public SakogbehandlingService sakogbehandlingService() {
@@ -88,42 +75,7 @@ public class ServicesConfig {
         return sakOgBehandlingPortType;
 
     }
-
-    @Bean
-    public SporsmalOgSvarPortType sporsmalOgSvarService() {
-        SporsmalOgSvarPortType sporsmalOgSvarPortType = sporsmalOgSvarPortTypeFactory().create(SporsmalOgSvarPortType.class);
-        Client client = getClient(sporsmalOgSvarPortType);
-        HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
-        httpConduit.setTlsClientParameters(jaxwsFeatures.tlsClientParameters());
-        STSConfigurationUtility.configureStsForExternalSSO(client);
-        return sporsmalOgSvarPortType;
-    }
-
-    @Bean
-    public JaxWsProxyFactoryBean sporsmalOgSvarPortTypeFactory() {
-        JaxWsProxyFactoryBean jaxwsClient = commonJaxWsConfig();
-        jaxwsClient.setServiceClass(SporsmalOgSvarPortType.class);
-        jaxwsClient.setAddress(spmSvarEndpoint);
-        jaxwsClient.setWsdlURL("SporsmalOgSvar.wsdl");
-        jaxwsClient.getProperties().put(SecurityConstants.MUSTUNDERSTAND, false);
-        return jaxwsClient;
-    }
-
-    @Bean
-    public HenvendelsePortType henvendelseService() {
-    	JaxWsProxyFactoryBean jaxwsClient = commonJaxWsConfig();
-    	jaxwsClient.setServiceClass(HenvendelsePortType.class);
-    	jaxwsClient.setAddress(henvendelseEndpoint);
-    	jaxwsClient.setWsdlURL("classpath:Henvendelse.wsdl");
-        jaxwsClient.getProperties().put(SecurityConstants.MUSTUNDERSTAND, false);
-        HenvendelsePortType henvendelsePortType = jaxwsClient.create(HenvendelsePortType.class);
-        Client client = getClient(henvendelsePortType);
-        HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
-        httpConduit.setTlsClientParameters(jaxwsFeatures.tlsClientParameters());
-        STSConfigurationUtility.configureStsForExternalSSO(client);
-        return henvendelsePortType;
-    }
-
+    
     @Bean
     public BehandlingService behandlingService() {
         return new BehandlingsServicePort();
