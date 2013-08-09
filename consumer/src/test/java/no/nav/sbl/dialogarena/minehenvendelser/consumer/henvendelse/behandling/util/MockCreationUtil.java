@@ -7,6 +7,7 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBe
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentForventningOppsummering;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.FinnSakOgBehandlingskjedeListeResponse;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandling;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.BehandlingVS;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingskjedetyper;
@@ -14,7 +15,6 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstid;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstidtyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Behandlingskjede;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Sak;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.FinnSakOgBehandlingskjedeListeResponse;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingResponse;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingskjedensBehandlingerResponse;
 import org.joda.time.DateTime;
@@ -176,20 +176,35 @@ public class MockCreationUtil {
 
     public static HentBehandlingResponse createBehandlingResponse() {
         return new HentBehandlingResponse()
-                .withBehandling(createHentBehandling());
+                .withBehandling(createHentBehandling(BigInteger.valueOf(99)));
     }
 
     private static Sak createSak() {
         return new Sak()
-                .withBehandlingskjede(createFinnbehandlingKjede());
+                .withBehandlingskjede(populateFinnbehandlingKjedeList());
     }
 
-    private static Behandlingskjede createFinnbehandlingKjede() {
-        return new Behandlingskjede()
-                .withStartNAVtid(createXmlGregorianDate(1,1,2013))
-                .withSluttNAVtid(createXmlGregorianDate(1,1,2014))
+    private static List<Behandlingskjede> populateFinnbehandlingKjedeList() {
+        List<Behandlingskjede> behandlingsKjeder = new ArrayList<>();
+        behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", "MOCK-00-00-00", true));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", "MOCK-10-00-00", true));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Arbeidsavklaringspenger", "MOCK-20-00-00", true));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", "MOCK-30-00-00", false));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", "MOCK-44-00-00", false));
+        return behandlingsKjeder;
+    }
+
+    private static Behandlingskjede createFinnbehandlingKjede(String value, String kodeverkRef, boolean isFerdig) {
+        Behandlingskjede behandlingskjede = new Behandlingskjede()
+                .withStartNAVtid(createXmlGregorianDate(1, 1, 2013))
                 .withNormertBehandlingstid(new Behandlingstid().withTid(BigInteger.TEN).withType(new Behandlingstidtyper()))
-                .withBehandlingskjedetype(createBehandlingskjedetyper());
+                .withBehandlingskjedetype(createBehandlingskjedetyper(value, kodeverkRef));
+
+        if(isFerdig) {
+           behandlingskjede.setSluttNAVtid(createXmlGregorianDate(1, 1, 2014));
+        }
+
+        return behandlingskjede;
     }
 
     private static XMLGregorianCalendar createXmlGregorianDate(int day, int month, int year) {
@@ -203,10 +218,10 @@ public class MockCreationUtil {
         return xmlGregorianCalendar;
     }
 
-    private static Behandlingskjedetyper createBehandlingskjedetyper() {
+    private static Behandlingskjedetyper createBehandlingskjedetyper(String value, String kodeverkRef) {
         return new Behandlingskjedetyper()
-                .withValue("MOCK-TEMA-REF-00")
-                .withKodeverksRef("MOCK-KODEVERK-REF-00");
+                .withValue(value)
+                .withKodeverksRef(kodeverkRef);
     }
 
     private static no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.hentbehandlingskjedensbehandlinger.Behandlingskjede createHentBehandlingskjede() {
@@ -216,12 +231,16 @@ public class MockCreationUtil {
 
     private static Collection<Behandling> createHentBehandlinger() {
         List<Behandling> behandlinger = new ArrayList<>();
-        behandlinger.add(createHentBehandling());
+        behandlinger.add(createHentBehandling(BigInteger.valueOf(1)));
+        behandlinger.add(createHentBehandling(BigInteger.valueOf(2)));
+        behandlinger.add(createHentBehandling(BigInteger.valueOf(3)));
+        behandlinger.add(createHentBehandling(BigInteger.valueOf(4)));
         return behandlinger;
     }
 
-    private static Behandling createHentBehandling() {
+
+    private static Behandling createHentBehandling(BigInteger tid) {
         return new BehandlingVS()
-                .withNormertBehandlingstid(new Behandlingstid().withTid(BigInteger.ONE));
+                .withNormertBehandlingstid(new Behandlingstid().withTid(tid));
     }
 }
