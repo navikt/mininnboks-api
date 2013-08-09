@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
 import no.nav.modig.core.exception.ApplicationException;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.HentBehandlingWebServiceMock;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.integration.HentBehandlingWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;

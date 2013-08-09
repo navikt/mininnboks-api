@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HenvendelsesBehandlingPortTypeMock implements HenvendelsesBehandlingPortType {
+
     @Override
     public WSDokument hentDokument(@WebParam(name = "dokumentId", targetNamespace = "") long l) {
         return new WSDokument();
