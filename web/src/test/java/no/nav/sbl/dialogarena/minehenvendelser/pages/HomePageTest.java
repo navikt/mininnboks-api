@@ -40,7 +40,7 @@ public class HomePageTest extends AbstractWicketTest {
     private FoedselsnummerService foedselsnummerServiceMock;
     private Kodeverk kodeverkServiceMock;
 
-    @SuppressWarnings({"PMD.UnusedPrivateField"})
+    @SuppressWarnings({"PMD.UnusedPrivateField, PMD.SingularField"})
     private SakogbehandlingService sakogbehandlingServiceMock;
 
     @SuppressWarnings({"PMD.SingularField"})
