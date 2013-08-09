@@ -1,5 +1,6 @@
-package no.nav.sbl.dialogarena.minehenvendelser;
+package no.nav.sbl.dialogarena.minehenvendelser.config;
 
+import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.HenvendelsesBehandlingPortTypeMock;

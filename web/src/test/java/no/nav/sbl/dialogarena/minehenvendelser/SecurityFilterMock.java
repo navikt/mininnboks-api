@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
+import no.nav.sbl.dialogarena.minehenvendelser.config.MockApplicationContext;
 import org.slf4j.Logger;
 
 import javax.servlet.Filter;
