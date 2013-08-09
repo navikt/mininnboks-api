@@ -31,7 +31,7 @@ public class ConsumerIntegrationTest {
 
     @Test
     public void shouldIntegrateWithHenvendelserViaWebService() {
-        mockdata.addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandling()));
+        mockdata.getHentData().addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandling()));
         List<Behandling> behandlingList = service.hentBehandlinger("***REMOVED***");
         assertNotNull(behandlingList);
         assertThat(behandlingList.size(), equalTo(1));
@@ -39,7 +39,7 @@ public class ConsumerIntegrationTest {
 
     @Test
     public void ukjentBrukerSkalGiTomListe() {
-        mockdata.addResponse("tester", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandling()));
+        mockdata.getHentData().addResponse("tester", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandling()));
         List<Behandling> behandlingList = service.hentBehandlinger("test1");
         assertNotNull(behandlingList);
         assertThat(behandlingList.size(), equalTo(0));
@@ -47,6 +47,6 @@ public class ConsumerIntegrationTest {
 
     @After
     public void clearData() {
-        mockdata.clear();
+        mockdata.getHentData().clear();
     }
 }

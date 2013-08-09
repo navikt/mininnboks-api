@@ -1,10 +1,10 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.modig.core.exception.SystemException;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.HentSakogbehandlingWebServiceMock;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakOgBehandlingPortTypeMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.FinnSakOgBehandlingskjedeListeResponse;
@@ -59,14 +59,14 @@ public class SakogbehandlingTestContext {
     @Bean
     public MockData mockData() {
         MockData mockData = new MockData();
-        mockData.addResponse("***REMOVED***",
+        mockData.getFinnData().addResponse("***REMOVED***",
                 new FinnSakOgBehandlingskjedeListeResponse().
                         withResponse(new no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.FinnSakOgBehandlingskjedeListeResponse().
                                 withSak(new Sak().withTema(new Temaer().withKodeverksRef("Tema")).
                                         withBehandlingskjede(createDummyBehandlingkjede()))));
-        mockData.addResponse("***REMOVED***", new FinnSakOgBehandlingskjedeListeResponse());
-        mockData.addResponse("test", new FinnSakOgBehandlingskjedeListeResponse());
-        mockData.addResponse(AKOTR_ID, MockCreationUtil.createSakOgBehandlingskjedeListeResponse());
+        mockData.getFinnData().addResponse("***REMOVED***", new FinnSakOgBehandlingskjedeListeResponse());
+        mockData.getFinnData().addResponse("test", new FinnSakOgBehandlingskjedeListeResponse());
+        mockData.getFinnData().addResponse(AKOTR_ID, MockCreationUtil.createSakOgBehandlingskjedeListeResponse());
         return mockData;
     }
 

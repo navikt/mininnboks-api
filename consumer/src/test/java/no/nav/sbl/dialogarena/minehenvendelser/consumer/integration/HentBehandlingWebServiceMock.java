@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.integration;
 
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.integration.BehandlingResponseMarshaller;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
@@ -41,7 +40,7 @@ public class HentBehandlingWebServiceMock implements HttpHandler {
             message = getPingResponse();
         } else {
             String aktorId = Jsoup.parse(body, "", Parser.xmlParser()).select("aktorId").get(0).text();
-            message = marshaller.transform(mockData.getData(aktorId));
+            message = marshaller.transform(mockData.getHentData().getData(aktorId));
         }
 
         response.charset(Charset.forName("UTF-8"))

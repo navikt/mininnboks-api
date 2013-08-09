@@ -5,13 +5,15 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehand
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
+
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.AVSLUTTET;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.UNDER_ARBEID;
 
 /**
  * Dette objektet representerer hva som logisk sett er en søknad for sluttbruker.
  */
-public final class Soeknad {
+public final class Soeknad implements Serializable {
 
     public enum SoeknadsStatus { AVSLUTTET, UNDER_ARBEID }
 

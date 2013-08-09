@@ -48,9 +48,9 @@ public class ConsumerTestContext {
     @Bean
     public MockData mockData() {
         MockData mockData = new MockData();
-        mockData.addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandling(), createFerdigEttersendingBehandling(), createUnderArbeidBehandling(), createUnderArbeidEttersendingBehandling()));
-        mockData.addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandlingMedAlleInnsendt(), createFerdigBehandlingMedIngenInnsendt()));
-        mockData.addResponse("test", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFitnesseTestData()));
+        mockData.getHentData().addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandling(), createFerdigEttersendingBehandling(), createUnderArbeidBehandling(), createUnderArbeidEttersendingBehandling()));
+        mockData.getHentData().addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFerdigBehandlingMedAlleInnsendt(), createFerdigBehandlingMedIngenInnsendt()));
+        mockData.getHentData().addResponse("test", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createFitnesseTestData()));
         return mockData;
     }
 

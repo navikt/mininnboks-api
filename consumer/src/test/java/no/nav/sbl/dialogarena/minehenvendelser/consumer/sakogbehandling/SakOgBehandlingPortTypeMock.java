@@ -8,6 +8,7 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingReq
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingResponse;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingskjedensBehandlingerRequest;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingskjedensBehandlingerResponse;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 
 import javax.inject.Inject;
 
@@ -18,7 +19,7 @@ public class SakOgBehandlingPortTypeMock  implements SakOgBehandlingPortType {
 
     @Override
     public FinnSakOgBehandlingskjedeListeResponse finnSakOgBehandlingskjedeListe(FinnSakOgBehandlingskjedeListeRequest request) {
-        return mockData.getData(request.getAktoerREF()).getResponse();
+        return mockData.getFinnData().getData(request.getAktoerREF()).getResponse();
     }
 
     @Override

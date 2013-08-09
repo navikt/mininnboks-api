@@ -7,6 +7,7 @@ import org.webbitserver.HttpControl;
 import org.webbitserver.HttpHandler;
 import org.webbitserver.HttpRequest;
 import org.webbitserver.HttpResponse;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 
 import java.nio.charset.Charset;
 
@@ -29,7 +30,7 @@ public class HentSakogbehandlingWebServiceMock implements HttpHandler {
             message = getPingResponse();
         } else {
             String aktorId = Jsoup.parse(body, "", Parser.xmlParser()).select("aktoerREF").get(0).text();
-            message = marshaller.transform(mockData.getData(aktorId));
+            message = marshaller.transform(mockData.getFinnData().getData(aktorId));
         }
 
         response.charset(Charset.forName("UTF-8"))

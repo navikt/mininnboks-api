@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -35,6 +36,6 @@ public class SakogbehandlingServiceTest {
 
     @After
     public void clearData() {
-        mockdata.clear();
+        mockdata.getFinnData().clearResponse();
     }
 }

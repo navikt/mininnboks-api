@@ -21,7 +21,5 @@ import org.springframework.context.annotation.PropertySource;
         SakogbehandlingTestContext.class
 })
 public class MockApplicationContext {
-
     public static final String AKTOR_ID = "***REMOVED***";
-
 }
