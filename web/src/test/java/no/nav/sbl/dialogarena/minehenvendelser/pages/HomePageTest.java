@@ -1,26 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
-import no.nav.modig.content.CmsContentRetriever;
-import no.nav.modig.content.ValueRetriever;
-import no.nav.modig.utils.UTF8Control;
-import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
-import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
-import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
-import org.apache.wicket.Component;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.PropertyListView;
-import org.joda.time.DateTime;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComponent;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.ofType;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
@@ -33,6 +12,27 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+
+import no.nav.modig.content.CmsContentRetriever;
+import no.nav.modig.content.ValueRetriever;
+import no.nav.modig.utils.UTF8Control;
+import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
+import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
+
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.PropertyListView;
+import org.joda.time.DateTime;
+import org.junit.Test;
+
 public class HomePageTest extends AbstractWicketTest {
 
     private static final String TEST_FNR = "***REMOVED***";
@@ -40,15 +40,11 @@ public class HomePageTest extends AbstractWicketTest {
     private FoedselsnummerService foedselsnummerServiceMock;
     private Kodeverk kodeverkServiceMock;
 
-    @SuppressWarnings({"PMD.UnusedPrivateField, PMD.SingularField"})
-    private SakogbehandlingService sakogbehandlingServiceMock;
-
     @SuppressWarnings({"PMD.SingularField"})
     @Override
     protected void setup() {
         behandlingServiceMock = mock(BehandlingService.class);
         foedselsnummerServiceMock = mock(FoedselsnummerService.class);
-        sakogbehandlingServiceMock = mock(SakogbehandlingService.class);
         when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(TEST_FNR);
         kodeverkServiceMock = mock(Kodeverk.class);
         mock("footerLinks", Map.class);
