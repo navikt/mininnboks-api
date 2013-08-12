@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
 import no.nav.modig.core.exception.ApplicationException;
-import no.nav.modig.core.exception.SystemException;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.HentSakogbehandlingWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakOgBehandlingPortTypeMock;
@@ -15,6 +14,7 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstidt
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Temaer;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Behandlingskjede;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Sak;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,13 +24,15 @@ import org.webbitserver.WebServer;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.math.BigInteger;
 import java.net.URL;
-import java.util.GregorianCalendar;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static javax.xml.datatype.DatatypeFactory.newInstance;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.AKOTR_ID;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createSakOgBehandlingskjedeListeResponse;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFinnSakOgBehandlingskjedeListeResponse;
 import static org.webbitserver.WebServers.createWebServer;
 
 @Configuration
@@ -66,7 +68,7 @@ public class SakogbehandlingTestContext {
                                         withBehandlingskjede(createDummyBehandlingkjede()))));
         mockData.getFinnData().addResponse("***REMOVED***", new FinnSakOgBehandlingskjedeListeResponse());
         mockData.getFinnData().addResponse("test", new FinnSakOgBehandlingskjedeListeResponse());
-        mockData.getFinnData().addResponse(AKOTR_ID, createSakOgBehandlingskjedeListeResponse());
+        mockData.getFinnData().addResponse(AKOTR_ID, createFinnSakOgBehandlingskjedeListeResponse(populateFinnbehandlingKjedeList()));
         return mockData;
     }
 
@@ -83,21 +85,47 @@ public class SakogbehandlingTestContext {
     private Behandlingskjede createDummyBehandlingkjede() {
         return new Behandlingskjede()
                 .withNormertBehandlingstid(new Behandlingstid().withType(new Behandlingstidtyper()))
-                .withStartNAVtid(createDummyXMLGregorianCalendarDate())
+                .withStartNAVtid(createXmlGregorianDate(1, 1, 2013))
                 .withBehandlingskjedetype(new Behandlingskjedetyper())
                 .withBehandlingskjedeId("id")
-                .withKjedensNAVfrist(createDummyXMLGregorianCalendarDate())
+                .withKjedensNAVfrist(createXmlGregorianDate(11, 11, 2022))
                 .withSisteBehandlingREF("sisteBehandlingref")
                 .withSisteBehandlingsstegREF("sisteBehandlingsstegref")
                 .withSisteBehandlingsstegtype(new Behandlingsstegtyper().withValue("value").withKodeRef("koderef").withKodeverksRef("kodeverksref"));
     }
 
-    private XMLGregorianCalendar createDummyXMLGregorianCalendarDate() {
-        try {
-            return newInstance().newXMLGregorianCalendar(new GregorianCalendar());
-        } catch (DatatypeConfigurationException e) {
-            throw new SystemException("failed to create xmlgregcal instance", e);
+    private static List<Behandlingskjede> populateFinnbehandlingKjedeList() {
+        List<Behandlingskjede> behandlingsKjeder = new ArrayList<>();
+        behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", "MOCK-00-00-00", true));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", "MOCK-10-00-00", true));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Arbeidsavklaringspenger", "MOCK-20-00-00", true));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", "MOCK-30-00-00", false));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", "MOCK-44-00-00", false));
+        return behandlingsKjeder;
+    }
+
+    private static Behandlingskjede createFinnbehandlingKjede(String value, String kodeverkRef, boolean isFerdig) {
+        Behandlingskjede behandlingskjede = new Behandlingskjede()
+                .withStartNAVtid(createXmlGregorianDate(1, 1, 2013))
+                .withNormertBehandlingstid(new Behandlingstid().withTid(BigInteger.TEN).withType(new Behandlingstidtyper()))
+                .withBehandlingskjedetype(new Behandlingskjedetyper().withValue(value).withKodeverksRef(kodeverkRef));
+
+        if(isFerdig) {
+            behandlingskjede.setSluttNAVtid(createXmlGregorianDate(1, 1, 2014));
         }
+
+        return behandlingskjede;
+    }
+
+    private static XMLGregorianCalendar createXmlGregorianDate(int day, int month, int year) {
+        DateTime dateTime = new DateTime().withDate(year, month, day);
+        XMLGregorianCalendar xmlGregorianCalendar;
+        try {
+            xmlGregorianCalendar = newInstance().newXMLGregorianCalendar(dateTime.toGregorianCalendar());
+        } catch (DatatypeConfigurationException e) {
+            throw new ApplicationException("Failed to convert date to XMLGregorianCalendar ",e);
+        }
+        return xmlGregorianCalendar;
     }
 
 }
