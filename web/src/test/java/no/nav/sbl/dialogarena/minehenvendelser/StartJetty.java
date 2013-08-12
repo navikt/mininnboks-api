@@ -1,20 +1,18 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
 import no.nav.modig.core.context.StaticSubjectHandler;
+import no.nav.modig.testcertificates.TestCertificates;
 import no.nav.sbl.dialogarena.common.jetty.Jetty;
 
 import java.io.File;
 
-import static java.lang.System.setProperty;
 import static no.nav.modig.core.context.SubjectHandler.SUBJECTHANDLER_KEY;
 import static no.nav.modig.lang.collections.FactoryUtils.gotKeypress;
 import static no.nav.modig.lang.collections.RunnableUtils.first;
 import static no.nav.modig.lang.collections.RunnableUtils.waitFor;
 import static no.nav.modig.test.util.FilesAndDirs.TEST_RESOURCES;
 import static no.nav.modig.test.util.FilesAndDirs.WEBAPP_SOURCE;
-import static no.nav.modig.testcertificates.TestCertificates.setupKeyAndTrustStore;
 import static no.nav.sbl.dialogarena.common.jetty.Jetty.usingWar;
-import static no.nav.sbl.dialogarena.minehenvendelser.SystemProperties.load;
 
 public final class StartJetty {
 
@@ -22,13 +20,13 @@ public final class StartJetty {
 
     @SuppressWarnings({ "PMD.SystemPrintln" })
     public static void main(String[] args) {
-        setProperty("java.security.auth.login.config", "src/test/resources/login.conf");
-        setProperty("wicket.configuration", "development");
-        setProperty("disable.ssl.cn.check", "true");
-        setProperty(SUBJECTHANDLER_KEY, StaticSubjectHandler.class.getName());
+        System.setProperty("java.security.auth.login.config", "src/test/resources/login.conf");
+        System.setProperty("wicket.configuration", "development");
+        System.setProperty("disable.ssl.cn.check", "true");
+        System.setProperty(SUBJECTHANDLER_KEY, StaticSubjectHandler.class.getName());
 
-        load("/environment-test.properties");
-        setupKeyAndTrustStore();
+        SystemProperties.load("/environment-test.properties");
+        TestCertificates.setupKeyAndTrustStore();
 
         Jetty jetty = usingWar(WEBAPP_SOURCE).at("minehenvendelser").port(PORT)
                 .overrideWebXml(new File(TEST_RESOURCES, "override-web.xml"))
