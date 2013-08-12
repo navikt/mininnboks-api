@@ -17,7 +17,6 @@ public class MockData {
         mockHentData = new MockHentData();
     }
 
-
     public MockFinnData getFinnData() {
         return mockFinnData;
     }

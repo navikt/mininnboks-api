@@ -8,7 +8,7 @@ import no.nav.modig.wicket.test.FluentWicketTester;
 import no.nav.sbl.dialogarena.common.kodeverk.config.KodeverkConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.WicketApplication;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.HenvendelseConsumerTestContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -19,7 +19,7 @@ import java.util.Locale;
 
 @Configuration
 @Import({
-        ConsumerTestContext.class,
+        HenvendelseConsumerTestContext.class,
         CacheConfig.class,
         KodeverkConfig.class,
         WebContext.class

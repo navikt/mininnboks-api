@@ -66,4 +66,5 @@ public class SakogbehandlingService {
     private boolean soeknadHasStatusUnderArbeid(Behandlingskjede behandlingskjede) {
         return behandlingskjede.getSluttNAVtid() == null && behandlingskjede.getStartNAVtid() != null;
     }
+
 }

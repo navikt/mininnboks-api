@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.integration;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.ConsumerTestContext;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.HenvendelseConsumerTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
@@ -20,8 +20,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ConsumerTestContext.class})
-public class ConsumerIntegrationTest {
+@ContextConfiguration(classes = {HenvendelseConsumerTestContext.class})
+public class HenvendelseConsumerIntegrationTest {
 
     @Inject
     private BehandlingService service;

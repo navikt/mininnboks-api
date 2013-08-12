@@ -28,7 +28,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static org.webbitserver.WebServers.createWebServer;
 
 @Configuration
-public class ConsumerTestContext {
+public class HenvendelseConsumerTestContext {
 
     @Value("${test.henvendelser.ws.url}")
     private URL endpoint;

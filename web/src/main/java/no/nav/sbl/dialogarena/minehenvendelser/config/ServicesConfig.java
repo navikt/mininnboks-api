@@ -124,7 +124,6 @@ public class ServicesConfig {
     }
 
     private HenvendelsesBehandlingPortType createHenvendelsesBehandlingClient() {
-
         JaxWsProxyFactoryBean proxyFactoryBean = commonJaxWsConfig();
         proxyFactoryBean.setServiceClass(HenvendelsesBehandlingPortType.class);
         proxyFactoryBean.setWsdlLocation("classpath:HenvendelsesBehandling.wsdl");

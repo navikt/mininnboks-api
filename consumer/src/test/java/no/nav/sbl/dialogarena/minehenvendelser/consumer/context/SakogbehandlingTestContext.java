@@ -1,9 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.modig.core.exception.SystemException;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.HentSakogbehandlingWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakOgBehandlingPortTypeMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
@@ -24,13 +23,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.webbitserver.WebServer;
 
 import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.net.URL;
 import java.util.GregorianCalendar;
 import java.util.concurrent.ExecutionException;
 
+import static javax.xml.datatype.DatatypeFactory.newInstance;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.AKOTR_ID;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createSakOgBehandlingskjedeListeResponse;
 import static org.webbitserver.WebServers.createWebServer;
 
 @Configuration
@@ -66,8 +66,18 @@ public class SakogbehandlingTestContext {
                                         withBehandlingskjede(createDummyBehandlingkjede()))));
         mockData.getFinnData().addResponse("***REMOVED***", new FinnSakOgBehandlingskjedeListeResponse());
         mockData.getFinnData().addResponse("test", new FinnSakOgBehandlingskjedeListeResponse());
-        mockData.getFinnData().addResponse(AKOTR_ID, MockCreationUtil.createSakOgBehandlingskjedeListeResponse());
+        mockData.getFinnData().addResponse(AKOTR_ID, createSakOgBehandlingskjedeListeResponse());
         return mockData;
+    }
+
+    @Bean
+    public SakogbehandlingService sakogbehandlingService() {
+        return new SakogbehandlingService();
+    }
+
+    @Bean
+    public SakOgBehandlingPortType sakOgBehandlingPortType() {
+        return new SakOgBehandlingPortTypeMock();
     }
 
     private Behandlingskjede createDummyBehandlingkjede() {
@@ -84,19 +94,10 @@ public class SakogbehandlingTestContext {
 
     private XMLGregorianCalendar createDummyXMLGregorianCalendarDate() {
         try {
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar());
+            return newInstance().newXMLGregorianCalendar(new GregorianCalendar());
         } catch (DatatypeConfigurationException e) {
             throw new SystemException("failed to create xmlgregcal instance", e);
         }
     }
 
-    @Bean
-    public SakogbehandlingService sakogbehandlingService() {
-        return new SakogbehandlingService();
-    }
-
-    @Bean
-    public SakOgBehandlingPortType sakOgBehandlingPortType() {
-        return new SakOgBehandlingPortTypeMock();
-    }
 }

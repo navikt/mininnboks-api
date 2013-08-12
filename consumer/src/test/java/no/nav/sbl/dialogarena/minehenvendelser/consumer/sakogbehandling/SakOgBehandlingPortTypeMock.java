@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.SakOgBehandlingPortType;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.FinnSakOgBehandlingskjedeListeRequest;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.FinnSakOgBehandlingskjedeListeResponse;
@@ -8,11 +8,13 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingReq
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingResponse;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingskjedensBehandlingerRequest;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingskjedensBehandlingerResponse;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 
 import javax.inject.Inject;
 
-public class SakOgBehandlingPortTypeMock  implements SakOgBehandlingPortType {
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createBehandlingResponse;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createBehandlingskjedensBehandlingerResponse;
+
+public class SakOgBehandlingPortTypeMock implements SakOgBehandlingPortType {
 
     @Inject
     MockData mockData;
@@ -24,12 +26,12 @@ public class SakOgBehandlingPortTypeMock  implements SakOgBehandlingPortType {
 
     @Override
     public HentBehandlingskjedensBehandlingerResponse hentBehandlingskjedensBehandlinger(HentBehandlingskjedensBehandlingerRequest request) {
-        return MockCreationUtil.createBehandlingskjedensBehandlingerResponse();
+        return createBehandlingskjedensBehandlingerResponse();
     }
 
     @Override
     public HentBehandlingResponse hentBehandling (HentBehandlingRequest request) {
-        return MockCreationUtil.createBehandlingResponse();
+        return createBehandlingResponse();
     }
 
     @Override
