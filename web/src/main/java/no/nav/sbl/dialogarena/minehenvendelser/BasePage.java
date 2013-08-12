@@ -1,25 +1,23 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
-import static no.nav.modig.wicket.model.ModelUtils.FALSE;
-import static no.nav.modig.wicket.model.ModelUtils.TRUE;
-
-import java.util.Locale;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.frontend.ConditionalCssResource;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import no.nav.sbl.dialogarena.webkomponent.footer.FooterPanel;
 import no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel;
 import no.nav.sbl.dialogarena.webkomponent.navigasjon.NavigasjonPanel;
-
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.Locale;
+import java.util.Map;
+
+import static no.nav.modig.wicket.model.ModelUtils.FALSE;
+import static no.nav.modig.wicket.model.ModelUtils.TRUE;
 
 public class BasePage extends WebPage {
 
@@ -31,7 +29,6 @@ public class BasePage extends WebPage {
 
     @Inject
     protected CmsContentRetriever cmsContentRetriever;
-
 
     @Inject
     @Named("navigasjonslink")
