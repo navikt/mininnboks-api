@@ -18,14 +18,14 @@
         <jxb:javaType
                 name="org.joda.time.DateTime"
                 xmlType="xs:dateTime"
-                parseMethod="no.nav.sbl.dialogarena.minehenvendelser.consumer.adapter.DateTimeAdapterXml.staticUnmarshal"
-                printMethod="no.nav.sbl.dialogarena.minehenvendelser.consumer.adapter.DateTimeAdapterXml.staticMarshal"
+                parseMethod="no.nav.sbl.dialogarena.henvendelse.adapters.DateTimeAdapterXml.staticUnmarshal"
+                printMethod="no.nav.sbl.dialogarena.henvendelse.adapters.DateTimeAdapterXml.staticMarshal"
                 />
         <jxb:javaType
                 name="org.joda.time.DateMidnight"
                 xmlType="xs:date"
-                parseMethod="no.nav.sbl.dialogarena.minehenvendelser.consumer.adapter.DateAdapterXml.staticUnmarshal"
-                printMethod="no.nav.sbl.dialogarena.minehenvendelser.consumer.adapter.DateAdapterXml.staticMarshal"
+                parseMethod="no.nav.sbl.dialogarena.henvendelse.adapters.DateAdapterXml.staticUnmarshal"
+                printMethod="no.nav.sbl.dialogarena.henvendelse.adapters.DateAdapterXml.staticMarshal"
                 />
     </jxb:globalBindings>
 
