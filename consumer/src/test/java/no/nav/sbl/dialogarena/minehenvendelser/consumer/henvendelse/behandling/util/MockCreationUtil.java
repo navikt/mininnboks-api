@@ -50,13 +50,22 @@ public class MockCreationUtil {
         WSDokumentForventningOppsummering wsDokumentForventning = new WSDokumentForventningOppsummering()
                 .withHovedskjema(isHovedskjema)
                 .withInnsendingsValg(innsendingsValg);
-        Dokumentforventning dokumentforventning = Dokumentforventning.transformToDokumentforventing(wsDokumentForventning);
-        return dokumentforventning;
+        return Dokumentforventning.transformToDokumentforventing(wsDokumentForventning);
     }
 
     public static WSBrukerBehandlingOppsummering createWsBehandlingMock() {
-        return createWsBehandlingMock(new DateTime(2013, 1, 2, 1, 1), new DateTime(2013, 1, 2, 1, 1), WSBehandlingsstatus.FERDIG)
-                .withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer()).withHovedskjemaId("hovedSkjemaId");
+        return createWsBehandlingMock(new DateTime(2013, 1, 2, 1, 1), new DateTime(2013, 1, 2, 1, 1), WSBehandlingsstatus.UNDER_ARBEID)
+                .withDokumentForventningOppsummeringer(
+                        new WSDokumentForventningOppsummeringer())
+                .withHovedskjemaId("hovedSkjemaId");
+    }
+
+    private static WSDokumentForventningOppsummering createDokumentForventingOppsummering() {
+        return new WSDokumentForventningOppsummering()
+                .withInnsendingsValg(WSInnsendingsValg.SEND_SENERE)
+                .withFriTekst("texttextText")
+                .withHovedskjema(true)
+                .withKodeverkId(KODEVERK_ID_1);
     }
 
     public static WSBrukerBehandlingOppsummering createWsBehandlingMock(DateTime innsendtDato, DateTime sistEndret, WSBehandlingsstatus status, boolean ettersending) {
@@ -209,7 +218,7 @@ public class MockCreationUtil {
 
     private static XMLGregorianCalendar createXmlGregorianDate(int day, int month, int year) {
         DateTime dateTime = new DateTime().withDate(year, month, day);
-        XMLGregorianCalendar xmlGregorianCalendar = null;
+        XMLGregorianCalendar xmlGregorianCalendar;
         try {
             xmlGregorianCalendar = newInstance().newXMLGregorianCalendar(dateTime.toGregorianCalendar());
         } catch (DatatypeConfigurationException e) {
@@ -242,5 +251,16 @@ public class MockCreationUtil {
     private static Behandling createHentBehandling(BigInteger tid) {
         return new BehandlingVS()
                 .withNormertBehandlingstid(new Behandlingstid().withTid(tid));
+    }
+
+    public static List<WSBrukerBehandlingOppsummering> createBrukerBehandlingOppsumeringList() {
+        List<WSBrukerBehandlingOppsummering> oppsummeringer = new ArrayList<>();
+        WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering = createUnderArbeidEttersendingBehandling();
+        wsBrukerBehandlingOppsummering.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(createDokumentForventingOppsummering());
+        oppsummeringer.add(wsBrukerBehandlingOppsummering);
+        oppsummeringer.add(createFerdigBehandling());
+        oppsummeringer.add(createFerdigBehandlingMedIngenInnsendt());
+        oppsummeringer.add(createFerdigBehandlingMedAlleInnsendt());
+        return oppsummeringer;
     }
 }
