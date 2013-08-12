@@ -25,6 +25,7 @@ import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
 
 import org.apache.wicket.Component;
@@ -51,6 +52,7 @@ public class HomePageTest extends AbstractWicketTest {
         mock("navigasjonslink", "");
         mock("dokumentInnsendingBaseUrl", "");
         mock(TilbakemeldingService.class);
+        mock(SakogbehandlingService.class);
         applicationContext.putBean("tilbakemeldingEnabled", true);
 
         setupFakeCms();
