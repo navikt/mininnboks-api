@@ -79,7 +79,7 @@ public final class Soeknad implements Serializable {
     }
 
     private static String getNormertTidString(Behandlingskjede behandlingskjede) {
-        return behandlingskjede.getNormertBehandlingstid().getTid() + behandlingskjede.getNormertBehandlingstid().getType().getValue();
+        return behandlingskjede.getNormertBehandlingstid().getTid() + " " + behandlingskjede.getNormertBehandlingstid().getType().getValue();
     }
 
 }

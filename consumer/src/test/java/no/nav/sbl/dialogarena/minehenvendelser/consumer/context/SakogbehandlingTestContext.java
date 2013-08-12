@@ -107,7 +107,7 @@ public class SakogbehandlingTestContext {
     private static Behandlingskjede createFinnbehandlingKjede(String value, String kodeverkRef, boolean isFerdig) {
         Behandlingskjede behandlingskjede = new Behandlingskjede()
                 .withStartNAVtid(createXmlGregorianDate(1, 1, 2013))
-                .withNormertBehandlingstid(new Behandlingstid().withTid(BigInteger.TEN).withType(new Behandlingstidtyper()))
+                .withNormertBehandlingstid(new Behandlingstid().withTid(BigInteger.TEN).withType(new Behandlingstidtyper().withValue("dager")))
                 .withBehandlingskjedetype(new Behandlingskjedetyper().withValue(value).withKodeverksRef(kodeverkRef));
 
         if(isFerdig) {
