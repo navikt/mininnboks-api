@@ -1,6 +1,13 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
-import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
+import static java.lang.System.getProperty;
+import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
+import static no.nav.modig.wicket.model.ModelUtils.isEmpty;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.components.behandling.BehandlingerUnderArbeidListView;
 import no.nav.sbl.dialogarena.minehenvendelser.components.soeknader.FerdigeSoeknaderListView;
@@ -8,26 +15,21 @@ import no.nav.sbl.dialogarena.minehenvendelser.components.soeknader.SoeknaderUnd
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
+import no.nav.sbl.dialogarena.webkomponent.felles.SelvbetjeningBasePageMedTilbakemelding;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 
-import javax.inject.Inject;
-import java.util.List;
-
-import static java.lang.System.getProperty;
-import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
-import static no.nav.modig.wicket.model.ModelUtils.isEmpty;
-
 /**
  * Hovedside for applikasjonen. Laster inn behandlinger via. en service og
  * instansierer wicketmodellene med lister av innsendte og uferdige søknader
  */
-public class HomePage extends BasePage {
+public class HomePage extends SelvbetjeningBasePageMedTilbakemelding {
 
     @Inject
     private BehandlingService behandlingService;

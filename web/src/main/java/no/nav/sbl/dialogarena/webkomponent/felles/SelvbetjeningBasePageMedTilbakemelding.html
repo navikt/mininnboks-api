@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org" lang="no">
     <wicket:head>
-        <title wicket:id="tittel">[[Dine innsendinger]]</title>
+        <title wicket:id="tittel">[[Tittel]]</title>
     </wicket:head>
     <body>
-        <div class="omslag minehenvendelser">
+        <div class="omslag">
             <wicket:container wicket:id="innstillinger"/>
             <wicket:container wicket:id="navigasjon"/>
-            <wicket:child/>
+			<wicket:child/>
             <div class="fyllut"></div>
         </div>
+        <div wicket:id="panel-tilbakemelding"></div>
         <wicket:container wicket:id="footer"/>
     </body>
 </html>
