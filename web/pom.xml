@@ -68,7 +68,8 @@
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>sporsmalogsvar-jaxws</artifactId>
+            <artifactId>sporsmalogsvar-tjenestespesifikasjon</artifactId>
+            <version>0.0.3-SNAPSHOT</version>
         </dependency>
 
         <dependency>
