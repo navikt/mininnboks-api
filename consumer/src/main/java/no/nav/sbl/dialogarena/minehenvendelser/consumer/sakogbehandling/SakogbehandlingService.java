@@ -13,6 +13,8 @@ import javax.xml.ws.soap.SOAPFaultException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.transformToSoeknad;
+
 public class SakogbehandlingService {
 
     @Inject
@@ -40,7 +42,7 @@ public class SakogbehandlingService {
         for (Sak sak : portType.finnSakOgBehandlingskjedeListe(new FinnSakOgBehandlingskjedeListeRequest().withAktoerREF(aktoerId)).getSak()) {
             for (Behandlingskjede behandlingskjede : sak.getBehandlingskjede()) {
                 if (soeknadHasStatusFerdig(behandlingskjede)) {
-                    soeknadListe.add(Soeknad.transformToSoeknad(behandlingskjede));
+                    soeknadListe.add(transformToSoeknad(behandlingskjede));
                 }
             }
         }
@@ -56,7 +58,7 @@ public class SakogbehandlingService {
         for (Sak sak : portType.finnSakOgBehandlingskjedeListe(new FinnSakOgBehandlingskjedeListeRequest().withAktoerREF(aktoerId)).getSak()) {
             for (Behandlingskjede behandlingskjede : sak.getBehandlingskjede()) {
                 if (soeknadHasStatusUnderArbeid(behandlingskjede)) {
-                    soeknadListe.add(Soeknad.transformToSoeknad(behandlingskjede));
+                    soeknadListe.add(transformToSoeknad(behandlingskjede));
                 }
             }
         }

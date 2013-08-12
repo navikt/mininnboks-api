@@ -11,7 +11,8 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.d
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.UNDER_ARBEID;
 
 /**
- * Dette objektet representerer hva som logisk sett er en søknad for sluttbruker.
+ * Dette objektet representerer hva som logisk sett er en søknad for sluttbruker. Fungerer som lokalt
+ * domeneobjekt mellom genererte klasser fra cxf og wicket
  */
 public final class Soeknad implements Serializable {
 
