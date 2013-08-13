@@ -13,7 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("environment.properties") // fjern denne a plis
 @Import({
         CacheConfig.class,
-        JaxWsFeatures.Integration.class,
+        JaxWsFeatures.DisableCNCheck.class,
         ServicesConfig.class,
         WebContext.class,
         KodeverkConfig.class

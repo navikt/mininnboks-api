@@ -57,4 +57,24 @@ public interface JaxWsFeatures {
             return params;
         }
     }
+
+    @Configuration
+    class DisableCNCheck implements JaxWsFeatures {
+        @Override
+        @Bean
+        public List<Feature> jaxwsFeatures() {
+            List<Feature> features = new ArrayList<>();
+            features.add(new LoggingFeature());
+            features.add(new WSAddressingFeature());
+            return features;
+        }
+
+        @Override
+        @Bean
+        public TLSClientParameters tlsClientParameters() {
+            TLSClientParameters params = new TLSClientParameters();
+            params.setDisableCNCheck(true);
+            return params;
+        }
+    }
 }
