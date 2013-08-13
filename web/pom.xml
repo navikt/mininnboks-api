@@ -69,7 +69,6 @@
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>sporsmalogsvar-tjenestespesifikasjon</artifactId>
-            <version>0.0.3-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -85,7 +84,6 @@
 		<dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>henvendelse-felles-tjenestespesifikasjon</artifactId>
-            <version>0.0.2</version>
         </dependency>
 
         <dependency>
