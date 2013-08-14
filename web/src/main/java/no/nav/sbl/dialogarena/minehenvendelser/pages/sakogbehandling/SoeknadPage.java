@@ -8,10 +8,10 @@ public class SoeknadPage extends BasePage {
 
     public SoeknadPage(Soeknad soeknad) {
         add(
+                new Label("detaljerTittel", cmsContentRetriever.hentTekst("soeknad.detaljer.tittel")),
                 new Label("overskrift", soeknad.getTema()),
                 new Label("beskrivelse", soeknad.getBeskrivelse()),
                 new Label("behandlingstid", soeknad.getNormertBehandlingsTid())
         );
     }
-
 }

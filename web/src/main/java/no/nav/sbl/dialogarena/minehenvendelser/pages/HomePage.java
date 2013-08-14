@@ -50,7 +50,9 @@ public class HomePage extends BasePage {
         add(
                 new Label("hovedTittel", cmsContentRetriever.hentTekst("hoved.tittel")),
                 createTooltip(),
-                new Label("skjultOverskriftPaabegynte", cmsContentRetriever.hentTekst("skjult.overskrift.paabegynte")),
+                new Label("paabegynteTittel", cmsContentRetriever.hentTekst("soeknad.paabegynte.tittel")),
+                new Label("underarbeidTittel", cmsContentRetriever.hentTekst("soeknad.underarbeid.tittel")),
+                new Label("ferdigTittel", cmsContentRetriever.hentTekst("soeknad.ferdige.tittel")),
                 new BehandlingerUnderArbeidListView("behandlingerUnderArbeid", behandlinger),
                 new SoeknaderUnderArbeidListView("soeknaderUnderArbeid", sakogbehandlingService.finnSoeknaderUnderArbeid(foedselsnummerService.getFoedselsnummer())),
                 new FerdigeSoeknaderListView("ferdigeSoeknader", sakogbehandlingService.finnFerdigeSoeknader(foedselsnummerService.getFoedselsnummer())),
@@ -79,5 +81,4 @@ public class HomePage extends BasePage {
         }
 
     }
-
 }
