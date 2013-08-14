@@ -11,12 +11,12 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 
 import java.nio.charset.Charset;
 
-public class HentSakogbehandlingWebServiceMock implements HttpHandler {
+public class SakogbehandlingWebServiceMock implements HttpHandler {
 
     private final MockData mockData;
     private final SakogbehandlingResponseMarshaller marshaller;
 
-    public HentSakogbehandlingWebServiceMock(MockData mockData) {
+    public SakogbehandlingWebServiceMock(MockData mockData) {
         this.mockData = mockData;
         this.marshaller = new SakogbehandlingResponseMarshaller(createMarshaller());
     }
@@ -54,7 +54,7 @@ public class HentSakogbehandlingWebServiceMock implements HttpHandler {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                 "   <soap:Body>\n" +
-                "      <ns3:pingResponse xmlns:ns3=\"http://nav.no/tjeneste/virksomhet/henvendelsesbehandling/v1\" xmlns:ns2=\"http://nav.no/tjeneste/virksomhet/henvendelse/v1/informasjon\">\n" +
+                "      <ns3:pingResponse xmlns:ns3=\"http://nav.no/tjeneste/virksomhet/sakOgBehandling/v1/\" xmlns:ns2=\"http://nav.no/tjeneste/virksomhet/sakOgBehandling/v1/informasjon\">\n" +
                 "         <return>true</return>\n" +
                 "      </ns3:pingResponse>\n" +
                 "   </soap:Body>\n" +

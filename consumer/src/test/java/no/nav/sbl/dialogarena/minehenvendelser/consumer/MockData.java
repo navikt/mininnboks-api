@@ -25,6 +25,11 @@ public class MockData {
         return mockHentData;
     }
 
+    public void clear() {
+        mockFinnData.clear();
+        mockHentData.clear();
+    }
+
     public class MockHentData {
         private Map<String, HentBrukerBehandlingListeResponse> responses = new HashMap<>();
 
@@ -77,7 +82,7 @@ public class MockData {
             responses.put(aktorId, response);
         }
 
-        public void clearResponse() {
+        public void clear() {
             responses.clear();
         }
     }

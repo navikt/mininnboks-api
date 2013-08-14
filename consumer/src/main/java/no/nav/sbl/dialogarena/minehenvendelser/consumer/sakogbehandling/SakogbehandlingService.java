@@ -21,7 +21,7 @@ public class SakogbehandlingService {
     @Named("sakOgBehandlingPortType")
     private SakOgBehandlingPortType portType;
 
-    public List<Soeknad> hentSoeknaderUnderArbeid(String aktoerId) {
+    public List<Soeknad> finnSoeknaderUnderArbeid(String aktoerId) {
         try {
             return getSoeknaderUnderArbeid(aktoerId);
         } catch (SOAPFaultException ex) {
@@ -29,7 +29,7 @@ public class SakogbehandlingService {
         }
     }
 
-    public List<Soeknad> hentFerdigeSoeknader(String aktoerId) {
+    public List<Soeknad> finnFerdigeSoeknader(String aktoerId) {
         try {
             return getFerdigeSoeknader(aktoerId);
         } catch (SOAPFaultException ex) {

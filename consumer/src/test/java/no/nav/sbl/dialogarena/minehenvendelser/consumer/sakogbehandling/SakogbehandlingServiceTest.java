@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.SakogbehandlingTestContext;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.SakogbehandlingMockTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad;
 import org.junit.After;
 import org.junit.Test;
@@ -17,25 +17,25 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SakogbehandlingTestContext.class})
+@ContextConfiguration(classes = {SakogbehandlingMockTestContext.class})
 public class SakogbehandlingServiceTest {
 
-    @Inject
-    private MockData mockdata;
 
     @Inject
     private SakogbehandlingService service;
 
+    @Inject
+    private MockData mockdata;
+
     @Test
     public void shouldReturnSoeknaderUnderArbeid() {
-        List<Soeknad> soeknadList = service.hentSoeknaderUnderArbeid("***REMOVED***");
+        List<Soeknad> soeknadList = service.finnSoeknaderUnderArbeid("***REMOVED***");
         assertNotNull(soeknadList);
         assertThat(soeknadList.size(), equalTo(1));
     }
 
-
     @After
     public void clearData() {
-        mockdata.getFinnData().clearResponse();
+        mockdata.getFinnData().clear();
     }
 }

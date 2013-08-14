@@ -52,8 +52,8 @@ public class HomePage extends BasePage {
                 createTooltip(),
                 new Label("skjultOverskriftPaabegynte", cmsContentRetriever.hentTekst("skjult.overskrift.paabegynte")),
                 new BehandlingerUnderArbeidListView("behandlingerUnderArbeid", behandlinger),
-                new SoeknaderUnderArbeidListView("soeknaderUnderArbeid", sakogbehandlingService.hentSoeknaderUnderArbeid(foedselsnummerService.getFoedselsnummer())),
-                new FerdigeSoeknaderListView("ferdigeSoeknader", sakogbehandlingService.hentFerdigeSoeknader(foedselsnummerService.getFoedselsnummer())),
+                new SoeknaderUnderArbeidListView("soeknaderUnderArbeid", sakogbehandlingService.finnSoeknaderUnderArbeid(foedselsnummerService.getFoedselsnummer())),
+                new FerdigeSoeknaderListView("ferdigeSoeknader", sakogbehandlingService.finnFerdigeSoeknader(foedselsnummerService.getFoedselsnummer())),
                 new IngenBehandlingerView("ingenBehandlinger", behandlinger),
                 new ExternalLink("forsiden", getProperty("inngangsporten.link.url"), cmsContentRetriever.hentTekst("link.tekst.forsiden")),
                 new TilbakemeldingContainer("panel-tilbakemelding", tilbakemeldingService, tilbakemeldingEnabled, cmsContentRetriever)

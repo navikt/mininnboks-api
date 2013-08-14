@@ -7,7 +7,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.d
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 import org.joda.time.DateTime;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -52,11 +51,6 @@ public class HenvendelseConsumerIntegrationTest {
         List<Behandling> behandlingList = service.hentBehandlinger("test1");
         assertNotNull(behandlingList);
         assertThat(behandlingList.size(), equalTo(0));
-    }
-
-    @After
-    public void clearData() {
-        mockdata.getHentData().clear();
     }
 
     private static WSBrukerBehandlingOppsummering createFerdigBehandling() {

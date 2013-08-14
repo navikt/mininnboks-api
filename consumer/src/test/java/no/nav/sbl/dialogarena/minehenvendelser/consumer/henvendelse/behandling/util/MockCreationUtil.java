@@ -27,7 +27,7 @@ import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSD
 
 public class MockCreationUtil {
 
-    public static final String AKOTR_ID = "***REMOVED***";
+    public static final String AKTOR_ID = "***REMOVED***";
 
     public static final String KODEVERK_ID_1 = "NAV 00-01.00";
     public static final String KODEVERK_ID_2 = "NAV 76-08.03";
