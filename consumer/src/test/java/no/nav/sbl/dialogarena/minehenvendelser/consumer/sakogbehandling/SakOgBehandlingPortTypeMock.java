@@ -22,7 +22,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 public class SakOgBehandlingPortTypeMock implements SakOgBehandlingPortType {
 
     @Inject
-    MockData mockData;
+    private MockData mockData;
 
     @Override
     public FinnSakOgBehandlingskjedeListeResponse finnSakOgBehandlingskjedeListe(FinnSakOgBehandlingskjedeListeRequest request) {

@@ -1,9 +1,10 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer.soap;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.soap;
 
+
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 
 @XmlType(name = "Body", namespace = Envelope.HTTP_SCHEMAS_XMLSOAP_ORG_SOAP_ENVELOPE)
 public class Body {

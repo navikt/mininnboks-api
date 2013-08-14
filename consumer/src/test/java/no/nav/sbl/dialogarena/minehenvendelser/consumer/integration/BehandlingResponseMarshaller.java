@@ -1,8 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.integration;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.soap.Body;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.soap.Envelope;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.soap.Header;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.soap.Body;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.soap.Envelope;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.soap.Header;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 import org.apache.commons.collections15.Transformer;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;

@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.consumer.soap;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.soap;
 
 
 import javax.xml.bind.annotation.XmlType;

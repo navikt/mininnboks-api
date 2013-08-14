@@ -27,7 +27,7 @@ public class HentBehandlingWebServiceMock implements HttpHandler {
         jaxb2Marshaller.setClassesToBeBound(
                 no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.ObjectFactory.class,
                 no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.ObjectFactory.class,
-                no.nav.sbl.dialogarena.minehenvendelser.consumer.soap.ObjectFactory.class);
+                no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.soap.ObjectFactory.class);
         return jaxb2Marshaller;
     }
 
