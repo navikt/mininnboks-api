@@ -14,7 +14,6 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Temaer;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Behandlingskjede;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Sak;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,6 @@ import org.springframework.core.io.ClassPathResource;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +29,6 @@ import static javax.xml.datatype.DatatypeFactory.newInstance;
 
 @Configuration
 public class SakogbehandlingMockTestContext {
-
-    @Value("${test.sakogbehandling.ws.url}")
-    private URL endpoint;
 
     @Bean
     public static PropertyPlaceholderConfigurer placeholderConfigurer() {
