@@ -29,18 +29,18 @@ public class HenvendelserSpringContext {
 	protected String henvendelseEndpoint;
 
 	@Bean
-	public MeldingService meldingService() {
-		return new MeldingService();
-	}
-
-	@Bean
-	public SporsmalOgSvarPortType sporsmalOgSvarService() {
+	public SporsmalOgSvarPortType sporsmalOgSvarPortType() {
 		return createPortType(spmSvarEndpoint, "classpath:SporsmalOgSvar.wsdl", SporsmalOgSvarPortType.class);
 	}
 
 	@Bean
-	public HenvendelsePortType henvendelseService() {
+	public HenvendelsePortType henvendelsePortType() {
 		return createPortType(henvendelseEndpoint, "classpath:Henvendelse.wsdl", HenvendelsePortType.class);
+	}
+	
+	@Bean
+	public MeldingService meldingService() {
+		return new MeldingService();
 	}
 
 	private static <T> T createPortType(String address, String wsdlUrl, Class<T> serviceClass) {
