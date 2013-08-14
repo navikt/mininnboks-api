@@ -2,7 +2,6 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.HentSakogbehandlingWebServiceMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakOgBehandlingPortTypeMock;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.FinnSakOgBehandlingskjedeListeResponse;
@@ -16,11 +15,10 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehand
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Sak;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
-import org.webbitserver.WebServer;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -28,32 +26,18 @@ import java.math.BigInteger;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static javax.xml.datatype.DatatypeFactory.newInstance;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.AKOTR_ID;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFinnSakOgBehandlingskjedeListeResponse;
-import static org.webbitserver.WebServers.createWebServer;
 
 @Configuration
-public class SakogbehandlingTestContext {
+public class SakogbehandlingMockTestContext {
 
-    @Value("${sakogbehandling.ws.url}")
+    @Value("${test.sakogbehandling.ws.url}")
     private URL endpoint;
 
-    @SuppressWarnings({"PMD.PreserveStackTrace"})
     @Bean
-    public WebServer webbitWebserver() throws InterruptedException {
-        try {
-            return createWebServer(endpoint.getPort()).add(endpoint.getPath(), new HentSakogbehandlingWebServiceMock(mockData())).start().get();
-        } catch (ExecutionException e) {
-            throw new ApplicationException("Stopp Jetty!!!");
-        }
-    }
-
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-        PropertySourcesPlaceholderConfigurer placeholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+    public static PropertyPlaceholderConfigurer placeholderConfigurer() {
+        PropertyPlaceholderConfigurer placeholderConfigurer = new PropertyPlaceholderConfigurer();
         placeholderConfigurer.setLocation(new ClassPathResource("environment-test.properties"));
         return placeholderConfigurer;
     }
@@ -68,7 +52,6 @@ public class SakogbehandlingTestContext {
                                         withBehandlingskjede(createDummyBehandlingkjede()))));
         mockData.getFinnData().addResponse("***REMOVED***", new FinnSakOgBehandlingskjedeListeResponse());
         mockData.getFinnData().addResponse("test", new FinnSakOgBehandlingskjedeListeResponse());
-        mockData.getFinnData().addResponse(AKOTR_ID, createFinnSakOgBehandlingskjedeListeResponse(populateFinnbehandlingKjedeList()));
         return mockData;
     }
 
@@ -107,7 +90,7 @@ public class SakogbehandlingTestContext {
     private static Behandlingskjede createFinnbehandlingKjede(String value, String kodeverkRef, boolean isFerdig) {
         Behandlingskjede behandlingskjede = new Behandlingskjede()
                 .withStartNAVtid(createXmlGregorianDate(1, 1, 2013))
-                .withNormertBehandlingstid(new Behandlingstid().withTid(BigInteger.TEN).withType(new Behandlingstidtyper().withValue("dager")))
+                .withNormertBehandlingstid(new Behandlingstid().withTid(BigInteger.TEN).withType(new Behandlingstidtyper()))
                 .withBehandlingskjedetype(new Behandlingskjedetyper().withValue(value).withKodeverksRef(kodeverkRef));
 
         if(isFerdig) {
