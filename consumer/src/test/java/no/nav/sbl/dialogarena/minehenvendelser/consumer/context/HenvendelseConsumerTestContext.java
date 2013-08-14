@@ -5,13 +5,9 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.integration.HentBehandlingWebServiceMock;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -20,21 +16,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.webbitserver.WebServer;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_1;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_2;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_7;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_8;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_9;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWSDokumentForventningMock;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWsBehandlingMock;
-import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus.UNDER_ARBEID;
-import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.IKKE_VALGT;
-import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.LASTET_OPP;
-import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.SENDES_IKKE;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFitnesseTestData;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidEttersendingBehandling;
 import static org.webbitserver.WebServers.createWebServer;
 
 @Configuration
@@ -80,39 +66,4 @@ public class HenvendelseConsumerTestContext {
         return proxyFactoryBean.create(HenvendelsesBehandlingPortType.class);
     }
 
-    private static WSBrukerBehandlingOppsummering createUnderArbeidBehandling() {
-        WSBrukerBehandlingOppsummering wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 1, 4, 1, 1), new DateTime(2013, 1, 4, 1, 1), UNDER_ARBEID, false);
-        wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
-                createWSDokumentForventningMock(true, KODEVERK_ID_7, IKKE_VALGT),
-                createWSDokumentForventningMock(false, KODEVERK_ID_8, IKKE_VALGT));
-        return wsBehandlingMock;
-    }
-
-    private static List<WSBrukerBehandlingOppsummering> createFitnesseTestData() {
-        List<WSBrukerBehandlingOppsummering> behandlinger = new ArrayList<>();
-        WSBrukerBehandlingOppsummering behandling1 = createWsBehandlingMock(null, new DateTime(2012, 9, 19, 1, 18), WSBehandlingsstatus.UNDER_ARBEID);
-        WSBrukerBehandlingOppsummering behandling2 = createWsBehandlingMock(null, new DateTime(2012, 9, 19, 1, 18), WSBehandlingsstatus.UNDER_ARBEID);
-
-        behandling1.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
-                createWSDokumentForventningMock(true, KODEVERK_ID_1, LASTET_OPP),
-                createWSDokumentForventningMock(false, KODEVERK_ID_2, SENDES_IKKE)
-        );
-
-        behandling2.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
-                createWSDokumentForventningMock(true, KODEVERK_ID_1, LASTET_OPP),
-                createWSDokumentForventningMock(false, KODEVERK_ID_2, LASTET_OPP)
-        );
-
-        behandlinger.add(behandling1);
-        behandlinger.add(behandling2);
-        return behandlinger;
-    }
-
-    private static WSBrukerBehandlingOppsummering createUnderArbeidEttersendingBehandling() {
-        WSBrukerBehandlingOppsummering wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 1, 5, 1, 1), new DateTime(2013, 1, 5, 1, 1), WSBehandlingsstatus.UNDER_ARBEID, true);
-        wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
-                createWSDokumentForventningMock(true, KODEVERK_ID_1, WSInnsendingsValg.IKKE_VALGT),
-                createWSDokumentForventningMock(false, KODEVERK_ID_9, WSInnsendingsValg.IKKE_VALGT));
-        return wsBehandlingMock;
-    }
 }

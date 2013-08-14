@@ -18,11 +18,16 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingskj
 import org.joda.time.DateTime;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
+import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus.UNDER_ARBEID;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingType.DOKUMENT_BEHANDLING;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingType.DOKUMENT_ETTERSENDING;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentbehandlingType.SOKNADSINNSENDING;
+import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.IKKE_VALGT;
+import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.LASTET_OPP;
+import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.SENDES_IKKE;
 
 
 public class MockCreationUtil {
@@ -94,5 +99,41 @@ public class MockCreationUtil {
         return new HentBehandlingskjedensBehandlingerResponse()
                 .withBehandlingskjede(new no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.hentbehandlingskjedensbehandlinger.Behandlingskjede()
                         .withBehandling(behandlinger));
+    }
+
+    public static WSBrukerBehandlingOppsummering createUnderArbeidBehandling() {
+        WSBrukerBehandlingOppsummering wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 1, 4, 1, 1), new DateTime(2013, 1, 4, 1, 1), UNDER_ARBEID, false);
+        wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
+                createWSDokumentForventningMock(true, KODEVERK_ID_7, IKKE_VALGT),
+                createWSDokumentForventningMock(false, KODEVERK_ID_8, IKKE_VALGT));
+        return wsBehandlingMock;
+    }
+
+    public static List<WSBrukerBehandlingOppsummering> createFitnesseTestData() {
+        List<WSBrukerBehandlingOppsummering> behandlinger = new ArrayList<>();
+        WSBrukerBehandlingOppsummering behandling1 = createWsBehandlingMock(null, new DateTime(2012, 9, 19, 1, 18), WSBehandlingsstatus.UNDER_ARBEID);
+        WSBrukerBehandlingOppsummering behandling2 = createWsBehandlingMock(null, new DateTime(2012, 9, 19, 1, 18), WSBehandlingsstatus.UNDER_ARBEID);
+
+        behandling1.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
+                createWSDokumentForventningMock(true, KODEVERK_ID_1, LASTET_OPP),
+                createWSDokumentForventningMock(false, KODEVERK_ID_2, SENDES_IKKE)
+        );
+
+        behandling2.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
+                createWSDokumentForventningMock(true, KODEVERK_ID_1, LASTET_OPP),
+                createWSDokumentForventningMock(false, KODEVERK_ID_2, LASTET_OPP)
+        );
+
+        behandlinger.add(behandling1);
+        behandlinger.add(behandling2);
+        return behandlinger;
+    }
+
+    public static WSBrukerBehandlingOppsummering createUnderArbeidEttersendingBehandling() {
+        WSBrukerBehandlingOppsummering wsBehandlingMock = createWsBehandlingMock(new DateTime(2013, 1, 5, 1, 1), new DateTime(2013, 1, 5, 1, 1), WSBehandlingsstatus.UNDER_ARBEID, true);
+        wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
+                createWSDokumentForventningMock(true, KODEVERK_ID_1, WSInnsendingsValg.IKKE_VALGT),
+                createWSDokumentForventningMock(false, KODEVERK_ID_9, WSInnsendingsValg.IKKE_VALGT));
+        return wsBehandlingMock;
     }
 }
