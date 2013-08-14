@@ -127,7 +127,7 @@ public class BehandlingTest {
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getHovedskjemaId(), equalTo("hovedSkjemaId"));
+        assertThat(behandling.getHovedskjemaId(), equalTo("hovedSkjemaId-1"));
     }
 
     @After
