@@ -5,9 +5,12 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehand
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.AVSLUTTET;
+import static no.nav.modig.lang.option.Optional.optional;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.FERDIG;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.MOTTATT;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.UNDER_ARBEID;
 
 /**
@@ -16,10 +19,11 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.d
  */
 public final class Soeknad implements Serializable {
 
-    public enum SoeknadsStatus { AVSLUTTET, UNDER_ARBEID }
+    public enum SoeknadsStatus {FERDIG, UNDER_ARBEID, MOTTATT }
 
-    private DateTime startNAVTid;
-    private DateTime sluttNAVTid;
+    private DateTime paabegynt;
+    private DateTime fullfoert;
+    private DateTime mottatt;
     private String normertBehandlingsTid;
     private String tema;
     private String beskrivelse;
@@ -39,24 +43,30 @@ public final class Soeknad implements Serializable {
     }
 
     public SoeknadsStatus getSoeknadsStatus() {
-        if (startNAVTid == null) {
+        if(mottatt == null) {
             throw new SystemException("illegal state", new RuntimeException());
-        } else if (sluttNAVTid != null) {
-            return AVSLUTTET;
+        } else if(fullfoert != null) {
+            return FERDIG;
+        } else if(paabegynt != null) {
+            return UNDER_ARBEID;
         }
-        return UNDER_ARBEID;
+        return MOTTATT;
     }
 
     public String getNormertBehandlingsTid() {
         return normertBehandlingsTid;
     }
 
-    public DateTime getStartNAVTid() {
-        return startNAVTid;
+    public DateTime getPaabegynt() {
+        return paabegynt;
     }
 
-    public DateTime getSluttNAVTid() {
-        return sluttNAVTid;
+    public DateTime getFullfoert() {
+        return fullfoert;
+    }
+
+    public DateTime getMottatt() {
+        return mottatt;
     }
 
     private static Transformer<Behandlingskjede, Soeknad> soeknadTransformer = new Transformer<Behandlingskjede, Soeknad>() {
@@ -67,19 +77,24 @@ public final class Soeknad implements Serializable {
             soeknad.tema = behandlingskjede.getBehandlingskjedetype().getValue();
             soeknad.beskrivelse = behandlingskjede.getBehandlingskjedetype().getKodeverksRef();
             soeknad.normertBehandlingsTid = getNormertTidString(behandlingskjede);
-            soeknad.startNAVTid = new DateTime(behandlingskjede.getStartNAVtid().toGregorianCalendar().getTime());
-            soeknad.sluttNAVTid = calculateSluttNAVTid(behandlingskjede);
+            soeknad.mottatt = new DateTime(behandlingskjede.getStart());
+            soeknad.paabegynt = optional(behandlingskjede.getStartNAVtid()).map(dateTimeTransformer()).getOrElse(null);
+            soeknad.fullfoert = optional(behandlingskjede.getSluttNAVtid()).map(dateTimeTransformer()).getOrElse(null);
             return soeknad;
         }
 
     };
 
-    private static DateTime calculateSluttNAVTid(Behandlingskjede behandlingskjede) {
-        return behandlingskjede.getSluttNAVtid() == null ? null : new DateTime(behandlingskjede.getSluttNAVtid().toGregorianCalendar().getTime());
+    private static Transformer<XMLGregorianCalendar, DateTime> dateTimeTransformer() {
+        return new Transformer<XMLGregorianCalendar, DateTime>() {
+            @Override
+            public DateTime transform(XMLGregorianCalendar xmlGregorianCalendar) {
+                return new DateTime(xmlGregorianCalendar.getMillisecond());
+            }
+        };
     }
 
     private static String getNormertTidString(Behandlingskjede behandlingskjede) {
         return behandlingskjede.getNormertBehandlingstid().getTid() + " " + behandlingskjede.getNormertBehandlingstid().getType().getValue();
     }
-
 }
