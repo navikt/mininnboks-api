@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.xml.datatype.DatatypeFactory.newInstance;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.transformToDokumentforventing;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus.UNDER_ARBEID;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingType.DOKUMENT_BEHANDLING;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingType.DOKUMENT_ETTERSENDING;
@@ -51,7 +52,7 @@ public class MockCreationUtil {
         WSDokumentForventningOppsummering wsDokumentForventning = new WSDokumentForventningOppsummering()
                 .withHovedskjema(isHovedskjema)
                 .withInnsendingsValg(innsendingsValg);
-        return Dokumentforventning.transformToDokumentforventing(wsDokumentForventning);
+        return transformToDokumentforventing(wsDokumentForventning);
     }
 
     public static WSDokumentForventningOppsummering createWSDokumentForventningMock(boolean hovedDok, String kodeverkId, WSInnsendingsValg innsendingsValg) {
@@ -63,8 +64,7 @@ public class MockCreationUtil {
 
     public static WSBrukerBehandlingOppsummering createWsBehandlingMock() {
         return createWsBehandlingMock(new DateTime(2013, 1, 2, 1, 1), new DateTime(2013, 1, 2, 1, 1), WSBehandlingsstatus.UNDER_ARBEID)
-                .withDokumentForventningOppsummeringer(
-                        new WSDokumentForventningOppsummeringer())
+                .withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer())
                 .withHovedskjemaId("hovedSkjemaId");
     }
 
@@ -84,7 +84,6 @@ public class MockCreationUtil {
         return createWsBehandlingMock(innsendtDato, sistEndret, status, false);
     }
 
-
     public static FinnSakOgBehandlingskjedeListeResponse createFinnSakOgBehandlingskjedeListeResponse(List<Behandlingskjede> behandlingskjede) {
         return new FinnSakOgBehandlingskjedeListeResponse()
                 .withResponse(new no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.FinnSakOgBehandlingskjedeListeResponse()
@@ -97,8 +96,7 @@ public class MockCreationUtil {
     }
 
     public static HentBehandlingResponse createHentBehandlingResponse(BigInteger normertBehandlingstid) {
-        return new HentBehandlingResponse()
-                .withBehandling(createBehandling(normertBehandlingstid));
+        return new HentBehandlingResponse().withBehandling(createBehandling(normertBehandlingstid));
     }
 
     public static HentBehandlingskjedensBehandlingerResponse createHentBehandlingskjedensBehandlingerResponse(List<Behandling> behandlinger) {
@@ -187,4 +185,5 @@ public class MockCreationUtil {
         }
         return xmlGregorianCalendar;
     }
+
 }
