@@ -152,7 +152,7 @@ public class MockCreationUtil {
         return behandlingsKjeder;
     }
 
-    public static Behandlingskjede createFinnbehandlingKjede(String value, String kodeverkRef, boolean isFerdig) {
+    private static Behandlingskjede createFinnbehandlingKjede(String value, String kodeverkRef, boolean isFerdig) {
         Behandlingskjede behandlingskjede = new Behandlingskjede()
                 .withStartNAVtid(createXmlGregorianDate(1, 1, 2013))
                 .withNormertBehandlingstid(new Behandlingstid().withTid(BigInteger.TEN).withType(new Behandlingstidtyper()))
@@ -163,7 +163,7 @@ public class MockCreationUtil {
         return behandlingskjede;
     }
 
-    public static XMLGregorianCalendar createXmlGregorianDate(int day, int month, int year) {
+    private static XMLGregorianCalendar createXmlGregorianDate(int day, int month, int year) {
         DateTime dateTime = new DateTime().withDate(year, month, day);
         XMLGregorianCalendar xmlGregorianCalendar;
         try {
