@@ -4,7 +4,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.HenvendelseConsumerTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.inject.Inject;
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidBehandling;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -30,7 +30,7 @@ public class HenvendelseConsumerIntegrationTest {
 
     @Test
     public void shouldIntegrateWithHenvendelserViaWebService() {
-        mockdata.getHentData().addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(MockCreationUtil.createUnderArbeidBehandling()));
+        mockdata.getHentData().addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createUnderArbeidBehandling()));
         List<Behandling> behandlingList = service.hentBehandlinger("***REMOVED***");
         assertNotNull(behandlingList);
         assertThat(behandlingList.size(), equalTo(1));
@@ -38,7 +38,7 @@ public class HenvendelseConsumerIntegrationTest {
 
     @Test
     public void ukjentBrukerSkalGiTomListe() {
-        mockdata.getHentData().addResponse("tester", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(MockCreationUtil.createUnderArbeidBehandling()));
+        mockdata.getHentData().addResponse("tester", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createUnderArbeidBehandling()));
         List<Behandling> behandlingList = service.hentBehandlinger("test1");
         assertNotNull(behandlingList);
         assertThat(behandlingList.size(), equalTo(0));

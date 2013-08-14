@@ -3,7 +3,6 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.integration;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.SakogbehandlingIntegrationTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,7 +33,7 @@ public class SakOgbehandlingIntegrationTest {
     @Test
     public void verifyNumberOfSoeknaderUnderArbeid() {
         List<Soeknad> soeknadList = service.finnSoeknaderUnderArbeid(AKTOR_ID);
-        Assert.assertNotNull(soeknadList);
+        assertNotNull(soeknadList);
         assertThat(soeknadList.size(), equalTo(2));
     }
 
