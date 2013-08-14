@@ -11,6 +11,7 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.FinnSakOgBehandlingskjedeLi
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandling;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.BehandlingVS;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingskjedetyper;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingsstegtyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstid;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstidtyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Behandlingskjede;
@@ -150,6 +151,19 @@ public class MockCreationUtil {
         behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", "MOCK-30-00-00", false));
         behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", "MOCK-44-00-00", false));
         return behandlingsKjeder;
+    }
+
+
+    public static Behandlingskjede createDummyBehandlingkjede() {
+        return new Behandlingskjede()
+                .withNormertBehandlingstid(new Behandlingstid().withType(new Behandlingstidtyper()))
+                .withStartNAVtid(createXmlGregorianDate(1, 1, 2013))
+                .withBehandlingskjedetype(new Behandlingskjedetyper())
+                .withBehandlingskjedeId("id")
+                .withKjedensNAVfrist(createXmlGregorianDate(11, 11, 2022))
+                .withSisteBehandlingREF("sisteBehandlingref")
+                .withSisteBehandlingsstegREF("sisteBehandlingsstegref")
+                .withSisteBehandlingsstegtype(new Behandlingsstegtyper().withValue("value").withKodeRef("koderef").withKodeverksRef("kodeverksref"));
     }
 
     private static Behandlingskjede createFinnbehandlingKjede(String value, String kodeverkRef, boolean isFerdig) {
