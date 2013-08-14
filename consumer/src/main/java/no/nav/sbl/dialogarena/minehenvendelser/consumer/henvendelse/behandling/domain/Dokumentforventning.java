@@ -15,33 +15,15 @@ import static org.apache.commons.collections15.TransformerUtils.stringValueTrans
  */
 public final class Dokumentforventning implements Serializable {
 
-    public static final Transformer<Dokumentforventning, Boolean> STATUS_LASTET_OPP = new Transformer<Dokumentforventning, Boolean>() {
-        @Override
-        public Boolean transform(Dokumentforventning dokumentforventning) {
-            return dokumentforventning.isLastetOpp();
-        }
-    };
-
-    public static final Transformer<Dokumentforventning, Boolean> HOVEDSKJEMA = new Transformer<Dokumentforventning, Boolean>() {
-        @Override
-        public Boolean transform(Dokumentforventning dokumentforventning) {
-            return dokumentforventning.isHovedskjema();
-        }
-    };
-
-    private static Transformer<WSDokumentForventningOppsummering, Dokumentforventning> dokumentforventningTransformer = new Transformer<WSDokumentForventningOppsummering, Dokumentforventning>() {
-
-        @Override
-        public Dokumentforventning transform(WSDokumentForventningOppsummering wsDokumentForventningOppsummering) {
-            Dokumentforventning dokumentforventning = new Dokumentforventning();
-            dokumentforventning.friTekst = optional(wsDokumentForventningOppsummering.getFriTekst()).map(stringValueTransformer()).getOrElse(null);
-            dokumentforventning.kodeverkId = wsDokumentForventningOppsummering.getKodeverkId();
-            dokumentforventning.hovedskjema = wsDokumentForventningOppsummering.isHovedskjema();
-            dokumentforventning.innsendingsvalg = valueOf(wsDokumentForventningOppsummering.getInnsendingsValg().value());
-            return dokumentforventning;
-        }
-
-    };
+    public enum Innsendingsvalg {
+        IKKE_VALGT,
+        SEND_SENERE,
+        LASTET_OPP,
+        SEND_I_POST,
+        SENDES_AV_ANDRE,
+        SENDES_IKKE,
+        INNSENDT;
+    }
 
     private String kodeverkId;
     private Innsendingsvalg innsendingsvalg;
@@ -74,13 +56,31 @@ public final class Dokumentforventning implements Serializable {
         return LASTET_OPP.equals(innsendingsvalg);
     }
 
-    public enum Innsendingsvalg {
-        IKKE_VALGT,
-        SEND_SENERE,
-        LASTET_OPP,
-        SEND_I_POST,
-        SENDES_AV_ANDRE,
-        SENDES_IKKE,
-        INNSENDT;}
+    public static final Transformer<Dokumentforventning, Boolean> STATUS_LASTET_OPP = new Transformer<Dokumentforventning, Boolean>() {
+        @Override
+        public Boolean transform(Dokumentforventning dokumentforventning) {
+            return dokumentforventning.isLastetOpp();
+        }
+    };
 
+    public static final Transformer<Dokumentforventning, Boolean> HOVEDSKJEMA = new Transformer<Dokumentforventning, Boolean>() {
+        @Override
+        public Boolean transform(Dokumentforventning dokumentforventning) {
+            return dokumentforventning.isHovedskjema();
+        }
+    };
+
+    private static Transformer<WSDokumentForventningOppsummering, Dokumentforventning> dokumentforventningTransformer = new Transformer<WSDokumentForventningOppsummering, Dokumentforventning>() {
+
+        @Override
+        public Dokumentforventning transform(WSDokumentForventningOppsummering wsDokumentForventningOppsummering) {
+            Dokumentforventning dokumentforventning = new Dokumentforventning();
+            dokumentforventning.friTekst = optional(wsDokumentForventningOppsummering.getFriTekst()).map(stringValueTransformer()).getOrElse(null);
+            dokumentforventning.kodeverkId = wsDokumentForventningOppsummering.getKodeverkId();
+            dokumentforventning.hovedskjema = wsDokumentForventningOppsummering.isHovedskjema();
+            dokumentforventning.innsendingsvalg = valueOf(wsDokumentForventningOppsummering.getInnsendingsValg().value());
+            return dokumentforventning;
+        }
+
+    };
 }

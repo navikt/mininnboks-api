@@ -23,36 +23,11 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
  */
 public final class Behandling implements Serializable {
 
-    public static final Transformer<Behandling, Behandlingsstatus> BEHANDLINGSSTATUS_TRANSFORMER = new Transformer<Behandling, Behandlingsstatus>() {
-        @Override
-        public Behandlingsstatus transform(Behandling behandling) {
-            return behandling.getBehandlingsstatus();
-        }
-    };
+    public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG}
+
+    public enum Dokumentbehandlingstatus {DOKUMENT_BEHANDLING, DOKUMENT_ETTERSENDING}
+
     private static final String KODEVERKSID_FOR_KVITTERING = "L7";
-
-    private static Transformer<WSBrukerBehandlingOppsummering, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandlingOppsummering, Behandling>() {
-
-        @Override
-        public Behandling transform(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering) {
-            Behandling behandling = new Behandling();
-            behandling.behandlingsId = wsBrukerBehandlingOppsummering.getBehandlingsId();
-            behandling.hovedskjemaId = wsBrukerBehandlingOppsummering.getHovedskjemaId();
-            behandling.behandlingsstatus = Behandlingsstatus.valueOf(wsBrukerBehandlingOppsummering.getStatus().name());
-            behandling.dokumentbehandlingstatus = Dokumentbehandlingstatus.valueOf(wsBrukerBehandlingOppsummering.getBrukerBehandlingType().name());
-            behandling.sistEndret = wsBrukerBehandlingOppsummering.getSistEndret();
-            behandling.innsendtDato = optional(wsBrukerBehandlingOppsummering.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
-            addForventningerToBehandling(wsBrukerBehandlingOppsummering, behandling);
-            return behandling;
-        }
-
-        private void addForventningerToBehandling(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering, Behandling behandling) {
-            for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering : wsBrukerBehandlingOppsummering.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
-                behandling.dokumentforventninger.add(transformToDokumentforventing(wsDokumentForventningOppsummering));
-            }
-        }
-
-    };
 
     private String behandlingsId;
     private String hovedskjemaId;
@@ -64,14 +39,12 @@ public final class Behandling implements Serializable {
 
     private Behandling() { }
 
-    private static Transformer<DateTime, DateTime> dateTimeValueTransformer() {
-        return new Transformer<DateTime, DateTime>() {
-            @Override
-            public DateTime transform(DateTime dateTime) {
-                return dateTime;
-            }
-        };
-    }
+    public static final Transformer<Behandling, Behandlingsstatus> BEHANDLINGSSTATUS_TRANSFORMER = new Transformer<Behandling, Behandlingsstatus>() {
+        @Override
+        public Behandlingsstatus transform(Behandling behandling) {
+            return behandling.getBehandlingsstatus();
+        }
+    };
 
     public static Behandling transformToBehandling(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering) {
         return behandlingTransformer.transform(wsBrukerBehandlingOppsummering);
@@ -113,6 +86,10 @@ public final class Behandling implements Serializable {
         return on(dokumentforventninger).filter(where(HOVEDSKJEMA, equalTo(true))).head().get();
     }
 
+    public Dokumentbehandlingstatus getDokumentbehandlingstatus() {
+        return dokumentbehandlingstatus;
+    }
+
     public List<Dokumentforventning> getInnsendteDokumenter(boolean excludeHoveddokument) {
         List<Dokumentforventning> returnList = on(clearKvittering()).filter(where(STATUS_LASTET_OPP, equalTo(true))).collect();
         if (excludeHoveddokument) {
@@ -140,12 +117,37 @@ public final class Behandling implements Serializable {
         return dokumentforventningsList;
     }
 
-    public Dokumentbehandlingstatus getDokumentbehandlingstatus() {
-        return dokumentbehandlingstatus;
+    private static Transformer<WSBrukerBehandlingOppsummering, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandlingOppsummering, Behandling>() {
+
+        @Override
+        public Behandling transform(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering) {
+            Behandling behandling = new Behandling();
+            behandling.behandlingsId = wsBrukerBehandlingOppsummering.getBehandlingsId();
+            behandling.hovedskjemaId = wsBrukerBehandlingOppsummering.getHovedskjemaId();
+            behandling.behandlingsstatus = Behandlingsstatus.valueOf(wsBrukerBehandlingOppsummering.getStatus().name());
+            behandling.dokumentbehandlingstatus = Dokumentbehandlingstatus.valueOf(wsBrukerBehandlingOppsummering.getBrukerBehandlingType().name());
+            behandling.sistEndret = wsBrukerBehandlingOppsummering.getSistEndret();
+            behandling.innsendtDato = optional(wsBrukerBehandlingOppsummering.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
+            addForventningerToBehandling(wsBrukerBehandlingOppsummering, behandling);
+            return behandling;
+        }
+
+        private void addForventningerToBehandling(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering, Behandling behandling) {
+            for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering : wsBrukerBehandlingOppsummering.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
+                behandling.dokumentforventninger.add(transformToDokumentforventing(wsDokumentForventningOppsummering));
+            }
+        }
+
+    };
+
+
+    private static Transformer<DateTime, DateTime> dateTimeValueTransformer() {
+        return new Transformer<DateTime, DateTime>() {
+            @Override
+            public DateTime transform(DateTime dateTime) {
+                return dateTime;
+            }
+        };
     }
-
-    public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG}
-
-    public enum Dokumentbehandlingstatus {DOKUMENT_BEHANDLING, DOKUMENT_ETTERSENDING}
 
 }

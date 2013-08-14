@@ -30,8 +30,9 @@ public class HenvendelseConsumerIntegrationTest {
 
     @Test
     public void shouldIntegrateWithHenvendelserViaWebService() {
-        mockdata.getHentData().addResponse("***REMOVED***", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createUnderArbeidBehandling()));
-        List<Behandling> behandlingList = service.hentBehandlinger("***REMOVED***");
+        final String foedselsnummer = "***REMOVED***";
+        mockdata.getHentData().addResponse(foedselsnummer, new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createUnderArbeidBehandling()));
+        List<Behandling> behandlingList = service.hentBehandlinger(foedselsnummer);
         assertNotNull(behandlingList);
         assertThat(behandlingList.size(), equalTo(1));
     }

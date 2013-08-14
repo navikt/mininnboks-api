@@ -16,9 +16,6 @@ import org.webbitserver.WebServer;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.AKTOR_ID;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFinnSakOgBehandlingskjedeListeResponse;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.populateFinnbehandlingKjedeList;
 import static org.webbitserver.WebServers.createWebServer;
 
 @Configuration
@@ -45,9 +42,7 @@ public class SakogbehandlingIntegrationTestContext {
 
     @Bean
     public MockData mockData() {
-        MockData mockData = new MockData();
-        mockData.getFinnData().addResponse(AKTOR_ID, createFinnSakOgBehandlingskjedeListeResponse(populateFinnbehandlingKjedeList()));
-        return mockData;
+        return new MockData();
     }
 
     @Bean
