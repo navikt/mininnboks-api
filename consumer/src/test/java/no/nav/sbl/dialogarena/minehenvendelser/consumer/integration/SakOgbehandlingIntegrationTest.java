@@ -33,8 +33,7 @@ public class SakOgbehandlingIntegrationTest {
 
     @Before
     public void before() {
-        mockData.getFinnData().addResponse(AKTOR_ID,
-                createFinnSakOgBehandlingskjedeListeResponse(populateFinnbehandlingKjedeList()));
+        mockData.getFinnData().addResponse(AKTOR_ID, createFinnSakOgBehandlingskjedeListeResponse(populateFinnbehandlingKjedeList()));
     }
 
     @After
