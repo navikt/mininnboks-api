@@ -8,16 +8,12 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokument
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.FinnSakOgBehandlingskjedeListeResponse;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandling;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.BehandlingVS;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingskjedetyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingsstegtyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstid;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstidtyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Behandlingskjede;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Sak;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingResponse;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingskjedensBehandlingerResponse;
 import org.joda.time.DateTime;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -65,14 +61,14 @@ public class MockCreationUtil {
     public static WSBrukerBehandlingOppsummering createWsBehandlingMock() {
         return createWsBehandlingMock(new DateTime(2013, 1, 2, 1, 1), new DateTime(2013, 1, 2, 1, 1), WSBehandlingsstatus.UNDER_ARBEID)
                 .withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer())
-                .withHovedskjemaId("hovedSkjemaId");
+                .withHovedskjemaId("hovedSkjemaId-1");
     }
 
     public static WSBrukerBehandlingOppsummering createWsBehandlingMock(DateTime innsendtDato, DateTime sistEndret, WSBehandlingsstatus status, boolean ettersending) {
         return new WSBrukerBehandlingOppsummering()
                 .withStatus(status)
-                .withBehandlingsId("DA01-000-000-029")
-                .withHovedskjemaId("hovedSkjemaId")
+                .withBehandlingsId("behandlingsId-1")
+                .withHovedskjemaId("hovedSkjemaId-1")
                 .withInnsendtDato(innsendtDato)
                 .withSistEndret(sistEndret)
                 .withBrukerBehandlingType(ettersending ? DOKUMENT_ETTERSENDING : DOKUMENT_BEHANDLING)
@@ -82,27 +78,6 @@ public class MockCreationUtil {
 
     public static WSBrukerBehandlingOppsummering createWsBehandlingMock(DateTime innsendtDato, DateTime sistEndret, WSBehandlingsstatus status) {
         return createWsBehandlingMock(innsendtDato, sistEndret, status, false);
-    }
-
-    public static FinnSakOgBehandlingskjedeListeResponse createFinnSakOgBehandlingskjedeListeResponse(List<Behandlingskjede> behandlingskjede) {
-        return new FinnSakOgBehandlingskjedeListeResponse()
-                .withResponse(new no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.FinnSakOgBehandlingskjedeListeResponse()
-                        .withSak(new Sak().withBehandlingskjede(behandlingskjede)));
-    }
-
-    public static Behandling createBehandling(BigInteger tid) {
-        return new BehandlingVS()
-                .withNormertBehandlingstid(new Behandlingstid().withTid(tid).withType(new Behandlingstidtyper().withValue("dager")));
-    }
-
-    public static HentBehandlingResponse createHentBehandlingResponse(BigInteger normertBehandlingstid) {
-        return new HentBehandlingResponse().withBehandling(createBehandling(normertBehandlingstid));
-    }
-
-    public static HentBehandlingskjedensBehandlingerResponse createHentBehandlingskjedensBehandlingerResponse(List<Behandling> behandlinger) {
-        return new HentBehandlingskjedensBehandlingerResponse()
-                .withBehandlingskjede(new no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.hentbehandlingskjedensbehandlinger.Behandlingskjede()
-                        .withBehandling(behandlinger));
     }
 
     public static WSBrukerBehandlingOppsummering createUnderArbeidBehandling() {
@@ -141,16 +116,21 @@ public class MockCreationUtil {
         return wsBehandlingMock;
     }
 
-    public static List<Behandlingskjede> populateFinnbehandlingKjedeList() {
-        List<Behandlingskjede> behandlingsKjeder = new ArrayList<>();
-        behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", "MOCK-00-00-00", true));
-        behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", "MOCK-10-00-00", true));
-        behandlingsKjeder.add(createFinnbehandlingKjede("Arbeidsavklaringspenger", "MOCK-20-00-00", true));
-        behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", "MOCK-30-00-00", false));
-        behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", "MOCK-44-00-00", false));
-        return behandlingsKjeder;
+    public static FinnSakOgBehandlingskjedeListeResponse createFinnSakOgBehandlingskjedeListeResponse(List<Behandlingskjede> behandlingskjede) {
+        return new FinnSakOgBehandlingskjedeListeResponse()
+                .withResponse(new no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.FinnSakOgBehandlingskjedeListeResponse()
+                        .withSak(new Sak().withBehandlingskjede(behandlingskjede)));
     }
 
+    public static List<Behandlingskjede> populateFinnbehandlingKjedeList() {
+        List<Behandlingskjede> behandlingsKjeder = new ArrayList<>();
+        behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", KODEVERK_ID_1, true));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", KODEVERK_ID_2, true));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Arbeidsavklaringspenger", KODEVERK_ID_3, true));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", KODEVERK_ID_1, false));
+        behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", KODEVERK_ID_2, false));
+        return behandlingsKjeder;
+    }
 
     public static Behandlingskjede createDummyBehandlingkjede() {
         return new Behandlingskjede()
@@ -159,9 +139,9 @@ public class MockCreationUtil {
                 .withBehandlingskjedetype(new Behandlingskjedetyper())
                 .withBehandlingskjedeId("id")
                 .withKjedensNAVfrist(createXmlGregorianDate(11, 11, 2022))
-                .withSisteBehandlingREF("sisteBehandlingref")
-                .withSisteBehandlingsstegREF("sisteBehandlingsstegref")
-                .withSisteBehandlingsstegtype(new Behandlingsstegtyper().withValue("value").withKodeRef("koderef").withKodeverksRef("kodeverksref"));
+                .withSisteBehandlingREF("sisteBehandlingref-1")
+                .withSisteBehandlingsstegREF("sisteBehandlingsStegRef-1")
+                .withSisteBehandlingsstegtype(new Behandlingsstegtyper().withValue("behandlingsStegValue").withKodeRef("behandlingsStegKodeRef").withKodeverksRef(KODEVERK_ID_1));
     }
 
     private static Behandlingskjede createFinnbehandlingKjede(String value, String kodeverkRef, boolean isFerdig) {
@@ -185,5 +165,4 @@ public class MockCreationUtil {
         }
         return xmlGregorianCalendar;
     }
-
 }
