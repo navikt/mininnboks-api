@@ -1,13 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
-import static org.apache.cxf.frontend.ClientProxy.getClient;
-
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.inject.Inject;
-
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
@@ -15,7 +7,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.B
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.SakOgBehandlingPortType;
-
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -24,6 +15,13 @@ import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.inject.Inject;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.cxf.frontend.ClientProxy.getClient;
 
 /**
  * Spring config for jaxws webservices

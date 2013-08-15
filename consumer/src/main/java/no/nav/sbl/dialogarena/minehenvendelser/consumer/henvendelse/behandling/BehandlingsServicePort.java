@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
 import no.nav.modig.core.exception.SystemException;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 
@@ -14,9 +14,9 @@ import java.util.List;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.BEHANDLINGSSTATUS_TRANSFORMER;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.BEHANDLINGSSTATUS_TRANSFORMER;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.Behandlingsstatus;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.transformToBehandling;
 
 /**
  * Dette er en standardimplementasjon av grensesnittet som benytter seg av en {@link HenvendelsesBehandlingPortType} implementasjon for å spørre
@@ -29,8 +29,8 @@ public class BehandlingsServicePort implements BehandlingService {
     private HenvendelsesBehandlingPortType portType;
 
     @Override
-    public List<Behandling> hentBehandlinger(String foedselsnummer){
-        List<Behandling> behandlinger = new ArrayList<>();
+    public List<Henvendelsesbehandling> hentBehandlinger(String foedselsnummer){
+        List<Henvendelsesbehandling> behandlinger = new ArrayList<>();
         if (foedselsnummer != null) {
             try {
                 for (WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering : portType.hentBrukerBehandlingListe(foedselsnummer)) {
@@ -44,7 +44,7 @@ public class BehandlingsServicePort implements BehandlingService {
     }
 
     @Override
-    public List<Behandling> hentPabegynteBehandlinger(String foedselsnummer) {
+    public List<Henvendelsesbehandling> hentPabegynteBehandlinger(String foedselsnummer) {
         return on(hentBehandlinger(foedselsnummer)).filter(where(BEHANDLINGSSTATUS_TRANSFORMER, equalTo(Behandlingsstatus.UNDER_ARBEID))).collect();
     }
 }

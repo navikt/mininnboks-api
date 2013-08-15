@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser;
 
-import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
+import no.nav.modig.core.context.SubjectHandler;
 
 /**
  * Implementasjon som henter AktørID fra sikkerhetskontekst.
@@ -8,7 +8,7 @@ import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 public class FoedselsnummerService {
 
     public String getFoedselsnummer() {
-        return getSubjectHandler().getUid();
+        return SubjectHandler.getSubjectHandler().getUid();
     }
 
 }

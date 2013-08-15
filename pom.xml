@@ -56,6 +56,7 @@
         <dialogarena.cms.url>http://e32apvl026.oera-t.local:8080</dialogarena.cms.url>
         <henvendelse.tjenestespesifikasjon.version.1>1.1.2-SNAPSHOT</henvendelse.tjenestespesifikasjon.version.1>
         <jboss.resteasy.version>3.0.3.Final</jboss.resteasy.version>
+        <sakogbehandling.jaxws.version>1.0.0</sakogbehandling.jaxws.version>
     </properties>
 
     <dependencyManagement>
@@ -607,7 +608,7 @@
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>sakogbehandling-jaxws</artifactId>
-                <version>1.0.0</version>
+                <version>${sakogbehandling.jaxws.version}</version>
             </dependency>
 
             <dependency>

@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.integration;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.HenvendelseConsumerTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.meldinger.HentBrukerBehandlingListeResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,17 +32,17 @@ public class HenvendelseConsumerIntegrationTest {
     public void shouldIntegrateWithHenvendelserViaWebService() {
         final String foedselsnummer = "***REMOVED***";
         mockdata.getHentData().addResponse(foedselsnummer, new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createUnderArbeidBehandling()));
-        List<Behandling> behandlingList = service.hentBehandlinger(foedselsnummer);
-        assertNotNull(behandlingList);
-        assertThat(behandlingList.size(), equalTo(1));
+        List<Henvendelsesbehandling> henvendelsesbehandlingList = service.hentBehandlinger(foedselsnummer);
+        assertNotNull(henvendelsesbehandlingList);
+        assertThat(henvendelsesbehandlingList.size(), equalTo(1));
     }
 
     @Test
     public void ukjentBrukerSkalGiTomListe() {
         mockdata.getHentData().addResponse("tester", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createUnderArbeidBehandling()));
-        List<Behandling> behandlingList = service.hentBehandlinger("test1");
-        assertNotNull(behandlingList);
-        assertThat(behandlingList.size(), equalTo(0));
+        List<Henvendelsesbehandling> henvendelsesbehandlingList = service.hentBehandlinger("test1");
+        assertNotNull(henvendelsesbehandlingList);
+        assertThat(henvendelsesbehandlingList.size(), equalTo(0));
     }
 
 }

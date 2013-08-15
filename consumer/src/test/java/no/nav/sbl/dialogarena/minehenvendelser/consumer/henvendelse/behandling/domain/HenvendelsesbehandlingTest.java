@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_BEHANDLING;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.Dokumentbehandlingstatus.DOKUMENT_BEHANDLING;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.transformToBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createDokumentforventning;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWsBehandlingMock;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.LASTET_OPP;
@@ -20,81 +20,81 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
-public class BehandlingTest {
+public class HenvendelsesbehandlingTest {
 
     private static final WSInnsendingsValg IS_INNSENDT = LASTET_OPP;
     private static final WSInnsendingsValg NOT_INNSENDT = SENDES_IKKE;
     private static final boolean IS_HOVEDSKJEMA = true;
     private static final boolean NOT_HOVEDSKJEMA = false;
     public static final String KODEVERK_ID = "kodeverkId";
-    private Behandling behandling;
+    private Henvendelsesbehandling henvendelsesbehandling;
 
     @Before
     public void setup() {
         WSBrukerBehandlingOppsummering wsBrukerBehandling = createWsBehandlingMock();
-        behandling = transformToBehandling(wsBrukerBehandling);
+        henvendelsesbehandling = transformToBehandling(wsBrukerBehandling);
     }
 
     @Test
     public void filterDokumenterShouldReturnAlleDokumenterWhichAreHovedskjema() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
+        List<Dokumentforventning> dokumentforventningList = henvendelsesbehandling.getDokumentforventninger();
         Dokumentforventning dokumentforventning = createDokumentforventning(IS_HOVEDSKJEMA, IS_INNSENDT);
         dokumentforventningList.add(dokumentforventning);
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.fetchHoveddokument(), equalTo(dokumentforventning));
+        assertThat(henvendelsesbehandling.fetchHoveddokument(), equalTo(dokumentforventning));
     }
 
     @Test
     public void filterDokumenterShouldReturnAlleDokumenter() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
+        List<Dokumentforventning> dokumentforventningList = henvendelsesbehandling.getDokumentforventninger();
         dokumentforventningList.add(createDokumentforventning(IS_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(IS_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getDokumentforventninger().size(), equalTo(5));
+        assertThat(henvendelsesbehandling.getDokumentforventninger().size(), equalTo(5));
     }
 
     @Test
     public void shouldCountCorrectAmountOfInnsendteDokumenter() {
-        behandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        behandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        behandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-        behandling.getDokumentforventninger().add(createDokumentforventning(IS_HOVEDSKJEMA, NOT_INNSENDT));
+        henvendelsesbehandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        henvendelsesbehandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        henvendelsesbehandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+        henvendelsesbehandling.getDokumentforventninger().add(createDokumentforventning(IS_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getInnsendteDokumenter(false).size(), is(2));
+        assertThat(henvendelsesbehandling.getInnsendteDokumenter(false).size(), is(2));
     }
 
     @Test
     public void shouldCountCorrectAmountOfDokumenter() {
-        behandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        behandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
-        behandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
-        behandling.getDokumentforventninger().add(createDokumentforventning(IS_HOVEDSKJEMA, NOT_INNSENDT));
+        henvendelsesbehandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        henvendelsesbehandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
+        henvendelsesbehandling.getDokumentforventninger().add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
+        henvendelsesbehandling.getDokumentforventninger().add(createDokumentforventning(IS_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getRelevanteDokumenter().size(), is(4));
+        assertThat(henvendelsesbehandling.getRelevanteDokumenter().size(), is(4));
     }
 
     @Test
     public void shouldReturnAntallDokumenterUnntattHovedskjema() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
+        List<Dokumentforventning> dokumentforventningList = henvendelsesbehandling.getDokumentforventninger();
         Dokumentforventning hovedSkjema = createDokumentforventning(IS_HOVEDSKJEMA, IS_INNSENDT);
-        setInternalState(behandling, "dokumentbehandlingstatus", DOKUMENT_ETTERSENDING);
+        setInternalState(henvendelsesbehandling, "dokumentbehandlingstatus", DOKUMENT_ETTERSENDING);
         dokumentforventningList.add(hovedSkjema);
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getRelevanteDokumenter().size(), equalTo(3));
+        assertThat(henvendelsesbehandling.getRelevanteDokumenter().size(), equalTo(3));
     }
 
     @Test
     public void shouldReturnNumberOfMissingDokumenter() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
+        List<Dokumentforventning> dokumentforventningList = henvendelsesbehandling.getDokumentforventninger();
         Dokumentforventning hovedSkjema = createDokumentforventning(IS_HOVEDSKJEMA, IS_INNSENDT);
         setInternalState(hovedSkjema, KODEVERK_ID, KODEVERK_ID);
         dokumentforventningList.add(hovedSkjema);
@@ -102,24 +102,24 @@ public class BehandlingTest {
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.hasManglendeDokumenter(), equalTo(true));
+        assertThat(henvendelsesbehandling.hasManglendeDokumenter(), equalTo(true));
     }
 
     @Test
     public void shouldReturnNumberOfMissingDokumenterExceptHoveddokument() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
+        List<Dokumentforventning> dokumentforventningList = henvendelsesbehandling.getDokumentforventninger();
         Dokumentforventning hovedSkjema = createDokumentforventning(IS_HOVEDSKJEMA, NOT_INNSENDT);
         dokumentforventningList.add(hovedSkjema);
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, IS_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getInnsendteDokumenter(true).size(), equalTo(1));
+        assertThat(henvendelsesbehandling.getInnsendteDokumenter(true).size(), equalTo(1));
     }
 
     @Test
     public void getTittelShouldReturnKodeverkIdFromHovedskjema() {
-        List<Dokumentforventning> dokumentforventningList = behandling.getDokumentforventninger();
+        List<Dokumentforventning> dokumentforventningList = henvendelsesbehandling.getDokumentforventninger();
         Dokumentforventning hovedSkjema = createDokumentforventning(IS_HOVEDSKJEMA, IS_INNSENDT);
         setInternalState(hovedSkjema, KODEVERK_ID, KODEVERK_ID);
         dokumentforventningList.add(hovedSkjema);
@@ -127,12 +127,12 @@ public class BehandlingTest {
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
         dokumentforventningList.add(createDokumentforventning(NOT_HOVEDSKJEMA, NOT_INNSENDT));
 
-        assertThat(behandling.getHovedskjemaId(), equalTo("hovedSkjemaId-1"));
+        assertThat(henvendelsesbehandling.getHovedskjemaId(), equalTo("hovedSkjemaId-1"));
     }
 
     @After
     public void resetData() {
-        setInternalState(behandling, "dokumentbehandlingstatus", DOKUMENT_BEHANDLING);
+        setInternalState(henvendelsesbehandling, "dokumentbehandlingstatus", DOKUMENT_BEHANDLING);
     }
 
 }

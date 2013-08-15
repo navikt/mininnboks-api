@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.components.behandling;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -16,27 +16,27 @@ import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.ApplicationConstants.DATO_FORMAT;
 import static no.nav.sbl.dialogarena.minehenvendelser.ApplicationConstants.DEFAULT_LOCALE;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.BEHANDLINGSSTATUS_TRANSFORMER;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Behandlingsstatus.UNDER_ARBEID;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.BEHANDLINGSSTATUS_TRANSFORMER;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.Behandlingsstatus.UNDER_ARBEID;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
 
 public class BehandlingerUnderArbeidListView extends BehandlingerListView {
 
-    public BehandlingerUnderArbeidListView(String id, List<? extends Behandling> behandlinger) {
+    public BehandlingerUnderArbeidListView(String id, List<? extends Henvendelsesbehandling> behandlinger) {
         super(id, filterAndSort(behandlinger));
     }
 
-    private static List<? extends Behandling> filterAndSort(List<? extends Behandling> behandlinger) {
-        return on(behandlinger).filter(where(BEHANDLINGSSTATUS_TRANSFORMER, equalTo(UNDER_ARBEID))).collect(new Comparator<Behandling>() {
+    private static List<? extends Henvendelsesbehandling> filterAndSort(List<? extends Henvendelsesbehandling> behandlinger) {
+        return on(behandlinger).filter(where(BEHANDLINGSSTATUS_TRANSFORMER, equalTo(UNDER_ARBEID))).collect(new Comparator<Henvendelsesbehandling>() {
             @Override
-            public int compare(Behandling arg0, Behandling arg1) {
+            public int compare(Henvendelsesbehandling arg0, Henvendelsesbehandling arg1) {
                 return arg1.getSistEndret().compareTo(arg0.getSistEndret());
             }
         });
     }
 
     @Override
-    protected void populateItem(ListItem<Behandling> item) {
+    protected void populateItem(ListItem<Henvendelsesbehandling> item) {
         String dokumentInnsendingUrl = getProperty("dokumentinnsending.link.url") + item.getModelObject().getBehandlingsId();
         String formattedDate = new SimpleDateFormat(DATO_FORMAT, DEFAULT_LOCALE).format(item.getModelObject().getSistEndret().toDate());
         item.add(
@@ -45,7 +45,7 @@ public class BehandlingerUnderArbeidListView extends BehandlingerListView {
                 new ExternalLink("fortsettLink", dokumentInnsendingUrl, innholdstekster.hentTekst("behandling.fortsett.innsending.link.tekst")));
     }
 
-    private Label getTittel(Behandling item) {
+    private Label getTittel(Henvendelsesbehandling item) {
         if (item.getDokumentbehandlingstatus() == DOKUMENT_ETTERSENDING) {
             return createFormattedLabel("tittel", innholdstekster.hentTekst("behandling.ettersending.tekst"), kodeverk.getTittel(item.getKodeverkId()));
         }

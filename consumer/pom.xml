@@ -89,6 +89,11 @@
             <artifactId>hamcrest-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-security-core</artifactId>
+        </dependency>
+
         <!-- test dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>

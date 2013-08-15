@@ -13,7 +13,7 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.modig.lang.option.Optional.optional;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.Dokumentbehandlingstatus.DOKUMENT_ETTERSENDING;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.HOVEDSKJEMA;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.STATUS_LASTET_OPP;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Dokumentforventning.transformToDokumentforventing;
@@ -21,7 +21,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 /**
  * Domeneobjekt som representerer en behandling
  */
-public final class Behandling implements Serializable {
+public final class Henvendelsesbehandling implements Serializable {
 
     public enum Behandlingsstatus {AVBRUTT_AV_BRUKER, IKKE_SPESIFISERT, UNDER_ARBEID, FERDIG}
 
@@ -37,16 +37,16 @@ public final class Behandling implements Serializable {
     private Dokumentbehandlingstatus dokumentbehandlingstatus;
     private List<Dokumentforventning> dokumentforventninger = new ArrayList<>();
 
-    private Behandling() { }
+    private Henvendelsesbehandling() { }
 
-    public static final Transformer<Behandling, Behandlingsstatus> BEHANDLINGSSTATUS_TRANSFORMER = new Transformer<Behandling, Behandlingsstatus>() {
+    public static final Transformer<Henvendelsesbehandling, Behandlingsstatus> BEHANDLINGSSTATUS_TRANSFORMER = new Transformer<Henvendelsesbehandling, Behandlingsstatus>() {
         @Override
-        public Behandlingsstatus transform(Behandling behandling) {
-            return behandling.getBehandlingsstatus();
+        public Behandlingsstatus transform(Henvendelsesbehandling henvendelsesbehandling) {
+            return henvendelsesbehandling.getBehandlingsstatus();
         }
     };
 
-    public static Behandling transformToBehandling(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering) {
+    public static Henvendelsesbehandling transformToBehandling(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering) {
         return behandlingTransformer.transform(wsBrukerBehandlingOppsummering);
     }
 
@@ -117,24 +117,24 @@ public final class Behandling implements Serializable {
         return dokumentforventningsList;
     }
 
-    private static Transformer<WSBrukerBehandlingOppsummering, Behandling> behandlingTransformer = new Transformer<WSBrukerBehandlingOppsummering, Behandling>() {
+    private static Transformer<WSBrukerBehandlingOppsummering, Henvendelsesbehandling> behandlingTransformer = new Transformer<WSBrukerBehandlingOppsummering, Henvendelsesbehandling>() {
 
         @Override
-        public Behandling transform(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering) {
-            Behandling behandling = new Behandling();
-            behandling.behandlingsId = wsBrukerBehandlingOppsummering.getBehandlingsId();
-            behandling.hovedskjemaId = wsBrukerBehandlingOppsummering.getHovedskjemaId();
-            behandling.behandlingsstatus = Behandlingsstatus.valueOf(wsBrukerBehandlingOppsummering.getStatus().name());
-            behandling.dokumentbehandlingstatus = Dokumentbehandlingstatus.valueOf(wsBrukerBehandlingOppsummering.getBrukerBehandlingType().name());
-            behandling.sistEndret = wsBrukerBehandlingOppsummering.getSistEndret();
-            behandling.innsendtDato = optional(wsBrukerBehandlingOppsummering.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
-            addForventningerToBehandling(wsBrukerBehandlingOppsummering, behandling);
-            return behandling;
+        public Henvendelsesbehandling transform(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering) {
+            Henvendelsesbehandling henvendelsesbehandling = new Henvendelsesbehandling();
+            henvendelsesbehandling.behandlingsId = wsBrukerBehandlingOppsummering.getBehandlingsId();
+            henvendelsesbehandling.hovedskjemaId = wsBrukerBehandlingOppsummering.getHovedskjemaId();
+            henvendelsesbehandling.behandlingsstatus = Behandlingsstatus.valueOf(wsBrukerBehandlingOppsummering.getStatus().name());
+            henvendelsesbehandling.dokumentbehandlingstatus = Dokumentbehandlingstatus.valueOf(wsBrukerBehandlingOppsummering.getBrukerBehandlingType().name());
+            henvendelsesbehandling.sistEndret = wsBrukerBehandlingOppsummering.getSistEndret();
+            henvendelsesbehandling.innsendtDato = optional(wsBrukerBehandlingOppsummering.getInnsendtDato()).map(dateTimeValueTransformer()).getOrElse(null);
+            addForventningerToBehandling(wsBrukerBehandlingOppsummering, henvendelsesbehandling);
+            return henvendelsesbehandling;
         }
 
-        private void addForventningerToBehandling(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering, Behandling behandling) {
+        private void addForventningerToBehandling(WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering, Henvendelsesbehandling henvendelsesbehandling) {
             for (WSDokumentForventningOppsummering wsDokumentForventningOppsummering : wsBrukerBehandlingOppsummering.getDokumentForventningOppsummeringer().getDokumentForventningOppsummering()) {
-                behandling.dokumentforventninger.add(transformToDokumentforventing(wsDokumentForventningOppsummering));
+                henvendelsesbehandling.dokumentforventninger.add(transformToDokumentforventing(wsDokumentForventningOppsummering));
             }
         }
 

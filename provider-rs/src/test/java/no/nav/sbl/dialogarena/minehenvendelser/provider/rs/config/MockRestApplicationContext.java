@@ -9,5 +9,6 @@ import org.springframework.context.annotation.Import;
         RestServiceConfig.class,
         KodeverkConfig.class
 })
-public class RestApplicationContext {
+public class MockRestApplicationContext {
+    public static final String AKTOR_ID = "***REMOVED***";
 }

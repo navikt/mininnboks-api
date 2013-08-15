@@ -6,7 +6,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.components.behandling.Behandlinge
 import no.nav.sbl.dialogarena.minehenvendelser.components.soeknader.FerdigeSoeknaderListView;
 import no.nav.sbl.dialogarena.minehenvendelser.components.soeknader.SoeknaderUnderArbeidListView;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer;
@@ -45,7 +45,7 @@ public class HomePage extends BasePage {
     private Boolean tilbakemeldingEnabled;
 
     public HomePage() {
-        List<Behandling> behandlinger = behandlingService.hentBehandlinger(foedselsnummerService.getFoedselsnummer());
+        List<Henvendelsesbehandling> behandlinger = behandlingService.hentBehandlinger(foedselsnummerService.getFoedselsnummer());
 
         add(
                 new Label("hovedTittel", cmsContentRetriever.hentTekst("hoved.tittel")),
@@ -70,7 +70,7 @@ public class HomePage extends BasePage {
 
     private class IngenBehandlingerView extends WebMarkupContainer {
 
-        public IngenBehandlingerView(String id, List<Behandling> behandlinger) {
+        public IngenBehandlingerView(String id, List<Henvendelsesbehandling> behandlinger) {
             super(id);
 
             add(visibleIf(isEmpty(behandlinger)));

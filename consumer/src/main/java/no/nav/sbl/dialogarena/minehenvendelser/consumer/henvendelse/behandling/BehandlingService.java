@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling;
 
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface BehandlingService {
      * @param foedselsnummer unik identifikator for en aktør.
      * @return En liste med behandlinger knyttet til aktøren
      */
-    List<Behandling> hentBehandlinger(String foedselsnummer);
-    List<Behandling> hentPabegynteBehandlinger(String foedselsnummer);
+    List<Henvendelsesbehandling> hentBehandlinger(String foedselsnummer);
+    List<Henvendelsesbehandling> hentPabegynteBehandlinger(String foedselsnummer);
 
 }

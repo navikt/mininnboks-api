@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.pages;
 import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus;
@@ -22,7 +22,7 @@ import static java.util.Arrays.asList;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComponent;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.ofType;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.transformToBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_1;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_2;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_3;
@@ -72,7 +72,7 @@ public class HomePageTest extends AbstractWicketTest {
     @Test
     public void renderHomePageWithNotSentBehandling() {
         String testTittel1 = KODEVERK_ID_1;
-        List<Behandling> behandlinger = createListWithOneNotSent();
+        List<Henvendelsesbehandling> behandlinger = createListWithOneNotSent();
         when(behandlingServiceMock.hentBehandlinger(TEST_FNR)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
 
@@ -86,7 +86,7 @@ public class HomePageTest extends AbstractWicketTest {
     public void renderHomePageWithSortedViewOfNotSentBehandling() {
         String testTittel1 = KODEVERK_ID_1;
         String testTittel2 = KODEVERK_ID_2;
-        List<Behandling> behandlinger = createListWithTwoNotSent();
+        List<Henvendelsesbehandling> behandlinger = createListWithTwoNotSent();
         when(behandlingServiceMock.hentBehandlinger(TEST_FNR)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
@@ -118,7 +118,7 @@ public class HomePageTest extends AbstractWicketTest {
     public void renderHomePageWithViewofNotSentEtterbehandling() {
         String testFnr = "svein";
         String testTittel1 = KODEVERK_ID_1;
-        List<Behandling> behandlinger = createListWithOneNotSentEttersending();
+        List<Henvendelsesbehandling> behandlinger = createListWithOneNotSentEttersending();
         when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(testFnr);
         when(behandlingServiceMock.hentBehandlinger(testFnr)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
@@ -129,20 +129,20 @@ public class HomePageTest extends AbstractWicketTest {
         assertThat(labels.get(0).getDefaultModelObjectAsString(), equalTo("Ettersendelse til " + testTittel1));
     }
 
-    private List<Behandling> createListWithOneNotSent() {
-        List<Behandling> behandlinger = new ArrayList<>();
+    private List<Henvendelsesbehandling> createListWithOneNotSent() {
+        List<Henvendelsesbehandling> behandlinger = new ArrayList<>();
         behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2010, 1, 1, 12, 0), KODEVERK_ID_1)));
         return behandlinger;
     }
 
-    private List<Behandling> createListWithOneNotSentEttersending() {
-        List<Behandling> behandlinger = new ArrayList<>();
+    private List<Henvendelsesbehandling> createListWithOneNotSentEttersending() {
+        List<Henvendelsesbehandling> behandlinger = new ArrayList<>();
         behandlinger.add(transformToBehandling(createUnderArbeidEttersendingBehandling()));
         return behandlinger;
     }
 
-    private List<Behandling> createListWithTwoNotSent() {
-        List<Behandling> behandlinger = new ArrayList<>();
+    private List<Henvendelsesbehandling> createListWithTwoNotSent() {
+        List<Henvendelsesbehandling> behandlinger = new ArrayList<>();
         behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2010, 1, 1, 12, 0), KODEVERK_ID_1)));
         behandlinger.add(transformToBehandling(createUnderArbeidBehandling(new DateTime(2012, 1, 1, 12, 0), KODEVERK_ID_2)));
         return behandlinger;

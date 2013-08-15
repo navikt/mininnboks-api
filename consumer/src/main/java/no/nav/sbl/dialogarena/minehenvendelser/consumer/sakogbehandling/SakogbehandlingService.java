@@ -69,4 +69,7 @@ public class SakogbehandlingService {
         return behandlingskjede.getSluttNAVtid() == null && behandlingskjede.getStartNAVtid() != null;
     }
 
+    public List<Soeknad> finnMottatteSoeknader(String aktoerId) {
+        throw new RuntimeException("Not yet implemented");
+    }
 }

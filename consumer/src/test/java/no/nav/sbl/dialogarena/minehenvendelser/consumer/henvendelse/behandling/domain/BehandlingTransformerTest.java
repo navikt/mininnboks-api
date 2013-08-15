@@ -6,7 +6,7 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokument
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Behandling.transformToBehandling;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.transformToBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWsBehandlingMock;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus.FERDIG;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingType.DOKUMENT_BEHANDLING;
@@ -32,13 +32,13 @@ public class BehandlingTransformerTest {
                 .withDokumentbehandlingType(SOKNADSINNSENDING)
                 .withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer());
 
-        Behandling behandling = transformToBehandling(wsBrukerBehandling);
+        Henvendelsesbehandling henvendelsesbehandling = transformToBehandling(wsBrukerBehandling);
 
-        assertThat(behandling.getBehandlingsstatus().name(), equalTo(FERDIG.name()));
-        assertThat(behandling.getBehandlingsId(), equalTo("behandlingId"));
-        assertThat(behandling.getHovedskjemaId(), equalTo("hovedSkjemaId"));
-        assertThat(behandling.getInnsendtDato(), equalTo(innsendtDato));
-        assertThat(behandling.getSistEndret(), equalTo(sistEndret));
+        assertThat(henvendelsesbehandling.getBehandlingsstatus().name(), equalTo(FERDIG.name()));
+        assertThat(henvendelsesbehandling.getBehandlingsId(), equalTo("behandlingId"));
+        assertThat(henvendelsesbehandling.getHovedskjemaId(), equalTo("hovedSkjemaId"));
+        assertThat(henvendelsesbehandling.getInnsendtDato(), equalTo(innsendtDato));
+        assertThat(henvendelsesbehandling.getSistEndret(), equalTo(sistEndret));
     }
 
     @Test
@@ -56,11 +56,11 @@ public class BehandlingTransformerTest {
         WSBrukerBehandlingOppsummering wsBrukerBehandling = createWsBehandlingMock();
         wsBrukerBehandling.withDokumentForventningOppsummeringer(new WSDokumentForventningOppsummeringer().withDokumentForventningOppsummering(wsDokumentForventningOppsummering, wsDokumentForventningOppsummering1));
 
-        Behandling behandling = transformToBehandling(wsBrukerBehandling);
+        Henvendelsesbehandling henvendelsesbehandling = transformToBehandling(wsBrukerBehandling);
 
-        assertThat(behandling.getDokumentforventninger().size(), equalTo(2));
-        assertThat(behandling.getDokumentforventninger().get(0).getFriTekst(), equalTo("fritekst1"));
-        assertThat(behandling.getDokumentforventninger().get(1).getFriTekst(), equalTo("fritekst2"));
+        assertThat(henvendelsesbehandling.getDokumentforventninger().size(), equalTo(2));
+        assertThat(henvendelsesbehandling.getDokumentforventninger().get(0).getFriTekst(), equalTo("fritekst1"));
+        assertThat(henvendelsesbehandling.getDokumentforventninger().get(1).getFriTekst(), equalTo("fritekst2"));
     }
 
 }
