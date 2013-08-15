@@ -77,7 +77,7 @@ public final class Soeknad implements Serializable {
             soeknad.tema = behandlingskjede.getBehandlingskjedetype().getValue();
             soeknad.beskrivelse = behandlingskjede.getBehandlingskjedetype().getKodeverksRef();
             soeknad.normertBehandlingsTid = getNormertTidString(behandlingskjede);
-            soeknad.mottatt = new DateTime(behandlingskjede.getStart());
+            soeknad.mottatt = new DateTime(behandlingskjede.getStart().getMillisecond());
             soeknad.paabegynt = optional(behandlingskjede.getStartNAVtid()).map(dateTimeTransformer()).getOrElse(null);
             soeknad.fullfoert = optional(behandlingskjede.getSluttNAVtid()).map(dateTimeTransformer()).getOrElse(null);
             return soeknad;
