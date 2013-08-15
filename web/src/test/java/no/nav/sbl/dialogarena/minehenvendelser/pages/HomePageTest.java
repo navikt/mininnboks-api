@@ -73,7 +73,7 @@ public class HomePageTest extends AbstractWicketTest {
     public void renderHomePageWithNotSentBehandling() {
         String testTittel1 = KODEVERK_ID_1;
         List<Henvendelsesbehandling> behandlinger = createListWithOneNotSent();
-        when(behandlingServiceMock.hentBehandlinger(TEST_FNR)).thenReturn(behandlinger);
+        when(behandlingServiceMock.hentPabegynteBehandlinger(TEST_FNR)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
 
         Component behandlingerUnderArbeid = wicketTester.goTo(HomePage.class).get().component(withId("behandlingerUnderArbeid"));
@@ -87,7 +87,7 @@ public class HomePageTest extends AbstractWicketTest {
         String testTittel1 = KODEVERK_ID_1;
         String testTittel2 = KODEVERK_ID_2;
         List<Henvendelsesbehandling> behandlinger = createListWithTwoNotSent();
-        when(behandlingServiceMock.hentBehandlinger(TEST_FNR)).thenReturn(behandlinger);
+        when(behandlingServiceMock.hentPabegynteBehandlinger(TEST_FNR)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
         when(kodeverkServiceMock.getTittel(testTittel2)).thenReturn(testTittel2);
 
@@ -120,7 +120,7 @@ public class HomePageTest extends AbstractWicketTest {
         String testTittel1 = KODEVERK_ID_1;
         List<Henvendelsesbehandling> behandlinger = createListWithOneNotSentEttersending();
         when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(testFnr);
-        when(behandlingServiceMock.hentBehandlinger(testFnr)).thenReturn(behandlinger);
+        when(behandlingServiceMock.hentPabegynteBehandlinger(testFnr)).thenReturn(behandlinger);
         when(kodeverkServiceMock.getTittel(testTittel1)).thenReturn(testTittel1);
 
         Component behandlingerUnderArbeid = wicketTester.goTo(HomePage.class).get().component(withId("behandlingerUnderArbeid"));

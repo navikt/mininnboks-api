@@ -45,7 +45,7 @@ public class HomePage extends BasePage {
     private Boolean tilbakemeldingEnabled;
 
     public HomePage() {
-        List<Henvendelsesbehandling> behandlinger = behandlingService.hentBehandlinger(foedselsnummerService.getFoedselsnummer());
+        List<Henvendelsesbehandling> behandlinger = behandlingService.hentPabegynteBehandlinger(foedselsnummerService.getFoedselsnummer());
 
         add(
                 new Label("hovedTittel", cmsContentRetriever.hentTekst("hoved.tittel")),

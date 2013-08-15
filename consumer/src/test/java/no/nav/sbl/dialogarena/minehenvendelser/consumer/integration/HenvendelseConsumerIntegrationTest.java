@@ -32,7 +32,7 @@ public class HenvendelseConsumerIntegrationTest {
     public void shouldIntegrateWithHenvendelserViaWebService() {
         final String foedselsnummer = "***REMOVED***";
         mockdata.getHentData().addResponse(foedselsnummer, new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createUnderArbeidBehandling()));
-        List<Henvendelsesbehandling> henvendelsesbehandlingList = service.hentBehandlinger(foedselsnummer);
+        List<Henvendelsesbehandling> henvendelsesbehandlingList = service.hentPabegynteBehandlinger(foedselsnummer);
         assertNotNull(henvendelsesbehandlingList);
         assertThat(henvendelsesbehandlingList.size(), equalTo(1));
     }
@@ -40,7 +40,7 @@ public class HenvendelseConsumerIntegrationTest {
     @Test
     public void ukjentBrukerSkalGiTomListe() {
         mockdata.getHentData().addResponse("tester", new HentBrukerBehandlingListeResponse().withBrukerBehandlinger(createUnderArbeidBehandling()));
-        List<Henvendelsesbehandling> henvendelsesbehandlingList = service.hentBehandlinger("test1");
+        List<Henvendelsesbehandling> henvendelsesbehandlingList = service.hentPabegynteBehandlinger("test1");
         assertNotNull(henvendelsesbehandlingList);
         assertThat(henvendelsesbehandlingList.size(), equalTo(0));
     }

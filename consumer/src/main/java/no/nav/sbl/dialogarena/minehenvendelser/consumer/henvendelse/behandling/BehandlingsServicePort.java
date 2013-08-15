@@ -28,8 +28,7 @@ public class BehandlingsServicePort implements BehandlingService {
     @Named("getHenvendelsesBehandlingPortType")
     private HenvendelsesBehandlingPortType portType;
 
-    @Override
-    public List<Henvendelsesbehandling> hentBehandlinger(String foedselsnummer){
+    private List<Henvendelsesbehandling> hentBehandlinger(String foedselsnummer){
         List<Henvendelsesbehandling> behandlinger = new ArrayList<>();
         if (foedselsnummer != null) {
             try {

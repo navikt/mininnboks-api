@@ -13,9 +13,8 @@ public interface BehandlingService {
     /**
      * Henter ut en liste over behandlinger som er knyttet til en aktørId. Parameteren hentes ut fra innloggings/sikkerhetskontekst implisitt
      * @param foedselsnummer unik identifikator for en aktør.
-     * @return En liste med behandlinger knyttet til aktøren
+     * @return En liste med påbegynte behandlinger knyttet til aktøren
      */
-    List<Henvendelsesbehandling> hentBehandlinger(String foedselsnummer);
     List<Henvendelsesbehandling> hentPabegynteBehandlinger(String foedselsnummer);
 
 }
