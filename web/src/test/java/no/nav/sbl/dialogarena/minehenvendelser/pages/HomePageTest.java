@@ -1,8 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
-import no.nav.modig.content.CmsContentRetriever;
-import no.nav.modig.content.ValueRetriever;
-import no.nav.modig.utils.UTF8Control;
 import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
@@ -19,9 +16,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComponent;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.ofType;
@@ -98,6 +93,18 @@ public class HomePageTest extends AbstractWicketTest {
         assertThat(labels.get(0).getDefaultModelObjectAsString(), equalTo(testTittel2));
         assertThat(labels.get(1).getDefaultModelObjectAsString(), equalTo(testTittel1));
     }
+
+    @Test
+    public void homePageShouldContainSoeknaderUnderArbeidListView() {
+        wicketTester.goTo(HomePage.class)
+                .should().containComponent(withId("soeknaderUnderArbeid"));
+    }
+//
+//    @Test
+//    public void soeknaderUnderArbeidListViewShouldContainALinkToSoeknadPage() {
+//        wicketTester.goTo(HomePage.class)
+//                .click().l
+//    }
 
     @Test
     public void renderHomePageWithViewofNotSentEtterbehandling() {
