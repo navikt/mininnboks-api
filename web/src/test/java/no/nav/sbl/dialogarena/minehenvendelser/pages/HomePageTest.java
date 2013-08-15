@@ -133,22 +133,6 @@ public class HomePageTest extends AbstractWicketTest {
         return behandlinger;
     }
 
-    private void setupFakeCms() {
-        ValueRetriever tekstValueRetriever = new ValueRetriever() {
-            private ResourceBundle appBundle = ResourceBundle.getBundle("content/innholdstekster", new Locale("nb"), new UTF8Control());
-            private ResourceBundle webkomponenterBundle = ResourceBundle.getBundle("content/sbl-webkomponenter", new Locale("nb"), new UTF8Control());
-
-            @Override
-            public String getValueOf(String key, String language) {
-                return appBundle.containsKey(key) ? appBundle.getString(key) : webkomponenterBundle.getString(key);
-            }
-        };
-        CmsContentRetriever innholdstekster = new CmsContentRetriever();
-        innholdstekster.setTeksterRetriever(tekstValueRetriever);
-        innholdstekster.setDefaultLocale("no");
-        applicationContext.putBean(innholdstekster);
-    }
-
     private static WSBrukerBehandlingOppsummering createUnderArbeidBehandling(DateTime innsendtDato, String hovedSkjemaId) {
         WSBrukerBehandlingOppsummering wsBehandlingMock = createWsBehandlingMock(innsendtDato, innsendtDato, UNDER_ARBEID, false);
         wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(

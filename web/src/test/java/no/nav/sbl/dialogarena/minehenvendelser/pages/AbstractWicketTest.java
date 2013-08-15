@@ -1,5 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.pages;
 
+import no.nav.modig.content.CmsContentRetriever;
+import no.nav.modig.content.ValueRetriever;
+import no.nav.modig.utils.UTF8Control;
 import no.nav.modig.wicket.test.FluentWicketTester;
 import no.nav.sbl.dialogarena.minehenvendelser.WicketApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -7,6 +10,9 @@ import org.apache.wicket.spring.test.ApplicationContextMock;
 import org.junit.Before;
 import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public abstract class AbstractWicketTest {
 
@@ -55,5 +61,21 @@ public abstract class AbstractWicketTest {
     }
 
     protected abstract void setup();
+
+    protected void setupFakeCms() {
+        ValueRetriever tekstValueRetriever = new ValueRetriever() {
+            private ResourceBundle appBundle = ResourceBundle.getBundle("content/innholdstekster", new Locale("nb"), new UTF8Control());
+            private ResourceBundle webkomponenterBundle = ResourceBundle.getBundle("content/sbl-webkomponenter", new Locale("nb"), new UTF8Control());
+
+            @Override
+            public String getValueOf(String key, String language) {
+                return appBundle.containsKey(key) ? appBundle.getString(key) : webkomponenterBundle.getString(key);
+            }
+        };
+        CmsContentRetriever innholdstekster = new CmsContentRetriever();
+        innholdstekster.setTeksterRetriever(tekstValueRetriever);
+        innholdstekster.setDefaultLocale("no");
+        applicationContext.putBean(innholdstekster);
+    }
 
 }
