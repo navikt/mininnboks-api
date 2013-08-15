@@ -18,6 +18,7 @@
         <module>consumer</module>
         <module>web</module>
         <module>jee</module>
+        <module>provider-rs</module>
     </modules>
 
     <properties>
@@ -54,6 +55,7 @@
         <wicket.version>6.8.0</wicket.version>
         <dialogarena.cms.url>http://e32apvl026.oera-t.local:8080</dialogarena.cms.url>
         <henvendelse.tjenestespesifikasjon.version.1>1.1.2-SNAPSHOT</henvendelse.tjenestespesifikasjon.version.1>
+        <jboss.resteasy.version>3.0.3.Final</jboss.resteasy.version>
     </properties>
 
     <dependencyManagement>
@@ -412,13 +414,23 @@
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-jaxrs</artifactId>
-                <version>2.3.5.Final</version>
+                <version>${jboss.resteasy.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-logging</groupId>
                         <artifactId>commons-logging</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-simple</artifactId>
+                    </exclusion>
                 </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>jaxrs-api</artifactId>
+                <version>${jboss.resteasy.version}</version>
             </dependency>
 
             <dependency>
@@ -437,6 +449,12 @@
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
                 <version>2.2.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-spring</artifactId>
+                <version>${jboss.resteasy.version}</version>
             </dependency>
 
             <!-- Test dependencies -->
