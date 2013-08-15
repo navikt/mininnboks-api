@@ -135,7 +135,8 @@ public class MockCreationUtil {
     public static Behandlingskjede createDummyBehandlingkjede() {
         return new Behandlingskjede()
                 .withNormertBehandlingstid(new Behandlingstid().withType(new Behandlingstidtyper()))
-                .withStartNAVtid(createXmlGregorianDate(1, 1, 2013))
+                .withStart(createXmlGregorianDate(1, 1, 2013))
+                .withStartNAVtid(createXmlGregorianDate(4, 2, 2013))
                 .withBehandlingskjedetype(new Behandlingskjedetyper())
                 .withBehandlingskjedeId("id")
                 .withKjedensNAVfrist(createXmlGregorianDate(11, 11, 2022))
@@ -146,7 +147,8 @@ public class MockCreationUtil {
 
     private static Behandlingskjede createFinnbehandlingKjede(String value, String kodeverkRef, boolean isFerdig) {
         Behandlingskjede behandlingskjede = new Behandlingskjede()
-                .withStartNAVtid(createXmlGregorianDate(1, 1, 2013))
+                .withStart(createXmlGregorianDate(2, 1, 2013))
+                .withStartNAVtid(createXmlGregorianDate(14, 5, 2013))
                 .withNormertBehandlingstid(new Behandlingstid().withTid(BigInteger.TEN).withType(new Behandlingstidtyper()))
                 .withBehandlingskjedetype(new Behandlingskjedetyper().withValue(value).withKodeverksRef(kodeverkRef));
         if (isFerdig) {
