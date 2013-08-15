@@ -14,7 +14,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsend
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.InnsendingStatus.MOTTATT;
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.InnsendingStatus.UNDER_BEHANDLING;
 
-public class Innsending {
+public final class Innsending {
 
     public enum InnsendingStatus { IKKE_SENDT_TIL_NAV, MOTTATT, UNDER_BEHANDLING, FERDIG }
 
