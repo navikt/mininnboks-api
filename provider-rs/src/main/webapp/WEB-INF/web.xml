@@ -6,11 +6,10 @@
     <display-name>minehenvendelser-rs</display-name>
 
 
-    <!-- RESTEasy configuration -->
+    <!-- NB: Følgende to listenere må ligge i riktig rekkefølge -->
     <listener>
         <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
     </listener>
-
     <listener>
         <listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class>
     </listener>
