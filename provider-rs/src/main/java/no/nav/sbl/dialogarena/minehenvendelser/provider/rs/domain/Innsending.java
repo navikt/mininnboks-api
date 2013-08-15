@@ -1,12 +1,9 @@
 package no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain;
 
-import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
-
-import javax.inject.Inject;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus;
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.InnsendingStatus.FERDIG;
@@ -17,9 +14,6 @@ import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsend
 public final class Innsending {
 
     public enum InnsendingStatus { IKKE_SENDT_TIL_NAV, MOTTATT, UNDER_BEHANDLING, FERDIG }
-
-    @Inject
-    private Kodeverk kodeverk;
 
     private String tittel;
     private InnsendingStatus status;
