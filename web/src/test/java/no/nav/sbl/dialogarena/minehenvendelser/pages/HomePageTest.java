@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.containedInComponent;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.ofType;
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
@@ -26,8 +27,10 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_2;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_3;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.KODEVERK_ID_9;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createDummyBehandlingkjede;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWSDokumentForventningMock;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWsBehandlingMock;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.transformToSoeknad;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus.UNDER_ARBEID;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.IKKE_VALGT;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.LASTET_OPP;
@@ -42,18 +45,19 @@ public class HomePageTest extends AbstractWicketTest {
     private BehandlingService behandlingServiceMock;
     private FoedselsnummerService foedselsnummerServiceMock;
     private Kodeverk kodeverkServiceMock;
+    private SakogbehandlingService sakogbehandlingService;
 
     @Override
     protected void setup() {
         behandlingServiceMock = mock(BehandlingService.class);
         foedselsnummerServiceMock = mock(FoedselsnummerService.class);
+        sakogbehandlingService = mock(SakogbehandlingService.class);
         when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(TEST_FNR);
         kodeverkServiceMock = mock(Kodeverk.class);
         mock("footerLinks", Map.class);
         mock("navigasjonslink", "");
         mock("dokumentInnsendingBaseUrl", "");
         mock(TilbakemeldingService.class);
-        mock(SakogbehandlingService.class);
         applicationContext.putBean("tilbakemeldingEnabled", true);
 
         setupFakeCms();
@@ -99,12 +103,16 @@ public class HomePageTest extends AbstractWicketTest {
         wicketTester.goTo(HomePage.class)
                 .should().containComponent(withId("soeknaderUnderArbeid"));
     }
-//
-//    @Test
-//    public void soeknaderUnderArbeidListViewShouldContainALinkToSoeknadPage() {
-//        wicketTester.goTo(HomePage.class)
-//                .click().l
-//    }
+
+    @Test
+    public void soeknaderUnderArbeidListViewShouldBeVisibleWhenSoeknaderExist() {
+        when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(TEST_FNR);
+        when(sakogbehandlingService.finnSoeknaderUnderArbeid(TEST_FNR)).thenReturn(asList(transformToSoeknad(createDummyBehandlingkjede())));
+        wicketTester.goTo(HomePage.class)
+                .should().containComponent(withId("tema"))
+                .should().containComponent(withId("beskrivelse"))
+                .should().containComponent(withId("detaljer")); //.and(ofType(Link.class)));
+    }
 
     @Test
     public void renderHomePageWithViewofNotSentEtterbehandling() {
