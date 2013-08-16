@@ -17,9 +17,9 @@ public class SoeknaderUnderArbeidListView extends SoeknaderListView {
     @Override
     protected void populateItem(final ListItem<Soeknad> item) {
         item.add(
-                new Label("tema", item.getModelObject().getTema()),
-                new Label("beskrivelse", item.getModelObject().getBeskrivelse()),
-                new Link("detaljer") {
+                new Label("ua-tema", item.getModelObject().getTema()),
+                new Label("ua-beskrivelse", item.getModelObject().getBeskrivelse()),
+                new Link("ua-detaljer") {
                     @Override
                     public void onClick() {
                         setResponsePage(new SoeknadPage(item.getModelObject()));

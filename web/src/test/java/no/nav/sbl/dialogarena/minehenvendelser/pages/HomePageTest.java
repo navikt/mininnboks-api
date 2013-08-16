@@ -109,9 +109,9 @@ public class HomePageTest extends AbstractWicketTest {
         when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(TEST_FNR);
         when(sakogbehandlingService.finnSoeknaderUnderArbeid(TEST_FNR)).thenReturn(asList(transformToSoeknad(createDummyBehandlingkjede())));
         wicketTester.goTo(HomePage.class)
-                .should().containComponent(withId("tema"))
-                .should().containComponent(withId("beskrivelse"))
-                .should().containComponent(withId("detaljer")); //.and(ofType(Link.class)));
+                .should().containComponent(withId("ua-tema"))
+                .should().containComponent(withId("ua-beskrivelse"))
+                .should().containComponent(withId("ua-detaljer")); //.and(ofType(Link.class)));
     }
 
     @Test
