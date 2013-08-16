@@ -56,7 +56,7 @@ public class SakogbehandlingService {
     }
 
     private List<Soeknad> getMottatteSoeknader(String aktoerId) {
-        return evaluateMatches(behandlingService.hentFerdigeBehandlinger(aktoerId), populateUkjentStatusBehandlingerList(populateBehandlingskjedeList(aktoerId)));
+        return evaluateMatches(behandlingService.hentFerdigeBehandlinger(aktoerId), evaluateUkjentStatusBehandlingskjeder(populateBehandlingskjedeList(aktoerId)));
     }
 
     private List<Soeknad> getFerdigeSoeknader(String aktoerId) {
@@ -99,7 +99,7 @@ public class SakogbehandlingService {
         return mottatteSoeknader;
     }
 
-    private List<Behandlingskjede> populateUkjentStatusBehandlingerList(List<Behandlingskjede> behandlingskjedeList) {
+    private List<Behandlingskjede> evaluateUkjentStatusBehandlingskjeder(List<Behandlingskjede> behandlingskjedeList) {
         List<Behandlingskjede> ukjentStatusBehandlinger = new ArrayList<>();
         for (Behandlingskjede behandlingskjede : behandlingskjedeList) {
             if (behandlingskjedeIsNeitherUnderArbeidNorFinished(behandlingskjede)) {
