@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.SystemProperties.load;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.SystemProperties.load;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationContext.class)

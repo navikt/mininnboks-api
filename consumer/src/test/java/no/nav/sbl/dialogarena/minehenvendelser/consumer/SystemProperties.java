@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser;
+package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -12,9 +12,11 @@ import no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.behandlingTransformer;
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.soeknadTransformer;
 
@@ -38,6 +40,7 @@ public class InnsendingerProvider {
 
     @GET
     @Path("/paabegynte")
+    @Produces(APPLICATION_JSON)
     public List<Innsending> getPaabegynte() {
 
         List<Innsending> innsendinger = new ArrayList<>();
@@ -49,6 +52,7 @@ public class InnsendingerProvider {
 
     @GET
     @Path("/mottatte")
+    @Produces(APPLICATION_JSON)
     public List<Innsending> getMottatte() {
 
         List<Innsending> innsendinger = new ArrayList<>();
@@ -60,6 +64,7 @@ public class InnsendingerProvider {
 
     @GET
     @Path("/underarbeid")
+    @Produces(APPLICATION_JSON)
     public List<Innsending> getUnderArbeid() {
 
         List<Innsending> innsendinger = new ArrayList<>();
@@ -71,6 +76,7 @@ public class InnsendingerProvider {
 
     @GET
     @Path("/ferdige")
+    @Produces(APPLICATION_JSON)
     public List<Innsending> getFerdige() {
 
         List<Innsending> innsendinger = new ArrayList<>();

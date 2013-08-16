@@ -87,6 +87,13 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>minehenvendelser-consumer</artifactId>
             <version>${project.version}</version>
+            <type>test-jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>minehenvendelser-consumer</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -176,6 +183,20 @@
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-testcertificates</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webbitserver</groupId>
+            <artifactId>webbit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>minehenvendelser-config</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
             <scope>test</scope>
         </dependency>
 

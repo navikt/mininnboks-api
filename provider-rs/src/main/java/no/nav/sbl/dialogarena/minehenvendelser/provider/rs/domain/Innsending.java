@@ -7,6 +7,12 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.S
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+
 import static java.lang.System.getProperty;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus;
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.InnsendingStatus.FERDIG;
@@ -14,6 +20,8 @@ import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsend
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.InnsendingStatus.MOTTATT;
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.InnsendingStatus.UNDER_BEHANDLING;
 
+@XmlRootElement()
+@XmlAccessorType(XmlAccessType.PROPERTY)
 public final class Innsending {
 
     public enum InnsendingStatus { IKKE_SENDT_TIL_NAV, MOTTATT, UNDER_BEHANDLING, FERDIG }
@@ -25,18 +33,22 @@ public final class Innsending {
 
     private Innsending() { }
 
+    @XmlElement
     public String getTittel() {
         return tittel;
     }
 
+    @XmlElement
     public InnsendingStatus getStatus() {
         return status;
     }
 
+    @XmlElement
     public DateTime getDato() {
         return dato;
     }
 
+    @XmlElement
     public InnsendingUrl getInnsendingUrl() {
         return innsendingUrl;
     }
@@ -80,7 +92,7 @@ public final class Innsending {
                 innsending.status = convertToInnsendingStatus(soeknad.getSoeknadsStatus());
                 innsending.dato = soeknad.getStart();
                 innsending.innsendingUrl = new InnsendingUrl(
-                        innholdstekster.hentTekst("soeknad.detaljer.link.tekst"),
+                        "Vis status på søknad",//innholdstekster.hentTekst("soeknad.detaljer.link.tekst"),
                         getProperty("soeknad.detaljer.link.url") + soeknad.getBehandlingsId());
                 return innsending;
             }
@@ -104,7 +116,8 @@ public final class Innsending {
         };
     }
 
-    public static class InnsendingUrl {
+    @XmlAccessorType(XmlAccessType.PROPERTY)
+    public static class InnsendingUrl implements Serializable {
         private String tekst;
         private String url;
 
@@ -113,10 +126,12 @@ public final class Innsending {
             this.url = url;
         }
 
+        @XmlElement
         public String getTekst() {
             return tekst;
         }
 
+        @XmlElement
         public String getUrl() {
             return url;
         }

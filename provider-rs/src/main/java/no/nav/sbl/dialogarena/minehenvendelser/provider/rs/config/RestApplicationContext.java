@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({
         RestServiceConfig.class,
-        KodeverkConfig.class
+        KodeverkConfig.class,
+        JaxWsFeatures.DisableCNCheck.class
 })
 public class RestApplicationContext {
 }

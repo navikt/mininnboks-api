@@ -4,6 +4,7 @@ package no.nav.sbl.dialogarena.minehenvendelser;
 import no.nav.modig.core.context.StaticSubjectHandler;
 import no.nav.modig.testcertificates.TestCertificates;
 import no.nav.sbl.dialogarena.common.jetty.Jetty;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.SystemProperties;
 
 import java.io.File;
 
