@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain;
 
 import no.nav.modig.core.exception.ApplicationException;
+import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus;
@@ -13,6 +14,7 @@ import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstid;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstidtyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Behandlingskjede;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -27,8 +29,17 @@ import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSB
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentbehandlingType.SOKNADSINNSENDING;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
-public class TransformToInnsendingTest {
+public class InnsendingTest {
+
+    private Kodeverk kodeverkServiceMock;
+
+    @Before
+    public void before() {
+        System.setProperty("dokumentinnsending.link.url", "http://mocked");
+        kodeverkServiceMock = mock(Kodeverk.class);
+    }
 
     @Test
     public void transformHenvendelsesbehandling() {
