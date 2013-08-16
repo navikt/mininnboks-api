@@ -15,8 +15,8 @@ public class FerdigeSoeknaderListView extends SoeknaderListView {
     @Override
     protected void populateItem(ListItem<Soeknad> item) {
         item.add(
-                new Label("tema", item.getModelObject().getTema()),
-                new Label("beskrivelse", item.getModelObject().getBeskrivelse())
+                new Label("ferdig-tema", item.getModelObject().getTema()),
+                new Label("ferdig-beskrivelse", item.getModelObject().getBeskrivelse())
         );
     }
 

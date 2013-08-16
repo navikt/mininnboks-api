@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain;
 
 import no.nav.modig.core.exception.ApplicationException;
-import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus;
@@ -23,22 +22,19 @@ import java.math.BigInteger;
 
 import static javax.xml.datatype.DatatypeFactory.newInstance;
 import static junit.framework.Assert.assertNotNull;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.transformToSoeknad;
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.InnsendingStatus.FERDIG;
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.InnsendingStatus.MOTTATT;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingType.DOKUMENT_BEHANDLING;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentbehandlingType.SOKNADSINNSENDING;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class InnsendingTest {
-
-    private Kodeverk kodeverkServiceMock;
 
     @Before
     public void before() {
         System.setProperty("dokumentinnsending.link.url", "http://mocked");
-        kodeverkServiceMock = mock(Kodeverk.class);
     }
 
     @Test
@@ -66,7 +62,7 @@ public class InnsendingTest {
     }
 
     private static Soeknad createSoeknad() {
-        return Soeknad.transformToSoeknad(createBehandlingskjede());
+        return transformToSoeknad(createBehandlingskjede());
     }
 
     private static Behandlingskjede createBehandlingskjede() {
