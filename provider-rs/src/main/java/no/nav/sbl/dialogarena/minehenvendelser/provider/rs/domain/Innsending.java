@@ -92,7 +92,7 @@ public final class Innsending {
                 innsending.status = convertToInnsendingStatus(soeknad.getSoeknadsStatus());
                 innsending.dato = soeknad.getStart();
                 innsending.innsendingUrl = new InnsendingUrl(
-                        "Vis status på søknad",//innholdstekster.hentTekst("soeknad.detaljer.link.tekst"),
+                        innholdstekster.hentTekst("soeknad.detaljer.link.tekst"),
                         getProperty("soeknad.detaljer.link.url") + soeknad.getBehandlingsId());
                 return innsending;
             }
