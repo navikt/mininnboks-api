@@ -21,6 +21,7 @@ public final class Soeknad implements Serializable {
 
     public enum SoeknadsStatus {FERDIG, UNDER_ARBEID, MOTTATT }
 
+    private String behandlingsId;
     private DateTime paabegynt;
     private DateTime fullfoert;
     private DateTime mottatt;
@@ -69,11 +70,16 @@ public final class Soeknad implements Serializable {
         return mottatt;
     }
 
+    public String getBehandlingsId() {
+        return behandlingsId;
+    }
+
     private static Transformer<Behandlingskjede, Soeknad> soeknadTransformer = new Transformer<Behandlingskjede, Soeknad>() {
 
         @Override
         public Soeknad transform(Behandlingskjede behandlingskjede) {
             Soeknad soeknad = new Soeknad();
+            soeknad.behandlingsId = behandlingskjede.getSisteBehandlingREF();
             soeknad.tema = behandlingskjede.getBehandlingskjedetype().getValue();
             soeknad.beskrivelse = behandlingskjede.getBehandlingskjedetype().getKodeverksRef();
             soeknad.normertBehandlingsTid = getNormertTidString(behandlingskjede);

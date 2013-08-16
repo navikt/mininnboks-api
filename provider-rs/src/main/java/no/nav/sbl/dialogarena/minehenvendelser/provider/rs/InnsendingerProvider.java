@@ -1,5 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.provider.rs;
 
+import no.nav.modig.content.CmsContentRetriever;
+import no.nav.sbl.dialogarena.common.kodeverk.Kodeverk;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
@@ -28,13 +30,19 @@ public class InnsendingerProvider {
     @Inject
     FoedselsnummerService foedselsnummerService;
 
+    @Inject
+    Kodeverk kodeverk;
+
+    @Inject
+    CmsContentRetriever innholdstekster;
+
     @GET
     @Path("/paabegynte")
     public List<Innsending> getPaabegynte() {
 
         List<Innsending> innsendinger = new ArrayList<>();
         for(Henvendelsesbehandling henvendelsesbehandling : behandlingService.hentPabegynteBehandlinger(foedselsnummerService.getFoedselsnummer())) {
-            innsendinger.add(behandlingTransformer().transform(henvendelsesbehandling));
+            innsendinger.add(behandlingTransformer(innholdstekster, kodeverk).transform(henvendelsesbehandling));
         }
         return innsendinger;
     }
@@ -45,7 +53,7 @@ public class InnsendingerProvider {
 
         List<Innsending> innsendinger = new ArrayList<>();
         for(Soeknad soeknad : sakogbehandlingService.finnMottatteSoeknader(foedselsnummerService.getFoedselsnummer())) {
-            innsendinger.add(soeknadTransformer().transform(soeknad));
+            innsendinger.add(soeknadTransformer(innholdstekster).transform(soeknad));
         }
         return innsendinger;
     }
@@ -56,7 +64,7 @@ public class InnsendingerProvider {
 
         List<Innsending> innsendinger = new ArrayList<>();
         for(Soeknad soeknad : sakogbehandlingService.finnSoeknaderUnderArbeid(foedselsnummerService.getFoedselsnummer())) {
-            innsendinger.add(soeknadTransformer().transform(soeknad));
+            innsendinger.add(soeknadTransformer(innholdstekster).transform(soeknad));
         }
         return innsendinger;
     }
@@ -67,7 +75,7 @@ public class InnsendingerProvider {
 
         List<Innsending> innsendinger = new ArrayList<>();
         for(Soeknad soeknad : sakogbehandlingService.finnFerdigeSoeknader(foedselsnummerService.getFoedselsnummer())) {
-            innsendinger.add(soeknadTransformer().transform(soeknad));
+            innsendinger.add(soeknadTransformer(innholdstekster).transform(soeknad));
         }
         return innsendinger;
     }
