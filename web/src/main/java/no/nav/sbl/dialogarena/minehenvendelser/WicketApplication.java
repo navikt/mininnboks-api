@@ -9,22 +9,18 @@ import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.CSS_RESOURCE;
 import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.IE8_CSS_RESOURCE;
 import static no.nav.sbl.dialogarena.minehenvendelser.BasePage.JS_RESOURCE;
 import static no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel.INNSTILLINGER_JS;
-import static no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel.INNSTILLINGER_LESS;
 import static no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer.TILBAKEMELDING_JS;
-import static no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer.TILBAKEMELDING_LESS;
 
 import javax.inject.Inject;
 
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.SporsmalOgSvarSide;
 import no.nav.sbl.dialogarena.minehenvendelser.pages.HomePage;
 import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
 
@@ -58,14 +54,12 @@ public class WicketApplication extends WebApplication {
                         XUA_IE_EDGE)
                 .addCss(CSS_RESOURCE)
                 .addConditionalCss(IE8_CSS_RESOURCE)
-                .addLess(TILBAKEMELDING_LESS, INNSTILLINGER_LESS, new PackageResourceReference(SporsmalOgSvarSide.class, "sporsmal.less"))
                 .addScripts(JS_RESOURCE, TILBAKEMELDING_JS, INNSTILLINGER_JS)
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
 
         mountPage("internal/selftest", SelfTestPage.class);
-        mountPage("sporsmal", SporsmalOgSvarSide.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         setSpringComponentInjector();
 

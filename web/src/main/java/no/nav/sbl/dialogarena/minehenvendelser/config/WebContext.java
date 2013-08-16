@@ -1,19 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
-import no.nav.modig.content.CmsContentRetriever;
-import no.nav.modig.content.ContentRetriever;
-import no.nav.modig.content.ValueRetriever;
-import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
-import no.nav.modig.content.enonic.HttpContentRetriever;
-import no.nav.sbl.dialogarena.minehenvendelser.WicketApplication;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.HenvendelserSpringContext;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -21,11 +7,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import no.nav.modig.content.CmsContentRetriever;
+import no.nav.modig.content.ContentRetriever;
+import no.nav.modig.content.ValueRetriever;
+import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
+import no.nav.modig.content.enonic.HttpContentRetriever;
+import no.nav.sbl.dialogarena.minehenvendelser.WicketApplication;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
 /**
  * Produksjonskontekst for webmodulen
  */
 @Configuration
-@Import({TilbakemeldingConfig.class, FooterConfig.class, HenvendelserSpringContext.class})
+@Import({TilbakemeldingConfig.class, FooterConfig.class})
 public class WebContext {
 
     @Value("${minehenvendelser.navigasjonslink.url}")

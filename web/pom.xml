@@ -63,16 +63,6 @@
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>sporsmal-og-svar-common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>sporsmalogsvar-tjenestespesifikasjon</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>henvendelse-jaxws</artifactId>
         </dependency>
 
@@ -81,11 +71,6 @@
             <artifactId>sakogbehandling-jaxws</artifactId>
         </dependency>
         
-		<dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>henvendelse-felles-tjenestespesifikasjon</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>minehenvendelser-consumer</artifactId>
