@@ -2,10 +2,14 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer.context;
 
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingWebServiceMock;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.SakOgBehandlingPortType;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -56,6 +60,16 @@ public class SakogbehandlingIntegrationTestContext {
         proxyFactoryBean.setServiceClass(SakOgBehandlingPortType.class);
         proxyFactoryBean.setAddress(endpoint.toString());
         return proxyFactoryBean.create(SakOgBehandlingPortType.class);
+    }
+
+    @Bean
+    public BehandlingService behandlingService() {
+        return new BehandlingsServicePort();
+    }
+
+    @Bean
+    public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
+        return Mockito.mock(HenvendelsesBehandlingPortType.class);
     }
 
 }

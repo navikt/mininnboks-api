@@ -15,7 +15,8 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.BEHANDLINGSSTATUS_TRANSFORMER;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.Behandlingsstatus;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.Behandlingsstatus.FERDIG;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.Behandlingsstatus.UNDER_ARBEID;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling.transformToBehandling;
 
 /**
@@ -44,6 +45,12 @@ public class BehandlingsServicePort implements BehandlingService {
 
     @Override
     public List<Henvendelsesbehandling> hentPabegynteBehandlinger(String foedselsnummer) {
-        return on(hentBehandlinger(foedselsnummer)).filter(where(BEHANDLINGSSTATUS_TRANSFORMER, equalTo(Behandlingsstatus.UNDER_ARBEID))).collect();
+        return on(hentBehandlinger(foedselsnummer)).filter(where(BEHANDLINGSSTATUS_TRANSFORMER, equalTo(UNDER_ARBEID))).collect();
     }
+
+    @Override
+    public List<Henvendelsesbehandling> hentFerdigeBehandlinger(String foedselsnummer) {
+        return on(hentBehandlinger(foedselsnummer)).filter(where(BEHANDLINGSSTATUS_TRANSFORMER, equalTo(FERDIG))).collect();
+    }
+
 }

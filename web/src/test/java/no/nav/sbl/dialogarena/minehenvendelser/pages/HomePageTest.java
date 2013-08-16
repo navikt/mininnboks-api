@@ -5,6 +5,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad;
 import no.nav.sbl.dialogarena.webkomponent.tilbakemelding.service.TilbakemeldingService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandlingOppsummering;
@@ -30,8 +31,8 @@ import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behan
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createDummyBehandlingkjede;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWSDokumentForventningMock;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createWsBehandlingMock;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.FERDIG;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.transformToSoeknad;
-import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus.UNDER_ARBEID;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.IKKE_VALGT;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.LASTET_OPP;
 import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg.SENDES_IKKE;
@@ -107,7 +108,7 @@ public class HomePageTest extends AbstractWicketTest {
     @Test
     public void soeknaderUnderArbeidListViewShouldBeVisibleWhenSoeknaderExist() {
         when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(TEST_FNR);
-        when(sakogbehandlingService.finnSoeknaderUnderArbeid(TEST_FNR)).thenReturn(asList(transformToSoeknad(createDummyBehandlingkjede())));
+        when(sakogbehandlingService.finnSoeknaderUnderArbeid(TEST_FNR)).thenReturn(asList(transformToSoeknad(createDummyBehandlingkjede(), Soeknad.SoeknadsStatus.UNDER_ARBEID)));
         wicketTester.goTo(HomePage.class)
                 .should().containComponent(withId("ua-tema"))
                 .should().containComponent(withId("ua-beskrivelse"))
@@ -117,7 +118,7 @@ public class HomePageTest extends AbstractWicketTest {
     @Test
     public void ferdigeSoeknaderListViewShouldBeVisibleWhenSoeknaderExist() {
         when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(TEST_FNR);
-        when(sakogbehandlingService.finnFerdigeSoeknader(TEST_FNR)).thenReturn(asList(transformToSoeknad(createDummyBehandlingkjede())));
+        when(sakogbehandlingService.finnFerdigeSoeknader(TEST_FNR)).thenReturn(asList(transformToSoeknad(createDummyBehandlingkjede(), FERDIG)));
         wicketTester.goTo(HomePage.class)
                 .should().containComponent(withId("ferdig-tema"))
                 .should().containComponent(withId("ferdig-beskrivelse"));
@@ -158,7 +159,7 @@ public class HomePageTest extends AbstractWicketTest {
     }
 
     private static WSBrukerBehandlingOppsummering createUnderArbeidBehandling(DateTime innsendtDato, String hovedSkjemaId) {
-        WSBrukerBehandlingOppsummering wsBehandlingMock = createWsBehandlingMock(innsendtDato, innsendtDato, UNDER_ARBEID, false);
+        WSBrukerBehandlingOppsummering wsBehandlingMock = createWsBehandlingMock(innsendtDato, innsendtDato, WSBehandlingsstatus.UNDER_ARBEID, false);
         wsBehandlingMock.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(
                 createWSDokumentForventningMock(true, hovedSkjemaId, LASTET_OPP),
                 createWSDokumentForventningMock(false, KODEVERK_ID_2, LASTET_OPP),

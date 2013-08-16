@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain;
 
-import no.nav.modig.core.exception.SystemException;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Behandlingskjede;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
@@ -9,9 +8,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
 
 import static no.nav.modig.lang.option.Optional.optional;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.FERDIG;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.MOTTATT;
-import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.UNDER_ARBEID;
 
 /**
  * Dette objektet representerer hva som logisk sett er en søknad for sluttbruker.
@@ -21,18 +17,25 @@ public final class Soeknad implements Serializable {
 
     public enum SoeknadsStatus {FERDIG, UNDER_ARBEID, MOTTATT }
 
-    private String behandlingsId;
-    private DateTime paabegynt;
+    private DateTime underArbeid;
     private DateTime fullfoert;
-    private DateTime mottatt;
+    private DateTime start;
     private String normertBehandlingsTid;
     private String tema;
     private String beskrivelse;
+    private SoeknadsStatus soeknadsStatus;
+    private String behandlingsId;
 
     private Soeknad() {}
 
-    public static Soeknad transformToSoeknad(Behandlingskjede behandlingskjede) {
-        return soeknadTransformer.transform(behandlingskjede);
+    public static Soeknad transformToSoeknad(Behandlingskjede behandlingskjede, SoeknadsStatus soeknadsStatus) {
+        Soeknad soeknad = soeknadTransformer.transform(behandlingskjede);
+        soeknad.soeknadsStatus = soeknadsStatus;
+        return soeknad;
+    }
+
+    public String getBehandlingsId() {
+        return behandlingsId;
     }
 
     public String getTema() {
@@ -44,14 +47,7 @@ public final class Soeknad implements Serializable {
     }
 
     public SoeknadsStatus getSoeknadsStatus() {
-        if(mottatt == null) {
-            throw new SystemException("illegal state", new RuntimeException());
-        } else if(fullfoert != null) {
-            return FERDIG;
-        } else if(paabegynt != null) {
-            return UNDER_ARBEID;
-        }
-        return MOTTATT;
+        return soeknadsStatus;
     }
 
     public String getNormertBehandlingsTid() {
@@ -59,19 +55,15 @@ public final class Soeknad implements Serializable {
     }
 
     public DateTime getPaabegynt() {
-        return paabegynt;
+        return underArbeid;
     }
 
     public DateTime getFullfoert() {
         return fullfoert;
     }
 
-    public DateTime getMottatt() {
-        return mottatt;
-    }
-
-    public String getBehandlingsId() {
-        return behandlingsId;
+    public DateTime getStart() {
+        return start;
     }
 
     private static Transformer<Behandlingskjede, Soeknad> soeknadTransformer = new Transformer<Behandlingskjede, Soeknad>() {
@@ -79,13 +71,13 @@ public final class Soeknad implements Serializable {
         @Override
         public Soeknad transform(Behandlingskjede behandlingskjede) {
             Soeknad soeknad = new Soeknad();
-            soeknad.behandlingsId = behandlingskjede.getSisteBehandlingREF();
             soeknad.tema = behandlingskjede.getBehandlingskjedetype().getValue();
             soeknad.beskrivelse = behandlingskjede.getBehandlingskjedetype().getKodeverksRef();
             soeknad.normertBehandlingsTid = getNormertTidString(behandlingskjede);
-            soeknad.mottatt = new DateTime(behandlingskjede.getStart().getMillisecond());
-            soeknad.paabegynt = optional(behandlingskjede.getStartNAVtid()).map(dateTimeTransformer()).getOrElse(null);
+            soeknad.start = new DateTime(behandlingskjede.getStart().getMillisecond());
+            soeknad.underArbeid = optional(behandlingskjede.getStartNAVtid()).map(dateTimeTransformer()).getOrElse(null);
             soeknad.fullfoert = optional(behandlingskjede.getSluttNAVtid()).map(dateTimeTransformer()).getOrElse(null);
+            soeknad.behandlingsId = behandlingskjede.getSisteBehandlingREF();
             return soeknad;
         }
 

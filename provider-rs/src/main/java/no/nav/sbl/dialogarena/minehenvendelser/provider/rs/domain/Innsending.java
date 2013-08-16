@@ -78,7 +78,7 @@ public final class Innsending {
                 Innsending innsending = new Innsending();
                 innsending.tittel = soeknad.getTema();
                 innsending.status = convertToInnsendingStatus(soeknad.getSoeknadsStatus());
-                innsending.dato = soeknad.getMottatt();
+                innsending.dato = soeknad.getStart();
                 innsending.innsendingUrl = new InnsendingUrl(
                         innholdstekster.hentTekst("soeknad.detaljer.link.tekst"),
                         getProperty("soeknad.detaljer.link.url") + soeknad.getBehandlingsId());

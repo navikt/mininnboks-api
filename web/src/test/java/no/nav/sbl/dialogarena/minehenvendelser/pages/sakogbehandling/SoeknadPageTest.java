@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.Map;
 
 import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad.SoeknadsStatus.UNDER_ARBEID;
 
 public class SoeknadPageTest extends AbstractWicketTest {
 
@@ -20,7 +21,7 @@ public class SoeknadPageTest extends AbstractWicketTest {
 
     @Test
     public void renderSoeknadPageWithBehandlingstidComponent() {
-        SoeknadPage soeknadPage = new SoeknadPage(Soeknad.transformToSoeknad(MockCreationUtil.createDummyBehandlingkjede()));
+        SoeknadPage soeknadPage = new SoeknadPage(Soeknad.transformToSoeknad(MockCreationUtil.createDummyBehandlingkjede(), UNDER_ARBEID));
         wicketTester.goTo(soeknadPage)
                 .should().containComponent(withId("behandlingstid"));
     }

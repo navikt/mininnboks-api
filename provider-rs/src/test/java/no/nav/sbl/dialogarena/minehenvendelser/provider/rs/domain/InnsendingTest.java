@@ -86,7 +86,7 @@ public class InnsendingTest {
     }
 
     private static Soeknad createSoeknad() {
-        return Soeknad.transformToSoeknad(createBehandlingskjede());
+        return Soeknad.transformToSoeknad(createBehandlingskjede(), Soeknad.SoeknadsStatus.FERDIG);
     }
 
     private static Behandlingskjede createBehandlingskjede() {

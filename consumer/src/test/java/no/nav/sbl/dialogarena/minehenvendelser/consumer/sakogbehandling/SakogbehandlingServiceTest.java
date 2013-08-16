@@ -31,7 +31,6 @@ public class SakogbehandlingServiceTest {
     @Inject
     private MockData mockData;
 
-
     @Test
     public void shouldReturnSoeknaderUnderArbeid() {
         setupMockData();
