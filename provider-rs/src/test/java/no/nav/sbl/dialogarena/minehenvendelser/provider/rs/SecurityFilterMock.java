@@ -11,12 +11,13 @@ import javax.servlet.ServletResponse;
 import java.io.IOException;
 
 import static no.nav.modig.core.context.SubjectHandlerUtils.setEksternBruker;
-import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.config.MockRestApplicationContext.AKTOR_ID;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class SecurityFilterMock implements Filter {
 
     private static final Logger LOG = getLogger(SecurityFilterMock.class);
+
+    public static final String AKTOR_ID = "***REMOVED***";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

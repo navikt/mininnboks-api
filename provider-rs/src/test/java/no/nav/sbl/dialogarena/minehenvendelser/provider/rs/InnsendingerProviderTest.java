@@ -5,7 +5,6 @@ import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.mock.MockDispatcherFactory;
 import org.jboss.resteasy.mock.MockHttpRequest;
 import org.jboss.resteasy.mock.MockHttpResponse;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +15,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,14 +44,14 @@ public class InnsendingerProviderTest {
 
         dispatcher.invoke(request, response);
 
-        System.out.println(response.getContentAsString());
+        assertThat(response.getContentAsString(), is("[{\"innsending\":{\"innsendingUrl\":{\"tekst\":\"lenketittel\",\"url\":\"http:\\/\\/some.url.com\\/\"},\"status\":\"IKKE_SENDT_TIL_NAV\",\"tittel\":\"en tittel\"}}]"));
     }
 
     private List<Innsending> getPaabegynteMockData() {
         List<Innsending> paabegynte = new ArrayList<>();
         Innsending innsending1 = new Innsending();
         innsending1.setTittel("en tittel");
-        innsending1.setDato(new DateTime());
+        innsending1.setDato(null);
         innsending1.setInnsendingUrl(new Innsending.InnsendingUrl("lenketittel", "http://some.url.com/"));
         innsending1.setStatus(Innsending.InnsendingStatus.IKKE_SENDT_TIL_NAV);
         paabegynte.add(innsending1);
