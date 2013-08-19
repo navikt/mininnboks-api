@@ -20,7 +20,7 @@ import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsend
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.InnsendingStatus.MOTTATT;
 import static no.nav.sbl.dialogarena.minehenvendelser.provider.rs.domain.Innsending.InnsendingStatus.UNDER_BEHANDLING;
 
-@XmlRootElement()
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public final class Innsending {
 
@@ -31,11 +31,15 @@ public final class Innsending {
     private DateTime dato;
     private InnsendingUrl innsendingUrl;
 
-    private Innsending() { }
+    public Innsending() { }
 
     @XmlElement
     public String getTittel() {
         return tittel;
+    }
+
+    public void setTittel(String tittel) {
+        this.tittel = tittel;
     }
 
     @XmlElement
@@ -43,14 +47,26 @@ public final class Innsending {
         return status;
     }
 
+    public void setStatus(InnsendingStatus status) {
+        this.status = status;
+    }
+
     @XmlElement
     public DateTime getDato() {
         return dato;
     }
 
+    public void setDato(DateTime dato) {
+        this.dato = dato;
+    }
+
     @XmlElement
     public InnsendingUrl getInnsendingUrl() {
         return innsendingUrl;
+    }
+
+    public void setInnsendingUrl(InnsendingUrl innsendingUrl) {
+        this.innsendingUrl = innsendingUrl;
     }
 
     public static InnsendingStatus convertToInnsendingStatus(SoeknadsStatus soeknadsStatus) {
@@ -136,4 +152,5 @@ public final class Innsending {
             return url;
         }
     }
+
 }

@@ -7,6 +7,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.B
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingsServicePort;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.provider.rs.InnsendingerProvider;
+import no.nav.sbl.dialogarena.minehenvendelser.provider.rs.InnsendingerService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.SakOgBehandlingPortType;
 import org.apache.cxf.endpoint.Client;
@@ -58,6 +59,11 @@ public class RestServiceConfig {
     @Bean
     public SakogbehandlingService sakogbehandlingService() {
         return new SakogbehandlingService();
+    }
+
+    @Bean
+    public InnsendingerService innsendingerService() {
+        return new InnsendingerService();
     }
 
     @Bean
