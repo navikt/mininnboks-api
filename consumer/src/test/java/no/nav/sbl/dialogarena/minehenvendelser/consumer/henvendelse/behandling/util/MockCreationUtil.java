@@ -122,16 +122,19 @@ public class MockCreationUtil {
                         .withSak(new Sak().withBehandlingskjede(behandlingskjede)));
     }
 
-    public static List<Behandlingskjede> populateFinnbehandlingKjedeList() {
+    public static List<Behandlingskjede> populateFinnbehandlingKjedeListWithThreeFerdige() {
         List<Behandlingskjede> behandlingsKjeder = new ArrayList<>();
         behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", KODEVERK_ID_1, true));
         behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", KODEVERK_ID_2, true));
         behandlingsKjeder.add(createFinnbehandlingKjede("Arbeidsavklaringspenger", KODEVERK_ID_3, true));
+        return behandlingsKjeder;
+    }
+    public static List<Behandlingskjede> populateFinnbehandlingKjedeListWithTwoUnderArbeid() {
+        List<Behandlingskjede> behandlingsKjeder = new ArrayList<>();
         behandlingsKjeder.add(createFinnbehandlingKjede("Uførepensjon", KODEVERK_ID_1, false));
         behandlingsKjeder.add(createFinnbehandlingKjede("Sykepenger", KODEVERK_ID_2, false));
         return behandlingsKjeder;
     }
-
     public static Behandlingskjede createDummyBehandlingkjede() {
         return new Behandlingskjede()
                 .withNormertBehandlingstid(new Behandlingstid().withType(new Behandlingstidtyper()))
