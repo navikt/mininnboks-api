@@ -55,7 +55,7 @@
             </AttributeValuePair>
         </Rule>
 
-        <Rule name="rule_Minehenvendelser_001_02">
+        <Rule name="rule_Minehenvendelser_001_05">
             <ServiceName name="iPlanetAMWebAgentService" />
             <ResourceName name="https://${DomainName}/minehenvendelser-rs/*?*" />
             <AttributeValuePair>
@@ -67,7 +67,7 @@
                 <Value>allow</Value>
             </AttributeValuePair>
         </Rule>
-        <Rule name="rule_Minehenvendelser_001_01">
+        <Rule name="rule_Minehenvendelser_001_06">
             <ServiceName name="iPlanetAMWebAgentService" />
             <ResourceName name="https://${DomainName}/minehenvendelser-rs/*" />
             <AttributeValuePair>
@@ -79,7 +79,7 @@
                 <Value>allow</Value>
             </AttributeValuePair>
         </Rule>
-        <Rule name="rule_Minehenvendelser_001_04">
+        <Rule name="rule_Minehenvendelser_001_07">
             <ServiceName name="iPlanetAMWebAgentService" />
             <ResourceName name="https://${DomainName}/minehenvendelser-rs/" />
             <AttributeValuePair>
@@ -91,7 +91,7 @@
                 <Value>allow</Value>
             </AttributeValuePair>
         </Rule>
-        <Rule name="rule_Minehenvendelser_001_03">
+        <Rule name="rule_Minehenvendelser_001_08">
             <ServiceName name="iPlanetAMWebAgentService" />
             <ResourceName name="https://${DomainName}/minehenvendelser-rs" />
             <AttributeValuePair>
