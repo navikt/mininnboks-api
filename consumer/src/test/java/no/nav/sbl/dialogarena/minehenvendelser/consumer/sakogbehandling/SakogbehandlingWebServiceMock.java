@@ -31,8 +31,7 @@ public class SakogbehandlingWebServiceMock implements HttpHandler {
         } else if (body.contains("behandlingskjedeREF")) {
             String behandlingsId = Jsoup.parse(body, "", Parser.xmlParser()).select("behandlingskjedeREF").get(0).text();
             message = marshaller.transformHentBehandlingskjedensBehandlingerResponse(mockData.getMockHentBehandlingskjedensBehandlingerData().getData(behandlingsId));
-        }
-        else {
+        } else {
             String aktorId = Jsoup.parse(body, "", Parser.xmlParser()).select("aktoerREF").get(0).text();
             message = marshaller.transformFinnSakOgBehandlingskjedeListeResponse(mockData.getFinnData().getData(aktorId));
         }

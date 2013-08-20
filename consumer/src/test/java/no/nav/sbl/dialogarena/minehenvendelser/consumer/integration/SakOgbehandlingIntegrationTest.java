@@ -89,9 +89,9 @@ public class SakOgbehandlingIntegrationTest {
     }
 
     private void setupSakogbehandlingForMottattSoeknad(String behandlingsId, String aktorId) {
-        String BEHANDLINGSKJEDE_ID = "behandlingsKjedeId";
-        mockData.getFinnData().addResponse(aktorId, createFinnSakOgBehandlingskjedeListeResponse(populateFinnbehandlingKjedeListWithOneWithNeitherUnderArbeidNorFerdig(BEHANDLINGSKJEDE_ID)));
-        mockData.getMockHentBehandlingskjedensBehandlingerData().addResponse(BEHANDLINGSKJEDE_ID, new HentBehandlingskjedensBehandlingerResponse().withResponse(new no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingskjedensBehandlingerResponse().withBehandlingskjede(new Behandlingskjede().withBehandlingskjedeId(BEHANDLINGSKJEDE_ID).withBehandling(createBehandlingForSakogbehandling(behandlingsId)))));
+        String behandlingsKjedeId = "behandlingsKjedeId";
+        mockData.getFinnData().addResponse(aktorId, createFinnSakOgBehandlingskjedeListeResponse(populateFinnbehandlingKjedeListWithOneWithNeitherUnderArbeidNorFerdig(behandlingsKjedeId)));
+        mockData.getMockHentBehandlingskjedensBehandlingerData().addResponse(behandlingsKjedeId, new HentBehandlingskjedensBehandlingerResponse().withResponse(new no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingskjedensBehandlingerResponse().withBehandlingskjede(new Behandlingskjede().withBehandlingskjedeId(behandlingsKjedeId).withBehandling(createBehandlingForSakogbehandling(behandlingsId)))));
     }
 
     private Behandling[] createBehandlingForSakogbehandling(String behandlingsId) {
@@ -110,7 +110,7 @@ public class SakOgbehandlingIntegrationTest {
     }
 
     private String setupHenvendelseForMottattSoeknad(String aktorId) {
-        String behandlingsId= "BEHID1";
+        String behandlingsId = "BEHID1";
         when(henvendelsesBehandlingPortType.hentBrukerBehandlingListe(aktorId)).thenReturn(createBrukerbehandling(behandlingsId));
         return behandlingsId;
     }
