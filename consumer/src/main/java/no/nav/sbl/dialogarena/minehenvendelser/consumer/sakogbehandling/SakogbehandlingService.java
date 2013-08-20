@@ -56,12 +56,12 @@ public class SakogbehandlingService {
     }
 
     private List<Soeknad> getMottatteSoeknader(String aktoerId) {
-        return evaluateMatches(behandlingService.hentFerdigeBehandlinger(aktoerId), behandlingskjederWithoutStartOrSluttNAVtid(populateBehandlingskjedeList(aktoerId)));
+        return findMatches(behandlingService.hentFerdigeBehandlinger(aktoerId), behandlingskjederUtenStartEllerSluttNAVtid(populateBehandlingskjedeList(aktoerId)));
     }
 
     private List<Soeknad> getFerdigeSoeknader(String aktoerId) {
         List<Soeknad> soeknadListe = new ArrayList<>();
-        for (Sak sak : portType.finnSakOgBehandlingskjedeListe(createRequest(aktoerId)).getSak()) {
+        for (Sak sak : getSak(aktoerId)) {
             for (Behandlingskjede behandlingskjede : sak.getBehandlingskjede()) {
                 if (soeknadHasStatusFerdig(behandlingskjede)) {
                     soeknadListe.add(transformToSoeknad(behandlingskjede, FERDIG));
@@ -77,9 +77,9 @@ public class SakogbehandlingService {
 
     private List<Soeknad> getSoeknaderUnderArbeid(String aktoerId) {
         List<Soeknad> soeknadListe = new ArrayList<>();
-        for (Sak sak : portType.finnSakOgBehandlingskjedeListe(createRequest(aktoerId)).getSak()) {
+        for (Sak sak : getSak(aktoerId)) {
             for (Behandlingskjede behandlingskjede : sak.getBehandlingskjede()) {
-                if (soeknadHasStatusUnderArbeid(behandlingskjede)) {
+                if (behandlingskjedeHasStatusUnderArbeid(behandlingskjede)) {
                     soeknadListe.add(transformToSoeknad(behandlingskjede, UNDER_ARBEID));
                 }
             }
@@ -87,7 +87,7 @@ public class SakogbehandlingService {
         return soeknadListe;
     }
 
-    private List<Soeknad> evaluateMatches(List<Henvendelsesbehandling> ferdigeHenvendelsesbehandlinger, List<Behandlingskjede> soeknaderUtenStartOrSluttNAVtid) {
+    private List<Soeknad> findMatches(List<Henvendelsesbehandling> ferdigeHenvendelsesbehandlinger, List<Behandlingskjede> soeknaderUtenStartOrSluttNAVtid) {
         List<Soeknad> mottatteSoeknader = new ArrayList<>();
         for (Behandlingskjede behandlingskjede : soeknaderUtenStartOrSluttNAVtid) {
             if (behandlingskjedeMatchesHenvendelsesBehandling(behandlingskjede, ferdigeHenvendelsesbehandlinger)) {
@@ -97,19 +97,19 @@ public class SakogbehandlingService {
         return mottatteSoeknader;
     }
 
-    private List<Behandlingskjede> behandlingskjederWithoutStartOrSluttNAVtid(List<Behandlingskjede> behandlingskjedeList) {
-        List<Behandlingskjede> ukjentStatusBehandlinger = new ArrayList<>();
+    private List<Behandlingskjede> behandlingskjederUtenStartEllerSluttNAVtid(List<Behandlingskjede> behandlingskjedeList) {
+        List<Behandlingskjede> behandlingskjederUtenStartEllerSluttNAVtid = new ArrayList<>();
         for (Behandlingskjede behandlingskjede : behandlingskjedeList) {
-            if (behandlingskjedeIsNeitherUnderArbeidNorFinished(behandlingskjede)) {
-                ukjentStatusBehandlinger.add(behandlingskjede);
+            if (behandlingskjedeHarHverkenStartEllerSluttNAVtid(behandlingskjede)) {
+                behandlingskjederUtenStartEllerSluttNAVtid.add(behandlingskjede);
             }
         }
-        return ukjentStatusBehandlinger;
+        return behandlingskjederUtenStartEllerSluttNAVtid;
     }
 
     private List<Behandlingskjede> populateBehandlingskjedeList(String aktoerId) {
         List<Behandlingskjede> behandlingskjedeList = new ArrayList<>();
-        for (Sak sak : portType.finnSakOgBehandlingskjedeListe(createRequest(aktoerId)).getSak()) {
+        for (Sak sak : getSak(aktoerId)) {
             for (Behandlingskjede behandlingskjede : sak.getBehandlingskjede()) {
                 behandlingskjedeList.add(behandlingskjede);
             }
@@ -117,11 +117,14 @@ public class SakogbehandlingService {
         return behandlingskjedeList;
     }
 
+    private List<Sak> getSak(String aktoerId) {
+        return portType.finnSakOgBehandlingskjedeListe(createRequest(aktoerId)).getSak();
+    }
+
     private boolean behandlingskjedeMatchesHenvendelsesBehandling(Behandlingskjede behandlingskjede, List<Henvendelsesbehandling> henvendelsesbehandlingList) {
-        List<Behandling> potensielleBehandlinger = portType.hentBehandlingskjedensBehandlinger(createRequest(behandlingskjede)).getBehandlingskjede().getBehandling();
         for (Henvendelsesbehandling henvendelsesbehandling : henvendelsesbehandlingList) {
-            for (Behandling behandling : potensielleBehandlinger) {
-                if (henvendelsesbehandling.getBehandlingsId().equals(behandling.getBehandlingsId())) {
+            for (Behandling behandling : getBehandlingskjedensBehandlinger(behandlingskjede)) {
+                if (behandlingsIdIsTheSame(henvendelsesbehandling, behandling)) {
                     return true;
                 }
             }
@@ -129,11 +132,19 @@ public class SakogbehandlingService {
         return false;
     }
 
+    private List<Behandling> getBehandlingskjedensBehandlinger(Behandlingskjede behandlingskjede) {
+        return portType.hentBehandlingskjedensBehandlinger(createRequest(behandlingskjede)).getBehandlingskjede().getBehandling();
+    }
+
+    private boolean behandlingsIdIsTheSame(Henvendelsesbehandling henvendelsesbehandling, Behandling behandling) {
+        return henvendelsesbehandling.getBehandlingsId().equals(behandling.getBehandlingsId());
+    }
+
     private HentBehandlingskjedensBehandlingerRequest createRequest(Behandlingskjede behandlingskjede) {
         return new HentBehandlingskjedensBehandlingerRequest().withBehandlingskjedeREF(behandlingskjede.getBehandlingskjedeId());
     }
 
-    private boolean behandlingskjedeIsNeitherUnderArbeidNorFinished(Behandlingskjede behandlingskjede) {
+    private boolean behandlingskjedeHarHverkenStartEllerSluttNAVtid(Behandlingskjede behandlingskjede) {
         return behandlingskjede.getSluttNAVtid() == null && behandlingskjede.getStartNAVtid() == null;
     }
 
@@ -141,7 +152,7 @@ public class SakogbehandlingService {
         return new FinnSakOgBehandlingskjedeListeRequest().withAktoerREF(aktoerId);
     }
 
-    private boolean soeknadHasStatusUnderArbeid(Behandlingskjede behandlingskjede) {
+    private boolean behandlingskjedeHasStatusUnderArbeid(Behandlingskjede behandlingskjede) {
         return behandlingskjede.getSluttNAVtid() == null && behandlingskjede.getStartNAVtid() != null;
     }
 

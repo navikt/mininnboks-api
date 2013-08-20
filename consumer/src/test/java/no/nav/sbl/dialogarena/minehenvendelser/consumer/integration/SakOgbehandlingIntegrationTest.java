@@ -77,13 +77,13 @@ public class SakOgbehandlingIntegrationTest {
 
     @Test
     public void verifyNumberOfMottatteSoeknader() {
-        setupMottattSoeknad(AKTOR_ID);
+        setupOneMottattSoeknad(AKTOR_ID);
         List<Soeknad> soeknadList = service.finnMottatteSoeknader(AKTOR_ID);
         assertNotNull(soeknadList);
         assertThat(soeknadList.size(), equalTo(1));
     }
 
-    private void setupMottattSoeknad(String aktorId) {
+    private void setupOneMottattSoeknad(String aktorId) {
         String behandlingsId = setupHenvendelseForMottattSoeknad(aktorId);
         setupSakogbehandlingForMottattSoeknad(behandlingsId, aktorId);
     }
