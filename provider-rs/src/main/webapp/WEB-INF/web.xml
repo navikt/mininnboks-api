@@ -5,6 +5,13 @@
 
     <display-name>minehenvendelser-rs</display-name>
 
+    <!-- sikrer at man kan benytte servlet-loginmodules -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>All pages</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
 
     <!-- NB: Følgende to listenere må ligge i riktig rekkefølge -->
     <listener>
@@ -13,6 +20,16 @@
     <listener>
         <listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class>
     </listener>
+
+    <filter>
+        <filter-name>HttpSessionSecurityIntegrationFilter</filter-name>
+        <filter-class>no.nav.modig.security.filter.OpenAMLoginFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>HttpSessionSecurityIntegrationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <context-param>
         <param-name>contextClass</param-name>
