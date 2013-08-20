@@ -28,6 +28,7 @@
         <logins>
             <openAm>
                 <contextRoot>minehenvendelser</contextRoot>
+                <contextRoot>minehenvendelser-rs</contextRoot>
             </openAm>
         </logins>
     </security>
