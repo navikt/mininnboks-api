@@ -11,7 +11,7 @@ import javax.servlet.ServletResponse;
 import java.io.IOException;
 
 import static no.nav.modig.core.context.SubjectHandlerUtils.setEksternBruker;
-import static no.nav.sbl.dialogarena.minehenvendelser.config.MockApplicationContext.AKTOR_ID;
+import static no.nav.sbl.dialogarena.minehenvendelser.config.JettyMockApplicationContext.AKTOR_ID;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class SecurityFilterMock implements Filter {

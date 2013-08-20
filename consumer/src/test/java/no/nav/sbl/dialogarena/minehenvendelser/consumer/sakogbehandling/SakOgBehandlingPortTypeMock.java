@@ -23,7 +23,7 @@ public class SakOgBehandlingPortTypeMock implements SakOgBehandlingPortType {
 
     @Override
     public HentBehandlingskjedensBehandlingerResponse hentBehandlingskjedensBehandlinger(HentBehandlingskjedensBehandlingerRequest request) {
-        throw new RuntimeException("Not yet implemented");
+        return mockData.getMockHentBehandlingskjedensBehandlingerData().getData(request.getBehandlingskjedeREF()).getResponse();
     }
 
     @Override

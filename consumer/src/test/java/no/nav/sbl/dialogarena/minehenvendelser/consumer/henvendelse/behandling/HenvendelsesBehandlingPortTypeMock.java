@@ -33,7 +33,7 @@ public class HenvendelsesBehandlingPortTypeMock implements HenvendelsesBehandlin
 
     @Override
     public List<WSBrukerBehandlingOppsummering> hentBrukerBehandlingListe(String s) {
-        return createBrukerBehandlingOppsumeringList();
+        return createBrukerBehandlingOppsummeringList();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class HenvendelsesBehandlingPortTypeMock implements HenvendelsesBehandlin
         return new WSBrukerBehandling();
     }
 
-    private static List<WSBrukerBehandlingOppsummering> createBrukerBehandlingOppsumeringList() {
+    private static List<WSBrukerBehandlingOppsummering> createBrukerBehandlingOppsummeringList() {
         List<WSBrukerBehandlingOppsummering> oppsummeringer = new ArrayList<>();
         WSBrukerBehandlingOppsummering wsBrukerBehandlingOppsummering = createUnderArbeidEttersendingBehandling();
         wsBrukerBehandlingOppsummering.getDokumentForventningOppsummeringer().withDokumentForventningOppsummering(createDokumentForventingOppsummering());

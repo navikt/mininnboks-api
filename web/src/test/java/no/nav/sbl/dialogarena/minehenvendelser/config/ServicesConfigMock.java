@@ -28,7 +28,6 @@ public class ServicesConfigMock  {
     @Bean
     public SakOgBehandlingPortType selfTestSakOgBehandlingPortType() {
         return new SakOgBehandlingPortTypeMock();
-
     }
 
     @Bean
