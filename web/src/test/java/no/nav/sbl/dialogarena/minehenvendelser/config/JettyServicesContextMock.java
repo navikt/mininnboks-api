@@ -89,7 +89,6 @@ public class JettyServicesContextMock {
                 .withAvslutningsstatus(new Avslutningsstatuser().withValue("avslutningsstatus"))
                 .withNormertBehandlingstid(new Behandlingstid())
                 .withFrist(createXmlGregorianDate(1, 3, 2013));
-
         return new Behandling[]{behandling};
     }
 
