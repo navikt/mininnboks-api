@@ -13,14 +13,6 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.Henvendelse
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.FinnSakOgBehandlingskjedeListeResponse;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.HentBehandlingskjedensBehandlingerResponse;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.SakOgBehandlingPortType;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Applikasjoner;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Avslutningsstatuser;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandling;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.BehandlingVS;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingsstatuser;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingsstegtyper;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstid;
-import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Sak;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.hentbehandlingskjedensbehandlinger.Behandlingskjede;
 import org.joda.time.DateTime;
@@ -34,6 +26,7 @@ import java.util.List;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.config.JettyMockApplicationContext.AKTOR_ID;
 import static no.nav.sbl.dialogarena.minehenvendelser.config.JettyMockApplicationContext.BEHANDLINGS_ID;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createBehandlingForSakOgBehandlingLinkedToHenvendelse;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createDummyBehandlingkjede;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createUnderArbeidEttersendingBehandling;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createXmlGregorianDate;
@@ -75,21 +68,7 @@ public class JettyServicesContextMock {
     }
 
     private Behandlingskjede createBehandlingsKjedeWithLinkedBehandling() {
-        return new Behandlingskjede().withBehandlingskjedeId("behandlingsKjedeId").withBehandling(createBehandlingForSakOgBehandlingLinkedToHenvendelse());
-    }
-
-    private Behandling[] createBehandlingForSakOgBehandlingLinkedToHenvendelse() {
-        BehandlingVS behandling = new BehandlingVS()
-                .withBehandlingsId(BEHANDLINGS_ID)
-                .withBehandlingstype(new Behandlingstyper().withValue("type"))
-                .withApplikasjon(new Applikasjoner().withValue("applikasjon"))
-                .withBehandlingsstatus(new Behandlingsstatuser().withValue("behandlingsstatus"))
-                .withSisteBehandlingssteg(new Behandlingsstegtyper().withValue("stegstype"))
-                .withStart(createXmlGregorianDate(1, 2, 2013))
-                .withAvslutningsstatus(new Avslutningsstatuser().withValue("avslutningsstatus"))
-                .withNormertBehandlingstid(new Behandlingstid())
-                .withFrist(createXmlGregorianDate(1, 3, 2013));
-        return new Behandling[]{behandling};
+        return new Behandlingskjede().withBehandlingskjedeId("behandlingsKjedeId").withBehandling(createBehandlingForSakOgBehandlingLinkedToHenvendelse(BEHANDLINGS_ID));
     }
 
     @Bean

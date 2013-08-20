@@ -8,10 +8,16 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokument
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSDokumentForventningOppsummeringer;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSInnsendingsValg;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.FinnSakOgBehandlingskjedeListeResponse;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Applikasjoner;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Avslutningsstatuser;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandling;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.BehandlingVS;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingskjedetyper;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingsstatuser;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingsstegtyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstid;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstidtyper;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstyper;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Behandlingskjede;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.finnsakogbehandlingskjedeliste.Sak;
 import org.joda.time.DateTime;
@@ -182,4 +188,20 @@ public class MockCreationUtil {
         }
         return xmlGregorianCalendar;
     }
+
+    public static Behandling[] createBehandlingForSakOgBehandlingLinkedToHenvendelse(String behandlingsId) {
+        BehandlingVS behandling = new BehandlingVS()
+                .withBehandlingsId(behandlingsId)
+                .withBehandlingstype(new Behandlingstyper().withValue("type"))
+                .withApplikasjon(new Applikasjoner().withValue("applikasjon"))
+                .withBehandlingsstatus(new Behandlingsstatuser().withValue("behandlingsstatus"))
+                .withSisteBehandlingssteg(new Behandlingsstegtyper().withValue("stegstype"))
+                .withStart(createXmlGregorianDate(1, 2, 2013))
+                .withAvslutningsstatus(new Avslutningsstatuser().withValue("avslutningsstatus"))
+                .withNormertBehandlingstid(new Behandlingstid())
+                .withFrist(createXmlGregorianDate(1, 3, 2013));
+        return new Behandling[]{behandling};
+    }
+
+
 }
