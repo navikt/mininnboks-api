@@ -56,7 +56,7 @@ public class SakogbehandlingService {
     }
 
     private List<Soeknad> getMottatteSoeknader(String aktoerId) {
-        return evaluateMatches(behandlingService.hentFerdigeBehandlinger(aktoerId), evaluateUkjentStatusBehandlingskjeder(populateBehandlingskjedeList(aktoerId)));
+        return evaluateMatches(behandlingService.hentFerdigeBehandlinger(aktoerId), behandlingskjederWithoutStartOrSluttNAVtid(populateBehandlingskjedeList(aktoerId)));
     }
 
     private List<Soeknad> getFerdigeSoeknader(String aktoerId) {
@@ -87,19 +87,17 @@ public class SakogbehandlingService {
         return soeknadListe;
     }
 
-    private List<Soeknad> evaluateMatches(List<Henvendelsesbehandling> henvendelsesbehandlinger, List<Behandlingskjede> potentiallyMottatteSoeknader) {
+    private List<Soeknad> evaluateMatches(List<Henvendelsesbehandling> ferdigeHenvendelsesbehandlinger, List<Behandlingskjede> soeknaderUtenStartOrSluttNAVtid) {
         List<Soeknad> mottatteSoeknader = new ArrayList<>();
-        for (Behandlingskjede behandlingskjede : potentiallyMottatteSoeknader) {
-            if (behandlingskjedeMatchesHenvendelsesBehandling(behandlingskjede, henvendelsesbehandlinger)) {
-                if (firstBehandlingIsUnfinished(behandlingskjede)) {
-                    mottatteSoeknader.add(transformToSoeknad(behandlingskjede, MOTTATT));
-                }
+        for (Behandlingskjede behandlingskjede : soeknaderUtenStartOrSluttNAVtid) {
+            if (behandlingskjedeMatchesHenvendelsesBehandling(behandlingskjede, ferdigeHenvendelsesbehandlinger)) {
+                mottatteSoeknader.add(transformToSoeknad(behandlingskjede, MOTTATT));
             }
         }
         return mottatteSoeknader;
     }
 
-    private List<Behandlingskjede> evaluateUkjentStatusBehandlingskjeder(List<Behandlingskjede> behandlingskjedeList) {
+    private List<Behandlingskjede> behandlingskjederWithoutStartOrSluttNAVtid(List<Behandlingskjede> behandlingskjedeList) {
         List<Behandlingskjede> ukjentStatusBehandlinger = new ArrayList<>();
         for (Behandlingskjede behandlingskjede : behandlingskjedeList) {
             if (behandlingskjedeIsNeitherUnderArbeidNorFinished(behandlingskjede)) {
@@ -117,10 +115,6 @@ public class SakogbehandlingService {
             }
         }
         return behandlingskjedeList;
-    }
-
-    private boolean firstBehandlingIsUnfinished(Behandlingskjede behandlingskjede) {
-        return portType.hentBehandlingskjedensBehandlinger(createRequest(behandlingskjede)).getBehandlingskjede().getBehandling().get(0).getBehandlingsstatus().getValue().equals("UNFINISHED");
     }
 
     private boolean behandlingskjedeMatchesHenvendelsesBehandling(Behandlingskjede behandlingskjede, List<Henvendelsesbehandling> henvendelsesbehandlingList) {

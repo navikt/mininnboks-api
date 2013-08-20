@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling;
 
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -7,7 +8,6 @@ import org.webbitserver.HttpControl;
 import org.webbitserver.HttpHandler;
 import org.webbitserver.HttpRequest;
 import org.webbitserver.HttpResponse;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 
 import java.nio.charset.Charset;
 
@@ -28,9 +28,13 @@ public class SakogbehandlingWebServiceMock implements HttpHandler {
         String message;
         if (body.contains("ping")) {
             message = getPingResponse();
-        } else {
+        } else if (body.contains("behandlingskjedeREF")) {
+            String behandlingsId = Jsoup.parse(body, "", Parser.xmlParser()).select("behandlingskjedeREF").get(0).text();
+            message = marshaller.transformHentBehandlingskjedensBehandlingerResponse(mockData.getMockHentBehandlingskjedensBehandlingerData().getData(behandlingsId));
+        }
+        else {
             String aktorId = Jsoup.parse(body, "", Parser.xmlParser()).select("aktoerREF").get(0).text();
-            message = marshaller.transform(mockData.getFinnData().getData(aktorId));
+            message = marshaller.transformFinnSakOgBehandlingskjedeListeResponse(mockData.getFinnData().getData(aktorId));
         }
 
         response.charset(Charset.forName("UTF-8"))

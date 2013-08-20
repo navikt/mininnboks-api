@@ -4,6 +4,18 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.MockData;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.context.SakogbehandlingIntegrationTestContext;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.SakogbehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.domain.Soeknad;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBrukerBehandling;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Applikasjoner;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Avslutningsstatuser;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandling;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.BehandlingVS;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingsstatuser;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingsstegtyper;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstid;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.Behandlingstyper;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.informasjon.hentbehandlingskjedensbehandlinger.Behandlingskjede;
+import no.nav.tjeneste.virksomhet.sakogbehandling.v1.HentBehandlingskjedensBehandlingerResponse;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -17,10 +29,14 @@ import java.util.List;
 import static junit.framework.Assert.assertNotNull;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.AKTOR_ID;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createFinnSakOgBehandlingskjedeListeResponse;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.createXmlGregorianDate;
+import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.populateFinnbehandlingKjedeListWithOneWithNeitherUnderArbeidNorFerdig;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.populateFinnbehandlingKjedeListWithThreeFerdige;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.util.MockCreationUtil.populateFinnbehandlingKjedeListWithTwoUnderArbeid;
+import static no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.informasjon.WSBehandlingsstatus.FERDIG;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SakogbehandlingIntegrationTestContext.class})
@@ -31,6 +47,9 @@ public class SakOgbehandlingIntegrationTest {
 
     @Inject
     private MockData mockData;
+
+    @Inject
+    private HenvendelsesBehandlingPortType henvendelsesBehandlingPortType;
 
     @After
     public void after() {
@@ -53,12 +72,47 @@ public class SakOgbehandlingIntegrationTest {
         assertThat(soeknadList.size(), equalTo(2));
     }
 
-    @Ignore //det må opprettes en del korrekt testkontekst for at dette skal stemme
+    @Ignore
     @Test
     public void verifyNumberOfMottatteSoeknader() {
+        setupMottattSoeknad(AKTOR_ID);
         List<Soeknad> soeknadList = service.finnMottatteSoeknader(AKTOR_ID);
         assertNotNull(soeknadList);
         assertThat(soeknadList.size(), equalTo(1));
+    }
+
+    private void setupMottattSoeknad(String aktorId) {
+        String behandlingsId = setupHenvendelseForMottattSoeknad(aktorId);
+        setupSakogbehandlingForMottattSoeknad(behandlingsId, aktorId);
+    }
+
+    private void setupSakogbehandlingForMottattSoeknad(String behandlingsId, String aktorId) {
+        String BEHANDLINGSKJEDE_ID = "behandlingsKjedeId";
+        mockData.getFinnData().addResponse(aktorId, createFinnSakOgBehandlingskjedeListeResponse(populateFinnbehandlingKjedeListWithOneWithNeitherUnderArbeidNorFerdig(BEHANDLINGSKJEDE_ID)));
+        mockData.getMockHentBehandlingskjedensBehandlingerData().addResponse(BEHANDLINGSKJEDE_ID, new HentBehandlingskjedensBehandlingerResponse().withResponse(new no.nav.tjeneste.virksomhet.sakogbehandling.v1.meldinger.HentBehandlingskjedensBehandlingerResponse().withBehandlingskjede(new Behandlingskjede().withBehandlingskjedeId(BEHANDLINGSKJEDE_ID).withBehandling(createBehandlingForSakogbehandling(behandlingsId)))));
+    }
+
+    private Behandling[] createBehandlingForSakogbehandling(String behandlingsId) {
+        BehandlingVS behandling = new BehandlingVS()
+                .withBehandlingsId(behandlingsId)
+                .withBehandlingstype(new Behandlingstyper().withValue("type"))
+                .withApplikasjon(new Applikasjoner().withValue("applikasjon"))
+                .withBehandlingsstatus(new Behandlingsstatuser().withValue("behandlingsstatus"))
+                .withSisteBehandlingssteg(new Behandlingsstegtyper().withValue("stegstype"))
+                .withStart(createXmlGregorianDate(1, 2, 2013))
+                .withAvslutningsstatus(new Avslutningsstatuser().withValue("avslutningsstatus"))
+                .withNormertBehandlingstid(new Behandlingstid())
+                .withFrist(createXmlGregorianDate(1, 3, 2013));
+        return new Behandling[]{behandling};
+    }
+
+    private String setupHenvendelseForMottattSoeknad(String aktorId) {
+        String behandlingsId= "BEHID1";
+        when(henvendelsesBehandlingPortType.hentBrukerBehandling(aktorId)).thenReturn(
+                new WSBrukerBehandling()
+                        .withBehandlingsId(behandlingsId)
+                        .withStatus(FERDIG));
+        return behandlingsId;
     }
 
 }

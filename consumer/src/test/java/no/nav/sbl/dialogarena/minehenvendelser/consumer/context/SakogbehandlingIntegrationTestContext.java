@@ -9,7 +9,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.sakogbehandling.Sakogbeh
 import no.nav.tjeneste.domene.brukerdialog.henvendelsesbehandling.v1.HenvendelsesBehandlingPortType;
 import no.nav.tjeneste.virksomhet.sakogbehandling.v1.SakOgBehandlingPortType;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +19,7 @@ import org.webbitserver.WebServer;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
+import static org.mockito.Mockito.mock;
 import static org.webbitserver.WebServers.createWebServer;
 
 @Configuration
@@ -69,7 +69,7 @@ public class SakogbehandlingIntegrationTestContext {
 
     @Bean
     public HenvendelsesBehandlingPortType getHenvendelsesBehandlingPortType() {
-        return Mockito.mock(HenvendelsesBehandlingPortType.class);
+        return mock(HenvendelsesBehandlingPortType.class);
     }
 
 }
