@@ -106,6 +106,12 @@ public class HomePageTest extends AbstractWicketTest {
     }
 
     @Test
+    public void homePageShouldContainMottatteSoeknaderListView() {
+        wicketTester.goTo(HomePage.class)
+                .should().containComponent(withId("mottatteSoeknader"));
+    }
+
+    @Test
     public void soeknaderUnderArbeidListViewShouldBeVisibleWhenSoeknaderExist() {
         when(foedselsnummerServiceMock.getFoedselsnummer()).thenReturn(TEST_FNR);
         when(sakogbehandlingService.finnSoeknaderUnderArbeid(TEST_FNR)).thenReturn(asList(transformToSoeknad(createDummyBehandlingkjede(), Soeknad.SoeknadsStatus.UNDER_ARBEID)));

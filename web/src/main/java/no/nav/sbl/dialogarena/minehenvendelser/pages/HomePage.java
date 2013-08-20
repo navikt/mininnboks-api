@@ -4,6 +4,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.FoedselsnummerService;
 import no.nav.sbl.dialogarena.minehenvendelser.components.behandling.BehandlingerUnderArbeidListView;
 import no.nav.sbl.dialogarena.minehenvendelser.components.soeknader.FerdigeSoeknaderListView;
+import no.nav.sbl.dialogarena.minehenvendelser.components.soeknader.MottatteSoeknaderListView;
 import no.nav.sbl.dialogarena.minehenvendelser.components.soeknader.SoeknaderUnderArbeidListView;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.BehandlingService;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.henvendelse.behandling.domain.Henvendelsesbehandling;
@@ -53,7 +54,9 @@ public class HomePage extends BasePage {
                 new Label("paabegynteTittel", cmsContentRetriever.hentTekst("soeknad.paabegynte.tittel")),
                 new Label("underarbeidTittel", cmsContentRetriever.hentTekst("soeknad.underarbeid.tittel")),
                 new Label("ferdigTittel", cmsContentRetriever.hentTekst("soeknad.ferdige.tittel")),
+                new Label("mottattTittel", cmsContentRetriever.hentTekst("soeknad.mottatt.tittel")),
                 new BehandlingerUnderArbeidListView("behandlingerUnderArbeid", behandlinger),
+                new MottatteSoeknaderListView("mottatteSoeknader", sakogbehandlingService.finnMottatteSoeknader(foedselsnummerService.getFoedselsnummer())),
                 new SoeknaderUnderArbeidListView("soeknaderUnderArbeid", sakogbehandlingService.finnSoeknaderUnderArbeid(foedselsnummerService.getFoedselsnummer())),
                 new FerdigeSoeknaderListView("ferdigeSoeknader", sakogbehandlingService.finnFerdigeSoeknader(foedselsnummerService.getFoedselsnummer())),
                 new IngenBehandlingerView("ingenBehandlinger", behandlinger),
