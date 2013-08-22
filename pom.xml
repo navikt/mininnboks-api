@@ -15,10 +15,8 @@
 
     <modules>
         <module>config</module>
-        <module>consumer</module>
         <module>web</module>
         <module>jee</module>
-        <module>provider-rs</module>
     </modules>
 
     <properties>
