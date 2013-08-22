@@ -1,4 +1,0 @@
-<jboss-web>
-    <context-root>minehenvendelser</context-root>
-    <security-domain>java:/jaas/NavOpenAM</security-domain>
-</jboss-web>
