@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
-import no.nav.sbl.dialogarena.sporsmalogsvar.consumer.MeldingService;
-import no.nav.sbl.dialogarena.sporsmalogsvar.innboks.Innboks;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;

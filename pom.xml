@@ -145,10 +145,10 @@
                 <artifactId>modig-content</artifactId>
                 <version>${modig-content.version}</version>
                 <exclusions>
-                    <exclusion>
-                        <groupId>org.apache.httpcomponents</groupId>
-                        <artifactId>httpcore</artifactId>
-                    </exclusion>
+                    <!--<exclusion>-->
+                        <!--<groupId>org.apache.httpcomponents</groupId>-->
+                        <!--<artifactId>httpcore</artifactId>-->
+                    <!--</exclusion>-->
                     <exclusion>
                         <groupId>commons-logging</groupId>
                         <artifactId>commons-logging</artifactId>
@@ -589,6 +589,12 @@
                 <artifactId>jcl-over-slf4j</artifactId>
                 <version>${slf4j.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>net.sourceforge.collections</groupId>
+                <artifactId>collections-generic</artifactId>
+                <version>4.01</version>
             </dependency>
 
         </dependencies>

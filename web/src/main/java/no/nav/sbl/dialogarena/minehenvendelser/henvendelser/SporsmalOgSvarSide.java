@@ -1,12 +1,12 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser;
 
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSporsmalPanel;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SideNavigerer;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.Sporsmal;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SporsmalBekreftelsePanel;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.TemavelgerPanel;
-import no.nav.sbl.dialogarena.sporsmalogsvar.consumer.MeldingService;
-import no.nav.sbl.dialogarena.sporsmalogsvar.innboks.Innboks;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;

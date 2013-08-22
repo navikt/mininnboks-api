@@ -15,12 +15,6 @@
   <dependencies>
 
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>sporsmal-og-svar-common</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.0.11</version>
@@ -102,7 +96,7 @@
     <dependency>
       <groupId>no.nav.sbl.dialogarena</groupId>
       <artifactId>henvendelse-felles-tjenestespesifikasjon</artifactId>
-      <version>0.0.3</version>
+      <version>0.0.5</version>
     </dependency>
 
     <dependency>
@@ -110,6 +104,11 @@
       <artifactId>sporsmalogsvar-tjenestespesifikasjon</artifactId>
       <version>0.0.4-SNAPSHOT</version>
     </dependency>
+
+      <dependency>
+          <groupId>no.nav.modig</groupId>
+          <artifactId>modig-lang</artifactId>
+      </dependency>
 
     <dependency>
       <groupId>no.nav.modig</groupId>
@@ -226,6 +225,11 @@
       <artifactId>jcl-over-slf4j</artifactId>
       <scope>runtime</scope>
     </dependency>
+
+      <dependency>
+          <groupId>net.sourceforge.collections</groupId>
+          <artifactId>collections-generic</artifactId>
+      </dependency>
 
   </dependencies>
 

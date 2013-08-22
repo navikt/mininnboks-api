@@ -1,6 +1,9 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
-import no.nav.modig.cache.CacheConfig;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.content.ContentRetriever;
 import no.nav.modig.content.ValueRetriever;
@@ -8,7 +11,7 @@ import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
 import no.nav.modig.content.enonic.HttpContentRetriever;
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.WicketApplication;
-import no.nav.sbl.dialogarena.sporsmalogsvar.consumer.MeldingService;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
@@ -21,15 +24,9 @@ import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.apache.cxf.ws.security.SecurityConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
-@Import(CacheConfig.class)
+//@Import(CacheConfig.class)
 public class ApplicationContext {
 	
 	@Bean
