@@ -1,4 +1,0 @@
-!1 [[Kjør godkjente tester][?suite&suiteFilter=godkjent]]
-
-
-!contents -R2 -g -p -f -h
