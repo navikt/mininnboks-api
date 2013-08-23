@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.melding;
+package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;

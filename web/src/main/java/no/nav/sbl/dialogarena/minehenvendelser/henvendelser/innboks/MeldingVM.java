@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.melding;
+package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
 import java.io.Serializable;
 import java.util.Comparator;

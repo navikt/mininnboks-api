@@ -5,11 +5,11 @@ import java.util.Comparator;
 import java.util.List;
 import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Melding;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.melding.MeldingVM;
+
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.option.Optional.optional;
-import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.melding.MeldingVM.TIL_MELDING_VM;
-import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.melding.MeldingVM.harTraadId;
+import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.MeldingVM.TIL_MELDING_VM;
+import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.MeldingVM.harTraadId;
 
 public class InnboksVM implements Serializable {
 

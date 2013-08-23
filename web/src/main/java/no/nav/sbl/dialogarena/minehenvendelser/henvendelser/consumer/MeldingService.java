@@ -1,27 +1,19 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 
 import java.util.List;
-import no.nav.modig.lang.option.Optional;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSMelding;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmal;
-import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmalOgSvar;
-import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSvar;
 import org.apache.commons.collections15.Transformer;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.option.Optional.optional;
 
 public interface MeldingService {
 
     String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId);
     List<Melding> hentAlleMeldinger(String aktorId);
-    void merkMeldingSomHelst(String behandlingsId);
-    Optional<SporsmalOgSvar> plukkMelding(String aktorId);
-    void besvar(WSSvar svar);
-
+    void merkMeldingSomLelst(String behandlingsId);
 
     class Default implements MeldingService {
 
@@ -64,42 +56,9 @@ public interface MeldingService {
         }
 
         @Override
-        public void merkMeldingSomHelst(String behandlingsId) {
+        public void merkMeldingSomLelst(String behandlingsId) {
             henvendelseWS.merkMeldingSomLest(behandlingsId);
         }
-
-        @Override
-        public Optional<SporsmalOgSvar> plukkMelding(String aktorId) {
-            return optional(spsmogsvarWS.plukkMeldingForBesvaring(aktorId)).map(TIL_SPORSMALOGSVAR);
-        }
-
-        @Override
-        public void besvar(WSSvar svar) {
-            spsmogsvarWS.besvarSporsmal(svar);
-        }
-
-        private static final Transformer<WSMelding, Melding> TIL_MELDING = new Transformer<WSMelding, Melding>() {
-            @Override
-            public Melding transform(WSMelding wsMelding) {
-                return new Melding()
-                        .withId(wsMelding.getId())
-                        .withTraadId(wsMelding.getTraadId())
-                        .withOpprettet(wsMelding.getOpprettet())
-                        .withType(Meldingstype.valueOf(wsMelding.getType().toString()))
-                        .withTema(wsMelding.getTema())
-                        .withOverskrift(wsMelding.getOverskrift())
-                        .withFritekst(wsMelding.getFritekst());
-            }
-        };
-
-        private static final Transformer<WSSporsmalOgSvar, SporsmalOgSvar> TIL_SPORSMALOGSVAR = new Transformer<WSSporsmalOgSvar, SporsmalOgSvar>() {
-            @Override
-            public SporsmalOgSvar transform(WSSporsmalOgSvar wsSporsmalOgSvar) {
-                Melding sporsmal = TIL_MELDING.transform(wsSporsmalOgSvar.getSporsmal());
-                Melding svar = TIL_MELDING.transform(wsSporsmalOgSvar.getSvar());
-                return new SporsmalOgSvar(sporsmal, svar);
-            }
-        };
 
     }
 

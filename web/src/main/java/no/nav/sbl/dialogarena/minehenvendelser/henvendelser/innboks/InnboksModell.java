@@ -2,7 +2,6 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
 import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Meldingstype;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.melding.MeldingVM;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;

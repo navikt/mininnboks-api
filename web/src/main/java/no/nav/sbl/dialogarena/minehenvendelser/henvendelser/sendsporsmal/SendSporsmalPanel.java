@@ -61,7 +61,7 @@ public class SendSporsmalPanel extends Panel {
                     spsm.innsendingsTidspunkt = DateTime.now();
                     String overskrift = "Spørsmål om " + spsm.getTema();
                     meldingService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), fodselsnr);
-                    send(getPage(), Broadcast.BREADTH, Innboks.MELDINGER_OPPDATERT);
+                    send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_MELDINGER);
                     sideNavigerer.neste();
                     target.add(SendSporsmalPanel.this.getParent());
                 }
