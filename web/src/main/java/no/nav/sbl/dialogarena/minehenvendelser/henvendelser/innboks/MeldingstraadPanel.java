@@ -25,6 +25,7 @@ public class MeldingstraadPanel extends Panel {
             item.setOutputMarkupId(true);
             item.add(new MeldingsHeader("header"));
             item.add(new Label("melding.fritekst"));
+            item.add(new Label("lestDato"));
         }
     }
 }

@@ -50,6 +50,7 @@ public interface MeldingService {
                             melding.markerSomLest();
                         }
 
+                        melding.lestDato = wsMelding.getLestDato();
                         return melding;
                     }
                     throw new RuntimeException("Kan ikke håndtere " + input.getClass());

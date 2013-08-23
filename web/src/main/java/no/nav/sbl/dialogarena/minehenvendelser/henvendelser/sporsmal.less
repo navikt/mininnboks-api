@@ -232,17 +232,21 @@ h2.liten {
   background-color: darkgrey;
 }
 
-.meldingsdetaljer > .melding:not(.valgt) > P {
+.meldingsdetaljer > .melding > P {
+  padding: 1em;
+  border: 1px solid #ddd;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 500px;
-  overflow: hidden;
-  margin: 0 auto;
-  border: solid 1px #ddd;
-  padding: 1em;
 }
 
-.meldingsdetaljer > .melding.valgt > P {
+.meldingsdetaljer > .melding .settDato {
+  color: #888;
+  margin: 0 10em;
+  display: block;
+  font-style: italic;
+  border-top: 1px solid #ddd;
+  margin-top: 5px;
+  text-align: center;
 }
 
 .melding:not(.valgt) {

@@ -13,11 +13,12 @@ public class Melding implements Serializable {
     public final String id, traadId;
     public final Meldingstype type;
     public String tema, overskrift, fritekst;
-    public DateTime opprettet;
+    public DateTime opprettet, lestDato;
     private boolean lest;
 
     public void markerSomLest() {
         lest = true;
+        lestDato = DateTime.now();
     }
 
     public boolean erLest() {

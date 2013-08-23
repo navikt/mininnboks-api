@@ -7,10 +7,11 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Melding;
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 public class MeldingVM implements Serializable {
-	
+
     public final Melding melding;
 
     public MeldingVM(Melding melding) {
@@ -18,9 +19,19 @@ public class MeldingVM implements Serializable {
     }
 
     public String getOpprettetDato() {
-        return DateTimeFormat.forPattern("dd.MM.yyyy, HH:mm:ss")
-                .withLocale(Locale.getDefault())
-                .print(melding.opprettet);
+        return formatertDato(melding.opprettet);
+    }
+
+    public String getLestDato() {
+        String dato = formatertDato(melding.lestDato);
+        return dato != null ? "Sett " + dato : null;
+    }
+
+    private String formatertDato(DateTime dato) {
+        return dato == null ? null :
+                DateTimeFormat.forPattern("dd.MM.yyyy, HH:mm:ss")
+                        .withLocale(Locale.getDefault())
+                        .print(dato);
     }
 
     public IModel<Boolean> erLest() {
