@@ -250,6 +250,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.wicket</groupId>
+                <artifactId>wicket-util</artifactId>
+                <version>${wicket.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>javax.inject</groupId>
                 <artifactId>javax.inject</artifactId>
                 <version>1</version>
