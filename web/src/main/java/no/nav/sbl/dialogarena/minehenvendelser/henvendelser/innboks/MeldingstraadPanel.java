@@ -24,7 +24,7 @@ public class MeldingstraadPanel extends Panel {
         protected void populateItem(final ListItem<MeldingVM> item) {
             item.setOutputMarkupId(true);
             item.add(new MeldingsHeader("header"));
-            item.add(new Label("fritekst"));
+            item.add(new Label("melding.fritekst"));
         }
     }
 }

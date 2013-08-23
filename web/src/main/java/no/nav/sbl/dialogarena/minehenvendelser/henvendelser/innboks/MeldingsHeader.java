@@ -7,7 +7,7 @@ public class MeldingsHeader extends Panel {
 
     public MeldingsHeader(String id) {
         super(id);
-        add(new Label("overskrift"));
+        add(new Label("melding.overskrift"));
         add(new Label("opprettetDato"));
     }
 }

@@ -21,7 +21,7 @@ public class AlleMeldingerPanel extends Panel {
             @Override
             protected void populateItem(final ListItem<MeldingVM> item) {
                 item.add(new MeldingsHeader("header"));
-                item.add(new Label("fritekst"));
+                item.add(new Label("melding.fritekst"));
                 item.add(hasCssClassIf("valgt", innboksModell.erValgtMelding(item.getModelObject())));
                 item.add(hasCssClassIf("lest", item.getModelObject().erLest()));
                 item.add(new AjaxEventBehavior("click") {
@@ -32,11 +32,11 @@ public class AlleMeldingerPanel extends Panel {
                         send(getPage(), Broadcast.DEPTH, Innboks.VALGT_MELDING);
                         // Merk meldingen som lest
                         if (!item.getModelObject().erLest().getObject()) {
-                            service.merkMeldingSomLest(item.getModelObject().getId());
-                            item.getModelObject().setLest();
+                            service.merkMeldingSomLest(item.getModelObject().melding.id);
+                            item.getModelObject().melding.markerSomLest();
                         }
                         // Oppdater visningen
-                        target.add(getParent());
+                        target.add(AlleMeldingerPanel.this);
                     }
                 });
             }

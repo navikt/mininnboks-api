@@ -22,7 +22,6 @@ public class DetaljvisningPanel extends Panel {
 		add(meldingstraadPanel);
 	}
 
-    @SuppressWarnings("unused")
     @RunOnEvents(Innboks.VALGT_MELDING)
     public void meldingerOppdatert(AjaxRequestTarget target) {
         target.add(this);

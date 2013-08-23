@@ -30,7 +30,6 @@ public class Innboks extends Panel {
         add(new AttributeAppender("class", " innboks clearfix"));
     }
 
-    @SuppressWarnings("unused")
     @RunOnEvents(OPPDATER_MELDINGER)
     public void meldingerOppdatert(AjaxRequestTarget target) {
         this.innboksModell.getObject().oppdaterMeldingerFra(service.hentAlleMeldinger(fodselsnr));

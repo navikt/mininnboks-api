@@ -22,33 +22,37 @@ public interface MeldingService {
         private final SporsmalOgSvarPortType spsmogsvarWS;
 
         public Default(HenvendelsePortType henvendelseWS, SporsmalOgSvarPortType spsmogsvarWS) {
-    		this.henvendelseWS = henvendelseWS;
-    		this.spsmogsvarWS = spsmogsvarWS;
-    	}
+            this.henvendelseWS = henvendelseWS;
+            this.spsmogsvarWS = spsmogsvarWS;
+        }
 
-    	@Override
+        @Override
         public String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId) {
             return spsmogsvarWS.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema).withOverskrift(overskrift), aktorId);
         }
 
         @Override
         public List<Melding> hentAlleMeldinger(String aktorId) {
-        	Transformer<WSHenvendelse, Melding> somMelding = new Transformer<WSHenvendelse, Melding>() {
-    			@Override
+            Transformer<WSHenvendelse, Melding> somMelding = new Transformer<WSHenvendelse, Melding>() {
+                @Override
                 public Melding transform(WSHenvendelse input) {
-                    Melding melding = new Melding()
-                            .withId(input.getBehandlingsId())
-                            .withFritekst(input.getBeskrivelse())
-                            .withOpprettet(input.getSistEndretDato())
-                            .withOverskrift(input.getOverskrift())
-                            .withTema(input.getTema())
-                            .withLest(input.isLest());
                     if (input instanceof WSMelding) {
                         WSMelding wsMelding = (WSMelding) input;
-                        melding.withType(Meldingstype.valueOf(wsMelding.getType().name()));
-                        melding.withTraadId(wsMelding.getTraadId());
-                    } 
-                    return melding;
+                        Melding melding = new Melding(
+                                wsMelding.getBehandlingsId(),
+                                Meldingstype.valueOf(wsMelding.getType().name()),
+                                wsMelding.getTraadId());
+                        melding.fritekst = wsMelding.getBeskrivelse();
+                        melding.opprettet = wsMelding.getSistEndretDato();
+                        melding.overskrift = wsMelding.getOverskrift();
+                        melding.tema = wsMelding.getTema();
+                        if (wsMelding.isLest()) {
+                            melding.markerSomLest();
+                        }
+
+                        return melding;
+                    }
+                    throw new RuntimeException("Kan ikke håndtere " + input.getClass());
                 }
             };
             return on(henvendelseWS.hentHenvendelseListe(aktorId)).map(somMelding).collect();
