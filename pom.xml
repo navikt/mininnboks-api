@@ -103,6 +103,12 @@
                 <version>1.0.23</version>
             </dependency>
 
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>sporsmalogsvar-tjenestespesifikasjon</artifactId>
+                <version>0.0.4</version>
+            </dependency>
+
             <!-- Modig dependencies -->
             <dependency>
                 <groupId>no.nav.modig</groupId>
