@@ -17,6 +17,7 @@ import org.apache.wicket.model.Model;
 
 import javax.inject.Inject;
 import java.util.List;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import static java.util.Arrays.asList;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
@@ -30,7 +31,6 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
     @Inject
     MeldingService meldingService;
 
-    private static final String FODSELSNUMMER = "***REMOVED***";
 
     private enum Side {INNBOKS_BRUKER, TEMAVELGER, SEND_SPORSMAL, SPORMSMAL_BEKREFTELSE}
 
@@ -38,14 +38,16 @@ public class SporsmalOgSvarSide extends BasePage implements SideNavigerer {
     final List<String> alleTema = asList("Uføre", "Sykepenger", "Tjenestebasert innskuddspensjon", "Annet");
     CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
 
-	public SporsmalOgSvarSide() {
-        Innboks innboks = new Innboks("innboks-bruker", FODSELSNUMMER, meldingService);
+	public SporsmalOgSvarSide(final PageParameters pageParameters) {
+
+        String fnr = pageParameters.get("fnr").toString();
+        Innboks innboks = new Innboks("innboks-bruker", fnr, meldingService);
         innboks.add(visibleIf(aktivSideEr(Side.INNBOKS_BRUKER)));
 
         TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", alleTema, model, this);
         temavelger.add(visibleIf(aktivSideEr(Side.TEMAVELGER)));
 
-        SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, FODSELSNUMMER, this, meldingService);
+        SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, fnr, this, meldingService);
         sendSporsmal.add(visibleIf(aktivSideEr(Side.SEND_SPORSMAL)));
 
         SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", model, this);
