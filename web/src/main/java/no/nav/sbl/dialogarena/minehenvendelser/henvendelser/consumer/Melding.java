@@ -15,6 +15,7 @@ public class Melding implements Serializable {
     public String id, traadId, tema, overskrift, fritekst;
     public DateTime opprettet;
     public Meldingstype type;
+    public boolean lest;
 
     public Melding withId(String id) {
         this.id = id;
@@ -48,6 +49,11 @@ public class Melding implements Serializable {
 
     public Melding withType(Meldingstype type) {
         this.type = type;
+        return this;
+    }
+
+    public Melding withLest(boolean lest) {
+        this.lest = lest;
         return this;
     }
 

@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 import java.util.List;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSMelding;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmal;
 import org.apache.commons.collections15.Transformer;
@@ -35,23 +36,21 @@ public interface MeldingService {
         	Transformer<WSHenvendelse, Melding> somMelding = new Transformer<WSHenvendelse, Melding>() {
     			@Override
                 public Melding transform(WSHenvendelse input) {
-    				Melding melding = new Melding()
-    					.withId(input.getBehandlingsId())
-    					.withFritekst(input.getBeskrivelse())
-    					.withOpprettet(input.getSistEndretDato())
-    					.withOverskrift(input.getOverskrift())
-    					.withTema(input.getTema());
-    				if (input instanceof no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSMelding) {
-    					no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSMelding wsMelding = (no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSMelding) input;
-    					melding.withType(Meldingstype.valueOf(wsMelding.getType().name()));
-    					melding.withTraadId(wsMelding.getTraadId());
-    				} else {
-    					melding.withType(Meldingstype.DOKUMENTINNSENDING);
-    					melding.withTraadId("0");
-    				}
-    				return melding;
-    			}
-    		};
+                    Melding melding = new Melding()
+                            .withId(input.getBehandlingsId())
+                            .withFritekst(input.getBeskrivelse())
+                            .withOpprettet(input.getSistEndretDato())
+                            .withOverskrift(input.getOverskrift())
+                            .withTema(input.getTema())
+                            .withLest(input.isLest());
+                    if (input instanceof WSMelding) {
+                        WSMelding wsMelding = (WSMelding) input;
+                        melding.withType(Meldingstype.valueOf(wsMelding.getType().name()));
+                        melding.withTraadId(wsMelding.getTraadId());
+                    } 
+                    return melding;
+                }
+            };
             return on(henvendelseWS.hentHenvendelseListe(aktorId)).map(somMelding).collect();
         }
 

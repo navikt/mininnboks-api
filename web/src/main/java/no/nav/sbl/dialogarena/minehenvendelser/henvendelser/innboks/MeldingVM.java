@@ -7,6 +7,8 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Melding;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Meldingstype;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -66,6 +68,19 @@ public class MeldingVM implements Serializable {
 
     public void setFritekst(String fritekst) {
         melding.fritekst = fritekst;
+    }
+
+    public void setLest() {
+        melding.lest = true;
+    }
+
+    public IModel<Boolean> erLest() {
+        return new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                return melding.lest;
+            }
+        };
     }
 
     public static final Transformer<Melding, MeldingVM> TIL_MELDING_VM = new Transformer<Melding, MeldingVM>() {

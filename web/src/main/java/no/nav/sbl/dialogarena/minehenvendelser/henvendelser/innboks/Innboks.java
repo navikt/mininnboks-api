@@ -23,7 +23,7 @@ public class Innboks extends Panel {
         setDefaultModel(innboksModell);
         setOutputMarkupId(true);
 
-        AlleMeldingerPanel alleMeldinger = new AlleMeldingerPanel("meldinger", innboksModell);
+        AlleMeldingerPanel alleMeldinger = new AlleMeldingerPanel("meldinger", innboksModell, service);
         DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksModell);
         add(alleMeldinger, detaljvisning);
 

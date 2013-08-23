@@ -31,7 +31,6 @@ public class InnboksVM implements Serializable {
 
     public final void oppdaterMeldingerFra(List<Melding> meldinger) {
         this.meldinger = on(meldinger).map(TIL_MELDING_VM).collect(nyesteOverst);
-//        this.valgtMelding = meldinger.isEmpty() ? new MeldingVM(new Melding()) : this.meldinger.get(0);
     }
 
     public Optional<MeldingVM> getValgtMelding() {
