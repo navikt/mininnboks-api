@@ -14,7 +14,7 @@ public interface MeldingService {
 
     String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId);
     List<Melding> hentAlleMeldinger(String aktorId);
-    void merkMeldingSomLelst(String behandlingsId);
+    void merkMeldingSomLest(String behandlingsId);
 
     class Default implements MeldingService {
 
@@ -55,7 +55,7 @@ public interface MeldingService {
         }
 
         @Override
-        public void merkMeldingSomLelst(String behandlingsId) {
+        public void merkMeldingSomLest(String behandlingsId) {
             henvendelseWS.merkMeldingSomLest(behandlingsId);
         }
 

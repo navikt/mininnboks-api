@@ -32,7 +32,7 @@ public class AlleMeldingerPanel extends Panel {
                         send(getPage(), Broadcast.DEPTH, Innboks.VALGT_MELDING);
                         // Merk meldingen som lest
                         if (!item.getModelObject().erLest().getObject()) {
-                            service.merkMeldingSomLelst(item.getModelObject().getId());
+                            service.merkMeldingSomLest(item.getModelObject().getId());
                             item.getModelObject().setLest();
                         }
                         // Oppdater visningen
