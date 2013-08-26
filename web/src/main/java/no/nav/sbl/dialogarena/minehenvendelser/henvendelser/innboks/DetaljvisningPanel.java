@@ -2,9 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
 import no.nav.modig.wicket.events.annotations.RunOnEvents;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.StringResourceModel;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.either;
@@ -18,7 +16,6 @@ public class DetaljvisningPanel extends Panel {
 		setOutputMarkupId(true);
         MeldingstraadPanel meldingstraadPanel = new MeldingstraadPanel("traad");
         meldingstraadPanel.add(visibleIf(either(innboksModell.valgtMeldingAvType(SPORSMAL)).or(innboksModell.valgtMeldingAvType(SVAR))));
-        add(new Label("ingen-valgt", new StringResourceModel("ingen-melding-valgt", this, null)).add(visibleIf(innboksModell.ingenMeldingValgt())));
 		add(meldingstraadPanel);
 	}
 
