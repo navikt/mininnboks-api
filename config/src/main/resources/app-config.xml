@@ -4,7 +4,7 @@
 
     <name>minehenvendelser</name>
 
-    <selftestPagePath>/minehenvendelser/internal/selftest</selftestPagePath>
+    <!--<selftestPagePath>/minehenvendelser/internal/selftest</selftestPagePath>-->
 
     <artifacts>
         <ear groupId="no.nav.sbl.dialogarena" artifactId="minehenvendelser-jee"/>
@@ -28,7 +28,6 @@
         <logins>
             <openAm>
                 <contextRoot>minehenvendelser</contextRoot>
-                <contextRoot>minehenvendelser-rs</contextRoot>
             </openAm>
         </logins>
     </security>

@@ -53,7 +53,6 @@
         <wicket.version>6.8.0</wicket.version>
         <dialogarena.cms.url>http://e32apvl026.oera-t.local:8080</dialogarena.cms.url>
         <henvendelse.tjenestespesifikasjon.version.1>1.0.19</henvendelse.tjenestespesifikasjon.version.1>
-        <jboss.resteasy.version>3.0.3.Final</jboss.resteasy.version>
         <sakogbehandling.jaxws.version>1.0.0</sakogbehandling.jaxws.version>
     </properties>
 
@@ -404,28 +403,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-jaxrs</artifactId>
-                <version>${jboss.resteasy.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-simple</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>jaxrs-api</artifactId>
-                <version>${jboss.resteasy.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.webbitserver</groupId>
                 <artifactId>webbit</artifactId>
                 <version>${webbit.version}</version>
@@ -441,12 +418,6 @@
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
                 <version>2.2.2</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-spring</artifactId>
-                <version>${jboss.resteasy.version}</version>
             </dependency>
 
             <!-- Test dependencies -->
