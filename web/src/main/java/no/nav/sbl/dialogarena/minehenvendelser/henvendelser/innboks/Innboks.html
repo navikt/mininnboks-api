@@ -4,12 +4,15 @@
 <head>
 </head>
 <body>
-<wicket:panel>
+<wicket:extend>
+    <div wicket:id="top-bar" id="innboks-top">
+        <a wicket:id="skriv-ny" class="skriv-ny-link">Skriv ny</a>
+    </div>
     <div id="innboks-container">
         <div wicket:id="meldinger" class="pane meldingsliste"></div>
         <div wicket:id="detaljpanel" class="pane meldingsdetaljer"></div>
     </div>
-</wicket:panel>
+</wicket:extend>
 
 </body>
 </html>

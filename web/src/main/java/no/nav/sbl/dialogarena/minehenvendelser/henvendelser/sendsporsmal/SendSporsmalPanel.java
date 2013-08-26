@@ -3,7 +3,6 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
@@ -12,6 +11,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -46,11 +46,10 @@ public class SendSporsmalPanel extends Panel {
             final TextArea<Object> fritekst = new TextArea<>("fritekst");
             fritekst.setRequired(true);
 
-            AjaxLink<Void> avbryt = new AjaxLink<Void>("avbryt") {
+            Link avbryt = new Link("avbryt") {
                 @Override
-                public void onClick(AjaxRequestTarget target) {
-                    sideNavigerer.forside();
-                    target.add(SendSporsmalPanel.this.getParent());
+                public void onClick() {
+                    setResponsePage(Innboks.class);
                 }
             };
 
