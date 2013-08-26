@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 
+import java.util.ArrayList;
 import java.util.List;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
@@ -7,6 +8,7 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSMe
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmal;
 import org.apache.commons.collections15.Transformer;
+import org.joda.time.DateTime;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
 
@@ -15,6 +17,35 @@ public interface MeldingService {
     String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId);
     List<Melding> hentAlleMeldinger(String aktorId);
     void merkMeldingSomLest(String behandlingsId);
+    
+    class Mock implements MeldingService {
+    	
+    	List<Melding> meldinger = new ArrayList<>();
+    	
+    	public Mock() {
+    		Melding m = new Melding("123", Meldingstype.SPORSMAL, "1");
+    		m.opprettet = DateTime.now();
+    		m.fritekst = "Her er spørsmålet";
+    		m.overskrift = "Spørsmål om Uføre";
+    		m.tema = "Uføre";
+			meldinger.add(m);
+    	}
+
+		@Override
+		public String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId) {
+			return null;
+		}
+
+		@Override
+		public List<Melding> hentAlleMeldinger(String aktorId) {
+			return meldinger;
+		}
+
+		@Override
+		public void merkMeldingSomLest(String behandlingsId) {
+		}
+    	
+    }
 
     class Default implements MeldingService {
 

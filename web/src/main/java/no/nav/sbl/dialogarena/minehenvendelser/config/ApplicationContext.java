@@ -4,6 +4,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+
+import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.content.ContentRetriever;
 import no.nav.modig.content.ValueRetriever;
@@ -14,6 +16,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
+
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
@@ -24,9 +27,10 @@ import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.apache.cxf.ws.security.SecurityConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
-//@Import(CacheConfig.class)
+@Import(CacheConfig.class)
 public class ApplicationContext {
 	
 	@Bean
@@ -53,20 +57,10 @@ public class ApplicationContext {
 	}
 
 	@Bean
-	public SporsmalOgSvarPortType sporsmalOgSvarPortType() {
-		return createPortType(System.getProperty("spormalogsvarendpoint.url"), "classpath:SporsmalOgSvar.wsdl",
-				SporsmalOgSvarPortType.class);
-	}
-
-	@Bean
-	public HenvendelsePortType henvendelsePortType() {
-		return createPortType(System.getProperty("henvendelseendpoint.url"), "classpath:Henvendelse.wsdl",
-				HenvendelsePortType.class);
-	}
-
-	@Bean
-	public MeldingService meldingService(HenvendelsePortType hpt, SporsmalOgSvarPortType sospt) {
-		return new MeldingService.Default(hpt, sospt);
+	public MeldingService meldingService() {
+		SporsmalOgSvarPortType sosPT = createPortType(System.getProperty("spormalogsvarendpoint.url"), "classpath:SporsmalOgSvar.wsdl", SporsmalOgSvarPortType.class);
+		HenvendelsePortType hvPT = createPortType(System.getProperty("henvendelseendpoint.url"), "classpath:Henvendelse.wsdl", HenvendelsePortType.class);
+		return new MeldingService.Default(hvPT, sosPT);
 	}
 
 	private static <T> T createPortType(String address, String wsdlUrl, Class<T> serviceClass) {
