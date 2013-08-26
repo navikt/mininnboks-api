@@ -67,9 +67,10 @@ public class MeldingVM implements Serializable {
         }
     };
 
-    public static final Comparator<MeldingVM> NYESTE_NEDERST = new Comparator<MeldingVM>() {
-        public int compare(MeldingVM o1, MeldingVM o2) {
-            return o1.melding.opprettet.compareTo(o2.melding.opprettet);
+    public static final Comparator<MeldingVM> NYESTE_OVERST = new Comparator<MeldingVM>() {
+        public int compare(MeldingVM m1, MeldingVM m2) {
+            return m2.melding.opprettet.compareTo(m1.melding.opprettet);
         }
     };
+
 }

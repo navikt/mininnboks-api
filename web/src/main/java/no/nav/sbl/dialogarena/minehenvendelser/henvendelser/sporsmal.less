@@ -235,8 +235,6 @@ h2.liten {
 .meldingsdetaljer > .melding > P {
   padding: 1em;
   border: 1px solid #ddd;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .meldingsdetaljer > .melding .settDato {
@@ -257,15 +255,22 @@ h2.liten {
   float:left;
 }
 
+
+#innboks-container {
+  overflow: hidden;
+  height: 600px;
+}
+
 .pane.meldingsliste {
   width: 40%;
-  overflow-y: scroll;
+  overflow: auto;
   border-right: solid 1px #ddd;
-  max-height: 500px;
+  height: 100%;
 }
 .pane.meldingsdetaljer {
   width: 60%;
-  max-height: 500px;
+  height: 100%;
+  overflow: auto;
 }
 
 .opprettet {
