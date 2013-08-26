@@ -5,5 +5,4 @@ import java.io.Serializable;
 public enum Meldingstype implements Serializable {
     SPORSMAL,
     SVAR,
-    DOKUMENTINNSENDING
 }

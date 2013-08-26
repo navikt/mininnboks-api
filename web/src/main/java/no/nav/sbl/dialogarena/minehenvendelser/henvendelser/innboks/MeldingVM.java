@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Locale;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Melding;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Meldingstype;
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -32,6 +33,15 @@ public class MeldingVM implements Serializable {
                 DateTimeFormat.forPattern("dd.MM.yyyy, HH:mm:ss")
                         .withLocale(Locale.getDefault())
                         .print(dato);
+    }
+
+    public IModel<Boolean> avType(final Meldingstype type) {
+        return new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                return melding.type == type;
+            }
+        };
     }
 
     public IModel<Boolean> erLest() {
