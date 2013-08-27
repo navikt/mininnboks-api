@@ -52,7 +52,7 @@
         <webbit.version>0.4.14</webbit.version>
         <wicket.version>6.8.0</wicket.version>
         <dialogarena.cms.url>http://e32apvl026.oera-t.local:8080</dialogarena.cms.url>
-        <henvendelse.tjenestespesifikasjon.version.1>1.0.19</henvendelse.tjenestespesifikasjon.version.1>
+        <henvendelse.tjenestespesifikasjon.version.1>2.0.0</henvendelse.tjenestespesifikasjon.version.1>
         <sakogbehandling.jaxws.version>1.0.0</sakogbehandling.jaxws.version>
     </properties>
 
