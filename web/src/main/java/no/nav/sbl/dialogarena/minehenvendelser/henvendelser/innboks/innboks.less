@@ -2,7 +2,9 @@
   overflow: hidden;
   padding: 1em;
   background-color: white;
-  .skriv-ny-link {
+}
+
+.knapp-blaa {
     text-transform: uppercase;
     float: right;
     background: dodgerblue;
@@ -10,12 +12,13 @@
     font-size: 1.2em;
     padding: 0.5em;
     margin: 1em;
+    .border-radius(20px);
     &:hover {
       text-decoration: none;
       color: white;
     }
-  }
 }
+
 h2.liten {
   text-transform: uppercase;
   font-weight: bold;
@@ -69,7 +72,11 @@ h2.liten {
 }
 
 .meldingsliste > .melding:not(.lest) {
-  background-color: darkgrey;
+  background-color: #777;
+}
+
+.meldingsliste > .melding:not(.lest) * {
+  color: white;
 }
 
 .meldingsdetaljer > .melding > P {
@@ -83,7 +90,7 @@ h2.liten {
   display: block;
   font-style: italic;
   border-top: 1px solid #ddd;
-  margin-top: 5px;
+  margin-top: 0.5em;
   text-align: center;
 }
 
@@ -93,10 +100,11 @@ h2.liten {
 
 #innboks-container {
   overflow: hidden;
-  height: 600px;
+  height: 40%;
 }
 
-.meldingsliste {
+.meldingsliste {  
+  width: 40%;
   float: left;
   overflow: auto;
   border-right: solid 1px #ddd;
@@ -133,11 +141,21 @@ h2.liten {
     width: 100%;
   }
 
-  .skjult {
+  .meldingsliste.skjult {
+    display: none;
+  }
+
+  .tilbake-til-innboks-link.skjult {
     display: none;
   }
 
   .tilbake-til-innboks-link {
     display: block;
   }
+}
+
+.border-radius (@radius) {
+    border-radius: @radius;
+    -moz-border-radius: @radius;
+    -webkit-border-radius: @radius;
 }

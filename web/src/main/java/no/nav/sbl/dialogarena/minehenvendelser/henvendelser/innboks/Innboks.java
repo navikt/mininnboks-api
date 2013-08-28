@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
+import static no.nav.modig.wicket.model.ModelUtils.not;
 
 public class Innboks extends BasePage {
 
@@ -24,6 +25,7 @@ public class Innboks extends BasePage {
 
     private InnboksModell innboksModell;
     String fodselsnr;
+    AjaxLink<Void> tilInnboksLink;
 
     public Innboks(PageParameters pageParameters) {
         fodselsnr = pageParameters.get("fnr").toString();
@@ -43,14 +45,16 @@ public class Innboks extends BasePage {
         alleMeldinger.add(hasCssClassIf("skjult", innboksModell.alleMeldingerSkalSkjules()));
         DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksModell);
 
-        AjaxLink<Void> tilInnboksLink = new AjaxLink<Void>("til-innboks") {
+        tilInnboksLink = new AjaxLink<Void>("til-innboks") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                innboksModell.skjulAlleMeldinger = false;
-                target.add(alleMeldinger);
+                innboksModell.skjulAlleMeldingerHvisResponsiv = false;
+                target.add(this, alleMeldinger);
             }
         };
+        tilInnboksLink.add(hasCssClassIf("skjult", not(innboksModell.alleMeldingerSkalSkjules())));
         topBar.add(tilInnboksLink);
+
         add(topBar, alleMeldinger, detaljvisning);
 
         add(new AttributeAppender("class", " innboks clearfix"));
@@ -62,4 +66,8 @@ public class Innboks extends BasePage {
         target.add(this);
     }
 
+    @RunOnEvents(VALGT_MELDING)
+    public void visTilInnboksLink(AjaxRequestTarget target) {
+        target.add(tilInnboksLink);
+    }
 }
