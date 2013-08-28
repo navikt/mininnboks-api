@@ -1,7 +1,7 @@
 #innboks-top {
   overflow: hidden;
-  padding: 1em;
-  background-color: white;
+  padding: 0.5em;
+  border-bottom: solid 1px #ddd;
 }
 
 .knapp-blaa {
@@ -19,15 +19,16 @@
     }
 }
 
+#innboks-container {
+  overflow: hidden;
+  height: 800px;
+  margin: 0 5%;
+  border-left: solid 1px #ddd;
+}
+
 h2.liten {
   text-transform: uppercase;
   font-weight: bold;
-}
-
-.innboks {
-  max-height: 500px;
-  border: solid 1px #ddd;
-  background: white;
 }
 
 .melding {
@@ -60,7 +61,6 @@ h2.liten {
   overflow: hidden;
   white-space: nowrap;
   word-wrap: break-word;
-
 }
 
 .meldingsliste > .melding.valgt {
@@ -98,9 +98,8 @@ h2.liten {
   cursor: pointer;
 }
 
-#innboks-container {
-  overflow: hidden;
-  height: 40%;
+.omslag {
+    margin: 0 auto !important;
 }
 
 .meldingsliste {  
@@ -108,13 +107,19 @@ h2.liten {
   float: left;
   overflow: auto;
   border-right: solid 1px #ddd;
-  height: 100%;
+  height: auto;
+  background-color: white;
+  margin: 0;
+  margin-right: 2em;
 }
 
 .meldingsdetaljer {
   display: block;
   height: 100%;
   overflow: auto;
+  margin: 0;
+  margin-top: 2em;
+  background-color: white;
 }
 
 .opprettet {
@@ -126,19 +131,24 @@ h2.liten {
 }
 
 .tilbake-til-innboks-link {
-  text-transform: uppercase;
   float: left;
-  background: dodgerblue;
-  color: white;
-  font-size: 1.2em;
-  padding: 0.5em;
-  margin: 1em;
   display: none;
 }
 
 @media screen and (max-width: 768px) {
+
+  #innboks-container {
+    margin: 0;
+    border: 0;
+  }
+
   .meldingsliste {
     width: 100%;
+    margin: 0;
+  }
+
+  .meldingsdetaljer {
+    margin: 0;
   }
 
   .meldingsliste.skjult {
