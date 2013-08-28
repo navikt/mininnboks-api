@@ -1,19 +1,18 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
+import javax.inject.Inject;
 import no.nav.modig.wicket.events.annotations.RunOnEvents;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSporsmalPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
-import javax.inject.Inject;
+import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
 
 public class Innboks extends BasePage {
 
@@ -25,11 +24,6 @@ public class Innboks extends BasePage {
 
     private InnboksModell innboksModell;
     String fodselsnr;
-
-    @Override
-    public void renderHead(IHeaderResponse response) {
-        response.render(JavaScriptReferenceHeaderItem.forReference(new JavaScriptResourceReference(Innboks.class, "innboks.js")));
-    }
 
     public Innboks(PageParameters pageParameters) {
         fodselsnr = pageParameters.get("fnr").toString();
@@ -45,8 +39,18 @@ public class Innboks extends BasePage {
             }
         });
 
-        AlleMeldingerPanel alleMeldinger = new AlleMeldingerPanel("meldinger", innboksModell, service);
+        final AlleMeldingerPanel alleMeldinger = new AlleMeldingerPanel("meldinger", innboksModell, service);
+        alleMeldinger.add(hasCssClassIf("skjult", innboksModell.alleMeldingerSkalSkjules()));
         DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksModell);
+
+        AjaxLink<Void> tilInnboksLink = new AjaxLink<Void>("til-innboks") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                innboksModell.skjulAlleMeldinger = false;
+                target.add(alleMeldinger);
+            }
+        };
+        topBar.add(tilInnboksLink);
         add(topBar, alleMeldinger, detaljvisning);
 
         add(new AttributeAppender("class", " innboks clearfix"));

@@ -116,3 +116,28 @@ h2.liten {
   font-size: 80%;
   font-weight: bold;
 }
+
+.tilbake-til-innboks-link {
+  text-transform: uppercase;
+  float: left;
+  background: dodgerblue;
+  color: white;
+  font-size: 1.2em;
+  padding: 0.5em;
+  margin: 1em;
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .meldingsliste {
+    width: 100%;
+  }
+
+  .skjult {
+    display: none;
+  }
+
+  .tilbake-til-innboks-link {
+    display: block;
+  }
+}

@@ -46,4 +46,5 @@ public class InnboksVM implements Serializable {
     public void setValgtMelding(MeldingVM valgtMelding) {
         this.valgtMelding = optional(valgtMelding);
     }
+
 }

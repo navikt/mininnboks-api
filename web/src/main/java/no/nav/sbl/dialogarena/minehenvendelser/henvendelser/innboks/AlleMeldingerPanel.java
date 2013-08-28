@@ -36,6 +36,7 @@ public class AlleMeldingerPanel extends Panel {
                             item.getModelObject().melding.markerSomLest();
                         }
                         // Oppdater visningen
+                        innboksModell.skjulAlleMeldinger = true;
                         target.add(AlleMeldingerPanel.this);
                     }
                 });
