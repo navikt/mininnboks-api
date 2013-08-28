@@ -193,6 +193,12 @@
 
             <dependency>
                 <groupId>no.nav.modig</groupId>
+                <artifactId>modig-security-authorization</artifactId>
+                <version>${modig-security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.modig</groupId>
                 <artifactId>modig-security-loginmodule</artifactId>
                 <version>${modig-security.version}</version>
                 <scope>runtime</scope>
