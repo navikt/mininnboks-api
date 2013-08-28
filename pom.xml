@@ -39,7 +39,7 @@
         <modig.fitnesse.version>1.0.1</modig.fitnesse.version>
         <modig.frontend.version>1.0.5</modig.frontend.version>
         <modig.lang.version>1.0.1</modig.lang.version>
-        <modig-security.version>1.0.7</modig-security.version>
+        <modig-security.version>1.0.9</modig-security.version>
         <modig.wicket.test.version>1.0.0</modig.wicket.test.version>
         <modig.wicket.version>1.0.2</modig.wicket.version>
         <nav.sbl.commons.version>3.19</nav.sbl.commons.version>
