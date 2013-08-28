@@ -1,19 +1,22 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 
+import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.not;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import no.nav.melding.virksomhet.henvendelsebehandling.behandlingsresultat.v1.Henvendelse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSMelding;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmal;
+
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
-
-import static no.nav.modig.lang.collections.IterUtils.on;
 
 public interface MeldingService {
 
@@ -38,30 +41,31 @@ public interface MeldingService {
 
         @Override
         public List<Melding> hentAlleMeldinger(String aktorId) {
-            Transformer<WSHenvendelse, Melding> somMelding = new Transformer<WSHenvendelse, Melding>() {
+            Transformer<Henvendelse, Melding> somMelding = new Transformer<Henvendelse, Melding>() {
                 @Override
-                public Melding transform(WSHenvendelse input) {
-                    if (input instanceof WSMelding) {
-                        WSMelding wsMelding = (WSMelding) input;
-                        Melding melding = new Melding(
-                                wsMelding.getBehandlingsId(),
-                                Meldingstype.valueOf(wsMelding.getType().name()),
-                                wsMelding.getTraadId());
-                        melding.fritekst = wsMelding.getBeskrivelse();
-                        melding.opprettet = wsMelding.getSistEndretDato();
-                        melding.overskrift = wsMelding.getOverskrift();
-                        melding.tema = wsMelding.getTema();
-                        if (wsMelding.isLest()) {
-                            melding.markerSomLest();
-                        }
-
-                        melding.lestDato = wsMelding.getLestDato();
-                        return melding;
+                public Melding transform(Henvendelse wsMelding) {
+                	String henvendelseType = wsMelding.getHenvendelseType();
+                	if (!"SPORSMAL".equals(henvendelseType) && !"SVAR".equals(henvendelseType)) {
+                		return null;
+                	}
+                    Melding melding = new Melding(
+                            wsMelding.getBehandlingsId(),
+                            Meldingstype.valueOf(henvendelseType),
+                            wsMelding.getTraad());
+                    melding.opprettet = wsMelding.getOpprettetDato();
+                    melding.tema = wsMelding.getTema();
+                    melding.lestDato = wsMelding.getLestDato();
+                    if (wsMelding.getLestDato() != null) {
+                        melding.markerSomLest();
                     }
-                    throw new RuntimeException("Kan ikke håndtere " + input.getClass());
+                    String[] parts = ((String) wsMelding.getBehandlingsresultat()).split("#");
+                    melding.overskrift = parts[0];
+                    melding.fritekst = parts[1];
+                    return melding;
                 }
             };
-            return on(henvendelseWS.hentHenvendelseListe(aktorId)).map(somMelding).collect();
+            aktorId.getClass();
+            return on(henvendelseWS.hentHenvendelseListe("***REMOVED***")).map(somMelding).filter(not(equalTo(null))).collect(); //TODO: Fiks så fødselsnummer funker
         }
 
         @Override

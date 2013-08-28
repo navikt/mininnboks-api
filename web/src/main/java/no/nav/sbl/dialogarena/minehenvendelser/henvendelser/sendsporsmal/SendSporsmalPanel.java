@@ -59,7 +59,8 @@ public class SendSporsmalPanel extends Panel {
                     Sporsmal spsm = getModelObject();
                     spsm.innsendingsTidspunkt = DateTime.now();
                     String overskrift = "Spørsmål om " + spsm.getTema();
-                    meldingService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), fodselsnr);
+                    fodselsnr.getClass();
+                    meldingService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), "***REMOVED***"); //TODO: Fiks så fødselsnummer funker
                     send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_MELDINGER);
                     sideNavigerer.neste();
                     target.add(SendSporsmalPanel.this.getParent());
