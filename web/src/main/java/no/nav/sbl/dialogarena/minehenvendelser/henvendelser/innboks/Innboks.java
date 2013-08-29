@@ -6,9 +6,12 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingServ
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSporsmalPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import javax.inject.Inject;
 
@@ -26,6 +29,11 @@ public class Innboks extends BasePage {
     private InnboksModell innboksModell;
     String fodselsnr;
     AjaxLink<Void> tilInnboksLink;
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(Innboks.class, "innboks.js")));
+    }
 
     public Innboks(final PageParameters pageParameters) {
         fodselsnr = pageParameters.get("fnr").toString();
