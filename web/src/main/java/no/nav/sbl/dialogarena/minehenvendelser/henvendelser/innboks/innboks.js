@@ -23,6 +23,15 @@ $(document).ready(function() {
         });
     }
 
+    var adjustInnboksHeight = function() {
+        var bodyHeight = $('body').outerHeight();
+        var restHeight = $('.footer').outerHeight() + $('.innstillinger-innlogget').outerHeight() +
+                         $('.rad-logo').outerHeight() + $('#innboks-top').outerHeight();
+        $('#innboks-container').height(bodyHeight - restHeight);
+    }
+
     attachMeldingListener();
     attachTilInnboksListener();
+    adjustInnboksHeight();
+    $(window).on('resize', function() { adjustInnboksHeight(); });
 });
