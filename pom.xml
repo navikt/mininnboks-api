@@ -104,8 +104,8 @@
 
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>sporsmalogsvar-tjenestespesifikasjon</artifactId>
-                <version>0.0.4</version>
+                <artifactId>sporsmalinnsending-tjenestespesifikasjon</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
 
             <!-- Modig dependencies -->

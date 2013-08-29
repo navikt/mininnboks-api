@@ -12,8 +12,8 @@ import java.util.Random;
 
 import no.nav.melding.virksomhet.henvendelsebehandling.behandlingsresultat.v1.Henvendelse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.informasjon.WSSporsmal;
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
 
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
@@ -28,15 +28,15 @@ public interface MeldingService {
 
         private final HenvendelsePortType henvendelseWS;
 
-        private final SporsmalOgSvarPortType spsmogsvarWS;
-        public Default(HenvendelsePortType henvendelseWS, SporsmalOgSvarPortType spsmogsvarWS) {
+        private final SporsmalinnsendingPortType sporsmalinnsendingPortType;
+        public Default(HenvendelsePortType henvendelseWS, SporsmalinnsendingPortType sporsmalinnsendingPortType) {
             this.henvendelseWS = henvendelseWS;
-            this.spsmogsvarWS = spsmogsvarWS;
+            this.sporsmalinnsendingPortType = sporsmalinnsendingPortType;
         }
 
         @Override
         public String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId) {
-            return spsmogsvarWS.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema).withOverskrift(overskrift), aktorId);
+            return sporsmalinnsendingPortType.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema).withOverskrift(overskrift), aktorId);
         }
 
         @Override
@@ -64,8 +64,7 @@ public interface MeldingService {
                     return melding;
                 }
             };
-            aktorId.getClass();
-            return on(henvendelseWS.hentHenvendelseListe("***REMOVED***")).map(somMelding).filter(not(equalTo(null))).collect(); //TODO: Fiks så fødselsnummer funker
+            return on(henvendelseWS.hentHenvendelseListe(aktorId)).map(somMelding).filter(not(equalTo(null))).collect();
         }
 
         @Override

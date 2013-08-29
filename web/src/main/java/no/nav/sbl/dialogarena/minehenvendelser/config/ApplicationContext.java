@@ -15,8 +15,8 @@ import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmalogsvar.v1.SporsmalOgSvarPortType;
 
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
@@ -58,9 +58,9 @@ public class ApplicationContext {
 
 	@Bean
 	public MeldingService meldingService() {
-		SporsmalOgSvarPortType sosPT = createPortType(System.getProperty("spormalogsvarendpoint.url"), "classpath:SporsmalOgSvar.wsdl", SporsmalOgSvarPortType.class);
+		SporsmalinnsendingPortType siPT = createPortType(System.getProperty("sporsmalinnsendingendpoint.url"), "classpath:Sporsmalinnsending.wsdl", SporsmalinnsendingPortType.class);
 		HenvendelsePortType hvPT = createPortType(System.getProperty("henvendelseendpoint.url"), "classpath:Henvendelse.wsdl", HenvendelsePortType.class);
-		return new MeldingService.Default(hvPT, sosPT);
+		return new MeldingService.Default(hvPT, siPT);
 	}
 
 	private static <T> T createPortType(String address, String wsdlUrl, Class<T> serviceClass) {

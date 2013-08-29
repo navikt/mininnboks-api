@@ -106,7 +106,7 @@
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>sporsmalogsvar-tjenestespesifikasjon</artifactId>
+            <artifactId>sporsmalinnsending-tjenestespesifikasjon</artifactId>
         </dependency>
 
         <dependency>

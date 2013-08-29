@@ -27,7 +27,7 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
     final List<String> alleTema = asList("Uføre", "Sykepenger", "Tjenestebasert innskuddspensjon", "Annet");
     CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
 
-    public SendSporsmalPage(PageParameters pageParameters) {
+    public SendSporsmalPage(final PageParameters pageParameters) {
 
         String fnr = pageParameters.get("fnr").toString();
 
@@ -37,13 +37,13 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
         SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, fnr, this, meldingService);
         sendSporsmal.add(visibleIf(aktivSideEr(Side.SEND_SPORSMAL)));
 
-        SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", model);
+        SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", model, pageParameters);
         sporsmalBekreftelse.add(visibleIf(aktivSideEr(Side.SPORMSMAL_BEKREFTELSE)));
 
         Link innboksLink = new Link("innboks-link") {
             @Override
             public void onClick() {
-                setResponsePage(Innboks.class);
+                setResponsePage(Innboks.class, pageParameters);
             }
         };
 

@@ -7,11 +7,12 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
 public class SporsmalBekreftelsePanel extends Panel {
 	
-    public SporsmalBekreftelsePanel(String id, final CompoundPropertyModel<Sporsmal> model) {
+    public SporsmalBekreftelsePanel(String id, final CompoundPropertyModel<Sporsmal> model, final PageParameters pageParameters) {
         super(id);
         add(new Label("tidspunkt", new Model<String>() {
         	@Override
@@ -23,7 +24,7 @@ public class SporsmalBekreftelsePanel extends Panel {
         add(new Link("til-mine-henvendelser") {
             @Override
             public void onClick() {
-                setResponsePage(Innboks.class);
+                setResponsePage(Innboks.class, pageParameters);
             }
         });
     }

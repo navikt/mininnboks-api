@@ -27,7 +27,7 @@ public class Innboks extends BasePage {
     String fodselsnr;
     AjaxLink<Void> tilInnboksLink;
 
-    public Innboks(PageParameters pageParameters) {
+    public Innboks(final PageParameters pageParameters) {
         fodselsnr = pageParameters.get("fnr").toString();
         innboksModell = new InnboksModell(new InnboksVM(service.hentAlleMeldinger(fodselsnr)));
         setDefaultModel(innboksModell);
@@ -37,7 +37,7 @@ public class Innboks extends BasePage {
         topBar.add(new Link("skriv-ny") {
             @Override
             public void onClick() {
-                setResponsePage(SendSporsmalPage.class);
+                setResponsePage(SendSporsmalPage.class, pageParameters);
             }
         });
 
