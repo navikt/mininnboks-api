@@ -55,13 +55,5 @@ public class InnboksModell extends CompoundPropertyModel<InnboksVM> {
         };
     }
 
-    public boolean skjulAlleMeldingerHvisResponsiv = false;
-    public IModel<Boolean> alleMeldingerSkalSkjules() {
-        return new AbstractReadOnlyModel<Boolean>() {
-            @Override
-            public Boolean getObject() {
-                return skjulAlleMeldingerHvisResponsiv;
-            }
-        };
-    }
+    public CompoundPropertyModel<Boolean> alleMeldingerSkalSkjulesHvisLitenSkjerm = new CompoundPropertyModel<>(false);
 }

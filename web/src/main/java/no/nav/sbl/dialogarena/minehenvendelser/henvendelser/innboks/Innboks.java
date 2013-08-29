@@ -42,17 +42,17 @@ public class Innboks extends BasePage {
         });
 
         final AlleMeldingerPanel alleMeldinger = new AlleMeldingerPanel("meldinger", innboksModell, service);
-        alleMeldinger.add(hasCssClassIf("skjult", innboksModell.alleMeldingerSkalSkjules()));
+        alleMeldinger.add(hasCssClassIf("skjult", innboksModell.alleMeldingerSkalSkjulesHvisLitenSkjerm));
         DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksModell);
 
         tilInnboksLink = new AjaxLink<Void>("til-innboks") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                innboksModell.skjulAlleMeldingerHvisResponsiv = false;
+                innboksModell.alleMeldingerSkalSkjulesHvisLitenSkjerm.setObject(false);
                 target.add(this, alleMeldinger);
             }
         };
-        tilInnboksLink.add(hasCssClassIf("skjult", not(innboksModell.alleMeldingerSkalSkjules())));
+        tilInnboksLink.add(hasCssClassIf("skjult", not(innboksModell.alleMeldingerSkalSkjulesHvisLitenSkjerm)));
         topBar.add(tilInnboksLink);
 
         add(topBar, alleMeldinger, detaljvisning);
