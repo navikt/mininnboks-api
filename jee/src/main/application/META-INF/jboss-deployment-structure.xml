@@ -15,10 +15,4 @@
             <module name="org.slf4j.impl" />
         </exclusions>
     </sub-deployment>
-    <sub-deployment name="minehenvendelser-provider-rs.war">
-        <exclusions>
-            <module name="org.slf4j" />
-            <module name="org.slf4j.impl" />
-        </exclusions>
-    </sub-deployment>
 </jboss-deployment-structure>

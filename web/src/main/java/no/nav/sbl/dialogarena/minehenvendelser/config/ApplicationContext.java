@@ -58,8 +58,8 @@ public class ApplicationContext {
 
 	@Bean
 	public MeldingService meldingService() {
-		SporsmalinnsendingPortType siPT = createPortType(System.getProperty("sporsmalinnsendingendpoint.url"), "classpath:Sporsmalinnsending.wsdl", SporsmalinnsendingPortType.class);
-		HenvendelsePortType hvPT = createPortType(System.getProperty("henvendelseendpoint.url"), "classpath:Henvendelse.wsdl", HenvendelsePortType.class);
+		SporsmalinnsendingPortType siPT = createPortType(System.getProperty("henvendelse.spsminnsending.ws.url"), "classpath:Sporsmalinnsending.wsdl", SporsmalinnsendingPortType.class);
+		HenvendelsePortType hvPT = createPortType(System.getProperty("henvendelse.felles.ws.url"), "classpath:Henvendelse.wsdl", HenvendelsePortType.class);
 		return new MeldingService.Default(hvPT, siPT);
 	}
 

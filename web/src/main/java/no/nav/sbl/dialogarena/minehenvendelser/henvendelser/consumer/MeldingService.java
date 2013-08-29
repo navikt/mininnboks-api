@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import no.nav.melding.virksomhet.henvendelsebehandling.behandlingsresultat.v1.Henvendelse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
 
@@ -41,9 +41,9 @@ public interface MeldingService {
 
         @Override
         public List<Melding> hentAlleMeldinger(String aktorId) {
-            Transformer<Henvendelse, Melding> somMelding = new Transformer<Henvendelse, Melding>() {
+            Transformer<WSHenvendelse, Melding> somMelding = new Transformer<WSHenvendelse, Melding>() {
                 @Override
-                public Melding transform(Henvendelse wsMelding) {
+                public Melding transform(WSHenvendelse wsMelding) {
                 	String henvendelseType = wsMelding.getHenvendelseType();
                 	if (!"SPORSMAL".equals(henvendelseType) && !"SVAR".equals(henvendelseType)) {
                 		return null;
