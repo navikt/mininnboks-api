@@ -5,11 +5,11 @@
 </head>
 <body>
 <wicket:extend>
+    <div wicket:id="top-bar" id="innboks-top">
+        <a wicket:id="til-innboks" class="tilbake-til-innboks-link knapp-blaa">Innboks</a>
+        <a wicket:id="skriv-ny" class="skriv-ny-link knapp-blaa">Skriv ny</a>
+    </div>
     <div id="innboks-container">
-        <div wicket:id="top-bar" id="innboks-top">
-            <a wicket:id="til-innboks" class="tilbake-til-innboks-link knapp-blaa">Innboks</a>
-            <a wicket:id="skriv-ny" class="skriv-ny-link knapp-blaa">Skriv ny</a>
-        </div>
         <div wicket:id="meldinger" id="meldinger" class="meldingsliste"></div>
         <div wicket:id="detaljpanel" id="detaljpanel" class="meldingsdetaljer"></div>
     </div>

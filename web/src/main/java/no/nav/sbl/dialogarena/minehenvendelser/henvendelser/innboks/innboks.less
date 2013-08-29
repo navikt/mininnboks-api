@@ -19,9 +19,16 @@
     }
 }
 
+
+.omslag {
+    margin: 0 auto !important;
+    min-height: 0;
+    height: auto;
+}
+
 #innboks-container {
   overflow: hidden;
-  height: 800px;
+  height: 700px;
   margin: 0 5%;
   border-left: solid 1px #ddd;
 }
@@ -48,10 +55,6 @@ h2.liten {
 .melding > p {
   color: #333;
   margin: 0;
-}
-
-.meldingliste > .melding {
-
 }
 
 .meldingsliste > .melding > P {
@@ -98,27 +101,20 @@ h2.liten {
   cursor: pointer;
 }
 
-.omslag {
-    margin: 0 auto !important;
-}
-
-.meldingsliste {  
+.meldingsliste {
   width: 40%;
+  height: 100%;
   float: left;
   overflow: auto;
-  border-right: solid 1px #ddd;
-  height: auto;
   background-color: white;
   margin: 0;
   margin-right: 2em;
 }
 
 .meldingsdetaljer {
-  display: block;
   height: 100%;
   overflow: auto;
   margin: 0;
-  margin-top: 2em;
   background-color: white;
 }
 
@@ -147,20 +143,20 @@ h2.liten {
     margin: 0;
   }
 
-  .meldingsdetaljer {
-    margin: 0;
-  }
-
   .meldingsliste.skjult {
     display: none;
   }
 
-  .tilbake-til-innboks-link.skjult {
-    display: none;
+  .meldingsdetaljer {
+    margin: 0;
   }
 
   .tilbake-til-innboks-link {
     display: block;
+  }
+
+  .tilbake-til-innboks-link.skjult {
+    display: none;
   }
 }
 

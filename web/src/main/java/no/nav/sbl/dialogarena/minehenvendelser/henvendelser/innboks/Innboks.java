@@ -1,16 +1,16 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
-import javax.inject.Inject;
 import no.nav.modig.wicket.events.annotations.RunOnEvents;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSporsmalPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import javax.inject.Inject;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
 import static no.nav.modig.wicket.model.ModelUtils.not;
@@ -56,8 +56,6 @@ public class Innboks extends BasePage {
         topBar.add(tilInnboksLink);
 
         add(topBar, alleMeldinger, detaljvisning);
-
-        add(new AttributeAppender("class", " innboks clearfix"));
     }
 
     @RunOnEvents(OPPDATER_MELDINGER)
