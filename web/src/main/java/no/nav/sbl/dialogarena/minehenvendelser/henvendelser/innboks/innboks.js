@@ -33,5 +33,4 @@ $(document).ready(function() {
     attachMeldingListener();
     attachTilInnboksListener();
     adjustInnboksHeight();
-    $(window).on('resize', function() { adjustInnboksHeight(); });
 });
