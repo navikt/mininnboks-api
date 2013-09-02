@@ -10,7 +10,6 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import static java.util.Arrays.asList;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
@@ -27,23 +26,21 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
     final List<String> alleTema = asList("Uføre", "Sykepenger", "Tjenestebasert innskuddspensjon", "Annet");
     CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
 
-    public SendSporsmalPage(final PageParameters pageParameters) {
-
-        String fnr = pageParameters.get("fnr").toString();
+    public SendSporsmalPage() {
 
         TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", alleTema, model, this);
         temavelger.add(visibleIf(aktivSideEr(Side.TEMAVELGER)));
 
-        SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, fnr, this, meldingService);
+        SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, this, meldingService);
         sendSporsmal.add(visibleIf(aktivSideEr(Side.SEND_SPORSMAL)));
 
-        SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", model, pageParameters);
+        SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", model);
         sporsmalBekreftelse.add(visibleIf(aktivSideEr(Side.SPORMSMAL_BEKREFTELSE)));
 
         Link innboksLink = new Link("innboks-link") {
             @Override
             public void onClick() {
-                setResponsePage(Innboks.class, pageParameters);
+                setResponsePage(Innboks.class);
             }
         };
 

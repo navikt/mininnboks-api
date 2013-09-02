@@ -1,22 +1,23 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
+import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
+import static no.nav.modig.wicket.model.ModelUtils.not;
+
+import javax.inject.Inject;
+
+import no.nav.modig.core.context.SubjectHandler;
 import no.nav.modig.wicket.events.annotations.RunOnEvents;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSporsmalPage;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
-
-import javax.inject.Inject;
-
-import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
-import static no.nav.modig.wicket.model.ModelUtils.not;
 
 public class Innboks extends BasePage {
 
@@ -27,7 +28,6 @@ public class Innboks extends BasePage {
     MeldingService service;
 
     private InnboksModell innboksModell;
-    String fodselsnr;
     AjaxLink<Void> tilInnboksLink;
 
     @Override
@@ -35,9 +35,8 @@ public class Innboks extends BasePage {
         response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(Innboks.class, "innboks.js")));
     }
 
-    public Innboks(final PageParameters pageParameters) {
-        fodselsnr = pageParameters.get("fnr").toString();
-        innboksModell = new InnboksModell(new InnboksVM(service.hentAlleMeldinger(fodselsnr)));
+    public Innboks() {
+        innboksModell = new InnboksModell(new InnboksVM(service.hentAlleMeldinger(SubjectHandler.getSubjectHandler().getUid())));
         setDefaultModel(innboksModell);
         setOutputMarkupId(true);
 
@@ -45,7 +44,7 @@ public class Innboks extends BasePage {
         topBar.add(new Link("skriv-ny") {
             @Override
             public void onClick() {
-                setResponsePage(SendSporsmalPage.class, pageParameters);
+                setResponsePage(SendSporsmalPage.class);
             }
         });
 
@@ -68,7 +67,7 @@ public class Innboks extends BasePage {
 
     @RunOnEvents(OPPDATER_MELDINGER)
     public void meldingerOppdatert(AjaxRequestTarget target) {
-        this.innboksModell.getObject().oppdaterMeldingerFra(service.hentAlleMeldinger(fodselsnr));
+        this.innboksModell.getObject().oppdaterMeldingerFra(service.hentAlleMeldinger(SubjectHandler.getSubjectHandler().getUid()));
         target.add(this);
     }
 

@@ -1,7 +1,9 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
+import no.nav.modig.core.context.SubjectHandler;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.Broadcast;
@@ -21,13 +23,11 @@ import org.joda.time.DateTime;
 
 public class SendSporsmalPanel extends Panel {
 
-    private String fodselsnr;
     private SideNavigerer sideNavigerer;
     private MeldingService meldingService;
 
-    public SendSporsmalPanel(String id, CompoundPropertyModel<Sporsmal> model, String fodselsnr, final SideNavigerer sideNavigerer, MeldingService meldingService) {
+    public SendSporsmalPanel(String id, CompoundPropertyModel<Sporsmal> model, final SideNavigerer sideNavigerer, MeldingService meldingService) {
         super(id);
-        this.fodselsnr = fodselsnr;
         this.sideNavigerer = sideNavigerer;
         this.meldingService = meldingService;
         add(new SporsmalForm("sporsmal-form", model));
@@ -59,7 +59,7 @@ public class SendSporsmalPanel extends Panel {
                     Sporsmal spsm = getModelObject();
                     spsm.innsendingsTidspunkt = DateTime.now();
                     String overskrift = "Spørsmål om " + spsm.getTema();
-                    meldingService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), fodselsnr);
+                    meldingService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
                     send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_MELDINGER);
                     sideNavigerer.neste();
                     target.add(SendSporsmalPanel.this.getParent());
