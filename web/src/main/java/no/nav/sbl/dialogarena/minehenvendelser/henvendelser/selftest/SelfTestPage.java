@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.selftest;
 
 import no.nav.modig.wicket.selftest.SelfTestBase;
-import no.nav.sbl.dialogarena.minehenvendelser.config.ApplicationContext;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
