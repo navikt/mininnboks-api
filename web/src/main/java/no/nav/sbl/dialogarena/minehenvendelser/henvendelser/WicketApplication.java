@@ -4,7 +4,9 @@ import javax.inject.Inject;
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.selftest.SelfTestPage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSporsmalPage;
+import no.nav.sbl.dialogarena.webkomponent.innstillinger.LogoutPage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -53,7 +55,8 @@ public class WicketApplication extends WebApplication {
         new ApplicationSettingsConfig().configure(this);
         mountPage("innboks", Innboks.class);
         mountPage("sendsporsmal", SendSporsmalPage.class);
-//        mountPage("internal/selftest", SelfTestPage.class);
+        mountPage("internal/selftest", SelfTestPage.class);
+        mountPage("loggut", LogoutPage.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
     }

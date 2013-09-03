@@ -1,10 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-
 import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.content.ContentRetriever;
@@ -15,7 +10,6 @@ import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
-
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
@@ -29,11 +23,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
 @Configuration
 @Import(CacheConfig.class)
 public class ApplicationContext {
-	
-	@Bean
+
+    @Bean
 	public ContentRetriever contentRetriever() {
 		// Egen bønne for å hooke opp @Cachable
 		return new HttpContentRetriever();
@@ -58,10 +57,16 @@ public class ApplicationContext {
 
 	@Bean
 	public MeldingService meldingService() {
-		SporsmalinnsendingPortType siPT = createPortType(System.getProperty("henvendelse.spsminnsending.ws.url"), "classpath:Sporsmalinnsending.wsdl", SporsmalinnsendingPortType.class);
-		HenvendelsePortType hvPT = createPortType(System.getProperty("henvendelse.felles.ws.url"), "classpath:Henvendelse.wsdl", HenvendelsePortType.class);
-		return new MeldingService.Default(hvPT, siPT);
+		return new MeldingService.Default(createhenvendelsesPorttype(), createSporsmalinnsendingPortType());
 	}
+
+    public static SporsmalinnsendingPortType createSporsmalinnsendingPortType() {
+        return createPortType(System.getProperty("henvendelse.spsminnsending.ws.url"), "classpath:Sporsmalinnsending.wsdl", SporsmalinnsendingPortType.class);
+    }
+
+    public static HenvendelsePortType createhenvendelsesPorttype() {
+        return createPortType(System.getProperty("henvendelse.felles.ws.url"), "classpath:Henvendelse.wsdl", HenvendelsePortType.class);
+    }
 
 	private static <T> T createPortType(String address, String wsdlUrl, Class<T> serviceClass) {
 		JaxWsProxyFactoryBean proxy = new JaxWsProxyFactoryBean();
