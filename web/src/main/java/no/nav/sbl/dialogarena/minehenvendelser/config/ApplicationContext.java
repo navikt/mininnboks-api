@@ -33,60 +33,86 @@ import java.util.Map;
 public class ApplicationContext {
 
     @Bean
-	public ContentRetriever contentRetriever() {
-		// Egen bønne for å hooke opp @Cachable
-		return new HttpContentRetriever();
-	}
-
-	@Bean
-	public CmsContentRetriever cmsContentRetriever(ContentRetriever contentRetriever) throws URISyntaxException {
-		String cmsBaseUrl = System.getProperty("dialogarena.cms.url");
-		Map<String, URI> uris = new HashMap<>();
-		uris.put("nb", new URI(cmsBaseUrl + "/site/16/sbl-webkomponenter/nb/tekster"));
-		ValueRetriever valueRetriever = new ValuesFromContentWithResourceBundleFallback("content.sbl-webkomponenter", contentRetriever, uris, "nb");
-		CmsContentRetriever cmsContentRetriever = new CmsContentRetriever();
-		cmsContentRetriever.setDefaultLocale("nb");
-		cmsContentRetriever.setTeksterRetriever(valueRetriever);
-		return cmsContentRetriever;
-	}
-
-	@Bean
-	public WicketApplication wicket() {
-		return new WicketApplication();
-	}
-
-	@Bean
-	public MeldingService meldingService() {
-		return new MeldingService.Default(createhenvendelsesPorttype(), createSporsmalinnsendingPortType());
-	}
-
-    public static SporsmalinnsendingPortType createSporsmalinnsendingPortType() {
-        return createPortType(System.getProperty("henvendelse.spsminnsending.ws.url"), "classpath:Sporsmalinnsending.wsdl", SporsmalinnsendingPortType.class);
+    public ContentRetriever contentRetriever() {
+        // Egen bønne for å hooke opp @Cachable
+        return new HttpContentRetriever();
     }
 
-    public static HenvendelsePortType createhenvendelsesPorttype() {
-        return createPortType(System.getProperty("henvendelse.felles.ws.url"), "classpath:Henvendelse.wsdl", HenvendelsePortType.class);
+    @Bean
+    public CmsContentRetriever cmsContentRetriever(ContentRetriever contentRetriever) throws URISyntaxException {
+        String cmsBaseUrl = System.getProperty("dialogarena.cms.url");
+        Map<String, URI> uris = new HashMap<>();
+        uris.put("nb", new URI(cmsBaseUrl + "/site/16/sbl-webkomponenter/nb/tekster"));
+        ValueRetriever valueRetriever = new ValuesFromContentWithResourceBundleFallback("content.sbl-webkomponenter", contentRetriever, uris, "nb");
+        CmsContentRetriever cmsContentRetriever = new CmsContentRetriever();
+        cmsContentRetriever.setDefaultLocale("nb");
+        cmsContentRetriever.setTeksterRetriever(valueRetriever);
+        return cmsContentRetriever;
     }
 
-	private static <T> T createPortType(String address, String wsdlUrl, Class<T> serviceClass) {
-		JaxWsProxyFactoryBean proxy = new JaxWsProxyFactoryBean();
-		proxy.getFeatures().add(new WSAddressingFeature());
-		proxy.getFeatures().add(new LoggingFeature());
-		proxy.setServiceClass(serviceClass);
-		proxy.setAddress(address);
-		proxy.setWsdlURL(wsdlUrl);
-		proxy.setProperties(new HashMap<String, Object>());
-		proxy.getProperties().put(SecurityConstants.MUSTUNDERSTAND, false);
+    @Bean
+    public WicketApplication wicket() {
+        return new WicketApplication();
+    }
 
-		T portType = proxy.create(serviceClass);
-		Client client = ClientProxy.getClient(portType);
-		HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
-		httpConduit.setTlsClientParameters(new TLSClientParameters());
-		if (Boolean.valueOf(System.getProperty("disable.ssl.cn.check", "false"))) {
-			httpConduit.getTlsClientParameters().setDisableCNCheck(true);
-		}
-		STSConfigurationUtility.configureStsForExternalSSO(client);
-		return portType;
-	}
+    @Bean
+    public MeldingService meldingService() {
+        return new MeldingService.Default(henvendelsesSSO(), sporsmalinnsendingSSO());
+    }
+
+    private static SporsmalinnsendingPortType sporsmalinnsendingSSO() {
+        return createPortType(System.getProperty("henvendelse.spsminnsending.ws.url"),
+                "classpath:Sporsmalinnsending.wsdl",
+                SporsmalinnsendingPortType.class,
+                true);
+    }
+
+    private static HenvendelsePortType henvendelsesSSO() {
+        return createPortType(System.getProperty("henvendelse.felles.ws.url"),
+                "classpath:Henvendelse.wsdl",
+                HenvendelsePortType.class,
+                true);
+    }
+
+    @Bean
+    public static SporsmalinnsendingPortType sporsmalinnsendingSystemUser() {
+        return createPortType(System.getProperty("henvendelse.spsminnsending.ws.url"),
+                "classpath:Sporsmalinnsending.wsdl",
+                SporsmalinnsendingPortType.class,
+                false);
+    }
+
+    @Bean
+    public static HenvendelsePortType henvendelsesSystemUser() {
+        return createPortType(System.getProperty("henvendelse.felles.ws.url"),
+                "classpath:Henvendelse.wsdl",
+                HenvendelsePortType.class,
+                false);
+    }
+
+    private static <T> T createPortType(String address, String wsdlUrl, Class<T> serviceClass, boolean externalService) {
+        JaxWsProxyFactoryBean proxy = new JaxWsProxyFactoryBean();
+        proxy.getFeatures().add(new WSAddressingFeature());
+        proxy.getFeatures().add(new LoggingFeature());
+        proxy.setServiceClass(serviceClass);
+        proxy.setAddress(address);
+        proxy.setWsdlURL(wsdlUrl);
+        proxy.setProperties(new HashMap<String, Object>());
+        proxy.getProperties().put(SecurityConstants.MUSTUNDERSTAND, false);
+
+        T portType = proxy.create(serviceClass);
+        Client client = ClientProxy.getClient(portType);
+        HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
+        httpConduit.setTlsClientParameters(new TLSClientParameters());
+        if (Boolean.valueOf(System.getProperty("disable.ssl.cn.check", "false"))) {
+            httpConduit.getTlsClientParameters().setDisableCNCheck(true);
+        }
+        if (externalService) {
+            STSConfigurationUtility.configureStsForExternalSSO(client);
+        } else {
+            STSConfigurationUtility.configureStsForSystemUser(client);
+        }
+        return portType;
+    }
 
 }

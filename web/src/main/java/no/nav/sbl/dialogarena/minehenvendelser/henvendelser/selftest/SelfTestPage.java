@@ -8,6 +8,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -24,8 +26,14 @@ public class SelfTestPage extends SelfTestBase {
 
 
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
-    private HenvendelsePortType selfTestHenvendelsePortType = ApplicationContext.createhenvendelsesPorttype();
-    private SporsmalinnsendingPortType selfTestSporsmalinnsendingPortType = ApplicationContext.createSporsmalinnsendingPortType();
+
+    @Inject
+    @Named("henvendelsesSystemUser")
+    private HenvendelsePortType henvendelsesSystemUser;
+
+    @Inject
+    @Named("sporsmalinnsendingSystemUser")
+    private SporsmalinnsendingPortType sporsmalinnsendingSystemUser;
 
     public SelfTestPage(PageParameters params) throws IOException {
         super("Minehenvendelser", params);
@@ -57,7 +65,7 @@ public class SelfTestPage extends SelfTestBase {
         long start = currentTimeMillis();
         String status = SelfTestBase.STATUS_ERROR;
         try {
-            if (selfTestHenvendelsePortType.ping()) {
+            if (henvendelsesSystemUser.ping()) {
                 status = SelfTestBase.STATUS_OK;
             }
         } catch (Exception e) {
@@ -71,7 +79,7 @@ public class SelfTestPage extends SelfTestBase {
         long start = currentTimeMillis();
         String status = SelfTestBase.STATUS_ERROR;
         try {
-            if (selfTestSporsmalinnsendingPortType.ping()) {
+            if (sporsmalinnsendingSystemUser.ping()) {
                 status = SelfTestBase.STATUS_OK;
             }
         } catch (Exception e) {
