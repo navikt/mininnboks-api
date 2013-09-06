@@ -17,7 +17,7 @@ public class AlleMeldingerPanel extends Panel {
         super(id);
         setOutputMarkupId(true);
 
-        add(new PropertyListView<MeldingVM>("meldinger") {
+        add(new PropertyListView<MeldingVM>("nyesteHenvendelseITraad") {
             @Override
             protected void populateItem(final ListItem<MeldingVM> item) {
                 item.add(new Label("avsender"));

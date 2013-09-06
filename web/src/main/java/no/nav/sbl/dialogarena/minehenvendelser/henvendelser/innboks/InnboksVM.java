@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Melding;
@@ -13,6 +14,7 @@ import static no.nav.modig.lang.option.Optional.none;
 import static no.nav.modig.lang.option.Optional.optional;
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.MeldingVM.NYESTE_OVERST;
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.MeldingVM.TIL_MELDING_VM;
+import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.MeldingVM.TRAAD_ID;
 
 public class InnboksVM implements Serializable {
 
@@ -28,9 +30,24 @@ public class InnboksVM implements Serializable {
         return meldinger;
     }
 
+    public List<MeldingVM> getNyesteHenvendelseITraad() {
+        List<String> traadIder = new ArrayList<>();
+        for (String id : on(getMeldinger()).map(TRAAD_ID)) {
+            if (!traadIder.contains(id)) {
+                traadIder.add(id);
+            }
+        }
+        List<MeldingVM> nyesteHenvendelser = new ArrayList<>();
+        for (String id : traadIder) {
+            List<MeldingVM> henvendelserITraad = on(getMeldinger()).filter(where(TRAAD_ID, equalTo(id))).collect(NYESTE_OVERST);
+            nyesteHenvendelser.add(henvendelserITraad.get(0));
+        }
+        return on(nyesteHenvendelser).collect(NYESTE_OVERST);
+    }
+
     public List<MeldingVM> getTraad() {
         for (MeldingVM meldingVM : valgtMelding) {
-            return on(meldinger).filter(where(MeldingVM.TRAAD_ID, equalTo(meldingVM.melding.traadId))).collect(NYESTE_OVERST);
+            return on(meldinger).filter(where(TRAAD_ID, equalTo(meldingVM.melding.traadId))).collect(NYESTE_OVERST);
         }
         return emptyList();
     }
