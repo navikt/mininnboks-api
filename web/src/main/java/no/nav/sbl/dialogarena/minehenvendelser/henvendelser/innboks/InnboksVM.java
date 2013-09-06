@@ -35,6 +35,16 @@ public class InnboksVM implements Serializable {
         return emptyList();
     }
 
+    public List<MeldingVM> getTidligereHenvendelser() {
+        List<MeldingVM> traad = getTraad();
+        return traad.isEmpty() ? traad : traad.subList(1, traad.size());
+    }
+
+    public MeldingVM getNyesteHenvendelse() {
+        List<MeldingVM> traad = getTraad();
+        return traad.isEmpty() ? null : traad.get(0);
+    }
+
     public final void oppdaterMeldingerFra(List<Melding> meldinger) {
         this.meldinger = on(meldinger).map(TIL_MELDING_VM).collect(NYESTE_OVERST);
     }

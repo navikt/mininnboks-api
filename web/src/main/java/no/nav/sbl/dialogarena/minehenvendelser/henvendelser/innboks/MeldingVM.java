@@ -11,6 +11,8 @@ import org.apache.wicket.model.IModel;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
+import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Meldingstype.SPORSMAL;
+
 public class MeldingVM implements Serializable {
 
     public final Melding melding;
@@ -26,6 +28,10 @@ public class MeldingVM implements Serializable {
     public String getLestDato() {
         String dato = formatertDato(melding.lestDato);
         return dato != null ? "Sett " + dato : null;
+    }
+
+    public String getAvsender() {
+        return avType(SPORSMAL).getObject() ? "Ola Nordmann" : "Fra: NAV";
     }
 
     private String formatertDato(DateTime dato) {
