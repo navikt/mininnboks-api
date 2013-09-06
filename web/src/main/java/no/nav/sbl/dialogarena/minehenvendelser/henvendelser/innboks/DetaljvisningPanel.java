@@ -14,7 +14,7 @@ public class DetaljvisningPanel extends Panel {
     public DetaljvisningPanel(String id, InnboksModell innboksModell) {
 		super(id);
 		setOutputMarkupId(true);
-        MeldingstraadPanel meldingstraadPanel = new MeldingstraadPanel("traad");
+        MeldingstraadPanel meldingstraadPanel = new MeldingstraadPanel("traad", innboksModell);
         meldingstraadPanel.add(visibleIf(either(innboksModell.valgtMeldingAvType(SPORSMAL)).or(innboksModell.valgtMeldingAvType(SVAR))));
 		add(meldingstraadPanel);
 	}
