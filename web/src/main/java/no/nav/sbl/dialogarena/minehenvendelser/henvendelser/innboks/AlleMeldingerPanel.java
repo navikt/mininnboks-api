@@ -20,7 +20,8 @@ public class AlleMeldingerPanel extends Panel {
         add(new PropertyListView<MeldingVM>("meldinger") {
             @Override
             protected void populateItem(final ListItem<MeldingVM> item) {
-                item.add(new MeldingsHeader("header"));
+                item.add(new Label("melding.overskrift"));
+                item.add(new Label("opprettetDato"));
                 item.add(new Label("melding.fritekst"));
                 item.add(hasCssClassIf("valgt", innboksModell.erValgtMelding(item.getModelObject())));
                 item.add(hasCssClassIf("lest", item.getModelObject().erLest()));

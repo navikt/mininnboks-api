@@ -27,7 +27,8 @@ public class MeldingstraadPanel extends Panel {
         @Override
         protected void populateItem(final ListItem<MeldingVM> item) {
             item.setOutputMarkupId(true);
-            item.add(new MeldingsHeader("header"));
+            item.add(new Label("melding.overskrift"));
+            item.add(new Label("opprettetDato"));
             item.add(new Label("melding.fritekst"));
             Label lestDato = new Label("lestDato");
             lestDato.add(visibleIf(both(item.getModelObject().avType(SVAR)).and(item.getModelObject().erLest())));
