@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
 import no.nav.modig.core.context.SubjectHandler;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -24,12 +24,12 @@ import org.joda.time.DateTime;
 public class SendSporsmalPanel extends Panel {
 
     private SideNavigerer sideNavigerer;
-    private MeldingService meldingService;
+    private HenvendelseService henvendelseService;
 
-    public SendSporsmalPanel(String id, CompoundPropertyModel<Sporsmal> model, final SideNavigerer sideNavigerer, MeldingService meldingService) {
+    public SendSporsmalPanel(String id, CompoundPropertyModel<Sporsmal> model, final SideNavigerer sideNavigerer, HenvendelseService henvendelseService) {
         super(id);
         this.sideNavigerer = sideNavigerer;
-        this.meldingService = meldingService;
+        this.henvendelseService = henvendelseService;
         add(new SporsmalForm("sporsmal-form", model));
     }
 
@@ -59,8 +59,8 @@ public class SendSporsmalPanel extends Panel {
                     Sporsmal spsm = getModelObject();
                     spsm.innsendingsTidspunkt = DateTime.now();
                     String overskrift = "Spørsmål om " + spsm.getTema();
-                    meldingService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
-                    send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_MELDINGER);
+                    henvendelseService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
+                    send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_HENVENDELSER);
                     sideNavigerer.neste();
                     target.add(SendSporsmalPanel.this.getParent());
                 }

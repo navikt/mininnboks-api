@@ -3,15 +3,15 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 import java.io.Serializable;
 import org.joda.time.DateTime;
 
-public class Melding implements Serializable {
+public class Henvendelse implements Serializable {
 
-    public Melding(String id, Meldingstype type, String traadId) {
+    public Henvendelse(String id, Henvendelsetype type, String traadId) {
         this.id = id;
         this.type = type;
         this.traadId = traadId;
     }
     public final String id, traadId;
-    public final Meldingstype type;
+    public final Henvendelsetype type;
     public String tema, overskrift, fritekst;
     public DateTime opprettet, lestDato;
     private boolean lest;

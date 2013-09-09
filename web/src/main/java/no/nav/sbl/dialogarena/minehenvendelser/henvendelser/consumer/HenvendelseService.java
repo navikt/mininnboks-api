@@ -19,13 +19,13 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.not;
 
-public interface MeldingService {
+public interface HenvendelseService {
 
     String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId);
-    List<Melding> hentAlleMeldinger(String aktorId);
-    void merkMeldingSomLest(String behandlingsId);
+    List<Henvendelse> hentAlleHenvendelser(String aktorId);
+    void merkHenvendelseSomLest(String behandlingsId);
     
-    class Default implements MeldingService {
+    class Default implements HenvendelseService {
 
         private final HenvendelsePortType henvendelseWS;
 
@@ -41,56 +41,56 @@ public interface MeldingService {
         }
 
         @Override
-        public List<Melding> hentAlleMeldinger(String aktorId) {
-            Transformer<WSHenvendelse, Melding> somMelding = new Transformer<WSHenvendelse, Melding>() {
+        public List<Henvendelse> hentAlleHenvendelser(String aktorId) {
+            Transformer<WSHenvendelse, Henvendelse> somHenvendelse = new Transformer<WSHenvendelse, Henvendelse>() {
                 @Override
-                public Melding transform(WSHenvendelse wsMelding) {
-                	String henvendelseType = wsMelding.getHenvendelseType();
+                public Henvendelse transform(WSHenvendelse wsHenvendelse) {
+                	String henvendelseType = wsHenvendelse.getHenvendelseType();
                 	if (!"SPORSMAL".equals(henvendelseType) && !"SVAR".equals(henvendelseType)) {
                 		return null;
                 	}
-                    Melding melding = new Melding(
-                            wsMelding.getBehandlingsId(),
-                            Meldingstype.valueOf(henvendelseType),
-                            wsMelding.getTraad());
-                    melding.opprettet = wsMelding.getOpprettetDato();
-                    melding.tema = wsMelding.getTema();
-                    melding.lestDato = wsMelding.getLestDato();
-                    if (wsMelding.getLestDato() != null) {
-                        melding.markerSomLest();
+                    Henvendelse henvendelse = new Henvendelse(
+                            wsHenvendelse.getBehandlingsId(),
+                            Henvendelsetype.valueOf(henvendelseType),
+                            wsHenvendelse.getTraad());
+                    henvendelse.opprettet = wsHenvendelse.getOpprettetDato();
+                    henvendelse.tema = wsHenvendelse.getTema();
+                    henvendelse.lestDato = wsHenvendelse.getLestDato();
+                    if (wsHenvendelse.getLestDato() != null) {
+                        henvendelse.markerSomLest();
                     }
 
                     ObjectMapper mapper = new ObjectMapper();
                     Map<String, String> behandlingsresultat;
                     try {
-                        behandlingsresultat = mapper.readValue(wsMelding.getBehandlingsresultat(), Map.class);
+                        behandlingsresultat = mapper.readValue(wsHenvendelse.getBehandlingsresultat(), Map.class);
                     } catch (IOException e) {
                         throw new RuntimeException("Kunne ikke lese ut behandlingsresultat", e);
                     }
 
-                    melding.overskrift = behandlingsresultat.get("overskrift");
-                    melding.fritekst = behandlingsresultat.get("sporsmal");
-                    return melding;
+                    henvendelse.overskrift = behandlingsresultat.get("overskrift");
+                    henvendelse.fritekst = behandlingsresultat.get("sporsmal");
+                    return henvendelse;
                 }
             };
-            return on(henvendelseWS.hentHenvendelseListe(aktorId)).map(somMelding).filter(not(equalTo(null))).collect();
+            return on(henvendelseWS.hentHenvendelseListe(aktorId)).map(somHenvendelse).filter(not(equalTo(null))).collect();
         }
 
         @Override
-        public void merkMeldingSomLest(String behandlingsId) {
+        public void merkHenvendelseSomLest(String behandlingsId) {
             henvendelseWS.merkMeldingSomLest(behandlingsId);
         }
 
     }
 
-    class Mock implements MeldingService {
+    class Mock implements HenvendelseService {
 
-        Map<String, Melding> meldinger = new HashMap<String, Melding>();
+        Map<String, Henvendelse> henvendelser = new HashMap<>();
 
         public Mock() {
             Random random = new Random();
 
-            Melding spsm1 = new Melding("" + random.nextInt(), Meldingstype.SPORSMAL, "" + random.nextInt());
+            Henvendelse spsm1 = new Henvendelse("" + random.nextInt(), Henvendelsetype.SPORSMAL, "" + random.nextInt());
             spsm1.opprettet = DateTime.now().minusWeeks(2);
             spsm1.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                     "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
@@ -104,9 +104,9 @@ public interface MeldingService {
             spsm1.tema = "Uføre";
             spsm1.markerSomLest();
             spsm1.lestDato = spsm1.opprettet;
-            meldinger.put(spsm1.id, spsm1);
+            henvendelser.put(spsm1.id, spsm1);
 
-            Melding svar1 = new Melding("" + random.nextInt(), Meldingstype.SVAR, spsm1.traadId);
+            Henvendelse svar1 = new Henvendelse("" + random.nextInt(), Henvendelsetype.SVAR, spsm1.traadId);
             svar1.opprettet = DateTime.now().minusDays(6);
             svar1.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                     "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
@@ -115,9 +115,9 @@ public interface MeldingService {
             svar1.tema = spsm1.tema;
             svar1.markerSomLest();
             svar1.lestDato = DateTime.now().minusDays(4);
-            meldinger.put(svar1.id, svar1);
+            henvendelser.put(svar1.id, svar1);
 
-            Melding spsm2 = new Melding("" + random.nextInt(), Meldingstype.SPORSMAL, spsm1.traadId);
+            Henvendelse spsm2 = new Henvendelse("" + random.nextInt(), Henvendelsetype.SPORSMAL, spsm1.traadId);
             spsm2.opprettet = DateTime.now().minusDays(2);
             spsm2.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                     "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
@@ -131,9 +131,9 @@ public interface MeldingService {
             spsm2.tema = "Uføre";
             spsm2.markerSomLest();
             spsm2.lestDato = spsm2.opprettet;
-            meldinger.put(spsm2.id, spsm2);
+            henvendelser.put(spsm2.id, spsm2);
 
-            Melding svar2 = new Melding("" + random.nextInt(), Meldingstype.SVAR, spsm1.traadId);
+            Henvendelse svar2 = new Henvendelse("" + random.nextInt(), Henvendelsetype.SVAR, spsm1.traadId);
             svar2.opprettet = DateTime.now().minusDays(1);
             svar2.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                     "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
@@ -144,9 +144,9 @@ public interface MeldingService {
                     " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
             svar2.tema = spsm2.tema;
             svar2.overskrift = "Re: " + spsm2.overskrift;
-            meldinger.put(svar2.id, svar2);
+            henvendelser.put(svar2.id, svar2);
 
-            Melding spsm3 = new Melding("" + random.nextInt(), Meldingstype.SPORSMAL, "" + random.nextInt());
+            Henvendelse spsm3 = new Henvendelse("" + random.nextInt(), Henvendelsetype.SPORSMAL, "" + random.nextInt());
             spsm3.opprettet = DateTime.now().minusWeeks(12);
             spsm3.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                     "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum";
@@ -154,9 +154,9 @@ public interface MeldingService {
             spsm3.overskrift = "Spørsmål om " + spsm3.tema;
             spsm3.markerSomLest();
             spsm3.lestDato = spsm3.opprettet;
-            meldinger.put(spsm3.id, spsm3);
+            henvendelser.put(spsm3.id, spsm3);
 
-            Melding svar3 = new Melding("" + random.nextInt(), Meldingstype.SVAR, spsm3.traadId);
+            Henvendelse svar3 = new Henvendelse("" + random.nextInt(), Henvendelsetype.SVAR, spsm3.traadId);
             svar3.opprettet = DateTime.now();
             svar3.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                     "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
@@ -167,9 +167,9 @@ public interface MeldingService {
                     " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
             svar3.tema = spsm3.tema;
             svar3.overskrift = "Re: " + spsm3.overskrift;
-            meldinger.put(svar3.id, svar3);
+            henvendelser.put(svar3.id, svar3);
 
-            Melding spsm4 = new Melding("" + random.nextInt(), Meldingstype.SPORSMAL, "" + random.nextInt());
+            Henvendelse spsm4 = new Henvendelse("" + random.nextInt(), Henvendelsetype.SPORSMAL, "" + random.nextInt());
             spsm4.opprettet = DateTime.now().minusHours(1);
             spsm4.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                     "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
@@ -182,31 +182,31 @@ public interface MeldingService {
             spsm4.overskrift = "Spørsmål om " + spsm4.tema;
             spsm4.markerSomLest();
             spsm4.lestDato = spsm4.opprettet;
-            meldinger.put(spsm4.id, spsm4);
+            henvendelser.put(spsm4.id, spsm4);
         }
 
         @Override
         public String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId) {
             Random random = new Random();
-            Melding spsm = new Melding("" + random.nextInt(), Meldingstype.SPORSMAL, "" + random.nextInt());
+            Henvendelse spsm = new Henvendelse("" + random.nextInt(), Henvendelsetype.SPORSMAL, "" + random.nextInt());
             spsm.fritekst = fritekst;
             spsm.overskrift = overskrift;
             spsm.opprettet = DateTime.now();
             spsm.markerSomLest();
-            meldinger.put(spsm.id, spsm);
+            henvendelser.put(spsm.id, spsm);
             return spsm.id;
         }
 
         @Override
-        public List<Melding> hentAlleMeldinger(String aktorId) {
-            return new ArrayList<>(meldinger.values());
+        public List<Henvendelse> hentAlleHenvendelser(String aktorId) {
+            return new ArrayList<>(henvendelser.values());
         }
 
         @Override
-        public void merkMeldingSomLest(String behandlingsId) {
-            Melding melding = meldinger.get(behandlingsId);
-            melding.markerSomLest();
-            meldinger.put(melding.id, melding);
+        public void merkHenvendelseSomLest(String behandlingsId) {
+            Henvendelse henvendelse = henvendelser.get(behandlingsId);
+            henvendelse.markerSomLest();
+            henvendelser.put(henvendelse.id, henvendelse);
         }
 
     }

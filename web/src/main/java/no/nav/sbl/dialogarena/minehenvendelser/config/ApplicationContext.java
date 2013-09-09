@@ -8,7 +8,7 @@ import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
 import no.nav.modig.content.enonic.HttpContentRetriever;
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.WicketApplication;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
@@ -56,8 +56,8 @@ public class ApplicationContext {
     }
 
     @Bean
-    public MeldingService meldingService() {
-        return new MeldingService.Default(henvendelsesSSO(), sporsmalinnsendingSSO());
+    public HenvendelseService henvendelseService() {
+        return new HenvendelseService.Default(henvendelsesSSO(), sporsmalinnsendingSSO());
     }
 
     private static SporsmalinnsendingPortType sporsmalinnsendingSSO() {

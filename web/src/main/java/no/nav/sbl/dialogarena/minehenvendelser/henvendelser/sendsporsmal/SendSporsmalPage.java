@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 import java.util.List;
 import javax.inject.Inject;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -20,7 +20,7 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
     private enum Side {TEMAVELGER, SEND_SPORSMAL, SPORMSMAL_BEKREFTELSE}
 
     @Inject
-    MeldingService meldingService;
+    HenvendelseService henvendelseService;
 
     IModel<Side> aktivSide = new Model<>(Side.values()[0]);
     final List<String> alleTema = asList("Uføre", "Sykepenger", "Tjenestebasert innskuddspensjon", "Annet");
@@ -31,7 +31,7 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
         TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", alleTema, model, this);
         temavelger.add(visibleIf(aktivSideEr(Side.TEMAVELGER)));
 
-        SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, this, meldingService);
+        SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, this, henvendelseService);
         sendSporsmal.add(visibleIf(aktivSideEr(Side.SEND_SPORSMAL)));
 
         SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", model);

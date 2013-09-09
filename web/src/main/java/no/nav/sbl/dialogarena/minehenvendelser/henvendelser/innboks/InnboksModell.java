@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
 import no.nav.modig.lang.option.Optional;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Meldingstype;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -16,44 +16,44 @@ public class InnboksModell extends CompoundPropertyModel<InnboksVM> {
         return getObject();
     }
 
-    public IModel<Boolean> ingenMeldinger() {
+    public IModel<Boolean> ingenHenvendelser() {
         return new AbstractReadOnlyModel<Boolean>() {
             @Override
             public Boolean getObject() {
-                return InnboksModell.this.getObject().getMeldinger().size() == 0;
+                return InnboksModell.this.getObject().getHenvendelser().size() == 0;
             }
         };
     }
 
-    public final IModel<Boolean> erValgtMelding(final MeldingVM melding) {
+    public final IModel<Boolean> erValgtHenvendelse(final HenvendelseVM henvendelse) {
         return new AbstractReadOnlyModel<Boolean>() {
             @Override
             public Boolean getObject() {
-                Optional<MeldingVM> valgtMelding = getInnboksVM().getValgtMelding();
-                return valgtMelding.isSome() && valgtMelding.get() == melding;
+                Optional<HenvendelseVM> valgtHenvendelse = getInnboksVM().getValgtHenvendelse();
+                return valgtHenvendelse.isSome() && valgtHenvendelse.get() == henvendelse;
             }
         };
     }
 
-    public IModel<Boolean> ingenMeldingValgt() {
+    public IModel<Boolean> ingenHenvendelseValgt() {
         return new AbstractReadOnlyModel<Boolean>() {
             @Override
             public Boolean getObject() {
-                Optional<MeldingVM> valgtMelding = getInnboksVM().getValgtMelding();
-                return !valgtMelding.isSome();
+                Optional<HenvendelseVM> valgtHenvendelse = getInnboksVM().getValgtHenvendelse();
+                return !valgtHenvendelse.isSome();
             }
         };
     }
 
-    public IModel<Boolean> valgtMeldingAvType(final Meldingstype type) {
+    public IModel<Boolean> valgtHenvendelseAvType(final Henvendelsetype type) {
         return new AbstractReadOnlyModel<Boolean>() {
             @Override
             public Boolean getObject() {
-                Optional<MeldingVM> valgtMelding = getInnboksVM().getValgtMelding();
-                return valgtMelding.isSome() && valgtMelding.get().melding.type == type;
+                Optional<HenvendelseVM> valgtHenvendelse = getInnboksVM().getValgtHenvendelse();
+                return valgtHenvendelse.isSome() && valgtHenvendelse.get().henvendelse.type == type;
             }
         };
     }
 
-    public CompoundPropertyModel<Boolean> alleMeldingerSkalSkjulesHvisLitenSkjerm = new CompoundPropertyModel<>(false);
+    public CompoundPropertyModel<Boolean> alleHenvendelserSkalSkjulesHvisLitenSkjerm = new CompoundPropertyModel<>(false);
 }

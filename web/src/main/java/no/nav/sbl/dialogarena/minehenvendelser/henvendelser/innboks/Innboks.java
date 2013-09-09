@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.modig.wicket.events.annotations.RunOnEvents;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.MeldingService;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSporsmalPage;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -21,11 +21,11 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 public class Innboks extends BasePage {
 
-    public static final String VALGT_MELDING = "hendelser.valgt_melding";
-    public static final String OPPDATER_MELDINGER = "hendelser.oppdater_meldinger";
+    public static final String VALGT_HENVENDELSE = "hendelser.valgt_henvendelse";
+    public static final String OPPDATER_HENVENDELSER = "hendelser.oppdater_henvendelser";
 
     @Inject
-    MeldingService service;
+    HenvendelseService service;
 
     private InnboksModell innboksModell;
     AjaxLink<Void> tilInnboksLink;
@@ -36,7 +36,7 @@ public class Innboks extends BasePage {
     }
 
     public Innboks() {
-        innboksModell = new InnboksModell(new InnboksVM(service.hentAlleMeldinger(SubjectHandler.getSubjectHandler().getUid())));
+        innboksModell = new InnboksModell(new InnboksVM(service.hentAlleHenvendelser(SubjectHandler.getSubjectHandler().getUid())));
         setDefaultModel(innboksModell);
         setOutputMarkupId(true);
 
@@ -48,30 +48,30 @@ public class Innboks extends BasePage {
             }
         });
 
-        final AlleMeldingerPanel alleMeldinger = new AlleMeldingerPanel("meldinger", innboksModell, service);
-        alleMeldinger.add(hasCssClassIf("skjult", innboksModell.alleMeldingerSkalSkjulesHvisLitenSkjerm));
+        final AlleHenvendelserPanel alleMeldinger = new AlleHenvendelserPanel("henvendelser", innboksModell, service);
+        alleMeldinger.add(hasCssClassIf("skjult", innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm));
         DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksModell);
 
         tilInnboksLink = new AjaxLink<Void>("til-innboks") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                innboksModell.alleMeldingerSkalSkjulesHvisLitenSkjerm.setObject(false);
+                innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm.setObject(false);
                 target.add(this, alleMeldinger);
             }
         };
-        tilInnboksLink.add(hasCssClassIf("skjult", not(innboksModell.alleMeldingerSkalSkjulesHvisLitenSkjerm)));
+        tilInnboksLink.add(hasCssClassIf("skjult", not(innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm)));
         topBar.add(tilInnboksLink);
 
         add(topBar, alleMeldinger, detaljvisning);
     }
 
-    @RunOnEvents(OPPDATER_MELDINGER)
+    @RunOnEvents(OPPDATER_HENVENDELSER)
     public void meldingerOppdatert(AjaxRequestTarget target) {
-        this.innboksModell.getObject().oppdaterMeldingerFra(service.hentAlleMeldinger(SubjectHandler.getSubjectHandler().getUid()));
+        this.innboksModell.getObject().oppdaterHenvendelserFra(service.hentAlleHenvendelser(SubjectHandler.getSubjectHandler().getUid()));
         target.add(this);
     }
 
-    @RunOnEvents(VALGT_MELDING)
+    @RunOnEvents(VALGT_HENVENDELSE)
     public void visTilInnboksLink(AjaxRequestTarget target) {
         target.add(tilInnboksLink);
     }
