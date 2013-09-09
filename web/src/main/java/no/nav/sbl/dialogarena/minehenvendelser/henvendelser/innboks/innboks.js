@@ -7,13 +7,13 @@ $(document).ready(function() {
             distanseFraToppen = $('#meldinger').scrollTop();
             attachAjaxCompleteListener();
         });
-    }
+    };
 
     var attachTilInnboksListener = function() {
         $('.tilbake-til-innboks-link').on('click', function() {
           attachAjaxCompleteListener();
         });
-    }
+    };
 
     var attachAjaxCompleteListener = function() {
         $(document).one('ajaxComplete', function() {
@@ -21,14 +21,14 @@ $(document).ready(function() {
             attachMeldingListener();
             attachTilInnboksListener();
         });
-    }
+    };
 
     var adjustInnboksHeight = function() {
         var bodyHeight = $('body').outerHeight();
         var restHeight = $('.footer').outerHeight() + $('.innstillinger-innlogget').outerHeight() +
                          $('.rad-logo').outerHeight() + $('#innboks-top').outerHeight();
         $('#innboks-container').height(bodyHeight - restHeight);
-    }
+    };
 
     attachMeldingListener();
     attachTilInnboksListener();

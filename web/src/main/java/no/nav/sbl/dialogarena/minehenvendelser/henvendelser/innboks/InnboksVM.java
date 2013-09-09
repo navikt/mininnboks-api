@@ -31,18 +31,22 @@ public class InnboksVM implements Serializable {
     }
 
     public List<MeldingVM> getNyesteHenvendelseITraad() {
+        List<MeldingVM> nyesteHenvendelser = new ArrayList<>();
+        for (String id : alleTraadIder()) {
+            List<MeldingVM> henvendelserITraad = on(getMeldinger()).filter(where(TRAAD_ID, equalTo(id))).collect(NYESTE_OVERST);
+            nyesteHenvendelser.add(henvendelserITraad.get(0));
+        }
+        return on(nyesteHenvendelser).collect(NYESTE_OVERST);
+    }
+
+    private List<String> alleTraadIder() {
         List<String> traadIder = new ArrayList<>();
         for (String id : on(getMeldinger()).map(TRAAD_ID)) {
             if (!traadIder.contains(id)) {
                 traadIder.add(id);
             }
         }
-        List<MeldingVM> nyesteHenvendelser = new ArrayList<>();
-        for (String id : traadIder) {
-            List<MeldingVM> henvendelserITraad = on(getMeldinger()).filter(where(TRAAD_ID, equalTo(id))).collect(NYESTE_OVERST);
-            nyesteHenvendelser.add(henvendelserITraad.get(0));
-        }
-        return on(nyesteHenvendelser).collect(NYESTE_OVERST);
+        return traadIder;
     }
 
     public List<MeldingVM> getTraad() {
