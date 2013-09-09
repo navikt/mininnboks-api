@@ -1,22 +1,23 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
-import static no.nav.modig.lang.collections.PredicateUtils.not;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
+import org.apache.commons.collections15.Transformer;
+import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
-import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
-
-import org.apache.commons.collections15.Transformer;
-import org.joda.time.DateTime;
+import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.not;
 
 public interface MeldingService {
 
@@ -58,9 +59,17 @@ public interface MeldingService {
                     if (wsMelding.getLestDato() != null) {
                         melding.markerSomLest();
                     }
-                    String[] parts = ((String) wsMelding.getBehandlingsresultat()).split("#");
-                    melding.overskrift = parts[0];
-                    melding.fritekst = parts[1];
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    Map<String, String> behandlingsresultat;
+                    try {
+                        behandlingsresultat = mapper.readValue(wsMelding.getBehandlingsresultat(), Map.class);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Kunne ikke lese ut behandlingsresultat", e);
+                    }
+
+                    melding.overskrift = behandlingsresultat.get("overskrift");
+                    melding.fritekst = behandlingsresultat.get("sporsmal");
                     return melding;
                 }
             };
