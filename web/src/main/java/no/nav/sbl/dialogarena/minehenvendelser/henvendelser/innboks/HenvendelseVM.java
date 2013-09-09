@@ -1,15 +1,15 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
-import java.io.Serializable;
-import java.util.Comparator;
-import java.util.Locale;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype;
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+
+import java.io.Serializable;
+import java.util.Comparator;
+import java.util.Locale;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SPORSMAL;
 
@@ -21,24 +21,24 @@ public class HenvendelseVM implements Serializable {
         this.henvendelse = henvendelse;
     }
 
-    public String getOpprettetDato() {
-        return formatertDato(henvendelse.opprettet);
-    }
-
-    public String getLestDato() {
-        String dato = formatertDato(henvendelse.lestDato);
-        return dato != null ? "Sett " + dato : null;
-    }
-
     public String getAvsender() {
         return avType(SPORSMAL).getObject() ? "Ola Nordmann" : "Fra: NAV";
     }
 
-    private String formatertDato(DateTime dato) {
-        return dato == null ? null :
-                DateTimeFormat.forPattern("dd.MM.yyyy, HH:mm:ss")
-                        .withLocale(Locale.getDefault())
-                        .print(dato);
+    public String getOpprettetDato() {
+        return formatertOpprettetDato("EEEEE dd.MM.yyyy").getObject();
+    }
+
+    public IModel<String> formatertOpprettetDato(final String format) {
+        return new AbstractReadOnlyModel<String>() {
+            @Override
+            public String getObject() {
+                return henvendelse.opprettet == null ? null :
+                        DateTimeFormat.forPattern(format)
+                                .withLocale(new Locale("nb"))
+                                .print(henvendelse.opprettet);
+            }
+        };
     }
 
     public IModel<Boolean> avType(final Henvendelsetype type) {

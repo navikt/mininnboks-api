@@ -1,57 +1,65 @@
-#innboks-top {
-  overflow: hidden;
-  padding: 0.5em;
-  border-bottom: solid 1px #ddd;
-}
+@sortbakgrunn : #333;
+@graabakgrunn : #f1f1f1;
+@rammeborder: #ccc;
+@skilleborder: #999;
+@dodgerblue: #1e90ff;
 
 .knapp-blaa {
-    text-transform: uppercase;
-    float: right;
-    background: dodgerblue;
+  text-transform: uppercase;
+  float: right;
+  background: @dodgerblue;
+  color: white;
+  font-size: 1.2em;
+  padding: 0.25em 0.75em;
+  &:hover {
+    text-decoration: none;
+    background: (@dodgerblue * 1.1);
     color: white;
-    font-size: 1.2em;
-    padding: 0.5em;
-    margin: 1em;
-    .border-radius(20px);
-    &:hover {
-      text-decoration: none;
-      color: white;
-    }
+  }
+}
+
+#innboks-top {
+  overflow: hidden;
+  border-bottom: solid 1px @rammeborder;
+  background-color: white;
+  padding: 0.5em 0;
+}
+
+#innboks-top .innboks-nav {
+  border-left: @rammeborder;
+  margin: 0 10%;
 }
 
 #innboks-container {
   overflow: hidden;
   height: 700px;
-  margin: 0 5%;
-  border-left: solid 1px #ddd;
+  margin: 0 10%;
+  border-left: solid 1px @rammeborder;
 }
 
 .footer {
-    height: 142px;
-}
-
-h2.liten {
-  text-transform: uppercase;
-  font-weight: bold;
+  height: 142px;
 }
 
 .melding {
   padding: 1em;
   position: relative;
-  border-bottom: solid 1px #ddd;
-}
-
-.meldingliste > .melding {
-  border-bottom: solid 1px #ddd;
-}
-
-.melding:last-child, .meldingsdetaljer:last-child {
-  border-bottom: none;
-}
-
-.melding > p {
-  color: #333;
-  margin: 0;
+  border-bottom: solid 1px @rammeborder;
+  height: 100px;
+  h2 {
+    text-transform: uppercase;
+    font-weight: normal;
+    margin: 0;
+    font-size: 1em;
+  }
+  h1 {
+    font-weight: bold;
+    margin: 0;
+    font-size: 1.25em;
+  }
+  &:not(.valgt) {
+    cursor: pointer;
+  }
 }
 
 .meldingsliste > .melding > P {
@@ -64,7 +72,7 @@ h2.liten {
 }
 
 .meldingsliste > .melding.valgt {
-  background-color: #5bc0de;
+  background-color: @sortbakgrunn;
 }
 
 .meldingsliste > .melding.valgt * {
@@ -72,30 +80,11 @@ h2.liten {
 }
 
 .meldingsliste > .melding:not(.lest) {
-  background-color: #777;
+  background-color: @graabakgrunn;
 }
 
 .meldingsliste > .melding:not(.lest) * {
-  color: white;
-}
-
-.meldingsdetaljer > .melding > P {
-  padding: 1em;
-  border: 1px solid #ddd;
-}
-
-.meldingsdetaljer > .melding .settDato {
-  color: #888;
-  margin: 0 10em;
-  display: block;
-  font-style: italic;
-  border-top: 1px solid #ddd;
-  margin-top: 0.5em;
-  text-align: center;
-}
-
-.melding:not(.valgt) {
-  cursor: pointer;
+  color: black;
 }
 
 .meldingsliste {
@@ -105,7 +94,8 @@ h2.liten {
   overflow: auto;
   background-color: white;
   margin: 0;
-  margin-right: 2em;
+  border-right: 1px solid @skilleborder;
+  border-left: 1px solid @rammeborder;
 }
 
 .meldingsdetaljer {
@@ -113,14 +103,79 @@ h2.liten {
   overflow: auto;
   margin: 0;
   background-color: white;
+  border-right: 1px solid @rammeborder;
+  border-left: 1px solid @skilleborder;
+  padding-bottom: 3em;
+  line-height: 1.5em;
+  text-align: justify;
+}
+
+section.nyeste-henvendelse {
+  position: relative;
+  background-color: @graabakgrunn;
+  padding: 1.5em;
+  border-bottom: 1px solid @rammeborder;
+  h1 {
+    font-size: 1.5em;
+  }
+  h2 {
+    font-size: 1.1em;
+    text-transform: uppercase;
+  }
+}
+
+section.tidligere-henvendelse {
+  padding: 2.5em;
+  padding-bottom: 0;
+  header {
+    margin-bottom: 0.5em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  article {
+    position: relative;
+    background: white;
+    padding: 1.5em;
+    border: 1px solid @rammeborder;
+    // CSS magi for å tegne pil
+    &:before, &:after {
+      position: absolute;
+      top: 100%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+    }
+    &:after {
+      border-top-color: white;
+      border-width: 20px;
+      left: 50%;
+      margin-left: -20px;
+    }
+    &:before {
+      border-top-color: @rammeborder;
+      border-width: 21px;
+      left: 50%;
+      margin-left: -21px;
+    }
+    // Ferdig med CSS magi
+    h2 {
+      text-align: center;
+    }
+    hr {
+      width: 3em;
+      border: 0;
+      height: 1px;
+      background: black;
+    }
+  }
 }
 
 .opprettet {
   position: absolute;
   top: 1.5em;
   right: 1.5em;
-  font-size: 80%;
-  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .tilbake-til-innboks-link {
@@ -130,6 +185,18 @@ h2.liten {
 
 @media screen and (max-width: 768px) {
 
+  #innboks-top .innboks-nav {
+    margin: 0 1em;
+  }
+
+  .tilbake-til-innboks-link {
+    display: block;
+
+    &.skjult {
+      display: none;
+    }
+  }
+
   #innboks-container {
     margin: 0;
     border: 0;
@@ -138,27 +205,15 @@ h2.liten {
   .meldingsliste {
     width: 100%;
     margin: 0;
-  }
+    border: 0;
 
-  .meldingsliste.skjult {
-    display: none;
+    &.skjult {
+      display: none;
+    }
   }
 
   .meldingsdetaljer {
     margin: 0;
+    border: 0;
   }
-
-  .tilbake-til-innboks-link {
-    display: block;
-  }
-
-  .tilbake-til-innboks-link.skjult {
-    display: none;
-  }
-}
-
-.border-radius (@radius) {
-    border-radius: @radius;
-    -moz-border-radius: @radius;
-    -webkit-border-radius: @radius;
 }

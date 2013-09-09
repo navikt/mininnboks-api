@@ -7,9 +7,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.joda.time.format.DateTimeFormat;
-
-import java.util.Locale;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SPORSMAL;
 
@@ -24,12 +21,8 @@ public class TidligereHenvendelserPanel extends Panel {
                             @Override
                             public String getObject() {
                                 HenvendelseVM henvendelseVM = item.getModelObject();
-                                String dato = DateTimeFormat.forPattern("dd.MM.yyyy, HH:mm:ss")
-                                        .withLocale(Locale.getDefault())
-                                        .print(henvendelseVM.henvendelse.opprettet);
                                 String avsender = henvendelseVM.avType(SPORSMAL).getObject() ? "sendte du" : "sendte NAV";
-
-                                return dato + " " + avsender;
+                                return henvendelseVM.formatertOpprettetDato("EEEEE dd.MM.yyyy 'kl' HH:mm").getObject() + " " + avsender;
                             }
                         }));
                 item.add(new Label("henvendelse.overskrift"));
