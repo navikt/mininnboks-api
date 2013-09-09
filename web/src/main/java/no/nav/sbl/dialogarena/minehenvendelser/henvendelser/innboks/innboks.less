@@ -168,6 +168,27 @@ section.tidligere-henvendelse {
       height: 1px;
       background: black;
     }
+    p {
+      overflow: hidden;
+      padding: 0 2em;
+    }
+    .utvide-tekst-pil {
+      position: absolute;
+      height: 0;
+      width: 0;
+      top: 2em;
+      right: 2em;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid @dodgerblue;
+      &.rotert {
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+      }
+    }
   }
 }
 
