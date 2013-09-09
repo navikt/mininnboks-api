@@ -69,7 +69,7 @@ public interface HenvendelseService {
                     }
 
                     henvendelse.overskrift = behandlingsresultat.get("overskrift");
-                    henvendelse.fritekst = behandlingsresultat.get("sporsmal");
+                    henvendelse.fritekst = behandlingsresultat.get("fritekst");
                     return henvendelse;
                 }
             };
