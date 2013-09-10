@@ -2,10 +2,17 @@ $(document).ready(function() {
 
     var distanseFraToppen = 0;
 
-    var attachMeldingListener = function() {
+    var attachHenvendelseListener = function() {
         $('.melding').on('click', function() {
             distanseFraToppen = $('#meldinger').scrollTop();
             attachAjaxCompleteListener();
+        });
+    };
+
+    var attachAjaxCompleteListener = function() {
+        $(document).one('ajaxComplete', function() {
+            $('#meldinger').scrollTop(distanseFraToppen);
+            attachListeners();
         });
     };
 
@@ -15,35 +22,33 @@ $(document).ready(function() {
         });
     };
 
-    var attachAjaxCompleteListener = function() {
-        $(document).one('ajaxComplete', function() {
-            $('#meldinger').scrollTop(distanseFraToppen);
-            attachMeldingListener();
-            attachTilInnboksListener();
-            attachToggleHoydeListener();
-        });
-    };
-
     var attachToggleHoydeListener = function() {
-        var $tidligereHenvendelse = $('.tidligere-henvendelse p');
-        var $utvideTekstPil = $('.utvide-tekst-pil');
-        var minHoyde = 50;
+        var $tidligereHenvendelseTekst = $('.tidligere-henvendelse p');
+        var minHoyde = parseInt($tidligereHenvendelseTekst.css('line-height')) * 2;
 
-        $tidligereHenvendelse.each(function() {
+        $tidligereHenvendelseTekst.each(function() {
             $(this).data('height', $(this).height());
         });
 
-        $tidligereHenvendelse.height(minHoyde);
+        $tidligereHenvendelseTekst.height(minHoyde);
 
-        $utvideTekstPil.on('click', function() {
-            var $tekstFelt = $(this).siblings('p');
+        $('.tidligere-henvendelse').on('click', function() {
+            var $tekstFelt = $(this).find('p');
+            var animasjonsHastighet = 100;
+
             if($tekstFelt.height() == minHoyde) {
-                $tekstFelt.animate({height: $tekstFelt.data('height')});
+                $tekstFelt.animate({height: $tekstFelt.data('height')}, animasjonsHastighet);
             } else {
-                $tekstFelt.animate({height: minHoyde});
+                $tekstFelt.animate({height: minHoyde}, animasjonsHastighet);
             }
-            $(this).toggleClass('rotert');
+            $(this).find('.utvide-tekst-pil').toggleClass('rotert');
         });
+    };
+
+    var attachListeners = function() {
+        attachHenvendelseListener();
+        attachTilInnboksListener();
+        attachToggleHoydeListener();
     };
 
     var adjustInnboksHeight = function() {
@@ -53,8 +58,6 @@ $(document).ready(function() {
         $('#innboks-container').height(bodyHeight - restHeight);
     };
 
-    attachToggleHoydeListener();
-    attachMeldingListener();
-    attachTilInnboksListener();
+    attachListeners();
     adjustInnboksHeight();
 });
