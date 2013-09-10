@@ -44,6 +44,7 @@
   border-left: 1px solid @rammeborder;
   .melding {
     padding: 1em;
+    padding-left: 2em;
     position: relative;
     border-bottom: solid 1px @rammeborder;
     height: 100px;
@@ -87,10 +88,15 @@
       cursor: pointer;
     }
     &:not(.lest) {
-      background-color: @graabakgrunn;
-    }
-    &:not(.lest) * {
-      color: black;
+      .ulest-indikator {
+        position: absolute;
+        top: 1.7em;
+        left: 0.5em;
+        background-color: #ffc033;
+        height: 1em;
+        width: 1em;
+        border-radius: 2em;
+      }
     }
   }
 }
@@ -139,6 +145,7 @@
       background: white;
       padding: 1.5em;
       border: 1px solid @rammeborder;
+      cursor: pointer;
       // CSS magi for å tegne pil
       &:before, &:after {
         position: absolute;

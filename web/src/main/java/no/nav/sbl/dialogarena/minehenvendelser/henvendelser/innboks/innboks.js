@@ -32,7 +32,7 @@ $(document).ready(function() {
 
         $tidligereHenvendelseTekst.height(minHoyde);
 
-        $('.tidligere-henvendelse').on('click', function() {
+        $('.tidligere-henvendelse article').on('click', function() {
             var $tekstFelt = $(this).find('p');
             var animasjonsHastighet = 100;
 
