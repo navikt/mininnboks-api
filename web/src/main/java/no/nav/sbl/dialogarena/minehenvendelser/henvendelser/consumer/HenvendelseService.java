@@ -1,19 +1,18 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
-import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
-import org.apache.commons.collections15.Transformer;
-import org.joda.time.DateTime;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
+import org.apache.commons.collections15.Transformer;
+import org.joda.time.DateTime;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
@@ -37,7 +36,7 @@ public interface HenvendelseService {
 
         @Override
         public String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId) {
-            return sporsmalinnsendingPortType.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema).withOverskrift(overskrift), aktorId);
+            return sporsmalinnsendingPortType.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema), aktorId);
         }
 
         @Override
@@ -55,6 +54,7 @@ public interface HenvendelseService {
                             wsHenvendelse.getTraad());
                     henvendelse.opprettet = wsHenvendelse.getOpprettetDato();
                     henvendelse.tema = wsHenvendelse.getTema();
+                    henvendelse.overskrift = ("SPORSMAL".equals(henvendelseType) ? "Spørsmål om " : "Svar på ") + wsHenvendelse.getTema();
                     henvendelse.lestDato = wsHenvendelse.getLestDato();
                     if (wsHenvendelse.getLestDato() != null) {
                         henvendelse.markerSomLest();
@@ -68,7 +68,6 @@ public interface HenvendelseService {
                         throw new RuntimeException("Kunne ikke lese ut behandlingsresultat", e);
                     }
 
-                    henvendelse.overskrift = behandlingsresultat.get("overskrift");
                     henvendelse.fritekst = behandlingsresultat.get("fritekst");
                     return henvendelse;
                 }
