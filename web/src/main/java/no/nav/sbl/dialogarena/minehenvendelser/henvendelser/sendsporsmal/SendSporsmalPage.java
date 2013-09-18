@@ -1,7 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
-import java.util.List;
-import javax.inject.Inject;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
@@ -10,6 +8,8 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+
+import javax.inject.Inject;
 
 import static java.util.Arrays.asList;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
@@ -23,12 +23,11 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
     HenvendelseService henvendelseService;
 
     IModel<Side> aktivSide = new Model<>(Side.values()[0]);
-    final List<String> alleTema = asList("Uføre", "Sykepenger", "Tjenestebasert innskuddspensjon", "Annet");
     CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
 
     public SendSporsmalPage() {
 
-        TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", alleTema, model, this);
+        TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", asList(Tema.values()), model, this);
         temavelger.add(visibleIf(aktivSideEr(Side.TEMAVELGER)));
 
         SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, this, henvendelseService);

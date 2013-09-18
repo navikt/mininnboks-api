@@ -5,11 +5,12 @@ import java.io.Serializable;
 import org.joda.time.DateTime;
 
 public class Sporsmal implements Serializable {
-    
-	private String tema, fritekst;
-	public DateTime innsendingsTidspunkt;
 
-    public void setTema(String tema) {
+    private String fritekst;
+    private Tema tema;
+    public DateTime innsendingsTidspunkt;
+
+    public void setTema(Tema tema) {
         this.tema = tema;
     }
 
@@ -17,7 +18,7 @@ public class Sporsmal implements Serializable {
         this.fritekst = fritekst;
     }
 
-    public String getTema() {
+    public Tema getTema() {
         return tema;
     }
 

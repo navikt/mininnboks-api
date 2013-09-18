@@ -1,12 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.Tema;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
@@ -14,16 +9,23 @@ import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.not;
 
 public interface HenvendelseService {
 
-    String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId);
+    String stillSporsmal(String fritekst, String overskrift, Tema tema, String aktorId);
     List<Henvendelse> hentAlleHenvendelser(String aktorId);
     void merkHenvendelseSomLest(String behandlingsId);
-    
+
     class Default implements HenvendelseService {
 
         private final HenvendelsePortType henvendelseWS;
@@ -35,8 +37,8 @@ public interface HenvendelseService {
         }
 
         @Override
-        public String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId) {
-            return sporsmalinnsendingPortType.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema), aktorId);
+        public String stillSporsmal(String fritekst, String overskrift, Tema tema, String aktorId) {
+            return sporsmalinnsendingPortType.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema.navn()), aktorId);
         }
 
         @Override
@@ -44,10 +46,10 @@ public interface HenvendelseService {
             Transformer<WSHenvendelse, Henvendelse> somHenvendelse = new Transformer<WSHenvendelse, Henvendelse>() {
                 @Override
                 public Henvendelse transform(WSHenvendelse wsHenvendelse) {
-                	String henvendelseType = wsHenvendelse.getHenvendelseType();
-                	if (!"SPORSMAL".equals(henvendelseType) && !"SVAR".equals(henvendelseType)) {
-                		return null;
-                	}
+                    String henvendelseType = wsHenvendelse.getHenvendelseType();
+                    if (!"SPORSMAL".equals(henvendelseType) && !"SVAR".equals(henvendelseType)) {
+                        return null;
+                    }
                     Henvendelse henvendelse = new Henvendelse(
                             wsHenvendelse.getBehandlingsId(),
                             Henvendelsetype.valueOf(henvendelseType),
@@ -185,7 +187,7 @@ public interface HenvendelseService {
         }
 
         @Override
-        public String stillSporsmal(String fritekst, String overskrift, String tema, String aktorId) {
+        public String stillSporsmal(String fritekst, String overskrift, Tema tema, String aktorId) {
             Random random = new Random();
             Henvendelse spsm = new Henvendelse("" + random.nextInt(), Henvendelsetype.SPORSMAL, "" + random.nextInt());
             spsm.fritekst = fritekst;
