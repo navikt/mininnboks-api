@@ -38,7 +38,7 @@ public interface HenvendelseService {
 
         @Override
         public String stillSporsmal(String fritekst, String overskrift, Tema tema, String aktorId) {
-            return sporsmalinnsendingPortType.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema.navn()), aktorId);
+            return sporsmalinnsendingPortType.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema.toString()), aktorId);
         }
 
         @Override
