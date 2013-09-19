@@ -57,9 +57,7 @@ public class TemavelgerPanel extends Panel {
             item.add(hasCssClassIf("valgt", new AbstractReadOnlyModel<Boolean>() {
                 @Override
                 public Boolean getObject() {
-                    boolean erLike = item.getModelObject() == model.getObject().getTema();
-                    System.out.println("erLike = " + erLike);
-                    return erLike;
+                    return item.getModelObject() == model.getObject().getTema();
                 }
             }));
             item.add(new AjaxEventBehavior("onclick") {
