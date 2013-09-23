@@ -3,11 +3,9 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,6 +17,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.DateTime;
 
 public class SendSporsmalPanel extends Panel {
@@ -35,16 +34,18 @@ public class SendSporsmalPanel extends Panel {
 
     private final class SporsmalForm extends Form<Sporsmal> {
 
+        private static final int FRITEKST_MAKS_LENGDE = 1000;
+
         private SporsmalForm(String id, CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            final FeedbackPanel feedbackPanel = new FeedbackPanel("validering", new ContainerFeedbackMessageFilter(this));
-            feedbackPanel.setOutputMarkupId(true);
+            FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
 
             Label hjelpetekst = new Label("hjelpetekst", new ResourceModel("still-sporsmal-hjelp"));
 
-            final TextArea<Object> fritekst = new TextArea<>("fritekst");
+            TextArea<Object> fritekst = new TextArea<>("fritekst");
             fritekst.setRequired(true);
+            fritekst.add(StringValidator.maximumLength(FRITEKST_MAKS_LENGDE));
 
             Link avbryt = new Link("avbryt") {
                 @Override
@@ -53,7 +54,7 @@ public class SendSporsmalPanel extends Panel {
                 }
             };
 
-            final AjaxSubmitLink send = new AjaxSubmitLink("send") {
+            AjaxSubmitLink send = new AjaxSubmitLink("send") {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     Sporsmal spsm = getModelObject();
