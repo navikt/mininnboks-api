@@ -39,7 +39,8 @@ public class SendSporsmalPanel extends Panel {
         private SporsmalForm(String id, CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
+            final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
+            feedbackPanel.setOutputMarkupId(true);
 
             Label hjelpetekst = new Label("hjelpetekst", new ResourceModel("still-sporsmal-hjelp"));
 
@@ -68,7 +69,7 @@ public class SendSporsmalPanel extends Panel {
 
                 @Override
                 protected void onError(AjaxRequestTarget target, Form<?> form) {
-                    target.add(SendSporsmalPanel.this.getParent());
+                    target.add(feedbackPanel);
                 }
             };
 

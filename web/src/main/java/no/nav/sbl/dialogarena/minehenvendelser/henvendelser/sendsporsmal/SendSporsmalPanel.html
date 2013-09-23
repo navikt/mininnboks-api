@@ -7,9 +7,10 @@
 <wicket:panel>
     <article class="send-panel">
         <form wicket:id="sporsmal-form" class="vertikal">
-            <wicket:container wicket:id="validering">[[Valideringsmeldinger]]</wicket:container>
-
         	<p wicket:id="hjelpetekst">[[Hjelpetekst]]</p>
+
+            <div wicket:id="validering" class="valideringsfelt">[[Valideringsmeldinger]]</div>
+
             <section class="tekstfelt">
                 <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
                 <div id="antall"></div>
