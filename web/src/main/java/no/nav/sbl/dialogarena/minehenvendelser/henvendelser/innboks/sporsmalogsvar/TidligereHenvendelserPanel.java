@@ -22,7 +22,7 @@ public class TidligereHenvendelserPanel extends Panel {
                             public String getObject() {
                                 HenvendelseVM henvendelseVM = item.getModelObject();
                                 String avsender = henvendelseVM.avType(SPORSMAL).getObject() ? "sendte du" : "sendte NAV";
-                                return henvendelseVM.formatertOpprettetDato("EEEEE dd.MM.yyyy 'kl' HH:mm").getObject() + " " + avsender;
+                                return henvendelseVM.getOpprettetDato() + " " + avsender;
                             }
                         }));
                 item.add(new Label("henvendelse.overskrift"));

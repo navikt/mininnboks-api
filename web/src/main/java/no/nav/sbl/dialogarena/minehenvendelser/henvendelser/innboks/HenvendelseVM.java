@@ -26,7 +26,7 @@ public class HenvendelseVM implements Serializable {
     }
 
     public String getOpprettetDato() {
-        return formatertOpprettetDato("EEEEE dd.MM.yyyy").getObject();
+        return formatertOpprettetDato("EEEEE dd.MM.yyyy 'kl' HH:mm").getObject();
     }
 
     public IModel<String> formatertOpprettetDato(final String format) {
