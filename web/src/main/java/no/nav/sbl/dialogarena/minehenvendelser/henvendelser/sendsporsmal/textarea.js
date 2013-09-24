@@ -31,13 +31,13 @@ $(document).ready(function() {
     }
     function tellAntallTegn(textArea) {
         var antall = textArea.value.length;
-        var $antall = $("#antall");
-        $antall.text(antall + " av " + MAKS_TEGN + " tegn");
+        var $antallTegn = $("#antall-tegn");
+        $antallTegn.text(MAKS_TEGN - antall);
         var overskrider = "overskrider";
         if (antall > MAKS_TEGN) {
-            $antall.addClass(overskrider);
+            $antallTegn.addClass(overskrider);
         } else {
-            $antall.removeClass(overskrider)
+            $antallTegn.removeClass(overskrider)
         }
     }
 

@@ -39,10 +39,13 @@ public class SendSporsmalPanel extends Panel {
         private SporsmalForm(String id, CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
-            feedbackPanel.setOutputMarkupId(true);
+            Label tema = new Label("tema");
+            tema.setOutputMarkupId(true);
 
             Label hjelpetekst = new Label("hjelpetekst", new ResourceModel("still-sporsmal-hjelp"));
+
+            final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
+            feedbackPanel.setOutputMarkupId(true);
 
             TextArea<Object> fritekst = new TextArea<>("fritekst");
             fritekst.setRequired(true);
@@ -60,7 +63,7 @@ public class SendSporsmalPanel extends Panel {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     Sporsmal spsm = getModelObject();
                     spsm.innsendingsTidspunkt = DateTime.now();
-                    String overskrift = "Spørsmål om " + spsm.getTema();
+                    String overskrift = "Spørsmål om " + spsm.getTema().toString();
                     henvendelseService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
                     send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_HENVENDELSER);
                     sideNavigerer.neste();
@@ -73,14 +76,13 @@ public class SendSporsmalPanel extends Panel {
                 }
             };
 
-            add(feedbackPanel, hjelpetekst, fritekst, avbryt, send);
+            add(tema, hjelpetekst, feedbackPanel, fritekst, avbryt, send);
         }
 
         @Override
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SendSporsmalPanel.class, "textarea.js")));
-
         }
     }
 }

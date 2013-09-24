@@ -2,8 +2,6 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -27,6 +25,10 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
 
     public SendSporsmalPage() {
 
+        Sporsmal spsm = model.getObject();
+        spsm.setTema(Tema.ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT);
+        model.setObject(spsm);
+
         TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", asList(Tema.values()), model, this);
         temavelger.add(visibleIf(aktivSideEr(Side.TEMAVELGER)));
 
@@ -36,14 +38,7 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
         SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", model);
         sporsmalBekreftelse.add(visibleIf(aktivSideEr(Side.SPORMSMAL_BEKREFTELSE)));
 
-        Link innboksLink = new Link("innboks-link") {
-            @Override
-            public void onClick() {
-                setResponsePage(Innboks.class);
-            }
-        };
-
-        add(innboksLink, temavelger, sendSporsmal, sporsmalBekreftelse);
+        add(temavelger, sendSporsmal, sporsmalBekreftelse);
 
     }
 

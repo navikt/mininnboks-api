@@ -5,18 +5,23 @@
 </head>
 <body>
 <wicket:panel>
+    <h1>Ny melding til NAV</h1>
     <article class="send-panel">
         <form wicket:id="sporsmal-form" class="vertikal">
-        	<p wicket:id="hjelpetekst">[[Hjelpetekst]]</p>
+            <h2 wicket:id="tema"></h2>
+            <hr class="robust-strek"/>
+            <p wicket:id="hjelpetekst">[[Hjelpetekst]]</p>
 
             <div wicket:id="validering" class="valideringsfelt">[[Valideringsmeldinger]]</div>
 
             <section class="tekstfelt">
                 <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
-                <div id="antall"></div>
             </section>
-            <a wicket:id="send" class="send-link" href="#"><wicket:message key="send-inn">[[Send inn]]</wicket:message></a>
-            <a wicket:id="avbryt" class="avbryt-link" href="#"><wicket:message key="avbryt">[[Avbryt]]</wicket:message></a>
+            <ul>
+                <li><span id="antall-tegn">1000</span> TEGN IGJEN</li>
+                <li><a wicket:id="send" class="send-link knapp-hoved-stor" href="#"><wicket:message key="send-inn">[[Send inn]]</wicket:message></a></li>
+                <li><a wicket:id="avbryt" class="avbryt" href="#"><wicket:message key="avbryt">[[Avbryt]]</wicket:message></a></li>
+            </ul>
         </form>
     </article>
 </wicket:panel>

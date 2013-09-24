@@ -1,21 +1,21 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.StringResourceModel;
 
 import java.util.List;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
-import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 
 public class TemavelgerPanel extends Panel {
 
@@ -35,13 +35,14 @@ public class TemavelgerPanel extends Panel {
                 target.add(TemavelgerPanel.this.getParent());
             }
         };
-        fortsettLink.add(visibleIf(new AbstractReadOnlyModel<Boolean>() {
+
+        Link avbrytLink = new Link("avbryt") {
             @Override
-            public Boolean getObject() {
-                return alleTema.contains(model.getObject().getTema());
+            public void onClick() {
+                setResponsePage(Innboks.class);
             }
-        }));
-        container.add(fortsettLink);
+        };
+        container.add(fortsettLink, avbrytLink);
         add(container);
     }
 
@@ -53,7 +54,7 @@ public class TemavelgerPanel extends Panel {
 
         @Override
         protected void populateItem(final ListItem<Tema> item) {
-            item.add(new Label("tema", new StringResourceModel(item.getModelObject().toString(), this, null)));
+            item.add(new Label("tema", item.getModelObject().toString()));
             item.add(hasCssClassIf("valgt", new AbstractReadOnlyModel<Boolean>() {
                 @Override
                 public Boolean getObject() {
@@ -71,5 +72,4 @@ public class TemavelgerPanel extends Panel {
             });
         }
     }
-
 }

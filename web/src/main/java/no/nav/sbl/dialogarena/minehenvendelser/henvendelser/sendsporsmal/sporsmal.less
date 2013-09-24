@@ -1,41 +1,43 @@
-.innboks-link {
-  text-transform: uppercase;
-  float: left;
-  background: dodgerblue;
-  color: white;
-  font-size: 1.2em;
-  padding: 0.5em;
+@containerWidth: 700px;
+@morkeBlaa: #0067c5;
+
+h1 {
+  font-size: 2.5em;
+  text-align: center;
   margin: 1em;
-  &:hover {
-    text-decoration: none;
-    color: white;
-  }
+  font-weight: 600;
 }
 
 .tema-panel {
-  padding: 3em;
+  padding: 2em;
   overflow: hidden;
-
+  background-color: white;
+  max-width: @containerWidth;
+  margin: 0 auto;
+  text-align: center;
   h2 {
-    text-align: center;
-    font-family: arial;
+    font-size: 1.25em;
+    font-weight: 600;
+    margin: 0;
     text-transform: uppercase;
   }
-
+  .robust-strek {
+    background-color: transparent;
+    margin-top: 0;
+  }
   .tema {
-    background-color: white;
+    background-color: #ddd;
     margin: 0 auto 0.5em;
-    max-width: 300px;
+    max-width: 400px;
     cursor: pointer;
     p {
       font-size: 1.2em;
-      font-family: arial;
       color: black;
       padding: 0.5em 1.5em;
       margin: 0;
     }
     &.valgt {
-      background-color: dodgerblue;
+      background-color: @morkeBlaa;
       p {
         color: white;
       }
@@ -44,65 +46,99 @@
       margin-top: 2em;
       background-color: transparent;
     }
-    .fortsett-link {
-      background-color: dodgerblue;
-      color: white;
-      font-size: 1.2em;
-      margin: 0 auto;
+  }
+  hr {
+    margin: 2em auto;
+    width: 100%;
+    height: 1px;
+    border-style: none;
+    background-color: #ddd;
+  }
+  ul {
+    list-style: none;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    li {
       padding: 0.5em;
+    }
+    .avbryt {
+      color: @morkeBlaa;
+      text-decoration: none;
+      font-size: 1.25em;
       &:hover {
-        text-decoration: none;
+        text-decoration: underline;
       }
     }
   }
 }
 
 .send-panel {
-  padding: 3em;
   overflow: hidden;
-  max-width: 500px;
-  margin: auto;
-  padding: 1em;
-  .valideringsfelt * {
-    color: red;
-    list-style: none;
-    padding: 0;
-  }
-  .tema-bar {
-    label {
-      display: inline-block;
-      margin-bottom: 1em;
-      padding: 0.2em 1em;
-      background-color: grey;
-      color: white;
-    }
-  }
-  .tekstfelt {
+  max-width: @containerWidth;
+  margin: 0 auto;
+  form {
+    width: 100%;
+    padding: 2em;
+    background-color: white;
     text-align: center;
-    .overskrider {
+    h2 {
+      font-weight: 600;
+      margin: 0;
+    }
+    hr {
+      border-style: none;
+    }
+    .valideringsfelt * {
       color: red;
+      list-style: none;
+      padding: 0;
     }
-    textarea {
-      resize: none;
-      overflow: hidden;
-      margin-bottom: 0.5em;
+    .tema-bar {
+      label {
+        display: inline-block;
+        margin-bottom: 1em;
+        padding: 0.2em 1em;
+        background-color: grey;
+        color: white;
+      }
     }
-    div {
-      margin-bottom: 1em;
+    .tekstfelt {
+      text-align: center;
+      textarea {
+        resize: none;
+        overflow: hidden;
+        margin-bottom: 0.5em;
+      }
+      div {
+        margin-bottom: 1em;
+      }
     }
-  }
-  .send-link {
-    background-color: dodgerblue;
-    color: white;
-    padding: 0.2em 0.8em;
-
-  }
-  .avbryt-link {
-    background-color: darkgrey;
-    color: black;
-    padding: 0.2em 0.8em;
-    &:hover {
-      text-decoration: none;
+    ul {
+      list-style: none;
+      text-align: center;
+      margin: 0;
+      li {
+        padding: 1em;
+        #antall-tegn {
+          font-weight: bold;
+          &.overskrider {
+            color: red;
+          }
+        }
+        &:last-child {
+          padding: 0;
+        }
+      }
+      .avbryt {
+        padding-top: 0;
+        color: @morkeBlaa;
+        text-decoration: none;
+        font-size: 1.25em;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 }
@@ -111,20 +147,4 @@
   padding: 3em;
   overflow: hidden;
   text-align: center;
-  h2 {
-    font-family: arial;
-    text-transform: uppercase;
-  }
-  a {
-    text-transform: uppercase;
-    background: dodgerblue;
-    color: white;
-    font-size: 1.2em;
-    padding: 0.5em;
-    margin: auto;
-    &:hover {
-      text-decoration: none;
-      color: white;
-    }
-  }
 }
