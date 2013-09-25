@@ -37,7 +37,7 @@
         <modig-core.version>1.0.0</modig-core.version>
         <modig-content.version>1.2.1</modig-content.version>
         <modig.fitnesse.version>1.0.1</modig.fitnesse.version>
-        <modig.frontend.version>1.0.18</modig.frontend.version>
+        <modig.frontend.version>1.0.33</modig.frontend.version>
         <modig.lang.version>1.0.1</modig.lang.version>
         <modig-security.version>1.0.9</modig-security.version>
         <modig.wicket.test.version>1.0.0</modig.wicket.test.version>
@@ -74,7 +74,7 @@
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
                 <artifactId>sbl-webkomponent-innstillinger</artifactId>
-                <version>1.0.10</version>
+                <version>1.0.17</version>
             </dependency>
 
             <dependency>
