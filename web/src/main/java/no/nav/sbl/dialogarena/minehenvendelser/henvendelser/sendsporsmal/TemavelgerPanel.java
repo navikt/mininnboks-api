@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class TemavelgerPanel extends Panel {
 
         @Override
         protected void populateItem(final ListItem<Tema> item) {
-            item.add(new Label("tema", item.getModelObject().toString()));
+            item.add(new Label("tema", new StringResourceModel(item.getModelObject().toString(), this, null)));
             item.add(hasCssClassIf("valgt", new AbstractReadOnlyModel<Boolean>() {
                 @Override
                 public Boolean getObject() {

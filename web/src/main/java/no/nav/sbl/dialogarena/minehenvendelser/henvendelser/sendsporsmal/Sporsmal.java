@@ -1,8 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
-import java.io.Serializable;
-
 import org.joda.time.DateTime;
+
+import java.io.Serializable;
 
 public class Sporsmal implements Serializable {
 

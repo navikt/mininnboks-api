@@ -15,7 +15,9 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.DateTime;
@@ -36,10 +38,15 @@ public class SendSporsmalPanel extends Panel {
 
         private static final int FRITEKST_MAKS_LENGDE = 1000;
 
-        private SporsmalForm(String id, CompoundPropertyModel<Sporsmal> model) {
+        private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            Label tema = new Label("tema");
+            Label tema = new Label("tema", new LoadableDetachableModel<String>() {
+                @Override
+                protected String load() {
+                    return new StringResourceModel(model.getObject().getTema().toString(), SporsmalForm.this, null).getString();
+                }
+            });
             tema.setOutputMarkupId(true);
 
             Label hjelpetekst = new Label("hjelpetekst", new ResourceModel("still-sporsmal-hjelp"));
@@ -63,7 +70,7 @@ public class SendSporsmalPanel extends Panel {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     Sporsmal spsm = getModelObject();
                     spsm.innsendingsTidspunkt = DateTime.now();
-                    String overskrift = "Spørsmål om " + spsm.getTema().toString();
+                    String overskrift = "Spørsmål om " + new StringResourceModel(spsm.getTema().toString(), this, null).getString();
                     henvendelseService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
                     send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_HENVENDELSER);
                     sideNavigerer.neste();
