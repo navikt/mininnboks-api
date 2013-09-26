@@ -14,12 +14,13 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
-import org.apache.wicket.validation.validator.StringValidator;
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.validator.AbstractRangeValidator;
 import org.joda.time.DateTime;
 
 public class SendSporsmalPanel extends Panel {
@@ -41,9 +42,9 @@ public class SendSporsmalPanel extends Panel {
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            Label tema = new Label("tema", new LoadableDetachableModel<String>() {
+            Label tema = new Label("tema", new AbstractReadOnlyModel<String>() {
                 @Override
-                protected String load() {
+                public String getObject() {
                     return new StringResourceModel(model.getObject().getTema().toString(), SporsmalForm.this, null).getString();
                 }
             });
@@ -56,7 +57,7 @@ public class SendSporsmalPanel extends Panel {
 
             TextArea<Object> fritekst = new TextArea<>("fritekst");
             fritekst.setRequired(true);
-            fritekst.add(StringValidator.maximumLength(FRITEKST_MAKS_LENGDE));
+            fritekst.add(NewlineCorrectingStringValidator.maximumLength(FRITEKST_MAKS_LENGDE));
 
             Link avbryt = new Link("avbryt") {
                 @Override
@@ -90,6 +91,29 @@ public class SendSporsmalPanel extends Panel {
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SendSporsmalPanel.class, "textarea.js")));
+        }
+    }
+
+    private static class NewlineCorrectingStringValidator extends AbstractRangeValidator<Integer, String> {
+
+        public NewlineCorrectingStringValidator(Integer minimum, Integer maximum) {
+            super(minimum, maximum);
+        }
+
+        @Override
+        protected Integer getValue(IValidatable<String> validatable) {
+            if (validatable.getValue().contains("\r\n")) {
+                return getCorrectedStringLength(validatable);
+            }
+            return validatable.getValue().length();
+        }
+
+        private int getCorrectedStringLength(IValidatable<String> validatable) {
+            return validatable.getValue().replace("\r", "").length();
+        }
+
+        public static NewlineCorrectingStringValidator maximumLength(int length) {
+            return new NewlineCorrectingStringValidator(null, length);
         }
     }
 }
