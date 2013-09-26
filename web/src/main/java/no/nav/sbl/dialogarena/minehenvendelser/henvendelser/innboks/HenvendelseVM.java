@@ -5,6 +5,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelse
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.Comparator;
 import java.util.Locale;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SPORSMAL;
+import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SVAR;
 
 public class HenvendelseVM implements Serializable {
 
@@ -26,17 +28,21 @@ public class HenvendelseVM implements Serializable {
     }
 
     public String getOpprettetDato() {
-        return formatertOpprettetDato("EEEEE dd.MM.yyyy 'kl' HH:mm").getObject();
+        return formatertDato(henvendelse.opprettet, "EEEEE dd.MM.yyyy 'kl' HH:mm").getObject();
     }
 
-    public IModel<String> formatertOpprettetDato(final String format) {
+    public String getLestDato() {
+        return avType(SVAR).getObject() ? formatertDato(henvendelse.lestDato, "'Lest:' dd.MM.yyyy 'kl' HH:mm").getObject() : null;
+    }
+
+    public IModel<String> formatertDato(final DateTime dato, final String format) {
         return new AbstractReadOnlyModel<String>() {
             @Override
             public String getObject() {
-                return henvendelse.opprettet == null ? null :
+                return dato == null ? null :
                         DateTimeFormat.forPattern(format)
                                 .withLocale(new Locale("nb"))
-                                .print(henvendelse.opprettet);
+                                .print(dato);
             }
         };
     }
