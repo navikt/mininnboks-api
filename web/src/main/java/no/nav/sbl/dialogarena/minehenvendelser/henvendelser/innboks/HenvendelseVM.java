@@ -5,7 +5,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelse
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -28,24 +27,21 @@ public class HenvendelseVM implements Serializable {
         return avType(SPORSMAL) ? "Ola Nordmann" : "Fra: NAV";
     }
 
-    public String getOpprettetDato() {
-        return formatertDato(henvendelse.opprettet, "EEEEE dd.MM.yyyy 'kl' HH:mm").getObject();
+    public String getLangOpprettetDato() {
+        return formatertDato(henvendelse.opprettet, "EEEEE dd.MM.yyyy 'kl' HH:mm");
+    }
+
+    public String getKortOpprettetDato() {
+        return formatertDato(henvendelse.opprettet, "dd.MM.yyyy");
     }
 
     public String getLestDato() {
-        return avType(SVAR) ? formatertDato(henvendelse.lestDato, "'Lest:' dd.MM.yyyy 'kl' HH:mm").getObject() : null;
+        return avType(SVAR) ? formatertDato(henvendelse.lestDato, "'Lest:' dd.MM.yyyy 'kl' HH:mm") : null;
     }
 
-    public IModel<String> formatertDato(final DateTime dato, final String format) {
-        return new AbstractReadOnlyModel<String>() {
-            @Override
-            public String getObject() {
-                return dato == null ? null :
-                        DateTimeFormat.forPattern(format)
-                                .withLocale(new Locale("nb"))
-                                .print(dato);
-            }
-        };
+    private String formatertDato(final DateTime dato, final String format) {
+        return dato == null ? null :
+                DateTimeFormat.forPattern(format).withLocale(new Locale("nb")).print(dato);
     }
 
     public boolean avType(final Henvendelsetype type) {

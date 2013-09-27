@@ -22,7 +22,7 @@ public class AlleHenvendelserPanel extends Panel {
             protected void populateItem(final ListItem<HenvendelseVM> item) {
                 item.add(new Label("avsender"));
                 item.add(new Label("henvendelse.overskrift"));
-                item.add(new Label("opprettet", item.getModelObject().formatertDato(item.getModelObject().henvendelse.opprettet, "dd.MM.yyyy")));
+                item.add(new Label("kortOpprettetDato"));
                 item.add(new Label("henvendelse.fritekst"));
                 item.add(hasCssClassIf("valgt", innboksModell.erValgtHenvendelse(item.getModelObject())));
                 item.add(hasCssClassIf("lest", item.getModelObject().erLest()));

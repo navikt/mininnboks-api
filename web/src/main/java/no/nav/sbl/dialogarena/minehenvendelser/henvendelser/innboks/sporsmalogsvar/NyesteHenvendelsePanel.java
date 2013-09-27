@@ -9,7 +9,7 @@ public class NyesteHenvendelsePanel extends Panel {
         super(id);
         add(new Label("nyesteHenvendelse.henvendelse.overskrift"));
         add(new Label("nyesteHenvendelse.avsender"));
-        add(new Label("nyesteHenvendelse.opprettetDato"));
+        add(new Label("nyesteHenvendelse.langOpprettetDato"));
         add(new Label("nyesteHenvendelse.lestDato"));
         add(new Label("nyesteHenvendelse.henvendelse.fritekst"));
     }
