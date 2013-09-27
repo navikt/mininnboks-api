@@ -1,24 +1,25 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.Tema;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
-import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
-import org.apache.commons.collections15.Transformer;
-import org.joda.time.DateTime;
+import static no.nav.modig.lang.collections.IterUtils.on;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
-import static no.nav.modig.lang.collections.PredicateUtils.not;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.Tema;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
+
+import org.apache.commons.collections15.Transformer;
+import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public interface HenvendelseService {
 
@@ -44,12 +45,10 @@ public interface HenvendelseService {
         @Override
         public List<Henvendelse> hentAlleHenvendelser(String aktorId) {
             Transformer<WSHenvendelse, Henvendelse> somHenvendelse = new Transformer<WSHenvendelse, Henvendelse>() {
-                @Override
+				@Override
+				@SuppressWarnings("unchecked")
                 public Henvendelse transform(WSHenvendelse wsHenvendelse) {
                     String henvendelseType = wsHenvendelse.getHenvendelseType();
-                    if (!"SPORSMAL".equals(henvendelseType) && !"SVAR".equals(henvendelseType)) {
-                        return null;
-                    }
                     Henvendelse henvendelse = new Henvendelse(
                             wsHenvendelse.getBehandlingsId(),
                             Henvendelsetype.valueOf(henvendelseType),
@@ -63,7 +62,7 @@ public interface HenvendelseService {
                     ObjectMapper mapper = new ObjectMapper();
                     Map<String, String> behandlingsresultat;
                     try {
-                        behandlingsresultat = mapper.readValue(wsHenvendelse.getBehandlingsresultat(), Map.class);
+                        behandlingsresultat = (Map<String, String>) mapper.readValue(wsHenvendelse.getBehandlingsresultat(), Map.class);
                     } catch (IOException e) {
                         throw new RuntimeException("Kunne ikke lese ut behandlingsresultat", e);
                     }
@@ -72,7 +71,7 @@ public interface HenvendelseService {
                     return henvendelse;
                 }
             };
-            return on(henvendelseWS.hentHenvendelseListe(aktorId)).map(somHenvendelse).filter(not(equalTo(null))).collect();
+            return on(henvendelseWS.hentHenvendelseListe(aktorId, Arrays.asList("SPORSMAL", "SVAR"))).map(somHenvendelse).collect();
         }
 
         @Override
