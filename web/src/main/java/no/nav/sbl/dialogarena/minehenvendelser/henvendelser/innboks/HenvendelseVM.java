@@ -5,6 +5,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelse
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -24,7 +25,7 @@ public class HenvendelseVM implements Serializable {
     }
 
     public String getAvsender() {
-        return avType(SPORSMAL).getObject() ? "Ola Nordmann" : "Fra: NAV";
+        return avType(SPORSMAL) ? "Ola Nordmann" : "Fra: NAV";
     }
 
     public String getOpprettetDato() {
@@ -32,7 +33,7 @@ public class HenvendelseVM implements Serializable {
     }
 
     public String getLestDato() {
-        return avType(SVAR).getObject() ? formatertDato(henvendelse.lestDato, "'Lest:' dd.MM.yyyy 'kl' HH:mm").getObject() : null;
+        return avType(SVAR) ? formatertDato(henvendelse.lestDato, "'Lest:' dd.MM.yyyy 'kl' HH:mm").getObject() : null;
     }
 
     public IModel<String> formatertDato(final DateTime dato, final String format) {
@@ -47,13 +48,8 @@ public class HenvendelseVM implements Serializable {
         };
     }
 
-    public IModel<Boolean> avType(final Henvendelsetype type) {
-        return new AbstractReadOnlyModel<Boolean>() {
-            @Override
-            public Boolean getObject() {
-                return henvendelse.type == type;
-            }
-        };
+    public boolean avType(final Henvendelsetype type) {
+        return henvendelse.type == type;
     }
 
     public IModel<Boolean> erLest() {
