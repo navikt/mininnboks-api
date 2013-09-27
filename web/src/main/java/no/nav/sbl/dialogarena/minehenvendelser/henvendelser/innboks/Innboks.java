@@ -36,7 +36,7 @@ public class Innboks extends BasePage {
     }
 
     public Innboks() {
-        innboksModell = new InnboksModell(new InnboksVM(service.hentAlleHenvendelser(SubjectHandler.getSubjectHandler().getUid())));
+        innboksModell = new InnboksModell(new InnboksVM(service.hentAlleHenvendelser(innloggetBruker())));
         setDefaultModel(innboksModell);
         setOutputMarkupId(true);
 
@@ -67,12 +67,16 @@ public class Innboks extends BasePage {
 
     @RunOnEvents(OPPDATER_HENVENDELSER)
     public void meldingerOppdatert(AjaxRequestTarget target) {
-        this.innboksModell.getObject().oppdaterHenvendelserFra(service.hentAlleHenvendelser(SubjectHandler.getSubjectHandler().getUid()));
+        this.innboksModell.getObject().oppdaterHenvendelserFra(service.hentAlleHenvendelser(innloggetBruker()));
         target.add(this);
     }
 
     @RunOnEvents(VALGT_HENVENDELSE)
     public void visTilInnboksLink(AjaxRequestTarget target) {
         target.add(tilInnboksLink);
+    }
+
+    private static String innloggetBruker() {
+        return SubjectHandler.getSubjectHandler().getUid();
     }
 }
