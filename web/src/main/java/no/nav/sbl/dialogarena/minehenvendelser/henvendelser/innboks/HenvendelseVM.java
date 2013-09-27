@@ -27,6 +27,10 @@ public class HenvendelseVM implements Serializable {
         return avType(SPORSMAL) ? "Ola Nordmann" : "Fra: NAV";
     }
 
+    public void markerSomLest() {
+        henvendelse.markerSomLest();
+    }
+
     public String getLangOpprettetDato() {
         return formatertDato(henvendelse.opprettet, "EEEEE dd.MM.yyyy 'kl' HH:mm");
     }
@@ -37,11 +41,6 @@ public class HenvendelseVM implements Serializable {
 
     public String getLestDato() {
         return avType(SVAR) ? formatertDato(henvendelse.lestDato, "'Lest:' dd.MM.yyyy 'kl' HH:mm") : null;
-    }
-
-    private String formatertDato(final DateTime dato, final String format) {
-        return dato == null ? null :
-                DateTimeFormat.forPattern(format).withLocale(new Locale("nb")).print(dato);
     }
 
     public boolean avType(final Henvendelsetype type) {
@@ -76,5 +75,10 @@ public class HenvendelseVM implements Serializable {
             return m2.henvendelse.opprettet.compareTo(m1.henvendelse.opprettet);
         }
     };
+
+    private String formatertDato(final DateTime dato, final String format) {
+        return dato == null ? null :
+                DateTimeFormat.forPattern(format).withLocale(new Locale("nb")).print(dato);
+    }
 
 }

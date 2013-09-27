@@ -50,7 +50,7 @@ public class InnboksModell extends CompoundPropertyModel<InnboksVM> {
             @Override
             public Boolean getObject() {
                 Optional<HenvendelseVM> valgtHenvendelse = getInnboksVM().getValgtHenvendelse();
-                return valgtHenvendelse.isSome() && valgtHenvendelse.get().henvendelse.type == type;
+                return valgtHenvendelse.isSome() && valgtHenvendelse.get().avType(type);
             }
         };
     }
