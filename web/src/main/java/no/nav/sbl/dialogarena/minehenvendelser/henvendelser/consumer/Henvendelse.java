@@ -17,8 +17,12 @@ public class Henvendelse implements Serializable {
     private boolean lest;
 
     public void markerSomLest() {
-        lest = true;
+        setLest(true);
         lestDato = DateTime.now();
+    }
+
+    public void setLest(boolean lest) {
+        this.lest = lest;
     }
 
     public boolean erLest() {

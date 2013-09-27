@@ -56,11 +56,9 @@ public interface HenvendelseService {
                             wsHenvendelse.getTraad());
                     henvendelse.opprettet = wsHenvendelse.getOpprettetDato();
                     henvendelse.tema = wsHenvendelse.getTema();
-                    henvendelse.overskrift = ("SPORSMAL".equals(henvendelseType) ? "Spørsmål om " : "Svar på ") + wsHenvendelse.getTema();
+                    henvendelse.overskrift = ("SPORSMAL".equals(henvendelseType) ? "Bruker:" : "NAV:");
+                    henvendelse.setLest(wsHenvendelse.getLestDato() != null);
                     henvendelse.lestDato = wsHenvendelse.getLestDato();
-                    if (wsHenvendelse.getLestDato() != null) {
-                        henvendelse.markerSomLest();
-                    }
 
                     ObjectMapper mapper = new ObjectMapper();
                     Map<String, String> behandlingsresultat;
