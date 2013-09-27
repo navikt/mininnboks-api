@@ -8,6 +8,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.StringResourceModel;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
 
@@ -20,8 +22,13 @@ public class AlleHenvendelserPanel extends Panel {
         add(new PropertyListView<HenvendelseVM>("nyesteHenvendelseITraad") {
             @Override
             protected void populateItem(final ListItem<HenvendelseVM> item) {
-                item.add(new Label("avsender"));
                 item.add(new Label("henvendelse.overskrift"));
+                item.add(new Label("tema", new AbstractReadOnlyModel<String>() {
+                    @Override
+                    public String getObject() {
+                        return new StringResourceModel(item.getModelObject().henvendelse.tema, AlleHenvendelserPanel.this, null).getString();
+                    }
+                }));
                 item.add(new Label("opprettet", item.getModelObject().formatertDato(item.getModelObject().henvendelse.opprettet, "dd.MM.yyyy")));
                 item.add(new Label("henvendelse.fritekst"));
                 item.add(hasCssClassIf("valgt", innboksModell.erValgtHenvendelse(item.getModelObject())));

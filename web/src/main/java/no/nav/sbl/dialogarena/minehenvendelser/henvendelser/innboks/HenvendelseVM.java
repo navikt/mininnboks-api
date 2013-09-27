@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Locale;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SPORSMAL;
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SVAR;
 
 public class HenvendelseVM implements Serializable {
@@ -21,10 +20,6 @@ public class HenvendelseVM implements Serializable {
 
     public HenvendelseVM(Henvendelse henvendelse) {
         this.henvendelse = henvendelse;
-    }
-
-    public String getAvsender() {
-        return avType(SPORSMAL).getObject() ? "Ola Nordmann" : "Fra: NAV";
     }
 
     public String getOpprettetDato() {

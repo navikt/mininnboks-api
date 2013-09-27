@@ -15,7 +15,7 @@ public class DetaljvisningPanel extends Panel {
     public DetaljvisningPanel(String id, InnboksModell innboksModell) {
 		super(id);
 		setOutputMarkupId(true);
-        TraaddetaljerPanel traaddetaljerPanel = new TraaddetaljerPanel("traad");
+        TraaddetaljerPanel traaddetaljerPanel = new TraaddetaljerPanel("traad", innboksModell);
         traaddetaljerPanel.add(visibleIf(either(innboksModell.valgtHenvendelseAvType(SPORSMAL)).or(innboksModell.valgtHenvendelseAvType(SVAR))));
 		add(traaddetaljerPanel);
 	}
