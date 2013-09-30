@@ -52,12 +52,26 @@
         <webbit.version>0.4.14</webbit.version>
         <wicket.version>6.8.0</wicket.version>
         <dialogarena.cms.url>http://e32apvl026.oera-t.local:8080</dialogarena.cms.url>
-        <henvendelse.tjenestespesifikasjon.version.1>2.0.0</henvendelse.tjenestespesifikasjon.version.1>
         <sakogbehandling.jaxws.version>1.0.0</sakogbehandling.jaxws.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- Tjenestegrensesnitt -->
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>henvendelse-felles-tjenestespesifikasjon</artifactId>
+                <version>0.0.12</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>sporsmalinnsending-tjenestespesifikasjon</artifactId>
+                <version>0.0.3</version>
+            </dependency>
+
+
             <!-- Dialogarena dependencies -->
             <dependency>
                 <groupId>no.nav.sbl.dialogarena</groupId>
@@ -94,24 +108,6 @@
                 <artifactId>common-jetty</artifactId>
                 <version>1.0.20</version>
                 <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>common-lokalt-kodeverk</artifactId>
-                <version>1.0.23</version>
-            </dependency>
-
-            <dependency>
-                <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>sporsmalinnsending-tjenestespesifikasjon</artifactId>
-                <version>0.0.3</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>2.2.2</version>
             </dependency>
 
 
@@ -157,10 +153,6 @@
                 <artifactId>modig-content</artifactId>
                 <version>${modig-content.version}</version>
                 <exclusions>
-                    <!--<exclusion>-->
-                        <!--<groupId>org.apache.httpcomponents</groupId>-->
-                        <!--<artifactId>httpcore</artifactId>-->
-                    <!--</exclusion>-->
                     <exclusion>
                         <groupId>commons-logging</groupId>
                         <artifactId>commons-logging</artifactId>
@@ -441,6 +433,13 @@
                 <version>2.2.2</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.2.2</version>
+            </dependency>
+
+
             <!-- Test dependencies -->
 
             <dependency>
@@ -574,12 +573,6 @@
                 <artifactId>commons-lang</artifactId>
                 <version>2.6</version>
                 <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>henvendelse-jaxws</artifactId>
-                <version>${henvendelse.tjenestespesifikasjon.version.1}</version>
             </dependency>
 
             <dependency>
