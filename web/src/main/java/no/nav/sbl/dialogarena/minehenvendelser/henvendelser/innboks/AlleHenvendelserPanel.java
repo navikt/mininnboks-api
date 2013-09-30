@@ -23,12 +23,7 @@ public class AlleHenvendelserPanel extends Panel {
             @Override
             protected void populateItem(final ListItem<HenvendelseVM> item) {
                 item.add(new Label("overskrift", new StringResourceModel("overskrift.${henvendelse.type}", item.getModel())));
-                item.add(new Label("tema", new AbstractReadOnlyModel<String>() {
-                    @Override
-                    public String getObject() {
-                        return new StringResourceModel(item.getModelObject().henvendelse.tema.toString(), AlleHenvendelserPanel.this, null).getString();
-                    }
-                }));
+                item.add(new Label("tema", new StringResourceModel(item.getModelObject().henvendelse.tema.toString(), null)));
                 item.add(new Label("kortOpprettetDato"));
                 item.add(new Label("henvendelse.fritekst"));
                 item.add(hasCssClassIf("valgt", innboksModell.erValgtHenvendelse(item.getModelObject())));
