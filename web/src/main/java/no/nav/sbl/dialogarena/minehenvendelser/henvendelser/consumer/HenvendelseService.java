@@ -1,6 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.Tema.INTERNASJONALT;
+import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.Tema.PENSJON;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ public interface HenvendelseService {
                             Henvendelsetype.valueOf(henvendelseType),
                             wsHenvendelse.getTraad());
                     henvendelse.opprettet = wsHenvendelse.getOpprettetDato();
-                    henvendelse.tema = wsHenvendelse.getTema();
+                    henvendelse.tema = Tema.valueOf(wsHenvendelse.getTema());
                     henvendelse.overskrift = ("SPORSMAL".equals(henvendelseType) ? "Bruker:" : "NAV:");
                     henvendelse.setLest(wsHenvendelse.getLestDato() != null);
                     henvendelse.lestDato = wsHenvendelse.getLestDato();
@@ -99,7 +101,7 @@ public interface HenvendelseService {
                     " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas" +
                     " humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.";
             spsm1.overskrift = "Spørsmål om Uføre";
-            spsm1.tema = "PENSJON";
+            spsm1.tema = PENSJON;
             spsm1.markerSomLest();
             spsm1.lestDato = spsm1.opprettet;
             henvendelser.put(spsm1.id, spsm1);
@@ -126,7 +128,7 @@ public interface HenvendelseService {
                     " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas" +
                     " humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.";
             spsm2.overskrift = "Spørsmål om Uføre";
-            spsm2.tema = "PENSJON";
+            spsm2.tema = PENSJON;
             spsm2.markerSomLest();
             spsm2.lestDato = spsm2.opprettet;
             henvendelser.put(spsm2.id, spsm2);
@@ -148,7 +150,7 @@ public interface HenvendelseService {
             spsm3.opprettet = DateTime.now().minusWeeks(12);
             spsm3.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                     "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum";
-            spsm3.tema = "INTERNASJONALT";
+            spsm3.tema = INTERNASJONALT;
             spsm3.overskrift = "Spørsmål om " + spsm3.tema;
             spsm3.markerSomLest();
             spsm3.lestDato = spsm3.opprettet;
@@ -176,7 +178,7 @@ public interface HenvendelseService {
                     " option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit" +
                     " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                     " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
-            spsm4.tema = "INTERNASJONALT";
+            spsm4.tema = INTERNASJONALT;
             spsm4.overskrift = "Spørsmål om " + spsm4.tema;
             spsm4.markerSomLest();
             spsm4.lestDato = spsm4.opprettet;

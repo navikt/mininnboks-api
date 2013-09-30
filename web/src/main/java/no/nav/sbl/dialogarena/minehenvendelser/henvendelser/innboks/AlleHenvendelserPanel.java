@@ -26,7 +26,7 @@ public class AlleHenvendelserPanel extends Panel {
                 item.add(new Label("tema", new AbstractReadOnlyModel<String>() {
                     @Override
                     public String getObject() {
-                        return new StringResourceModel(item.getModelObject().henvendelse.tema, AlleHenvendelserPanel.this, null).getString();
+                        return new StringResourceModel(item.getModelObject().henvendelse.tema.toString(), AlleHenvendelserPanel.this, null).getString();
                     }
                 }));
                 item.add(new Label("kortOpprettetDato"));

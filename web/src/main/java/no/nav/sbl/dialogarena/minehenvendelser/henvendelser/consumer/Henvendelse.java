@@ -1,6 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer;
 
 import java.io.Serializable;
+
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.Tema;
 import org.joda.time.DateTime;
 
 public class Henvendelse implements Serializable {
@@ -12,7 +14,8 @@ public class Henvendelse implements Serializable {
     }
     public final String id, traadId;
     public final Henvendelsetype type;
-    public String tema, overskrift, fritekst;
+    public String overskrift, fritekst;
+    public Tema tema;
     public DateTime opprettet, lestDato;
     private boolean lest;
 
