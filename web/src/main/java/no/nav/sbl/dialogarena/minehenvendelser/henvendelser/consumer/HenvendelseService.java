@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public interface HenvendelseService {
 
-    String stillSporsmal(String fritekst, String overskrift, Tema tema, String aktorId);
+    String stillSporsmal(String fritekst, Tema tema, String aktorId);
     List<Henvendelse> hentAlleHenvendelser(String aktorId);
     void merkHenvendelseSomLest(String behandlingsId);
 
@@ -40,7 +40,7 @@ public interface HenvendelseService {
         }
 
         @Override
-        public String stillSporsmal(String fritekst, String overskrift, Tema tema, String aktorId) {
+        public String stillSporsmal(String fritekst, Tema tema, String aktorId) {
             return sporsmalinnsendingPortType.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema.toString()), aktorId);
         }
 
@@ -57,7 +57,6 @@ public interface HenvendelseService {
                             wsHenvendelse.getTraad());
                     henvendelse.opprettet = wsHenvendelse.getOpprettetDato();
                     henvendelse.tema = Tema.valueOf(wsHenvendelse.getTema());
-                    henvendelse.overskrift = ("SPORSMAL".equals(henvendelseType) ? "Bruker:" : "NAV:");
                     henvendelse.setLest(wsHenvendelse.getLestDato() != null);
                     henvendelse.lestDato = wsHenvendelse.getLestDato();
 
@@ -100,7 +99,6 @@ public interface HenvendelseService {
                     " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                     " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas" +
                     " humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.";
-            spsm1.overskrift = "Spørsmål om Uføre";
             spsm1.tema = PENSJON;
             spsm1.markerSomLest();
             spsm1.lestDato = spsm1.opprettet;
@@ -111,7 +109,6 @@ public interface HenvendelseService {
             svar1.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                     "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
                     " iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto";
-            svar1.overskrift = "Re: " + spsm1.overskrift;
             svar1.tema = spsm1.tema;
             svar1.markerSomLest();
             svar1.lestDato = DateTime.now().minusDays(4);
@@ -127,7 +124,6 @@ public interface HenvendelseService {
                     " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                     " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas" +
                     " humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.";
-            spsm2.overskrift = "Spørsmål om Uføre";
             spsm2.tema = PENSJON;
             spsm2.markerSomLest();
             spsm2.lestDato = spsm2.opprettet;
@@ -143,7 +139,6 @@ public interface HenvendelseService {
                     " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                     " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
             svar2.tema = spsm2.tema;
-            svar2.overskrift = "Re: " + spsm2.overskrift;
             henvendelser.put(svar2.id, svar2);
 
             Henvendelse spsm3 = new Henvendelse("" + random.nextInt(), Henvendelsetype.SPORSMAL, "" + random.nextInt());
@@ -151,7 +146,6 @@ public interface HenvendelseService {
             spsm3.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                     "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum";
             spsm3.tema = INTERNASJONALT;
-            spsm3.overskrift = "Spørsmål om " + spsm3.tema;
             spsm3.markerSomLest();
             spsm3.lestDato = spsm3.opprettet;
             henvendelser.put(spsm3.id, spsm3);
@@ -166,7 +160,6 @@ public interface HenvendelseService {
                     " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                     " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
             svar3.tema = spsm3.tema;
-            svar3.overskrift = "Re: " + spsm3.overskrift;
             henvendelser.put(svar3.id, svar3);
 
             Henvendelse spsm4 = new Henvendelse("" + random.nextInt(), Henvendelsetype.SPORSMAL, "" + random.nextInt());
@@ -179,18 +172,16 @@ public interface HenvendelseService {
                     " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                     " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
             spsm4.tema = INTERNASJONALT;
-            spsm4.overskrift = "Spørsmål om " + spsm4.tema;
             spsm4.markerSomLest();
             spsm4.lestDato = spsm4.opprettet;
             henvendelser.put(spsm4.id, spsm4);
         }
 
         @Override
-        public String stillSporsmal(String fritekst, String overskrift, Tema tema, String aktorId) {
+        public String stillSporsmal(String fritekst, Tema tema, String aktorId) {
             Random random = new Random();
             Henvendelse spsm = new Henvendelse("" + random.nextInt(), Henvendelsetype.SPORSMAL, "" + random.nextInt());
             spsm.fritekst = fritekst;
-            spsm.overskrift = overskrift;
             spsm.opprettet = DateTime.now();
             spsm.markerSomLest();
             henvendelser.put(spsm.id, spsm);

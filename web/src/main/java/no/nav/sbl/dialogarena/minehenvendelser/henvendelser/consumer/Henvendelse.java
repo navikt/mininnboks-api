@@ -14,7 +14,7 @@ public class Henvendelse implements Serializable {
     }
     public final String id, traadId;
     public final Henvendelsetype type;
-    public String overskrift, fritekst;
+    public String fritekst;
     public Tema tema;
     public DateTime opprettet, lestDato;
     private boolean lest;

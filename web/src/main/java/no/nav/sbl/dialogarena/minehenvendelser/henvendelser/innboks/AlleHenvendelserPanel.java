@@ -22,7 +22,7 @@ public class AlleHenvendelserPanel extends Panel {
         add(new PropertyListView<HenvendelseVM>("nyesteHenvendelseITraad") {
             @Override
             protected void populateItem(final ListItem<HenvendelseVM> item) {
-                item.add(new Label("henvendelse.overskrift"));
+                item.add(new Label("overskrift", new StringResourceModel("overskrift.${henvendelse.type}", item.getModel())));
                 item.add(new Label("tema", new AbstractReadOnlyModel<String>() {
                     @Override
                     public String getObject() {

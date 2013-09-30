@@ -71,8 +71,7 @@ public class SendSporsmalPanel extends Panel {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     Sporsmal spsm = getModelObject();
                     spsm.innsendingsTidspunkt = DateTime.now();
-                    String overskrift = "Spørsmål om " + new StringResourceModel(spsm.getTema().toString(), this, null).getString();
-                    henvendelseService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
+                    henvendelseService.stillSporsmal(spsm.getFritekst(), spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
                     send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_HENVENDELSER);
                     sideNavigerer.neste();
                     target.add(SendSporsmalPanel.this.getParent());
