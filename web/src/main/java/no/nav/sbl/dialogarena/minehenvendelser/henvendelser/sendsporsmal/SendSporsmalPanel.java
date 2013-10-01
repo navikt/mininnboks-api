@@ -42,12 +42,7 @@ public class SendSporsmalPanel extends Panel {
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            Label tema = new Label("tema", new AbstractReadOnlyModel<String>() {
-                @Override
-                public String getObject() {
-                    return new StringResourceModel(model.getObject().getTema().toString(), SporsmalForm.this, null).getString();
-                }
-            });
+            Label tema = new Label("tema", new StringResourceModel("${tema}", model));
             tema.setOutputMarkupId(true);
 
             Label hjelpetekst = new Label("hjelpetekst", new ResourceModel("still-sporsmal-hjelp"));
