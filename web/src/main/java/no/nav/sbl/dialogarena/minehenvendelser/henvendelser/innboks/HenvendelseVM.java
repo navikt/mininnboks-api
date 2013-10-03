@@ -1,16 +1,15 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
+import java.io.Serializable;
+import java.util.Comparator;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype;
 import org.apache.commons.collections15.Transformer;
+import org.apache.wicket.Session;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-
-import java.io.Serializable;
-import java.util.Comparator;
-import java.util.Locale;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SPORSMAL;
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SVAR;
@@ -78,7 +77,7 @@ public class HenvendelseVM implements Serializable {
 
     private String formatertDato(final DateTime dato, final String format) {
         return dato == null ? null :
-                DateTimeFormat.forPattern(format).withLocale(new Locale("nb")).print(dato);
+                DateTimeFormat.forPattern(format).withLocale(Session.get().getLocale()).print(dato);
     }
 
 }

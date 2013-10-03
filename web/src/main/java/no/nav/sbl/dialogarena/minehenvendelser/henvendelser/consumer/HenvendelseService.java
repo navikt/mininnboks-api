@@ -182,6 +182,7 @@ public interface HenvendelseService {
             Random random = new Random();
             Henvendelse spsm = new Henvendelse("" + random.nextInt(), Henvendelsetype.SPORSMAL, "" + random.nextInt());
             spsm.fritekst = fritekst;
+            spsm.tema = tema;
             spsm.opprettet = DateTime.now();
             spsm.markerSomLest();
             henvendelser.put(spsm.id, spsm);
