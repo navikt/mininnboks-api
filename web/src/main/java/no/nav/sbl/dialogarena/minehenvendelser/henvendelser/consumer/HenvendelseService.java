@@ -4,37 +4,35 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.Tema.INTERNASJONALT;
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.Tema.PENSJON;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.Tema;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.informasjon.WSHenvendelse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.informasjon.Melding;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.informasjon.WSMeldingstype;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.meldinger.HentMeldingListe;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
 
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public interface HenvendelseService {
 
     String stillSporsmal(String fritekst, Tema tema, String aktorId);
-    List<Henvendelse> hentAlleHenvendelser(String aktorId);
+    List<Henvendelse> hentAlleHenvendelser(String fnr);
     void merkHenvendelseSomLest(String behandlingsId);
 
     class Default implements HenvendelseService {
 
-        private final HenvendelsePortType henvendelseWS;
+        private final HenvendelseMeldingerPortType henvendelseWS;
 
         private final SporsmalinnsendingPortType sporsmalinnsendingPortType;
-        public Default(HenvendelsePortType henvendelseWS, SporsmalinnsendingPortType sporsmalinnsendingPortType) {
+        public Default(HenvendelseMeldingerPortType henvendelseWS, SporsmalinnsendingPortType sporsmalinnsendingPortType) {
             this.henvendelseWS = henvendelseWS;
             this.sporsmalinnsendingPortType = sporsmalinnsendingPortType;
         }
@@ -45,34 +43,21 @@ public interface HenvendelseService {
         }
 
         @Override
-        public List<Henvendelse> hentAlleHenvendelser(String aktorId) {
-            Transformer<WSHenvendelse, Henvendelse> somHenvendelse = new Transformer<WSHenvendelse, Henvendelse>() {
+        public List<Henvendelse> hentAlleHenvendelser(String fnr) {
+            Transformer<Melding, Henvendelse> somHenvendelse = new Transformer<Melding, Henvendelse>() {
 				@Override
-				@SuppressWarnings("unchecked")
-                public Henvendelse transform(WSHenvendelse wsHenvendelse) {
-                    String henvendelseType = wsHenvendelse.getHenvendelseType();
-                    Henvendelse henvendelse = new Henvendelse(
-                            wsHenvendelse.getBehandlingsId(),
-                            Henvendelsetype.valueOf(henvendelseType),
-                            wsHenvendelse.getTraad());
-                    henvendelse.opprettet = wsHenvendelse.getOpprettetDato();
-                    henvendelse.tema = Tema.valueOf(wsHenvendelse.getTema());
-                    henvendelse.setLest(wsHenvendelse.getLestDato() != null);
-                    henvendelse.lestDato = wsHenvendelse.getLestDato();
-
-                    ObjectMapper mapper = new ObjectMapper();
-                    Map<String, String> behandlingsresultat;
-                    try {
-                        behandlingsresultat = (Map<String, String>) mapper.readValue(wsHenvendelse.getBehandlingsresultat(), Map.class);
-                    } catch (IOException e) {
-                        throw new RuntimeException("Kunne ikke lese ut behandlingsresultat", e);
-                    }
-
-                    henvendelse.fritekst = behandlingsresultat.get("fritekst");
+                public Henvendelse transform(Melding melding) {
+                    Henvendelsetype henvendelseType = melding.getMeldingsType() == WSMeldingstype.INNGAENDE ? Henvendelsetype.SPORSMAL : Henvendelsetype.SVAR;
+                    Henvendelse henvendelse = new Henvendelse(melding.getBehandlingsId(), henvendelseType, melding.getTraad());
+                    henvendelse.opprettet = melding.getOpprettetDato();
+                    henvendelse.tema = Tema.valueOf(melding.getTemastruktur());
+                    henvendelse.setLest(melding.getLestDato() != null);
+                    henvendelse.lestDato = melding.getLestDato();
+                    henvendelse.fritekst = melding.getTekst();
                     return henvendelse;
                 }
             };
-            return on(henvendelseWS.hentHenvendelseListe(aktorId, Arrays.asList("SPORSMAL", "SVAR"))).map(somHenvendelse).collect();
+            return on(henvendelseWS.hentMeldingListe(new HentMeldingListe().withFodselsnummer(fnr)).getMelding()).map(somHenvendelse).collect();
         }
 
         @Override

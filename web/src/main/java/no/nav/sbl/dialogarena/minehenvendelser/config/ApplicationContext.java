@@ -1,5 +1,11 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.content.ContentRetriever;
@@ -9,8 +15,9 @@ import no.nav.modig.content.enonic.HttpContentRetriever;
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
+
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
@@ -18,15 +25,9 @@ import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
-import org.apache.cxf.ws.security.SecurityConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @Import(CacheConfig.class)
@@ -67,10 +68,10 @@ public class ApplicationContext {
                 true);
     }
 
-    private static HenvendelsePortType henvendelsesSSO() {
-        return createPortType(System.getProperty("henvendelse.felles.ws.url"),
-                "classpath:Henvendelse.wsdl",
-                HenvendelsePortType.class,
+    private static HenvendelseMeldingerPortType henvendelsesSSO() {
+        return createPortType(System.getProperty("henvendelse.meldinger.ws.url"),
+                "classpath:no/nav/tjeneste/domene/brukerdialog/henvendelsemeldinger/v1/Meldinger.wsdl",
+                HenvendelseMeldingerPortType.class,
                 true);
     }
 
@@ -83,23 +84,19 @@ public class ApplicationContext {
     }
 
     @Bean
-    public static HenvendelsePortType henvendelsesSystemUser() {
-        return createPortType(System.getProperty("henvendelse.felles.ws.url"),
-                "classpath:Henvendelse.wsdl",
-                HenvendelsePortType.class,
+    public static HenvendelseMeldingerPortType henvendelsesSystemUser() {
+        return createPortType(System.getProperty("henvendelse.meldinger.ws.url"),
+        		"classpath:no/nav/tjeneste/domene/brukerdialog/henvendelsemeldinger/v1/Meldinger.wsdl",
+                HenvendelseMeldingerPortType.class,
                 false);
     }
 
     private static <T> T createPortType(String address, String wsdlUrl, Class<T> serviceClass, boolean externalService) {
         JaxWsProxyFactoryBean proxy = new JaxWsProxyFactoryBean();
-        proxy.getFeatures().add(new WSAddressingFeature());
-        proxy.getFeatures().add(new LoggingFeature());
+        proxy.getFeatures().addAll(Arrays.asList(new WSAddressingFeature(), new LoggingFeature()));
         proxy.setServiceClass(serviceClass);
         proxy.setAddress(address);
         proxy.setWsdlURL(wsdlUrl);
-        proxy.setProperties(new HashMap<String, Object>());
-        proxy.getProperties().put(SecurityConstants.MUSTUNDERSTAND, false);
-
         T portType = proxy.create(serviceClass);
         Client client = ClientProxy.getClient(portType);
         HTTPConduit httpConduit = (HTTPConduit) client.getConduit();

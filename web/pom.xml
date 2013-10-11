@@ -100,8 +100,8 @@
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>henvendelse-felles-tjenestespesifikasjon</artifactId>
-            <version>0.0.12</version>
+			<artifactId>henvendelse-meldinger-tjenestespesifikasjon</artifactId>
+			<version>0.0.3</version>
         </dependency>
 
         <dependency>
@@ -277,12 +277,6 @@
             <groupId>net.sourceforge.collections</groupId>
             <artifactId>collections-generic</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-
 
     </dependencies>
 
