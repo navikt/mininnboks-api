@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
+
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -30,7 +31,7 @@ public class TemavelgerPanel extends Panel {
 
         WebMarkupContainer container = new WebMarkupContainer("tema-container");
         container.add(new TemaListe("tema-liste", alleTema));
-        Link avbrytLink = new Link("avbryt") {
+        Link<Void> avbrytLink = new Link<Void>("avbryt") {
             @Override
             public void onClick() {
                 setResponsePage(Innboks.class);

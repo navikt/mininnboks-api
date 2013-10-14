@@ -41,7 +41,7 @@ public class Innboks extends BasePage {
         setOutputMarkupId(true);
 
         WebMarkupContainer topBar = new WebMarkupContainer("top-bar");
-        topBar.add(new Link("skriv-ny") {
+        topBar.add(new Link<Void>("skriv-ny") {
             @Override
             public void onClick() {
                 setResponsePage(SendSporsmalPage.class);
