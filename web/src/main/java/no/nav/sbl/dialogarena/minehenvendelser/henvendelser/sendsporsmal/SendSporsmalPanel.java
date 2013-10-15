@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.Broadcast;
@@ -14,7 +15,6 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -42,12 +42,7 @@ public class SendSporsmalPanel extends Panel {
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            Label tema = new Label("tema", new AbstractReadOnlyModel<String>() {
-                @Override
-                public String getObject() {
-                    return new StringResourceModel(model.getObject().getTema().toString(), SporsmalForm.this, null).getString();
-                }
-            });
+            Label tema = new Label("tema", new StringResourceModel("${tema}", model));
             tema.setOutputMarkupId(true);
 
             Label hjelpetekst = new Label("hjelpetekst", new ResourceModel("still-sporsmal-hjelp"));
@@ -59,7 +54,7 @@ public class SendSporsmalPanel extends Panel {
             fritekst.setRequired(true);
             fritekst.add(NewlineCorrectingStringValidator.maximumLength(FRITEKST_MAKS_LENGDE));
 
-            Link avbryt = new Link("avbryt") {
+            Link<Void> avbryt = new Link<Void>("avbryt") {
                 @Override
                 public void onClick() {
                     setResponsePage(Innboks.class);
@@ -71,8 +66,7 @@ public class SendSporsmalPanel extends Panel {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     Sporsmal spsm = getModelObject();
                     spsm.innsendingsTidspunkt = DateTime.now();
-                    String overskrift = "Spørsmål om " + new StringResourceModel(spsm.getTema().toString(), this, null).getString();
-                    henvendelseService.stillSporsmal(spsm.getFritekst(), overskrift, spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
+                    henvendelseService.stillSporsmal(spsm.getFritekst(), spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
                     send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_HENVENDELSER);
                     sideNavigerer.neste();
                     target.add(SendSporsmalPanel.this.getParent());

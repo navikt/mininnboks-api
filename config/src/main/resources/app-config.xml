@@ -17,7 +17,7 @@
         <baseUrl alias="dokumentinnsending.link" mapToProperty="dokumentinnsending.link"/>
         <baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link"/>
 
-        <webservice alias="domene.Brukerdialog:HenvendelseService_v1" mapToProperty="henvendelse.felles.ws"/>
+        <webservice alias="domene.Brukerdialog:HenvendelseMeldingerService_v1" mapToProperty="henvendelse.meldinger.ws"/>
         <webservice alias="domene.Brukerdialog:SporsmalinnsendingService_v1" mapToProperty="henvendelse.spsminnsending.ws"/>
 
         <smtpServer alias="tilbakemelding.smtp" mapToProperty="tilbakemelding.smtp"/>

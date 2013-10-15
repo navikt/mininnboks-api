@@ -5,11 +5,11 @@ var informertKeyup = false;
 
 $(document).ready(function() {
     var $tekst = $("#tekst");
-    $tekst.bind('input propertychange', function () {
+    $tekst.on('input keydown', function () {
         tilpassHoyde(this);
         tellAntallTegn(this);
     });
-    $tekst.bind('paste', function() {
+    $tekst.on('paste', function() {
         var tekst = this;
         // Må sette 0-timemout for å telle antall tegn etter at de er limt inn
         setTimeout(function() {

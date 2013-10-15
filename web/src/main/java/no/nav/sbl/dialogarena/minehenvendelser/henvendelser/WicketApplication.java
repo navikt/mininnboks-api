@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser;
 
+import java.util.Locale;
 import javax.inject.Inject;
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
@@ -9,7 +10,10 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSpo
 import no.nav.sbl.dialogarena.webkomponent.innstillinger.LogoutPage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
+import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
@@ -63,6 +67,13 @@ public class WicketApplication extends WebApplication {
 
     public ApplicationContext getApplicationContext() {
         return applicationContext;
+    }
+
+    @Override
+    public Session newSession(Request request, Response response) {
+        Session session = super.newSession(request, response);
+        session.setLocale(new Locale("nb"));
+        return session;
     }
 
 }

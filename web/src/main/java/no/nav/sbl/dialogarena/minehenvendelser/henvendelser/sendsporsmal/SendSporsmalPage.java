@@ -26,7 +26,6 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
     public SendSporsmalPage() {
 
         Sporsmal spsm = model.getObject();
-        spsm.setTema(Tema.ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT);
         model.setObject(spsm);
 
         TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", asList(Tema.values()), model, this);

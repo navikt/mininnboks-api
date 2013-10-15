@@ -7,13 +7,13 @@
     <section class="nyeste-henvendelse">
         <header>
             <div class="opprettet">
-                <aside wicket:id="nyesteHenvendelse.opprettetDato"></aside>
+                <aside wicket:id="nyesteHenvendelse.langOpprettetDato"></aside>
                 <aside wicket:id="nyesteHenvendelse.lestDato" class="lest-dato"></aside>
             </div>
-            <h1 wicket:id="nyesteHenvendelse.henvendelse.overskrift"></h1>
+            <h1 wicket:id="overskrift"></h1>
         </header>
         <article>
-            <p wicket:id="nyesteHenvendelse.henvendelse.fritekst"></p>
+            <wicket:container wicket:id="nyesteHenvendelse.henvendelse.fritekst" />
         </article>
     </section>
 </wicket:panel>

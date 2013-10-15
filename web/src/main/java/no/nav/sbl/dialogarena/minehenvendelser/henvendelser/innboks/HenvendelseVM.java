@@ -1,17 +1,17 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
+import java.io.Serializable;
+import java.util.Comparator;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype;
 import org.apache.commons.collections15.Transformer;
+import org.apache.wicket.Session;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-import java.io.Serializable;
-import java.util.Comparator;
-import java.util.Locale;
-
+import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SPORSMAL;
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SVAR;
 
 public class HenvendelseVM implements Serializable {
@@ -22,33 +22,28 @@ public class HenvendelseVM implements Serializable {
         this.henvendelse = henvendelse;
     }
 
-    public String getOpprettetDato() {
-        return formatertDato(henvendelse.opprettet, "EEEEE dd.MM.yyyy 'kl' HH:mm").getObject();
+    public String getAvsender() {
+        return avType(SPORSMAL) ? "Ola Nordmann" : "Fra: NAV";
+    }
+
+    public void markerSomLest() {
+        henvendelse.markerSomLest();
+    }
+
+    public String getLangOpprettetDato() {
+        return formatertDato(henvendelse.opprettet, "EEEEE dd.MM.yyyy 'kl' HH:mm");
+    }
+
+    public String getKortOpprettetDato() {
+        return formatertDato(henvendelse.opprettet, "dd.MM.yyyy");
     }
 
     public String getLestDato() {
-        return avType(SVAR).getObject() ? formatertDato(henvendelse.lestDato, "'Lest:' dd.MM.yyyy 'kl' HH:mm").getObject() : null;
+        return avType(SVAR) ? formatertDato(henvendelse.lestDato, "'Lest:' dd.MM.yyyy 'kl' HH:mm") : null;
     }
 
-    public IModel<String> formatertDato(final DateTime dato, final String format) {
-        return new AbstractReadOnlyModel<String>() {
-            @Override
-            public String getObject() {
-                return dato == null ? null :
-                        DateTimeFormat.forPattern(format)
-                                .withLocale(new Locale("nb"))
-                                .print(dato);
-            }
-        };
-    }
-
-    public IModel<Boolean> avType(final Henvendelsetype type) {
-        return new AbstractReadOnlyModel<Boolean>() {
-            @Override
-            public Boolean getObject() {
-                return henvendelse.type == type;
-            }
-        };
+    public boolean avType(final Henvendelsetype type) {
+        return henvendelse.type == type;
     }
 
     public IModel<Boolean> erLest() {
@@ -79,5 +74,10 @@ public class HenvendelseVM implements Serializable {
             return m2.henvendelse.opprettet.compareTo(m1.henvendelse.opprettet);
         }
     };
+
+    private String formatertDato(final DateTime dato, final String format) {
+        return dato == null ? null :
+                DateTimeFormat.forPattern(format).withLocale(Session.get().getLocale()).print(dato);
+    }
 
 }

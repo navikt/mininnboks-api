@@ -1,22 +1,24 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.selftest;
 
-import no.nav.modig.wicket.selftest.SelfTestBase;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsefelles.v1.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.lang.String.format;
+import static java.lang.System.currentTimeMillis;
+import static java.net.HttpURLConnection.HTTP_OK;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-import static java.lang.String.format;
-import static java.lang.System.currentTimeMillis;
-import static java.net.HttpURLConnection.HTTP_OK;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import no.nav.modig.wicket.selftest.SelfTestBase;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
+
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Viser status for alle integrasjonspunkter
@@ -28,7 +30,7 @@ public class SelfTestPage extends SelfTestBase {
 
     @Inject
     @Named("henvendelsesSystemUser")
-    private HenvendelsePortType henvendelsesSystemUser;
+    private HenvendelseMeldingerPortType henvendelsesSystemUser;
 
     @Inject
     @Named("sporsmalinnsendingSystemUser")
@@ -64,13 +66,11 @@ public class SelfTestPage extends SelfTestBase {
         long start = currentTimeMillis();
         String status = SelfTestBase.STATUS_ERROR;
         try {
-            if (henvendelsesSystemUser.ping()) {
-                status = SelfTestBase.STATUS_OK;
-            }
+            henvendelsesSystemUser.ping();
+            status = SelfTestBase.STATUS_OK;
         } catch (Exception e) {
             logger.warn("<<<<<<Error Contacting Henvendelse WS: " + e.getMessage(), e);
         }
-
         return new AvhengighetStatus("HENVENDELSE_TJENESTE_PING", status, currentTimeMillis() - start);
     }
 

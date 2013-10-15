@@ -23,7 +23,7 @@ $(document).ready(function() {
     };
 
     var attachToggleHoydeListener = function() {
-        var $tidligereHenvendelseTekst = $('.tidligere-henvendelse p');
+        var $tidligereHenvendelseTekst = $('.tidligere-henvendelse .fritekst');
         var minHoyde = parseInt($tidligereHenvendelseTekst.css('line-height')) * 2;
 
         $tidligereHenvendelseTekst.each(function() {
@@ -33,7 +33,7 @@ $(document).ready(function() {
         $tidligereHenvendelseTekst.height(minHoyde);
 
         $('.tidligere-henvendelse article').on('click', function() {
-            var $tekstFelt = $(this).find('p');
+            var $tekstFelt = $(this).find('.fritekst');
             var animasjonsHastighet = 100;
 
             if($tekstFelt.height() == minHoyde) {
