@@ -47,12 +47,12 @@ public class SendSporsmalPanel extends Panel {
 
             Label hjelpetekst = new Label("hjelpetekst", new ResourceModel("still-sporsmal-hjelp"));
 
-            final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
-            feedbackPanel.setOutputMarkupId(true);
-
             TextArea<Object> fritekst = new TextArea<>("fritekst");
             fritekst.setRequired(true);
             fritekst.add(NewlineCorrectingStringValidator.maximumLength(FRITEKST_MAKS_LENGDE));
+
+            final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
+            feedbackPanel.setOutputMarkupId(true);
 
             Link<Void> avbryt = new Link<Void>("avbryt") {
                 @Override

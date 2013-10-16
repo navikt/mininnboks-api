@@ -11,14 +11,12 @@
             <h2 wicket:id="tema"></h2>
             <hr class="robust-strek"/>
             <p wicket:id="hjelpetekst">[[Hjelpetekst]]</p>
-
-            <div wicket:id="validering" class="valideringsfelt">[[Valideringsmeldinger]]</div>
-
             <section class="tekstfelt">
-                <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" style="display: block; width: 100%; margin-bottom: 1em;"></textarea>
+                <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" rows="8"></textarea>
             </section>
             <ul>
-                <li><span id="antall-tegn">1000</span> TEGN IGJEN</li>
+                <li><span id="antall-tegn" /><span id="antall-tegn-tekst" /></li>
+                <li wicket:id="validering"></li>
                 <li><a wicket:id="send" class="send-link knapp-hoved-stor" href="#"><wicket:message key="send-inn">[[Send inn]]</wicket:message></a></li>
                 <li><a wicket:id="avbryt" class="avbryt" href="#"><wicket:message key="avbryt">[[Avbryt]]</wicket:message></a></li>
             </ul>

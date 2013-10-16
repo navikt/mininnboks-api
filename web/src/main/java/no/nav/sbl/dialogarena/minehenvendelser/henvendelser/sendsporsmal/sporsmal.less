@@ -1,5 +1,6 @@
 @containerWidth: 700px;
 @morkeBlaa: #0067c5;
+@navRodt: #c30000;
 
 h1 {
   font-size: 2.5em;
@@ -80,11 +81,6 @@ h1 {
     hr {
       border-style: none;
     }
-    .valideringsfelt * {
-      color: red;
-      list-style: none;
-      padding: 0;
-    }
     .tema-bar {
       label {
         display: inline-block;
@@ -99,7 +95,9 @@ h1 {
       textarea {
         resize: none;
         overflow: hidden;
-        margin-bottom: 0.5em;
+        display: block;
+        width: 100%;
+        margin-bottom: 1em;
       }
       div {
         margin-bottom: 1em;
@@ -108,16 +106,30 @@ h1 {
     ul {
       list-style: none;
       text-align: center;
+      padding: 0;
       margin: 0;
       li {
         padding: 1em;
         #antall-tegn {
           font-weight: bold;
           &.overskrider {
-            color: red;
+            color: @navRodt;
           }
         }
-        &:last-child {
+        #antall-tegn-tekst {
+          text-transform: uppercase;
+        }
+        ul.feedbackPanel {
+          padding: 1rem 1rem 1rem 2rem;
+          list-style-type: none;
+          color: @white;
+          background-color: @navRodt;
+          font: 1.43rem Modus, "Helvetica Neue", Helvetica, Arial, sans-serif;
+          li:before {
+            content: "* ";
+          }
+        }
+        &:last-child, &:nth-child(2) {
           padding: 0;
         }
       }
