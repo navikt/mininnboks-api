@@ -1,11 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.content.ContentRetriever;
@@ -17,7 +11,8 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
-
+import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
@@ -28,6 +23,12 @@ import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @Import(CacheConfig.class)
@@ -73,6 +74,38 @@ public class ApplicationContext {
                 "classpath:no/nav/tjeneste/domene/brukerdialog/henvendelsemeldinger/v1/Meldinger.wsdl",
                 HenvendelseMeldingerPortType.class,
                 true);
+    }
+
+    @Bean
+    public static BrukerprofilPortType brukerprofilSSO() {
+        return createPortType(System.getProperty("brukerprofil.ws.url"),
+                "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
+                BrukerprofilPortType.class,
+                true);
+    }
+
+    @Bean
+    public static BehandleBrukerprofilPortType behandleBrukerprofilSSO() {
+        return createPortType(System.getProperty("behandlebrukerprofil.ws.url"),
+                "classpath:behandleBrukerprofil/no/nav/tjeneste/virksomhet/behandleBrukerprofil/v1/BehandleBrukerprofil.wsdl",
+                BehandleBrukerprofilPortType.class,
+                true);
+    }
+
+    @Bean
+    public static BrukerprofilPortType brukerprofilSystemUser() {
+        return createPortType(System.getProperty("brukerprofil.ws.url"),
+                "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
+                BrukerprofilPortType.class,
+                false);
+    }
+
+    @Bean
+    public static BehandleBrukerprofilPortType behandleBrukerprofilSystemUser() {
+        return createPortType(System.getProperty("behandlebrukerprofil.ws.url"),
+                "classpath:behandleBrukerprofil/no/nav/tjeneste/virksomhet/behandleBrukerprofil/v1/BehandleBrukerprofil.wsdl",
+                BehandleBrukerprofilPortType.class,
+                false);
     }
 
     @Bean
