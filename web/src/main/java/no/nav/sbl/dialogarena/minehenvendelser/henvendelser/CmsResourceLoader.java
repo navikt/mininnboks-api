@@ -7,11 +7,11 @@ import org.apache.wicket.resource.loader.IStringResourceLoader;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
-public class EnonicResourceLoader implements IStringResourceLoader {
+public class CmsResourceLoader implements IStringResourceLoader {
 
     private CmsContentRetriever cmsContentRetriever;
 
-    public EnonicResourceLoader(CmsContentRetriever cmsContentRetriever) {
+    public CmsResourceLoader(CmsContentRetriever cmsContentRetriever) {
         this.cmsContentRetriever = cmsContentRetriever;
     }
 
@@ -26,7 +26,6 @@ public class EnonicResourceLoader implements IStringResourceLoader {
     }
 
     private String getFromEnonic(String key) {
-        System.out.println("\n\n\n\n\nHenter tekst med key " + key + " fra CMS \n\n\n\n\n");
         try {
             return cmsContentRetriever.hentTekst(key);
         } catch (MissingResourceException e) {

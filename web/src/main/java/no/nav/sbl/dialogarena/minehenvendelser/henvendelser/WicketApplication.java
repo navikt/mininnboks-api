@@ -68,7 +68,7 @@ public class WicketApplication extends WebApplication {
         mountPage("loggut", LogoutPage.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
-        getResourceSettings().getStringResourceLoaders().add(0, new EnonicResourceLoader(cmsContentRetriever));
+        getResourceSettings().getStringResourceLoaders().add(0, new CmsResourceLoader(cmsContentRetriever));
     }
 
     public ApplicationContext getApplicationContext() {
