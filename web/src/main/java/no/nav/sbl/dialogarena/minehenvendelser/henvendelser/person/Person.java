@@ -6,7 +6,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.Adres
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.StrukturertAdresse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.UstrukturertAdresse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.common.TekstUtils;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.konto.UtenlandskKonto;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummer;
 
@@ -33,8 +32,6 @@ public class Person implements Serializable {
     private UstrukturertAdresse utenlandskMidlertidig;
     private GjeldendeAdressetype gjeldendeAdressetype;
     private UtenlandskKonto bankkontoUtland;
-
-    private Preferanser preferanser = new Preferanser();
 
 
     public Person(String navn, String ident, Optional<? extends Adresse> folkeregistrertAdresse) {
@@ -74,14 +71,6 @@ public class Person implements Serializable {
 
     public void setEpost(String epost) {
         this.epost = epost;
-    }
-
-    public Preferanser getPreferanser() {
-        return preferanser;
-    }
-
-    public void setPreferanser(Preferanser preferanser) {
-        this.preferanser = preferanser;
     }
 
     public void setKontonummer(String kontonummer) {

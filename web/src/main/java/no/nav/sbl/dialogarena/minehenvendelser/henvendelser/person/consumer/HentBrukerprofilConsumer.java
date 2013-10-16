@@ -9,7 +9,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.Adres
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.StrukturertAdresse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.UstrukturertAdresse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.common.UnableToHandleException;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.konto.UtenlandskKonto;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummer;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
@@ -24,7 +23,6 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLElektroniskKomm
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresse;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresseNorge;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresseUtland;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPreferanser;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLStrukturertAdresse;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLTelefonnummer;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLUstrukturertAdresse;
@@ -89,17 +87,7 @@ public class HentBrukerprofilConsumer {
         for (UtenlandskKonto utenlandskKonto : optional(soapBruker.getBankkonto()).map(castIfPossibleTo(XMLBankkontoUtland.class)).map(utenlandskKonto())) {
             person.setBankkontoUtland(utenlandskKonto);
         }
-
-        setPreferanser(person, soapBruker.getPreferanser());
-
         return person;
-    }
-
-    private void setPreferanser(Person person, XMLPreferanser xmlPreferanser) {
-        Preferanser preferanser = new Preferanser();
-        preferanser.setElektroniskSamtykke(xmlPreferanser.isElektroniskKorrespondanse());
-        preferanser.getMaalform().setKodeverkRef(xmlPreferanser.getMaalform().getKodeverksRef());
-        person.setPreferanser(preferanser);
     }
 
     private Kanaler finnElektroniskeKanaler(XMLBruker soapPerson) {
