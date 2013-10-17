@@ -19,7 +19,9 @@ import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkon
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBruker;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresseNorge;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLNorskIdent;
+import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPreferanser;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLRetningsnumre;
+import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLSpraak;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLTelefonnummer;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
 import org.apache.commons.collections15.Transformer;
@@ -79,6 +81,7 @@ public class OppdaterBrukerprofilConsumer {
                 telefonnummerKanal(Telefonnummertype.MOBIL, person.getMobiltelefon()).map(toXMLElektroniskKommunkasjonskanal())
         ).collect());
 
+        populatePreferanser(person, xmlBruker);
         populateBankkonto(person, xmlBruker);
 
         try {
@@ -102,6 +105,17 @@ public class OppdaterBrukerprofilConsumer {
 				e);
             }
         }
+    }
+
+    private void populatePreferanser(Person person, XMLBruker xmlBruker) {
+        xmlBruker.withPreferanser(new XMLPreferanser()
+                .withMaalform(populateMaalform(person))
+                .withElektroniskKorrespondanse(person.getPreferanser().isElektroniskSamtykke())
+        );
+    }
+
+    private XMLSpraak populateMaalform(Person person) {
+        return new XMLSpraak().withKodeverksRef(person.getPreferanser().getMaalform().getKodeverkRef());
     }
 
     private void populateMidlertidigAdresse(Person person, XMLBruker xmlBruker) {
