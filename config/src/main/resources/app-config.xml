@@ -11,8 +11,8 @@
     </artifacts>
 
     <resources>
-        <webservice alias="virksomhet:Brukerprofil_v1" mapToProperty="brukerprofil.webservice.brukerprofil"/>
-        <webservice alias="virksomhet:BehandleBrukerprofil_v1" mapToProperty="brukerprofil.webservice.behandlebrukerprofil"/>
+        <webservice alias="virksomhet:Brukerprofil_v1" mapToProperty="brukerprofil.ws"/>
+        <webservice alias="virksomhet:BehandleBrukerprofil_v1" mapToProperty="behandlebrukerprofil.ws"/>
         <baseUrl alias="dialogarena.cms" mapToProperty="dialogarena.cms"/>
         <baseUrl alias="dialogarena.footer" mapToProperty="dialogarena.footer"/>
         <baseUrl alias="minehenvendelser.navigasjonslink" mapToProperty="minehenvendelser.navigasjonslink"/>
