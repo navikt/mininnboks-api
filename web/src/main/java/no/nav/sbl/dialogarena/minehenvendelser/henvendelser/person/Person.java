@@ -20,9 +20,9 @@ import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Gjelde
 
 public class Person implements Serializable {
 
-    public final String ident;
-    public final String navn;
-    public final Adresse folkeregistrertAdresse;
+    public String ident;
+    public String navn;
+    public Adresse folkeregistrertAdresse;
 
     private String kontonummer;
     private Telefonnummer hjemmetelefon;
@@ -36,6 +36,8 @@ public class Person implements Serializable {
 
     private Preferanser preferanser = new Preferanser();
 
+    public Person() {
+    }
 
     public Person(String navn, String ident, Optional<? extends Adresse> folkeregistrertAdresse) {
         this.navn = navn;

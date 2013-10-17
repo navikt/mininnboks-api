@@ -58,9 +58,7 @@ public class OppdaterBrukerprofilConsumer {
         this.behandleBrukerprofilService = behandleBrukerprofilPortType;
     }
 
-
     public void oppdaterPerson(Person person) {
-
         XMLNorskIdent ident = new XMLNorskIdent()
                 .withIdent(person.ident)
                 .withType(PersonidenttypeKodeverk.of(person.ident).forSkrivtjeneste);
