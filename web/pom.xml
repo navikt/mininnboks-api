@@ -16,10 +16,10 @@
         <cxf.version>2.7.6</cxf.version>
         <hamcrest.version>1.3</hamcrest.version>
         <modig.frontend.version>1.0.33</modig.frontend.version>
-        <modig-security.version>1.0.9</modig-security.version>
+        <modig-security.version>1.0.19</modig-security.version>
         <slf4j.version>1.7.5</slf4j.version>
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
-        <wicket.version>6.8.0</wicket.version>
+        <wicket.version>6.11.0</wicket.version>
     </properties>
 
     <dependencies>
@@ -27,34 +27,40 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.0.11</version>
+            <version>1.0.13</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
-			<scope>provided</scope>
+            <version>3.1.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-			<version>3.2.3.RELEASE</version>
+            <version>3.2.4.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
-			<version>2.6.5</version>
-			<scope>runtime</scope>
+            <version>2.6.6</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.2</version>
+            <version>2.3</version>
         </dependency>
 
         <dependency>
@@ -67,25 +73,25 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-simple</artifactId>
-			<version>${cxf.version}</version>
+            <version>${cxf.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxws</artifactId>
-			<version>${cxf.version}</version>
+            <version>${cxf.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-api</artifactId>
-			<version>${cxf.version}</version>
+            <version>${cxf.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http</artifactId>
-			<version>${cxf.version}</version>
+            <version>${cxf.version}</version>
         </dependency>
 
         <dependency>
@@ -120,8 +126,8 @@
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
-			<artifactId>henvendelse-meldinger-tjenestespesifikasjon</artifactId>
-			<version>0.0.3</version>
+            <artifactId>henvendelse-meldinger-tjenestespesifikasjon</artifactId>
+            <version>0.0.4</version>
         </dependency>
 
         <dependency>
@@ -133,107 +139,117 @@
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-lang</artifactId>
-			<version>1.0.1</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-wicket</artifactId>
-			<version>1.0.19</version>
+            <version>1.0.28</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-spring</artifactId>
-			<version>${wicket.version}</version>
+            <version>${wicket.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-core</artifactId>
-			<version>${wicket.version}</version>
+            <version>${wicket.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-request</artifactId>
-			<version>${wicket.version}</version>
+            <version>${wicket.version}</version>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-frontend-wicket</artifactId>
-			<version>${modig.frontend.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
+            <version>${modig.frontend.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-frontend-ressurser</artifactId>
-			<version>${modig.frontend.version}</version>
+            <version>${modig.frontend.version}</version>
             <scope>runtime</scope>
         </dependency>
 
-		<dependency>
-			<groupId>no.nav.modig</groupId>
-			<artifactId>modig-content</artifactId>
-			<version>1.2.2</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-content</artifactId>
+            <version>1.2.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-ws</artifactId>
-			<version>${modig-security.version}</version>
+            <version>${modig-security.version}</version>
             <scope>runtime</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-core</artifactId>
-			<version>${modig-security.version}</version>
+            <version>${modig-security.version}</version>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-sts</artifactId>
-			<version>${modig-security.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
+            <version>${modig-security.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-filter</artifactId>
-			<version>${modig-security.version}</version>
+            <version>${modig-security.version}</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-loginmodule</artifactId>
-			<version>${modig-security.version}</version>
+            <version>${modig-security.version}</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-authorization</artifactId>
-			<version>${modig-security.version}</version>
+            <version>${modig-security.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -241,13 +257,13 @@
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-log-filter</artifactId>
             <scope>runtime</scope>
-            <version>1.1.2</version>
+            <version>1.1.3</version>
         </dependency>
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>common-web</artifactId>
-            <version>1.0.13</version>
+            <version>1.1.4</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -261,74 +277,78 @@
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-testcertificates</artifactId>
-			<version>1.0.0</version>
-			<scope>test</scope>
+            <version>1.0.0</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-core</artifactId>
-			<version>${modig-security.version}</version>
-			<type>test-jar</type>
-			<scope>test</scope>
+            <version>${modig-security.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>common-jetty</artifactId>
-			<version>1.0.20</version>
-			<scope>test</scope>
+            <version>1.0.20</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-			<version>2.4</version>
+            <version>2.4</version>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-	    </dependency>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-library</artifactId>
-			<version>${hamcrest.version}</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-core</artifactId>
-			<version>${hamcrest.version}</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>runtime</scope>
+            <version>${slf4j.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
-			<version>2.3.5.Final</version>
+            <version>2.3.5.Final</version>
             <scope>runtime</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -336,7 +356,7 @@
         <dependency>
             <groupId>net.sourceforge.collections</groupId>
             <artifactId>collections-generic</artifactId>
-			<version>4.01</version>
+            <version>4.01</version>
         </dependency>
 
     </dependencies>
