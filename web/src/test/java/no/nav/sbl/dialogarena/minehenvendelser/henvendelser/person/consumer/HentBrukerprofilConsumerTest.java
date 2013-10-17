@@ -6,19 +6,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.ValgtKontotyp
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.HentKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoNorge;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoUtland;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontonummer;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontonummerUtland;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLGateadresse;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLGyldighetsperiode;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresse;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresseNorge;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresseUtland;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPersonnavn;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPostadresse;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLUstrukturertAdresse;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.*;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
 import org.joda.time.DateTimeUtils;
@@ -46,14 +34,12 @@ import static org.mockito.Mockito.when;
 public class HentBrukerprofilConsumerTest {
 
     private static final LocalDate IDAG = new LocalDate(2013, 5, 4);
-
     private static final String IDENT = "123456***REMOVED***";
 
     @Mock
     private BrukerprofilPortType brukerprofilServiceMock;
 
     private HentBrukerprofilConsumer consumer;
-
     private XMLBruker response;
 
 
@@ -62,7 +48,6 @@ public class HentBrukerprofilConsumerTest {
         consumer = new HentBrukerprofilConsumer(brukerprofilServiceMock);
         response = (XMLBruker) stubResponseFromService().getPerson();
     }
-
 
     @Test
     public void skalHentePerson() {
@@ -80,7 +65,6 @@ public class HentBrukerprofilConsumerTest {
         Person person = consumer.hentPerson(IDENT);
         assertNotNull(person);
     }
-
 
     @Test
     public void utenlandskKontoUtenBankadresse() {
@@ -155,6 +139,17 @@ public class HentBrukerprofilConsumerTest {
         return xmlResponse;
     }
 
+    @Test
+    public void preferanser() {
+        response.withPreferanser(
+                new XMLPreferanser().withElektroniskKorrespondanse(true)
+                        .withMaalform(new XMLSpraak().withKodeverksRef("kodeverksRef"))
+        );
+
+        Person person = consumer.hentPerson(IDENT);
+        assertThat(person.getPreferanser().isElektroniskSamtykke(), is(true));
+    }
+
     @BeforeClass
     public static void lockTime() {
         DateTimeUtils.setCurrentMillisFixed(IDAG.toDate().getTime());
@@ -164,5 +159,4 @@ public class HentBrukerprofilConsumerTest {
     public static void unlockTime() {
         DateTimeUtils.setCurrentMillisSystem();
     }
-
 }
