@@ -1,16 +1,16 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.service;
 
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.HentBrukerprofilConsumer;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.HentBrukerprofilPerson;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.OppdaterBrukerprofilConsumer;
 
 public class PersonServiceTPS implements PersonService {
 
-    private final HentBrukerprofilConsumer hentConsumer;
+    private final HentBrukerprofilPerson hentConsumer;
     private final OppdaterBrukerprofilConsumer oppdaterConsumer;
 
-    public PersonServiceTPS(HentBrukerprofilConsumer hentBrukerprofilConsumer, OppdaterBrukerprofilConsumer oppdaterBrukerprofilConsumer) {
-        this.hentConsumer = hentBrukerprofilConsumer;
+    public PersonServiceTPS(HentBrukerprofilPerson hentBrukerprofilPerson, OppdaterBrukerprofilConsumer oppdaterBrukerprofilConsumer) {
+        this.hentConsumer = hentBrukerprofilPerson;
         this.oppdaterConsumer = oppdaterBrukerprofilConsumer;
     }
 

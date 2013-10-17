@@ -9,6 +9,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.common.TekstU
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.konto.UtenlandskKonto;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummer;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -35,6 +36,8 @@ public class Person implements Serializable {
     private UtenlandskKonto bankkontoUtland;
 
     private Preferanser preferanser = new Preferanser();
+    private XMLHentKontaktinformasjonOgPreferanserResponse response;
+    private XMLHentKontaktinformasjonOgPreferanserResponse responseFraTPS;
 
     public Person() {
     }
@@ -151,6 +154,14 @@ public class Person implements Serializable {
 
     public void setJobbtelefonnummer(Telefonnummer ekstraTelefonnummer) {
         this.jobbtelefon = ekstraTelefonnummer;
+    }
+
+    public void setResponseFraTPS(XMLHentKontaktinformasjonOgPreferanserResponse responseFraTPS) {
+        this.responseFraTPS = responseFraTPS;
+    }
+
+    public XMLHentKontaktinformasjonOgPreferanserResponse getResponseFraTPS() {
+        return responseFraTPS;
     }
 
     public static class KanIkkeVelgeAdresse extends ApplicationException {
