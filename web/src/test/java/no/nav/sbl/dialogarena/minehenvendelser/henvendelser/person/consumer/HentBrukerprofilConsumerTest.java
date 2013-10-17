@@ -134,6 +134,7 @@ public class HentBrukerprofilConsumerTest {
         XMLHentKontaktinformasjonOgPreferanserResponse xmlResponse = new XMLHentKontaktinformasjonOgPreferanserResponse();
         xmlResponse.withPerson(new XMLBruker()
                 .withPersonnavn(new XMLPersonnavn())
+                .withPreferanser(new XMLPreferanser().withMaalform(new XMLSpraak()))
                 .withGjeldendePostadresseType(UKJENT_ADRESSE.forLestjeneste));
         when(brukerprofilServiceMock.hentKontaktinformasjonOgPreferanser(any(XMLHentKontaktinformasjonOgPreferanserRequest.class))).thenReturn(xmlResponse);
         return xmlResponse;

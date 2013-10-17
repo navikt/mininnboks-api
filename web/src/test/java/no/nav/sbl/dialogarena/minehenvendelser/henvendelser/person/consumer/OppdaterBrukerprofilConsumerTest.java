@@ -8,6 +8,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.Adres
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.Adressetype;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.StrukturertAdresse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.UstrukturertAdresse;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserSikkerhetsbegrensning;
@@ -94,6 +95,20 @@ public class OppdaterBrukerprofilConsumerTest {
         assertThat(midlertidigPostadresse.getPostleveringsPeriode().getTom(), is(OM_ET_AAR.toDateTime(new LocalTime(23, 59, 59))));
         assertThat(midlertidigPostadresse.getStrukturertAdresse().getTilleggsadresseType(), nullValue());
         assertThat(midlertidigPostadresse.getStrukturertAdresse().getTilleggsadresse(), nullValue());
+    }
+
+    @Test
+    public void senderMedElektroniskSamtykke() {
+        Person p = new Person("Ola Nordmann", "***REMOVED***", ingenFolkeregistrertAdresse);
+        assertThat(p.getPreferanser().isElektroniskSamtykke(), is(false));
+
+        Preferanser preferanser = new Preferanser();
+        preferanser.setElektroniskSamtykke(true);
+        p.setPreferanser(preferanser);
+
+        service.oppdaterPerson(p);
+
+        assertThat(webServiceStub.sistOppdatert.getPreferanser().isElektroniskKorrespondanse(), is(true));
     }
 
     @Test
