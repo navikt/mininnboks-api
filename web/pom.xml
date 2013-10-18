@@ -150,12 +150,6 @@
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>sbl-webkomponent-tilbakemelding</artifactId>
-            <version>1.0.16</version>
-        </dependency>
-
-        <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>henvendelse-meldinger-tjenestespesifikasjon</artifactId>
             <version>0.0.4</version>
         </dependency>

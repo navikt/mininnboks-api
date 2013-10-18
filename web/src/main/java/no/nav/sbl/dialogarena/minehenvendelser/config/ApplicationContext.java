@@ -1,11 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.config;
 
 import no.nav.modig.cache.CacheConfig;
-import no.nav.modig.content.CmsContentRetriever;
-import no.nav.modig.content.ContentRetriever;
-import no.nav.modig.content.ValueRetriever;
-import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
-import no.nav.modig.content.enonic.HttpContentRetriever;
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
@@ -24,33 +19,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
-@Import(CacheConfig.class)
+@Import({CacheConfig.class, ContentConfig.class})
 public class ApplicationContext {
-
-    @Bean
-    public ContentRetriever contentRetriever() {
-        // Egen bønne for å hooke opp @Cachable
-        return new HttpContentRetriever();
-    }
-
-    @Bean
-    public CmsContentRetriever cmsContentRetriever(ContentRetriever contentRetriever) throws URISyntaxException {
-        String cmsBaseUrl = System.getProperty("dialogarena.cms.url");
-        Map<String, URI> uris = new HashMap<>();
-        uris.put("nb", new URI(cmsBaseUrl + "/site/16/sbl-webkomponenter/nb/tekster"));
-        ValueRetriever valueRetriever = new ValuesFromContentWithResourceBundleFallback("content.sbl-webkomponenter", contentRetriever, uris, "nb");
-        CmsContentRetriever cmsContentRetriever = new CmsContentRetriever();
-        cmsContentRetriever.setDefaultLocale("nb");
-        cmsContentRetriever.setTeksterRetriever(valueRetriever);
-        return cmsContentRetriever;
-    }
 
     @Bean
     public WicketApplication wicket() {
