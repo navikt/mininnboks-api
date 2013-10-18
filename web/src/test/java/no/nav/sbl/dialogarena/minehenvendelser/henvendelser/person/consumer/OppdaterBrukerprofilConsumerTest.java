@@ -1,10 +1,14 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer;
 
+import no.nav.modig.core.exception.ApplicationException;
+import no.nav.modig.core.exception.SystemException;
 import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.Adresse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
+import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserPersonIkkeFunnet;
+import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBruker;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
@@ -26,6 +30,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OppdaterBrukerprofilConsumerTest {
@@ -82,6 +88,24 @@ public class OppdaterBrukerprofilConsumerTest {
 
         assertThat(webServiceStub.sistOppdatert.getPreferanser().getMaalform().getValue(), is(p.getPreferanser().getMaalform().getValue()));
         assertThat(webServiceStub.sistOppdatert.getPreferanser().isElektroniskKorrespondanse(), is(p.getPreferanser().isElektroniskSamtykke()));
+    }
+
+    @Test(expected = SystemException.class)
+    public void sikkerhetsFeilWrappesISystemException() throws Exception {
+        OppdaterBrukerprofilConsumer consumer = new OppdaterBrukerprofilConsumer(webServiceMock);
+
+        doThrow(OppdaterKontaktinformasjonOgPreferanserSikkerhetsbegrensning.class)
+                .when(webServiceMock).oppdaterKontaktinformasjonOgPreferanser(any(XMLOppdaterKontaktinformasjonOgPreferanserRequest.class));
+        consumer.oppdaterPerson(p);
+    }
+
+    @Test(expected = ApplicationException.class)
+    public void personFinnesIkkeWrappesIApplicationException() throws Exception {
+        OppdaterBrukerprofilConsumer consumer = new OppdaterBrukerprofilConsumer(webServiceMock);
+
+        doThrow(OppdaterKontaktinformasjonOgPreferanserPersonIkkeFunnet.class)
+                .when(webServiceMock).oppdaterKontaktinformasjonOgPreferanser(any(XMLOppdaterKontaktinformasjonOgPreferanserRequest.class));
+        consumer.oppdaterPerson(p);
     }
 
     private XMLHentKontaktinformasjonOgPreferanserResponse stubResponseFromService() throws Exception {
@@ -151,26 +175,6 @@ public class OppdaterBrukerprofilConsumerTest {
         assertThat(webServiceStub.sistOppdatert.getGjeldendePostadresseType().getValue(), is(GjeldendeAdresseKodeverk.MIDLERTIDIG_POSTADRESSE_UTLAND.name()));
         assertThat(webServiceStub.sistOppdatert.getMidlertidigPostadresse().getPostleveringsPeriode().getFom(), is(IDAG.toDateTimeAtStartOfDay()));
         assertThat(webServiceStub.sistOppdatert.getMidlertidigPostadresse().getPostleveringsPeriode().getTom(), is(OM_ET_AAR.toDateTime(new LocalTime(23, 59, 59))));
-    }
-
-    @Test(expected = SystemException.class)
-    public void sikkerhetsFeilWrappesISystemException() throws Exception {
-        Person person = new Person("Bønna", "***REMOVED***", ingenFolkeregistrertAdresse);
-        OppdaterBrukerprofilConsumer consumer = new OppdaterBrukerprofilConsumer(webServiceMock);
-
-        doThrow(OppdaterKontaktinformasjonOgPreferanserSikkerhetsbegrensning.class)
-                .when(webServiceMock).oppdaterKontaktinformasjonOgPreferanser(any(XMLOppdaterKontaktinformasjonOgPreferanserRequest.class));
-        consumer.oppdaterPerson(person);
-    }
-
-    @Test(expected = ApplicationException.class)
-    public void personFinnesIkkeWrappesIApplicationException() throws Exception {
-        OppdaterBrukerprofilConsumer consumer = new OppdaterBrukerprofilConsumer(webServiceMock);
-        Person person = new Person("Bønna", "***REMOVED***", ingenFolkeregistrertAdresse);
-
-        doThrow(OppdaterKontaktinformasjonOgPreferanserPersonIkkeFunnet.class)
-                .when(webServiceMock).oppdaterKontaktinformasjonOgPreferanser(any(XMLOppdaterKontaktinformasjonOgPreferanserRequest.class));
-        consumer.oppdaterPerson(person);
     }
 
     @Test
