@@ -14,12 +14,12 @@ public class PersonTransform {
         }
 
         Person person = new Person();
-        person.setResponseFraTPS(response);
+        person.setPersonFraTPS((XMLBruker) response.getPerson());
         return setPreferanser(person);
     }
 
     private Person setPreferanser(Person person) {
-        XMLBruker soapBruker = (XMLBruker) person.getResponseFraTPS().getPerson();
+        XMLBruker soapBruker = person.getPersonFraTPS();
         XMLPreferanser soapBrukerPreferanser = soapBruker.getPreferanser();
         Preferanser preferanser = new Preferanser();
 

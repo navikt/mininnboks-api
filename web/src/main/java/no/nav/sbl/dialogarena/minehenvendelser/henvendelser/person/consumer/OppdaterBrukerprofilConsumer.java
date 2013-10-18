@@ -7,8 +7,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummer;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummertype;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLPersonidenterInToXMLPersonidenterOut;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLPostadresseTyperInToXMLPostadresseTyperOut;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLPreferanserInToXMLPreferanserOut;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserSikkerhetsbegrensning;
@@ -20,9 +18,6 @@ import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLRetning
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLSpraak;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLTelefonnummer;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLElektroniskKommunikasjonskanal;
-
-import java.util.List;
 
 import static no.nav.modig.lang.option.Optional.optional;
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform.Transform.toXMLTelefontype;
@@ -39,20 +34,20 @@ public class OppdaterBrukerprofilConsumer {
 
     public void oppdaterPerson(Person person) {
         XMLNorskIdent ident = new XMLNorskIdent()
-                .withIdent(person.getResponseFraTPS().getPerson().getIdent().getIdent())
-                .withType(new XMLPersonidenterInToXMLPersonidenterOut().transform(person.getResponseFraTPS().getPerson().getIdent().getType()));
+                .withIdent(person.getPersonFraTPS().getIdent().getIdent())
+                .withType(new XMLPersonidenterInToXMLPersonidenterOut().transform(person.getPersonFraTPS().getIdent().getType()));
 
         XMLBruker xmlBruker = new XMLBruker().withIdent(ident);
-        no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker xmlBrukerFraTPS = (no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker) person.getResponseFraTPS().getPerson();
-        xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(xmlBrukerFraTPS.getGjeldendePostadresseType()));
+        no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker xmlBrukerFraTPS = (no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker) person.getPersonFraTPS();
+//        xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(xmlBrukerFraTPS.getGjeldendePostadresseType()));
         //xmlBruker.withMidlertidigPostadresse((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse) xmlBrukerFraTPS.getMidlertidigPostadresse());
 
-        List<XMLElektroniskKommunikasjonskanal> kanaler = xmlBrukerFraTPS.getElektroniskKommunikasjonskanal();
+        //  List<XMLElektroniskKommunikasjonskanal> kanaler = xmlBrukerFraTPS.getElektroniskKommunikasjonskanal();
 
-        for (XMLElektroniskKommunikasjonskanal kanal : kanaler) {
-            //xmlBruker.withElektroniskKommunikasjonskanal(toxml)
+        //    for (XMLElektroniskKommunikasjonskanal kanal : kanaler) {
+        //        //xmlBruker.withElektroniskKommunikasjonskanal(toxml)
 
-        }
+        //  }
 
 
 //        xmlBruker.withElektroniskKommunikasjonskanal(several(
@@ -61,8 +56,8 @@ public class OppdaterBrukerprofilConsumer {
 //                telefonnummerKanal(Telefonnummertype.MOBIL, person.getMobiltelefon()).map(toXMLElektroniskKommunkasjonskanal())
 //        ).collect());
 
-        populatePreferanser(new XMLPreferanserInToXMLPreferanserOut().transform(xmlBrukerFraTPS.getPreferanser()), xmlBruker);
-        populateBankkonto(person, xmlBruker);
+//        populatePreferanser(new XMLPreferanserInToXMLPreferanserOut().transform(xmlBrukerFraTPS.getPreferanser()), xmlBruker);
+//        populateBankkonto(person, xmlBruker);
 
         try {
             behandleBrukerprofilService.oppdaterKontaktinformasjonOgPreferanser(new XMLOppdaterKontaktinformasjonOgPreferanserRequest().withPerson(xmlBruker));
@@ -78,7 +73,7 @@ public class OppdaterBrukerprofilConsumer {
                     throw new TpsValideringException(TpsValideringsfeil.UGYLDIG_POSTNUMMER, e);
                 default:
                     throw new ApplicationException(
-                            "Feil ved oppdatering av adresse for bruker '" + person.getResponseFraTPS().getPerson().getIdent().getIdent() + "'.\n" +
+                            "Feil ved oppdatering av adresse for bruker '" + person.getPersonFraTPS().getIdent().getIdent() + "'.\n" +
                                     e.getMessage() + "\n" +
                                     "Feilmelding: " + e.getFaultInfo().getFeilmelding() + "\n" +
                                     "Årsak: " + e.getFaultInfo().getFeilaarsak() + "\n" +

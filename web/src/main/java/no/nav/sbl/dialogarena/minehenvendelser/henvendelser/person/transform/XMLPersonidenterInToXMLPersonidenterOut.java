@@ -8,8 +8,6 @@ public final class XMLPersonidenterInToXMLPersonidenterOut implements Transforme
     @Override
     public no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPersonidenter transform(XMLPersonidenter xmlPersonidenter) {
         return new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPersonidenter().
-                withKodeRef(xmlPersonidenter.getKodeRef()).
-                withKodeverksRef(xmlPersonidenter.getKodeverksRef()).
                 withValue(xmlPersonidenter.getValue());
     }
 }

@@ -1,13 +1,13 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person;
 
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker;
 
 import java.io.Serializable;
 
 public class Person implements Serializable {
     private Preferanser preferanser = new Preferanser();
-    private XMLHentKontaktinformasjonOgPreferanserResponse responseFraTPS;
+    private XMLBruker personFraTPS;
 
     public Person() {
     }
@@ -20,11 +20,11 @@ public class Person implements Serializable {
         this.preferanser = preferanser;
     }
 
-    public void setResponseFraTPS(XMLHentKontaktinformasjonOgPreferanserResponse responseFraTPS) {
-        this.responseFraTPS = responseFraTPS;
+    public void setPersonFraTPS(XMLBruker personFraTPS) {
+        this.personFraTPS = personFraTPS;
     }
 
-    public XMLHentKontaktinformasjonOgPreferanserResponse getResponseFraTPS() {
-        return responseFraTPS;
+    public XMLBruker getPersonFraTPS() {
+        return personFraTPS;
     }
 }
