@@ -10,11 +10,8 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPreferanser;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLSpraak;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
-import org.joda.time.DateTimeUtils;
 import org.joda.time.LocalDate;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -84,15 +81,4 @@ public class HentBrukerprofilPersonTest {
         when(brukerprofilServiceMock.hentKontaktinformasjonOgPreferanser(any(XMLHentKontaktinformasjonOgPreferanserRequest.class))).thenReturn(xmlResponse);
         return xmlResponse;
     }
-
-    @BeforeClass
-    public static void lockTime() {
-        DateTimeUtils.setCurrentMillisFixed(IDAG.toDate().getTime());
-    }
-
-    @AfterClass
-    public static void unlockTime() {
-        DateTimeUtils.setCurrentMillisSystem();
-    }
-
 }
