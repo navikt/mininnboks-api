@@ -7,8 +7,6 @@ public final class XMLPostadresseTyperInToXMLPostadresseTyperOut implements Tran
     @Override
     public no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPostadressetyper transform(XMLPostadressetyper xmlPostadressetyper) {
         return new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPostadressetyper()
-                .withValue(xmlPostadressetyper.getValue())
-                .withKodeverksRef(xmlPostadressetyper.getKodeverksRef())
-                .withKodeRef(xmlPostadressetyper.getKodeRef());
+                .withValue(xmlPostadressetyper.getValue());
     }
 }

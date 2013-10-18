@@ -7,6 +7,7 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummer;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummertype;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLPersonidenterInToXMLPersonidenterOut;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLPostadresseTyperInToXMLPostadresseTyperOut;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserSikkerhetsbegrensning;
@@ -38,8 +39,8 @@ public class OppdaterBrukerprofilConsumer {
                 .withType(new XMLPersonidenterInToXMLPersonidenterOut().transform(person.getPersonFraTPS().getIdent().getType()));
 
         XMLBruker xmlBruker = new XMLBruker().withIdent(ident);
-        no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker xmlBrukerFraTPS = (no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker) person.getPersonFraTPS();
-//        xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(xmlBrukerFraTPS.getGjeldendePostadresseType()));
+        no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker xmlBrukerFraTPS = person.getPersonFraTPS();
+        xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(xmlBrukerFraTPS.getGjeldendePostadresseType()));
         //xmlBruker.withMidlertidigPostadresse((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse) xmlBrukerFraTPS.getMidlertidigPostadresse());
 
         //  List<XMLElektroniskKommunikasjonskanal> kanaler = xmlBrukerFraTPS.getElektroniskKommunikasjonskanal();

@@ -9,6 +9,7 @@ import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterK
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLNorskIdent;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPersonidenter;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPostadressetyper;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPreferanser;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLSpraak;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
@@ -59,10 +60,22 @@ public class OppdaterBrukerprofilConsumerTest {
 
     }
 
+    @Test
+    public void senderPostadresseTypeSomErLikSomPostadresseTypenUthentetFraTPS() {
+        service.oppdaterPerson(p);
+
+        assertThat(webServiceStub.sistOppdatert.getGjeldendePostadresseType().getValue(), is(personFraTPS.getGjeldendePostadresseType().getValue()));
+    }
+
     private XMLHentKontaktinformasjonOgPreferanserResponse stubResponseFromService() throws Exception {
         XMLHentKontaktinformasjonOgPreferanserResponse xmlResponse = new XMLHentKontaktinformasjonOgPreferanserResponse();
         xmlResponse.withPerson(new no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker()
-                .withIdent(new XMLNorskIdent().withIdent("***REMOVED***").withType(new XMLPersonidenter().withValue("FOEDSELSNUMMER")))
+                .withIdent(
+                        new XMLNorskIdent().
+                                withIdent("***REMOVED***").
+                                withType(new XMLPersonidenter().
+                                        withValue("FOEDSELSNUMMER")))
+                .withGjeldendePostadresseType(new XMLPostadressetyper().withValue("FOLKEREGISTRERT"))
                 .withPreferanser(new XMLPreferanser().withMaalform(new XMLSpraak())));
         return xmlResponse;
     }
