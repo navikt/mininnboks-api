@@ -51,10 +51,11 @@ public class OppdaterBrukerprofilConsumerTest {
     }
 
     @Test
-    public void senderIdentSomErLikSomUthentetFraTPS() {
+    public void senderIdentOgTypeSomErLikSomUthentetFraTPS() {
         service.oppdaterPerson(p);
 
         assertThat(webServiceStub.sistOppdatert.getIdent().getIdent(), is(personFraTPS.getIdent().getIdent()));
+        assertThat(webServiceStub.sistOppdatert.getIdent().getType().getValue(), is(personFraTPS.getIdent().getType().getValue()));
 
     }
 
