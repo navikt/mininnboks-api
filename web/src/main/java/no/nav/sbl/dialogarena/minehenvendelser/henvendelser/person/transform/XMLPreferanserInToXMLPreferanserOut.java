@@ -1,11 +1,14 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform;
 
-/**
- * Created with IntelliJ IDEA.
- * User: h138603
- * Date: 17.10.13
- * Time: 17:17
- * To change this template use File | Settings | File Templates.
- */
-public class XMLPreferanserInToXMLPreferanserOut {
+
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPreferanser;
+import org.apache.commons.collections15.Transformer;
+
+public class XMLPreferanserInToXMLPreferanserOut implements Transformer<XMLPreferanser, no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPreferanser> {
+    @Override
+    public no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPreferanser transform(XMLPreferanser xmlPreferanser) {
+        return new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPreferanser()
+                .withElektroniskKorrespondanse(xmlPreferanser.isElektroniskKorrespondanse())
+                .withMaalform(new XMLSpraakInToXMLSpraakOut().transform(xmlPreferanser.getMaalform()));
+    }
 }

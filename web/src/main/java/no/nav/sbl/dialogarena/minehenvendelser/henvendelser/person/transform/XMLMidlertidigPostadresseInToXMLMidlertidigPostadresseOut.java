@@ -1,11 +1,19 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform;
 
-/**
- * Created with IntelliJ IDEA.
- * User: h138603
- * Date: 17.10.13
- * Time: 16:26
- * To change this template use File | Settings | File Templates.
- */
-public class XMLMidlertidigPostadresseInToXMLMidlertidigPostadresseOut {
+
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresse;
+import org.apache.commons.collections15.Transformer;
+
+public final class XMLMidlertidigPostadresseInToXMLMidlertidigPostadresseOut implements Transformer<XMLMidlertidigPostadresse, no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse> {
+    @Override
+    public no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse transform(XMLMidlertidigPostadresse xmlMidlertidigPostadresse) {
+//        no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse midlertidigPostadresse = no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse()
+//
+//
+//        return no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse()
+//                .withPostleveringsPeriode(xmlMidlertidigPostadresse.getPostleveringsPeriode());
+
+        return null;
+
+    }
 }

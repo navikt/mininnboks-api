@@ -1,11 +1,15 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform;
 
-/**
- * Created with IntelliJ IDEA.
- * User: h138603
- * Date: 17.10.13
- * Time: 15:58
- * To change this template use File | Settings | File Templates.
- */
-public class XMLPersonidenterInToXMLPersonidenterOut {
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPersonidenter;
+import org.apache.commons.collections15.Transformer;
+
+public final class XMLPersonidenterInToXMLPersonidenterOut implements Transformer<XMLPersonidenter, no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPersonidenter> {
+
+    @Override
+    public no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPersonidenter transform(XMLPersonidenter xmlPersonidenter) {
+        return new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPersonidenter().
+                withKodeRef(xmlPersonidenter.getKodeRef()).
+                withKodeverksRef(xmlPersonidenter.getKodeverksRef()).
+                withValue(xmlPersonidenter.getValue());
+    }
 }

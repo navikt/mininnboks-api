@@ -1,11 +1,15 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform;
 
-/**
- * Created with IntelliJ IDEA.
- * User: h138603
- * Date: 17.10.13
- * Time: 16:00
- * To change this template use File | Settings | File Templates.
- */
-public class XMLElektroniskKommunikasjonskanalInToXMLElektroniskKommunikasjonskanalOut {
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLElektroniskKommunikasjonskanal;
+import org.apache.commons.collections15.Transformer;
+
+public final class XMLElektroniskKommunikasjonskanalInToXMLElektroniskKommunikasjonskanalOut implements Transformer<XMLElektroniskKommunikasjonskanal, no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLElektroniskKommunikasjonskanal> {
+
+    @Override
+    public no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLElektroniskKommunikasjonskanal transform(XMLElektroniskKommunikasjonskanal xmlElektroniskKommunikasjonskanal) {
+//        return new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLElektroniskKommunikasjonskanal()
+//                .w
+
+        return null;
+    }
 }

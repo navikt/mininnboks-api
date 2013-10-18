@@ -1,11 +1,14 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform;
 
-/**
- * Created with IntelliJ IDEA.
- * User: h138603
- * Date: 17.10.13
- * Time: 15:57
- * To change this template use File | Settings | File Templates.
- */
-public class XMLPostadresseTyperInToXMLPostadresseTyperOut {
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPostadressetyper;
+import org.apache.commons.collections15.Transformer;
+
+public final class XMLPostadresseTyperInToXMLPostadresseTyperOut implements Transformer<XMLPostadressetyper, no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPostadressetyper> {
+    @Override
+    public no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPostadressetyper transform(XMLPostadressetyper xmlPostadressetyper) {
+        return new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPostadressetyper()
+                .withValue(xmlPostadressetyper.getValue())
+                .withKodeverksRef(xmlPostadressetyper.getKodeverksRef())
+                .withKodeRef(xmlPostadressetyper.getKodeRef());
+    }
 }
