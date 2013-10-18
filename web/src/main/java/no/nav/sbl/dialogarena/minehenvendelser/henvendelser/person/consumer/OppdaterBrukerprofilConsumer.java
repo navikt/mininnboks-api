@@ -43,6 +43,8 @@ public class OppdaterBrukerprofilConsumer {
         xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(xmlBrukerFraTPS.getGjeldendePostadresseType()));
 
         populatePreferanser(person, xmlBruker);
+        populateBankkonto(person, xmlBruker);
+        
         // populateMidlertidigAdresse(person, xmlBruker);
         // xmlBruker.withMidlertidigPostadresse((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse) xmlBrukerFraTPS.getMidlertidigPostadresse());
 
@@ -60,7 +62,6 @@ public class OppdaterBrukerprofilConsumer {
 //                telefonnummerKanal(Telefonnummertype.MOBIL, person.getMobiltelefon()).map(toXMLElektroniskKommunkasjonskanal())
 //        ).collect());
 
-//        populateBankkonto(person, xmlBruker);
 
         try {
             behandleBrukerprofilService.oppdaterKontaktinformasjonOgPreferanser(new XMLOppdaterKontaktinformasjonOgPreferanserRequest().withPerson(xmlBruker));
@@ -127,6 +128,7 @@ public class OppdaterBrukerprofilConsumer {
     }*/
 
     private void populateBankkonto(Person person, XMLBruker xmlBruker) {
+//        xmlBruker.withBankkonto(person.getPersonFraTPS().getBankkonto());
 //        Optional<? extends XMLBankkonto> valgtBankkonto;
 //        if (person.har(ValgtKontotype.NORGE)) {
 //            valgtBankkonto = optional(person.getKontonummer()).map(toXMLBankkontoNorge());
