@@ -24,7 +24,7 @@ public class PersonTransform {
         Preferanser preferanser = new Preferanser();
 
         preferanser.setElektroniskSamtykke(soapBrukerPreferanser.isElektroniskKorrespondanse());
-        preferanser.getMaalform().setKodeverkRef(soapBrukerPreferanser.getMaalform().getKodeverksRef());
+        preferanser.getMaalform().setValue(soapBrukerPreferanser.getMaalform().getValue());
         person.setPreferanser(preferanser);
 
         return person;

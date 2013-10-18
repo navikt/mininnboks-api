@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer;
 import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.Adresse;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBruker;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
@@ -67,6 +68,22 @@ public class OppdaterBrukerprofilConsumerTest {
         assertThat(webServiceStub.sistOppdatert.getGjeldendePostadresseType().getValue(), is(personFraTPS.getGjeldendePostadresseType().getValue()));
     }
 
+    @Test
+    public void senderPreferansePaaPersonSomSkalOppdateres() {
+        Preferanser preferanser = new Preferanser();
+        preferanser.getMaalform().setValue("NO");
+        preferanser.setElektroniskSamtykke(true);
+        p.setPreferanser(preferanser);
+
+        assertThat(p.getPersonFraTPS().getPreferanser().getMaalform().getValue(), is("SE"));
+        assertThat(p.getPersonFraTPS().getPreferanser().isElektroniskKorrespondanse(), is(false));
+
+        service.oppdaterPerson(p);
+
+        assertThat(webServiceStub.sistOppdatert.getPreferanser().getMaalform().getValue(), is(p.getPreferanser().getMaalform().getValue()));
+        assertThat(webServiceStub.sistOppdatert.getPreferanser().isElektroniskKorrespondanse(), is(p.getPreferanser().isElektroniskSamtykke()));
+    }
+
     private XMLHentKontaktinformasjonOgPreferanserResponse stubResponseFromService() throws Exception {
         XMLHentKontaktinformasjonOgPreferanserResponse xmlResponse = new XMLHentKontaktinformasjonOgPreferanserResponse();
         xmlResponse.withPerson(new no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker()
@@ -76,7 +93,10 @@ public class OppdaterBrukerprofilConsumerTest {
                                 withType(new XMLPersonidenter().
                                         withValue("FOEDSELSNUMMER")))
                 .withGjeldendePostadresseType(new XMLPostadressetyper().withValue("FOLKEREGISTRERT"))
-                .withPreferanser(new XMLPreferanser().withMaalform(new XMLSpraak())));
+                .withPreferanser(new XMLPreferanser()
+                        .withMaalform(new XMLSpraak().withValue("SE"))
+                        .withElektroniskKorrespondanse(false)
+                ));
         return xmlResponse;
     }
 

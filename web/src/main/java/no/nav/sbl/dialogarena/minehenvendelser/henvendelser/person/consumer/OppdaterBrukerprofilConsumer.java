@@ -41,7 +41,10 @@ public class OppdaterBrukerprofilConsumer {
         XMLBruker xmlBruker = new XMLBruker().withIdent(ident);
         no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker xmlBrukerFraTPS = person.getPersonFraTPS();
         xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(xmlBrukerFraTPS.getGjeldendePostadresseType()));
-        //xmlBruker.withMidlertidigPostadresse((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse) xmlBrukerFraTPS.getMidlertidigPostadresse());
+
+        populatePreferanser(person, xmlBruker);
+        // populateMidlertidigAdresse(person, xmlBruker);
+        // xmlBruker.withMidlertidigPostadresse((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse) xmlBrukerFraTPS.getMidlertidigPostadresse());
 
         //  List<XMLElektroniskKommunikasjonskanal> kanaler = xmlBrukerFraTPS.getElektroniskKommunikasjonskanal();
 
@@ -57,7 +60,6 @@ public class OppdaterBrukerprofilConsumer {
 //                telefonnummerKanal(Telefonnummertype.MOBIL, person.getMobiltelefon()).map(toXMLElektroniskKommunkasjonskanal())
 //        ).collect());
 
-//        populatePreferanser(new XMLPreferanserInToXMLPreferanserOut().transform(xmlBrukerFraTPS.getPreferanser()), xmlBruker);
 //        populateBankkonto(person, xmlBruker);
 
         try {
@@ -84,41 +86,45 @@ public class OppdaterBrukerprofilConsumer {
         }
     }
 
-    private void populatePreferanser(XMLPreferanser xmlPreferanserTPSBruker, XMLBruker xmlBruker) {
+    private void populatePreferanser(Person person, XMLBruker xmlBruker) {
         xmlBruker.withPreferanser(new XMLPreferanser()
-                .withMaalform(new XMLSpraak().withKodeverksRef(xmlPreferanserTPSBruker.getMaalform().getKodeverksRef()))
-                .withElektroniskKorrespondanse(xmlPreferanserTPSBruker.isElektroniskKorrespondanse())
+                .withMaalform(populateMaalform(person))
+                .withElektroniskKorrespondanse(person.getPreferanser().isElektroniskSamtykke())
         );
     }
 
-//    private void populateMidlertidigAdresse(Person person, XMLBruker xmlBruker) {
-//        if (person.har(GjeldendeAdressetype.MIDLERTIDIG_NORGE)) {
-//            DateTime utlopsdato = person.getNorskMidlertidig().getUtlopstidspunkt();
-//            Optional<StrukturertAdresse> midlertidigAdresse = optional(person.getNorskMidlertidig());
-//            Transformer<StrukturertAdresse, XMLMidlertidigPostadresseNorge> toXMLMidlertidigPostadresseNorge;
-//            switch (person.getValgtMidlertidigAdresse().getType()) {
-//                case POSTBOKSADRESSE:
-//                    toXMLMidlertidigPostadresseNorge = toXMLMidlertidigPostboksadresse(utlopsdato);
-//                    break;
-//                case GATEADRESSE:
-//                    toXMLMidlertidigPostadresseNorge = toXMLMidlertidigGateadresse(utlopsdato, midlertidigAdresse.map(EIER));
-//                    break;
-//                case OMRAADEADRESSE:
-//                    toXMLMidlertidigPostadresseNorge = ((StrukturertAdresse) person.getValgtMidlertidigAdresse()).getOmraadeadresse() != null ?
-//                            toXMLMatrikkeladresse(utlopsdato, midlertidigAdresse.map(EIER)) :
-//                            toXMLStedsadresseNorge(utlopsdato, midlertidigAdresse.map(EIER));
-//                    break;
-//                default:
-//                    throw new UnableToHandleException(person.getValgtMidlertidigAdresse().getType());
-//            }
-//            xmlBruker.withGjeldendePostadresseType(MIDLERTIDIG_POSTADRESSE_NORGE.forSkrivtjeneste)
-//                    .withMidlertidigPostadresse(midlertidigAdresse.map(toXMLMidlertidigPostadresseNorge).getOrElse(null));
-//        } else if (person.har(GjeldendeAdressetype.MIDLERTIDIG_UTLAND)) {
-//            xmlBruker.withGjeldendePostadresseType(MIDLERTIDIG_POSTADRESSE_UTLAND.forSkrivtjeneste)
-//                    .withMidlertidigPostadresse(optional(person.getUtenlandskMidlertidig())
-//                            .map(toXMLMidlertidigPostadresseUtland(person.getUtenlandskMidlertidig().getUtlopstidspunkt())).getOrElse(null));
-//        }
-//    }
+    private XMLSpraak populateMaalform(Person person) {
+        return new XMLSpraak().withValue(person.getPreferanser().getMaalform().getValue());
+    }
+
+   /* private void populateMidlertidigAdresse(Person person, XMLBruker xmlBruker) {
+        if (person.getPersonFraTPS().getGjeldendePostadresseType().getValue()har(GjeldendeAdressetype.MIDLERTIDIG_NORGE)) {
+            DateTime utlopsdato = person.getNorskMidlertidig().getUtlopstidspunkt();
+            Optional<StrukturertAdresse> midlertidigAdresse = optional(person.getNorskMidlertidig());
+            Transformer<StrukturertAdresse, XMLMidlertidigPostadresseNorge> toXMLMidlertidigPostadresseNorge;
+            switch (person.getValgtMidlertidigAdresse().getType()) {
+                case POSTBOKSADRESSE:
+                    toXMLMidlertidigPostadresseNorge = toXMLMidlertidigPostboksadresse(utlopsdato);
+                    break;
+                case GATEADRESSE:
+                    toXMLMidlertidigPostadresseNorge = toXMLMidlertidigGateadresse(utlopsdato, midlertidigAdresse.map(EIER));
+                    break;
+                case OMRAADEADRESSE:
+                    toXMLMidlertidigPostadresseNorge = ((StrukturertAdresse) person.getValgtMidlertidigAdresse()).getOmraadeadresse() != null ?
+                            toXMLMatrikkeladresse(utlopsdato, midlertidigAdresse.map(EIER)) :
+                            toXMLStedsadresseNorge(utlopsdato, midlertidigAdresse.map(EIER));
+                    break;
+                default:
+                    throw new UnableToHandleException(person.getValgtMidlertidigAdresse().getType());
+            }
+            xmlBruker.withGjeldendePostadresseType(MIDLERTIDIG_POSTADRESSE_NORGE.forSkrivtjeneste)
+                    .withMidlertidigPostadresse(midlertidigAdresse.map(toXMLMidlertidigPostadresseNorge).getOrElse(null));
+        } else if (person.har(GjeldendeAdressetype.MIDLERTIDIG_UTLAND)) {
+            xmlBruker.withGjeldendePostadresseType(MIDLERTIDIG_POSTADRESSE_UTLAND.forSkrivtjeneste)
+                    .withMidlertidigPostadresse(optional(person.getUtenlandskMidlertidig())
+                            .map(toXMLMidlertidigPostadresseUtland(person.getUtenlandskMidlertidig().getUtlopstidspunkt())).getOrElse(null));
+        }
+    }*/
 
     private void populateBankkonto(Person person, XMLBruker xmlBruker) {
 //        Optional<? extends XMLBankkonto> valgtBankkonto;

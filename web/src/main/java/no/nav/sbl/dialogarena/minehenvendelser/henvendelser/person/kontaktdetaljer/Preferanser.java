@@ -34,20 +34,20 @@ public class Preferanser implements Serializable, Copyable<Preferanser> {
     }
 
     public class Maalform implements Serializable, Copyable<Maalform>{
-        private String kodeverkRef;
+        private String value;
 
-        public String getKodeverkRef() {
-            return kodeverkRef;
+        public String getValue() {
+            return value;
         }
 
-        public void setKodeverkRef(String kodeverkRef) {
-            this.kodeverkRef = kodeverkRef;
+        public void setValue(String value) {
+            this.value = value;
         }
 
         @Override
         public Maalform copy() {
             Maalform maalform = new Maalform();
-            maalform.setKodeverkRef(this.kodeverkRef);
+            maalform.setValue(this.value);
             return maalform;
         }
     }
