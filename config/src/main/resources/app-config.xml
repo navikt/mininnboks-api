@@ -19,9 +19,6 @@
 
         <webservice alias="domene.Brukerdialog:HenvendelseMeldingerService_v1" mapToProperty="henvendelse.meldinger.ws"/>
         <webservice alias="domene.Brukerdialog:SporsmalinnsendingService_v1" mapToProperty="henvendelse.spsminnsending.ws"/>
-
-        <smtpServer alias="tilbakemelding.smtp" mapToProperty="tilbakemelding.smtp"/>
-        <emailAddress alias="tilbakemelding.email" mapToProperty="tilbakemelding.email"/>
     </resources>
 
     <security serviceUserResourceAlias="srvMinehenvendelser">
