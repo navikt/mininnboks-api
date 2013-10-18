@@ -4,6 +4,10 @@ import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.HentBrukerprofilPerson;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.OppdaterBrukerprofilConsumer;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.service.PersonService;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.service.PersonServiceTPS;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
@@ -28,6 +32,21 @@ public class ApplicationContext {
     @Bean
     public WicketApplication wicket() {
         return new WicketApplication();
+    }
+
+    @Bean
+    public PersonService personService() {
+        return new PersonServiceTPS(hentBrukerprofilConsumer(), oppdaterBrukerprofilConsumer());
+    }
+
+    @Bean
+    public HentBrukerprofilPerson hentBrukerprofilConsumer() {
+        return new HentBrukerprofilPerson(brukerprofilSSO());
+    }
+
+    @Bean
+    public OppdaterBrukerprofilConsumer oppdaterBrukerprofilConsumer() {
+        return new OppdaterBrukerprofilConsumer(behandleBrukerprofilSSO());
     }
 
     @Bean
@@ -92,7 +111,7 @@ public class ApplicationContext {
     @Bean
     public static HenvendelseMeldingerPortType henvendelsesSystemUser() {
         return createPortType(System.getProperty("henvendelse.meldinger.ws.url"),
-        		"classpath:no/nav/tjeneste/domene/brukerdialog/henvendelsemeldinger/v1/Meldinger.wsdl",
+                "classpath:no/nav/tjeneste/domene/brukerdialog/henvendelsemeldinger/v1/Meldinger.wsdl",
                 HenvendelseMeldingerPortType.class,
                 false);
     }
