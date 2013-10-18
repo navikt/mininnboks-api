@@ -4,7 +4,7 @@ import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.WicketApplication;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.HentBrukerprofilPerson;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.HentBrukerProfilConsumer;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.OppdaterBrukerprofilConsumer;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.service.PersonService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.service.PersonServiceTPS;
@@ -40,8 +40,8 @@ public class ApplicationContext {
     }
 
     @Bean
-    public HentBrukerprofilPerson hentBrukerprofilConsumer() {
-        return new HentBrukerprofilPerson(brukerprofilSSO());
+    public HentBrukerProfilConsumer hentBrukerprofilConsumer() {
+        return new HentBrukerProfilConsumer(brukerprofilSSO());
     }
 
     @Bean

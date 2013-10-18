@@ -11,11 +11,11 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinform
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
 
 
-public class HentBrukerprofilPerson {
+public class HentBrukerProfilConsumer {
 
     private final BrukerprofilPortType webservice;
 
-    public HentBrukerprofilPerson(BrukerprofilPortType brukerprofilPortType) {
+    public HentBrukerProfilConsumer(BrukerprofilPortType brukerprofilPortType) {
         webservice = brukerprofilPortType;
     }
 

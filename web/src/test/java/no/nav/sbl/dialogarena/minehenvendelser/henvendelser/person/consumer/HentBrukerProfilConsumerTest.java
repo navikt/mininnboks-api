@@ -24,11 +24,11 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HentBrukerprofilPersonTest {
+public class HentBrukerProfilConsumerTest {
 
     private static final LocalDate IDAG = new LocalDate(2013, 5, 4);
     private static final String IDENT = "123456***REMOVED***";
-    private HentBrukerprofilPerson consumer;
+    private HentBrukerProfilConsumer consumer;
     private XMLBruker response;
 
     @Mock
@@ -37,7 +37,7 @@ public class HentBrukerprofilPersonTest {
 
     @Before
     public void initIntegrationServiceWithMock() throws Exception {
-        consumer = new HentBrukerprofilPerson(brukerprofilServiceMock);
+        consumer = new HentBrukerProfilConsumer(brukerprofilServiceMock);
         response = (XMLBruker) stubResponseFromService().getPerson();
     }
 
