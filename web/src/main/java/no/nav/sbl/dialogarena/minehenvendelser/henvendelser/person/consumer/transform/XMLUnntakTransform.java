@@ -12,5 +12,4 @@ public class XMLUnntakTransform {
             return unntak.getFeilaarsak();
         }
     }
-
 }

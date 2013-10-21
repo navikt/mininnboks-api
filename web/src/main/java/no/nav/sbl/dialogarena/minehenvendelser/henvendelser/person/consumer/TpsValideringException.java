@@ -8,5 +8,4 @@ public class TpsValideringException extends RuntimeException {
 		super("Valideringsfeil fra TPS: " + feil.name(), cause);
 		this.messagekey = feil.feilmeldingMsgKey;
 	}
-
 }
