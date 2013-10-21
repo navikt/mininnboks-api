@@ -2,10 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer;
 
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.modig.core.exception.SystemException;
-import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummer;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummertype;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLBankkontoNorgeInToXMLBankkontoNorgeOut;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLBankkontoUtlandInToXMLBankkontoUtlandOut;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLPersonidenterInToXMLPersonidenterOut;
@@ -17,19 +14,13 @@ import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinforma
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBruker;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLNorskIdent;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPreferanser;
-import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLRetningsnumre;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLSpraak;
-import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLTelefonnummer;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkonto;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoNorge;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoUtland;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresseNorge;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresseUtland;
-
-import static no.nav.modig.lang.option.Optional.optional;
-import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform.Transform.toXMLTelefontype;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 
 public class OppdaterBrukerprofilConsumer {
@@ -148,17 +139,6 @@ public class OppdaterBrukerprofilConsumer {
             xmlBruker.withBankkonto(new XMLBankkontoUtlandInToXMLBankkontoUtlandOut().transform((XMLBankkontoUtland) bankkkonto));
         } else {
             xmlBruker.withBankkonto(null);
-        }
-    }
-
-    private Optional<XMLTelefonnummer> telefonnummerKanal(Telefonnummertype type, Telefonnummer nr) {
-        if (nr != null && isNotBlank(nr.getLandkode()) && isNotBlank(nr.getNummer()) && isNotBlank(type.name())) {
-            return optional(new XMLTelefonnummer()
-                    .withType(toXMLTelefontype().transform(type))
-                    .withIdentifikator(nr.getNummer())
-                    .withRetningsnummer(new XMLRetningsnumre().withValue(nr.getLandkode())));
-        } else {
-            return optional(null);
         }
     }
 }

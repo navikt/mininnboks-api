@@ -2,9 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer;
 
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.modig.core.exception.SystemException;
-import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.Adresse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserPersonIkkeFunnet;
@@ -50,9 +48,7 @@ public class OppdaterBrukerprofilConsumerTest {
 
     private WebService webServiceStub = new WebService();
     private final OppdaterBrukerprofilConsumer service = new OppdaterBrukerprofilConsumer(webServiceStub);
-    private final Optional<Adresse> ingenFolkeregistrertAdresse = Optional.none();
     private static final LocalDate IDAG = new LocalDate(1981, 6, 24);
-    private static final LocalDate OM_ET_AAR = IDAG.plusYears(1).minusDays(1);
 
     private Person p;
     private no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker personFraTPS;

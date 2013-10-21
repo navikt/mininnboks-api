@@ -1,23 +1,17 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform;
 
 import no.nav.modig.lang.option.Optional;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.StrukturertAdresse;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.UstrukturertAdresse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.konto.UtenlandskKonto;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummertype;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.feil.XMLForretningsmessigUnntak;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoNorge;
-import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoUtland;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontonummerUtland;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLElektroniskAdresse;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLElektroniskKommunikasjonskanal;
-import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresseNorge;
-import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresseUtland;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLTelefontyper;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLKodeverdi;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPeriode;
 import org.apache.commons.collections15.Transformer;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import static no.nav.modig.lang.collections.TransformerUtils.first;
@@ -55,14 +49,6 @@ public final class Transform {
         return new XMLKodeverdiTransform.Verdi();
     }
 
-    public static XMLKontoTransform.NorskKontonummer norskKontonummer() {
-        return new XMLKontoTransform.NorskKontonummer();
-    }
-
-    public static XMLKontoTransform.TilUtenlandskKonto utenlandskKonto() {
-        return new XMLKontoTransform.TilUtenlandskKonto();
-    }
-
     public static Transformer<String, XMLBankkontoNorge> toXMLBankkontoNorge() {
         return new StringToXMLBankkontoNorge();
     }
@@ -70,9 +56,6 @@ public final class Transform {
         return new BankkontoUtlandToXMLBankkontonummerUtland();
     }
 
-    public static Transformer<XMLBankkontonummerUtland, XMLBankkontoUtland> toXMLBankkontoUtland() {
-        return new XMLKontoTransform.XMLBankkontonummerUtlandToXMLBankkontoUtland();
-    }
     public static Transformer<Telefonnummertype, XMLTelefontyper> toXMLTelefontype() {
         return new TelefonnummertypeToXMLTelefontype();
     }
@@ -85,31 +68,6 @@ public final class Transform {
         return first(new StringToXMLEpost()).then(toXMLElektroniskKommunkasjonskanal());
 
     }
-
-    public static Transformer<UstrukturertAdresse, XMLMidlertidigPostadresseUtland> toXMLMidlertidigPostadresseUtland(DateTime utlopsdato) {
-        return new UstrukturertAdresseToXMLMidlertidigPostadresseUtland(utlopsdato);
-    }
-
-    public static Transformer<StrukturertAdresse, XMLMidlertidigPostadresseNorge> toXMLMidlertidigGateadresse(DateTime utlopsdato, Optional<String> adresseeier) {
-        return first(toXMLGateadresse()).then(new WithCOadresse(adresseeier)).then(new XMLGeografiskAdresseToXMLMidlertidigPostadresseNorge(utlopsdato));
-    }
-
-    public static Transformer<StrukturertAdresse, XMLMidlertidigPostadresseNorge> toXMLMidlertidigPostboksadresse(DateTime utlopsdato) {
-        return first(new StrukturertAdresseToXMLPostboksadresseNorsk()).then(new XMLGeografiskAdresseToXMLMidlertidigPostadresseNorge(utlopsdato));
-    }
-
-    public static Transformer<StrukturertAdresse, XMLMidlertidigPostadresseNorge> toXMLStedsadresseNorge(DateTime utlopsdato, Optional<String> adresseeier) {
-        return first(new StrukturertAdresseToXMLStedsadresseNorge()).then(new WithCOadresse(adresseeier)).then(new XMLGeografiskAdresseToXMLMidlertidigPostadresseNorge(utlopsdato));
-    }
-
-    public static Transformer<StrukturertAdresse, XMLMidlertidigPostadresseNorge> toXMLMatrikkeladresse(DateTime utlopsdato, Optional<String> adresseeier) {
-        return first(new StrukturertAdresseToXMLMatrikkeladresse()).then(new WithCOadresse(adresseeier)).then(new XMLGeografiskAdresseToXMLMidlertidigPostadresseNorge(utlopsdato));
-    }
-
-    public static StrukturertAdresseToXMLGateadresse toXMLGateadresse() {
-        return new StrukturertAdresseToXMLGateadresse();
-    }
-
 
     private Transform() { }
 }
