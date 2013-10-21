@@ -1,10 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform;
 
 import no.nav.modig.lang.option.Optional;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.konto.UtenlandskKonto;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.feil.XMLForretningsmessigUnntak;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoNorge;
-import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontonummerUtland;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLElektroniskAdresse;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLElektroniskKommunikasjonskanal;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLKodeverdi;
@@ -49,9 +47,6 @@ public final class Transform {
 
     public static Transformer<String, XMLBankkontoNorge> toXMLBankkontoNorge() {
         return new StringToXMLBankkontoNorge();
-    }
-    public static Transformer<UtenlandskKonto, XMLBankkontonummerUtland> toXMLBankkontonummerUtland() {
-        return new BankkontoUtlandToXMLBankkontonummerUtland();
     }
 
     public static Transformer<XMLElektroniskAdresse, XMLElektroniskKommunikasjonskanal> toXMLElektroniskKommunkasjonskanal() {
