@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser;
 
+import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
@@ -35,6 +36,9 @@ public class WicketApplication extends WebApplication {
     @Inject
     private ApplicationContext applicationContext;
 
+    @Inject
+    private CmsContentRetriever cmsContentRetriever;
+
     public static WicketApplication get() {
         return (WicketApplication) Application.get();
     }
@@ -62,6 +66,7 @@ public class WicketApplication extends WebApplication {
         mountPage("loggut", LogoutPage.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
+        getResourceSettings().getStringResourceLoaders().add(0, new CmsResourceLoader(cmsContentRetriever));
     }
 
     public ApplicationContext getApplicationContext() {
