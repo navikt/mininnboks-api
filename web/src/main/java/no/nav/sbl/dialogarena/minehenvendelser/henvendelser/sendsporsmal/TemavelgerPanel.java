@@ -6,6 +6,7 @@ import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -31,13 +32,7 @@ public class TemavelgerPanel extends Panel {
 
         WebMarkupContainer container = new WebMarkupContainer("tema-container");
         container.add(new TemaListe("tema-liste", alleTema));
-        Link<Void> avbrytLink = new Link<Void>("avbryt") {
-            @Override
-            public void onClick() {
-                setResponsePage(Innboks.class);
-            }
-        };
-        container.add(avbrytLink);
+        container.add(new BookmarkablePageLink<>("avbryt", Innboks.class));
         add(container);
     }
 
