@@ -9,11 +9,14 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetalj
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserSikkerhetsbegrensning;
+import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkonto;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBruker;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoNorge;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoUtland;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontonummer;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontonummerUtland;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLNorskIdent;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPersonidenter;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPostadressetyper;
@@ -98,6 +101,20 @@ public class OppdaterBrukerprofilConsumerTest {
         service.oppdaterPerson(p);
 
         assertTrue(webServiceStub.sistOppdatert.getBankkonto() instanceof no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoNorge);
+    }
+
+    @Test
+    public void senderBankkontoUtlandMedKontonummer() {
+        String kontonummer = "123456";
+        p.getPersonFraTPS().setBankkonto(new XMLBankkontoUtland().withBankkontoUtland(new XMLBankkontonummerUtland().withBankkontonummer(kontonummer)));
+
+        service.oppdaterPerson(p);
+
+        XMLBankkonto xmlbankkonto = webServiceStub.sistOppdatert.getBankkonto();
+
+        assertTrue(xmlbankkonto instanceof no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoUtland);
+        assertThat(((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoUtland) xmlbankkonto).getBankkontoUtland().getBankkontonummer(), is(kontonummer));
+
     }
 
     @Test(expected = SystemException.class)

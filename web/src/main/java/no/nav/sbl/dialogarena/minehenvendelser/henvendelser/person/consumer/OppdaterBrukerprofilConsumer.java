@@ -6,6 +6,8 @@ import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummer;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummertype;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLBankkontoNorgeInToXMLBankkontoNorgeOut;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLBankkontoUtlandInToXMLBankkontoUtlandOut;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLPersonidenterInToXMLPersonidenterOut;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLPostadresseTyperInToXMLPostadresseTyperOut;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
@@ -91,7 +93,6 @@ public class OppdaterBrukerprofilConsumer {
 
     private void populateAdresser(Person person, XMLBruker xmlBruker) {
         xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(person.getPersonFraTPS().getGjeldendePostadresseType()));
-
     }
 
     private void populatePreferanser(Person person, XMLBruker xmlBruker) {
@@ -137,9 +138,9 @@ public class OppdaterBrukerprofilConsumer {
     private void populateBankkonto(Person person, XMLBruker xmlBruker) {
         XMLBankkonto bankkkonto = person.getPersonFraTPS().getBankkonto();
         if (bankkkonto instanceof XMLBankkontoNorge) {
-            xmlBruker.withBankkonto(new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoNorge());
+            xmlBruker.withBankkonto(new XMLBankkontoNorgeInToXMLBankkontoNorgeOut().transform((XMLBankkontoNorge) bankkkonto));
         } else if (bankkkonto instanceof XMLBankkontoUtland) {
-            xmlBruker.withBankkonto(new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoUtland());
+            xmlBruker.withBankkonto(new XMLBankkontoUtlandInToXMLBankkontoUtlandOut().transform((XMLBankkontoUtland) bankkkonto));
         } else {
             xmlBruker.withBankkonto(null);
         }
