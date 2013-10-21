@@ -19,6 +19,9 @@ import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLRetning
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLSpraak;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLTelefonnummer;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkonto;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoNorge;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoUtland;
 
 import static no.nav.modig.lang.option.Optional.optional;
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform.Transform.toXMLTelefontype;
@@ -44,7 +47,7 @@ public class OppdaterBrukerprofilConsumer {
 
         populatePreferanser(person, xmlBruker);
         populateBankkonto(person, xmlBruker);
-        
+
         // populateMidlertidigAdresse(person, xmlBruker);
         // xmlBruker.withMidlertidigPostadresse((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse) xmlBrukerFraTPS.getMidlertidigPostadresse());
 
@@ -128,19 +131,14 @@ public class OppdaterBrukerprofilConsumer {
     }*/
 
     private void populateBankkonto(Person person, XMLBruker xmlBruker) {
-//        xmlBruker.withBankkonto(person.getPersonFraTPS().getBankkonto());
-//        Optional<? extends XMLBankkonto> valgtBankkonto;
-//        if (person.har(ValgtKontotype.NORGE)) {
-//            valgtBankkonto = optional(person.getKontonummer()).map(toXMLBankkontoNorge());
-//        } else if (person.har(ValgtKontotype.UTLAND)) {
-//            valgtBankkonto = optional(person.getBankkontoUtland()).map(toXMLBankkontonummerUtland()).map(toXMLBankkontoUtland());
-//        } else {
-//            valgtBankkonto = none();
-//        }
-//
-//        for (XMLBankkonto bankkonto : valgtBankkonto) {
-//            xmlBruker.withBankkonto(bankkonto);
-//        }
+        XMLBankkonto bankkkonto = person.getPersonFraTPS().getBankkonto();
+        if (bankkkonto instanceof XMLBankkontoNorge) {
+            xmlBruker.withBankkonto(new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoNorge());
+        } else if (bankkkonto instanceof XMLBankkontoUtland) {
+            xmlBruker.withBankkonto(new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoUtland());
+        } else {
+            xmlBruker.withBankkonto(null);
+        }
     }
 
     private Optional<XMLTelefonnummer> telefonnummerKanal(Telefonnummertype type, Telefonnummer nr) {

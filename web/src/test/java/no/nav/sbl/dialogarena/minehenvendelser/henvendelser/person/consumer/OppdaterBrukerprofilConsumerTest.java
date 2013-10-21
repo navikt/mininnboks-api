@@ -12,6 +12,8 @@ import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinforma
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBruker;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoNorge;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontonummer;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLNorskIdent;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPersonidenter;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPostadressetyper;
@@ -30,6 +32,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 
@@ -90,6 +93,14 @@ public class OppdaterBrukerprofilConsumerTest {
         assertThat(webServiceStub.sistOppdatert.getPreferanser().isElektroniskKorrespondanse(), is(p.getPreferanser().isElektroniskSamtykke()));
     }
 
+    @Test
+    public void senderBankkontoNorge() {
+
+        service.oppdaterPerson(p);
+
+        assertTrue(webServiceStub.sistOppdatert.getBankkonto() instanceof no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoNorge);
+    }
+
     @Test(expected = SystemException.class)
     public void sikkerhetsFeilWrappesISystemException() throws Exception {
         OppdaterBrukerprofilConsumer consumer = new OppdaterBrukerprofilConsumer(webServiceMock);
@@ -114,9 +125,12 @@ public class OppdaterBrukerprofilConsumerTest {
                 .withIdent(
                         new XMLNorskIdent().
                                 withIdent("***REMOVED***").
-                                withType(new XMLPersonidenter().
-                                        withValue("FOEDSELSNUMMER")))
+                                withType(new XMLPersonidenter()
+                                        .withValue("FOEDSELSNUMMER")))
                 .withGjeldendePostadresseType(new XMLPostadressetyper().withValue("FOLKEREGISTRERT"))
+                .withBankkonto(new XMLBankkontoNorge()
+                        .withBankkonto(new XMLBankkontonummer()
+                                .withBankkontonummer("123456789")))
                 .withPreferanser(new XMLPreferanser()
                         .withMaalform(new XMLSpraak().withValue("SE"))
                         .withElektroniskKorrespondanse(false)
