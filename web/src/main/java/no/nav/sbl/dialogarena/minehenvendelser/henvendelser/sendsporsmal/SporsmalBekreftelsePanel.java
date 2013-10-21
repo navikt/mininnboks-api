@@ -1,14 +1,12 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
-
-import org.apache.wicket.Session;
+import no.nav.sbl.dialogarena.time.Datoformat;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
-import org.joda.time.DateTime;
 
 public class SporsmalBekreftelsePanel extends Panel {
 
@@ -17,15 +15,9 @@ public class SporsmalBekreftelsePanel extends Panel {
         add(new Label("tidspunkt", new Model<String>() {
         	@Override
         	public String getObject() {
-        		DateTime tidspunkt = model.getObject().innsendingsTidspunkt;
-        		return "kl " + tidspunkt.toString("hh:mm") + " den " + tidspunkt.toString("dd. MMMM YYYY", Session.get().getLocale());
-        	}
-        }));
-        add(new Link<Void>("til-mine-henvendelser") {
-            @Override
-            public void onClick() {
-                setResponsePage(Innboks.class);
+                return Datoformat.langMedTid(model.getObject().innsendingsTidspunkt);
             }
-        });
+        }));
+        add(new BookmarkablePageLink<>("til-mine-henvendelser", Innboks.class));
     }
 }

@@ -3,9 +3,11 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser;
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
+import no.nav.sbl.dialogarena.minehenvendelser.config.utils.LocaleFromWicketSession;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.selftest.SelfTestPage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSporsmalPage;
+import no.nav.sbl.dialogarena.time.Datoformat;
 import no.nav.sbl.dialogarena.webkomponent.innstillinger.LogoutPage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
@@ -67,6 +69,8 @@ public class WicketApplication extends WebApplication {
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
         getResourceSettings().getStringResourceLoaders().add(0, new CmsResourceLoader(cmsContentRetriever));
+
+        Datoformat.brukLocaleFra(LocaleFromWicketSession.INSTANCE);
     }
 
     public ApplicationContext getApplicationContext() {
