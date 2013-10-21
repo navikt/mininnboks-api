@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.service;
 
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.Person;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.HentBrukerProfilConsumer;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.OppdaterBrukerprofilConsumer;
 

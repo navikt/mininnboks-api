@@ -1,6 +1,6 @@
-package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform;
+package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform;
 
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.Person;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPreferanser;

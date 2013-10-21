@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform;
+package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform;
 
 import no.nav.modig.lang.option.Optional;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.feil.XMLForretningsmessigUnntak;

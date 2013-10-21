@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person;
+package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer;
 
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker;

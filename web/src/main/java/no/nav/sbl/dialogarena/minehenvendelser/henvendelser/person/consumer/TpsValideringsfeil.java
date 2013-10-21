@@ -10,7 +10,7 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.exists;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.modig.lang.option.Optional.optional;
-import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform.Transform.feilaarsakkode;
+import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.Transform.feilaarsakkode;
 
 public enum TpsValideringsfeil {
 
