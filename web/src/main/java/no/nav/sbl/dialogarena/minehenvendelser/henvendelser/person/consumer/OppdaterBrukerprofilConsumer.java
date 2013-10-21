@@ -42,11 +42,10 @@ public class OppdaterBrukerprofilConsumer {
                 .withType(new XMLPersonidenterInToXMLPersonidenterOut().transform(person.getPersonFraTPS().getIdent().getType()));
 
         XMLBruker xmlBruker = new XMLBruker().withIdent(ident);
-        no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker xmlBrukerFraTPS = person.getPersonFraTPS();
-        xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(xmlBrukerFraTPS.getGjeldendePostadresseType()));
 
         populatePreferanser(person, xmlBruker);
         populateBankkonto(person, xmlBruker);
+        populateAdresser(person, xmlBruker);
 
         // populateMidlertidigAdresse(person, xmlBruker);
         // xmlBruker.withMidlertidigPostadresse((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse) xmlBrukerFraTPS.getMidlertidigPostadresse());
@@ -88,6 +87,11 @@ public class OppdaterBrukerprofilConsumer {
                             e);
             }
         }
+    }
+
+    private void populateAdresser(Person person, XMLBruker xmlBruker) {
+        xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(person.getPersonFraTPS().getGjeldendePostadresseType()));
+
     }
 
     private void populatePreferanser(Person person, XMLBruker xmlBruker) {

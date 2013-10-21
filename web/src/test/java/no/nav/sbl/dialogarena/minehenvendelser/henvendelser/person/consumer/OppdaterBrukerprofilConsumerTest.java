@@ -67,7 +67,6 @@ public class OppdaterBrukerprofilConsumerTest {
 
         assertThat(webServiceStub.sistOppdatert.getIdent().getIdent(), is(personFraTPS.getIdent().getIdent()));
         assertThat(webServiceStub.sistOppdatert.getIdent().getType().getValue(), is(personFraTPS.getIdent().getType().getValue()));
-
     }
 
     @Test
