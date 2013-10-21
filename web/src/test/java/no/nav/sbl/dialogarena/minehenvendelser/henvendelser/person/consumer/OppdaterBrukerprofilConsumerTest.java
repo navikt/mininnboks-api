@@ -114,6 +114,16 @@ public class OppdaterBrukerprofilConsumerTest {
 
         assertTrue(xmlbankkonto instanceof no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoUtland);
         assertThat(((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoUtland) xmlbankkonto).getBankkontoUtland().getBankkontonummer(), is(kontonummer));
+    }
+
+    @Test
+    public void senderMedGjeldendePostadresse() {
+        String adresse = "Thranes Gate 98";
+        p.getPersonFraTPS().setGjeldendePostadresseType(new XMLPostadressetyper().withValue(adresse));
+
+        service.oppdaterPerson(p);
+
+        assertThat(webServiceStub.sistOppdatert.getGjeldendePostadresseType().getValue(), is(adresse));
 
     }
 
