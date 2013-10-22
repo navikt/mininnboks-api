@@ -2,8 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer;
 
 
 import no.nav.modig.core.exception.ApplicationException;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform.PersonTransform;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.PersonTransform;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.HentKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning;

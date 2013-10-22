@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform;
+package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform;
 
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.feil.XMLForretningsmessigUnntak;
 import org.apache.commons.collections15.Transformer;
@@ -12,5 +12,4 @@ public class XMLUnntakTransform {
             return unntak.getFeilaarsak();
         }
     }
-
 }
