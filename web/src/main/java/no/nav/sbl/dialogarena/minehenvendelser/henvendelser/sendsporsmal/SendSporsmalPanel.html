@@ -14,12 +14,10 @@
             <section class="tekstfelt">
                 <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" rows="8"></textarea>
             </section>
-            <ul>
-                <li><span id="antall-tegn" /><span id="antall-tegn-tekst" /></li>
-                <li wicket:id="validering"></li>
-                <li><a wicket:id="send" class="send-link knapp-hoved-stor" href="#"><wicket:message key="send-inn">[[Send inn]]</wicket:message></a></li>
-                <li><a wicket:id="avbryt" class="avbryt" href="#"><wicket:message key="avbryt">[[Avbryt]]</wicket:message></a></li>
-            </ul>
+            <div><span id="antall-tegn" /><span id="antall-tegn-tekst" /></div>
+            <div wicket:id="validering"></div>
+            <div><a wicket:id="send" class="send-link knapp-hoved-stor" href="#"><wicket:message key="send-inn">[[Send inn]]</wicket:message></a></div>
+            <div class="avbryt"><a wicket:id="avbryt" href="#"><wicket:message key="avbryt">[[Avbryt]]</wicket:message></a></div>
         </form>
     </article>
 </wicket:panel>

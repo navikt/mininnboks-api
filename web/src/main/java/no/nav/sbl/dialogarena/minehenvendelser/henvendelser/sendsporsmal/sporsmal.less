@@ -1,13 +1,6 @@
-@containerWidth: 700px;
+@containerWidth: 650px;
 @morkeBlaa: #0067c5;
 @navRodt: #c30000;
-
-h1 {
-  font-size: 2.5em;
-  text-align: center;
-  margin: 1em;
-  font-weight: 600;
-}
 
 .tema-panel {
   padding: 2em;
@@ -22,45 +15,32 @@ h1 {
     margin: 0;
     text-transform: uppercase;
   }
+  hr {
+    border: none;
+  }
   .robust-strek {
     background-color: transparent;
     margin-top: 0;
   }
-  .tema {
-    background-color: #ddd;
-    margin: 0 auto 0.5em;
-    max-width: 400px;
-    cursor: pointer;
-    p {
-      font-size: 1.2em;
-      color: black;
-      padding: 0.5em 1.5em;
-      margin: 0;
+  form {
+    margin: 0 auto;
+    .temavelger {
+      width: 60%;
+      margin: 0 auto;
     }
-    &:hover {
-      background-color: @morkeBlaa;
-      p {
-        color: white;
-      }
+    hr {
+      margin: 2em auto;
+      width: 100%;
+      height: 1px;
+      border-style: none;
+      background-color: #ddd;
     }
-    &:last-child {
-      margin-top: 2em;
-      background-color: transparent;
+    .fortsett {
+      margin-top: 1em;
+      text-align: center;
     }
-  }
-  hr {
-    margin: 2em auto;
-    width: 100%;
-    height: 1px;
-    border-style: none;
-    background-color: #ddd;
-  }
-  .avbryt {
-    color: @morkeBlaa;
-    text-decoration: none;
-    font-size: 1.25em;
-    &:hover {
-      text-decoration: underline;
+    .avbryt {
+      text-align: center;
     }
   }
 }
@@ -69,10 +49,10 @@ h1 {
   overflow: hidden;
   max-width: @containerWidth;
   margin: 0 auto;
+  padding: 2em;
+  background-color: white;
   form {
     width: 100%;
-    padding: 2em;
-    background-color: white;
     text-align: center;
     h2 {
       font-weight: 600;
@@ -103,46 +83,53 @@ h1 {
         margin-bottom: 1em;
       }
     }
-    ul {
-      list-style: none;
-      text-align: center;
-      padding: 0;
-      margin: 0;
-      li {
-        padding: 1em;
-        #antall-tegn {
-          font-weight: bold;
-          &.overskrider {
-            color: @navRodt;
-          }
-        }
-        #antall-tegn-tekst {
-          text-transform: uppercase;
-        }
-        ul.feedbackPanel {
-          padding: 1rem 1rem 1rem 2rem;
-          list-style-type: none;
-          color: @white;
-          background-color: @navRodt;
-          font: 1.43rem Modus, "Helvetica Neue", Helvetica, Arial, sans-serif;
-          li:before {
-            content: "* ";
-          }
-        }
-        &:last-child, &:nth-child(2) {
-          padding: 0;
+    div {
+      margin-bottom: 1em;
+      #antall-tegn {
+        font-weight: bold;
+        &.overskrider {
+          color: @navRodt;
         }
       }
-      .avbryt {
-        padding-top: 0;
-        color: @morkeBlaa;
-        text-decoration: none;
-        font-size: 1.25em;
-        &:hover {
-          text-decoration: underline;
-        }
+      #antall-tegn-tekst {
+        text-transform: uppercase;
+      }
+      &:last-child {
+        margin: 0;
       }
     }
+  }
+}
+
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  margin: 1em;
+  font-weight: 600;
+}
+
+ul.feedbackPanel {
+  text-align: center;
+  padding: 1rem 1rem 1rem 2rem;
+  margin: 0;
+  list-style-type: none;
+  color: @white;
+  background-color: @navRodt;
+  font: 1.43rem Modus, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  li:before {
+    content: "* ";
+  }
+}
+
+.avbryt {
+  margin-top: 1em;
+  a {
+    color: @morkeBlaa;
+    text-decoration: none;
+    font-size: 1.25em;
+  }
+  &:hover {
+    text-decoration: underline;
   }
 }
 

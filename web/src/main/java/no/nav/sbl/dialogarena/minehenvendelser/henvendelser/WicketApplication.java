@@ -1,7 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser;
 
-import java.util.Locale;
-import javax.inject.Inject;
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
@@ -18,8 +16,10 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
 
+import javax.inject.Inject;
+import java.util.Locale;
+
 import static no.nav.modig.frontend.FrontendModules.EKSTERNFLATE;
-import static no.nav.modig.frontend.FrontendModules.UNDERSCORE;
 import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
 import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
 import static no.nav.modig.frontend.MetaTag.XUA_IE_EDGE;
@@ -49,7 +49,7 @@ public class WicketApplication extends WebApplication {
     protected void init() {
         super.init();
         new FrontendConfigurator()
-                .withModules(EKSTERNFLATE, UNDERSCORE)
+                .withModules(EKSTERNFLATE)
                 .addMetas(CHARSET_UTF8, VIEWPORT_SCALE_1, XUA_IE_EDGE)
                 .addLess(TILBAKEMELDING_LESS, INNSTILLINGER_LESS, new PackageResourceReference(Innboks.class, "innboks.less"),
                         new PackageResourceReference(SendSporsmalPage.class, "sporsmal.less"))
