@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
+import org.apache.wicket.extensions.wizard.Wizard;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -15,7 +16,7 @@ import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 public class SendSporsmalPage extends BasePage implements SideNavigerer {
 
 
-    private enum Side {TEMAVELGER, SEND_SPORSMAL, SPORMSMAL_BEKREFTELSE}
+    private enum Side {TEMAVELGER, SAMTYKKE, SEND_SPORSMAL, SPORMSMAL_BEKREFTELSE}
 
     @Inject
     HenvendelseService henvendelseService;
@@ -31,13 +32,16 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
         TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", asList(Tema.values()), model, this);
         temavelger.add(visibleIf(aktivSideEr(Side.TEMAVELGER)));
 
+        SamtykkePanel avgiSamtykke = new SamtykkePanel("avgi-samtykke", this);
+        avgiSamtykke.add(visibleIf(aktivSideEr(Side.SAMTYKKE)));
+
         SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, this, henvendelseService);
         sendSporsmal.add(visibleIf(aktivSideEr(Side.SEND_SPORSMAL)));
 
         SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse", model);
         sporsmalBekreftelse.add(visibleIf(aktivSideEr(Side.SPORMSMAL_BEKREFTELSE)));
 
-        add(temavelger, sendSporsmal, sporsmalBekreftelse);
+        add(temavelger, avgiSamtykke, sendSporsmal, sporsmalBekreftelse);
 
     }
 
