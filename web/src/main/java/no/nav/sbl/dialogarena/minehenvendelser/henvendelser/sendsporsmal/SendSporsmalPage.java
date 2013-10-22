@@ -2,7 +2,9 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
-import org.apache.wicket.extensions.wizard.Wizard;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.Person;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.service.PersonService;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.security.Brukerkontekst;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -20,6 +22,12 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
 
     @Inject
     HenvendelseService henvendelseService;
+
+    @Inject
+    PersonService personService;
+
+    @Inject
+    Brukerkontekst brukerkontekst;
 
     IModel<Side> aktivSide = new Model<>(Side.values()[0]);
     CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
@@ -57,6 +65,11 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
     @Override
     public void neste() {
         aktivSide.setObject(Side.values()[aktivSide.getObject().ordinal() + 1]);
+        if (aktivSide.getObject() == Side.SAMTYKKE) {
+            Person person = personService.hentPerson(brukerkontekst.getBrukerId());
+            if (person.getPreferanser().isElektroniskSamtykke()) {
+                neste();
+            }
+        }
     }
-
 }
