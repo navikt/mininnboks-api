@@ -2,10 +2,9 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer;
 
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.modig.core.exception.SystemException;
-import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummer;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.telefonnummer.Telefonnummertype;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLBankkontoNorgeInToXMLBankkontoNorgeOut;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLBankkontoUtlandInToXMLBankkontoUtlandOut;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLPersonidenterInToXMLPersonidenterOut;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.transform.XMLPostadresseTyperInToXMLPostadresseTyperOut;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
@@ -15,17 +14,13 @@ import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinforma
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBruker;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLNorskIdent;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLPreferanser;
-import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLRetningsnumre;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLSpraak;
-import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLTelefonnummer;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkonto;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoNorge;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoUtland;
-
-import static no.nav.modig.lang.option.Optional.optional;
-import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.transform.Transform.toXMLTelefontype;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresseNorge;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLMidlertidigPostadresseUtland;
 
 
 public class OppdaterBrukerprofilConsumer {
@@ -42,29 +37,11 @@ public class OppdaterBrukerprofilConsumer {
                 .withType(new XMLPersonidenterInToXMLPersonidenterOut().transform(person.getPersonFraTPS().getIdent().getType()));
 
         XMLBruker xmlBruker = new XMLBruker().withIdent(ident);
-        no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker xmlBrukerFraTPS = person.getPersonFraTPS();
-        xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(xmlBrukerFraTPS.getGjeldendePostadresseType()));
 
         populatePreferanser(person, xmlBruker);
         populateBankkonto(person, xmlBruker);
-
-        // populateMidlertidigAdresse(person, xmlBruker);
-        // xmlBruker.withMidlertidigPostadresse((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresse) xmlBrukerFraTPS.getMidlertidigPostadresse());
-
-        //  List<XMLElektroniskKommunikasjonskanal> kanaler = xmlBrukerFraTPS.getElektroniskKommunikasjonskanal();
-
-        //    for (XMLElektroniskKommunikasjonskanal kanal : kanaler) {
-        //        //xmlBruker.withElektroniskKommunikasjonskanal(toxml)
-
-        //  }
-
-
-//        xmlBruker.withElektroniskKommunikasjonskanal(several(
-//                telefonnummerKanal(Telefonnummertype.HJEMMETELEFON, person.getHjemmetelefon()).map(toXMLElektroniskKommunkasjonskanal()),
-//                telefonnummerKanal(Telefonnummertype.JOBBTELEFON, person.getJobbtelefon()).map(toXMLElektroniskKommunkasjonskanal()),
-//                telefonnummerKanal(Telefonnummertype.MOBIL, person.getMobiltelefon()).map(toXMLElektroniskKommunkasjonskanal())
-//        ).collect());
-
+        populateAdresser(person, xmlBruker);
+        populateElektroniskeKanaler(person, xmlBruker);
 
         try {
             behandleBrukerprofilService.oppdaterKontaktinformasjonOgPreferanser(new XMLOppdaterKontaktinformasjonOgPreferanserRequest().withPerson(xmlBruker));
@@ -87,6 +64,30 @@ public class OppdaterBrukerprofilConsumer {
                                     "Feilkilde: " + e.getFaultInfo().getFeilkilde(),
                             e);
             }
+        }
+    }
+
+    private void populateElektroniskeKanaler(Person person, XMLBruker xmlBruker) {
+        //        xmlBruker.withElektroniskKommunikasjonskanal(several(
+//                telefonnummerKanal(Telefonnummertype.HJEMMETELEFON, person.getHjemmetelefon()).map(toXMLElektroniskKommunkasjonskanal()),
+//                telefonnummerKanal(Telefonnummertype.JOBBTELEFON, person.getJobbtelefon()).map(toXMLElektroniskKommunkasjonskanal()),
+//                telefonnummerKanal(Telefonnummertype.MOBIL, person.getMobiltelefon()).map(toXMLElektroniskKommunkasjonskanal())
+//        ).collect());
+    }
+
+    private void populateAdresser(Person person, XMLBruker xmlBruker) {
+        xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(person.getPersonFraTPS().getGjeldendePostadresseType()));
+
+        populateMidlertidigAdresse(person, xmlBruker);
+    }
+
+    private void populateMidlertidigAdresse(Person person, XMLBruker xmlBruker) {
+        if (person.getPersonFraTPS().getMidlertidigPostadresse() instanceof XMLMidlertidigPostadresseNorge) {
+            xmlBruker.withMidlertidigPostadresse(new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresseNorge());
+        } else if (person.getPersonFraTPS().getMidlertidigPostadresse() instanceof XMLMidlertidigPostadresseUtland) {
+            xmlBruker.withMidlertidigPostadresse(new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLMidlertidigPostadresseUtland());
+        } else {
+            xmlBruker.setMidlertidigPostadresse(null);
         }
     }
 
@@ -133,23 +134,11 @@ public class OppdaterBrukerprofilConsumer {
     private void populateBankkonto(Person person, XMLBruker xmlBruker) {
         XMLBankkonto bankkkonto = person.getPersonFraTPS().getBankkonto();
         if (bankkkonto instanceof XMLBankkontoNorge) {
-            xmlBruker.withBankkonto(new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoNorge());
+            xmlBruker.withBankkonto(new XMLBankkontoNorgeInToXMLBankkontoNorgeOut().transform((XMLBankkontoNorge) bankkkonto));
         } else if (bankkkonto instanceof XMLBankkontoUtland) {
-            xmlBruker.withBankkonto(new no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoUtland());
+            xmlBruker.withBankkonto(new XMLBankkontoUtlandInToXMLBankkontoUtlandOut().transform((XMLBankkontoUtland) bankkkonto));
         } else {
             xmlBruker.withBankkonto(null);
         }
     }
-
-    private Optional<XMLTelefonnummer> telefonnummerKanal(Telefonnummertype type, Telefonnummer nr) {
-        if (nr != null && isNotBlank(nr.getLandkode()) && isNotBlank(nr.getNummer()) && isNotBlank(type.name())) {
-            return optional(new XMLTelefonnummer()
-                    .withType(toXMLTelefontype().transform(type))
-                    .withIdentifikator(nr.getNummer())
-                    .withRetningsnummer(new XMLRetningsnumre().withValue(nr.getLandkode())));
-        } else {
-            return optional(null);
-        }
-    }
-
 }

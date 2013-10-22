@@ -2,18 +2,19 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer;
 
 import no.nav.modig.core.exception.ApplicationException;
 import no.nav.modig.core.exception.SystemException;
-import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.Person;
-import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.adresse.Adresse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.kontaktdetaljer.Preferanser;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinformasjonOgPreferanserSikkerhetsbegrensning;
+import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkonto;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBruker;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoNorge;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoUtland;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontonummer;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontonummerUtland;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLNorskIdent;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPersonidenter;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPostadressetyper;
@@ -47,9 +48,7 @@ public class OppdaterBrukerprofilConsumerTest {
 
     private WebService webServiceStub = new WebService();
     private final OppdaterBrukerprofilConsumer service = new OppdaterBrukerprofilConsumer(webServiceStub);
-    private final Optional<Adresse> ingenFolkeregistrertAdresse = Optional.none();
     private static final LocalDate IDAG = new LocalDate(1981, 6, 24);
-    private static final LocalDate OM_ET_AAR = IDAG.plusYears(1).minusDays(1);
 
     private Person p;
     private no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker personFraTPS;
@@ -67,7 +66,6 @@ public class OppdaterBrukerprofilConsumerTest {
 
         assertThat(webServiceStub.sistOppdatert.getIdent().getIdent(), is(personFraTPS.getIdent().getIdent()));
         assertThat(webServiceStub.sistOppdatert.getIdent().getType().getValue(), is(personFraTPS.getIdent().getType().getValue()));
-
     }
 
     @Test
@@ -99,6 +97,30 @@ public class OppdaterBrukerprofilConsumerTest {
         service.oppdaterPerson(p);
 
         assertTrue(webServiceStub.sistOppdatert.getBankkonto() instanceof no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoNorge);
+    }
+
+    @Test
+    public void senderBankkontoUtlandMedKontonummer() {
+        String kontonummer = "123456";
+        p.getPersonFraTPS().setBankkonto(new XMLBankkontoUtland().withBankkontoUtland(new XMLBankkontonummerUtland().withBankkontonummer(kontonummer)));
+
+        service.oppdaterPerson(p);
+
+        XMLBankkonto xmlbankkonto = webServiceStub.sistOppdatert.getBankkonto();
+
+        assertTrue(xmlbankkonto instanceof no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoUtland);
+        assertThat(((no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkontoUtland) xmlbankkonto).getBankkontoUtland().getBankkontonummer(), is(kontonummer));
+    }
+
+    @Test
+    public void senderMedGjeldendePostadresse() {
+        String adresse = "Thranes Gate 98";
+        p.getPersonFraTPS().setGjeldendePostadresseType(new XMLPostadressetyper().withValue(adresse));
+
+        service.oppdaterPerson(p);
+
+        assertThat(webServiceStub.sistOppdatert.getGjeldendePostadresseType().getValue(), is(adresse));
+
     }
 
     @Test(expected = SystemException.class)
