@@ -1,7 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
-import java.io.Serializable;
-import java.util.Comparator;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype;
 import org.apache.commons.collections15.Transformer;
@@ -11,7 +9,9 @@ import org.apache.wicket.model.IModel;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SPORSMAL;
+import java.io.Serializable;
+import java.util.Comparator;
+
 import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.Henvendelsetype.SVAR;
 
 public class HenvendelseVM implements Serializable {
@@ -20,10 +20,6 @@ public class HenvendelseVM implements Serializable {
 
     public HenvendelseVM(Henvendelse henvendelse) {
         this.henvendelse = henvendelse;
-    }
-
-    public String getAvsender() {
-        return avType(SPORSMAL) ? "Ola Nordmann" : "Fra: NAV";
     }
 
     public void markerSomLest() {
@@ -35,7 +31,7 @@ public class HenvendelseVM implements Serializable {
     }
 
     public String getKortOpprettetDato() {
-        return formatertDato(henvendelse.opprettet, "dd.MM.yyyy");
+        return formatertDato(henvendelse.opprettet, "dd.MM.yyyy 'kl' HH:mm");
     }
 
     public String getLestDato() {
