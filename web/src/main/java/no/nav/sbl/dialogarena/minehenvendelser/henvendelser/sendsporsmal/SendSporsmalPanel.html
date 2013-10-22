@@ -5,15 +5,15 @@
 </head>
 <body>
 <wicket:panel>
-    <h1>Ny melding til NAV</h1>
-    <article class="send-panel">
+    <h1 class="diger"><wicket:message key="ny-melding-overskrift">[[Ny melding til NAV]]</wicket:message></h1>
+    <article class="send-sporsmal-container send-panel">
+
+        <h2 wicket:id="tema" class="robust"></h2>
+        <hr class="robust-strek"/>
+        <p><wicket:message key="still-sporsmal-hjelp">[[Hjelpetekst]]</wicket:message></p>
+
         <form wicket:id="sporsmal-form" class="vertikal">
-            <h2 wicket:id="tema"></h2>
-            <hr class="robust-strek"/>
-            <p wicket:id="hjelpetekst">[[Hjelpetekst]]</p>
-            <section class="tekstfelt">
-                <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" rows="8"></textarea>
-            </section>
+            <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" rows="8"></textarea>
             <div><span id="antall-tegn" /><span id="antall-tegn-tekst" /></div>
             <div wicket:id="validering"></div>
             <div><a wicket:id="send" class="send-link knapp-hoved-stor" href="#"><wicket:message key="send-inn">[[Send inn]]</wicket:message></a></div>

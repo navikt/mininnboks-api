@@ -5,10 +5,14 @@
 </head>
 <body>
 <wicket:panel>
-    <article class="bekreftelse-panel">
-        <h1><wicket:message key="bekreftelse-overskrift">[[Takk, du vil få svar i løpet av 2 virkedager]]</wicket:message></h1>
-        <p><wicket:message key="bekreftelse-tidspunkt">[[Vi mottok din henvendelse ]]</wicket:message> <span wicket:id="tidspunkt">[[Tidspunkt]]</span>.</p>
-        <a wicket:id="til-mine-henvendelser" class="knapp-hoved-liten"><wicket:message key="tilbake-til-meldingsboksen">[[Til mine henvendelser]]</wicket:message></a>
+    <h1 class="diger"><wicket:message key="ny-melding-overskrift">[[Ny melding til NAV]]</wicket:message></h1>
+    <article class="send-sporsmal-container bekreftelse-panel">
+
+        <div class="robust-ikon-gront-sjekk"></div>
+        <h2 class="robust"><wicket:message key="bekreftelse-antall-dager">[[Takk, du vil få svar i løpet av x virkedager]]</wicket:message></h2>
+
+        <hr class="skillestrek-sporsmal"/>
+        <a wicket:id="til-mine-henvendelser" class="knapp-hoved-liten"><wicket:message key="til-mine-henvendelser">[[Til mine henvendelser]]</wicket:message></a>
     </article>
 </wicket:panel>
 </body>

@@ -3,85 +3,29 @@
 @navRodt: #c30000;
 
 .tema-panel {
-  padding: 2em;
-  overflow: hidden;
-  background-color: white;
-  max-width: @containerWidth;
-  margin: 0 auto;
-  text-align: center;
-  h2 {
-    font-size: 1.25em;
-    font-weight: 600;
-    margin: 0;
-    text-transform: uppercase;
-  }
-  hr {
-    border: none;
-  }
-  .robust-strek {
-    background-color: transparent;
-    margin-top: 0;
-  }
   form {
     margin: 0 auto;
     .temavelger {
       width: 60%;
       margin: 0 auto;
     }
-    hr {
-      margin: 2em auto;
-      width: 100%;
-      height: 1px;
-      border-style: none;
-      background-color: #ddd;
-    }
     .fortsett {
       margin-top: 1em;
-      text-align: center;
-    }
-    .avbryt {
       text-align: center;
     }
   }
 }
 
 .send-panel {
-  overflow: hidden;
-  max-width: @containerWidth;
-  margin: 0 auto;
-  padding: 2em;
-  background-color: white;
   form {
     width: 100%;
     text-align: center;
-    h2 {
-      font-weight: 600;
-      margin: 0;
-    }
-    hr {
-      border-style: none;
-    }
-    .tema-bar {
-      label {
-        display: inline-block;
-        margin-bottom: 1em;
-        padding: 0.2em 1em;
-        background-color: grey;
-        color: white;
-      }
-    }
-    .tekstfelt {
-      text-align: center;
-      textarea {
-        resize: none;
-        overflow: hidden;
-        display: block;
-        width: 100%;
-        margin-bottom: 1em;
-      }
-      div {
-        margin-bottom: 1em;
-      }
+    textarea {
+      resize: none;
+      overflow: hidden;
+      display: block;
+      width: 100%;
+      margin: 1em 0;
     }
     div {
       margin-bottom: 1em;
@@ -102,10 +46,35 @@
 }
 
 h1 {
-  font-size: 2.5em;
   text-align: center;
   margin: 1em;
-  font-weight: 600;
+}
+
+.send-sporsmal-container {
+  max-width: @containerWidth;
+  background-color: white;
+  text-align: center;
+  margin: 0 auto;
+  padding: 2em;
+  overflow: hidden;
+}
+
+.robust {
+  margin: 0;
+}
+
+hr.robust-strek {
+  border: none;
+  background-color: transparent;
+  margin-top: 0;
+}
+
+hr.skillestrek-sporsmal {
+  margin: 2em auto;
+  width: 100%;
+  height: 1px;
+  border-style: none;
+  background-color: #ddd;
 }
 
 ul.feedbackPanel {
@@ -123,18 +92,13 @@ ul.feedbackPanel {
 
 .avbryt {
   margin-top: 1em;
+  text-align: center;
   a {
     color: @morkeBlaa;
     text-decoration: none;
     font-size: 1.25em;
+    &:hover {
+      text-decoration: underline;
+    }
   }
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.bekreftelse-panel {
-  padding: 3em;
-  overflow: hidden;
-  text-align: center;
 }
