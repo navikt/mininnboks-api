@@ -8,6 +8,8 @@ import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.Hent
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.consumer.OppdaterBrukerprofilConsumer;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.service.PersonService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.person.service.PersonServiceTPS;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.security.Brukerkontekst;
+import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.security.ModigSecurityBrukerkontekst;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
@@ -32,6 +34,11 @@ public class ApplicationContext {
     @Bean
     public WicketApplication wicket() {
         return new WicketApplication();
+    }
+
+    @Bean
+    public Brukerkontekst brukerkontekst() {
+        return new ModigSecurityBrukerkontekst();
     }
 
     @Bean
