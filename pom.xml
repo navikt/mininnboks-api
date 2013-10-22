@@ -88,12 +88,12 @@
                 <configuration>
                     <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
                     <propertiesFiler>
-                        <nb>innhold_nb.properties</nb>
                         <nb>sbl-webkomponenter_nb.properties</nb>
+                        <nb>innhold_nb.properties</nb>
                     </propertiesFiler>
                     <menyPunktPaths>
-                        <nb>/site/2/systemsider/Modernisering/minehenvendelser/nb/tekster</nb>
                         <nb>/site/2/systemsider/Modernisering/sbl-webkomponenter/nb/tekster</nb>
+                        <nb>/site/2/systemsider/Modernisering/minehenvendelser/nb/tekster</nb>
                     </menyPunktPaths>
                 </configuration>
             </plugin>

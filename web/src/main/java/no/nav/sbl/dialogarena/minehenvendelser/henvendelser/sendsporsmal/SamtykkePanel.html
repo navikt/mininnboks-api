@@ -5,9 +5,14 @@
 </head>
 <body>
 <wicket:panel>
-    <div>
-        <p>Her skal du få samtykke</p>
-        <a href="#" wicket:id="neste">Gå videre</a>
+    <h1><wicket:message key="sendsporsmal.samtykke.overskrift-topp"></wicket:message></h1>
+    <div class="samtykke-panel">
+        <h2><wicket:message key="sendsporsmal.samtykke.overskrift"></wicket:message> </h2>
+        <div><wicket:message key="sendsporsmal.samtykke.infotekst"></wicket:message></div>
+        <a href="#" wicket:id="samtykker" class="knapp-hoved-liten">
+            <wicket:message key="sendsporsmal.samtykke.samtykk">[[Ja, jeg samtykker]]</wicket:message>
+        </a>
+        <a href="#" wicket:id="avbryt"><wicket:message key="sendsporsmal.samtykke.avbryt">[[Avbryt]]</wicket:message></a>
     </div>
 </wicket:panel>
 </body>
