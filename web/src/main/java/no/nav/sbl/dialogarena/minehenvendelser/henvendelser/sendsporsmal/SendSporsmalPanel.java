@@ -11,6 +11,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -68,12 +69,7 @@ public class SendSporsmalPanel extends Panel {
                 }
             };
 
-            Link<Void> avbryt = new Link<Void>("avbryt") {
-                @Override
-                public void onClick() {
-                    setResponsePage(Innboks.class);
-                }
-            };
+            Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
 
             add(fritekst, feedbackPanel, send, avbryt);
         }

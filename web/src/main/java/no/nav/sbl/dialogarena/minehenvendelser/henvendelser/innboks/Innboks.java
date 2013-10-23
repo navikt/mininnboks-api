@@ -1,23 +1,22 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
-import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
-import static no.nav.modig.wicket.model.ModelUtils.not;
-
-import javax.inject.Inject;
-
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.modig.wicket.events.annotations.RunOnEvents;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSporsmalPage;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+
+import javax.inject.Inject;
+
+import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
+import static no.nav.modig.wicket.model.ModelUtils.not;
 
 public class Innboks extends BasePage {
 
@@ -40,17 +39,8 @@ public class Innboks extends BasePage {
         setDefaultModel(innboksModell);
         setOutputMarkupId(true);
 
-        WebMarkupContainer topBar = new WebMarkupContainer("top-bar");
-        topBar.add(new Link<Void>("skriv-ny") {
-            @Override
-            public void onClick() {
-                setResponsePage(SendSporsmalPage.class);
-            }
-        });
-
         final AlleHenvendelserPanel alleMeldinger = new AlleHenvendelserPanel("henvendelser", innboksModell, service);
         alleMeldinger.add(hasCssClassIf("skjult", innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm));
-        DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksModell);
 
         tilInnboksLink = new AjaxLink<Void>("til-innboks") {
             @Override
@@ -60,7 +50,12 @@ public class Innboks extends BasePage {
             }
         };
         tilInnboksLink.add(hasCssClassIf("skjult", not(innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm)));
+
+        WebMarkupContainer topBar = new WebMarkupContainer("top-bar");
+        topBar.add(new BookmarkablePageLink<>("skriv-ny", SendSporsmalPage.class));
         topBar.add(tilInnboksLink);
+
+        DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksModell);
 
         add(topBar, alleMeldinger, detaljvisning);
     }
