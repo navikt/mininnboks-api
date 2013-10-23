@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser;
 
+import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
@@ -25,8 +26,6 @@ import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
 import static no.nav.modig.frontend.MetaTag.XUA_IE_EDGE;
 import static no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel.INNSTILLINGER_JS;
 import static no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel.INNSTILLINGER_LESS;
-import static no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer.TILBAKEMELDING_JS;
-import static no.nav.sbl.dialogarena.webkomponent.tilbakemelding.web.TilbakemeldingContainer.TILBAKEMELDING_LESS;
 
 /**
  * Kontekst for wicket
@@ -35,6 +34,9 @@ public class WicketApplication extends WebApplication {
 
     @Inject
     private ApplicationContext applicationContext;
+
+    @Inject
+    private CmsContentRetriever cmsContentRetriever;
 
     public static WicketApplication get() {
         return (WicketApplication) Application.get();
@@ -51,9 +53,9 @@ public class WicketApplication extends WebApplication {
         new FrontendConfigurator()
                 .withModules(EKSTERNFLATE)
                 .addMetas(CHARSET_UTF8, VIEWPORT_SCALE_1, XUA_IE_EDGE)
-                .addLess(TILBAKEMELDING_LESS, INNSTILLINGER_LESS, new PackageResourceReference(Innboks.class, "innboks.less"),
+                .addLess(INNSTILLINGER_LESS, new PackageResourceReference(Innboks.class, "innboks.less"),
                         new PackageResourceReference(SendSporsmalPage.class, "sporsmal.less"))
-                .addScripts(TILBAKEMELDING_JS, INNSTILLINGER_JS)
+                .addScripts(INNSTILLINGER_JS)
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
@@ -63,6 +65,7 @@ public class WicketApplication extends WebApplication {
         mountPage("loggut", LogoutPage.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
+        getResourceSettings().getStringResourceLoaders().add(0, new CmsResourceLoader(cmsContentRetriever));
     }
 
     public ApplicationContext getApplicationContext() {
