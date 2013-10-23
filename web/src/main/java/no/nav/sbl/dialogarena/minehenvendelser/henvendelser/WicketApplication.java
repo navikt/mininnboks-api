@@ -23,7 +23,6 @@ import javax.inject.Inject;
 import java.util.Locale;
 
 import static no.nav.modig.frontend.FrontendModules.EKSTERNFLATE;
-import static no.nav.modig.frontend.FrontendModules.UNDERSCORE;
 import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
 import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
 import static no.nav.modig.frontend.MetaTag.XUA_IE_EDGE;
@@ -54,7 +53,7 @@ public class WicketApplication extends WebApplication {
     protected void init() {
         super.init();
         new FrontendConfigurator()
-                .withModules(EKSTERNFLATE, UNDERSCORE)
+                .withModules(EKSTERNFLATE)
                 .addMetas(CHARSET_UTF8, VIEWPORT_SCALE_1, XUA_IE_EDGE)
                 .addLess(INNSTILLINGER_LESS, new PackageResourceReference(Innboks.class, "innboks.less"),
                         new PackageResourceReference(SendSporsmalPage.class, "sporsmal.less"))

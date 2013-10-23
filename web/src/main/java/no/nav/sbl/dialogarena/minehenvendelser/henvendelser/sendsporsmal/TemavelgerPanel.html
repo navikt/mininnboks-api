@@ -5,16 +5,20 @@
 </head>
 <body>
 <wicket:panel>
-    <h1>Ny melding til NAV</h1>
-    <div wicket:id="tema-container" class="tema-panel">
-        <h2>Hva gjelder henvendelsen?</h2>
+    <h1 class="diger"><wicket:message key="ny-melding-overskrift">[[Ny melding til NAV]]</wicket:message></h1>
+    <article wicket:id="tema-container" class="send-sporsmal-container tema-panel">
+
+        <h2 class="robust">Hva gjelder henvendelsen?</h2>
         <hr class="robust-strek"/>
-        <div wicket:id="tema-liste" class="tema">
-            <p wicket:id="tema"/>
-        </div>
-        <hr/>
-        <a wicket:id="avbryt" class="avbryt" href="#"><wicket:message key="avbryt">[[Avbryt]]</wicket:message></a>
-    </div>
+
+        <form>
+            <section wicket:id="tema" class="temavelger" />
+            <hr class="skillestrek-sporsmal"/>
+            <div wicket:id="feedback"></div>
+            <div class="fortsett"><a wicket:id="fortsett" class="knapp-hoved-stor" href="#"><wicket:message key="temavelger.fortsett">[[Fortsett]]</wicket:message></a></div>
+            <div class="avbryt"><a wicket:id="avbryt" href="#"><wicket:message key="avbryt">[[Avbryt]]</wicket:message></a></div>
+        </form>
+    </article>
 </wicket:panel>
 </body>
 </html>
