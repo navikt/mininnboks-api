@@ -26,4 +26,8 @@ public class Sporsmal implements Serializable {
         return fritekst;
     }
 
+    public boolean harTema() {
+        return tema != null;
+    }
+
 }

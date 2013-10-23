@@ -3,7 +3,6 @@ package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.Broadcast;
@@ -12,12 +11,10 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.validation.IValidatable;
@@ -33,7 +30,11 @@ public class SendSporsmalPanel extends Panel {
         super(id);
         this.sideNavigerer = sideNavigerer;
         this.henvendelseService = henvendelseService;
-        add(new SporsmalForm("sporsmal-form", model));
+
+        Label tema = new Label("tema", new StringResourceModel("${tema}", model));
+        tema.setOutputMarkupId(true);
+
+        add(tema, new SporsmalForm("sporsmal-form", model));
     }
 
     private final class SporsmalForm extends Form<Sporsmal> {
@@ -43,19 +44,12 @@ public class SendSporsmalPanel extends Panel {
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            Label tema = new Label("tema", new StringResourceModel("${tema}", model));
-            tema.setOutputMarkupId(true);
-
-            Label hjelpetekst = new Label("hjelpetekst", new ResourceModel("still-sporsmal-hjelp"));
-
-            final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
-            feedbackPanel.setOutputMarkupId(true);
-
             TextArea<Object> fritekst = new TextArea<>("fritekst");
             fritekst.setRequired(true);
             fritekst.add(NewlineCorrectingStringValidator.maximumLength(FRITEKST_MAKS_LENGDE));
 
-            Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
+            final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
+            feedbackPanel.setOutputMarkupId(true);
 
             AjaxSubmitLink send = new AjaxSubmitLink("send") {
                 @Override
@@ -74,7 +68,14 @@ public class SendSporsmalPanel extends Panel {
                 }
             };
 
-            add(tema, hjelpetekst, feedbackPanel, fritekst, avbryt, send);
+            Link<Void> avbryt = new Link<Void>("avbryt") {
+                @Override
+                public void onClick() {
+                    setResponsePage(Innboks.class);
+                }
+            };
+
+            add(fritekst, feedbackPanel, send, avbryt);
         }
 
         @Override

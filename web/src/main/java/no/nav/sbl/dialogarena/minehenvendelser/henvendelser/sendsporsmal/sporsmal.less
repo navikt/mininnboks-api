@@ -1,12 +1,6 @@
-@containerWidth: 700px;
+@containerWidth: 650px;
 @morkeBlaa: #0067c5;
-
-h1 {
-  font-size: 2.5em;
-  text-align: center;
-  margin: 1em;
-  font-weight: 600;
-}
+@navRodt: #c30000;
 
 .samtykke-panel {
   background-color: white;
@@ -17,52 +11,97 @@ h1 {
 }
 
 .tema-panel {
-  padding: 2em;
-  overflow: hidden;
-  background-color: white;
-  max-width: @containerWidth;
-  margin: 0 auto;
-  text-align: center;
-  h2 {
-    font-size: 1.25em;
-    font-weight: 600;
-    margin: 0;
-    text-transform: uppercase;
-  }
-  .robust-strek {
-    background-color: transparent;
-    margin-top: 0;
-  }
-  .tema {
-    background-color: #ddd;
-    margin: 0 auto 0.5em;
-    max-width: 400px;
-    cursor: pointer;
-    p {
-      font-size: 1.2em;
-      color: black;
-      padding: 0.5em 1.5em;
-      margin: 0;
+  form {
+    margin: 0 auto;
+    .temavelger {
+      width: 60%;
+      margin: 0 auto;
     }
-    &:hover {
-      background-color: @morkeBlaa;
-      p {
-        color: white;
+    .fortsett {
+      margin-top: 1em;
+      text-align: center;
+    }
+  }
+}
+
+.send-panel {
+  form {
+    width: 100%;
+    text-align: center;
+    textarea {
+      resize: none;
+      overflow: hidden;
+      display: block;
+      width: 100%;
+      margin: 1em 0;
+    }
+    div {
+      margin-bottom: 1em;
+      #antall-tegn {
+        font-weight: bold;
+        &.overskrider {
+          color: @navRodt;
+        }
+      }
+      #antall-tegn-tekst {
+        text-transform: uppercase;
+      }
+      &:last-child {
+        margin: 0;
       }
     }
-    &:last-child {
-      margin-top: 2em;
-      background-color: transparent;
-    }
   }
-  hr {
-    margin: 2em auto;
-    width: 100%;
-    height: 1px;
-    border-style: none;
-    background-color: #ddd;
+}
+
+h1 {
+  text-align: center;
+  margin: 1em;
+}
+
+.send-sporsmal-container {
+  max-width: @containerWidth;
+  background-color: white;
+  text-align: center;
+  margin: 0 auto;
+  padding: 2em;
+  overflow: hidden;
+}
+
+.robust {
+  margin: 0;
+}
+
+hr.robust-strek {
+  border: none;
+  background-color: transparent;
+  margin-top: 0;
+}
+
+hr.skillestrek-sporsmal {
+  margin: 2em auto;
+  width: 100%;
+  height: 1px;
+  border-style: none;
+  background-color: #ddd;
+}
+
+ul.feedbackPanel {
+  text-align: center;
+  padding: 1rem 1rem 1rem 2rem;
+  margin: 0;
+  list-style-type: none;
+  color: @white;
+  background-color: @navRodt;
+  font: 1.43rem Modus, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  li:before {
+    content: "* ";
   }
-  .avbryt {
+}
+
+.avbryt {
+  margin-top: 1em;
+  text-align: center;
+  a {
     color: @morkeBlaa;
     text-decoration: none;
     font-size: 1.25em;
@@ -70,80 +109,4 @@ h1 {
       text-decoration: underline;
     }
   }
-}
-
-.send-panel {
-  overflow: hidden;
-  max-width: @containerWidth;
-  margin: 0 auto;
-  form {
-    width: 100%;
-    padding: 2em;
-    background-color: white;
-    text-align: center;
-    h2 {
-      font-weight: 600;
-      margin: 0;
-    }
-    hr {
-      border-style: none;
-    }
-    .valideringsfelt * {
-      color: red;
-      list-style: none;
-      padding: 0;
-    }
-    .tema-bar {
-      label {
-        display: inline-block;
-        margin-bottom: 1em;
-        padding: 0.2em 1em;
-        background-color: grey;
-        color: white;
-      }
-    }
-    .tekstfelt {
-      text-align: center;
-      textarea {
-        resize: none;
-        overflow: hidden;
-        margin-bottom: 0.5em;
-      }
-      div {
-        margin-bottom: 1em;
-      }
-    }
-    ul {
-      list-style: none;
-      text-align: center;
-      margin: 0;
-      li {
-        padding: 1em;
-        #antall-tegn {
-          font-weight: bold;
-          &.overskrider {
-            color: red;
-          }
-        }
-        &:last-child {
-          padding: 0;
-        }
-      }
-      .avbryt {
-        padding-top: 0;
-        color: @morkeBlaa;
-        text-decoration: none;
-        font-size: 1.25em;
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-}
-
-.bekreftelse-panel {
-  padding: 3em;
-  overflow: hidden;
-  text-align: center;
 }
