@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+<wicket:panel>
+    <h1 class="diger"><wicket:message key="sendsporsmal.samtykke.overskrift-topp">[[Ny melding til NAV]]</wicket:message></h1>
+
+    <article class="send-sporsmal-container">
+        <h2 class="robust"><wicket:message key="sendsporsmal.samtykke.overskrift">[[Samtykke til elektronisk kommunikasjon]]</wicket:message></h2>
+        <hr class="robust-strek"/>
+
+        <p><wicket:message key="sendsporsmal.samtykke.ingress">[[Samtykke ingress]]</wicket:message></p>
+        <a href="#" wicket:id="les-mer"><wicket:message key="sendsporsmal.samtykke.lenketekst">[[Les mer om samtykke]]</wicket:message></a>
+
+        <div wicket:id="infotekst-modal"></div>
+
+        <hr class="skillestrek-sporsmal"/>
+
+        <div class="fortsett-knapp">
+            <a href="#" wicket:id="samtykker" class="knapp-hoved-stor">
+                <wicket:message key="sendsporsmal.samtykke.samtykk">[[Ja, jeg samtykker]]</wicket:message>
+            </a>
+        </div>
+        <div class="avbryt">
+            <a href="#" wicket:id="avbryt"><wicket:message key="sendsporsmal.samtykke.avbryt">[[Nei, jeg vil avbryte]]</wicket:message></a>
+        </div>
+    </article>
+</wicket:panel>
+</body>
+</html>
