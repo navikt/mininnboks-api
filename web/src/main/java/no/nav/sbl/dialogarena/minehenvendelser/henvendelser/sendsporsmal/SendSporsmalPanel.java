@@ -55,12 +55,17 @@ public class SendSporsmalPanel extends Panel {
             AjaxSubmitLink send = new AjaxSubmitLink("send") {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                    Sporsmal spsm = getModelObject();
-                    spsm.innsendingsTidspunkt = DateTime.now();
-                    henvendelseService.stillSporsmal(spsm.getFritekst(), spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
-                    send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_HENVENDELSER);
-                    sideNavigerer.neste();
-                    target.add(SendSporsmalPanel.this.getParent());
+                    try {
+                        Sporsmal spsm = getModelObject();
+                        spsm.innsendingsTidspunkt = DateTime.now();
+                        henvendelseService.stillSporsmal(spsm.getFritekst(), spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
+                        send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_HENVENDELSER);
+                        sideNavigerer.neste();
+                        target.add(SendSporsmalPanel.this.getParent());
+                    } catch (Exception e) {
+                        error("Det har skjedd en feil med innsendingen av spørsmålet ditt. Vennligst prøv igjen senere.");
+                        target.add(feedbackPanel);
+                    }
                 }
 
                 @Override
