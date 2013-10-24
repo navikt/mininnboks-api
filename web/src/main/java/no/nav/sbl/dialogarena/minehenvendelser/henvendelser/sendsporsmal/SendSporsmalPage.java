@@ -9,7 +9,6 @@ import org.apache.wicket.model.Model;
 
 import javax.inject.Inject;
 
-import static java.util.Arrays.asList;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 
 public class SendSporsmalPage extends BasePage implements SideNavigerer {
@@ -28,7 +27,7 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
         Sporsmal spsm = model.getObject();
         model.setObject(spsm);
 
-        TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", asList(Tema.values()), model, this);
+        TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", model, this);
         temavelger.add(visibleIf(aktivSideEr(Side.TEMAVELGER)));
 
         SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, this, henvendelseService);

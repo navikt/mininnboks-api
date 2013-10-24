@@ -1,28 +1,30 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal;
 
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.Innboks;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.markup.html.form.RadioChoice;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.util.value.IValueMap;
-import org.apache.wicket.util.value.ValueMap;
 
-import java.util.List;
+import static java.util.Arrays.asList;
 
 public class TemavelgerPanel extends Panel {
 
     IModel<Sporsmal> model;
 
-    public TemavelgerPanel(String id, final List<Tema> alleTema, final IModel<Sporsmal> model, final SideNavigerer sideNavigerer) {
+    public TemavelgerPanel(String id, final IModel<Sporsmal> model, final SideNavigerer sideNavigerer) {
         super(id, model);
 
         this.model = model;
@@ -33,7 +35,7 @@ public class TemavelgerPanel extends Panel {
         feedback.setOutputMarkupId(true);
         container.add(feedback);
 
-        container.add(getTemavalgListe("tema", alleTema, feedback));
+        container.add(getTemavalgListe("tema", feedback));
         container.add(getFortsettKnapp("fortsett", sideNavigerer, feedback));
         container.add(new Link<Void>("avbryt") {
             @Override
@@ -59,11 +61,25 @@ public class TemavelgerPanel extends Panel {
         };
     }
 
-    private RadioChoice<Tema> getTemavalgListe(String id, List<Tema> alleTema, final FeedbackPanel feedback) {
-        final RadioChoice<Tema> temaValg = new RadioChoice<>(id, alleTema, new EnumChoiceRenderer<Tema>(TemavelgerPanel.this) {
+    private RadioGroup<Tema> getTemavalgListe(String id, final FeedbackPanel feedback) {
+        final RadioGroup<Tema> temaValg = new RadioGroup<>(id, new Model<Tema>());
+        temaValg.add(new ListView<Tema>("temaliste", asList(Tema.values())) {
             @Override
-            protected String resourceKey(Tema tema) {
-                return tema.toString();
+            protected void populateItem(ListItem<Tema> item) {
+                Radio<Tema> temavalg = new Radio<>("temavalg", item.getModel());
+                item.add(temavalg);
+
+                AttributeModifier bindLabelTilValg = new AttributeModifier("for", temavalg.getMarkupId());
+
+                Label temanavn = new Label("temanavn",
+                        new StringResourceModel(item.getModelObject().toString(), TemavelgerPanel.this, null));
+                temanavn.add(bindLabelTilValg);
+                item.add(temanavn);
+
+                Label temabeskrivelse = new Label("temabeskrivelse",
+                        new StringResourceModel(item.getModelObject().toString() + ".beskrivelse", TemavelgerPanel.this, null));
+                temabeskrivelse.add(bindLabelTilValg);
+                item.add(temabeskrivelse);
             }
         });
         temaValg.add(new AjaxFormChoiceComponentUpdatingBehavior() {
@@ -75,7 +91,6 @@ public class TemavelgerPanel extends Panel {
                 target.add(temaValg, feedback);
             }
         });
-        setOutputMarkupId(true);
         return temaValg;
     }
 }

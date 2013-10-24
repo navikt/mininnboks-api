@@ -12,7 +12,14 @@
         <hr class="robust-strek"/>
 
         <form>
-            <section wicket:id="tema" class="temavelger" />
+            <section wicket:id="tema" class="temavelger">
+                <div wicket:id="temaliste">
+                    <input wicket:id="temavalg" type="radio" />
+                    <label wicket:id="temanavn" />
+                    <br/>
+                    <label wicket:id="temabeskrivelse" />
+                </div>
+            </section>
             <hr class="skillestrek-sporsmal"/>
             <div wicket:id="feedback"></div>
             <div class="fortsett"><a wicket:id="fortsett" class="knapp-hoved-stor" href="#"><wicket:message key="temavelger.fortsett">[[Fortsett]]</wicket:message></a></div>
