@@ -35,10 +35,20 @@ body {
   margin: 0 auto;
   border-right: solid 1px @rammeborder;
   border-left: solid 1px @rammeborder;
+  .tom-innboks, .meldingsliste, .meldingsdetaljer {
+    &.ingen-meldinger {
+      display: none;
+    }
+  }
 }
 
 .footer {
   height: 142px;
+}
+
+.tom-innboks {
+  margin-top: 200px;
+  text-align: center;
 }
 
 .meldingsliste {

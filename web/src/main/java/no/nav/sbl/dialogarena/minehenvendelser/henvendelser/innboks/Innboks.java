@@ -1,23 +1,25 @@
 package no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks;
 
-import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
-import static no.nav.modig.wicket.model.ModelUtils.not;
-
-import javax.inject.Inject;
-
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.modig.wicket.events.annotations.RunOnEvents;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.henvendelser.sendsporsmal.SendSporsmalPage;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+
+import javax.inject.Inject;
+
+import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
+import static no.nav.modig.wicket.model.ModelUtils.not;
 
 public class Innboks extends BasePage {
 
@@ -40,6 +42,17 @@ public class Innboks extends BasePage {
         setDefaultModel(innboksModell);
         setOutputMarkupId(true);
 
+        WebMarkupContainer tomInnboks = new WebMarkupContainer("tom-innboks");
+        tomInnboks.add(new Label("tom-innboks-tekst", new StringResourceModel("innboks.tom-innboks-melding", this, null)));
+        tomInnboks.add(hasCssClassIf("ingen-meldinger", new Model(!innboksModell.ingenHenvendelser().getObject())));
+
+        final AlleHenvendelserPanel alleMeldinger = new AlleHenvendelserPanel("henvendelser", innboksModell, service);
+        alleMeldinger.add(hasCssClassIf("skjult", innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm));
+        alleMeldinger.add(hasCssClassIf("ingen-meldinger", innboksModell.ingenHenvendelser()));
+
+        DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksModell);
+        detaljvisning.add(hasCssClassIf("ingen-meldinger", innboksModell.ingenHenvendelser()));
+
         WebMarkupContainer topBar = new WebMarkupContainer("top-bar");
         topBar.add(new Link<Void>("skriv-ny") {
             @Override
@@ -47,11 +60,6 @@ public class Innboks extends BasePage {
                 setResponsePage(SendSporsmalPage.class);
             }
         });
-
-        final AlleHenvendelserPanel alleMeldinger = new AlleHenvendelserPanel("henvendelser", innboksModell, service);
-        alleMeldinger.add(hasCssClassIf("skjult", innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm));
-        DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksModell);
-
         tilInnboksLink = new AjaxLink<Void>("til-innboks") {
             @Override
             public void onClick(AjaxRequestTarget target) {
@@ -62,7 +70,7 @@ public class Innboks extends BasePage {
         tilInnboksLink.add(hasCssClassIf("skjult", not(innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm)));
         topBar.add(tilInnboksLink);
 
-        add(topBar, alleMeldinger, detaljvisning);
+        add(topBar, tomInnboks, alleMeldinger, detaljvisning);
     }
 
     @RunOnEvents(OPPDATER_HENVENDELSER)
