@@ -63,7 +63,7 @@ public class SendSporsmalPanel extends Panel {
                         sideNavigerer.neste();
                         target.add(SendSporsmalPanel.this.getParent());
                     } catch (Exception e) {
-                        error("Det har skjedd en feil med innsendingen av spørsmålet ditt. Vennligst prøv igjen senere.");
+                        error(new StringResourceModel("send-sporsmal.still-sporsmal.underliggende-feil", SendSporsmalPanel.this, null));
                         target.add(feedbackPanel);
                     }
                 }
