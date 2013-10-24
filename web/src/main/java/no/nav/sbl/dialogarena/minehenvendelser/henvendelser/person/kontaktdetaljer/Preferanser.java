@@ -46,9 +46,9 @@ public class Preferanser implements Serializable, Copyable<Preferanser> {
 
         @Override
         public Maalform copy() {
-            Maalform maalform = new Maalform();
-            maalform.setValue(this.value);
-            return maalform;
+            Maalform maalformen = new Maalform();
+            maalformen.setValue(this.value);
+            return maalformen;
         }
     }
 }
