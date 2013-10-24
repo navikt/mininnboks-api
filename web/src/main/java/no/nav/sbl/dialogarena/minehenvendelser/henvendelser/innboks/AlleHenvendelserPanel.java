@@ -21,7 +21,7 @@ public class AlleHenvendelserPanel extends Panel {
         add(new PropertyListView<HenvendelseVM>("nyesteHenvendelseITraad") {
             @Override
             protected void populateItem(final ListItem<HenvendelseVM> item) {
-                item.add(new Label("overskrift", new StringResourceModel("overskrift.${henvendelse.type}", item.getModel())));
+                item.add(new Label("overskrift", new StringResourceModel("innboks.henvendelsesliste.overskrift.${henvendelse.type}", item.getModel())));
                 item.add(new Label("tema", new StringResourceModel(item.getModelObject().henvendelse.tema.toString(), null)));
                 item.add(new Label("kortOpprettetDato"));
                 item.add(new Label("henvendelse.fritekst"));

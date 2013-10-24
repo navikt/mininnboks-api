@@ -7,8 +7,8 @@
 <wicket:extend>
     <div wicket:id="top-bar" id="innboks-top">
         <div class="innboks-nav">
-            <a wicket:id="til-innboks" class="tilbake-til-innboks-link knapp-hoved-liten">Innboks</a>
-            <a wicket:id="skriv-ny" class="skriv-ny-link knapp-hoved-liten">Skriv ny melding til NAV</a>
+            <a wicket:id="til-innboks" class="tilbake-til-innboks-link knapp-hoved-liten"><wicket:message key="innboks.toppmeny.til-innboks">[[Innboks]]</wicket:message></a>
+            <a wicket:id="skriv-ny" class="skriv-ny-link knapp-hoved-liten"><wicket:message key="innboks.toppmeny.skriv-ny-melding">[[Skriv ny melding]]</wicket:message></a>
         </div>
     </div>
     <div id="innboks-container">
@@ -16,8 +16,8 @@
         <div wicket:id="detaljpanel" id="detaljpanel" class="meldingsdetaljer"></div>
     </div>
     <div id="eksterne-lenker">
-        <a href="https://tjenester.nav.no/sbl/as/minside/meldinger/meldingerNAV.do?m=totalt">Meldinger på "Din side arbeid"</a>
-        <a href="https://applikasjoner.nav.no/dinpensjon/pselv/publisering/dininnboks.jsf">Meldinger på "Din pensjon"</a>
+        <a href="https://tjenester.nav.no/sbl/as/minside/meldinger/meldingerNAV.do?m=totalt"><wicket:message key="innboks.bunnmeny.din-side-arbeid-lenke">[[Din side arbeid]]</wicket:message></a>
+        <a href="https://applikasjoner.nav.no/dinpensjon/pselv/publisering/dininnboks.jsf"><wicket:message key="innboks.bunnmeny.din-pensjon-lenke">[[Din pensjon]]</wicket:message></a>
     </div>
 </wicket:extend>
 

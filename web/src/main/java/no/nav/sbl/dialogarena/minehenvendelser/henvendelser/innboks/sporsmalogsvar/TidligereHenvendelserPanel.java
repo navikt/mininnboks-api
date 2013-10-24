@@ -16,7 +16,7 @@ public class TidligereHenvendelserPanel extends Panel {
             @Override
             protected void populateItem(final ListItem<HenvendelseVM> item) {
                 item.add(new Label("langOpprettetDato"));
-                item.add(new Label("overskrift", new StringResourceModel("overskrift.${henvendelse.type}", item.getModel())));
+                item.add(new Label("overskrift", new StringResourceModel("innboks.tidligere-henvendelse.overskrift.${henvendelse.type}", item.getModel())));
                 item.add(new MultiLineLabel("henvendelse.fritekst"));
             }
         });
