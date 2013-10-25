@@ -54,7 +54,7 @@ public class TemavelgerPanel extends Panel {
                     sideNavigerer.neste();
                     target.add(TemavelgerPanel.this.getParent());
                 } else {
-                    error(new StringResourceModel("temavelger.ikkeValgtTema", this, null).getString());
+                    error(new StringResourceModel("send-sporsmal.temavelger.ikke-valgt-tema", TemavelgerPanel.this, null).getString());
                     target.add(feedback);
                 }
             }
