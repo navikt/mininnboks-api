@@ -74,7 +74,23 @@ body {
       font-weight: 600;
       margin-top: 0.3em;
     }
+    .traad-lengde {
+      float: right;
+      color: white;
+      margin: 0.5rem;
+      padding-top: 2px;
+      padding-right: 2px;
+      text-align: center;
+      background-color: @sortbakgrunn;
+      border-radius: 2rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      &.skjult {
+        display: none;
+      }
+    }
     p {
+      margin: 1rem 0;
       text-overflow: ellipsis;
       -o-text-overflow: ellipsis;
       overflow: hidden;
@@ -82,6 +98,10 @@ body {
     }
     &.valgt {
       background-color: @sortbakgrunn;
+      .traad-lengde {
+        background-color: white;
+        color: @sortbakgrunn;
+      }
     }
     &.valgt * {
       color: white;

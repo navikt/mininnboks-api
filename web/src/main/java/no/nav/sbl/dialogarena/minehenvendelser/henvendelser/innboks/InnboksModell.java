@@ -6,6 +6,11 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
+import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static no.nav.sbl.dialogarena.minehenvendelser.henvendelser.innboks.HenvendelseVM.TRAAD_ID;
+
 public class InnboksModell extends CompoundPropertyModel<InnboksVM> {
 
     public InnboksModell(InnboksVM innboks) {
@@ -51,6 +56,15 @@ public class InnboksModell extends CompoundPropertyModel<InnboksVM> {
             public Boolean getObject() {
                 Optional<HenvendelseVM> valgtHenvendelse = getInnboksVM().getValgtHenvendelse();
                 return valgtHenvendelse.isSome() && valgtHenvendelse.get().avType(type);
+            }
+        };
+    }
+
+    public IModel<Integer> getTraadLengde(final String traadID) {
+        return new AbstractReadOnlyModel<Integer>() {
+            @Override
+            public Integer getObject() {
+                return on(InnboksModell.this.getInnboksVM().getHenvendelser()).filter(where(TRAAD_ID, equalTo(traadID))).collect().size();
             }
         };
     }
