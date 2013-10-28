@@ -32,11 +32,6 @@ public class Innboks extends BasePage {
     private InnboksModell innboksModell;
     AjaxLink<Void> tilInnboksLink;
 
-    @Override
-    public void renderHead(IHeaderResponse response) {
-        response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(Innboks.class, "innboks.js")));
-    }
-
     public Innboks() {
         innboksModell = new InnboksModell(new InnboksVM(service.hentAlleHenvendelser(innloggetBruker())));
         setDefaultModel(innboksModell);
@@ -71,6 +66,11 @@ public class Innboks extends BasePage {
         topBar.add(tilInnboksLink);
 
         add(topBar, tomInnboks, alleMeldinger, detaljvisning);
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(Innboks.class, "innboks.js")));
     }
 
     @RunOnEvents(OPPDATER_HENVENDELSER)
