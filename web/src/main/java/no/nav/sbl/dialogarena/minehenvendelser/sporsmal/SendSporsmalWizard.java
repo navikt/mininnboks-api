@@ -18,10 +18,9 @@ import javax.inject.Inject;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 
-public class SendSporsmalWizard extends BasePage implements SideNavigerer {
+public class SendSporsmalWizard extends BasePage implements Stegnavigerer {
 
-
-    private enum Side {TEMAVELGER, SAMTYKKE, SEND_SPORSMAL, SPORMSMAL_BEKREFTELSE}
+    private enum Steg {VELG_TEMA, SAMTYKK, SEND, KVITTERING}
 
     @Inject
     HenvendelseService henvendelseService;
@@ -32,7 +31,7 @@ public class SendSporsmalWizard extends BasePage implements SideNavigerer {
     @Inject
     Brukerkontekst brukerkontekst;
 
-    IModel<Side> aktivSide = new Model<>(Side.values()[0]);
+    IModel<Steg> aktivtSteg = new Model<>(Steg.values()[0]);
     CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
 
     public SendSporsmalWizard() {
@@ -40,35 +39,35 @@ public class SendSporsmalWizard extends BasePage implements SideNavigerer {
         Sporsmal spsm = model.getObject();
         model.setObject(spsm);
 
-        VelgTemaPanel temavelger = new VelgTemaPanel("temavelger", model, this);
-        temavelger.add(visibleIf(aktivSideEr(Side.TEMAVELGER)));
+        VelgTemaPanel velgTema = new VelgTemaPanel("velg-tema", model, this);
+        velgTema.add(visibleIf(aktivtStegEr(Steg.VELG_TEMA)));
 
         SamtykkePanel avgiSamtykke = new SamtykkePanel("avgi-samtykke", this);
-        avgiSamtykke.add(visibleIf(aktivSideEr(Side.SAMTYKKE)));
+        avgiSamtykke.add(visibleIf(aktivtStegEr(Steg.SAMTYKK)));
 
         SendPanel sendSporsmal = new SendPanel("send-sporsmal", model, this, henvendelseService);
-        sendSporsmal.add(visibleIf(aktivSideEr(Side.SEND_SPORSMAL)));
+        sendSporsmal.add(visibleIf(aktivtStegEr(Steg.SEND)));
 
-        KvitteringPanel sporsmalBekreftelse = new KvitteringPanel("sporsmal-bekreftelse");
-        sporsmalBekreftelse.add(visibleIf(aktivSideEr(Side.SPORMSMAL_BEKREFTELSE)));
+        KvitteringPanel kvittering = new KvitteringPanel("kvittering");
+        kvittering.add(visibleIf(aktivtStegEr(Steg.KVITTERING)));
 
-        add(temavelger, avgiSamtykke, sendSporsmal, sporsmalBekreftelse);
+        add(velgTema, avgiSamtykke, sendSporsmal, kvittering);
 
     }
 
-    private IModel<Boolean> aktivSideEr(final Side side) {
+    private IModel<Boolean> aktivtStegEr(final Steg steg) {
         return new AbstractReadOnlyModel<Boolean>() {
             @Override
             public Boolean getObject() {
-                return aktivSide.getObject() == side;
+                return aktivtSteg.getObject() == steg;
             }
         };
     }
 
     @Override
     public void neste() {
-        aktivSide.setObject(Side.values()[aktivSide.getObject().ordinal() + 1]);
-        if (aktivSide.getObject() == Side.SAMTYKKE) {
+        aktivtSteg.setObject(Steg.values()[aktivtSteg.getObject().ordinal() + 1]);
+        if (aktivtSteg.getObject() == Steg.SAMTYKK) {
             Person person = personService.hentPerson(brukerkontekst.getBrukerId());
             if (person.getPreferanser().isElektroniskSamtykke()) {
                 neste();

@@ -1,5 +1,5 @@
 package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
 
-public interface SideNavigerer {
+public interface Stegnavigerer {
     void neste();
 }

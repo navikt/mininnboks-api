@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.sporsmal.send;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
-import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SideNavigerer;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Stegnavigerer;
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Sporsmal;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -26,12 +26,12 @@ import org.joda.time.DateTime;
 
 public class SendPanel extends Panel {
 
-    private SideNavigerer sideNavigerer;
+    private Stegnavigerer stegnavigerer;
     private HenvendelseService henvendelseService;
 
-    public SendPanel(String id, CompoundPropertyModel<Sporsmal> model, final SideNavigerer sideNavigerer, HenvendelseService henvendelseService) {
+    public SendPanel(String id, CompoundPropertyModel<Sporsmal> model, final Stegnavigerer stegnavigerer, HenvendelseService henvendelseService) {
         super(id);
-        this.sideNavigerer = sideNavigerer;
+        this.stegnavigerer = stegnavigerer;
         this.henvendelseService = henvendelseService;
 
         Label tema = new Label("tema", new StringResourceModel("${tema}", model));
@@ -62,7 +62,7 @@ public class SendPanel extends Panel {
                         spsm.innsendingsTidspunkt = DateTime.now();
                         henvendelseService.stillSporsmal(spsm.getFritekst(), spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
                         send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_HENVENDELSER);
-                        sideNavigerer.neste();
+                        stegnavigerer.neste();
                         target.add(SendPanel.this.getParent());
                     } catch (Exception e) {
                         error(new StringResourceModel("send-sporsmal.still-sporsmal.underliggende-feil", SendPanel.this, null));

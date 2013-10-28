@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema;
 
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
-import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SideNavigerer;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Stegnavigerer;
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Sporsmal;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -26,7 +26,7 @@ public class VelgTemaPanel extends Panel {
 
     IModel<Sporsmal> model;
 
-    public VelgTemaPanel(String id, final IModel<Sporsmal> model, final SideNavigerer sideNavigerer) {
+    public VelgTemaPanel(String id, final IModel<Sporsmal> model, final Stegnavigerer stegnavigerer) {
         super(id, model);
 
         this.model = model;
@@ -38,7 +38,7 @@ public class VelgTemaPanel extends Panel {
         container.add(feedback);
 
         container.add(getTemavalgListe("tema", feedback));
-        container.add(getFortsettKnapp("fortsett", sideNavigerer, feedback));
+        container.add(getFortsettKnapp("fortsett", stegnavigerer, feedback));
         container.add(new Link<Void>("avbryt") {
             @Override
             public void onClick() {
@@ -48,12 +48,12 @@ public class VelgTemaPanel extends Panel {
         add(container);
     }
 
-    private AjaxLink<Void> getFortsettKnapp(String id, final SideNavigerer sideNavigerer, final FeedbackPanel feedback) {
+    private AjaxLink<Void> getFortsettKnapp(String id, final Stegnavigerer stegnavigerer, final FeedbackPanel feedback) {
         return new AjaxLink<Void>(id) {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 if (model.getObject().harTema()) {
-                    sideNavigerer.neste();
+                    stegnavigerer.neste();
                     target.add(VelgTemaPanel.this.getParent());
                 } else {
                     error(new StringResourceModel("send-sporsmal.temavelger.ikke-valgt-tema", VelgTemaPanel.this, null).getString());
