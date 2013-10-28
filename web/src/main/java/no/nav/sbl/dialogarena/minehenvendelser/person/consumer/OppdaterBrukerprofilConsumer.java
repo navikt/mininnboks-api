@@ -40,7 +40,7 @@ public class OppdaterBrukerprofilConsumer {
         populatePreferanser(person, xmlBruker);
         populateBankkonto(person, xmlBruker);
         populateAdresser(person, xmlBruker);
-        populateElektroniskeKanaler(person, xmlBruker);
+//        populateElektroniskeKanaler(person, xmlBruker);
 
         try {
             behandleBrukerprofilService.oppdaterKontaktinformasjonOgPreferanser(new XMLOppdaterKontaktinformasjonOgPreferanserRequest().withPerson(xmlBruker));
@@ -66,13 +66,13 @@ public class OppdaterBrukerprofilConsumer {
         }
     }
 
-    private void populateElektroniskeKanaler(Person person, XMLBruker xmlBruker) {
+//    private void populateElektroniskeKanaler(Person person, XMLBruker xmlBruker) {
         //        xmlBruker.withElektroniskKommunikasjonskanal(several(
 //                telefonnummerKanal(Telefonnummertype.HJEMMETELEFON, person.getHjemmetelefon()).map(toXMLElektroniskKommunkasjonskanal()),
 //                telefonnummerKanal(Telefonnummertype.JOBBTELEFON, person.getJobbtelefon()).map(toXMLElektroniskKommunkasjonskanal()),
 //                telefonnummerKanal(Telefonnummertype.MOBIL, person.getMobiltelefon()).map(toXMLElektroniskKommunkasjonskanal())
 //        ).collect());
-    }
+//    }
 
     private void populateAdresser(Person person, XMLBruker xmlBruker) {
         xmlBruker.withGjeldendePostadresseType(new XMLPostadresseTyperInToXMLPostadresseTyperOut().transform(person.getPersonFraTPS().getGjeldendePostadresseType()));

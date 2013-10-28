@@ -9,7 +9,6 @@ import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.OppdaterKontaktinforma
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBankkonto;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.informasjon.XMLBruker;
 import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.meldinger.XMLOppdaterKontaktinformasjonOgPreferanserRequest;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoNorge;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontoUtland;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBankkontonummer;
@@ -42,8 +41,8 @@ public class OppdaterBrukerprofilConsumerTest {
     @Mock
     private BehandleBrukerprofilPortType webServiceMock;
 
-    @Mock
-    private BrukerprofilPortType brukerprofilServiceMock;
+//    @Mock
+//    private BrukerprofilPortType brukerprofilServiceMock;
 
     private WebService webServiceStub = new WebService();
     private final OppdaterBrukerprofilConsumer service = new OppdaterBrukerprofilConsumer(webServiceStub);

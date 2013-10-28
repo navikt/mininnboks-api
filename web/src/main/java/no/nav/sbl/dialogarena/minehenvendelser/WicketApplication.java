@@ -7,7 +7,6 @@ import no.nav.sbl.dialogarena.minehenvendelser.config.utils.LocaleFromWicketSess
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
 import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SendSporsmalWizard;
-import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SendSporsmalWizard;
 import no.nav.sbl.dialogarena.time.Datoformat;
 import no.nav.sbl.dialogarena.webkomponent.innstillinger.LogoutPage;
 import org.apache.wicket.Application;

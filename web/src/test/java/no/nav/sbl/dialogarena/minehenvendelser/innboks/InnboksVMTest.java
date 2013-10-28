@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.innboks;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelse;
-import no.nav.sbl.dialogarena.minehenvendelser.innboks.InnboksVM;
 import org.joda.time.DateTime;
 import org.junit.Test;
 

@@ -9,7 +9,6 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLPreferanser;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLSpraak;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class HentBrukerProfilConsumerTest {
 
-    private static final LocalDate IDAG = new LocalDate(2013, 5, 4);
     private static final String IDENT = "123456***REMOVED***";
     private HentBrukerProfilConsumer consumer;
     private XMLBruker response;
