@@ -1,7 +1,8 @@
-package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
+package no.nav.sbl.dialogarena.minehenvendelser.sporsmal.samtykke;
 
 import no.nav.modig.wicket.component.modal.ModigModalWindow;
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SideNavigerer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;

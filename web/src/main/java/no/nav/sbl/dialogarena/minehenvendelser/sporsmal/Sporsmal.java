@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
 
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.Tema;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;

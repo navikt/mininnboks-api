@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
+package no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema;
 
 public enum Tema {
     ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT,

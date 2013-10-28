@@ -1,8 +1,10 @@
-package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
+package no.nav.sbl.dialogarena.minehenvendelser.sporsmal.send;
 
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SideNavigerer;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Sporsmal;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.Broadcast;
@@ -22,12 +24,12 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractRangeValidator;
 import org.joda.time.DateTime;
 
-public class SendSporsmalPanel extends Panel {
+public class SendPanel extends Panel {
 
     private SideNavigerer sideNavigerer;
     private HenvendelseService henvendelseService;
 
-    public SendSporsmalPanel(String id, CompoundPropertyModel<Sporsmal> model, final SideNavigerer sideNavigerer, HenvendelseService henvendelseService) {
+    public SendPanel(String id, CompoundPropertyModel<Sporsmal> model, final SideNavigerer sideNavigerer, HenvendelseService henvendelseService) {
         super(id);
         this.sideNavigerer = sideNavigerer;
         this.henvendelseService = henvendelseService;
@@ -61,9 +63,9 @@ public class SendSporsmalPanel extends Panel {
                         henvendelseService.stillSporsmal(spsm.getFritekst(), spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
                         send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_HENVENDELSER);
                         sideNavigerer.neste();
-                        target.add(SendSporsmalPanel.this.getParent());
+                        target.add(SendPanel.this.getParent());
                     } catch (Exception e) {
-                        error(new StringResourceModel("send-sporsmal.still-sporsmal.underliggende-feil", SendSporsmalPanel.this, null));
+                        error(new StringResourceModel("send-sporsmal.still-sporsmal.underliggende-feil", SendPanel.this, null));
                         target.add(feedbackPanel);
                     }
                 }
@@ -82,7 +84,7 @@ public class SendSporsmalPanel extends Panel {
         @Override
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
-            response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SendSporsmalPanel.class, "textarea.js")));
+            response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SendPanel.class, "textarea.js")));
         }
     }
 

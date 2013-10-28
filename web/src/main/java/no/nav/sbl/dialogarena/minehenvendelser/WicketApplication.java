@@ -6,7 +6,8 @@ import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.config.utils.LocaleFromWicketSession;
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
 import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
-import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SendSporsmalPage;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SendSporsmalWizard;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SendSporsmalWizard;
 import no.nav.sbl.dialogarena.time.Datoformat;
 import no.nav.sbl.dialogarena.webkomponent.innstillinger.LogoutPage;
 import org.apache.wicket.Application;
@@ -56,13 +57,13 @@ public class WicketApplication extends WebApplication {
                 .withModules(EKSTERNFLATE)
                 .addMetas(CHARSET_UTF8, VIEWPORT_SCALE_1, XUA_IE_EDGE)
                 .addLess(INNSTILLINGER_LESS, new PackageResourceReference(Innboks.class, "innboks.less"),
-                        new PackageResourceReference(SendSporsmalPage.class, "sporsmal.less"))
+                        new PackageResourceReference(SendSporsmalWizard.class, "sporsmal.less"))
                 .addScripts(INNSTILLINGER_JS)
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
         mountPage("innboks", Innboks.class);
-        mountPage("sporsmal", SendSporsmalPage.class);
+        mountPage("sporsmal", SendSporsmalWizard.class);
         mountPage("internal/selftest", SelfTestPage.class);
         mountPage("loggut", LogoutPage.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);

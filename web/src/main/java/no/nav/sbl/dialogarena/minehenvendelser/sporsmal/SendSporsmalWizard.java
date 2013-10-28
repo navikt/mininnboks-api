@@ -5,6 +5,10 @@ import no.nav.sbl.dialogarena.minehenvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.person.consumer.Person;
 import no.nav.sbl.dialogarena.minehenvendelser.person.service.PersonService;
 import no.nav.sbl.dialogarena.minehenvendelser.security.Brukerkontekst;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.kvittering.KvitteringPanel;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.samtykke.SamtykkePanel;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.send.SendPanel;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.VelgTemaPanel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -14,7 +18,7 @@ import javax.inject.Inject;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 
-public class SendSporsmalPage extends BasePage implements SideNavigerer {
+public class SendSporsmalWizard extends BasePage implements SideNavigerer {
 
 
     private enum Side {TEMAVELGER, SAMTYKKE, SEND_SPORSMAL, SPORMSMAL_BEKREFTELSE}
@@ -31,21 +35,21 @@ public class SendSporsmalPage extends BasePage implements SideNavigerer {
     IModel<Side> aktivSide = new Model<>(Side.values()[0]);
     CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(new Sporsmal());
 
-    public SendSporsmalPage() {
+    public SendSporsmalWizard() {
 
         Sporsmal spsm = model.getObject();
         model.setObject(spsm);
 
-        TemavelgerPanel temavelger = new TemavelgerPanel("temavelger", model, this);
+        VelgTemaPanel temavelger = new VelgTemaPanel("temavelger", model, this);
         temavelger.add(visibleIf(aktivSideEr(Side.TEMAVELGER)));
 
         SamtykkePanel avgiSamtykke = new SamtykkePanel("avgi-samtykke", this);
         avgiSamtykke.add(visibleIf(aktivSideEr(Side.SAMTYKKE)));
 
-        SendSporsmalPanel sendSporsmal = new SendSporsmalPanel("send-sporsmal", model, this, henvendelseService);
+        SendPanel sendSporsmal = new SendPanel("send-sporsmal", model, this, henvendelseService);
         sendSporsmal.add(visibleIf(aktivSideEr(Side.SEND_SPORSMAL)));
 
-        SporsmalBekreftelsePanel sporsmalBekreftelse = new SporsmalBekreftelsePanel("sporsmal-bekreftelse");
+        KvitteringPanel sporsmalBekreftelse = new KvitteringPanel("sporsmal-bekreftelse");
         sporsmalBekreftelse.add(visibleIf(aktivSideEr(Side.SPORMSMAL_BEKREFTELSE)));
 
         add(temavelger, avgiSamtykke, sendSporsmal, sporsmalBekreftelse);

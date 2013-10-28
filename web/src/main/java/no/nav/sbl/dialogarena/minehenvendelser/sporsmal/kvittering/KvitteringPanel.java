@@ -1,13 +1,13 @@
-package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
+package no.nav.sbl.dialogarena.minehenvendelser.sporsmal.kvittering;
 
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
 
-public class SporsmalBekreftelsePanel extends Panel {
+public class KvitteringPanel extends Panel {
 
-    public SporsmalBekreftelsePanel(String id) {
+    public KvitteringPanel(String id) {
         super(id);
         add(new ExternalLink("til-inngangsporten", System.getProperty("inngangsporten.link")));
         add(new BookmarkablePageLink<Void>("til-mine-henvendelser", Innboks.class));

@@ -1,8 +1,8 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Tema.INTERNASJONALT;
-import static no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Tema.PENSJON;
+import static no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.Tema.INTERNASJONALT;
+import static no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.Tema.PENSJON;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Tema;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.Tema;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.informasjon.Melding;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.informasjon.WSMeldingstype;

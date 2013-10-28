@@ -1,6 +1,8 @@
-package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
+package no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema;
 
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SideNavigerer;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Sporsmal;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
@@ -20,11 +22,11 @@ import org.apache.wicket.model.StringResourceModel;
 
 import static java.util.Arrays.asList;
 
-public class TemavelgerPanel extends Panel {
+public class VelgTemaPanel extends Panel {
 
     IModel<Sporsmal> model;
 
-    public TemavelgerPanel(String id, final IModel<Sporsmal> model, final SideNavigerer sideNavigerer) {
+    public VelgTemaPanel(String id, final IModel<Sporsmal> model, final SideNavigerer sideNavigerer) {
         super(id, model);
 
         this.model = model;
@@ -52,9 +54,9 @@ public class TemavelgerPanel extends Panel {
             public void onClick(AjaxRequestTarget target) {
                 if (model.getObject().harTema()) {
                     sideNavigerer.neste();
-                    target.add(TemavelgerPanel.this.getParent());
+                    target.add(VelgTemaPanel.this.getParent());
                 } else {
-                    error(new StringResourceModel("send-sporsmal.temavelger.ikke-valgt-tema", TemavelgerPanel.this, null).getString());
+                    error(new StringResourceModel("send-sporsmal.temavelger.ikke-valgt-tema", VelgTemaPanel.this, null).getString());
                     target.add(feedback);
                 }
             }
@@ -72,12 +74,12 @@ public class TemavelgerPanel extends Panel {
                 AttributeModifier bindLabelTilValg = new AttributeModifier("for", temavalg.getMarkupId());
 
                 Label temanavn = new Label("temanavn",
-                        new StringResourceModel(item.getModelObject().toString(), TemavelgerPanel.this, null));
+                        new StringResourceModel(item.getModelObject().toString(), VelgTemaPanel.this, null));
                 temanavn.add(bindLabelTilValg);
                 item.add(temanavn);
 
                 Label temabeskrivelse = new Label("temabeskrivelse",
-                        new StringResourceModel(item.getModelObject().toString() + ".beskrivelse", TemavelgerPanel.this, null));
+                        new StringResourceModel(item.getModelObject().toString() + ".beskrivelse", VelgTemaPanel.this, null));
                 temabeskrivelse.add(bindLabelTilValg);
                 item.add(temabeskrivelse);
             }

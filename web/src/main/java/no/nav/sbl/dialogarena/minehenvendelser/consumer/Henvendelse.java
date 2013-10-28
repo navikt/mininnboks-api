@@ -2,7 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 import java.io.Serializable;
 
-import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Tema;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.Tema;
 import org.joda.time.DateTime;
 
 public class Henvendelse implements Serializable {
