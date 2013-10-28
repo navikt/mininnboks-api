@@ -2,7 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.sporsmal.samtykke;
 
 import no.nav.modig.wicket.component.modal.ModigModalWindow;
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
-import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Stegnavigerer;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Stegnavigator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -16,7 +16,7 @@ public class SamtykkePanel extends Panel {
 //    @Inject
 //    Brukerkontekst brukerkontekst;
 
-    public SamtykkePanel(String id, final Stegnavigerer stegnavigerer) {
+    public SamtykkePanel(String id, final Stegnavigator stegnavigator) {
         super(id);
 
 //        Person person = personService.hentPerson(brukerkontekst.getBrukerId());
@@ -38,7 +38,7 @@ public class SamtykkePanel extends Panel {
         add(new AjaxLink("samtykker") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                stegnavigerer.neste();
+                stegnavigator.neste();
                 target.add(SamtykkePanel.this.getParent());
             }
         });

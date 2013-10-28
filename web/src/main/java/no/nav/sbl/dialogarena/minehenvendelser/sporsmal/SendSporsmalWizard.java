@@ -18,7 +18,7 @@ import javax.inject.Inject;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 
-public class SendSporsmalWizard extends BasePage implements Stegnavigerer {
+public class SendSporsmalWizard extends BasePage implements Stegnavigator {
 
     private enum Steg {VELG_TEMA, SAMTYKK, SEND, KVITTERING}
 
