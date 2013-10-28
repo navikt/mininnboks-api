@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.sendsporsmal;
+package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
 
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HenvendelseService;

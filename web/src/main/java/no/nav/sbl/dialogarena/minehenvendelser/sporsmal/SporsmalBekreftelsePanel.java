@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.sendsporsmal;
+package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
 
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;

@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.sendsporsmal;
+package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
 
 import no.nav.modig.wicket.component.modal.ModigModalWindow;
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;

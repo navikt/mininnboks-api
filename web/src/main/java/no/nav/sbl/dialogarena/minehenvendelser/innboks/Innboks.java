@@ -4,7 +4,7 @@ import no.nav.modig.core.context.SubjectHandler;
 import no.nav.modig.wicket.events.annotations.RunOnEvents;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HenvendelseService;
-import no.nav.sbl.dialogarena.minehenvendelser.sendsporsmal.SendSporsmalPage;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SendSporsmalPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;

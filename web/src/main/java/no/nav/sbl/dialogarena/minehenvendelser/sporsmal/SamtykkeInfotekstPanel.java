@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.minehenvendelser.sendsporsmal;
+package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
 
 import no.nav.modig.wicket.component.modal.ModigModalWindow;
 import org.apache.wicket.ajax.AjaxRequestTarget;
