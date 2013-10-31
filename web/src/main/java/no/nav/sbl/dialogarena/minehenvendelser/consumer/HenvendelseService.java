@@ -12,7 +12,7 @@ import java.util.Random;
 
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.Tema;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.informasjon.Melding;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.informasjon.WSMelding;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.informasjon.WSMeldingstype;
 import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.meldinger.HentMeldingListe;
 import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
@@ -44,9 +44,9 @@ public interface HenvendelseService {
 
         @Override
         public List<Henvendelse> hentAlleHenvendelser(String fnr) {
-            Transformer<Melding, Henvendelse> somHenvendelse = new Transformer<Melding, Henvendelse>() {
+            Transformer<WSMelding, Henvendelse> somHenvendelse = new Transformer<WSMelding, Henvendelse>() {
 				@Override
-                public Henvendelse transform(Melding melding) {
+                public Henvendelse transform(WSMelding melding) {
                     Henvendelsetype henvendelseType = melding.getMeldingsType() == WSMeldingstype.INNGAENDE ? Henvendelsetype.SPORSMAL : Henvendelsetype.SVAR;
                     Henvendelse henvendelse = new Henvendelse(melding.getBehandlingsId(), henvendelseType, melding.getTraad());
                     henvendelse.opprettet = melding.getOpprettetDato();
