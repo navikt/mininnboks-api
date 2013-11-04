@@ -23,11 +23,14 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractRangeValidator;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SendPanel extends Panel {
 
     private Stegnavigator stegnavigator;
     private HenvendelseService henvendelseService;
+    private static final Logger LOG = LoggerFactory.getLogger(SendPanel.class);
 
     public SendPanel(String id, CompoundPropertyModel<Sporsmal> model, final Stegnavigator stegnavigator, HenvendelseService henvendelseService) {
         super(id);
@@ -65,7 +68,8 @@ public class SendPanel extends Panel {
                         stegnavigator.neste();
                         target.add(SendPanel.this.getParent());
                     } catch (Exception e) {
-                        error(new StringResourceModel("send-sporsmal.still-sporsmal.underliggende-feil", SendPanel.this, null));
+                        LOG.error("Feil ved innsending av spørsmål", e);
+                        error(new StringResourceModel("send-sporsmal.still-sporsmal.underliggende-feil", SendPanel.this, null).getString());
                         target.add(feedbackPanel);
                     }
                 }
