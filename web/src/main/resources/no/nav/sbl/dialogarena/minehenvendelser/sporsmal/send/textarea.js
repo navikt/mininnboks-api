@@ -24,7 +24,7 @@ $(document).ready(function() {
 
     function tilpassHoyde(textArea) {
         textArea.style.height = 'auto';
-        textArea.style.height = textArea.scrollHeight + 'px';
+        textArea.style.height = Math.max(textArea.scrollHeight, 140) + 'px';
     }
     function tellAntallTegn(textArea) {
         var $antallTegn = $("#antall-tegn");
