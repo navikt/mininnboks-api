@@ -6,18 +6,18 @@
 <body>
 <wicket:panel>
     <h1 class="diger"><wicket:message key="send-sporsmal.temavelger.ny-melding-overskrift">[[Ny melding til NAV]]</wicket:message></h1>
-    <article wicket:id="tema-container" class="send-sporsmal-container tema-panel">
+    <article class="send-sporsmal-container tema-panel">
 
         <h2 class="robust"><wicket:message key="send-sporsmal.temavelger.velg-tema-overskrift">[[Hva gjelder henvendelsen?]]</wicket:message></h2>
         <hr class="robust-strek"/>
 
         <form>
-            <section wicket:id="tema" class="temavelger">
-                <div wicket:id="temaliste">
-                    <input wicket:id="temavalg" type="radio" />
-                    <label wicket:id="temanavn" />
+            <section wicket:id="temavalg" class="temavelger">
+                <div wicket:id="temaer">
+                    <input wicket:id="valg" type="radio" />
+                    <label wicket:for="valg" ><wicket:container wicket:id="navn" /></label>
                     <br/>
-                    <label wicket:id="temabeskrivelse" />
+                    <label wicket:for="valg" ><wicket:container wicket:id="beskrivelse" /></label>
                 </div>
             </section>
             <hr class="skillestrek-sporsmal"/>

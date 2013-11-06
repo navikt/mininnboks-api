@@ -1,13 +1,11 @@
 package no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema;
 
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
-import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Stegnavigator;
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Sporsmal;
-import org.apache.wicket.AttributeModifier;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.Stegnavigator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
@@ -15,84 +13,79 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 
 import static java.util.Arrays.asList;
 
-public class VelgTemaPanel extends Panel {
+public class VelgTemaPanel extends GenericPanel<Sporsmal> {
 
-    IModel<Sporsmal> model;
+    private final Stegnavigator stegnavigator;
+    private final FeedbackPanel feedback;
 
-    public VelgTemaPanel(String id, final IModel<Sporsmal> model, final Stegnavigator stegnavigator) {
+    public VelgTemaPanel(String id, IModel<Sporsmal> model, Stegnavigator stegnavigator) {
         super(id, model);
+        this.setModel(model);
+        this.stegnavigator = stegnavigator;
+        this.feedback = new FeedbackPanel("feedback");
+        this.feedback.setOutputMarkupId(true);
 
-        this.model = model;
-
-        WebMarkupContainer container = new WebMarkupContainer("tema-container");
-
-        final FeedbackPanel feedback = new FeedbackPanel("feedback");
-        feedback.setOutputMarkupId(true);
-        container.add(feedback);
-
-        container.add(getTemavalgListe("tema", feedback));
-        container.add(getFortsettKnapp("fortsett", stegnavigator, feedback));
-        container.add(new Link<Void>("avbryt") {
-            @Override
-            public void onClick() {
-                setResponsePage(Innboks.class);
-            }
-        });
-        add(container);
-    }
-
-    private AjaxLink<Void> getFortsettKnapp(String id, final Stegnavigator stegnavigator, final FeedbackPanel feedback) {
-        return new AjaxLink<Void>(id) {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                if (model.getObject().harTema()) {
-                    stegnavigator.neste();
-                    target.add(VelgTemaPanel.this.getParent());
-                } else {
-                    error(new StringResourceModel("send-sporsmal.temavelger.ikke-valgt-tema", VelgTemaPanel.this, null).getString());
-                    target.add(feedback);
+        add(
+            feedback,
+            new TemaValg("temavalg"),
+            new Fortsettknapp("fortsett"),
+            new Link<Void>("avbryt") {
+                @Override
+                public void onClick() {
+                    setResponsePage(Innboks.class);
                 }
-            }
-        };
+            });
     }
 
-    private RadioGroup<Tema> getTemavalgListe(String id, final FeedbackPanel feedback) {
-        final RadioGroup<Tema> temaValg = new RadioGroup<>(id, new Model<Tema>());
-        temaValg.add(new ListView<Tema>("temaliste", asList(Tema.values())) {
-            @Override
-            protected void populateItem(ListItem<Tema> item) {
-                Radio<Tema> temavalg = new Radio<>("temavalg", item.getModel());
-                item.add(temavalg);
 
-                AttributeModifier bindLabelTilValg = new AttributeModifier("for", temavalg.getMarkupId());
+    private final class Fortsettknapp extends AjaxLink<Void> {
 
-                Label temanavn = new Label("temanavn",
-                        new StringResourceModel(item.getModelObject().toString(), VelgTemaPanel.this, null));
-                temanavn.add(bindLabelTilValg);
-                item.add(temanavn);
+        public Fortsettknapp(String id) {
+            super(id);
+        }
 
-                Label temabeskrivelse = new Label("temabeskrivelse",
-                        new StringResourceModel(item.getModelObject().toString() + ".beskrivelse", VelgTemaPanel.this, null));
-                temabeskrivelse.add(bindLabelTilValg);
-                item.add(temabeskrivelse);
+        @Override
+        public void onClick(AjaxRequestTarget target) {
+            if (VelgTemaPanel.this.getModelObject().harTema()) {
+                stegnavigator.neste();
+                target.add(VelgTemaPanel.this.getParent());
+            } else {
+                error(new StringResourceModel("send-sporsmal.temavelger.ikke-valgt-tema", VelgTemaPanel.this, null).getString());
+                target.add(feedback);
             }
-        });
-        temaValg.add(new AjaxFormChoiceComponentUpdatingBehavior() {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                Sporsmal sos = model.getObject();
-                sos.setTema(temaValg.getModelObject());
-                model.setObject(sos);
-                target.add(temaValg, feedback);
-            }
-        });
-        return temaValg;
+        }
+
+    }
+
+
+    private final class TemaValg extends RadioGroup<Tema> {
+
+        public TemaValg(String id) {
+            super(id, new Model<Tema>());
+            add(new ListView<Tema>("temaer", asList(Tema.values())) {
+                @Override
+                protected void populateItem(ListItem<Tema> item) {
+                    item.add(
+                        new Radio<>("valg", item.getModel()),
+                        new Label("navn", new ResourceModel(item.getModelObject().toString())),
+                        new Label("beskrivelse", new ResourceModel(item.getModelObject() + ".beskrivelse")));
+                }
+            });
+            add(new AjaxFormChoiceComponentUpdatingBehavior() {
+                @Override
+                protected void onUpdate(AjaxRequestTarget target) {
+                    VelgTemaPanel.this.getModelObject().setTema(TemaValg.this.getModelObject());
+                }
+            });
+        }
+
     }
 }
