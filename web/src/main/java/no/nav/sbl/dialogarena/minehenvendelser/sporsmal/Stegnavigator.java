@@ -1,5 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.sporsmal;
 
-public interface Stegnavigator {
+import java.io.Serializable;
+
+public interface Stegnavigator extends Serializable {
     void neste();
 }
