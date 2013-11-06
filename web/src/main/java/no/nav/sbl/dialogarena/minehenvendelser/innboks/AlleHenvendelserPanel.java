@@ -9,7 +9,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
@@ -29,7 +28,6 @@ public class AlleHenvendelserPanel extends Panel {
 
                 IModel<Integer> traadLengde = innboksModell.getTraadLengde(item.getModelObject().henvendelse.traadId);
                 Label traadLengdeLabel = new Label("traadLengde", traadLengde);
-                traadLengdeLabel.add(hasCssClassIf("skjult", new Model<>(traadLengde.getObject() <= 1)));
                 item.add(traadLengdeLabel);
 
                 item.add(new Label("henvendelse.fritekst"));

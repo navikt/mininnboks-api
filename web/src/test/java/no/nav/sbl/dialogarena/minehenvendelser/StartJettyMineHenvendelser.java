@@ -7,15 +7,23 @@ import no.nav.sbl.dialogarena.test.SystemProperties;
 
 import java.io.File;
 
+import static no.nav.modig.lang.collections.FactoryUtils.gotKeypress;
+import static no.nav.modig.lang.collections.RunnableUtils.first;
+import static no.nav.modig.lang.collections.RunnableUtils.waitFor;
+
+/**
+ * Login: Testfamilien Aremark: 10108000398
+ */
 public class StartJettyMineHenvendelser {
 
 	public static void main(String[] args) {
 	    SystemProperties.setFrom("jetty-minehenvendelser.properties");
 		TestCertificates.setupKeyAndTrustStore();
 
-		Jetty.usingWar(FilesAndDirs.WEBAPP_SOURCE).at("minehenvendelser").port(8585)
+		final Jetty jetty = Jetty.usingWar(FilesAndDirs.WEBAPP_SOURCE).at("minehenvendelser").port(8585)
 				.overrideWebXml(new File(FilesAndDirs.TEST_RESOURCES, "override-web.xml"))
-				.buildJetty().start();
+				.buildJetty();
+        jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));
 	}
 
 }
