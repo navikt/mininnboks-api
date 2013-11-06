@@ -9,7 +9,7 @@ public class KvitteringPanel extends Panel {
 
     public KvitteringPanel(String id) {
         super(id);
-        add(new ExternalLink("til-inngangsporten", System.getProperty("inngangsporten.link")));
+        add(new ExternalLink("til-inngangsporten", System.getProperty("inngangsporten.link.url")));
         add(new BookmarkablePageLink<Void>("til-mine-henvendelser", Innboks.class));
     }
 }
