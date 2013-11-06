@@ -76,18 +76,15 @@ body {
     }
     .traad-lengde {
       float: right;
+      height: 22px;
+      width: 26px;
+      margin-left: 0.5rem;
+      margin-top: 12px;
+      padding-top: 1px;
+      background-image: url("../img/snakkeboble.svg");
+      background-repeat: no-repeat;
       color: white;
-      margin: 0.5rem;
-      padding-top: 2px;
-      padding-right: 2px;
       text-align: center;
-      background-color: @sortbakgrunn;
-      border-radius: 2rem;
-      width: 1.5rem;
-      height: 1.5rem;
-      &.skjult {
-        display: none;
-      }
     }
     p {
       margin: 1rem 0;
@@ -99,7 +96,7 @@ body {
     &.valgt {
       background-color: @sortbakgrunn;
       .traad-lengde {
-        background-color: white;
+        background-image: url("../img/snakkeboble_hvit.svg");
         color: @sortbakgrunn;
       }
     }
