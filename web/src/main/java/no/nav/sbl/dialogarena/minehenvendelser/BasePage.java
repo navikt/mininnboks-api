@@ -25,7 +25,7 @@ public class BasePage extends WebPage {
 		add(
                 new Label("tittel", "Mine Henvendelser"),
                 new InnstillingerPanel("innstillinger", TRUE, cmsContentRetriever),
-                new NavigasjonPanel("navigasjon", System.getProperty("inngangsporten.link"), cmsContentRetriever),
+                new NavigasjonPanel("navigasjon", System.getProperty("inngangsporten.link.url"), cmsContentRetriever),
                 new FooterPanel("footer", footerLinks, TRUE, FALSE, cmsContentRetriever));
 	}
 	
