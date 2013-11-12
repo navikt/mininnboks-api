@@ -1,0 +1,147 @@
+package no.nav.sbl.dialogarena.minehenvendelser.config;
+
+import no.nav.modig.cache.CacheConfig;
+import no.nav.modig.security.sts.utility.STSConfigurationUtility;
+import no.nav.sbl.dialogarena.minehenvendelser.WicketApplication;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.minehenvendelser.person.consumer.HentBrukerProfilConsumer;
+import no.nav.sbl.dialogarena.minehenvendelser.person.consumer.OppdaterBrukerprofilConsumer;
+import no.nav.sbl.dialogarena.minehenvendelser.person.service.PersonService;
+import no.nav.sbl.dialogarena.minehenvendelser.person.service.PersonServiceTPS;
+import no.nav.sbl.dialogarena.minehenvendelser.security.Brukerkontekst;
+import no.nav.sbl.dialogarena.minehenvendelser.security.ModigSecurityBrukerkontekst;
+import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
+import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
+import no.nav.tjeneste.virksomhet.behandlebrukerprofil.v1.BehandleBrukerprofilPortType;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
+import org.apache.cxf.configuration.jsse.TLSClientParameters;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.feature.LoggingFeature;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.ws.addressing.WSAddressingFeature;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+import java.util.Arrays;
+
+@Configuration
+@Import({CacheConfig.class, ContentConfig.class})
+public class ApplicationContext {
+
+    @Bean
+    public WicketApplication wicket() {
+        return new WicketApplication();
+    }
+
+    @Bean
+    public Brukerkontekst brukerkontekst() {
+        return new ModigSecurityBrukerkontekst();
+    }
+
+    @Bean
+    public PersonService personService() {
+        return new PersonServiceTPS(hentBrukerprofilConsumer(), oppdaterBrukerprofilConsumer());
+    }
+
+    @Bean
+    public HentBrukerProfilConsumer hentBrukerprofilConsumer() {
+        return new HentBrukerProfilConsumer(brukerprofilSSO());
+    }
+
+    @Bean
+    public OppdaterBrukerprofilConsumer oppdaterBrukerprofilConsumer() {
+        return new OppdaterBrukerprofilConsumer(behandleBrukerprofilSSO());
+    }
+
+    @Bean
+    public HenvendelseService henvendelseService() {
+        return new HenvendelseService.Default(henvendelsesSSO(), sporsmalinnsendingSSO());
+    }
+
+    private static SporsmalinnsendingPortType sporsmalinnsendingSSO() {
+        return createPortType(System.getProperty("henvendelse.spsminnsending.ws.url"),
+                "classpath:Sporsmalinnsending.wsdl",
+                SporsmalinnsendingPortType.class,
+                true);
+    }
+
+    private static HenvendelseMeldingerPortType henvendelsesSSO() {
+        return createPortType(System.getProperty("henvendelse.meldinger.ws.url"),
+                "classpath:no/nav/tjeneste/domene/brukerdialog/henvendelsemeldinger/v1/Meldinger.wsdl",
+                HenvendelseMeldingerPortType.class,
+                true);
+    }
+
+    @Bean
+    public static BrukerprofilPortType brukerprofilSSO() {
+        return createPortType(System.getProperty("brukerprofil.ws.url"),
+                "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
+                BrukerprofilPortType.class,
+                true);
+    }
+
+    @Bean
+    public static BehandleBrukerprofilPortType behandleBrukerprofilSSO() {
+        return createPortType(System.getProperty("behandlebrukerprofil.ws.url"),
+                "classpath:behandleBrukerprofil/no/nav/tjeneste/virksomhet/behandleBrukerprofil/v1/BehandleBrukerprofil.wsdl",
+                BehandleBrukerprofilPortType.class,
+                true);
+    }
+
+    @Bean
+    public static BrukerprofilPortType brukerprofilSystemUser() {
+        return createPortType(System.getProperty("brukerprofil.ws.url"),
+                "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
+                BrukerprofilPortType.class,
+                false);
+    }
+
+    @Bean
+    public static BehandleBrukerprofilPortType behandleBrukerprofilSystemUser() {
+        return createPortType(System.getProperty("behandlebrukerprofil.ws.url"),
+                "classpath:behandleBrukerprofil/no/nav/tjeneste/virksomhet/behandleBrukerprofil/v1/BehandleBrukerprofil.wsdl",
+                BehandleBrukerprofilPortType.class,
+                false);
+    }
+
+    @Bean
+    public static SporsmalinnsendingPortType sporsmalinnsendingSystemUser() {
+        return createPortType(System.getProperty("henvendelse.spsminnsending.ws.url"),
+                "classpath:Sporsmalinnsending.wsdl",
+                SporsmalinnsendingPortType.class,
+                false);
+    }
+
+    @Bean
+    public static HenvendelseMeldingerPortType henvendelsesSystemUser() {
+        return createPortType(System.getProperty("henvendelse.meldinger.ws.url"),
+                "classpath:no/nav/tjeneste/domene/brukerdialog/henvendelsemeldinger/v1/Meldinger.wsdl",
+                HenvendelseMeldingerPortType.class,
+                false);
+    }
+
+    private static <T> T createPortType(String address, String wsdlUrl, Class<T> serviceClass, boolean externalService) {
+        JaxWsProxyFactoryBean proxy = new JaxWsProxyFactoryBean();
+        proxy.getFeatures().addAll(Arrays.asList(new WSAddressingFeature(), new LoggingFeature()));
+        proxy.setServiceClass(serviceClass);
+        proxy.setAddress(address);
+        proxy.setWsdlURL(wsdlUrl);
+        T portType = proxy.create(serviceClass);
+        Client client = ClientProxy.getClient(portType);
+        HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
+        httpConduit.setTlsClientParameters(new TLSClientParameters());
+        if (Boolean.valueOf(System.getProperty("disable.ssl.cn.check", "false"))) {
+            httpConduit.getTlsClientParameters().setDisableCNCheck(true);
+        }
+        if (externalService) {
+            STSConfigurationUtility.configureStsForExternalSSO(client);
+        } else {
+            STSConfigurationUtility.configureStsForSystemUser(client);
+        }
+        return portType;
+    }
+
+}

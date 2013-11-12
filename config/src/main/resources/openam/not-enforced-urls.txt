@@ -1,0 +1,4 @@
+https://${DomainName}/minehenvendelser/js/*
+https://${DomainName}/minehenvendelser/css/*
+https://${DomainName}/minehenvendelser/img/*
+https://${DomainName}/minehenvendelser/internal/selftest*

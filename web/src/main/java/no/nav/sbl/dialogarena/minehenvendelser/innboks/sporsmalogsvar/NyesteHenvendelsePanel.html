@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head></head>
+<body>
+<wicket:panel>
+    <section class="nyeste-henvendelse">
+        <header>
+            <div class="opprettet">
+                <aside wicket:id="nyesteHenvendelse.langOpprettetDato" class="mini"></aside>
+                <aside wicket:id="nyesteHenvendelse.lestDato" class="lest-dato"></aside>
+            </div>
+            <h1 wicket:id="overskrift"></h1>
+        </header>
+        <article>
+            <wicket:container wicket:id="nyesteHenvendelse.henvendelse.fritekst" />
+        </article>
+    </section>
+</wicket:panel>
+</body>
+</html>

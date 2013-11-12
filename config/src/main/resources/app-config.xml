@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://appconfig.aura.nav.no" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://appconfig.aura.nav.no http://maven.adeo.no/xsd/appconfig.xsd">
+
+    <name>minehenvendelser</name>
+
+    <selftestPagePath>/minehenvendelser/internal/selftest?status</selftestPagePath>
+
+    <artifacts>
+        <ear groupId="no.nav.sbl.dialogarena" artifactId="minehenvendelser-jee"/>
+    </artifacts>
+
+    <resources>
+        <webservice alias="virksomhet:Brukerprofil_v1" mapToProperty="brukerprofil.ws"/>
+        <webservice alias="virksomhet:BehandleBrukerprofil_v1" mapToProperty="behandlebrukerprofil.ws"/>
+        <baseUrl alias="dialogarena.cms" mapToProperty="dialogarena.cms"/>
+        <baseUrl alias="dialogarena.footer" mapToProperty="dialogarena.footer"/>
+        <baseUrl alias="minehenvendelser.navigasjonslink" mapToProperty="minehenvendelser.navigasjonslink"/>
+        <baseUrl alias="dokumentinnsending.link" mapToProperty="dokumentinnsending.link"/>
+        <baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link"/>
+
+        <webservice alias="domene.Brukerdialog:HenvendelseMeldingerService_v1" mapToProperty="henvendelse.meldinger.ws"/>
+        <webservice alias="domene.Brukerdialog:SporsmalinnsendingService_v1" mapToProperty="henvendelse.spsminnsending.ws"/>
+    </resources>
+
+    <security serviceUserResourceAlias="srvMinehenvendelser">
+        <logins>
+            <openAm>
+                <contextRoot>minehenvendelser</contextRoot>
+            </openAm>
+        </logins>
+    </security>
+</application>
