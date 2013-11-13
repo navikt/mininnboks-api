@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>no.nav.sbl.dialogarena</groupId>
-        <artifactId>dininnboks</artifactId>
+        <artifactId>minehenvendelser</artifactId>
         <version>2.0.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>dininnboks-web</artifactId>
+    <artifactId>minehenvendelser-web</artifactId>
     <name>${project.artifactId}</name>
     <packaging>war</packaging>
 
