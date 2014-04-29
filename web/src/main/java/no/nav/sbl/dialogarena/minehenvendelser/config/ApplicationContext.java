@@ -30,6 +30,7 @@ public class ApplicationContext {
 
     @Bean
     public HenvendelseService henvendelseService() {
+//        return new HenvendelseService.Default(henvendelsesSSO(), sporsmalinnsendingSSO());
         return new HenvendelseService.Mock();
     }
 
