@@ -6,7 +6,6 @@ import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.minehenvendelser.config.utils.LocaleFromWicketSession;
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
 import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
-import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SendSporsmalWizard;
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.send.SkrivPage;
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.VelgTemaPage;
@@ -59,13 +58,12 @@ public class WicketApplication extends WebApplication {
                 .withModules(EKSTERNFLATE)
                 .addMetas(CHARSET_UTF8, VIEWPORT_SCALE_1, XUA_IE_EDGE)
                 .addLess(INNSTILLINGER_LESS, new PackageResourceReference(Innboks.class, "innboks.less"),
-                        new PackageResourceReference(SendSporsmalWizard.class, "sporsmal.less"))
+                        new PackageResourceReference(SkrivPage.class, "sporsmal.less"))
                 .addScripts(INNSTILLINGER_JS)
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
         mountPage("innboks", Innboks.class);
-        mountPage("sporsmal", SendSporsmalWizard.class);
         mountPage("sporsmal/velgtema", VelgTemaPage.class);
         mountPage("sporsmal/skriv/${tema}", SkrivPage.class);
         mountPage("sporsmal/kvittering", KvitteringPage.class);

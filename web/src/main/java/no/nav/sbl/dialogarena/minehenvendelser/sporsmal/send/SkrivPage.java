@@ -34,7 +34,7 @@ public class SkrivPage extends BasePage {
 
     @Inject
     private HenvendelseService service;
-    private static final Logger LOG = LoggerFactory.getLogger(SendPanel.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SkrivPage.class);
 
     public SkrivPage(PageParameters parameters) {
         Sporsmal sporsmal = new Sporsmal();
@@ -90,7 +90,7 @@ public class SkrivPage extends BasePage {
         @Override
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
-            response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SendPanel.class, "textarea.js")));
+            response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "textarea.js")));
         }
     }
 
