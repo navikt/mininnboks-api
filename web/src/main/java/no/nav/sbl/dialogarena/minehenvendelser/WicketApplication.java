@@ -7,6 +7,9 @@ import no.nav.sbl.dialogarena.minehenvendelser.config.utils.LocaleFromWicketSess
 import no.nav.sbl.dialogarena.minehenvendelser.innboks.Innboks;
 import no.nav.sbl.dialogarena.minehenvendelser.selftest.SelfTestPage;
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.SendSporsmalWizard;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.kvittering.KvitteringPage;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.send.SkrivPage;
+import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.VelgTemaPage;
 import no.nav.sbl.dialogarena.time.Datoformat;
 import no.nav.sbl.dialogarena.webkomponent.innstillinger.LogoutPage;
 import org.apache.wicket.Application;
@@ -63,6 +66,9 @@ public class WicketApplication extends WebApplication {
         new ApplicationSettingsConfig().configure(this);
         mountPage("innboks", Innboks.class);
         mountPage("sporsmal", SendSporsmalWizard.class);
+        mountPage("sporsmal/velgtema", VelgTemaPage.class);
+        mountPage("sporsmal/skriv/${tema}", SkrivPage.class);
+        mountPage("sporsmal/kvittering", KvitteringPage.class);
         mountPage("internal/selftest", SelfTestPage.class);
         mountPage("loggut", LogoutPage.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
