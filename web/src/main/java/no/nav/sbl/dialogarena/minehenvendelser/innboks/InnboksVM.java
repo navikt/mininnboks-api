@@ -1,10 +1,15 @@
 package no.nav.sbl.dialogarena.minehenvendelser.innboks;
 
+import no.nav.modig.lang.option.Optional;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelse;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelsetype;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import no.nav.modig.lang.option.Optional;
-import no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelse;
 
 import static java.util.Collections.emptyList;
 import static no.nav.modig.lang.collections.IterUtils.on;
@@ -50,8 +55,8 @@ public class InnboksVM implements Serializable {
     }
 
     public List<HenvendelseVM> getTraad() {
-        for (HenvendelseVM henvendelseVM : valgtHenvendelse) {
-            return on(henvendelser).filter(where(TRAAD_ID, equalTo(henvendelseVM.henvendelse.traadId))).collect(NYESTE_OVERST);
+        if (valgtHenvendelse.isSome()) {
+            return on(henvendelser).filter(where(TRAAD_ID, equalTo(valgtHenvendelse.get().henvendelse.traadId))).collect(NYESTE_OVERST);
         }
         return emptyList();
     }
@@ -78,4 +83,43 @@ public class InnboksVM implements Serializable {
         this.valgtHenvendelse = optional(valgtHenvendelse);
     }
 
+    public IModel<Boolean> ingenHenvendelser() {
+        return new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                return getHenvendelser().size() == 0;
+            }
+        };
+    }
+
+    public final IModel<Boolean> erValgtHenvendelse(final HenvendelseVM henvendelse) {
+        return new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                Optional<HenvendelseVM> valgtHenvendelse = getValgtHenvendelse();
+                return valgtHenvendelse.isSome() && valgtHenvendelse.get() == henvendelse;
+            }
+        };
+    }
+
+    public IModel<Boolean> valgtHenvendelseAvType(final Henvendelsetype type) {
+        return new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                Optional<HenvendelseVM> valgtHenvendelse = getValgtHenvendelse();
+                return valgtHenvendelse.isSome() && valgtHenvendelse.get().avType(type);
+            }
+        };
+    }
+
+    public IModel<Integer> getTraadLengde(final String traadID) {
+        return new AbstractReadOnlyModel<Integer>() {
+            @Override
+            public Integer getObject() {
+                return on(getHenvendelser()).filter(where(TRAAD_ID, equalTo(traadID))).collect().size();
+            }
+        };
+    }
+
+    public CompoundPropertyModel<Boolean> alleHenvendelserSkalSkjulesHvisLitenSkjerm = new CompoundPropertyModel<>(false);
 }

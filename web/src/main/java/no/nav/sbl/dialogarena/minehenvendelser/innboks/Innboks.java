@@ -12,6 +12,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -27,26 +28,26 @@ public class Innboks extends BasePage {
     public static final String OPPDATER_HENVENDELSER = "hendelser.oppdater_henvendelser";
 
     @Inject
-    HenvendelseService service;
+    private HenvendelseService service;
 
-    private InnboksModell innboksModell;
-    AjaxLink<Void> tilInnboksLink;
+    private InnboksVM innboksVM;
+    private AjaxLink<Void> tilInnboksLink;
 
     public Innboks() {
-        innboksModell = new InnboksModell(new InnboksVM(service.hentAlleHenvendelser(innloggetBruker())));
-        setDefaultModel(innboksModell);
+        innboksVM = new InnboksVM(service.hentAlleHenvendelser(innloggetBruker()));
+        setDefaultModel(new CompoundPropertyModel<>(innboksVM));
         setOutputMarkupId(true);
 
         WebMarkupContainer tomInnboks = new WebMarkupContainer("tom-innboks");
         tomInnboks.add(new Label("tom-innboks-tekst", new StringResourceModel("innboks.tom-innboks-melding", this, null)));
-        tomInnboks.add(hasCssClassIf("ingen-meldinger", new Model(!innboksModell.ingenHenvendelser().getObject())));
+        tomInnboks.add(hasCssClassIf("ingen-meldinger", new Model<>(!innboksVM.ingenHenvendelser().getObject())));
 
-        final AlleHenvendelserPanel alleMeldinger = new AlleHenvendelserPanel("henvendelser", innboksModell, service);
-        alleMeldinger.add(hasCssClassIf("skjult", innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm));
-        alleMeldinger.add(hasCssClassIf("ingen-meldinger", innboksModell.ingenHenvendelser()));
+        final AlleHenvendelserPanel alleMeldinger = new AlleHenvendelserPanel("henvendelser", innboksVM, service);
+        alleMeldinger.add(hasCssClassIf("skjult", innboksVM.alleHenvendelserSkalSkjulesHvisLitenSkjerm));
+        alleMeldinger.add(hasCssClassIf("ingen-meldinger", innboksVM.ingenHenvendelser()));
 
-        DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksModell);
-        detaljvisning.add(hasCssClassIf("ingen-meldinger", innboksModell.ingenHenvendelser()));
+        DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksVM);
+        detaljvisning.add(hasCssClassIf("ingen-meldinger", innboksVM.ingenHenvendelser()));
 
         WebMarkupContainer topBar = new WebMarkupContainer("top-bar");
         topBar.add(new Link<Void>("skriv-ny") {
@@ -58,11 +59,11 @@ public class Innboks extends BasePage {
         tilInnboksLink = new AjaxLink<Void>("til-innboks") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm.setObject(false);
+                innboksVM.alleHenvendelserSkalSkjulesHvisLitenSkjerm.setObject(false);
                 target.add(this, alleMeldinger);
             }
         };
-        tilInnboksLink.add(hasCssClassIf("skjult", not(innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm)));
+        tilInnboksLink.add(hasCssClassIf("skjult", not(innboksVM.alleHenvendelserSkalSkjulesHvisLitenSkjerm)));
         topBar.add(tilInnboksLink);
 
         add(topBar, tomInnboks, alleMeldinger, detaljvisning);
@@ -75,7 +76,7 @@ public class Innboks extends BasePage {
 
     @RunOnEvents(OPPDATER_HENVENDELSER)
     public void meldingerOppdatert(AjaxRequestTarget target) {
-        this.innboksModell.getObject().oppdaterHenvendelserFra(service.hentAlleHenvendelser(innloggetBruker()));
+        innboksVM.oppdaterHenvendelserFra(service.hentAlleHenvendelser(innloggetBruker()));
         target.add(this);
     }
 

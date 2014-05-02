@@ -15,7 +15,7 @@ import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
 
 public class AlleHenvendelserPanel extends Panel {
 
-    public AlleHenvendelserPanel(String id, final InnboksModell innboksModell, final HenvendelseService service) {
+    public AlleHenvendelserPanel(String id, final InnboksVM innboksVM, final HenvendelseService service) {
         super(id);
         setOutputMarkupId(true);
 
@@ -26,18 +26,18 @@ public class AlleHenvendelserPanel extends Panel {
                 item.add(new Label("tema", new StringResourceModel(item.getModelObject().henvendelse.tema.toString(), null)));
                 item.add(new Label("kortOpprettetDato"));
 
-                IModel<Integer> traadLengde = innboksModell.getTraadLengde(item.getModelObject().henvendelse.traadId);
+                IModel<Integer> traadLengde = innboksVM.getTraadLengde(item.getModelObject().henvendelse.traadId);
                 Label traadLengdeLabel = new Label("traadLengde", traadLengde);
                 item.add(traadLengdeLabel);
 
                 item.add(new Label("henvendelse.fritekst"));
-                item.add(hasCssClassIf("valgt", innboksModell.erValgtHenvendelse(item.getModelObject())));
+                item.add(hasCssClassIf("valgt", innboksVM.erValgtHenvendelse(item.getModelObject())));
                 item.add(hasCssClassIf("lest", item.getModelObject().erLest()));
                 item.add(new AjaxEventBehavior("click") {
                     @Override
                     protected void onEvent(AjaxRequestTarget target) {
                         // Merk meldingen som valgt
-                        innboksModell.getInnboksVM().setValgtHenvendelse(item.getModelObject());
+                        innboksVM.setValgtHenvendelse(item.getModelObject());
                         send(getPage(), Broadcast.DEPTH, Innboks.VALGT_HENVENDELSE);
                         // Merk meldingen som lest
                         if (!item.getModelObject().erLest().getObject()) {
@@ -45,7 +45,7 @@ public class AlleHenvendelserPanel extends Panel {
                             item.getModelObject().henvendelse.markerSomLest();
                         }
                         // Oppdater visningen
-                        innboksModell.alleHenvendelserSkalSkjulesHvisLitenSkjerm.setObject(true);
+                        innboksVM.alleHenvendelserSkalSkjulesHvisLitenSkjerm.setObject(true);
                         target.add(AlleHenvendelserPanel.this);
                     }
                 });
