@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.minehenvendelser.innboks;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelsetype;
+import no.nav.sbl.dialogarena.time.Datoformat;
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -22,20 +23,16 @@ public class HenvendelseVM implements Serializable {
         this.henvendelse = henvendelse;
     }
 
-    public void markerSomLest() {
-        henvendelse.markerSomLest();
-    }
-
     public String getLangOpprettetDato() {
-        return formatertDato(henvendelse.opprettet, "EEEEE dd.MM.yyyy 'kl' HH:mm");
+        return Datoformat.langMedTid(henvendelse.opprettet);
     }
 
     public String getKortOpprettetDato() {
-        return formatertDato(henvendelse.opprettet, "dd.MM.yyyy 'kl' HH:mm");
+        return Datoformat.kortMedTid(henvendelse.opprettet);
     }
 
     public String getLestDato() {
-        return avType(SVAR) ? formatertDato(henvendelse.lestDato, "'Lest:' dd.MM.yyyy 'kl' HH:mm") : null;
+        return avType(SVAR) ? "Lest: " + Datoformat.kortMedTid(henvendelse.lestDato) : null;
     }
 
     public boolean avType(final Henvendelsetype type) {
