@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.minehenvendelser.consumer;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.Tema;
 import org.joda.time.DateTime;
@@ -31,4 +32,10 @@ public class Henvendelse implements Serializable {
     public boolean erLest() {
         return lest;
     }
+
+    public static final Comparator<Henvendelse> NYESTE_OVERST = new Comparator<Henvendelse>() {
+        public int compare(Henvendelse h1, Henvendelse h2) {
+            return h2.opprettet.compareTo(h1.opprettet);
+        }
+    };
 }

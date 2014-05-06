@@ -6,12 +6,13 @@ import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.VelgTemaPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
@@ -20,7 +21,6 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import javax.inject.Inject;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
-import static no.nav.modig.wicket.model.ModelUtils.not;
 
 public class Innboks extends BasePage {
 
@@ -31,23 +31,11 @@ public class Innboks extends BasePage {
     private HenvendelseService service;
 
     private InnboksVM innboksVM;
-    private AjaxLink<Void> tilInnboksLink;
 
     public Innboks() {
         innboksVM = new InnboksVM(service.hentAlleHenvendelser(innloggetBruker()));
         setDefaultModel(new CompoundPropertyModel<>(innboksVM));
         setOutputMarkupId(true);
-
-        WebMarkupContainer tomInnboks = new WebMarkupContainer("tom-innboks");
-        tomInnboks.add(new Label("tom-innboks-tekst", new StringResourceModel("innboks.tom-innboks-melding", this, null)));
-        tomInnboks.add(hasCssClassIf("ingen-meldinger", new Model<>(!innboksVM.ingenHenvendelser().getObject())));
-
-        final AlleHenvendelserPanel alleMeldinger = new AlleHenvendelserPanel("henvendelser", innboksVM, service);
-        alleMeldinger.add(hasCssClassIf("skjult", innboksVM.alleHenvendelserSkalSkjulesHvisLitenSkjerm));
-        alleMeldinger.add(hasCssClassIf("ingen-meldinger", innboksVM.ingenHenvendelser()));
-
-        DetaljvisningPanel detaljvisning = new DetaljvisningPanel("detaljpanel", innboksVM);
-        detaljvisning.add(hasCssClassIf("ingen-meldinger", innboksVM.ingenHenvendelser()));
 
         WebMarkupContainer topBar = new WebMarkupContainer("top-bar");
         topBar.add(new Link<Void>("skriv-ny") {
@@ -56,17 +44,20 @@ public class Innboks extends BasePage {
                 setResponsePage(VelgTemaPage.class);
             }
         });
-        tilInnboksLink = new AjaxLink<Void>("til-innboks") {
+
+        ListView traader = new ListView<TraadVM>("traader", innboksVM.getTraader()) {
             @Override
-            public void onClick(AjaxRequestTarget target) {
-                innboksVM.alleHenvendelserSkalSkjulesHvisLitenSkjerm.setObject(false);
-                target.add(this, alleMeldinger);
+            protected void populateItem(ListItem<TraadVM> item) {
+                item.add(new NyesteMeldingPanel("nyeste-melding", item.getModel()));
+                item.add(new TidligereMeldingerPanel("tidligere-meldinger", item.getModel()));
             }
         };
-        tilInnboksLink.add(hasCssClassIf("skjult", not(innboksVM.alleHenvendelserSkalSkjulesHvisLitenSkjerm)));
-        topBar.add(tilInnboksLink);
 
-        add(topBar, tomInnboks, alleMeldinger, detaljvisning);
+        WebMarkupContainer tomInnboks = new WebMarkupContainer("tom-innboks");
+        tomInnboks.add(new Label("tom-innboks-tekst", new StringResourceModel("innboks.tom-innboks-melding", this, null)));
+        tomInnboks.add(hasCssClassIf("ingen-meldinger", new Model<>(!innboksVM.ingenHenvendelser().getObject())));
+
+        add(topBar, traader, tomInnboks);
     }
 
     @Override
@@ -78,11 +69,6 @@ public class Innboks extends BasePage {
     public void meldingerOppdatert(AjaxRequestTarget target) {
         innboksVM.oppdaterHenvendelserFra(service.hentAlleHenvendelser(innloggetBruker()));
         target.add(this);
-    }
-
-    @RunOnEvents(VALGT_HENVENDELSE)
-    public void visTilInnboksLink(AjaxRequestTarget target) {
-        target.add(tilInnboksLink);
     }
 
     private static String innloggetBruker() {

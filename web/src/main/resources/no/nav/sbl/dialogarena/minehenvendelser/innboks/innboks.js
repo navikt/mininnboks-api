@@ -51,13 +51,5 @@ $(document).ready(function() {
         attachToggleHoydeListener();
     };
 
-    var adjustInnboksHeight = function() {
-        var bodyHeight = $('body').outerHeight();
-        var restHeight = $('.footer').outerHeight() + $('.innstillinger-innlogget').outerHeight() +
-            $('.rad-logo').outerHeight() + $('#innboks-top').outerHeight() + $('#eksterne-lenker').outerHeight();
-        $('#innboks-container').height(bodyHeight - restHeight);
-    };
-
     attachListeners();
-    adjustInnboksHeight();
 });

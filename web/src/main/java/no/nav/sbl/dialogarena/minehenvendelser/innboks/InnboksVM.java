@@ -20,19 +20,28 @@ import static no.nav.modig.lang.option.Optional.optional;
 import static no.nav.sbl.dialogarena.minehenvendelser.innboks.HenvendelseVM.NYESTE_OVERST;
 import static no.nav.sbl.dialogarena.minehenvendelser.innboks.HenvendelseVM.TIL_HENVENDELSE_VM;
 import static no.nav.sbl.dialogarena.minehenvendelser.innboks.HenvendelseVM.TRAAD_ID;
+import static no.nav.sbl.dialogarena.minehenvendelser.innboks.TraadVM.tilTraader;
 
 public class InnboksVM implements Serializable {
 
     private List<HenvendelseVM> henvendelser;
 
+    private List<TraadVM> traader;
+
     private Optional<HenvendelseVM> valgtHenvendelse = none();
 
     public InnboksVM(List<Henvendelse> nyeHenvendelser) {
         oppdaterHenvendelserFra(nyeHenvendelser);
+
+        traader = tilTraader(nyeHenvendelser);
     }
 
     public List<HenvendelseVM> getHenvendelser() {
         return henvendelser;
+    }
+
+    public List<TraadVM> getTraader() {
+        return traader;
     }
 
     public List<HenvendelseVM> getNyesteHenvendelseITraad() {

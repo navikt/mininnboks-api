@@ -3,7 +3,7 @@
 @rammeborder: #ddd;
 @skilleborder: #bbb;
 @dodgerblue: #1e90ff;
-@maxwidth: 1080px;
+@maxwidth: 900px;
 
 body {
   font-family: Modus, Arial, Helvetica, sans-serif;
@@ -30,12 +30,11 @@ body {
 
 #innboks-container {
   overflow: hidden;
-  height: 700px;
   max-width: @maxwidth;
   margin: 0 auto;
   border-right: solid 1px @rammeborder;
   border-left: solid 1px @rammeborder;
-  .tom-innboks, .meldingsliste, .meldingsdetaljer {
+  .tom-innboks {
     &.ingen-meldinger {
       display: none;
     }
@@ -51,187 +50,30 @@ body {
   text-align: center;
 }
 
-.meldingsliste {
-  width: 35%;
-  height: 100%;
-  float: left;
-  overflow: auto;
-  background-color: white;
-  margin: 0;
-  border-right: 1px solid @skilleborder;
-  font-family: Arial, Helvetica, sans-serif;
-  .melding {
-    padding: 1em;
-    padding-left: 2em;
-    position: relative;
-    border-bottom: solid 1px @rammeborder;
-    height: 100px;
-    .opprettet {
-      float: right;
+.nyeste-melding {
+  .nyeste-header {
+    .status-indikator {
+      display: inline-block;
+      background-color: #006bc6;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
     }
-    .tema {
-      font-family: Modus, Arial, Helvetica, sans-serif;
-      font-weight: 600;
-      margin-top: 0.3em;
+
+    .overskrift {
+      display: inline-block;
+      font-size: 1.3rem;
     }
-    .traad-lengde {
+
+    .traadlengde {
       float: right;
       height: 22px;
       width: 26px;
-      margin-left: 0.5rem;
-      margin-top: 12px;
       padding-top: 1px;
       background-image: url("../img/snakkeboble.svg");
       background-repeat: no-repeat;
       color: white;
       text-align: center;
-    }
-    p {
-      margin: 1rem 0;
-      text-overflow: ellipsis;
-      -o-text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    &.valgt {
-      background-color: @sortbakgrunn;
-      .traad-lengde {
-        background-image: url("../img/snakkeboble_hvit.svg");
-        color: @sortbakgrunn;
-      }
-    }
-    &.valgt * {
-      color: white;
-    }
-    &:not(.valgt) {
-      cursor: pointer;
-    }
-    &:not(.lest) {
-      .ulest-indikator {
-        position: absolute;
-        top: 1.1em;
-        left: 0.5em;
-        background-color: #0ca9e1;
-        height: 1em;
-        width: 1em;
-        border-radius: 2em;
-      }
-    }
-  }
-}
-
-.meldingsdetaljer {
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin: 0;
-  background-color: @graabakgrunn;
-  border-left: 1px solid @skilleborder;
-  padding-bottom: 3em;
-  line-height: 1.5em;
-  font-family: Arial, Helvetica, sans-serif;
-  .tema-header {
-    font-family: Modus, Arial, Helvetica, sans-serif;
-    border-bottom: 1px solid @rammeborder;
-    font-weight: 600;
-    padding: 0.5em 2.5em 0.5em 2.5em;
-  }
-  section.nyeste-henvendelse {
-    padding: 1em 2.5em 1em 2.5em;
-    h1 {
-      font-family: Modus, Arial, Helvetica, sans-serif;
-      font-size: 1.5em;
-      text-align: left;
-      font-weight: 600;
-      margin: 0 0 1em 0;
-    }
-    p {
-      overflow: hidden;
-      margin-top: 2.5em;
-    }
-    .opprettet {
-      float: right;
-      text-transform: uppercase;
-      .lest-dato {
-        font-size: 0.8em;
-        text-align: right;
-      }
-    }
-  }
-  section.tidligere-henvendelse {
-    padding: 1em 2.5em 2.5em 2.5em;
-    padding-bottom: 0;
-    header {
-      margin: 0.5em 0 0.5em 0;
-      text-transform: uppercase;
-      text-align: center;
-    }
-    article {
-      position: relative;
-      background: white;
-      padding: 1.5em;
-      border: 1px solid @rammeborder;
-      cursor: pointer;
-      background-color: white;
-      // CSS magi for å tegne pil
-      &:before, &:after {
-        position: absolute;
-        top: 100%;
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-      }
-      &:after {
-        border-top-color: white;
-        border-width: 20px;
-        left: 50%;
-        margin-left: -20px;
-      }
-      &:before {
-        border-top-color: @rammeborder;
-        border-width: 21px;
-        left: 50%;
-        margin-left: -21px;
-      }
-      // Ferdig med CSS magi
-      h2 {
-        text-align: center;
-      }
-      .fritekst {
-        overflow: hidden;
-        padding: 0 2em;
-        p {
-          margin-top: 0;
-        }
-      }
-      .utvide-tekst-pil {
-        position: absolute;
-        height: 0;
-        width: 0;
-        top: 2em;
-        right: 2em;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-top: 8px solid @dodgerblue;
-        &.rotert {
-          -webkit-transform: rotate(-180deg);
-          -moz-transform: rotate(-180deg);
-          -ms-transform: rotate(-180deg);
-          -o-transform: rotate(-180deg);
-          transform: rotate(-180deg);
-        }
-      }
-    }
-    &:last-child {
-      article {
-        &:after {
-          border: none;
-        }
-        &:before {
-          border: none;
-        }
-      }
     }
   }
 }
@@ -245,39 +87,5 @@ body {
   a {
     font-family: Modus, Arial, Helvetica, sans-serif;
     margin: 1em;
-  }
-}
-
-@media screen and (max-width: 768px) {
-
-  #innboks-top .innboks-nav {
-    margin: 0 1em;
-    max-width: 100%;
-    .tilbake-til-innboks-link {
-      display: block;
-      &.skjult {
-        display: none;
-      }
-    }
-  }
-
-  #innboks-container {
-    max-width: 100%;
-    margin: 0;
-    border: 0;
-  }
-
-  .meldingsliste {
-    width: 100%;
-    margin: 0;
-    border: 0;
-    &.skjult {
-      display: none;
-    }
-  }
-
-  .meldingsdetaljer {
-    margin: 0;
-    border: 0;
   }
 }
