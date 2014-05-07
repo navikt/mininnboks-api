@@ -13,10 +13,6 @@ body {
   overflow: hidden;
   border-bottom: solid 1px @rammeborder;
   padding: 50px 0 10px 0;
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 600;
-  }
   .innboks-nav {
     border-left: @rammeborder;
     max-width: @maxwidth;
@@ -27,12 +23,9 @@ body {
   }
 }
 
-#innboks-container {
-  overflow: hidden;
-  .tom-innboks {
-    &.ingen-meldinger {
-      display: none;
-    }
+.tom-innboks {
+  &.ingen-meldinger {
+    display: none;
   }
 }
 
@@ -47,12 +40,26 @@ body {
 
 .toggleable {
   background-color: #fff;
+  position: relative;
+  .flipp {
+    position: absolute;
+    height: 27px;
+    width: 57px;
+    top: -4px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-image: url("../img/flipp_aapen.svg");
+    background-repeat: no-repeat;
+  }
   &.closed {
     height: @toggleHeight;
-    overflow: hidden;
     background-color: @backgroundColor;
     .tidligere-melding {
       display: none;
+    }
+    .flipp {
+      background-image: url("../img/flipp_lukket.svg");
     }
     p {
       overflow: hidden;
@@ -63,7 +70,6 @@ body {
 }
 
 .traad {
-
   border-bottom: 1px solid @rammeborder;
   padding: 40px 0;
 
