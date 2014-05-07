@@ -2,16 +2,16 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-    <div class="nyeste-melding">
+    <article class="nyeste-melding">
         <div class="nyeste-header">
             <div wicket:id="traadlengde" class="traadlengde"></div>
-            <div wicket:id="sendt-dato"></div>
+            <h4 wicket:id="sendt-dato" class="dato"></h4>
             <div>
                 <div class="status-indikator"></div>
-                <div wicket:id="tema" class="overskrift"></div>
+                <h2 wicket:id="tema" class="overskrift"></h2>
             </div>
         </div>
-        <div wicket:id="fritekst"></div>
-    </div>
+        <wicket:container wicket:id="fritekst"></wicket:container>
+    </article>
 </wicket:panel>
 </html>

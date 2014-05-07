@@ -2,10 +2,17 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-    <div wicket:id="tidligere-meldinger" class="tidligere-melding">
-        <div wicket:id="sendt-dato"></div>
-        <div wicket:id="tema" class="overskrift"></div>
-        <div wicket:id="fritekst"></div>
-    </div>
+    <article wicket:id="tidligere-meldinger" class="tidligere-melding">
+        <div class="clearfix">
+            <div class="bildekolonne">
+                <div style="width: 55px;height: 55px;border: 1px solid #ddd;background-color: #fff;"></div>
+            </div>
+            <div class="meldingkolonne">
+                <h4 wicket:id="sendt-dato" class="dato"></h4>
+                <h2 wicket:id="tema" class="overskrift"></h2>
+                <wicket:container wicket:id="fritekst"></wicket:container>
+            </div>
+        </div>
+    </article>
 </wicket:panel>
 </html>

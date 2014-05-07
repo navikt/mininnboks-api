@@ -3,8 +3,9 @@ package no.nav.sbl.dialogarena.minehenvendelser.innboks;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelse;
 import org.apache.commons.collections15.Transformer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import static java.util.Map.Entry;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelse.NYESTE_OVERST;
 
-public class TraadVM {
+public class TraadVM implements Serializable {
 
     public final String id;
     public final List<Henvendelse> henvendelser;
@@ -41,7 +42,7 @@ public class TraadVM {
     }
 
     public static List<TraadVM> tilTraader(List<Henvendelse> henvendelser) {
-        Map<String, List<Henvendelse>> traader = new HashMap<>();
+        Map<String, List<Henvendelse>> traader = new LinkedHashMap<>();
 
         for (Henvendelse henvendelse : on(henvendelser).collect(NYESTE_OVERST)) {
 

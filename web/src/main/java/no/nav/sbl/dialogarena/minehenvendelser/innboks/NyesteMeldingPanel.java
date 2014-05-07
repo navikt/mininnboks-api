@@ -9,6 +9,7 @@ import org.apache.wicket.model.IModel;
 import java.util.List;
 
 import static no.nav.sbl.dialogarena.minehenvendelser.innboks.TraadVM.getNyesteHenvendelse;
+import static no.nav.sbl.dialogarena.time.Datoformat.kortMedTid;
 
 public class NyesteMeldingPanel extends Panel {
 
@@ -18,8 +19,8 @@ public class NyesteMeldingPanel extends Panel {
         List<Henvendelse> henvendelser = model.getObject().henvendelser;
         Henvendelse nyesteHenvendelse = getNyesteHenvendelse(henvendelser);
 
-        add(new Label("sendt-dato", nyesteHenvendelse.opprettet));
-        add(new Label("tema", nyesteHenvendelse.tema.name()));
+        add(new Label("sendt-dato", kortMedTid(nyesteHenvendelse.opprettet)));
+        add(new Label("tema", nyesteHenvendelse.tema.name().toLowerCase()));
         add(new Label("traadlengde", henvendelser.size()));
         add(new URLParsingMultiLineLabel("fritekst", nyesteHenvendelse.fritekst));
     }

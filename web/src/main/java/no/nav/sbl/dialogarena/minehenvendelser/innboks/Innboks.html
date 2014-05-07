@@ -7,6 +7,7 @@
 <wicket:extend>
     <div wicket:id="top-bar" id="innboks-top">
         <div class="innboks-nav">
+            <h1>Mine Meldinger</h1>
             <a wicket:id="skriv-ny" class="skriv-ny-link knapp-hoved-liten"><wicket:message key="innboks.toppmeny.skriv-ny-melding">[[Skriv ny melding]]</wicket:message></a>
         </div>
     </div>
@@ -15,12 +16,17 @@
             <div class="robust-ikon-feil-gra"></div>
             <div wicket:id="tom-innboks-tekst" class="robust"></div>
         </div>
-        <div wicket:id="traader" class="traad toggleable closed">
-            <div class="traadcontainer">
-                <wicket:container wicket:id="nyeste-melding"></wicket:container>
-                <wicket:container wicket:id="tidligere-meldinger"></wicket:container>
+        <section wicket:id="traader" class="traad toggleable closed">
+            <div class="traadcontainer clearfix">
+                <div class="bildekolonne">
+                    <div style="width: 70px;height: 70px;border: 1px solid #ddd;background-color: #fff;"></div>
+                </div>
+                <div class="meldingkolonne">
+                    <wicket:container wicket:id="nyeste-melding"></wicket:container>
+                    <wicket:container wicket:id="tidligere-meldinger"></wicket:container>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
     <div id="eksterne-lenker">
         <a href="https://tjenester.nav.no/sbl/as/minside/meldinger/meldingerNAV.do?m=totalt"><wicket:message key="innboks.bunnmeny.din-side-arbeid-lenke">[[Din side arbeid]]</wicket:message></a>
