@@ -40,10 +40,6 @@ public class TraadVM {
         return true;
     }
 
-    public static String getTema(List<Henvendelse> henvendelser) {
-        return henvendelser.isEmpty() ? "" : henvendelser.get(0).tema.name();
-    }
-
     public static List<TraadVM> tilTraader(List<Henvendelse> henvendelser) {
         Map<String, List<Henvendelse>> traader = new HashMap<>();
 

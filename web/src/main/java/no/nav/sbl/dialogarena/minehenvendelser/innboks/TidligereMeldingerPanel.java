@@ -19,6 +19,7 @@ public class TidligereMeldingerPanel extends Panel {
             @Override
             protected void populateItem(ListItem<Henvendelse> item) {
                 item.add(new Label("sendt-dato", item.getModelObject().opprettet));
+                item.add(new Label("tema", item.getModelObject().tema.name()));
                 item.add(new URLParsingMultiLineLabel("fritekst", item.getModelObject().fritekst));
             }
         });

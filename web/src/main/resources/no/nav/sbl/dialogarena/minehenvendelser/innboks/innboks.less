@@ -1,9 +1,9 @@
-@sortbakgrunn : #333;
-@graabakgrunn : #f1f1f1;
 @rammeborder: #ddd;
-@skilleborder: #bbb;
+@backgroundColor: #f1f1f1;
 @dodgerblue: #1e90ff;
-@maxwidth: 900px;
+@maxwidth: 800px;
+@traadPadding: 40px;
+@toggleHeight: @traadPadding * 2 + 70px;
 
 body {
   font-family: Modus, Arial, Helvetica, sans-serif;
@@ -30,10 +30,6 @@ body {
 
 #innboks-container {
   overflow: hidden;
-  max-width: @maxwidth;
-  margin: 0 auto;
-  border-right: solid 1px @rammeborder;
-  border-left: solid 1px @rammeborder;
   .tom-innboks {
     &.ingen-meldinger {
       display: none;
@@ -50,30 +46,95 @@ body {
   text-align: center;
 }
 
-.nyeste-melding {
-  .nyeste-header {
-    .status-indikator {
-      display: inline-block;
-      background-color: #006bc6;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
+.toggleable {
+  background-color: #fff;
+  &.closed {
+    height: @toggleHeight;
+    overflow: hidden;
+    background-color: @backgroundColor;
+    .tidligere-melding {
+      display: none;
     }
-
-    .overskrift {
-      display: inline-block;
-      font-size: 1.3rem;
+    p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
+  }
+}
 
-    .traadlengde {
-      float: right;
-      height: 22px;
-      width: 26px;
-      padding-top: 1px;
-      background-image: url("../img/snakkeboble.svg");
-      background-repeat: no-repeat;
-      color: white;
-      text-align: center;
+.traad {
+
+  border-bottom: 1px solid @rammeborder;
+  padding: 40px 0;
+
+  .traadcontainer {
+    max-width: @maxwidth;
+    margin: 0 auto;
+  }
+
+  .overskrift {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .nyeste-melding {
+    .nyeste-header {
+      .status-indikator {
+        display: inline-block;
+        vertical-align: middle;
+        background-color: @dodgerblue;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+      }
+
+      .overskrift {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .traadlengde {
+        float: right;
+        height: 22px;
+        width: 26px;
+        padding-top: 1px;
+        background-image: url("../img/snakkeboble.svg");
+        background-repeat: no-repeat;
+        color: white;
+        text-align: center;
+      }
+    }
+  }
+
+  .tidligere-melding {
+    position: relative;
+    background-color: @backgroundColor;
+    border: 1px solid @rammeborder;
+    padding: 20px;
+    margin-top: 40px;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+    &:before, &:after {
+      position: absolute;
+      bottom: 100%;
+      left: 5%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+    }
+    &:after {
+      border-bottom-color: @backgroundColor;
+      border-width: 15px;
+      margin-left: -15px;
+    }
+    &:before {
+      border-bottom-color: @rammeborder;
+      border-width: 16px;
+      margin-left: -16px;
     }
   }
 }
