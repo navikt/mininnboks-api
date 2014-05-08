@@ -67,7 +67,6 @@ public class SkrivPage extends BasePage {
                         Sporsmal spsm = getModelObject();
                         spsm.innsendingsTidspunkt = DateTime.now();
                         service.stillSporsmal(spsm.getFritekst(), spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
-                        send(getPage(), Broadcast.BREADTH, Innboks.OPPDATER_HENVENDELSER);
                         setResponsePage(KvitteringPage.class);
                     } catch (Exception e) {
                         LOG.error("Feil ved innsending av spørsmål", e);

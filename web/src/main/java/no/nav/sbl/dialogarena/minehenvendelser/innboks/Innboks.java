@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.minehenvendelser.innboks;
 
 import no.nav.modig.core.context.SubjectHandler;
-import no.nav.modig.wicket.events.annotations.RunOnEvents;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HenvendelseService;
@@ -26,8 +25,6 @@ import static no.nav.sbl.dialogarena.minehenvendelser.innboks.TraadVM.erLest;
 import static no.nav.sbl.dialogarena.minehenvendelser.innboks.TraadVM.tilTraader;
 
 public class Innboks extends BasePage {
-
-    public static final String OPPDATER_HENVENDELSER = "hendelser.oppdater_henvendelser";
 
     @Inject
     private HenvendelseService service;
@@ -96,12 +93,6 @@ public class Innboks extends BasePage {
                 return henvendelser.size() == 0;
             }
         };
-    }
-
-    @RunOnEvents(OPPDATER_HENVENDELSER)
-    public void meldingerOppdatert(AjaxRequestTarget target) {
-        oppdaterHenvendelserFra(service.hentAlleHenvendelser(innloggetBruker()));
-        target.add(this);
     }
 
     private static String innloggetBruker() {
