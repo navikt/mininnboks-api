@@ -6,12 +6,12 @@
 
 <!--     <context-param> -->
 <!--         <param-name>contextConfigLocation</param-name> -->
-<!--         <param-value>no.nav.sbl.dialogarena.minehenvendelser.config.MockApplicationContext</param-value> -->
+<!--         <param-value>no.nav.sbl.dialogarena.mininnboks.config.MockApplicationContext</param-value> -->
 <!--     </context-param> -->
 
     <servlet>
         <servlet-name>Brukerindeks</servlet-name>
-        <servlet-class>no.nav.sbl.dialogarena.minehenvendelser.servlet.Brukerindeks</servlet-class>
+        <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.Brukerindeks</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -21,7 +21,7 @@
 
     <filter>
         <filter-name>HttpSessionSecurityIntegrationFilter</filter-name>
-        <filter-class>no.nav.sbl.dialogarena.minehenvendelser.security.SecurityFilterMock</filter-class>
+        <filter-class>no.nav.sbl.dialogarena.mininnboks.security.SecurityFilterMock</filter-class>
     </filter>
 
     <filter-mapping>

@@ -1,4 +1,4 @@
-https://${DomainName}/minehenvendelser/js/*
-https://${DomainName}/minehenvendelser/css/*
-https://${DomainName}/minehenvendelser/img/*
-https://${DomainName}/minehenvendelser/internal/selftest*
+https://${DomainName}/mininnboks/js/*
+https://${DomainName}/mininnboks/css/*
+https://${DomainName}/mininnboks/img/*
+https://${DomainName}/mininnboks/internal/selftest*

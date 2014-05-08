@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-    <display-name>minehenvendelser</display-name>
+    <display-name>mininnboks</display-name>
 
     <!-- sikrer at man kan benytte servlet-loginmodules -->
     <security-constraint>
@@ -25,7 +25,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>no.nav.sbl.dialogarena.minehenvendelser.config.ApplicationContext</param-value>
+        <param-value>no.nav.sbl.dialogarena.mininnboks.config.ApplicationContext</param-value>
     </context-param>
 
     <!-- sessioncreator MÅ ligge først i filter-rekken slik at man unngår url-rewriting på jboss -->
