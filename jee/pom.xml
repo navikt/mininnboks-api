@@ -5,18 +5,18 @@
 
 	<parent>
 		<groupId>no.nav.sbl.dialogarena</groupId>
-		<artifactId>dininnboks</artifactId>
-		<version>2.0.3-SNAPSHOT</version>
+		<artifactId>mininnboks</artifactId>
+		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-    <artifactId>dininnboks-jee</artifactId>
+    <artifactId>mininnboks-jee</artifactId>
     <name>${project.artifactId}</name>
 	<packaging>ear</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>dininnboks-web</artifactId>
+			<artifactId>mininnboks-web</artifactId>
 			<version>${project.version}</version>
             <type>war</type>
 			<scope>runtime</scope>
@@ -32,9 +32,9 @@
                     <modules>
                         <webModule>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>dininnboks-web</artifactId>
-                            <contextRoot>/dininnboks</contextRoot>
-                            <bundleFileName>dininnboks-web.war</bundleFileName>
+                            <artifactId>mininnboks-web</artifactId>
+                            <contextRoot>/mininnboks</contextRoot>
+                            <bundleFileName>mininnboks-web.war</bundleFileName>
                         </webModule>
                     </modules>
                     <encoding>UTF-8</encoding>
