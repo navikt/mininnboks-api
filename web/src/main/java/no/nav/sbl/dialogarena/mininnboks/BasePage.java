@@ -23,7 +23,7 @@ public class BasePage extends WebPage {
 		Map<String, String> footerLinks = new HashMap<>();
 		footerLinks.put(FooterPanel.DIALOGARENA_FOOTER_BASEURL, System.getProperty(FooterPanel.DIALOGARENA_FOOTER_BASEURL));
 		add(
-                new Label("tittel", "Mine Henvendelser"),
+                new Label("tittel", "Min Innboks"),
                 new InnstillingerPanel("innstillinger", TRUE, cmsContentRetriever),
                 new NavigasjonPanel("navigasjon", System.getProperty("inngangsporten.link.url"), cmsContentRetriever),
                 new FooterPanel("footer", footerLinks, TRUE, FALSE, cmsContentRetriever));
