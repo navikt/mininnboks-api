@@ -3,41 +3,40 @@ package no.nav.sbl.dialogarena.minehenvendelser.innboks;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.modig.wicket.events.annotations.RunOnEvents;
 import no.nav.sbl.dialogarena.minehenvendelser.BasePage;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.minehenvendelser.sporsmal.tema.VelgTemaPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import javax.inject.Inject;
+import java.util.List;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
 import static no.nav.sbl.dialogarena.minehenvendelser.innboks.TraadVM.erLest;
+import static no.nav.sbl.dialogarena.minehenvendelser.innboks.TraadVM.tilTraader;
 
 public class Innboks extends BasePage {
 
-    public static final String VALGT_HENVENDELSE = "hendelser.valgt_henvendelse";
     public static final String OPPDATER_HENVENDELSER = "hendelser.oppdater_henvendelser";
 
     @Inject
     private HenvendelseService service;
 
-    private InnboksVM innboksVM;
+    private List<Henvendelse> henvendelser;
+    private List<TraadVM> traader;
 
     public Innboks() {
-        innboksVM = new InnboksVM(service.hentAlleHenvendelser(innloggetBruker()));
-        setDefaultModel(new CompoundPropertyModel<>(innboksVM));
-        setOutputMarkupId(true);
+        oppdaterHenvendelserFra(service.hentAlleHenvendelser(innloggetBruker()));
 
         WebMarkupContainer topBar = new WebMarkupContainer("top-bar");
         topBar.add(new Link<Void>("skriv-ny") {
@@ -47,7 +46,7 @@ public class Innboks extends BasePage {
             }
         });
 
-        ListView traader = new ListView<TraadVM>("traader", innboksVM.getTraader()) {
+        ListView traadListe = new ListView<TraadVM>("traader", traader) {
             @Override
             protected void populateItem(final ListItem<TraadVM> item) {
                 item.setOutputMarkupId(true);
@@ -80,19 +79,28 @@ public class Innboks extends BasePage {
 
         WebMarkupContainer tomInnboks = new WebMarkupContainer("tom-innboks");
         tomInnboks.add(new Label("tom-innboks-tekst", new StringResourceModel("innboks.tom-innboks-melding", this, null)));
-        tomInnboks.add(hasCssClassIf("ingen-meldinger", Model.of(!innboksVM.ingenHenvendelser().getObject())));
+        tomInnboks.add(hasCssClassIf("ingen-meldinger", Model.of(!ingenHenvendelser().getObject())));
 
-        add(topBar, traader, tomInnboks);
+        add(topBar, traadListe, tomInnboks);
     }
 
-    @Override
-    public void renderHead(IHeaderResponse response) {
-        response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(Innboks.class, "innboks.js")));
+    private void oppdaterHenvendelserFra(List<Henvendelse> henvendelser) {
+        this.henvendelser = henvendelser;
+        this.traader = tilTraader(henvendelser);
+    }
+
+    private IModel<Boolean> ingenHenvendelser() {
+        return new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                return henvendelser.size() == 0;
+            }
+        };
     }
 
     @RunOnEvents(OPPDATER_HENVENDELSER)
     public void meldingerOppdatert(AjaxRequestTarget target) {
-        innboksVM.oppdaterHenvendelserFra(service.hentAlleHenvendelser(innloggetBruker()));
+        oppdaterHenvendelserFra(service.hentAlleHenvendelser(innloggetBruker()));
         target.add(this);
     }
 
