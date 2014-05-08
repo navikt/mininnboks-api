@@ -1,13 +1,9 @@
 @rammeborder: #ddd;
 @backgroundColor: #f1f1f1;
 @dodgerblue: #1e90ff;
-@maxwidth: 800px;
+@maxwidth: 640px;
 @traadPadding: 40px;
 @toggleHeight: @traadPadding * 2 + 80px;
-
-body {
-  font-family: Modus, Arial, Helvetica, sans-serif;
-}
 
 .top-bar {
   border-bottom: 1px solid @rammeborder;
@@ -51,6 +47,9 @@ body {
     .tidligere-melding {
       display: none;
     }
+    .nyeste-melding p:not(:first-of-type) {
+      display: none;
+    }
     .flipp {
       background-image: url("../img/flipp_lukket.svg");
     }
@@ -80,9 +79,8 @@ body {
     text-transform: uppercase;
   }
 
-  .overskrift {
+  .tema {
     margin: 0;
-    font-size: 1.3rem;
   }
 
   .bildekolonne {
@@ -92,7 +90,7 @@ body {
 
   .meldingkolonne {
     float: right;
-    width: 90%;
+    width: 85%;
   }
 
   &.lest {
@@ -110,6 +108,10 @@ body {
     }
   }
 
+  p {
+    line-height: 1.25rem;
+  }
+
   .nyeste-melding {
     .nyeste-header {
       .status-indikator {
@@ -121,7 +123,7 @@ body {
         border-radius: 50%;
       }
 
-      .overskrift {
+      .tema {
         margin-left: 5px;
         display: inline-block;
         vertical-align: middle;
