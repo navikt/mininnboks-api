@@ -5,17 +5,17 @@
 </head>
 <body>
 <wicket:extend>
-    <div wicket:id="top-bar" id="innboks-top">
-        <h1 class="diger">Mine Meldinger</h1>
-        <div class="innboks-nav">
+    <h1 class="diger"><wicket:message key="innboks.overskrift" /></h1>
+    <div class="top-bar">
+        <div wicket:id="top-bar" class="innboks-navigasjon clearfix">
             <a wicket:id="skriv-ny" class="skriv-ny-link knapp-hoved-liten"><wicket:message key="innboks.toppmeny.skriv-ny-melding">[[Skriv ny melding]]</wicket:message></a>
         </div>
     </div>
     <div id="innboks-container">
-        <div wicket:id="tom-innboks" class="tom-innboks">
+        <section wicket:id="tom-innboks" class="tom-innboks">
             <div class="robust-ikon-feil-gra"></div>
             <div wicket:id="tom-innboks-tekst" class="robust"></div>
-        </div>
+        </section>
         <section wicket:id="traader" class="traad toggleable closed">
             <div class="flipp"></div>
             <div class="traadcontainer clearfix">

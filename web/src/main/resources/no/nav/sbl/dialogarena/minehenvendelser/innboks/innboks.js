@@ -1,10 +1,11 @@
 $(document).ready(function() {
 
-    $('.toggleable').on('click', function () {
-        if ($(this).hasClass('closed')) {
-            $(this).removeClass('closed');
+    $('.flipp').on('click', function () {
+        var $toggleable = $(this).parent('.toggleable');
+        if ($toggleable.hasClass('closed')) {
+            $toggleable.removeClass('closed');
         } else {
-            $(this).addClass('closed');
+            $toggleable.addClass('closed');
         }
     });
 
