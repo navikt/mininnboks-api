@@ -1,7 +1,11 @@
 package no.nav.sbl.dialogarena.minehenvendelser.innboks;
 
 import no.nav.sbl.dialogarena.minehenvendelser.consumer.Henvendelse;
+import no.nav.sbl.dialogarena.minehenvendelser.consumer.HenvendelseService;
 import org.apache.commons.collections15.Transformer;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,9 +23,18 @@ public class TraadVM implements Serializable {
     public final String id;
     public final List<Henvendelse> henvendelser;
 
+    public IModel<Boolean> lukket = new CompoundPropertyModel<>(true);
+
     public TraadVM(String id, List<Henvendelse> henvendelser) {
         this.id = id;
         this.henvendelser = henvendelser;
+    }
+
+    public void markerSomLest(HenvendelseService service) {
+        for (Henvendelse henvendelse : henvendelser) {
+            henvendelse.markerSomLest();
+            service.merkHenvendelseSomLest(henvendelse.id);
+        }
     }
 
     public static Henvendelse getNyesteHenvendelse(List<Henvendelse> henvendelser) {
@@ -32,13 +45,18 @@ public class TraadVM implements Serializable {
         return henvendelser.isEmpty() ? henvendelser : on(henvendelser).collect(NYESTE_OVERST).subList(1, henvendelser.size());
     }
 
-    public static boolean erLest(List<Henvendelse> henvendelser) {
-        for (Henvendelse henvendelse : henvendelser) {
-            if (!henvendelse.erLest()) {
-                return false;
+    public static IModel<Boolean> erLest(final List<Henvendelse> henvendelser) {
+        return new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                for (Henvendelse henvendelse : henvendelser) {
+                    if (!henvendelse.erLest()) {
+                        return false;
+                    }
+                }
+                return true;
             }
-        }
-        return true;
+        };
     }
 
     public static List<TraadVM> tilTraader(List<Henvendelse> henvendelser) {

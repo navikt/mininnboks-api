@@ -3,7 +3,7 @@
 @dodgerblue: #1e90ff;
 @maxwidth: 800px;
 @traadPadding: 40px;
-@toggleHeight: @traadPadding * 2 + 70px;
+@toggleHeight: @traadPadding * 2 + 80px;
 
 body {
   font-family: Modus, Arial, Helvetica, sans-serif;
@@ -27,10 +27,6 @@ body {
   }
 }
 
-.footer {
-  height: 142px;
-}
-
 .tom-innboks {
   margin-top: 200px;
   text-align: center;
@@ -52,7 +48,6 @@ body {
   }
   &.closed {
     height: @toggleHeight;
-    background-color: @backgroundColor;
     .tidligere-melding {
       display: none;
     }
@@ -68,6 +63,7 @@ body {
 }
 
 .traad {
+  background-color: #fff;
   border-bottom: 1px solid @rammeborder;
   padding: 40px 0;
 
@@ -98,6 +94,21 @@ body {
   .meldingkolonne {
     float: right;
     width: 90%;
+  }
+
+  &.lest {
+    background-color: @backgroundColor;
+    &:not(.closed) {
+      background-color: #fff;
+    }
+    .nyeste-melding {
+      .nyeste-header {
+        .status-indikator {
+          border: 1px solid @dodgerblue;
+          background-color: transparent;
+        }
+      }
+    }
   }
 
   .nyeste-melding {
