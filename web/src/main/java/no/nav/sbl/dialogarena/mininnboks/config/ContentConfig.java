@@ -1,5 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
+import no.nav.innholdshenter.common.EnonicContentRetriever;
+import no.nav.innholdshenter.filter.DecoratorFilter;
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.content.ContentRetriever;
 import no.nav.modig.content.ValueRetriever;
@@ -10,10 +12,11 @@ import org.springframework.context.annotation.Configuration;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.Arrays.asList;
 
 @Configuration
 public class ContentConfig {
@@ -21,21 +24,15 @@ public class ContentConfig {
     private static final String DEFAULT_LOCALE = "nb";
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/systemsider/Modernisering/minehenvendelser/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innhold_nb";
-    private static final String SBL_WEBKOMPONENTER_NB_NO_REMOTE = "/systemsider/Modernisering/sbl-webkomponenter/nb/tekster";
-    private static final String SBL_WEBKOMPONENTER_NB_NO_LOCAL = "content.sbl-webkomponenter_nb";
 
     @Bean
     public ValueRetriever siteContentRetriever(ContentRetriever contentRetriever) throws URISyntaxException {
         String cmsBaseUrl = System.getProperty("dialogarena.cms.url");
         Map<String, List<URI>> uris = new HashMap<>();
         uris.put(DEFAULT_LOCALE,
-                Arrays.asList(
-                        new URI(cmsBaseUrl + INNHOLDSTEKSTER_NB_NO_REMOTE),
-                        new URI(cmsBaseUrl + SBL_WEBKOMPONENTER_NB_NO_REMOTE)
-
-                ));
+                asList(new URI(cmsBaseUrl + INNHOLDSTEKSTER_NB_NO_REMOTE)));
         return new ValuesFromContentWithResourceBundleFallback(
-                Arrays.asList(INNHOLDSTEKSTER_NB_NO_LOCAL, SBL_WEBKOMPONENTER_NB_NO_LOCAL), contentRetriever,
+                asList(INNHOLDSTEKSTER_NB_NO_LOCAL), contentRetriever,
                 uris, DEFAULT_LOCALE);
     }
 
@@ -52,5 +49,21 @@ public class ContentConfig {
         cmsContentRetriever.setTeksterRetriever(valueRetriever);
         cmsContentRetriever.setArtikkelRetriever(valueRetriever);
         return cmsContentRetriever;
+    }
+
+    @Bean
+    public DecoratorFilter decoratorFilter() {
+        EnonicContentRetriever enonicContentRetriever = new EnonicContentRetriever("mininnboks");
+        enonicContentRetriever.setBaseUrl("https://appres-t1.nav.no");
+        enonicContentRetriever.setHttpTimeoutMillis(5000);
+        enonicContentRetriever.setRefreshIntervalSeconds(60);
+
+        DecoratorFilter decoratorFilter = new DecoratorFilter();
+        decoratorFilter.setFragmentsUrl("common-html/v1/navno");
+        decoratorFilter.setContentRetriever(enonicContentRetriever);
+        decoratorFilter.setApplicationName("Min Innboks");
+        decoratorFilter.setFragmentNames(asList("resources","header", "footer-withmenu"));
+
+        return decoratorFilter;
     }
 }

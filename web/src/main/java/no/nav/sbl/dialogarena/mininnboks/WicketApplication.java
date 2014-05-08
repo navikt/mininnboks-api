@@ -10,7 +10,6 @@ import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.send.SkrivPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.VelgTemaPage;
 import no.nav.sbl.dialogarena.time.Datoformat;
-import no.nav.sbl.dialogarena.webkomponent.innstillinger.LogoutPage;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
@@ -28,8 +27,6 @@ import static no.nav.modig.frontend.FrontendModules.EKSTERNFLATE;
 import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
 import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
 import static no.nav.modig.frontend.MetaTag.XUA_IE_EDGE;
-import static no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel.INNSTILLINGER_JS;
-import static no.nav.sbl.dialogarena.webkomponent.innstillinger.InnstillingerPanel.INNSTILLINGER_LESS;
 
 /**
  * Kontekst for wicket
@@ -57,9 +54,8 @@ public class WicketApplication extends WebApplication {
         new FrontendConfigurator()
                 .withModules(EKSTERNFLATE)
                 .addMetas(CHARSET_UTF8, VIEWPORT_SCALE_1, XUA_IE_EDGE)
-                .addLess(INNSTILLINGER_LESS, new PackageResourceReference(Innboks.class, "innboks.less"),
+                .addLess(new PackageResourceReference(Innboks.class, "innboks.less"),
                         new PackageResourceReference(SkrivPage.class, "sporsmal.less"))
-                .addScripts(INNSTILLINGER_JS)
                 .withResourcePacking(this.usesDeploymentConfig())
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
@@ -68,7 +64,6 @@ public class WicketApplication extends WebApplication {
         mountPage("sporsmal/skriv/${tema}", SkrivPage.class);
         mountPage("sporsmal/kvittering", KvitteringPage.class);
         mountPage("internal/selftest", SelfTestPage.class);
-        mountPage("loggut", LogoutPage.class);
         Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
         getResourceSettings().getStringResourceLoaders().add(0, new CmsResourceLoader(cmsContentRetriever));

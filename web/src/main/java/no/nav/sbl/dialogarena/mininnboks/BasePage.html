@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org" lang="no">
 <wicket:head>
-    <title wicket:id="tittel">[[Dine innsendinger]]</title>
+    <title><wicket:message key="mininnboks.tittel" /></title>
+    {{fragment.resources}}
 </wicket:head>
 <body>
-<div class="omslag mininnboks">
-    <wicket:container wicket:id="innstillinger"/>
-    <wicket:container wicket:id="navigasjon"/>
-    <wicket:child/>
-    <div class="fyllut"></div>
+<div class="pagewrapper">
+    {{fragment.header}}
+    <main id="maincontent" tabindex="-1" role="main">
+        <wicket:child/>
+    </main>
 </div>
-<wicket:container wicket:id="footer"/>
+{{fragment.footer-withmenu}}
 </body>
 </html>
