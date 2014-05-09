@@ -56,7 +56,7 @@ public class ContentConfig {
         EnonicContentRetriever enonicContentRetriever = new EnonicContentRetriever("mininnboks");
         enonicContentRetriever.setBaseUrl("https://appres-t1.nav.no");
         enonicContentRetriever.setHttpTimeoutMillis(5000);
-        enonicContentRetriever.setRefreshIntervalSeconds(60);
+        enonicContentRetriever.setRefreshIntervalSeconds(1800);
 
         DecoratorFilter decoratorFilter = new DecoratorFilter();
         decoratorFilter.setFragmentsUrl("common-html/v1/navno");
