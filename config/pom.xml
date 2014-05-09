@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>no.nav.sbl.dialogarena</groupId>
 		<artifactId>mininnboks</artifactId>
-		<version>2.0.3-SNAPSHOT</version>
+		<version>0.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>mininnboks-config</artifactId>
@@ -15,28 +15,18 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>no.nav.maven.plugins</groupId>
-				<artifactId>jboss-maven-plugin</artifactId>
-				<configuration>
-					<apps>${project.parent.artifactId}:${project.version}</apps>
-					<envConfigUrl>https://envconfig.adeo.no/conf</envConfigUrl>
-					<username>admin</username>
-					<password>admin</password>
-				</configuration>
-			</plugin>
-
+            <plugin>
+                <groupId>no.nav.maven.plugins</groupId>
+                <artifactId>aura-maven-plugin</artifactId>
+                <version>3.6.5</version>
+                <configuration>
+                    <!-- enten url eller fil -->
+                    <envConfigUrl>https://envconfig.adeo.no/conf</envConfigUrl>
+                    <username>admin</username>
+                    <password>admin</password>
+                    <apps>mininnboks:${project.version}</apps>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
