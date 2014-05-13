@@ -7,6 +7,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.VelgTemaPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -16,6 +17,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.erLest;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.tilTraader;
+import static org.apache.wicket.markup.head.JavaScriptHeaderItem.forReference;
 
 public class Innboks extends BasePage {
 
@@ -49,7 +52,6 @@ public class Innboks extends BasePage {
                 item.setOutputMarkupId(true);
 
                 final TraadVM traadVM = item.getModelObject();
-                item.add(hasCssClassIf("closed", traadVM.lukket));
                 item.add(hasCssClassIf("lest", erLest(traadVM.henvendelser)));
 
                 item.add(new AjaxLink<Void>("flipp") {
@@ -57,15 +59,9 @@ public class Innboks extends BasePage {
                     public void onClick(AjaxRequestTarget target) {
                         if (!erLest(traadVM.henvendelser).getObject()) {
                             traadVM.markerSomLest(service);
+                            target.appendJavaScript("Innboks.markerSomLest('" + item.getMarkupId() + "');");
                         }
-
-                        if (traadVM.lukket.getObject()) {
-                            traadVM.lukket.setObject(false);
-                        } else {
-                            traadVM.lukket.setObject(true);
-                        }
-
-                        target.add(item);
+                        target.appendJavaScript("Innboks.toggleTraad('" + item.getMarkupId() + "');");
                     }
                 });
 
@@ -98,4 +94,11 @@ public class Innboks extends BasePage {
     private static String innloggetBruker() {
         return SubjectHandler.getSubjectHandler().getUid();
     }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.render(forReference(new JavaScriptResourceReference(Innboks.class, "innboks.js")));
+    }
+
 }

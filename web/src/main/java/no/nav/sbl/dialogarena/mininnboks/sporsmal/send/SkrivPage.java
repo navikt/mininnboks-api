@@ -10,7 +10,6 @@ import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -28,6 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+
+import static org.apache.wicket.markup.head.JavaScriptHeaderItem.forReference;
 
 public class SkrivPage extends BasePage {
 
@@ -88,7 +89,7 @@ public class SkrivPage extends BasePage {
         @Override
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
-            response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "textarea.js")));
+            response.render(forReference(new JavaScriptResourceReference(SkrivPage.class, "textarea.js")));
         }
     }
 
