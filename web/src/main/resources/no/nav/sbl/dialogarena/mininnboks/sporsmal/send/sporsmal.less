@@ -2,12 +2,6 @@
 @morkeBlaa: #0067c5;
 @navRodt: #c30000;
 
-.samtykke-modal-innhold {
-  padding: 2em;
-  h2 { text-align: center }
-
-}
-
 .tema-panel {
   form {
     margin: 0 auto;
@@ -43,6 +37,45 @@
   form {
     width: 100%;
     text-align: center;
+    h3.tema-overskrift {
+      font-weight: 600;
+      display: inline;
+      cursor: pointer;
+    }
+    .pil-ned {
+      cursor: pointer;
+      display: inline-block;
+      margin-bottom: 0;
+      margin-left: 0.5rem;
+    }
+    .endre-tema-wrapper {
+      display: none;
+      margin: 0;
+      .endre-tema {
+        list-style: none;
+        max-width: 365px;
+        text-align: left;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        border: 1px solid #cccccc;
+        box-shadow: 5px 5px 5px 0 #cccccc;
+
+        position: absolute;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        li {
+          cursor: pointer;
+          &:not(:last-child) {
+            margin-bottom: 0.5rem;
+          }
+          &.valgt {
+            color: @morkeBlaa;
+            list-style: initial;
+          }
+        }
+      }
+    }
     textarea {
       resize: none;
       overflow: hidden;
@@ -124,4 +157,12 @@ ul.feedbackPanel {
       text-decoration: underline;
     }
   }
+}
+
+.pil-ned {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid @morkeBlaa;
 }

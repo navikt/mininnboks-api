@@ -5,11 +5,20 @@
     <h1 class="diger"><wicket:message key="send-sporsmal.still-sporsmal.ny-melding-overskrift">[[Ny melding til NAV]]</wicket:message></h1>
     <article class="send-sporsmal-container send-panel">
 
-        <h2 wicket:id="tema" class="robust"></h2>
-        <hr class="robust-strek"/>
-        <p><wicket:message key="send-sporsmal.still-sporsmal.hjelpetekst">[[Hjelpetekst]]</wicket:message></p>
-
         <form wicket:id="sporsmal-form" class="vertikal">
+            <img src="img/melding_graa.svg"/>
+            <h2>Skriv melding</h2>
+            <hr class="robust-strek"/>
+            <h3 wicket:id="tema" class="tema-overskrift"></h3><div class="pil-ned"></div>
+            <div wicket:id="endre-tema-wrapper" class="endre-tema-wrapper">
+                <ul class="endre-tema">
+                    <wicket:container wicket:id="tema-liste">
+                        <li wicket:id="tema"/>
+                    </wicket:container>
+                </ul>
+            </div>
+            <p><wicket:message key="send-sporsmal.still-sporsmal.hjelpetekst">[[Hjelpetekst]]</wicket:message></p>
+
             <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" rows="8" style="height: 140px;"></textarea>
             <div><span id="antall-tegn" /><span id="antall-tegn-tekst" /></div>
             <div wicket:id="validering"></div>

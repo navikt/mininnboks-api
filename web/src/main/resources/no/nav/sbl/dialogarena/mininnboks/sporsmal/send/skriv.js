@@ -36,8 +36,20 @@ $(document).ready(function() {
             $antallTegn.addClass(OVERSKRIDER);
             $antallTegnTekst.text(TEGN_IGJEN_OVERSKRIDER);
         } else {
-            $antallTegn.removeClass(OVERSKRIDER)
+            $antallTegn.removeClass(OVERSKRIDER);
             $antallTegnTekst.text(TEGN_IGJEN);
         }
     }
+
+});
+
+
+$(document).on('click', '.send-panel .pil-ned, .send-panel .tema-overskrift', function () {
+    $('.endre-tema-wrapper').show();
+    var handler = function () {
+        $('.endre-tema-wrapper').hide();
+        $(':not(.endre-tema)').off('click', handler)
+    };
+
+    $(':not(.endre-tema)').on('click', handler)
 });
