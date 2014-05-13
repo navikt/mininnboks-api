@@ -75,6 +75,11 @@
     margin: 0 auto;
   }
 
+  .header {
+    line-height: 1.2em;
+    margin-bottom: 1em;
+  }
+
   .dato {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -103,7 +108,7 @@
       background-color: #fff;
     }
     .nyeste-melding {
-      .nyeste-header {
+      .header {
         .status-indikator {
           border: 1px solid @dodgerblue;
           background-color: transparent;
@@ -115,9 +120,12 @@
   p {
     line-height: 1.25rem;
   }
+  a {
+    font-size: 1em;
+  }
 
   .nyeste-melding {
-    .nyeste-header {
+    .header {
       .status-indikator {
         display: inline-block;
         vertical-align: middle;
@@ -137,6 +145,7 @@
         float: right;
         height: 22px;
         width: 26px;
+        padding: 1px 1px 0 0;
         font-size: 0.85em;
         background-image: url("../img/snakkeboble.svg");
         background-repeat: no-repeat;
