@@ -16,14 +16,11 @@
             <div class="robust-ikon-feil-gra"></div>
             <div wicket:id="tom-innboks-tekst" class="robust"></div>
         </section>
-        <section wicket:id="traader" class="traad toggleable closed">
+        <section wicket:id="traader" class="traad toggleable">
             <div wicket:id="flipp" class="flipp"></div>
             <div class="traadcontainer clearfix">
-                <div class="bildekolonne">
-                    <div style="width: 70px;height: 70px;border: 1px solid #ddd;background-color: #fff;"></div>
-                </div>
-                <div class="meldingkolonne">
-                    <wicket:container wicket:id="nyeste-melding"></wicket:container>
+                <wicket:container wicket:id="nyeste-melding"></wicket:container>
+                <div class="hoyre-kolonne">
                     <wicket:container wicket:id="tidligere-meldinger"></wicket:container>
                 </div>
             </div>

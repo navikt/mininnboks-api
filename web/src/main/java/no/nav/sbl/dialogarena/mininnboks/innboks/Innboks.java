@@ -5,6 +5,7 @@ import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.VelgTemaPage;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -51,20 +52,23 @@ public class Innboks extends BasePage {
             protected void populateItem(final ListItem<TraadVM> item) {
                 item.setOutputMarkupId(true);
 
-                final TraadVM traadVM = item.getModelObject();
-                item.add(hasCssClassIf("lest", erLest(traadVM.henvendelser)));
+                item.add(hasCssClassIf("lest", erLest(item.getModelObject().henvendelser)));
+                item.add(hasCssClassIf("closed", item.getModelObject().lukket));
 
                 item.add(new AjaxLink<Void>("flipp") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        if (!erLest(traadVM.henvendelser).getObject()) {
-                            traadVM.markerSomLest(service);
-                            target.appendJavaScript("Innboks.markerSomLest('" + item.getMarkupId() + "');");
-                        }
-                        target.appendJavaScript("Innboks.toggleTraad('" + item.getMarkupId() + "');");
+                        traadClickBehaviour(item, target);
                     }
                 });
-
+                item.add(new AjaxEventBehavior("click") {
+                    @Override
+                    protected void onEvent(AjaxRequestTarget target) {
+                        if (item.getModelObject().lukket.getObject()) {
+                            traadClickBehaviour(item, target);
+                        }
+                    }
+                });
                 item.add(new NyesteMeldingPanel("nyeste-melding", item.getModel()));
                 item.add(new TidligereMeldingerPanel("tidligere-meldinger", item.getModel()));
             }
@@ -75,6 +79,16 @@ public class Innboks extends BasePage {
         tomInnboks.add(hasCssClassIf("ingen-meldinger", Model.of(!ingenHenvendelser().getObject())));
 
         add(topBar, traadListe, tomInnboks);
+    }
+
+    private void traadClickBehaviour(ListItem<TraadVM> item, AjaxRequestTarget target) {
+        TraadVM traadVM = item.getModelObject();
+        if (!erLest(traadVM.henvendelser).getObject()) {
+            traadVM.markerSomLest(service);
+            target.appendJavaScript("Innboks.markerSomLest('" + item.getMarkupId() + "');");
+        }
+        traadVM.lukket.setObject(!traadVM.lukket.getObject());
+        target.appendJavaScript("Innboks.toggleTraad('" + item.getMarkupId() + "');");
     }
 
     private void oppdaterHenvendelserFra(List<Henvendelse> henvendelser) {

@@ -3,15 +3,20 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
     <article class="nyeste-melding">
-        <div class="header">
-            <div wicket:id="traadlengde" class="traadlengde"></div>
-            <h4 wicket:id="sendt-dato" class="dato"></h4>
-            <div>
-                <div class="status-indikator"></div>
-                <h2 wicket:id="tema" class="medium tema"></h2>
-            </div>
+        <div class="venstre-kolonne">
+            <div wicket:id="avsender-bilde" class="avsender-bilde"></div>
         </div>
-        <wicket:container wicket:id="fritekst"></wicket:container>
+        <div class="hoyre-kolonne">
+            <div class="header">
+                <div wicket:id="traadlengde" class="traadlengde"></div>
+                <h4 wicket:id="sendt-dato" class="dato"></h4>
+                <div>
+                    <div class="status-indikator"></div>
+                    <h2 wicket:id="tema" class="medium tema"></h2>
+                </div>
+            </div>
+            <wicket:container wicket:id="fritekst"></wicket:container>
+        </div>
     </article>
 </wicket:panel>
 </html>

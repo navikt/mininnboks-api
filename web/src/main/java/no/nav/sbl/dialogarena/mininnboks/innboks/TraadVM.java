@@ -4,6 +4,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
 import java.io.Serializable;
@@ -21,10 +22,12 @@ public class TraadVM implements Serializable {
 
     public final String id;
     public final List<Henvendelse> henvendelser;
+    public final IModel<Boolean> lukket;
 
     public TraadVM(String id, List<Henvendelse> henvendelser) {
         this.id = id;
         this.henvendelser = henvendelser;
+        this.lukket = new CompoundPropertyModel<>(true);
     }
 
     public void markerSomLest(HenvendelseService service) {
