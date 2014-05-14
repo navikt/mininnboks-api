@@ -5,10 +5,12 @@
     <h1 class="diger"><wicket:message key="send-sporsmal.still-sporsmal.ny-melding-overskrift">[[Ny melding til NAV]]</wicket:message></h1>
     <article class="send-sporsmal-container send-panel">
 
-        <form wicket:id="sporsmal-form" class="vertikal">
-            <img src="img/melding_graa.svg"/>
-            <h2>Skriv melding</h2>
-            <hr class="robust-strek"/>
+        <form wicket:id="sporsmal-form">
+            <div class="sporsmal-header">
+                <img class="meldingikon" src="img/melding_graa.svg"/>
+                <h2 class="deloverskrift"><wicket:message key="send-sporsmal.still-sporsmal.deloverskrift">[[Skriv melding]]</wicket:message></h2>
+                <hr class="robust-strek"/>
+            </div>
             <h3 wicket:id="tema" class="tema-overskrift"></h3><div class="pil-ned"></div>
             <div wicket:id="endre-tema-wrapper" class="endre-tema-wrapper">
                 <ul class="endre-tema">
@@ -17,12 +19,12 @@
                     </wicket:container>
                 </ul>
             </div>
-            <p><wicket:message key="send-sporsmal.still-sporsmal.hjelpetekst">[[Hjelpetekst]]</wicket:message></p>
+            <p class="hjelpetekst"><wicket:message key="send-sporsmal.still-sporsmal.hjelpetekst">[[Hjelpetekst]]</wicket:message></p>
 
             <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" rows="8" style="height: 140px;"></textarea>
-            <div><span id="antall-tegn" /><span id="antall-tegn-tekst" /></div>
+            <div class="tegnteller"><span id="antall-tegn" /><span id="antall-tegn-tekst" /></div>
             <div wicket:id="validering"></div>
-            <div><a wicket:id="send" class="send-link knapp-hoved-stor" href="#"><wicket:message key="send-sporsmal.still-sporsmal.send-inn">[[Send inn]]</wicket:message></a></div>
+            <div><a wicket:id="send" class="send-link knapp-link-stor" href="#"><wicket:message key="send-sporsmal.still-sporsmal.send-inn">[[Send inn]]</wicket:message></a></div>
             <div class="avbryt"><a wicket:id="avbryt" href="#"><wicket:message key="send-sporsmal.still-sporsmal.avbryt">[[Avbryt]]</wicket:message></a></div>
         </form>
     </article>
