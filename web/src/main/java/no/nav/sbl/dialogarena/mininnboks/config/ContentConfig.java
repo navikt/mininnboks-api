@@ -54,7 +54,7 @@ public class ContentConfig {
     @Bean
     public DecoratorFilter decoratorFilter() {
         EnonicContentRetriever enonicContentRetriever = new EnonicContentRetriever("mininnboks");
-        enonicContentRetriever.setBaseUrl("https://appres-t1.nav.no");
+        enonicContentRetriever.setBaseUrl(System.getProperty("appres.cms.url"));
         enonicContentRetriever.setHttpTimeoutMillis(5000);
         enonicContentRetriever.setRefreshIntervalSeconds(1800);
 

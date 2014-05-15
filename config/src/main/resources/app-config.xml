@@ -18,12 +18,13 @@
         <baseUrl alias="mininnboks.navigasjonslink" mapToProperty="mininnboks.navigasjonslink"/>
         <baseUrl alias="dokumentinnsending.link" mapToProperty="dokumentinnsending.link"/>
         <baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link"/>
+        <baseUrl alias="appres.cms" mapToProperty="appres.cms"/>
 
         <webservice alias="domene.Brukerdialog:HenvendelseMeldingerService_v1" mapToProperty="henvendelse.meldinger.ws"/>
         <webservice alias="domene.Brukerdialog:SporsmalinnsendingService_v1" mapToProperty="henvendelse.spsminnsending.ws"/>
     </resources>
 
-    <security serviceUserResourceAlias="srvMininnboks">
+    <security serviceUserResourceAlias="srvmininnboks">
         <logins>
             <openAm>
                 <contextRoot>mininnboks</contextRoot>
