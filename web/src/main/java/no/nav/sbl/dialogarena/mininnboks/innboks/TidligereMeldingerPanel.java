@@ -22,7 +22,9 @@ public class TidligereMeldingerPanel extends Panel {
             protected void populateItem(ListItem<Henvendelse> item) {
                 item.add(new AvsenderBilde("avsender-bilde", item.getModelObject()));
                 item.add(new Label("sendt-dato", kortMedTid(item.getModelObject().opprettet)));
-                item.add(new Label("tema", new StringResourceModel(item.getModelObject().tema.name(), TidligereMeldingerPanel.this, null)));
+                item.add(new Label("tema",
+                        new StringResourceModel(item.getModelObject().type.name(), TidligereMeldingerPanel.this, null).getString()
+                                + ": " + new StringResourceModel(item.getModelObject().tema.name(), TidligereMeldingerPanel.this, null).getString()));
                 item.add(new URLParsingMultiLineLabel("fritekst", item.getModelObject().fritekst));
             }
         });
