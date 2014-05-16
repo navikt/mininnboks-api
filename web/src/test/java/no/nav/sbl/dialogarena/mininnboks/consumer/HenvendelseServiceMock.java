@@ -24,9 +24,9 @@ public class HenvendelseServiceMock implements HenvendelseService {
     public HenvendelseServiceMock() {
         Random random = new Random();
 
-        Henvendelse spsm1 = new Henvendelse("" + random.nextInt(), SPORSMAL, "" + random.nextInt());
-        spsm1.opprettet = now().minusWeeks(2);
-        spsm1.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
+        Henvendelse traad1Spsm = new Henvendelse("" + random.nextInt(), SPORSMAL, "" + random.nextInt());
+        traad1Spsm.opprettet = now().minusWeeks(2);
+        traad1Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
                 " iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto" +
                 " odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend" +
@@ -34,94 +34,81 @@ public class HenvendelseServiceMock implements HenvendelseService {
                 " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas" +
                 " humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum. For nærmere info: www.google.com";
-        spsm1.tema = PENSJON;
-        spsm1.markerSomLest();
-        spsm1.lestDato = spsm1.opprettet;
-        henvendelser.put(spsm1.id, spsm1);
+        traad1Spsm.tema = PENSJON;
+        traad1Spsm.markerSomLest();
+        traad1Spsm.lestDato = traad1Spsm.opprettet;
+        henvendelser.put(traad1Spsm.id, traad1Spsm);
 
-        Henvendelse svar1 = new Henvendelse("" + random.nextInt(), SVAR, spsm1.traadId);
-        svar1.opprettet = now().minusDays(6);
-        svar1.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
+        Henvendelse traad1Svar1 = new Henvendelse("" + random.nextInt(), SVAR, traad1Spsm.traadId);
+        traad1Svar1.opprettet = now().minusDays(6);
+        traad1Svar1.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
                 " iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto";
-        svar1.tema = spsm1.tema;
-        svar1.markerSomLest();
-        svar1.lestDato = now().minusDays(4);
-        henvendelser.put(svar1.id, svar1);
+        traad1Svar1.tema = traad1Spsm.tema;
+        traad1Svar1.markerSomLest();
+        traad1Svar1.lestDato = now().minusDays(4);
+        henvendelser.put(traad1Svar1.id, traad1Svar1);
 
-        Henvendelse spsm2 = new Henvendelse("" + random.nextInt(), SPORSMAL, spsm1.traadId);
-        spsm2.opprettet = now().minusDays(2);
-        spsm2.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
-                "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
-                " iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto" +
-                " odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend" +
-                " option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit" +
-                " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
-                " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas" +
-                " humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.";
-        spsm2.tema = PENSJON;
-        spsm2.markerSomLest();
-        spsm2.lestDato = spsm2.opprettet;
-        henvendelser.put(spsm2.id, spsm2);
-
-        Henvendelse svar2 = new Henvendelse("" + random.nextInt(), SVAR, spsm1.traadId);
-        svar2.opprettet = now().minusDays(1);
-        svar2.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
+        Henvendelse traad1Svar2 = new Henvendelse("" + random.nextInt(), SVAR, traad1Spsm.traadId);
+        traad1Svar2.opprettet = now().minusDays(1);
+        traad1Svar2.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
                 " iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto" +
                 " odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend" +
                 " option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit" +
                 " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
-        svar2.tema = spsm2.tema;
-        henvendelser.put(svar2.id, svar2);
+        traad1Svar2.tema = traad1Spsm.tema;
+        traad1Svar2.markerSomLest();
+        henvendelser.put(traad1Svar2.id, traad1Svar2);
 
-        Henvendelse referat1 = new Henvendelse("" + random.nextInt(), REFERAT, "" + random.nextInt());
-        referat1.opprettet = now().minusHours(20);
-        referat1.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
+        Henvendelse traad2Referat = new Henvendelse("" + random.nextInt(), REFERAT, "" + random.nextInt());
+        traad2Referat.opprettet = now().minusHours(20);
+        traad2Referat.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
                 " iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto" +
                 " odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend" +
                 " option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit" +
                 " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
-        referat1.tema = ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT;
-        henvendelser.put(referat1.id, referat1);
+        traad2Referat.tema = ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT;
+        traad2Referat.markerSomLest();
+        henvendelser.put(traad2Referat.id, traad2Referat);
 
-        Henvendelse spsm3 = new Henvendelse("" + random.nextInt(), SPORSMAL, "" + random.nextInt());
-        spsm3.opprettet = now().minusWeeks(12);
-        spsm3.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
+        Henvendelse traad3Spsm = new Henvendelse("" + random.nextInt(), SPORSMAL, "" + random.nextInt());
+        traad3Spsm.opprettet = now().minusWeeks(12);
+        traad3Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum";
-        spsm3.tema = INTERNASJONALT;
-        spsm3.markerSomLest();
-        spsm3.lestDato = spsm3.opprettet;
-        henvendelser.put(spsm3.id, spsm3);
+        traad3Spsm.tema = INTERNASJONALT;
+        traad3Spsm.markerSomLest();
+        traad3Spsm.lestDato = traad3Spsm.opprettet;
+        henvendelser.put(traad3Spsm.id, traad3Spsm);
 
-        Henvendelse svar3 = new Henvendelse("" + random.nextInt(), SVAR, spsm3.traadId);
-        svar3.opprettet = now();
-        svar3.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
+        Henvendelse traad3Svar = new Henvendelse("" + random.nextInt(), SVAR, traad3Spsm.traadId);
+        traad3Svar.opprettet = now();
+        traad3Svar.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
                 " iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto" +
                 " odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend" +
                 " option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit" +
                 " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
-        svar3.tema = spsm3.tema;
-        henvendelser.put(svar3.id, svar3);
+        traad3Svar.tema = traad3Spsm.tema;
+        henvendelser.put(traad3Svar.id, traad3Svar);
 
-        Henvendelse spsm4 = new Henvendelse("" + random.nextInt(), SPORSMAL, "" + random.nextInt());
-        spsm4.opprettet = now().minusHours(1);
-        spsm4.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
+        Henvendelse traad4Spsm = new Henvendelse("" + random.nextInt(), SPORSMAL, "" + random.nextInt());
+        traad4Spsm.opprettet = now().minusHours(1);
+        traad4Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
                 " iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto" +
                 " odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend" +
                 " option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit" +
                 " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
-        spsm4.tema = FAMILIE_OG_BARN;
-        spsm4.markerSomLest();
-        spsm4.lestDato = spsm4.opprettet;
-        henvendelser.put(spsm4.id, spsm4);
+        traad4Spsm.tema = FAMILIE_OG_BARN;
+        traad4Spsm.markerSomLest();
+        traad4Spsm.lestDato = traad4Spsm.opprettet;
+        henvendelser.put(traad4Spsm.id, traad4Spsm);
     }
 
     @Override
