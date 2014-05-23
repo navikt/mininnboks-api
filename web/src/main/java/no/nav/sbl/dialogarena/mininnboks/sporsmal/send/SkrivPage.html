@@ -21,8 +21,8 @@
             </div>
             <p class="hjelpetekst"><wicket:message key="send-sporsmal.still-sporsmal.hjelpetekst">[[Hjelpetekst]]</wicket:message></p>
 
-            <textarea wicket:id="fritekst" id="tekst" class="sporsmal-felt" rows="8" style="height: 140px;"></textarea>
-            <div class="tegnteller"><span id="antall-tegn" /><span id="antall-tegn-tekst" /></div>
+            <wicket:container wicket:id="tekstfelt" />
+
             <div wicket:id="validering"></div>
             <div><a wicket:id="send" class="send-link knapp-link-stor" href="#"><wicket:message key="send-sporsmal.still-sporsmal.send-inn">[[Send inn]]</wicket:message></a></div>
             <div class="avbryt"><a wicket:id="avbryt" href="#"><wicket:message key="send-sporsmal.still-sporsmal.avbryt">[[Avbryt]]</wicket:message></a></div>

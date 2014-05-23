@@ -1,13 +1,11 @@
 package no.nav.sbl.dialogarena.mininnboks.sporsmal;
 
+import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextAreaModel;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
 import org.joda.time.DateTime;
 
-import java.io.Serializable;
+public class Sporsmal extends EnhancedTextAreaModel {
 
-public class Sporsmal implements Serializable {
-
-    private String fritekst;
     private Tema tema;
     public DateTime innsendingsTidspunkt;
 
@@ -15,16 +13,12 @@ public class Sporsmal implements Serializable {
         this.tema = tema;
     }
 
-    public void setFritekst(String fritekst) {
-        this.fritekst = fritekst;
-    }
-
     public Tema getTema() {
         return tema;
     }
 
     public String getFritekst() {
-        return fritekst;
+        return text;
     }
 
     public boolean harTema() {

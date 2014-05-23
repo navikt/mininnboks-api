@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.sporsmal.send;
 
 import no.nav.modig.core.context.SubjectHandler;
+import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextArea;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
@@ -15,7 +16,6 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -27,8 +27,6 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.validator.AbstractRangeValidator;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,17 +51,13 @@ public class SkrivPage extends BasePage {
 
     private final class SporsmalForm extends Form<Sporsmal> {
 
-        private static final int FRITEKST_MAKS_LENGDE = 1000;
-
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
             final Label temaOverskrift = new Label("tema", new StringResourceModel("${tema}", model));
             temaOverskrift.setOutputMarkupId(true);
 
-            TextArea<Object> fritekst = new TextArea<>("fritekst");
-            fritekst.setRequired(true);
-            fritekst.add(NewlineCorrectingStringValidator.maximumLength(FRITEKST_MAKS_LENGDE));
+            EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model);
 
             final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
             feedbackPanel.setOutputMarkupId(true);
@@ -110,36 +104,13 @@ public class SkrivPage extends BasePage {
             };
             endreTemaWrapper.add(endreTema);
 
-            add(temaOverskrift, endreTemaWrapper, fritekst, feedbackPanel, send, avbryt);
+            add(temaOverskrift, endreTemaWrapper, enhancedTextArea, feedbackPanel, send, avbryt);
         }
 
         @Override
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skriv.js")));
-        }
-    }
-
-    private static class NewlineCorrectingStringValidator extends AbstractRangeValidator<Integer, String> {
-
-        public NewlineCorrectingStringValidator(Integer minimum, Integer maximum) {
-            super(minimum, maximum);
-        }
-
-        @Override
-        protected Integer getValue(IValidatable<String> validatable) {
-            if (validatable.getValue().contains("\r\n")) {
-                return getCorrectedStringLength(validatable);
-            }
-            return validatable.getValue().length();
-        }
-
-        private int getCorrectedStringLength(IValidatable<String> validatable) {
-            return validatable.getValue().replace("\r", "").length();
-        }
-
-        public static NewlineCorrectingStringValidator maximumLength(int length) {
-            return new NewlineCorrectingStringValidator(null, length);
         }
     }
 }
