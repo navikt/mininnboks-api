@@ -1,8 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.selftest;
 
 import no.nav.modig.wicket.selftest.SelfTestBase;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.HenvendelseAktivitetV2PortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.informasjon.v2.HenvendelseInformasjonV2PortType;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +26,12 @@ public class SelfTestPage extends SelfTestBase {
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
     @Inject
-    @Named("henvendelsesSystemUser")
-    private HenvendelseMeldingerPortType henvendelsesSystemUser;
+    @Named("henvendelseInformasjonSystemUser")
+    private HenvendelseInformasjonV2PortType henvendelseInformasjonSystemUser;
 
     @Inject
-    @Named("sporsmalinnsendingSystemUser")
-    private SporsmalinnsendingPortType sporsmalinnsendingSystemUser;
+    @Named("henvendelseAktivitetSystemUser")
+    private HenvendelseAktivitetV2PortType henvendelseAktivitetSystemUser;
 
     public SelfTestPage(PageParameters params) throws IOException {
         super("Mininnboks", params);
@@ -62,7 +62,7 @@ public class SelfTestPage extends SelfTestBase {
         long start = currentTimeMillis();
         String status = SelfTestBase.STATUS_ERROR;
         try {
-            henvendelsesSystemUser.ping();
+            henvendelseInformasjonSystemUser.ping();
             status = SelfTestBase.STATUS_OK;
         } catch (Exception e) {
             logger.warn("<<<<<<Error Contacting Henvendelse WS: " + e.getMessage(), e);
@@ -74,13 +74,11 @@ public class SelfTestPage extends SelfTestBase {
         long start = currentTimeMillis();
         String status = SelfTestBase.STATUS_ERROR;
         try {
-            if (sporsmalinnsendingSystemUser.ping()) {
-                status = SelfTestBase.STATUS_OK;
-            }
+            henvendelseAktivitetSystemUser.ping();
+            status = SelfTestBase.STATUS_OK;
         } catch (Exception e) {
             logger.warn("<<<<<<Error Contacting Sporsmalinnsending WS: " + e.getMessage(), e);
         }
-
         return new AvhengighetStatus("SPORSMAL_TJENESTE_PING", status, currentTimeMillis() - start);
     }
 

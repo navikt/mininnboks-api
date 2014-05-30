@@ -133,14 +133,20 @@
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>henvendelse-meldinger-tjenestespesifikasjon</artifactId>
-            <version>0.0.7</version>
+            <artifactId>dialogarena-behandlingsinformasjon-v2</artifactId>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>sporsmalinnsending-tjenestespesifikasjon</artifactId>
-            <version>0.0.3</version>
+            <artifactId>henvendelse-aktivitet-v2</artifactId>
+            <version>0.2-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>henvendelse-informasjon-v2</artifactId>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>

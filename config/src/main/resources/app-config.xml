@@ -18,8 +18,8 @@
         <baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link"/>
         <baseUrl alias="appres.cms" mapToProperty="appres.cms"/>
 
-        <webservice alias="domene.Brukerdialog:HenvendelseMeldingerService_v1" mapToProperty="henvendelse.meldinger.ws"/>
-        <webservice alias="domene.Brukerdialog:SporsmalinnsendingService_v1" mapToProperty="henvendelse.spsminnsending.ws"/>
+        <webservice alias="domene.Brukerdialog:HenvendelseInformasjon_v2" mapToProperty="henvendelse.informasjon.ws"/>
+        <webservice alias="domene.Brukerdialog:HenvendelseAktivitet_v2" mapToProperty="henvendelse.aktivitet.ws"/>
     </resources>
 
     <security serviceUserResourceAlias="srvmininnboks">

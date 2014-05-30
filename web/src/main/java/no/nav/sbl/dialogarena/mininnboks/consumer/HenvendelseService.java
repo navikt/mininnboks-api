@@ -1,63 +1,79 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLAktor;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLBehandlingsinformasjonV2;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLMetadataListe;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.HenvendelseMeldingerPortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.informasjon.WSMelding;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.informasjon.WSMeldingstype;
-import no.nav.tjeneste.domene.brukerdialog.henvendelsemeldinger.v1.meldinger.HentMeldingListe;
-import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.SporsmalinnsendingPortType;
-import no.nav.tjeneste.domene.brukerdialog.sporsmal.v1.informasjon.WSSporsmal;
-import org.apache.commons.collections15.Transformer;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.HenvendelseAktivitetV2PortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.meldinger.WSSendHenvendelseRequest;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.meldinger.WSSendHenvendelseResponse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.informasjon.v2.HenvendelseInformasjonV2PortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.informasjon.v2.meldinger.WSHentHenvendelseListeRequest;
 
+import java.util.Arrays;
 import java.util.List;
 
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHenvendelseType.REFERAT;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHenvendelseType.SPORSMAL;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHenvendelseType.SVAR;
 import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
+import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
 
-    String stillSporsmal(String fritekst, Tema tema, String aktorId);
+    WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String aktorId);
+
     List<Henvendelse> hentAlleHenvendelser(String fnr);
+
     void merkHenvendelseSomLest(String behandlingsId);
 
     class Default implements HenvendelseService {
 
-        private final HenvendelseMeldingerPortType henvendelseWS;
+        private final HenvendelseInformasjonV2PortType henvendelseInformasjonWS;
 
-        private final SporsmalinnsendingPortType sporsmalinnsendingPortType;
-        public Default(HenvendelseMeldingerPortType henvendelseWS, SporsmalinnsendingPortType sporsmalinnsendingPortType) {
-            this.henvendelseWS = henvendelseWS;
-            this.sporsmalinnsendingPortType = sporsmalinnsendingPortType;
+        private final HenvendelseAktivitetV2PortType henvendelseAktivitetWS;
+
+        public Default(HenvendelseInformasjonV2PortType henvendelseInformasjonWS, HenvendelseAktivitetV2PortType henvendelseAktivitetWS) {
+            this.henvendelseInformasjonWS = henvendelseInformasjonWS;
+            this.henvendelseAktivitetWS = henvendelseAktivitetWS;
         }
 
         @Override
-        public String stillSporsmal(String fritekst, Tema tema, String aktorId) {
-            return sporsmalinnsendingPortType.opprettSporsmal(new WSSporsmal().withFritekst(fritekst).withTema(tema.toString()), aktorId);
-        }
+        public WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String aktorId) {
+            XMLBehandlingsinformasjonV2 info =
+                    new XMLBehandlingsinformasjonV2()
+                            .withHenvendelseType(SPORSMAL.name())
+                            .withAktor(new XMLAktor().withFodselsnummer(aktorId))
+                            .withOpprettetDato(now())
+                            .withAvsluttetDato(now())
+                            .withMetadataListe(new XMLMetadataListe().withMetadata(
+                                    new XMLSporsmal()
+                                            .withTemagruppe(tema.name())
+                                            .withFritekst(fritekst)));
 
-        @Override
-        public List<Henvendelse> hentAlleHenvendelser(String fnr) {
-            Transformer<WSMelding, Henvendelse> somHenvendelse = new Transformer<WSMelding, Henvendelse>() {
-                @Override
-                public Henvendelse transform(WSMelding melding) {
-                    Henvendelsetype henvendelseType = melding.getMeldingsType() == WSMeldingstype.INNGAENDE ? SPORSMAL : SVAR;
-                    Henvendelse henvendelse = new Henvendelse(melding.getBehandlingsId(), henvendelseType, melding.getTraad());
-                    henvendelse.opprettet = melding.getOpprettetDato();
-                    henvendelse.tema = Tema.valueOf(melding.getTemastruktur());
-                    henvendelse.setLest(melding.getLestDato() != null);
-                    henvendelse.lestDato = melding.getLestDato();
-                    henvendelse.fritekst = melding.getTekst();
-                    return henvendelse;
-                }
-            };
-            return on(henvendelseWS.hentMeldingListe(new HentMeldingListe().withFodselsnummer(fnr)).getMelding()).map(somHenvendelse).collect();
+            return henvendelseAktivitetWS.sendHenvendelse(
+                    new WSSendHenvendelseRequest()
+                            .withType(SPORSMAL.name())
+                            .withFodselsnummer(aktorId)
+                            .withAny(info));
         }
 
         @Override
         public void merkHenvendelseSomLest(String behandlingsId) {
-            henvendelseWS.merkMeldingSomLest(behandlingsId);
+            // Sett henvendelse til lest vha henvendelseAktivitetWS
         }
 
+        @Override
+        public List<Henvendelse> hentAlleHenvendelser(String fnr) {
+            List<String> typer = Arrays.asList(SPORSMAL.name(), SVAR.name(), REFERAT.name());
+            return on(henvendelseInformasjonWS.hentHenvendelseListe(
+                    new WSHentHenvendelseListeRequest()
+                            .withFodselsnummer(fnr)
+                            .withTyper(typer))
+                    .getAny())
+                    .map(TIL_HENVENDELSE).collect();
+        }
     }
 }
