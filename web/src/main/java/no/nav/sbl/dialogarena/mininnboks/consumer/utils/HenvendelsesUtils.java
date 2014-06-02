@@ -30,6 +30,7 @@ public class HenvendelsesUtils {
             henvendelse.fodselsnummer = info.getAktor().getFodselsnummer();
             henvendelse.opprettet = info.getOpprettetDato();
             henvendelse.avsluttet = info.getAvsluttetDato();
+
             if (metadata instanceof XMLSporsmal) {
                 XMLSporsmal sporsmal = (XMLSporsmal) metadata;
                 henvendelse.type = SPORSMAL;
@@ -61,11 +62,12 @@ public class HenvendelsesUtils {
         }
     };
 
-    public static final XMLBehandlingsinformasjonV2 tilXMLBehandlingsinformasjonV2(Henvendelse henvendelse){
+    public static XMLBehandlingsinformasjonV2 tilXMLBehandlingsinformasjonV2(Henvendelse henvendelse){
         XMLBehandlingsinformasjonV2 info = new XMLBehandlingsinformasjonV2()
                 .withAktor(new XMLAktor().withFodselsnummer(henvendelse.fodselsnummer))
                 .withOpprettetDato(henvendelse.opprettet)
                 .withAvsluttetDato(henvendelse.avsluttet);
+
         if (henvendelse.type.equals(Henvendelsetype.SVAR)) {
             return info
                     .withHenvendelseType(XMLHenvendelseType.SVAR.name())
