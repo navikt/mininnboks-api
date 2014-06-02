@@ -38,8 +38,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas" +
                 " humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum. For nærmere info: www.google.com";
         traad1Spsm.tema = PENSJON;
-        traad1Spsm.markerSomLest();
-        traad1Spsm.lestDato = traad1Spsm.opprettet;
+        traad1Spsm.markerSomLest(traad1Spsm.opprettet);
         henvendelser.put(traad1Spsm.id, traad1Spsm);
 
         Henvendelse traad1Svar1 = new Henvendelse("" + random.nextInt());
@@ -50,8 +49,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
                 " iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto";
         traad1Svar1.tema = traad1Spsm.tema;
-        traad1Svar1.markerSomLest();
-        traad1Svar1.lestDato = now().minusDays(4);
+        traad1Svar1.markerSomLest(now().minusDays(4));
         henvendelser.put(traad1Svar1.id, traad1Svar1);
 
         Henvendelse traad1Svar2 = new Henvendelse("" + random.nextInt());
@@ -92,8 +90,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad3Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum";
         traad3Spsm.tema = INTERNASJONALT;
-        traad3Spsm.markerSomLest();
-        traad3Spsm.lestDato = traad3Spsm.opprettet;
+        traad3Spsm.markerSomLest(traad3Spsm.opprettet);
         henvendelser.put(traad3Spsm.id, traad3Spsm);
 
         Henvendelse traad3Svar = new Henvendelse("" + random.nextInt());
@@ -122,13 +119,12 @@ public class HenvendelseServiceMock implements HenvendelseService {
                 " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
         traad4Spsm.tema = FAMILIE_OG_BARN;
-        traad4Spsm.markerSomLest();
-        traad4Spsm.lestDato = traad4Spsm.opprettet;
+        traad4Spsm.markerSomLest(traad4Spsm.opprettet);
         henvendelser.put(traad4Spsm.id, traad4Spsm);
     }
 
     @Override
-    public WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String aktorId) {
+    public WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String fodselsnummer) {
         Random random = new Random();
         Henvendelse spsm = new Henvendelse("" + random.nextInt());
         spsm.type = SPORSMAL;
@@ -142,14 +138,11 @@ public class HenvendelseServiceMock implements HenvendelseService {
     }
 
     @Override
-    public List<Henvendelse> hentAlleHenvendelser(String aktorId) {
+    public List<Henvendelse> hentAlleHenvendelser(String fnr) {
         return new ArrayList<>(henvendelser.values());
     }
 
     @Override
-    public void merkHenvendelseSomLest(String behandlingsId) {
-        Henvendelse henvendelse = henvendelser.get(behandlingsId);
-        henvendelse.markerSomLest();
-        henvendelser.put(henvendelse.id, henvendelse);
+    public void oppdaterHenvendelse(Henvendelse henvendelse) {
     }
 }

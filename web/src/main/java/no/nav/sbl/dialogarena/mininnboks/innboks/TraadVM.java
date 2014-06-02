@@ -33,7 +33,7 @@ public class TraadVM implements Serializable {
     public void markerSomLest(HenvendelseService service) {
         for (Henvendelse henvendelse : henvendelser) {
             henvendelse.markerSomLest();
-            service.merkHenvendelseSomLest(henvendelse.id);
+            service.oppdaterHenvendelse(henvendelse);
         }
     }
 

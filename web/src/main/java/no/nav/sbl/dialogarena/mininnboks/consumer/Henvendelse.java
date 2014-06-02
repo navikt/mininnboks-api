@@ -12,24 +12,26 @@ public class Henvendelse implements Serializable {
         this.id = id;
     }
     public final String id;
-    public String traadId;
+    public String traadId, fodselsnummer, fritekst, kanal;
     public Henvendelsetype type;
-    public String fritekst, kanal;
     public Tema tema;
-    public DateTime opprettet, lestDato;
-    private boolean lest;
+    public DateTime opprettet, avsluttet;
+    private DateTime lestDato;
 
-    public void markerSomLest() {
-        setLest(true);
-        lestDato = DateTime.now();
+    public void markerSomLest(DateTime lestDato) {
+        this.lestDato = lestDato;
     }
 
-    public void setLest(boolean lest) {
-        this.lest = lest;
+    public void markerSomLest(){
+        this.lestDato = DateTime.now();
+    }
+
+    public DateTime getLestDato() {
+        return lestDato;
     }
 
     public boolean erLest() {
-        return lest;
+        return lestDato != null;
     }
 
     public static final Comparator<Henvendelse> NYESTE_OVERST = new Comparator<Henvendelse>() {

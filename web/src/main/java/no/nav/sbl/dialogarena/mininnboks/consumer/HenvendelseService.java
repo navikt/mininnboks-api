@@ -6,6 +6,7 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLMetadataL
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.HenvendelseAktivitetV2PortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.meldinger.WSOppdaterHenvendelseRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.meldinger.WSSendHenvendelseRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.meldinger.WSSendHenvendelseResponse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.informasjon.v2.HenvendelseInformasjonV2PortType;
@@ -19,15 +20,16 @@ import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHe
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHenvendelseType.SVAR;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilXMLBehandlingsinformasjonV2;
 import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
 
-    WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String aktorId);
+    WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String fodselsnummer);
 
-    List<Henvendelse> hentAlleHenvendelser(String fnr);
+    List<Henvendelse> hentAlleHenvendelser(String fodselsnummer);
 
-    void merkHenvendelseSomLest(String behandlingsId);
+    void oppdaterHenvendelse(Henvendelse henvendelse);
 
     class Default implements HenvendelseService {
 
@@ -41,11 +43,11 @@ public interface HenvendelseService {
         }
 
         @Override
-        public WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String aktorId) {
+        public WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String fodselsnummer) {
             XMLBehandlingsinformasjonV2 info =
                     new XMLBehandlingsinformasjonV2()
                             .withHenvendelseType(SPORSMAL.name())
-                            .withAktor(new XMLAktor().withFodselsnummer(aktorId))
+                            .withAktor(new XMLAktor().withFodselsnummer(fodselsnummer))
                             .withOpprettetDato(now())
                             .withAvsluttetDato(now())
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
@@ -56,21 +58,24 @@ public interface HenvendelseService {
             return henvendelseAktivitetWS.sendHenvendelse(
                     new WSSendHenvendelseRequest()
                             .withType(SPORSMAL.name())
-                            .withFodselsnummer(aktorId)
+                            .withFodselsnummer(fodselsnummer)
                             .withAny(info));
         }
 
         @Override
-        public void merkHenvendelseSomLest(String behandlingsId) {
-            // Sett henvendelse til lest vha henvendelseAktivitetWS
+        public void oppdaterHenvendelse(Henvendelse henvendelse) {
+            henvendelseAktivitetWS.oppdaterHenvendelse(
+                    new WSOppdaterHenvendelseRequest()
+                            .withBehandlingsId(henvendelse.id)
+                            .withAny(tilXMLBehandlingsinformasjonV2(henvendelse)));
         }
 
         @Override
-        public List<Henvendelse> hentAlleHenvendelser(String fnr) {
+        public List<Henvendelse> hentAlleHenvendelser(String fodselsnummer) {
             List<String> typer = Arrays.asList(SPORSMAL.name(), SVAR.name(), REFERAT.name());
             return on(henvendelseInformasjonWS.hentHenvendelseListe(
                     new WSHentHenvendelseListeRequest()
-                            .withFodselsnummer(fnr)
+                            .withFodselsnummer(fodselsnummer)
                             .withTyper(typer))
                     .getAny())
                     .map(TIL_HENVENDELSE).collect();
