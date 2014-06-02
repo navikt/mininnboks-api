@@ -20,12 +20,13 @@ public class TidligereMeldingerPanel extends Panel {
         add(new ListView<Henvendelse>("tidligere-meldinger", getTidligereHenvendelser(model.getObject().henvendelser)) {
             @Override
             protected void populateItem(ListItem<Henvendelse> item) {
-                item.add(new AvsenderBilde("avsender-bilde", item.getModelObject()));
-                item.add(new Label("sendt-dato", kortMedTid(item.getModelObject().opprettet)));
+                Henvendelse henvendelse = item.getModelObject();
+                item.add(new AvsenderBilde("avsender-bilde", henvendelse));
+                item.add(new Label("sendt-dato", kortMedTid(henvendelse.opprettet)));
                 item.add(new Label("tema",
-                        new StringResourceModel(item.getModelObject().type.name(), TidligereMeldingerPanel.this, null).getString()
-                                + ": " + new StringResourceModel(item.getModelObject().tema.name(), TidligereMeldingerPanel.this, null).getString()));
-                item.add(new URLParsingMultiLineLabel("fritekst", item.getModelObject().fritekst));
+                        new StringResourceModel(henvendelse.type.name(), TidligereMeldingerPanel.this, null).getString()
+                                + ": " + new StringResourceModel(henvendelse.tema.name(), TidligereMeldingerPanel.this, null).getString()));
+                item.add(new URLParsingMultiLineLabel("fritekst", henvendelse.fritekst));
             }
         });
     }

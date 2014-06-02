@@ -82,6 +82,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
         traad2Referat.tema = ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT;
         traad2Referat.markerSomLest();
+        traad2Referat.kanal = "Kanal";
         henvendelser.put(traad2Referat.id, traad2Referat);
 
         Henvendelse traad3Spsm = new Henvendelse("" + random.nextInt());

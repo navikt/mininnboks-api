@@ -50,10 +50,11 @@ public class Innboks extends BasePage {
         ListView traadListe = new ListView<TraadVM>("traader", traader) {
             @Override
             protected void populateItem(final ListItem<TraadVM> item) {
+                final TraadVM traadVM = item.getModelObject();
                 item.setOutputMarkupId(true);
 
-                item.add(hasCssClassIf("lest", erLest(item.getModelObject().henvendelser)));
-                item.add(hasCssClassIf("closed", item.getModelObject().lukket));
+                item.add(hasCssClassIf("lest", erLest(traadVM.henvendelser)));
+                item.add(hasCssClassIf("closed", traadVM.lukket));
 
                 item.add(new AjaxLink<Void>("flipp") {
                     @Override
@@ -64,7 +65,7 @@ public class Innboks extends BasePage {
                 item.add(new AjaxEventBehavior("click") {
                     @Override
                     protected void onEvent(AjaxRequestTarget target) {
-                        if (item.getModelObject().lukket.getObject()) {
+                        if (traadVM.lukket.getObject()) {
                             traadClickBehaviour(item, target);
                         }
                     }

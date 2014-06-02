@@ -90,16 +90,17 @@ public class SkrivPage extends BasePage {
             ListView<Tema> endreTema = new ListView<Tema>("tema-liste", asList(Tema.values())) {
                 @Override
                 protected void populateItem(final ListItem<Tema> item) {
-                    final Label tema = new Label("tema", new ResourceModel(item.getModelObject().toString()));
-                    tema.add(hasCssClassIf("valgt", Model.of(item.getModelObject() == SporsmalForm.this.getModelObject().getTema())));
-                    tema.add(new AjaxEventBehavior("click") {
+                    final Tema tema = item.getModelObject();
+                    final Label temaLabel = new Label("tema", new ResourceModel(tema.toString()));
+                    temaLabel.add(hasCssClassIf("valgt", Model.of(tema == SporsmalForm.this.getModelObject().getTema())));
+                    temaLabel.add(new AjaxEventBehavior("click") {
                         @Override
                         protected void onEvent(AjaxRequestTarget target) {
-                            SporsmalForm.this.getModelObject().setTema(item.getModelObject());
+                            SporsmalForm.this.getModelObject().setTema(tema);
                             target.add(temaOverskrift, endreTemaWrapper);
                         }
                     });
-                    item.add(tema);
+                    item.add(temaLabel);
                 }
             };
             endreTemaWrapper.add(endreTema);
