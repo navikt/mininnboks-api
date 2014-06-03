@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLAktor;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLBehandlingsinformasjonV2;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHenvendelseType;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLMetadataListe;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLReferat;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSporsmal;
@@ -158,7 +159,7 @@ public class HenvendelsesUtilsTest {
         XMLSvar svar = (XMLSvar) info.getMetadataListe().getMetadata().get(0);
         assertThat(info.getBehandlingsId(), is(ID_4));
         assertThat(info.getAktor().getFodselsnummer(), is(FODSELSNUMMER));
-        assertThat(info.getHenvendelseType(), is(SVAR.name()));
+        assertThat(info.getHenvendelseType(), is(XMLHenvendelseType.SVAR.name()));
         assertThat(info.getOpprettetDato(), is(OPPRETTET_DATO));
         assertThat(info.getAvsluttetDato(), is(AVSLUTTET_DATO));
         assertThat(svar.getTemagruppe(), is(TEMA.name()));
@@ -177,7 +178,7 @@ public class HenvendelsesUtilsTest {
         XMLReferat referat = (XMLReferat) info.getMetadataListe().getMetadata().get(0);
         assertThat(info.getBehandlingsId(), is(ID_5));
         assertThat(info.getAktor().getFodselsnummer(), is(FODSELSNUMMER));
-        assertThat(info.getHenvendelseType(), is(REFERAT.name()));
+        assertThat(info.getHenvendelseType(), is(XMLHenvendelseType.REFERAT.name()));
         assertThat(info.getOpprettetDato(), is(OPPRETTET_DATO));
         assertThat(info.getAvsluttetDato(), is(AVSLUTTET_DATO));
         assertThat(referat.getTemagruppe(), is(TEMA.name()));
@@ -213,7 +214,7 @@ public class HenvendelsesUtilsTest {
         henvendelse.fodselsnummer = FODSELSNUMMER;
         henvendelse.fritekst = FRITEKST;
         henvendelse.kanal = KANAL;
-        henvendelse.type = Henvendelsetype.REFERAT;
+        henvendelse.type = SAMTALEREFERAT;
         henvendelse.tema = TEMA;
         henvendelse.opprettet = OPPRETTET_DATO;
         henvendelse.avsluttet = AVSLUTTET_DATO;
