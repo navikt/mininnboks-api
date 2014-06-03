@@ -12,9 +12,9 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import javax.inject.Inject;
@@ -70,7 +70,7 @@ public class Innboks extends BasePage {
             }
         });
 
-        add(new WebMarkupContainer("tom-innboks").add(hasCssClassIf("ingen-meldinger", Model.of(!traaderModel.getObject().isEmpty()))));
+        add(new WebMarkupContainer("tom-innboks").add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
     }
 
     private void traadClickBehaviour(ListItem<TraadVM> item, AjaxRequestTarget target) {
@@ -81,6 +81,15 @@ public class Innboks extends BasePage {
         }
         traadVM.lukket.setObject(!traadVM.lukket.getObject());
         target.appendJavaScript("Innboks.toggleTraad('" + item.getMarkupId() + "');");
+    }
+
+    private IModel<Boolean> tomInnboksModel() {
+        return new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                return !traaderModel.getObject().isEmpty();
+            }
+        };
     }
 
     private static String innloggetBruker() {
