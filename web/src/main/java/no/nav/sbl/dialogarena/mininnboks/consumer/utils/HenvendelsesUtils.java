@@ -64,6 +64,7 @@ public class HenvendelsesUtils {
 
     public static XMLBehandlingsinformasjonV2 tilXMLBehandlingsinformasjonV2(Henvendelse henvendelse){
         XMLBehandlingsinformasjonV2 info = new XMLBehandlingsinformasjonV2()
+                .withBehandlingsId(henvendelse.id)
                 .withAktor(new XMLAktor().withFodselsnummer(henvendelse.fodselsnummer))
                 .withOpprettetDato(henvendelse.opprettet)
                 .withAvsluttetDato(henvendelse.avsluttet);

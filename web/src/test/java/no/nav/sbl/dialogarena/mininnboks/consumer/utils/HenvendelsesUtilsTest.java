@@ -7,6 +7,7 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLReferat;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSporsmal;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSvar;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALE
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilXMLBehandlingsinformasjonV2;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -32,6 +34,9 @@ public class HenvendelsesUtilsTest {
     private static final String ID_1 = "1";
     private static final String ID_2 = "2";
     private static final String ID_3 = "3";
+    private static final String ID_4 = "4";
+    private static final String ID_5 = "5";
+    private static final String ID_6 = "6";
     private static final String FODSELSNUMMER = "fodselsnummer-1234";
     private static final String FRITEKST = "fritekst";
     private static final DateTime OPPRETTET_DATO = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 1));
@@ -41,7 +46,7 @@ public class HenvendelsesUtilsTest {
     private static final String KANAL = "kanal";
 
     @Test
-    public void skalTransformereTilHendelseMedFelterForXMLSporsmal() {
+    public void skalTransformereTilHenvendelseMedFelterForXMLSporsmal() {
         XMLBehandlingsinformasjonV2 info = mockXMLXMLBehandlingsinformasjonV2MedXMLSporsmal();
         List<XMLBehandlingsinformasjonV2> infoList = Arrays.asList(info);
 
@@ -62,7 +67,7 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
-    public void skalTransformereTilHendelseMedFelterForXMLSvar() {
+    public void skalTransformereTilHenvendelseMedFelterForXMLSvar() {
         XMLBehandlingsinformasjonV2 info = mockXMLXMLBehandlingsinformasjonV2MedXMLSvar();
         List<XMLBehandlingsinformasjonV2> infoList = Arrays.asList(info);
 
@@ -83,7 +88,7 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
-    public void skalTransformereTilHendelseMedFelterForXMLReferat() {
+    public void skalTransformereTilHenvendelseMedFelterForXMLReferat() {
         XMLBehandlingsinformasjonV2 info = mockXMLXMLBehandlingsinformasjonV2MedXMLReferat();
         List<XMLBehandlingsinformasjonV2> infoList = Arrays.asList(info);
 
@@ -143,4 +148,76 @@ public class HenvendelsesUtilsTest {
                                 .withKanal(KANAL)));
     }
 
+    @Test
+    public void skalOppretteXMLBehandlingsinformasjonV2MedRiktigeFelterForHenvendelseAvTypeSvar() {
+        Henvendelse henvendelse = mockSvarHenvendelse();
+
+        XMLBehandlingsinformasjonV2 info = tilXMLBehandlingsinformasjonV2(henvendelse);
+
+        assertTrue(info.getMetadataListe().getMetadata().get(0) instanceof XMLSvar);
+        XMLSvar svar = (XMLSvar) info.getMetadataListe().getMetadata().get(0);
+        assertThat(info.getBehandlingsId(), is(ID_4));
+        assertThat(info.getAktor().getFodselsnummer(), is(FODSELSNUMMER));
+        assertThat(info.getHenvendelseType(), is(SVAR.name()));
+        assertThat(info.getOpprettetDato(), is(OPPRETTET_DATO));
+        assertThat(info.getAvsluttetDato(), is(AVSLUTTET_DATO));
+        assertThat(svar.getTemagruppe(), is(TEMA.name()));
+        assertThat(svar.getSporsmalsId(), is(ID_4));
+        assertThat(svar.getFritekst(), is(FRITEKST));
+        assertThat(svar.getLestDato(), is(LEST_DATO));
+    }
+
+    @Test
+    public void skalOppretteXMLBehandlingsinformasjonV2MedRiktigeFelterForHenvendelseAvTypeReferat() {
+        Henvendelse henvendelse = mockReferatHenvendelse();
+
+        XMLBehandlingsinformasjonV2 info = tilXMLBehandlingsinformasjonV2(henvendelse);
+
+        assertTrue(info.getMetadataListe().getMetadata().get(0) instanceof XMLReferat);
+        XMLReferat referat = (XMLReferat) info.getMetadataListe().getMetadata().get(0);
+        assertThat(info.getBehandlingsId(), is(ID_5));
+        assertThat(info.getAktor().getFodselsnummer(), is(FODSELSNUMMER));
+        assertThat(info.getHenvendelseType(), is(REFERAT.name()));
+        assertThat(info.getOpprettetDato(), is(OPPRETTET_DATO));
+        assertThat(info.getAvsluttetDato(), is(AVSLUTTET_DATO));
+        assertThat(referat.getTemagruppe(), is(TEMA.name()));
+        assertThat(referat.getKanal(), is(KANAL));
+        assertThat(referat.getFritekst(), is(FRITEKST));
+        assertThat(referat.getLestDato(), is(LEST_DATO));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void skalKasteExceptionDersomHenvendelsestypenIkkeErSvarEllerReferat() {
+        Henvendelse henvendelse = new Henvendelse(ID_6);
+        henvendelse.type = Henvendelsetype.SPORSMAL;
+
+        tilXMLBehandlingsinformasjonV2(henvendelse);
+    }
+
+    private Henvendelse mockSvarHenvendelse() {
+        Henvendelse henvendelse = new Henvendelse(ID_4);
+        henvendelse.traadId = ID_4;
+        henvendelse.fodselsnummer = FODSELSNUMMER;
+        henvendelse.fritekst = FRITEKST;
+        henvendelse.tema = TEMA;
+        henvendelse.opprettet = OPPRETTET_DATO;
+        henvendelse.avsluttet = AVSLUTTET_DATO;
+        henvendelse.markerSomLest(LEST_DATO);
+        henvendelse.type = Henvendelsetype.SVAR;
+        return henvendelse;
+    }
+
+    private Henvendelse mockReferatHenvendelse() {
+        Henvendelse henvendelse = new Henvendelse(ID_5);
+        henvendelse.traadId = ID_5;
+        henvendelse.fodselsnummer = FODSELSNUMMER;
+        henvendelse.fritekst = FRITEKST;
+        henvendelse.kanal = KANAL;
+        henvendelse.type = Henvendelsetype.REFERAT;
+        henvendelse.tema = TEMA;
+        henvendelse.opprettet = OPPRETTET_DATO;
+        henvendelse.avsluttet = AVSLUTTET_DATO;
+        henvendelse.markerSomLest(LEST_DATO);
+        return henvendelse;
+    }
 }
