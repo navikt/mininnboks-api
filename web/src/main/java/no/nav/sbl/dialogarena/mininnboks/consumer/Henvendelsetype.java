@@ -5,5 +5,5 @@ import java.io.Serializable;
 public enum Henvendelsetype implements Serializable {
     SPORSMAL,
     SVAR,
-    REFERAT
+    SAMTALEREFERAT
 }

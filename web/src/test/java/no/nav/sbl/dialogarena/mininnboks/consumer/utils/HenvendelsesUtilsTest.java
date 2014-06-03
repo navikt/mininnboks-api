@@ -17,7 +17,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.REFERAT;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
@@ -93,7 +93,7 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.id, is(ID_3));
         assertThat(sporsmal.fodselsnummer, is(FODSELSNUMMER));
         assertThat(sporsmal.traadId, is(ID_3));
-        assertThat(sporsmal.type, is(REFERAT));
+        assertThat(sporsmal.type, is(SAMTALEREFERAT));
         assertThat(sporsmal.fritekst, is(FRITEKST));
         assertThat(sporsmal.kanal, is(KANAL));
         assertThat(sporsmal.tema, is(TEMA));

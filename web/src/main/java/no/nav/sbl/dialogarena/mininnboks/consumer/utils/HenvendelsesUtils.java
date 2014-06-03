@@ -13,7 +13,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
 import org.apache.commons.collections15.Transformer;
 
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.REFERAT;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
 
@@ -49,7 +49,7 @@ public class HenvendelsesUtils {
                 return henvendelse;
             } else if (metadata instanceof XMLReferat) {
                 XMLReferat referat = (XMLReferat) metadata;
-                henvendelse.type = REFERAT;
+                henvendelse.type = SAMTALEREFERAT;
                 henvendelse.traadId = info.getBehandlingsId();
                 henvendelse.tema = Tema.valueOf(referat.getTemagruppe());
                 henvendelse.markerSomLest(referat.getLestDato());
@@ -77,7 +77,7 @@ public class HenvendelsesUtils {
                                     .withTemagruppe(henvendelse.tema.name())
                                     .withFritekst(henvendelse.fritekst)
                                     .withLestDato(henvendelse.getLestDato())));
-        } else if (henvendelse.type.equals(Henvendelsetype.REFERAT)){
+        } else if (henvendelse.type.equals(Henvendelsetype.SAMTALEREFERAT)){
             return info
                     .withHenvendelseType(XMLHenvendelseType.REFERAT.name())
                     .withMetadataListe(new XMLMetadataListe().withMetadata(

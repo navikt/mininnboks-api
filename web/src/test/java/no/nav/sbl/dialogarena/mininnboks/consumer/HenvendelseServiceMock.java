@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.REFERAT;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema.ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT;
@@ -68,7 +68,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         henvendelser.put(traad1Svar2.id, traad1Svar2);
 
         Henvendelse traad2Referat = new Henvendelse("" + random.nextInt());
-        traad2Referat.type = REFERAT;
+        traad2Referat.type = SAMTALEREFERAT;
         traad2Referat.traadId =  "" + random.nextInt();
         traad2Referat.opprettet = now().minusHours(20);
         traad2Referat.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
