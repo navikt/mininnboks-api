@@ -5,12 +5,12 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLBehandlin
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLMetadataListe;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.HenvendelseAktivitetV2PortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.meldinger.WSOppdaterHenvendelseRequest;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.meldinger.WSSendHenvendelseRequest;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.meldinger.WSSendHenvendelseResponse;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.informasjon.v2.HenvendelseInformasjonV2PortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.informasjon.v2.meldinger.WSHentHenvendelseListeRequest;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSOppdaterHenvendelseRequest;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSSendHenvendelseRequest;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSSendHenvendelseResponse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.sendhenvendelse.SendHenvendelsePortType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,13 +33,13 @@ public interface HenvendelseService {
 
     class Default implements HenvendelseService {
 
-        private final HenvendelseInformasjonV2PortType henvendelseInformasjonWS;
+        private final HenvendelsePortType henvendelsePortType;
 
-        private final HenvendelseAktivitetV2PortType henvendelseAktivitetWS;
+        private final SendHenvendelsePortType sendHenvendelsePortType;
 
-        public Default(HenvendelseInformasjonV2PortType henvendelseInformasjonWS, HenvendelseAktivitetV2PortType henvendelseAktivitetWS) {
-            this.henvendelseInformasjonWS = henvendelseInformasjonWS;
-            this.henvendelseAktivitetWS = henvendelseAktivitetWS;
+        public Default(HenvendelsePortType henvendelsePortType, SendHenvendelsePortType sendHenvendelsePortType) {
+            this.henvendelsePortType = henvendelsePortType;
+            this.sendHenvendelsePortType = sendHenvendelsePortType;
         }
 
         @Override
@@ -55,7 +55,7 @@ public interface HenvendelseService {
                                             .withTemagruppe(tema.name())
                                             .withFritekst(fritekst)));
 
-            return henvendelseAktivitetWS.sendHenvendelse(
+            return sendHenvendelsePortType.sendHenvendelse(
                     new WSSendHenvendelseRequest()
                             .withType(SPORSMAL.name())
                             .withFodselsnummer(fodselsnummer)
@@ -64,7 +64,7 @@ public interface HenvendelseService {
 
         @Override
         public void oppdaterHenvendelse(Henvendelse henvendelse) {
-            henvendelseAktivitetWS.oppdaterHenvendelse(
+            sendHenvendelsePortType.oppdaterHenvendelse(
                     new WSOppdaterHenvendelseRequest()
                             .withBehandlingsId(henvendelse.id)
                             .withAny(tilXMLBehandlingsinformasjonV2(henvendelse)));
@@ -73,7 +73,7 @@ public interface HenvendelseService {
         @Override
         public List<Henvendelse> hentAlleHenvendelser(String fodselsnummer) {
             List<String> typer = Arrays.asList(SPORSMAL.name(), SVAR.name(), REFERAT.name());
-            return on(henvendelseInformasjonWS.hentHenvendelseListe(
+            return on(henvendelsePortType.hentHenvendelseListe(
                     new WSHentHenvendelseListeRequest()
                             .withFodselsnummer(fodselsnummer)
                             .withTyper(typer))

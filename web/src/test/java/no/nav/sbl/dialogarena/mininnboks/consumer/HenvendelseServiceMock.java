@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.meldinger.WSSendHenvendelseResponse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSSendHenvendelseResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;

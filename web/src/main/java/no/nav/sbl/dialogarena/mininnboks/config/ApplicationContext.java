@@ -9,8 +9,8 @@ import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.mininnboks.WicketApplication;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.aktivitet.v2.HenvendelseAktivitetV2PortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.informasjon.v2.HenvendelseInformasjonV2PortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.sendhenvendelse.SendHenvendelsePortType;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
@@ -36,36 +36,36 @@ public class ApplicationContext {
 
     @Bean
     public HenvendelseService henvendelseService() {
-        return new HenvendelseService.Default(henvendelseInformasjonSSO(), henvendelseAktivitetSSO());
+        return new HenvendelseService.Default(henvendelseSSO(), sendHenvendelseSSO());
     }
 
-    private static HenvendelseAktivitetV2PortType henvendelseAktivitetSSO() {
-        return createPortType(System.getProperty("henvendelse.aktivitet.ws.url"),
-                "classpath:HenvendelseAktivitetV2.wsdl",
-                HenvendelseAktivitetV2PortType.class,
+    private static SendHenvendelsePortType sendHenvendelseSSO() {
+        return createPortType(System.getProperty("send.henvendelse.ws.url"),
+                "classpath:SendHenvendelse.wsdl",
+                SendHenvendelsePortType.class,
                 true);
     }
 
-    private static HenvendelseInformasjonV2PortType henvendelseInformasjonSSO() {
-        return createPortType(System.getProperty("henvendelse.informasjon.ws.url"),
-                "classpath:HenvendelseInformasjonV2.wsdl",
-                HenvendelseInformasjonV2PortType.class,
+    private static HenvendelsePortType henvendelseSSO() {
+        return createPortType(System.getProperty("henvendelse.ws.url"),
+                "classpath:Henvendelse.wsdl",
+                HenvendelsePortType.class,
                 true);
     }
 
     @Bean
-    public static HenvendelseAktivitetV2PortType henvendelseAktivitetSystemUser() {
-        return createPortType(System.getProperty("henvendelse.aktivitet.ws.url"),
-                "classpath:HenvendelseAktivitetV2.wsdl",
-                HenvendelseAktivitetV2PortType.class,
+    public static SendHenvendelsePortType sendHenvendelseSystemUser() {
+        return createPortType(System.getProperty("send.henvendelse.ws.url"),
+                "classpath:SendHenvendelse.wsdl",
+                SendHenvendelsePortType.class,
                 false);
     }
 
     @Bean
-    public static HenvendelseInformasjonV2PortType henvendelseInformasjonSystemUser() {
-        return createPortType(System.getProperty("henvendelse.informasjon.ws.url"),
-                "classpath:HenvendelseInformasjonV2.wsdl",
-                HenvendelseInformasjonV2PortType.class,
+    public static HenvendelsePortType henvendelseSystemUser() {
+        return createPortType(System.getProperty("henvendelse.ws.url"),
+                "classpath:Henvendelse.wsdl",
+                HenvendelsePortType.class,
                 false);
     }
 
