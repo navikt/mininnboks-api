@@ -118,8 +118,8 @@
     </build>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@a34apvl029.devillo.no:7999/dial/mininnboks.git</developerConnection>
-        <url>http://a34apvl029.devillo.no:7990/projects/DIAL/repos/mininnboks/browse</url>
+        <developerConnection>scm:git:ssh://git@stash.devillo.no:7999/dial/mininnboks.git</developerConnection>
+        <url>http://stash.devillo.no:7990/projects/DIAL/repos/mininnboks/browse</url>
 		<tag>HEAD</tag>
 	</scm>
 
