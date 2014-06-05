@@ -1,10 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
-import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.protocol.http.WebApplication;
 
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
@@ -22,7 +22,7 @@ public class AvsenderBilde extends Image {
             avsender = "bruker";
             bilde = "siluett.svg";
         }
-        setImageResource(new ContextRelativeResource("img/" + bilde));
-        add(new AttributeAppender("alt", new StringResourceModel("innboks.avsender." + avsender, this, null)));
+        add(new AttributeModifier("src", WebApplication.get().getServletContext().getContextPath() + "/img/" + bilde));
+        add(new AttributeModifier("alt", new StringResourceModel("innboks.avsender." + avsender, this, null)));
     }
 }
