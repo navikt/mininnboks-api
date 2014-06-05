@@ -14,8 +14,8 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMA
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema.ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema.FAMILIE_OG_BARN;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema.INTERNASJONALT;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema.PENSJON;
+import static no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema.HJELPEMIDLER;
+import static no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema.OVRIGE_HENVENDELSER;
 import static org.joda.time.DateTime.now;
 
 public class HenvendelseServiceMock implements HenvendelseService {
@@ -37,7 +37,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
                 " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas" +
                 " humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum. For nærmere info: www.google.com";
-        traad1Spsm.tema = PENSJON;
+        traad1Spsm.tema = HJELPEMIDLER;
         traad1Spsm.markerSomLest(traad1Spsm.opprettet);
         henvendelser.put(traad1Spsm.id, traad1Spsm);
 
@@ -89,7 +89,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad3Spsm.opprettet = now().minusWeeks(12);
         traad3Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum";
-        traad3Spsm.tema = INTERNASJONALT;
+        traad3Spsm.tema = OVRIGE_HENVENDELSER;
         traad3Spsm.markerSomLest(traad3Spsm.opprettet);
         henvendelser.put(traad3Spsm.id, traad3Spsm);
 
