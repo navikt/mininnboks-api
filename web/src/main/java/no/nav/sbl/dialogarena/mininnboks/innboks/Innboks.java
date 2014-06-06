@@ -6,6 +6,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.VelgTemaPage;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -63,6 +64,11 @@ public class Innboks extends BasePage {
                         if (traadVM.lukket.getObject()) {
                             traadClickBehaviour(item, target);
                         }
+                    }
+                    @Override
+                    protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                        super.updateAjaxAttributes(attributes);
+                        attributes.setAllowDefault(true);
                     }
                 });
                 item.add(new NyesteMeldingPanel("nyeste-melding", item.getModel()));
