@@ -47,10 +47,11 @@
   &.closed {
     cursor: pointer;
     height: @toggleHeight;
-    .tidligere-melding {
-      display: none;
+    .nyeste-melding
+     .fritekst {
+      height: 1rem;
     }
-    .nyeste-melding p:not(:first-of-type) {
+    .tidligere-melding {
       display: none;
     }
     .flipp {
@@ -174,6 +175,9 @@
         color: white;
         text-align: center;
       }
+    }
+    .fritekst {
+      overflow: hidden;
     }
   }
 
