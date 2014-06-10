@@ -20,6 +20,7 @@
         <modig-security.version>1.0.19</modig-security.version>
         <slf4j.version>1.7.5</slf4j.version>
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
+        <spring.version>3.2.4.RELEASE</spring.version>
         <wicket.version>6.11.0</wicket.version>
     </properties>
 
@@ -185,6 +186,13 @@
         </dependency>
 
         <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-wicket-test</artifactId>
+            <version>1.0.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-spring</artifactId>
             <version>${wicket.version}</version>
@@ -229,7 +237,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>3.2.4.RELEASE</version>
+            <version>${spring.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -240,7 +248,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>3.2.4.RELEASE</version>
+            <version>${spring.version}</version>
             <scope>runtime</scope>
             <exclusions>
                 <exclusion>
@@ -279,6 +287,13 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
