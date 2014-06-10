@@ -9,20 +9,20 @@
             <h2 class="deloverskrift"><wicket:message key="send-sporsmal.temavelger.velg-tema-overskrift">[[Velg tema]]</wicket:message></h2>
             <hr class="robust-strek"/>
         </div>
-        <form>
-            <section wicket:id="temavalg" class="temavelger">
+        <form wicket:id="temavalg" class="temavelger">
+            <wicket:container wicket:id="tema">
                 <div wicket:id="temaer">
                     <input wicket:id="valg" type="radio" />
                     <label class="tema-overskrift" wicket:for="valg" ><wicket:container wicket:id="navn" /></label>
                     <br/>
                     <label class="tema-beskrivelse" wicket:for="valg" ><wicket:container wicket:id="beskrivelse" /></label>
                 </div>
-            </section>
+            </wicket:container>
             <hr class="skillestrek-sporsmal"/>
             <div wicket:id="feedback"></div>
             <div class="fortsett-knapp"><a wicket:id="fortsett" class="knapp-link-stor fortsett" href="#"><wicket:message key="send-sporsmal.temavelger.fortsett">[[Fortsett]]</wicket:message></a></div>
-            <div class="avbryt"><a wicket:id="avbryt" href="#"><wicket:message key="send-sporsmal.temavelger.avbryt">[[Avbryt]]</wicket:message></a></div>
         </form>
+        <div class="avbryt"><a wicket:id="avbryt" href="#"><wicket:message key="send-sporsmal.temavelger.avbryt">[[Avbryt]]</wicket:message></a></div>
     </article>
 </wicket:extend>
 </html>
