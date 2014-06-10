@@ -29,17 +29,6 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.cxf</groupId>
-                    <artifactId>cxf-codegen-plugin</artifactId>
-                    <version>2.7.7</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>no.nav.maven.plugins</groupId>
-                    <artifactId>jboss-maven-plugin</artifactId>
-                    <version>3.4.0</version>
-                </plugin>
-                <plugin>
                     <groupId>no.nav.maven.plugins</groupId>
                     <artifactId>modig-scm-plugin</artifactId>
                     <version>1.1.10</version>
