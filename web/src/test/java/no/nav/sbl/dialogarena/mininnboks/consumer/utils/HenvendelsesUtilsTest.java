@@ -1,12 +1,12 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLAktor;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLBehandlingsinformasjonV2;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHenvendelseType;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLMetadataListe;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLReferat;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSporsmal;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSvar;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLAktor;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLBehandlingsinformasjon;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLReferat;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSvar;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
@@ -23,7 +23,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALE
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilXMLBehandlingsinformasjonV2;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilXMLBehandlingsinformasjon;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -48,8 +48,8 @@ public class HenvendelsesUtilsTest {
 
     @Test
     public void skalTransformereTilHenvendelseMedFelterForXMLSporsmal() {
-        XMLBehandlingsinformasjonV2 info = mockXMLXMLBehandlingsinformasjonV2MedXMLSporsmal();
-        List<XMLBehandlingsinformasjonV2> infoList = Arrays.asList(info);
+        XMLBehandlingsinformasjon info = mockXMLBehandlingsinformasjonMedXMLSporsmal();
+        List<XMLBehandlingsinformasjon> infoList = Arrays.asList(info);
 
         List<Henvendelse> henvendelserListe =  on(infoList).map(TIL_HENVENDELSE).collect();
         Henvendelse sporsmal = henvendelserListe.get(0);
@@ -69,8 +69,8 @@ public class HenvendelsesUtilsTest {
 
     @Test
     public void skalTransformereTilHenvendelseMedFelterForXMLSvar() {
-        XMLBehandlingsinformasjonV2 info = mockXMLXMLBehandlingsinformasjonV2MedXMLSvar();
-        List<XMLBehandlingsinformasjonV2> infoList = Arrays.asList(info);
+        XMLBehandlingsinformasjon info = mockXMLBehandlingsinformasjonMedXMLSvar();
+        List<XMLBehandlingsinformasjon> infoList = Arrays.asList(info);
 
         List<Henvendelse> henvendelserListe =  on(infoList).map(TIL_HENVENDELSE).collect();
         Henvendelse sporsmal = henvendelserListe.get(0);
@@ -90,8 +90,8 @@ public class HenvendelsesUtilsTest {
 
     @Test
     public void skalTransformereTilHenvendelseMedFelterForXMLReferat() {
-        XMLBehandlingsinformasjonV2 info = mockXMLXMLBehandlingsinformasjonV2MedXMLReferat();
-        List<XMLBehandlingsinformasjonV2> infoList = Arrays.asList(info);
+        XMLBehandlingsinformasjon info = mockXMLBehandlingsinformasjonMedXMLReferat();
+        List<XMLBehandlingsinformasjon> infoList = Arrays.asList(info);
 
         List<Henvendelse> henvendelserListe =  on(infoList).map(TIL_HENVENDELSE).collect();
         Henvendelse sporsmal = henvendelserListe.get(0);
@@ -109,8 +109,8 @@ public class HenvendelsesUtilsTest {
         assertTrue(sporsmal.erLest());
     }
 
-    private XMLBehandlingsinformasjonV2 mockXMLXMLBehandlingsinformasjonV2MedXMLSporsmal() {
-        return new XMLBehandlingsinformasjonV2()
+    private XMLBehandlingsinformasjon mockXMLBehandlingsinformasjonMedXMLSporsmal() {
+        return new XMLBehandlingsinformasjon()
                 .withBehandlingsId(ID_1)
                 .withAktor(new XMLAktor().withFodselsnummer(FODSELSNUMMER))
                 .withOpprettetDato(OPPRETTET_DATO)
@@ -121,8 +121,8 @@ public class HenvendelsesUtilsTest {
                                 .withTemagruppe(TEMA.name())));
     }
 
-    private XMLBehandlingsinformasjonV2 mockXMLXMLBehandlingsinformasjonV2MedXMLSvar() {
-        return new XMLBehandlingsinformasjonV2()
+    private XMLBehandlingsinformasjon mockXMLBehandlingsinformasjonMedXMLSvar() {
+        return new XMLBehandlingsinformasjon()
                 .withBehandlingsId(ID_2)
                 .withAktor(new XMLAktor().withFodselsnummer(FODSELSNUMMER))
                 .withOpprettetDato(OPPRETTET_DATO)
@@ -135,8 +135,8 @@ public class HenvendelsesUtilsTest {
                                 .withLestDato(LEST_DATO)));
     }
 
-    private XMLBehandlingsinformasjonV2 mockXMLXMLBehandlingsinformasjonV2MedXMLReferat() {
-        return new XMLBehandlingsinformasjonV2()
+    private XMLBehandlingsinformasjon mockXMLBehandlingsinformasjonMedXMLReferat() {
+        return new XMLBehandlingsinformasjon()
                 .withBehandlingsId(ID_3)
                 .withAktor(new XMLAktor().withFodselsnummer(FODSELSNUMMER))
                 .withOpprettetDato(OPPRETTET_DATO)
@@ -150,10 +150,10 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
-    public void skalOppretteXMLBehandlingsinformasjonV2MedRiktigeFelterForHenvendelseAvTypeSvar() {
+    public void skalOppretteXMLBehandlingsinformasjonMedRiktigeFelterForHenvendelseAvTypeSvar() {
         Henvendelse henvendelse = mockSvarHenvendelse();
 
-        XMLBehandlingsinformasjonV2 info = tilXMLBehandlingsinformasjonV2(henvendelse);
+        XMLBehandlingsinformasjon info = tilXMLBehandlingsinformasjon(henvendelse);
 
         assertTrue(info.getMetadataListe().getMetadata().get(0) instanceof XMLSvar);
         XMLSvar svar = (XMLSvar) info.getMetadataListe().getMetadata().get(0);
@@ -169,10 +169,10 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
-    public void skalOppretteXMLBehandlingsinformasjonV2MedRiktigeFelterForHenvendelseAvTypeReferat() {
+    public void skalOppretteXMLBehandlingsinformasjonMedRiktigeFelterForHenvendelseAvTypeReferat() {
         Henvendelse henvendelse = mockReferatHenvendelse();
 
-        XMLBehandlingsinformasjonV2 info = tilXMLBehandlingsinformasjonV2(henvendelse);
+        XMLBehandlingsinformasjon info = tilXMLBehandlingsinformasjon(henvendelse);
 
         assertTrue(info.getMetadataListe().getMetadata().get(0) instanceof XMLReferat);
         XMLReferat referat = (XMLReferat) info.getMetadataListe().getMetadata().get(0);
@@ -192,7 +192,7 @@ public class HenvendelsesUtilsTest {
         Henvendelse henvendelse = new Henvendelse(ID_6);
         henvendelse.type = Henvendelsetype.SPORSMAL;
 
-        tilXMLBehandlingsinformasjonV2(henvendelse);
+        tilXMLBehandlingsinformasjon(henvendelse);
     }
 
     private Henvendelse mockSvarHenvendelse() {

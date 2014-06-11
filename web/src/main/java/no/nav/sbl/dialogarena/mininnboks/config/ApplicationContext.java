@@ -1,10 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLBehandlingsinformasjonV2;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLMetadataListe;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLReferat;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSporsmal;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSvar;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLBehandlingsinformasjon;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLReferat;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSvar;
 import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.mininnboks.WicketApplication;
@@ -77,7 +77,7 @@ public class ApplicationContext {
         proxy.getFeatures().addAll(Arrays.asList(new WSAddressingFeature(), new LoggingFeature()));
         proxy.setProperties(new HashMap<String, Object>());
         proxy.getProperties().put("jaxb.additionalContextClasses", new Class[]{
-                XMLBehandlingsinformasjonV2.class,
+                XMLBehandlingsinformasjon.class,
                 XMLMetadataListe.class,
                 XMLSporsmal.class,
                 XMLSvar.class,

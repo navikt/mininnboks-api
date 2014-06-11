@@ -1,13 +1,13 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLAktor;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLBehandlingsinformasjonV2;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHenvendelseType;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLMetadata;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLMetadataListe;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLReferat;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSporsmal;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSvar;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLAktor;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLBehandlingsinformasjon;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadata;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLReferat;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSvar;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
@@ -23,7 +23,7 @@ public class HenvendelsesUtils {
 
         @Override
         public Henvendelse transform(Object wsMelding) {
-            XMLBehandlingsinformasjonV2 info = (XMLBehandlingsinformasjonV2) wsMelding;
+            XMLBehandlingsinformasjon info = (XMLBehandlingsinformasjon) wsMelding;
             XMLMetadataListe metadataListe = info.getMetadataListe();
             XMLMetadata metadata = metadataListe.getMetadata().get(0);
             Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
@@ -62,8 +62,8 @@ public class HenvendelsesUtils {
         }
     };
 
-    public static XMLBehandlingsinformasjonV2 tilXMLBehandlingsinformasjonV2(Henvendelse henvendelse){
-        XMLBehandlingsinformasjonV2 info = new XMLBehandlingsinformasjonV2()
+    public static XMLBehandlingsinformasjon tilXMLBehandlingsinformasjon(Henvendelse henvendelse){
+        XMLBehandlingsinformasjon info = new XMLBehandlingsinformasjon()
                 .withBehandlingsId(henvendelse.id)
                 .withAktor(new XMLAktor().withFodselsnummer(henvendelse.fodselsnummer))
                 .withOpprettetDato(henvendelse.opprettet)

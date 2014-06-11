@@ -1,9 +1,9 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLAktor;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLBehandlingsinformasjonV2;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLMetadataListe;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLSporsmal;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLAktor;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLBehandlingsinformasjon;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
@@ -15,12 +15,12 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.sendhenvendelse.SendHe
 import java.util.Arrays;
 import java.util.List;
 
-import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHenvendelseType.REFERAT;
-import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHenvendelseType.SPORSMAL;
-import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v2.XMLHenvendelseType.SVAR;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.REFERAT;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SPORSMAL;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SVAR;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilXMLBehandlingsinformasjonV2;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilXMLBehandlingsinformasjon;
 import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
@@ -44,8 +44,8 @@ public interface HenvendelseService {
 
         @Override
         public WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String fodselsnummer) {
-            XMLBehandlingsinformasjonV2 info =
-                    new XMLBehandlingsinformasjonV2()
+            XMLBehandlingsinformasjon info =
+                    new XMLBehandlingsinformasjon()
                             .withHenvendelseType(SPORSMAL.name())
                             .withAktor(new XMLAktor().withFodselsnummer(fodselsnummer))
                             .withOpprettetDato(now())
@@ -67,7 +67,7 @@ public interface HenvendelseService {
             sendHenvendelsePortType.oppdaterHenvendelse(
                     new WSOppdaterHenvendelseRequest()
                             .withBehandlingsId(henvendelse.id)
-                            .withAny(tilXMLBehandlingsinformasjonV2(henvendelse)));
+                            .withAny(tilXMLBehandlingsinformasjon(henvendelse)));
         }
 
         @Override
