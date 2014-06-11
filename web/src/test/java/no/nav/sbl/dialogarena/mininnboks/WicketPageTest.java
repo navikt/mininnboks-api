@@ -3,7 +3,6 @@ package no.nav.sbl.dialogarena.mininnboks;
 import no.nav.modig.wicket.test.FluentWicketTester;
 import no.nav.sbl.dialogarena.mininnboks.config.PageTestContext;
 import no.nav.sbl.dialogarena.test.SystemProperties;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,10 +20,5 @@ public abstract class WicketPageTest {
     @BeforeClass
     public static void setupStatic() {
         SystemProperties.setFrom("jetty-mininnboks.properties");
-    }
-
-    @Before
-    public void setupSession() {
-        wicketTester.tester.getSession().replaceSession();
     }
 }
