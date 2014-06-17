@@ -6,12 +6,15 @@ $(document).on('keydown', function(e) {
     }
 });
 
-$(document).on('click', '.send-panel .pil-ned, .send-panel .tema-overskrift', function () {
-    $('.endre-tema-wrapper').show();
-    var handler = function () {
-        $('.endre-tema-wrapper').hide();
-        $(':not(.endre-tema)').off('click', handler)
-    };
+$(document).on('click', function () {
+    $('.endre-tema-wrapper').hide();
+});
 
-    $(':not(.endre-tema)').on('click', handler)
+$(document).on('click', '.send-panel .pil-ned, .send-panel .tema-overskrift', function (e) {
+    $('.endre-tema-wrapper').toggle();
+    e.stopPropagation();
+});
+
+$(document).on('click', '.endre-tema', function (e) {
+    e.stopPropagation();
 });
