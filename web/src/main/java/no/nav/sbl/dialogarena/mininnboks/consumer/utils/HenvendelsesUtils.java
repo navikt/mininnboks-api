@@ -46,6 +46,7 @@ public class HenvendelsesUtils {
                 henvendelse.tema = Tema.valueOf(svar.getTemagruppe());
                 henvendelse.markerSomLest(svar.getLestDato());
                 henvendelse.fritekst = svar.getFritekst();
+                henvendelse.kanal = svar.getKanal();
                 return henvendelse;
             } else if (metadata instanceof XMLReferat) {
                 XMLReferat referat = (XMLReferat) metadata;
@@ -76,6 +77,7 @@ public class HenvendelsesUtils {
                             new XMLSvar()
                                     .withSporsmalsId(henvendelse.traadId)
                                     .withTemagruppe(henvendelse.tema.name())
+                                    .withKanal(henvendelse.kanal)
                                     .withFritekst(henvendelse.fritekst)
                                     .withLestDato(henvendelse.getLestDato())));
         } else if (henvendelse.type.equals(Henvendelsetype.SAMTALEREFERAT)){
