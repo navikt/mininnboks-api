@@ -4,7 +4,7 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLAktor;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLBehandlingsinformasjon;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSOppdaterHenvendelseRequest;
@@ -25,7 +25,7 @@ import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
 
-    WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String fodselsnummer);
+    WSSendHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer);
 
     List<Henvendelse> hentAlleHenvendelser(String fodselsnummer);
 
@@ -43,7 +43,7 @@ public interface HenvendelseService {
         }
 
         @Override
-        public WSSendHenvendelseResponse stillSporsmal(String fritekst, Tema tema, String fodselsnummer) {
+        public WSSendHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
             XMLBehandlingsinformasjon info =
                     new XMLBehandlingsinformasjon()
                             .withHenvendelseType(SPORSMAL.name())
@@ -52,7 +52,7 @@ public interface HenvendelseService {
                             .withAvsluttetDato(now())
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLSporsmal()
-                                            .withTemagruppe(tema.name())
+                                            .withTemagruppe(temagruppe.name())
                                             .withFritekst(fritekst)));
 
             return sendHenvendelsePortType.sendHenvendelse(

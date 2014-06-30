@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks.consumer;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.joda.time.DateTime;
 
 public class Henvendelse implements Serializable {
@@ -14,7 +14,7 @@ public class Henvendelse implements Serializable {
     public final String id;
     public String traadId, fodselsnummer, fritekst, kanal;
     public Henvendelsetype type;
-    public Tema tema;
+    public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
     private DateTime lestDato;
 

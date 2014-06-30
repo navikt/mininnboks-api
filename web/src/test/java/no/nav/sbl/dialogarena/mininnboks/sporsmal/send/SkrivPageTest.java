@@ -4,7 +4,7 @@ import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextArea;
 import no.nav.modig.wicket.test.internal.Parameters;
 import no.nav.sbl.dialogarena.mininnboks.WicketPageTest;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -20,14 +20,14 @@ public class SkrivPageTest extends WicketPageTest {
 
     @Before
     public void setup() {
-        wicketTester.goTo(SkrivPage.class, new Parameters().param("tema", Tema.ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT.name()));
+        wicketTester.goTo(SkrivPage.class, new Parameters().param("temagruppe", Temagruppe.ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT.name()));
     }
 
     @Test
     public void testSkrivPageKomponenter() {
         wicketTester.should().containComponent(withId("sporsmal-form").and(ofType(Form.class)))
-                .should().inComponent(withId("sporsmal-form")).containComponent(withId("tema").and(ofType(Label.class)))
-                .should().inComponent(withId("sporsmal-form")).containComponent(withId("tema-liste").and(ofType(ListView.class)))
+                .should().inComponent(withId("sporsmal-form")).containComponent(withId("temagruppe").and(ofType(Label.class)))
+                .should().inComponent(withId("sporsmal-form")).containComponent(withId("temagruppe-liste").and(ofType(ListView.class)))
                 .should().inComponent(withId("sporsmal-form")).containComponent(withId("tekstfelt").and(ofType(EnhancedTextArea.class)))
                 .should().inComponent(withId("sporsmal-form")).containComponent(withId("send").and(ofType(AjaxSubmitLink.class)))
                 .should().inComponent(withId("sporsmal-form")).containComponent(withId("avbryt").and(ofType(Link.class)));

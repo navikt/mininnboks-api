@@ -7,7 +7,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.Sporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -44,7 +44,7 @@ public class SkrivPage extends BasePage {
 
     public SkrivPage(PageParameters parameters) {
         Sporsmal sporsmal = new Sporsmal();
-        sporsmal.setTema(Tema.valueOf(parameters.get("tema").toString()));
+        sporsmal.setTemagruppe(Temagruppe.valueOf(parameters.get("temagruppe").toString()));
         CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(sporsmal);
         add(new SporsmalForm("sporsmal-form", model));
     }
@@ -54,8 +54,8 @@ public class SkrivPage extends BasePage {
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            final Label temaOverskrift = new Label("tema", new StringResourceModel("${tema}", model));
-            temaOverskrift.setOutputMarkupId(true);
+            final Label temagruppeOverskrift = new Label("temagruppe", new StringResourceModel("${temagruppe}", model));
+            temagruppeOverskrift.setOutputMarkupId(true);
 
             EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model);
 
@@ -68,7 +68,7 @@ public class SkrivPage extends BasePage {
                     try {
                         Sporsmal spsm = getModelObject();
                         spsm.innsendingsTidspunkt = DateTime.now();
-                        service.stillSporsmal(spsm.getFritekst(), spsm.getTema(), SubjectHandler.getSubjectHandler().getUid());
+                        service.stillSporsmal(spsm.getFritekst(), spsm.getTemagruppe(), SubjectHandler.getSubjectHandler().getUid());
                         setResponsePage(KvitteringPage.class);
                     } catch (Exception e) {
                         LOG.error("Feil ved innsending av spørsmål", e);
@@ -85,27 +85,27 @@ public class SkrivPage extends BasePage {
 
             Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
 
-            final WebMarkupContainer endreTemaWrapper = new WebMarkupContainer("endre-tema-wrapper");
-            endreTemaWrapper.setOutputMarkupId(true);
-            ListView<Tema> endreTema = new ListView<Tema>("tema-liste", asList(Tema.values())) {
+            final WebMarkupContainer endreTemagruppeWrapper = new WebMarkupContainer("endre-temagruppe-wrapper");
+            endreTemagruppeWrapper.setOutputMarkupId(true);
+            ListView<Temagruppe> endreTemagruppe = new ListView<Temagruppe>("temagruppe-liste", asList(Temagruppe.values())) {
                 @Override
-                protected void populateItem(final ListItem<Tema> item) {
-                    final Tema tema = item.getModelObject();
-                    final Label temaLabel = new Label("tema", new ResourceModel(tema.toString()));
-                    temaLabel.add(hasCssClassIf("valgt", Model.of(tema == SporsmalForm.this.getModelObject().getTema())));
-                    temaLabel.add(new AjaxEventBehavior("click") {
+                protected void populateItem(final ListItem<Temagruppe> item) {
+                    final Temagruppe temagruppe = item.getModelObject();
+                    final Label temagruppeLabel = new Label("temagruppe", new ResourceModel(temagruppe.toString()));
+                    temagruppeLabel.add(hasCssClassIf("valgt", Model.of(temagruppe == SporsmalForm.this.getModelObject().getTemagruppe())));
+                    temagruppeLabel.add(new AjaxEventBehavior("click") {
                         @Override
                         protected void onEvent(AjaxRequestTarget target) {
-                            SporsmalForm.this.getModelObject().setTema(tema);
-                            target.add(temaOverskrift, endreTemaWrapper);
+                            SporsmalForm.this.getModelObject().setTemagruppe(temagruppe);
+                            target.add(temagruppeOverskrift, endreTemagruppeWrapper);
                         }
                     });
-                    item.add(temaLabel);
+                    item.add(temagruppeLabel);
                 }
             };
-            endreTemaWrapper.add(endreTema);
+            endreTemagruppeWrapper.add(endreTemagruppe);
 
-            add(temaOverskrift, endreTemaWrapper, enhancedTextArea, feedbackPanel, send, avbryt);
+            add(temagruppeOverskrift, endreTemagruppeWrapper, enhancedTextArea, feedbackPanel, send, avbryt);
         }
 
         @Override

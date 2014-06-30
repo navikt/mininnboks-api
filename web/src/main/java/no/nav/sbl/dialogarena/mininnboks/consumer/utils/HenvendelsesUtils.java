@@ -10,7 +10,7 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSvar;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.commons.collections15.Transformer;
 
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT;
@@ -35,7 +35,7 @@ public class HenvendelsesUtils {
                 XMLSporsmal sporsmal = (XMLSporsmal) metadata;
                 henvendelse.type = SPORSMAL;
                 henvendelse.traadId = info.getBehandlingsId();
-                henvendelse.tema = Tema.valueOf(sporsmal.getTemagruppe());
+                henvendelse.temagruppe = Temagruppe.valueOf(sporsmal.getTemagruppe());
                 henvendelse.fritekst = sporsmal.getFritekst();
                 henvendelse.markerSomLest();
                 return henvendelse;
@@ -43,7 +43,7 @@ public class HenvendelsesUtils {
                 XMLSvar svar = (XMLSvar) metadata;
                 henvendelse.type = SVAR;
                 henvendelse.traadId = svar.getSporsmalsId();
-                henvendelse.tema = Tema.valueOf(svar.getTemagruppe());
+                henvendelse.temagruppe = Temagruppe.valueOf(svar.getTemagruppe());
                 henvendelse.markerSomLest(svar.getLestDato());
                 henvendelse.fritekst = svar.getFritekst();
                 henvendelse.kanal = svar.getKanal();
@@ -52,7 +52,7 @@ public class HenvendelsesUtils {
                 XMLReferat referat = (XMLReferat) metadata;
                 henvendelse.type = SAMTALEREFERAT;
                 henvendelse.traadId = info.getBehandlingsId();
-                henvendelse.tema = Tema.valueOf(referat.getTemagruppe());
+                henvendelse.temagruppe = Temagruppe.valueOf(referat.getTemagruppe());
                 henvendelse.markerSomLest(referat.getLestDato());
                 henvendelse.fritekst = referat.getFritekst();
                 henvendelse.kanal = referat.getKanal();
@@ -76,7 +76,7 @@ public class HenvendelsesUtils {
                     .withMetadataListe(new XMLMetadataListe().withMetadata(
                             new XMLSvar()
                                     .withSporsmalsId(henvendelse.traadId)
-                                    .withTemagruppe(henvendelse.tema.name())
+                                    .withTemagruppe(henvendelse.temagruppe.name())
                                     .withKanal(henvendelse.kanal)
                                     .withFritekst(henvendelse.fritekst)
                                     .withLestDato(henvendelse.getLestDato())));
@@ -85,7 +85,7 @@ public class HenvendelsesUtils {
                     .withHenvendelseType(XMLHenvendelseType.REFERAT.name())
                     .withMetadataListe(new XMLMetadataListe().withMetadata(
                             new XMLReferat()
-                                    .withTemagruppe(henvendelse.tema.name())
+                                    .withTemagruppe(henvendelse.temagruppe.name())
                                     .withKanal(henvendelse.kanal)
                                     .withFritekst(henvendelse.fritekst)
                                     .withLestDato(henvendelse.getLestDato())));

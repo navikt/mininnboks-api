@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks;
 
 import no.nav.sbl.dialogarena.mininnboks.WicketPageTest;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.VelgTemaPage;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.VelgTemagruppePage;
 import org.apache.wicket.markup.html.link.Link;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class InnboksTest extends WicketPageTest {
 
     @Test
     public void testSkrivNyLenke() {
-        wicketTester.click().link(withId("skriv-ny")).should().beOn(VelgTemaPage.class);
+        wicketTester.click().link(withId("skriv-ny")).should().beOn(VelgTemagruppePage.class);
     }
 
 }

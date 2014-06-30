@@ -23,9 +23,9 @@ public class TidligereMeldingerPanel extends Panel {
                 Henvendelse henvendelse = item.getModelObject();
                 item.add(new AvsenderBilde("avsender-bilde", henvendelse));
                 item.add(new Label("sendt-dato", kortMedTid(henvendelse.opprettet)));
-                item.add(new Label("tema",
+                item.add(new Label("temagruppe",
                         new StringResourceModel(henvendelse.type.name(), TidligereMeldingerPanel.this, null).getString()
-                                + ": " + new StringResourceModel(henvendelse.tema.name(), TidligereMeldingerPanel.this, null).getString()));
+                                + ": " + new StringResourceModel(henvendelse.temagruppe.name(), TidligereMeldingerPanel.this, null).getString()));
                 item.add(new URLParsingMultiLineLabel("fritekst", henvendelse.fritekst));
             }
         });

@@ -9,7 +9,7 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSvar;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.Tema;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -43,7 +43,7 @@ public class HenvendelsesUtilsTest {
     private static final DateTime OPPRETTET_DATO = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 1));
     private static final DateTime AVSLUTTET_DATO = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 2));
     private static final DateTime LEST_DATO = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 3));
-    private static final Tema TEMA = Tema.FAMILIE_OG_BARN;
+    private static final Temagruppe TEMAGRUPPE = Temagruppe.FAMILIE_OG_BARN;
     private static final String KANAL = "kanal";
 
     @Test
@@ -59,7 +59,7 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.traadId, is(ID_1));
         assertThat(sporsmal.type, is(SPORSMAL));
         assertThat(sporsmal.fritekst, is(FRITEKST));
-        assertThat(sporsmal.tema, is(TEMA));
+        assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
         assertThat(sporsmal.opprettet, is(OPPRETTET_DATO));
         assertThat(sporsmal.avsluttet, is(AVSLUTTET_DATO));
         assertTrue(sporsmal.erLest());
@@ -80,7 +80,7 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.traadId, is(ID_1));
         assertThat(sporsmal.type, is(SVAR));
         assertThat(sporsmal.fritekst, is(FRITEKST));
-        assertThat(sporsmal.tema, is(TEMA));
+        assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
         assertThat(sporsmal.opprettet, is(OPPRETTET_DATO));
         assertThat(sporsmal.avsluttet, is(AVSLUTTET_DATO));
         assertThat(sporsmal.getLestDato(), is(LEST_DATO));
@@ -102,7 +102,7 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.type, is(SAMTALEREFERAT));
         assertThat(sporsmal.fritekst, is(FRITEKST));
         assertThat(sporsmal.kanal, is(KANAL));
-        assertThat(sporsmal.tema, is(TEMA));
+        assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
         assertThat(sporsmal.opprettet, is(OPPRETTET_DATO));
         assertThat(sporsmal.avsluttet, is(AVSLUTTET_DATO));
         assertThat(sporsmal.getLestDato(), is(LEST_DATO));
@@ -118,7 +118,7 @@ public class HenvendelsesUtilsTest {
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLSporsmal()
                                 .withFritekst(FRITEKST)
-                                .withTemagruppe(TEMA.name())));
+                                .withTemagruppe(TEMAGRUPPE.name())));
     }
 
     private XMLBehandlingsinformasjon mockXMLBehandlingsinformasjonMedXMLSvar() {
@@ -130,7 +130,7 @@ public class HenvendelsesUtilsTest {
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLSvar()
                                 .withFritekst(FRITEKST)
-                                .withTemagruppe(TEMA.name())
+                                .withTemagruppe(TEMAGRUPPE.name())
                                 .withSporsmalsId(ID_1)
                                 .withLestDato(LEST_DATO)));
     }
@@ -144,7 +144,7 @@ public class HenvendelsesUtilsTest {
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLReferat()
                                 .withFritekst(FRITEKST)
-                                .withTemagruppe(TEMA.name())
+                                .withTemagruppe(TEMAGRUPPE.name())
                                 .withLestDato(LEST_DATO)
                                 .withKanal(KANAL)));
     }
@@ -162,7 +162,7 @@ public class HenvendelsesUtilsTest {
         assertThat(info.getHenvendelseType(), is(XMLHenvendelseType.SVAR.name()));
         assertThat(info.getOpprettetDato(), is(OPPRETTET_DATO));
         assertThat(info.getAvsluttetDato(), is(AVSLUTTET_DATO));
-        assertThat(svar.getTemagruppe(), is(TEMA.name()));
+        assertThat(svar.getTemagruppe(), is(TEMAGRUPPE.name()));
         assertThat(svar.getSporsmalsId(), is(ID_4));
         assertThat(svar.getFritekst(), is(FRITEKST));
         assertThat(svar.getLestDato(), is(LEST_DATO));
@@ -181,7 +181,7 @@ public class HenvendelsesUtilsTest {
         assertThat(info.getHenvendelseType(), is(XMLHenvendelseType.REFERAT.name()));
         assertThat(info.getOpprettetDato(), is(OPPRETTET_DATO));
         assertThat(info.getAvsluttetDato(), is(AVSLUTTET_DATO));
-        assertThat(referat.getTemagruppe(), is(TEMA.name()));
+        assertThat(referat.getTemagruppe(), is(TEMAGRUPPE.name()));
         assertThat(referat.getKanal(), is(KANAL));
         assertThat(referat.getFritekst(), is(FRITEKST));
         assertThat(referat.getLestDato(), is(LEST_DATO));
@@ -200,7 +200,7 @@ public class HenvendelsesUtilsTest {
         henvendelse.traadId = ID_4;
         henvendelse.fodselsnummer = FODSELSNUMMER;
         henvendelse.fritekst = FRITEKST;
-        henvendelse.tema = TEMA;
+        henvendelse.temagruppe = TEMAGRUPPE;
         henvendelse.opprettet = OPPRETTET_DATO;
         henvendelse.avsluttet = AVSLUTTET_DATO;
         henvendelse.markerSomLest(LEST_DATO);
@@ -215,7 +215,7 @@ public class HenvendelsesUtilsTest {
         henvendelse.fritekst = FRITEKST;
         henvendelse.kanal = KANAL;
         henvendelse.type = SAMTALEREFERAT;
-        henvendelse.tema = TEMA;
+        henvendelse.temagruppe = TEMAGRUPPE;
         henvendelse.opprettet = OPPRETTET_DATO;
         henvendelse.avsluttet = AVSLUTTET_DATO;
         henvendelse.markerSomLest(LEST_DATO);

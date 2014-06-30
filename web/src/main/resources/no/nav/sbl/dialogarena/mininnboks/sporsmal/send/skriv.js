@@ -7,14 +7,14 @@ $(document).on('keydown', function(e) {
 });
 
 $(document).on('click', function () {
-    $('.endre-tema-wrapper').hide();
+    $('.endre-temagruppe-wrapper').hide();
 });
 
-$(document).on('click', '.send-panel .pil-ned, .send-panel .tema-overskrift', function (e) {
-    $('.endre-tema-wrapper').toggle();
+$(document).on('click', '.send-panel .pil-ned, .send-panel .temagruppe-overskrift', function (e) {
+    $('.endre-temagruppe-wrapper').toggle();
     e.stopPropagation();
 });
 
-$(document).on('click', '.endre-tema', function (e) {
+$(document).on('click', '.endre-temagruppe', function (e) {
     e.stopPropagation();
 });

@@ -24,9 +24,9 @@ public class NyesteMeldingPanel extends Panel {
         add(new AvsenderBilde("avsender-bilde", nyesteHenvendelse));
         add(new Label("sendt-dato", kortMedTid(nyesteHenvendelse.opprettet)));
         add(new Label("kanal", nyesteHenvendelse.kanal).setVisible(nyesteHenvendelse.type.equals(SAMTALEREFERAT)));
-        add(new Label("tema",
+        add(new Label("temagruppe",
                 new StringResourceModel(nyesteHenvendelse.type.name(), this, null).getString()
-                        + ": " + new StringResourceModel(nyesteHenvendelse.tema.name(), this, null).getString()));
+                        + ": " + new StringResourceModel(nyesteHenvendelse.temagruppe.name(), this, null).getString()));
         add(new Label("traadlengde", henvendelser.size()));
         add(new URLParsingMultiLineLabel("fritekst", nyesteHenvendelse.fritekst));
     }

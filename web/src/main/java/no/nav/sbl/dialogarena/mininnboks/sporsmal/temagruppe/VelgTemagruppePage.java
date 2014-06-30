@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.mininnboks.sporsmal.tema;
+package no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe;
 
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
@@ -20,20 +20,20 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import static java.util.Arrays.asList;
 
-public class VelgTemaPage extends BasePage {
+public class VelgTemagruppePage extends BasePage {
 
-    private IModel<Tema> tema = new Model<>();
+    private IModel<Temagruppe> temagruppe = new Model<>();
 
-    public VelgTemaPage() {
+    public VelgTemagruppePage() {
         final FeedbackPanel feedback = new FeedbackPanel("feedback");
         feedback.setOutputMarkupId(true);
 
-        Form form = new Form<>("temavalg");
-        form.add(new RadioGroup<>("tema", tema)
+        Form form = new Form<>("temagruppevalg");
+        form.add(new RadioGroup<>("temagruppe", temagruppe)
                 .setRequired(true)
-                .add(new ListView<Tema>("temaer", asList(Tema.values())) {
+                .add(new ListView<Temagruppe>("temagrupper", asList(Temagruppe.values())) {
                     @Override
-                    protected void populateItem(ListItem<Tema> item) {
+                    protected void populateItem(ListItem<Temagruppe> item) {
                         item.add(
                                 new Radio<>("valg", item.getModel()),
                                 new Label("navn", new ResourceModel(item.getModelObject().toString())),
@@ -43,7 +43,7 @@ public class VelgTemaPage extends BasePage {
         form.add(new AjaxSubmitLink("fortsett") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                setResponsePage(SkrivPage.class, new PageParameters().set("tema", tema.getObject().name()));
+                setResponsePage(SkrivPage.class, new PageParameters().set("temagruppe", temagruppe.getObject().name()));
             }
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {

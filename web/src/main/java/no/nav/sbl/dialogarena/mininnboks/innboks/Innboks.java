@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks.innboks;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.tema.VelgTemaPage;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.VelgTemagruppePage;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
@@ -39,7 +39,7 @@ public class Innboks extends BasePage {
         add(new Link<Void>("skriv-ny") {
             @Override
             public void onClick() {
-                setResponsePage(VelgTemaPage.class);
+                setResponsePage(VelgTemagruppePage.class);
             }
         });
 
