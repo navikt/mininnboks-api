@@ -5,13 +5,14 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLBehandlin
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseRequest;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSOppdaterHenvendelseRequest;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSSendHenvendelseRequest;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSSendHenvendelseResponse;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.sendhenvendelse.SendHenvendelsePortType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,30 +21,32 @@ import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHe
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SVAR;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilXMLBehandlingsinformasjon;
 import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
 
-    WSSendHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer);
+    WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer);
 
     List<Henvendelse> hentAlleHenvendelser(String fodselsnummer);
 
-    void oppdaterHenvendelse(Henvendelse henvendelse);
+    void merkHenvendelseSomLest(Henvendelse henvendelse);
 
     class Default implements HenvendelseService {
 
         private final HenvendelsePortType henvendelsePortType;
 
-        private final SendHenvendelsePortType sendHenvendelsePortType;
+        private final SendInnHenvendelsePortType sendInnHenvendelsePortType;
 
-        public Default(HenvendelsePortType henvendelsePortType, SendHenvendelsePortType sendHenvendelsePortType) {
+        private final InnsynHenvendelsePortType innsynHenvendelsePortType;
+
+        public Default(HenvendelsePortType henvendelsePortType, SendInnHenvendelsePortType sendInnHenvendelsePortType, InnsynHenvendelsePortType innsynHenvendelsePortType) {
             this.henvendelsePortType = henvendelsePortType;
-            this.sendHenvendelsePortType = sendHenvendelsePortType;
+            this.sendInnHenvendelsePortType = sendInnHenvendelsePortType;
+            this.innsynHenvendelsePortType = innsynHenvendelsePortType;
         }
 
         @Override
-        public WSSendHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
+        public WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
             XMLBehandlingsinformasjon info =
                     new XMLBehandlingsinformasjon()
                             .withHenvendelseType(SPORSMAL.name())
@@ -55,19 +58,16 @@ public interface HenvendelseService {
                                             .withTemagruppe(temagruppe.name())
                                             .withFritekst(fritekst)));
 
-            return sendHenvendelsePortType.sendHenvendelse(
-                    new WSSendHenvendelseRequest()
+            return sendInnHenvendelsePortType.sendInnHenvendelse(
+                    new WSSendInnHenvendelseRequest()
                             .withType(SPORSMAL.name())
                             .withFodselsnummer(fodselsnummer)
                             .withAny(info));
         }
 
         @Override
-        public void oppdaterHenvendelse(Henvendelse henvendelse) {
-            sendHenvendelsePortType.oppdaterHenvendelse(
-                    new WSOppdaterHenvendelseRequest()
-                            .withBehandlingsId(henvendelse.id)
-                            .withAny(tilXMLBehandlingsinformasjon(henvendelse)));
+        public void merkHenvendelseSomLest(Henvendelse henvendelse) {
+            innsynHenvendelsePortType.merkSomLest(new ArrayList<String>(Arrays.asList(henvendelse.id)));
         }
 
         @Override

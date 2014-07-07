@@ -1,8 +1,9 @@
 package no.nav.sbl.dialogarena.mininnboks.selftest;
 
 import no.nav.modig.wicket.selftest.SelfTestBase;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.sendhenvendelse.SendHenvendelsePortType;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,10 @@ public class SelfTestPage extends SelfTestBase {
     private HenvendelsePortType henvendelse;
 
     @Inject
-    private SendHenvendelsePortType sendHenvendelse;
+    private SendInnHenvendelsePortType sendInnHenvendelse;
+
+    @Inject
+    private InnsynHenvendelsePortType innsynHenvendelse;
 
     public SelfTestPage(PageParameters params) throws IOException {
         super("Mininnboks", params);
@@ -71,7 +75,7 @@ public class SelfTestPage extends SelfTestBase {
         long start = currentTimeMillis();
         String status = SelfTestBase.STATUS_ERROR;
         try {
-            sendHenvendelse.ping();
+            sendInnHenvendelse.ping();
             status = SelfTestBase.STATUS_OK;
         } catch (Exception e) {
             logger.warn("<<<<<<Error Contacting Sporsmalinnsending WS: " + e.getMessage(), e);
@@ -79,10 +83,24 @@ public class SelfTestPage extends SelfTestBase {
         return new AvhengighetStatus("SEND_HENVENDELSE_TJENESTE_PING", status, currentTimeMillis() - start);
     }
 
+    private AvhengighetStatus getInnsynHenvendelseWSStatus() {
+        long start = currentTimeMillis();
+        String status = SelfTestBase.STATUS_ERROR;
+        try {
+            innsynHenvendelse.ping();
+            status = SelfTestBase.STATUS_OK;
+        } catch (Exception e) {
+            logger.warn("<<<<<<Error Contacting Sporsmalinnsending WS: " + e.getMessage(), e);
+        }
+        return new AvhengighetStatus("INNSYN_HENVENDELSE_TJENESTE_PING", status, currentTimeMillis() - start);
+    }
+
     @Override
     protected void addToStatusList(List<AvhengighetStatus> statusList) {
         statusList.add(getHenvendelseWSStatus());
         statusList.add(getSendHenvendelseWSStatus());
+        statusList.add(getInnsynHenvendelseWSStatus());
         statusList.add(getCmsStatus());
     }
+
 }

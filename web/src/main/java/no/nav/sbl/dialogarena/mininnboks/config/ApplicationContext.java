@@ -9,8 +9,9 @@ import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.mininnboks.WicketApplication;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.sendhenvendelse.SendHenvendelsePortType;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
@@ -36,14 +37,7 @@ public class ApplicationContext {
 
     @Bean
     public HenvendelseService henvendelseService() {
-        return new HenvendelseService.Default(henvendelseSSO(), sendHenvendelseSSO());
-    }
-
-    private static SendHenvendelsePortType sendHenvendelseSSO() {
-        return createPortType(System.getProperty("send.henvendelse.ws.url"),
-                "classpath:SendHenvendelse.wsdl",
-                SendHenvendelsePortType.class,
-                true);
+        return new HenvendelseService.Default(henvendelseSSO(), sendInnHenvendelseSSO(), innsynHenvendelseSSO());
     }
 
     private static HenvendelsePortType henvendelseSSO() {
@@ -53,12 +47,18 @@ public class ApplicationContext {
                 true);
     }
 
-    @Bean
-    public static SendHenvendelsePortType sendHenvendelseSystemUser() {
-        return createPortType(System.getProperty("send.henvendelse.ws.url"),
+    private static SendInnHenvendelsePortType sendInnHenvendelseSSO() {
+        return createPortType(System.getProperty("send.inn.henvendelse.ws.url"),
                 "classpath:SendHenvendelse.wsdl",
-                SendHenvendelsePortType.class,
-                false);
+                SendInnHenvendelsePortType.class,
+                true);
+    }
+
+    private static InnsynHenvendelsePortType innsynHenvendelseSSO() {
+        return createPortType(System.getProperty("innsyn.henvendelse.ws.url"),
+                "classpath:InnsynHenvendelse.wsdl",
+                InnsynHenvendelsePortType.class,
+                true);
     }
 
     @Bean
@@ -66,6 +66,22 @@ public class ApplicationContext {
         return createPortType(System.getProperty("henvendelse.ws.url"),
                 "classpath:Henvendelse.wsdl",
                 HenvendelsePortType.class,
+                false);
+    }
+
+    @Bean
+    public static SendInnHenvendelsePortType sendInnHenvendelseSystemUser() {
+        return createPortType(System.getProperty("send.inn.henvendelse.ws.url"),
+                "classpath:SendHenvendelse.wsdl",
+                SendInnHenvendelsePortType.class,
+                false);
+    }
+
+    @Bean
+    public static InnsynHenvendelsePortType innsynHenvendelseSystemUser() {
+        return createPortType(System.getProperty("innsyn.henvendelse.ws.url"),
+                "classpath:InnsynHenvendelse.wsdl",
+                InnsynHenvendelsePortType.class,
                 false);
     }
 

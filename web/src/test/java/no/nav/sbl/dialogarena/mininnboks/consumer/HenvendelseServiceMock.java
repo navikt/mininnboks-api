@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSSendHenvendelseResponse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,7 +124,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
     }
 
     @Override
-    public WSSendHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
+    public WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
         Random random = new Random();
         Henvendelse spsm = new Henvendelse("" + random.nextInt());
         spsm.type = SPORSMAL;
@@ -134,7 +134,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         spsm.opprettet = now();
         spsm.markerSomLest();
         henvendelser.put(spsm.id, spsm);
-        return new WSSendHenvendelseResponse().withBehandlingsId(spsm.id);
+        return new WSSendInnHenvendelseResponse().withBehandlingsId(spsm.id);
     }
 
     @Override
@@ -143,6 +143,6 @@ public class HenvendelseServiceMock implements HenvendelseService {
     }
 
     @Override
-    public void oppdaterHenvendelse(Henvendelse henvendelse) {
+    public void merkHenvendelseSomLest(Henvendelse henvendelse) {
     }
 }

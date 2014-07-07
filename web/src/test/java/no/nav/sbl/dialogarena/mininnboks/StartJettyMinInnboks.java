@@ -19,7 +19,8 @@ public class StartJettyMinInnboks {
 	public static void main(String[] args) {
 	    SystemProperties.setFrom("jetty-mininnboks.properties");
         System.setProperty("henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/Henvendelse_v2");
-        System.setProperty("send.henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/SendHenvendelse_v2");
+        System.setProperty("send.inn.henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/SendInnHenvendelse_v1");
+        System.setProperty("innsyn.henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/InnsynHenvendelse_v1");
 		TestCertificates.setupKeyAndTrustStore();
 
 		final Jetty jetty = Jetty.usingWar(FilesAndDirs.WEBAPP_SOURCE).at("mininnboks").port(8585)
