@@ -33,12 +33,12 @@ class MininnboksSimulation extends Simulation {
   val scn = scenario("Scenario Name")
     .feed(userCredentials)
 
-    .exec(http("går til loginsiden med riktig parametre")
+    .exec(http("Go to login page with correct parameters")
     .get("https://tjenester-" + ENV + ".nav.no/esso/UI/Login?goto=https://tjenester-" + ENV + ".nav.no/mininnboks/&service=level4Service")
     .headers(standard_headers)
     .check(regex("OpenAM").exists))
 
-    .exec(http("logger inn")
+    .exec(http("logging in")
     .post("/esso/UI/Login")
     .headers(standard_headers)
     .param("IDToken1", "${brukernavn}")
@@ -46,28 +46,32 @@ class MininnboksSimulation extends Simulation {
     .queryParam("goto", goTo)
     .check(regex("Min Innboks").exists))
 
-    .exec(http("test om jeg er logget inn")
+    .exec(http("check to see if logged in properly")
     .get( """/mininnboks/""")
     .headers(standard_headers)
     .check(regex("Min Innboks").exists))
 
-    .exec(http("Tar en snarvei til siden der man skriver inn spørsmål")
+    .exec(http("take a shortcut to page for sending in question")
     .get( """/mininnboks/sporsmal/skriv/HJELPEMIDLER""")
     .headers(standard_headers)
     .check(regex("Skriv melding").exists))
 
-    .exec(http("Sender det faktiske spørsmålet")
+    .exec(http("sending the actual question")
     .post( """/mininnboks/sporsmal/skriv/HJELPEMIDLER?2-1.IBehaviorListener.0-sporsmal~form-send=""")
     .headers(ajaxHeaders)
     .param( """tekstfelt:text""", """Dette er en melding som er sendt av gatling. Er den ikke fin?""")
     .param( """send""", """1""")
     .check(regex("kvittering").exists))
 
-    .exec(http("Logger ut")
+    .exec(http("seeing receipt page")
+    .get( """/mininnboks/sporsmal/kvittering""")
+    .headers(standard_headers)
+    .check(regex("du vil få svar ").exists))
+
+    .exec(http("logging out")
     .get( """/esso/UI/Logout""")
     .headers(standard_headers)
     .check(regex("You are logged out").exists))
 
-
-  setUp(scn.inject(ramp(nrUsers users) over(rampTime seconds))).protocols(httpConf)
+  setUp(scn.inject(ramp(nrUsers users) over (rampTime seconds))).protocols(httpConf)
 }
