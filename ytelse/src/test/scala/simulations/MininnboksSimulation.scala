@@ -3,13 +3,19 @@ package simulations
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
+import scala.concurrent.duration._
+
 class MininnboksSimulation extends Simulation {
 
-  final val ENV = "t11"
+  final val ENV = System.getProperty("environment", "t11")
   val baseUrl = "https://tjenester-" + ENV + ".nav.no"
   val goTo = baseUrl + "/mininnboks/"
+  val userCredentials = csv("brukere.csv").circular
+  val password = "Eifel123"
+  val nrUsers: Int = Integer.getInteger("nrUsers", 10)
+  val rampTime: Long = java.lang.Long.getLong("rampTime", 1L)
 
-  val httpProtocol = http
+  val httpConf = http
     .baseURL(baseUrl)
     .acceptHeader("image/png,image/*;q=0.8,*/*;q=0.5")
     .acceptEncodingHeader("gzip, deflate")
@@ -32,6 +38,7 @@ class MininnboksSimulation extends Simulation {
 
 
   val scn = scenario("Scenario Name")
+    .feed(userCredentials)
 
     .exec(http("går til loginsiden med riktig parametre")
     .get("https://tjenester-" + ENV + ".nav.no/esso/UI/Login?goto=https://tjenester-" + ENV + ".nav.no/mininnboks/&service=level4Service")
@@ -41,8 +48,8 @@ class MininnboksSimulation extends Simulation {
     .exec(http("logger inn")
     .post("/esso/UI/Login")
     .headers(standard_headers)
-    .param("IDToken1", "***REMOVED***")
-    .param("IDToken2", "Eifel123")
+    .param("IDToken1", "${brukernavn}")
+    .param("IDToken2", password)
     .queryParam("goto", goTo)
     .check(regex("Min Innboks").exists))
 
@@ -70,5 +77,5 @@ class MininnboksSimulation extends Simulation {
     .check(regex("You are logged out").exists))
 
 
-  setUp(scn.inject(atOnce(1 user))).protocols(httpProtocol)
+  setUp(scn.inject(ramp(nrUsers users) over(rampTime seconds))).protocols(httpConf)
 }
