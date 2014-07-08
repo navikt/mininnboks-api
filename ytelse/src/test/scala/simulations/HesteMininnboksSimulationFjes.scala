@@ -5,7 +5,7 @@ import io.gatling.http.Predef._
 
 import scala.concurrent.duration._
 
-class MininnboksSimulation extends Simulation {
+class HesteMininnboksSimulationFjes extends Simulation {
 
   final val ENV = "t11"
   val baseUrl = "https://tjenester-" + ENV + ".nav.no"

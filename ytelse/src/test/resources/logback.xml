@@ -13,7 +13,7 @@
 	 <!--Uncomment for logging ONLY FAILED HTTP request and responses-->
 	 	<logger name="io.gatling.http" level="DEBUG" />
 
-    <logger name="simulations.MininnboksSimulation" level="DEBUG" />
+    <logger name="simulations.HesteMininnboksSimulationFjes" level="DEBUG" />
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
