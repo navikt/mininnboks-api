@@ -8,15 +8,14 @@ import scala.concurrent.duration._
 class MininnboksSimulation extends Simulation {
 
   final val ENV = System.getProperty("environment", "t11")
-  val baseUrl = "https://tjenester-" + ENV + ".nav.no"
-  val goTo = baseUrl + "/mininnboks/"
+  final val BASE_URL = "https://tjenester-" + ENV + ".nav.no"
   val userCredentials = csv("brukere.csv").circular
   val password = "Eifel123"
   val nrUsers: Int = Integer.getInteger("nrUsers", 1)
   val rampTime: Long = java.lang.Long.getLong("rampTime", 1L)
 
   val httpConf = http
-    .baseURL(baseUrl)
+    .baseURL(BASE_URL)
     .disableWarmUp
 
   val standard_headers = Map( """Accept""" -> """text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8""")
@@ -43,7 +42,7 @@ class MininnboksSimulation extends Simulation {
     .headers(standard_headers)
     .param("IDToken1", "${brukernavn}")
     .param("IDToken2", password)
-    .queryParam("goto", goTo)
+    .queryParam("goto", BASE_URL + "/mininnboks/")
     .check(regex("Min Innboks").exists))
 
     .exec(http("check to see if logged in properly")
