@@ -7,7 +7,8 @@ import scala.concurrent.duration._
 
 class MininnboksSimulation extends Simulation {
 
-  val baseUrl = "https://tjenester-t4.nav.no"
+  final val ENV = "t11"
+  val baseUrl = "https://tjenester-" + ENV + ".nav.no"
   val goTo = baseUrl + "/mininnboks/"
 
   val httpProtocol = http
@@ -35,7 +36,7 @@ class MininnboksSimulation extends Simulation {
   val scn = scenario("Scenario Name")
 
     .exec(http("går til loginsiden med riktig parametre")
-    .get("https://tjenester-t4.nav.no/esso/UI/Login?goto=https://tjenester-t4.nav.no/mininnboks/&service=level4Service")
+    .get("https://tjenester-" + ENV + ".nav.no/esso/UI/Login?goto=https://tjenester-" + ENV + ".nav.no/mininnboks/&service=level4Service")
     .headers(standard_headers)
     .check(regex("OpenAM").exists))
     .pause(125 milliseconds)
@@ -45,7 +46,7 @@ class MininnboksSimulation extends Simulation {
     .headers(standard_headers)
     .param("IDToken1", "***REMOVED***")
     .param("IDToken2", "Eifel123")
-    .queryParam("goto", "https://tjenester-t4.nav.no/mininnboks/")
+    .queryParam("goto", "https://tjenester-" + ENV + ".nav.no/mininnboks/")
     .check(regex("Min Innboks").exists))
     .pause(999 milliseconds)
 
