@@ -52,7 +52,7 @@
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>dialogarena-behandlingsinformasjon</artifactId>
-            <version>0.0.13</version>
+            <version>0.0.14-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
