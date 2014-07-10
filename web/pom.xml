@@ -29,18 +29,23 @@
         <!--Dialogarena tjenestespesifikasjon-->
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>dialogarena-behandlingsinformasjon</artifactId>
+            <version>0.0.14</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>henvendelse-informasjon-v2</artifactId>
             <version>0.3</version>
         </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>send-inn-henvendelse</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
         </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>innsyn-henvendelse</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
         </dependency>
 
         <!--Dialogarena-->
@@ -48,11 +53,6 @@
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>common-time</artifactId>
             <version>2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>dialogarena-behandlingsinformasjon</artifactId>
-            <version>0.0.14-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
