@@ -40,12 +40,12 @@
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>send-inn-henvendelse</artifactId>
-            <version>0.2</version>
+            <version>0.3</version>
         </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>innsyn-henvendelse</artifactId>
-            <version>0.2</version>
+            <version>0.3</version>
         </dependency>
 
         <!--Dialogarena-->
