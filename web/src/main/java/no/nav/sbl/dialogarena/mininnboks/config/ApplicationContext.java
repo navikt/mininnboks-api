@@ -49,7 +49,7 @@ public class ApplicationContext {
 
     private static SendInnHenvendelsePortType sendInnHenvendelseSSO() {
         return createPortType(System.getProperty("send.inn.henvendelse.ws.url"),
-                "classpath:SendHenvendelse.wsdl",
+                "classpath:SendInnHenvendelse.wsdl",
                 SendInnHenvendelsePortType.class,
                 true);
     }
@@ -72,7 +72,7 @@ public class ApplicationContext {
     @Bean
     public static SendInnHenvendelsePortType sendInnHenvendelseSystemUser() {
         return createPortType(System.getProperty("send.inn.henvendelse.ws.url"),
-                "classpath:SendHenvendelse.wsdl",
+                "classpath:SendInnHenvendelse.wsdl",
                 SendInnHenvendelsePortType.class,
                 false);
     }
