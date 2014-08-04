@@ -1,18 +1,19 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import java.io.Serializable;
-import java.util.Comparator;
-
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.joda.time.DateTime;
+
+import java.io.Serializable;
+import java.util.Comparator;
 
 public class Henvendelse implements Serializable {
 
     public Henvendelse(String id) {
         this.id = id;
     }
+
     public final String id;
-    public String traadId, fodselsnummer, fritekst, kanal;
+    public String traadId, fritekst, kanal;
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
@@ -22,7 +23,7 @@ public class Henvendelse implements Serializable {
         this.lestDato = lestDato;
     }
 
-    public void markerSomLest(){
+    public void markerSomLest() {
         this.lestDato = DateTime.now();
     }
 

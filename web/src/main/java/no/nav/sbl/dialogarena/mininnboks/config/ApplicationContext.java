@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLBehandlingsinformasjon;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLReferat;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
@@ -93,7 +93,7 @@ public class ApplicationContext {
         proxy.getFeatures().addAll(Arrays.asList(new WSAddressingFeature(), new LoggingFeature()));
         proxy.setProperties(new HashMap<String, Object>());
         proxy.getProperties().put("jaxb.additionalContextClasses", new Class[]{
-                XMLBehandlingsinformasjon.class,
+                XMLHenvendelse.class,
                 XMLMetadataListe.class,
                 XMLSporsmal.class,
                 XMLSvar.class,

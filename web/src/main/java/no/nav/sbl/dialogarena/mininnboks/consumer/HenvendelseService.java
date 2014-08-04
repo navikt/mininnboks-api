@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLAktor;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLBehandlingsinformasjon;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
@@ -47,10 +46,9 @@ public interface HenvendelseService {
 
         @Override
         public WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
-            XMLBehandlingsinformasjon info =
-                    new XMLBehandlingsinformasjon()
+            XMLHenvendelse info =
+                    new XMLHenvendelse()
                             .withHenvendelseType(SPORSMAL.name())
-                            .withAktor(new XMLAktor().withFodselsnummer(fodselsnummer))
                             .withOpprettetDato(now())
                             .withAvsluttetDato(now())
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
@@ -67,7 +65,7 @@ public interface HenvendelseService {
 
         @Override
         public void merkHenvendelseSomLest(Henvendelse henvendelse) {
-            innsynHenvendelsePortType.merkSomLest(new ArrayList<String>(Arrays.asList(henvendelse.id)));
+            innsynHenvendelsePortType.merkSomLest(new ArrayList(Arrays.asList(henvendelse.id)));
         }
 
         @Override

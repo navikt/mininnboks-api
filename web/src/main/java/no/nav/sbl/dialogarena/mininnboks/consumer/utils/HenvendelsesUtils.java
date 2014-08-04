@@ -1,15 +1,12 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLAktor;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLBehandlingsinformasjon;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadata;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLReferat;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSvar;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.commons.collections15.Transformer;
 
@@ -23,11 +20,10 @@ public class HenvendelsesUtils {
 
         @Override
         public Henvendelse transform(Object wsMelding) {
-            XMLBehandlingsinformasjon info = (XMLBehandlingsinformasjon) wsMelding;
+            XMLHenvendelse info = (XMLHenvendelse) wsMelding;
             XMLMetadataListe metadataListe = info.getMetadataListe();
             XMLMetadata metadata = metadataListe.getMetadata().get(0);
             Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
-            henvendelse.fodselsnummer = info.getAktor().getFodselsnummer();
             henvendelse.opprettet = info.getOpprettetDato();
             henvendelse.avsluttet = info.getAvsluttetDato();
 
@@ -62,36 +58,5 @@ public class HenvendelsesUtils {
             }
         }
     };
-
-    public static XMLBehandlingsinformasjon tilXMLBehandlingsinformasjon(Henvendelse henvendelse){
-        XMLBehandlingsinformasjon info = new XMLBehandlingsinformasjon()
-                .withBehandlingsId(henvendelse.id)
-                .withAktor(new XMLAktor().withFodselsnummer(henvendelse.fodselsnummer))
-                .withOpprettetDato(henvendelse.opprettet)
-                .withAvsluttetDato(henvendelse.avsluttet);
-
-        if (henvendelse.type.equals(Henvendelsetype.SVAR)) {
-            return info
-                    .withHenvendelseType(XMLHenvendelseType.SVAR.name())
-                    .withMetadataListe(new XMLMetadataListe().withMetadata(
-                            new XMLSvar()
-                                    .withSporsmalsId(henvendelse.traadId)
-                                    .withTemagruppe(henvendelse.temagruppe.name())
-                                    .withKanal(henvendelse.kanal)
-                                    .withFritekst(henvendelse.fritekst)
-                                    .withLestDato(henvendelse.getLestDato())));
-        } else if (henvendelse.type.equals(Henvendelsetype.SAMTALEREFERAT)){
-            return info
-                    .withHenvendelseType(XMLHenvendelseType.REFERAT.name())
-                    .withMetadataListe(new XMLMetadataListe().withMetadata(
-                            new XMLReferat()
-                                    .withTemagruppe(henvendelse.temagruppe.name())
-                                    .withKanal(henvendelse.kanal)
-                                    .withFritekst(henvendelse.fritekst)
-                                    .withLestDato(henvendelse.getLestDato())));
-        } else {
-            throw new RuntimeException("Henvendelse som skal settes som lest er ikke av typen Svar eller Referat. Ukjent type: " + henvendelse.type.name());
-        }
-    }
 
 }
