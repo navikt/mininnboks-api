@@ -35,7 +35,7 @@ public class HenvendelsesUtilsTest {
     private static final DateTime OPPRETTET_DATO = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 1));
     private static final DateTime AVSLUTTET_DATO = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 2));
     private static final DateTime LEST_DATO = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 3));
-    private static final Temagruppe TEMAGRUPPE = Temagruppe.FAMILIE_OG_BARN;
+    private static final Temagruppe TEMAGRUPPE = Temagruppe.FMLI;
     private static final String KANAL = "kanal";
 
     @Test

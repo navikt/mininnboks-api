@@ -20,7 +20,7 @@ public class SkrivPageTest extends WicketPageTest {
 
     @Before
     public void setup() {
-        wicketTester.goTo(SkrivPage.class, new Parameters().param("temagruppe", Temagruppe.ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT.name()));
+        wicketTester.goTo(SkrivPage.class, new Parameters().param("temagruppe", Temagruppe.ARBD.name()));
     }
 
     @Test

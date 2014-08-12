@@ -12,10 +12,8 @@ import java.util.Random;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.FAMILIE_OG_BARN;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.HJELPEMIDLER;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.OVRIGE_HENVENDELSER;
+import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.ARBD;
+import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.FMLI;
 import static org.joda.time.DateTime.now;
 
 public class HenvendelseServiceMock implements HenvendelseService {
@@ -37,7 +35,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
                 " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas" +
                 " humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum. For nærmere info: www.google.com";
-        traad1Spsm.temagruppe = HJELPEMIDLER;
+        traad1Spsm.temagruppe = FMLI;
         traad1Spsm.markerSomLest(traad1Spsm.opprettet);
         henvendelser.put(traad1Spsm.id, traad1Spsm);
 
@@ -78,7 +76,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
                 " option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit" +
                 " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
-        traad2Referat.temagruppe = ARBEIDSSOKER_ARBEIDSAVKLARING_SYKEMELDT;
+        traad2Referat.temagruppe = ARBD;
         traad2Referat.markerSomLest();
         traad2Referat.kanal = "Kanal";
         henvendelser.put(traad2Referat.id, traad2Referat);
@@ -89,7 +87,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad3Spsm.opprettet = now().minusWeeks(12);
         traad3Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum";
-        traad3Spsm.temagruppe = OVRIGE_HENVENDELSER;
+        traad3Spsm.temagruppe = ARBD;
         traad3Spsm.markerSomLest(traad3Spsm.opprettet);
         henvendelser.put(traad3Spsm.id, traad3Spsm);
 
@@ -118,7 +116,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
                 " option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit" +
                 " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
-        traad4Spsm.temagruppe = FAMILIE_OG_BARN;
+        traad4Spsm.temagruppe = FMLI;
         traad4Spsm.markerSomLest(traad4Spsm.opprettet);
         henvendelser.put(traad4Spsm.id, traad4Spsm);
     }
