@@ -1,10 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLReferat;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSvar;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.joda.time.DateTime;
@@ -87,7 +87,7 @@ public class HenvendelsesUtilsTest {
         Henvendelse sporsmal = henvendelserListe.get(0);
 
         assertThat(sporsmal.id, is(ID_3));
-        assertThat(sporsmal.traadId, is(ID_3));
+        assertThat(sporsmal.traadId, is(ID_1));
         assertThat(sporsmal.type, is(SAMTALEREFERAT));
         assertThat(sporsmal.fritekst, is(FRITEKST));
         assertThat(sporsmal.kanal, is(KANAL));
@@ -100,22 +100,24 @@ public class HenvendelsesUtilsTest {
 
     private XMLHenvendelse mockXMLHenvendelseMedXMLSporsmal() {
         return new XMLHenvendelse()
+                .withHenvendelseType(XMLHenvendelseType.SPORSMAL.name())
                 .withBehandlingsId(ID_1)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
-                        new XMLSporsmal()
+                        new XMLMeldingFraBruker()
                                 .withFritekst(FRITEKST)
                                 .withTemagruppe(TEMAGRUPPE.name())));
     }
 
     private XMLHenvendelse mockXMLHenvendelseMedXMLSvar() {
         return new XMLHenvendelse()
+                .withHenvendelseType(XMLHenvendelseType.SVAR.name())
                 .withBehandlingsId(ID_2)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
-                        new XMLSvar()
+                        new XMLMeldingTilBruker()
                                 .withFritekst(FRITEKST)
                                 .withTemagruppe(TEMAGRUPPE.name())
                                 .withSporsmalsId(ID_1)
@@ -124,14 +126,16 @@ public class HenvendelsesUtilsTest {
 
     private XMLHenvendelse mockXMLHenvendelseMedXMLReferat() {
         return new XMLHenvendelse()
+                .withHenvendelseType(XMLHenvendelseType.REFERAT.name())
                 .withBehandlingsId(ID_3)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
-                        new XMLReferat()
+                        new XMLMeldingTilBruker()
                                 .withFritekst(FRITEKST)
                                 .withTemagruppe(TEMAGRUPPE.name())
                                 .withLestDato(LEST_DATO)
+                                .withSporsmalsId(ID_1)
                                 .withKanal(KANAL)));
     }
 

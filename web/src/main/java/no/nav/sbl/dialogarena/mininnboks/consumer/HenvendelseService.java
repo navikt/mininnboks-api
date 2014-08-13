@@ -1,8 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
@@ -52,7 +52,7 @@ public interface HenvendelseService {
                             .withOpprettetDato(now())
                             .withAvsluttetDato(now())
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
-                                    new XMLSporsmal()
+                                    new XMLMeldingFraBruker()
                                             .withTemagruppe(temagruppe.name())
                                             .withFritekst(fritekst)));
 
@@ -65,7 +65,7 @@ public interface HenvendelseService {
 
         @Override
         public void merkHenvendelseSomLest(Henvendelse henvendelse) {
-            innsynHenvendelsePortType.merkSomLest(new ArrayList(Arrays.asList(henvendelse.id)));
+            innsynHenvendelsePortType.merkSomLest(new ArrayList<>(Arrays.asList(henvendelse.id)));
         }
 
         @Override

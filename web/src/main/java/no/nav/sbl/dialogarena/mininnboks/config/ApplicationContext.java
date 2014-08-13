@@ -1,10 +1,9 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLReferat;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSporsmal;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLSvar;
 import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.security.sts.utility.STSConfigurationUtility;
 import no.nav.sbl.dialogarena.mininnboks.WicketApplication;
@@ -95,9 +94,8 @@ public class ApplicationContext {
         proxy.getProperties().put("jaxb.additionalContextClasses", new Class[]{
                 XMLHenvendelse.class,
                 XMLMetadataListe.class,
-                XMLSporsmal.class,
-                XMLSvar.class,
-                XMLReferat.class});
+                XMLMeldingFraBruker.class,
+                XMLMeldingTilBruker.class});
 
         T portType = proxy.create(serviceClass);
         Client client = ClientProxy.getClient(portType);
