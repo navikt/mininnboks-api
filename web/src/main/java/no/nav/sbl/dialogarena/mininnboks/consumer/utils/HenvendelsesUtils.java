@@ -26,11 +26,11 @@ public class HenvendelsesUtils {
             Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
             henvendelse.opprettet = info.getOpprettetDato();
             henvendelse.avsluttet = info.getAvsluttetDato();
+            henvendelse.traadId = info.getBehandlingsId();
 
             if (metadata instanceof XMLMeldingFraBruker) {
                 XMLMeldingFraBruker sporsmal = (XMLMeldingFraBruker) metadata;
                 henvendelse.type = SPORSMAL;
-                henvendelse.traadId = info.getBehandlingsId();
                 henvendelse.temagruppe = Temagruppe.valueOf(sporsmal.getTemagruppe());
                 henvendelse.fritekst = sporsmal.getFritekst();
                 henvendelse.markerSomLest();
@@ -43,7 +43,9 @@ public class HenvendelsesUtils {
                 } else if (henvendelseType.equals(XMLHenvendelseType.REFERAT)) {
                     henvendelse.type = SAMTALEREFERAT;
                 }
-                henvendelse.traadId = svarEllerReferat.getSporsmalsId();
+                if(svarEllerReferat.getSporsmalsId() != null){
+                    henvendelse.traadId = svarEllerReferat.getSporsmalsId();
+                }
                 henvendelse.temagruppe = Temagruppe.valueOf(svarEllerReferat.getTemagruppe());
                 henvendelse.markerSomLest(svarEllerReferat.getLestDato());
                 henvendelse.fritekst = svarEllerReferat.getFritekst();

@@ -39,8 +39,8 @@ public class HenvendelsesUtilsTest {
     private static final String KANAL = "kanal";
 
     @Test
-    public void skalTransformereTilHenvendelseMedFelterForXMLSporsmal() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLSporsmal();
+    public void skalTransformereTilHenvendelseMedFelterForXMLMeldingFraBruker() {
+        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker();
         List<XMLHenvendelse> infoList = Arrays.asList(info);
 
         List<Henvendelse> henvendelserListe = on(infoList).map(TIL_HENVENDELSE).collect();
@@ -59,8 +59,8 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
-    public void skalTransformereTilHenvendelseMedFelterForXMLSvar() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLSvar();
+    public void skalTransformereTilHenvendelseMedFelterForXMLMeldingTilBrukerSomSvar() {
+        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBrukerSomSvar();
         List<XMLHenvendelse> infoList = Arrays.asList(info);
 
         List<Henvendelse> henvendelserListe = on(infoList).map(TIL_HENVENDELSE).collect();
@@ -79,15 +79,15 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
-    public void skalTransformereTilHenvendelseMedFelterForXMLReferat() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLReferat();
+    public void skalTransformereTilHenvendelseMedFelterForXMLMeldingTilBrukerSomReferat() {
+        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBrukerSomReferat();
         List<XMLHenvendelse> infoList = Arrays.asList(info);
 
         List<Henvendelse> henvendelserListe = on(infoList).map(TIL_HENVENDELSE).collect();
         Henvendelse sporsmal = henvendelserListe.get(0);
 
         assertThat(sporsmal.id, is(ID_3));
-        assertThat(sporsmal.traadId, is(ID_1));
+        assertThat(sporsmal.traadId, is(ID_3));
         assertThat(sporsmal.type, is(SAMTALEREFERAT));
         assertThat(sporsmal.fritekst, is(FRITEKST));
         assertThat(sporsmal.kanal, is(KANAL));
@@ -98,7 +98,7 @@ public class HenvendelsesUtilsTest {
         assertTrue(sporsmal.erLest());
     }
 
-    private XMLHenvendelse mockXMLHenvendelseMedXMLSporsmal() {
+    private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingFraBruker() {
         return new XMLHenvendelse()
                 .withHenvendelseType(XMLHenvendelseType.SPORSMAL.name())
                 .withBehandlingsId(ID_1)
@@ -110,7 +110,7 @@ public class HenvendelsesUtilsTest {
                                 .withTemagruppe(TEMAGRUPPE.name())));
     }
 
-    private XMLHenvendelse mockXMLHenvendelseMedXMLSvar() {
+    private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingTilBrukerSomSvar() {
         return new XMLHenvendelse()
                 .withHenvendelseType(XMLHenvendelseType.SVAR.name())
                 .withBehandlingsId(ID_2)
@@ -124,7 +124,7 @@ public class HenvendelsesUtilsTest {
                                 .withLestDato(LEST_DATO)));
     }
 
-    private XMLHenvendelse mockXMLHenvendelseMedXMLReferat() {
+    private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingTilBrukerSomReferat() {
         return new XMLHenvendelse()
                 .withHenvendelseType(XMLHenvendelseType.REFERAT.name())
                 .withBehandlingsId(ID_3)
@@ -135,7 +135,6 @@ public class HenvendelsesUtilsTest {
                                 .withFritekst(FRITEKST)
                                 .withTemagruppe(TEMAGRUPPE.name())
                                 .withLestDato(LEST_DATO)
-                                .withSporsmalsId(ID_1)
                                 .withKanal(KANAL)));
     }
 
