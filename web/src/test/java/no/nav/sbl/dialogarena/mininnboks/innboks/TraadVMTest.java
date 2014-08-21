@@ -5,10 +5,10 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.Arrays.asList;
 import static no.nav.modig.lang.option.Optional.none;
 import static no.nav.modig.lang.option.Optional.optional;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,7 +28,7 @@ public class TraadVMTest {
         Henvendelse henvendelse3 = lagHenvendelse(traadId1);
         Henvendelse henvendelse4 = lagHenvendelse(traadId2);
 
-        List<TraadVM> traadListe = TraadVM.tilTraader(Arrays.asList(henvendelse1, henvendelse2, henvendelse3, henvendelse4));
+        List<TraadVM> traadListe = TraadVM.tilTraader(asList(henvendelse1, henvendelse2, henvendelse3, henvendelse4));
 
         assertThat(traadListe.size(), is(2));
 
@@ -41,6 +41,36 @@ public class TraadVMTest {
         assertThat(traad2.henvendelser, hasItems(henvendelse2, henvendelse4));
     }
 
+    @Test
+    public void traaderErSortertPaaDato() {
+        String traadId1 = "1";
+        String traadId2 = "2";
+
+        Henvendelse henvendelse1 = lagHenvendelse(traadId1, DateTime.now().minusDays(1));
+        Henvendelse henvendelse2 = lagHenvendelse(traadId2, DateTime.now().minusDays(3));
+        Henvendelse henvendelse3 = lagHenvendelse(traadId1, DateTime.now().minusDays(2));
+        Henvendelse henvendelse4 = lagHenvendelse(traadId2, DateTime.now().minusDays(4));
+
+        List<TraadVM> traadListe = TraadVM.tilTraader(asList(henvendelse1, henvendelse2, henvendelse3, henvendelse4));
+
+        assertThat(traadListe.get(0).id, is(traadId1));
+        assertThat(traadListe.get(1).id, is(traadId2));
+    }
+
+    @Test
+    public void henvendelserSortertIHverTraad() {
+        String traadId = "1";
+
+        Henvendelse henvendelse1 = lagHenvendelse(traadId, DateTime.now());
+        Henvendelse henvendelse2 = lagHenvendelse(traadId, DateTime.now().minusDays(1));
+        Henvendelse henvendelse3 = lagHenvendelse(traadId, DateTime.now().plusDays(1));
+
+        List<TraadVM> traadListe = TraadVM.tilTraader(asList(henvendelse1, henvendelse2, henvendelse3));
+
+        assertThat(traadListe.get(0).henvendelser, is(asList(henvendelse3, henvendelse1, henvendelse2)));
+    }
+
+
     private static Optional<TraadVM> traadVMMedTraadId(String traadId, List<TraadVM> traadVMList) {
         for (TraadVM traadVM : traadVMList) {
             if (traadId.equals(traadVM.id)) {
@@ -51,9 +81,13 @@ public class TraadVMTest {
     }
 
     private static Henvendelse lagHenvendelse(String traadId) {
+        return lagHenvendelse(traadId, DateTime.now());
+    }
+
+    private static Henvendelse lagHenvendelse(String traadId, DateTime opprettet) {
         Henvendelse henvendelse = new Henvendelse(UUID.randomUUID().toString());
         henvendelse.traadId = traadId;
-        henvendelse.opprettet = DateTime.now();
+        henvendelse.opprettet = opprettet;
         return henvendelse;
     }
 
