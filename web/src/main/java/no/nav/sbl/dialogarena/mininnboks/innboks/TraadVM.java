@@ -8,15 +8,15 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-import static java.util.Map.Entry;
+import static java.util.Collections.sort;
 import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.NYESTE_OVERST;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.TRAAD_ID;
 
 public class TraadVM implements Serializable {
 
@@ -62,28 +62,23 @@ public class TraadVM implements Serializable {
     }
 
     public static List<TraadVM> tilTraader(List<Henvendelse> henvendelser) {
-        Map<String, List<Henvendelse>> traader = new LinkedHashMap<>();
-
-        for (Henvendelse henvendelse : on(henvendelser).collect(NYESTE_OVERST)) {
-
-            String traadId = henvendelse.traadId;
-
-            if (traader.containsKey(traadId)) {
-                List<Henvendelse> traad = new ArrayList<>(traader.get(traadId));
-                traad.add(henvendelse);
-                traader.put(traadId, traad);
-            } else {
-                traader.put(traadId, asList(henvendelse));
-            }
+        sorterHenvendelserPaaOpprettetdato(henvendelser);
+        Map<String, List<Henvendelse>> traader = on(henvendelser).reduce(indexBy(TRAAD_ID), new LinkedHashMap<String, List<Henvendelse>>());
+        for (List<Henvendelse> henvendelseList : traader.values()) {
+            sorterHenvendelserPaaOpprettetdato(henvendelseList);
         }
-
-        return on(traader.entrySet()).map(TIL_TRAAD_VM).collect();
+        return on(traader.values()).map(TIL_TRAAD_VM).collect();
     }
 
-    public static final Transformer<Entry<String, List<Henvendelse>>, TraadVM> TIL_TRAAD_VM = new Transformer<Entry<String, List<Henvendelse>>, TraadVM>() {
+    private static void sorterHenvendelserPaaOpprettetdato(List<Henvendelse> henvendelser) {
+        sort(henvendelser, NYESTE_OVERST);
+    }
+
+    private static final Transformer<List<Henvendelse>, TraadVM> TIL_TRAAD_VM = new Transformer<List<Henvendelse>, TraadVM>() {
         @Override
-        public TraadVM transform(Entry<String, List<Henvendelse>> traad) {
-            return new TraadVM(traad.getKey(), traad.getValue());
+        public TraadVM transform(List<Henvendelse> henvendelser) {
+            return new TraadVM(henvendelser.get(0).traadId, henvendelser);
         }
     };
+
 }

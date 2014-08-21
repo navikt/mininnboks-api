@@ -47,14 +47,14 @@ public class TraadVMTest {
         String traadId2 = "2";
 
         Henvendelse henvendelse1 = lagHenvendelse(traadId1, DateTime.now().minusDays(1));
-        Henvendelse henvendelse2 = lagHenvendelse(traadId2, DateTime.now().minusDays(3));
+        Henvendelse henvendelse2 = lagHenvendelse(traadId2, DateTime.now());
         Henvendelse henvendelse3 = lagHenvendelse(traadId1, DateTime.now().minusDays(2));
         Henvendelse henvendelse4 = lagHenvendelse(traadId2, DateTime.now().minusDays(4));
 
         List<TraadVM> traadListe = TraadVM.tilTraader(asList(henvendelse1, henvendelse2, henvendelse3, henvendelse4));
 
-        assertThat(traadListe.get(0).id, is(traadId1));
-        assertThat(traadListe.get(1).id, is(traadId2));
+        assertThat(traadListe.get(0).id, is(traadId2));
+        assertThat(traadListe.get(1).id, is(traadId1));
     }
 
     @Test

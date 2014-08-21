@@ -1,10 +1,14 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
+import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Comparator;
+
+import static java.util.Collections.reverseOrder;
+import static no.nav.modig.lang.collections.ComparatorUtils.compareWith;
 
 public class Henvendelse implements Serializable {
 
@@ -35,9 +39,19 @@ public class Henvendelse implements Serializable {
         return lestDato != null;
     }
 
-    public static final Comparator<Henvendelse> NYESTE_OVERST = new Comparator<Henvendelse>() {
-        public int compare(Henvendelse h1, Henvendelse h2) {
-            return h2.opprettet.compareTo(h1.opprettet);
+    public static final Transformer<Henvendelse, DateTime> OPPRETTET = new Transformer<Henvendelse, DateTime>() {
+        @Override
+        public DateTime transform(Henvendelse henvendelse) {
+            return henvendelse.opprettet;
         }
     };
+
+    public static final Transformer<Henvendelse, String> TRAAD_ID = new Transformer<Henvendelse, String>() {
+        @Override
+        public String transform(Henvendelse henvendelse) {
+            return henvendelse.traadId;
+        }
+    };
+
+    public static final Comparator<Henvendelse> NYESTE_OVERST = reverseOrder(compareWith(OPPRETTET));
 }
