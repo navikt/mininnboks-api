@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.innboks;
 
 import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
+import org.apache.wicket.model.IModel;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -70,6 +71,19 @@ public class TraadVMTest {
         assertThat(traadListe.get(0).henvendelser, is(asList(henvendelse3, henvendelse1, henvendelse2)));
     }
 
+    @Test
+    public void finnesDetUlesteHenvendelser() {
+        List<Henvendelse> henvendelser = asList(lagHenvendelse(false), lagHenvendelse(true));
+        IModel<Boolean> erLest = TraadVM.erLest(henvendelser);
+        assertThat(erLest.getObject(), is(false));
+    }
+
+    @Test
+    public void finnesDetKunLesteHenvendelser() {
+        List<Henvendelse> henvendelser = asList(lagHenvendelse(true), lagHenvendelse(true));
+        IModel<Boolean> erLest = TraadVM.erLest(henvendelser);
+        assertThat(erLest.getObject(), is(true));
+    }
 
     private static Optional<TraadVM> traadVMMedTraadId(String traadId, List<TraadVM> traadVMList) {
         for (TraadVM traadVM : traadVMList) {
@@ -78,6 +92,14 @@ public class TraadVMTest {
             }
         }
         return none();
+    }
+
+    private static Henvendelse lagHenvendelse(boolean erLest) {
+        Henvendelse henvendelse = new Henvendelse(UUID.randomUUID().toString());
+        if (erLest) {
+            henvendelse.markerSomLest();
+        }
+        return henvendelse;
     }
 
     private static Henvendelse lagHenvendelse(String traadId) {

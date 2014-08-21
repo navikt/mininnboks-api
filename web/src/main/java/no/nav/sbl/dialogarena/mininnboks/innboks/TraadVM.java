@@ -14,9 +14,10 @@ import java.util.Map;
 
 import static java.util.Collections.sort;
 import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.NYESTE_OVERST;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.TRAAD_ID;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.*;
 
 public class TraadVM implements Serializable {
 
@@ -51,12 +52,7 @@ public class TraadVM implements Serializable {
         return new AbstractReadOnlyModel<Boolean>() {
             @Override
             public Boolean getObject() {
-                for (Henvendelse henvendelse : henvendelser) {
-                    if (!henvendelse.erLest()) {
-                        return false;
-                    }
-                }
-                return true;
+                return on(henvendelser).filter(where(ER_LEST, equalTo(false))).isEmpty();
             }
         };
     }

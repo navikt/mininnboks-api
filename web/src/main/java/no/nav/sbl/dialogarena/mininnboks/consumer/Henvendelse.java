@@ -53,5 +53,12 @@ public class Henvendelse implements Serializable {
         }
     };
 
+    public static final Transformer<Henvendelse, Boolean> ER_LEST = new Transformer<Henvendelse, Boolean>() {
+        @Override
+        public Boolean transform(Henvendelse henvendelse) {
+            return henvendelse.erLest();
+        }
+    };
+
     public static final Comparator<Henvendelse> NYESTE_OVERST = reverseOrder(compareWith(OPPRETTET));
 }
