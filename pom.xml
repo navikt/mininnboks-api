@@ -25,6 +25,7 @@
         <dialogarena.cms.url>http://e32apvl026.oera-t.local:8080</dialogarena.cms.url>
     </properties>
 
+
     <build>
 
         <pluginManagement>
