@@ -8,6 +8,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,16 +59,15 @@ public class TraadVM implements Serializable {
     }
 
     public static List<TraadVM> tilTraader(List<Henvendelse> henvendelser) {
-        sorterHenvendelserPaaOpprettetdato(henvendelser);
-        Map<String, List<Henvendelse>> traader = on(henvendelser).reduce(indexBy(TRAAD_ID), new LinkedHashMap<String, List<Henvendelse>>());
-        for (List<Henvendelse> henvendelseList : traader.values()) {
-            sorterHenvendelserPaaOpprettetdato(henvendelseList);
-        }
+        List<Henvendelse> sortert = sortertPaaOpprettetDato(henvendelser);
+        Map<String, List<Henvendelse>> traader = on(sortert).reduce(indexBy(TRAAD_ID), new LinkedHashMap<String, List<Henvendelse>>());
         return on(traader.values()).map(TIL_TRAAD_VM).collect();
     }
 
-    private static void sorterHenvendelserPaaOpprettetdato(List<Henvendelse> henvendelser) {
-        sort(henvendelser, NYESTE_OVERST);
+    private static List<Henvendelse> sortertPaaOpprettetDato(List<Henvendelse> henvendelser) {
+        List<Henvendelse> sortert = new ArrayList<>(henvendelser);
+        sort(sortert, NYESTE_OVERST);
+        return sortert;
     }
 
     private static final Transformer<List<Henvendelse>, TraadVM> TIL_TRAAD_VM = new Transformer<List<Henvendelse>, TraadVM>() {
