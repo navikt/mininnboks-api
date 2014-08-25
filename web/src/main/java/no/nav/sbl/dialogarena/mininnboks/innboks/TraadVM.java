@@ -18,7 +18,9 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.*;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.ER_LEST;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.NYESTE_OVERST;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.TRAAD_ID;
 
 public class TraadVM implements Serializable {
 
