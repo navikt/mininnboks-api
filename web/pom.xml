@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -46,6 +47,12 @@
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>innsyn-henvendelse</artifactId>
             <version>0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tjenester.pip</groupId>
+            <artifactId>nav-pip-diskresjonskode-tjenestespesifikasjon</artifactId>
+            <version>1.0.0</version>
+            <classifier>jaxws</classifier>
         </dependency>
 
         <!--Dialogarena-->
@@ -141,6 +148,11 @@
         </dependency>
         <dependency>
             <groupId>no.nav.modig</groupId>
+            <artifactId>modig-security-wicket</artifactId>
+            <version>${modig-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-sts</artifactId>
             <version>${modig-security.version}</version>
             <exclusions>
@@ -166,7 +178,6 @@
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-authorization</artifactId>
             <version>${modig-security.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>no.nav.modig</groupId>
@@ -189,6 +200,11 @@
         </dependency>
         <dependency>
             <groupId>no.nav.modig</groupId>
+            <artifactId>modig-core</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.modig</groupId>
             <artifactId>modig-core-test</artifactId>
             <version>1.0.0</version>
             <scope>test</scope>
@@ -198,6 +214,13 @@
             <artifactId>modig-wicket-test</artifactId>
             <version>1.0.0</version>
             <scope>test</scope>
+        </dependency>
+
+        <!--Security-->
+        <dependency>
+            <groupId>org.jboss.security</groupId>
+            <artifactId>jbossxacml</artifactId>
+            <version>2.0.9.Final</version>
         </dependency>
 
         <!--Wicket-->
@@ -258,6 +281,28 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
             <version>${spring.version}</version>
             <scope>runtime</scope>
@@ -295,6 +340,11 @@
         </dependency>
 
         <!--Diverse-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.1</version>
+        </dependency>
 
         <dependency>
             <groupId>no.nav.sbl</groupId>

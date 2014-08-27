@@ -16,32 +16,40 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import javax.inject.Inject;
 import java.util.List;
 
+import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
+import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
+import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
+import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
+import static no.nav.modig.wicket.model.ModelUtils.not;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.erLest;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.tilTraader;
 import static org.apache.wicket.markup.head.JavaScriptHeaderItem.forReference;
 
 public class Innboks extends BasePage {
 
+    private final IModel<List<TraadVM>> traaderModel;
     @Inject
     private HenvendelseService service;
-
-    private final IModel<List<TraadVM>> traaderModel;
 
     public Innboks() {
         traaderModel = new CompoundPropertyModel<>(tilTraader(service.hentAlleHenvendelser(innloggetBruker())));
 
-        add(new Link<Void>("skriv-ny") {
+        final Link<Void> skrivNyKnapp = new Link<Void>("skriv-ny") {
             @Override
             public void onClick() {
                 setResponsePage(VelgTemagruppePage.class);
             }
-        });
+        };
+
+        add(skrivNyKnapp.add(accessRestriction(RENDER).withAttributes(actionId("innsending"), resourceId(""))));
+        add(new WebMarkupContainer("diskresjonskode").add(visibleIf(not(new PropertyModel<Boolean>(skrivNyKnapp, "isRenderAllowed")))));
 
         add(new ListView<TraadVM>("traader", traaderModel) {
             @Override
@@ -65,6 +73,7 @@ public class Innboks extends BasePage {
                             traadClickBehaviour(item, target);
                         }
                     }
+
                     @Override
                     protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
                         super.updateAjaxAttributes(attributes);
@@ -77,6 +86,10 @@ public class Innboks extends BasePage {
         });
 
         add(new WebMarkupContainer("tom-innboks").add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
+    }
+
+    private static String innloggetBruker() {
+        return SubjectHandler.getSubjectHandler().getUid();
     }
 
     private void traadClickBehaviour(ListItem<TraadVM> item, AjaxRequestTarget target) {
@@ -96,10 +109,6 @@ public class Innboks extends BasePage {
                 return !traaderModel.getObject().isEmpty();
             }
         };
-    }
-
-    private static String innloggetBruker() {
-        return SubjectHandler.getSubjectHandler().getUid();
     }
 
     @Override

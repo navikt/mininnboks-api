@@ -2,6 +2,8 @@ package no.nav.sbl.dialogarena.mininnboks;
 
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.frontend.FrontendConfigurator;
+import no.nav.modig.security.tilgangskontroll.policy.pep.EnforcementPoint;
+import no.nav.modig.security.tilgangskontroll.wicket.BehaviorPolicyAuthorizationStrategy;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.LocaleFromWicketSession;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
@@ -38,6 +40,8 @@ public class WicketApplication extends WebApplication {
 
     @Inject
     private CmsContentRetriever cmsContentRetriever;
+    @Inject
+    private EnforcementPoint pep;
 
     public static WicketApplication get() {
         return (WicketApplication) Application.get();
@@ -64,15 +68,11 @@ public class WicketApplication extends WebApplication {
         mountPage("sporsmal/skriv/${temagruppe}", SkrivPage.class);
         mountPage("sporsmal/kvittering", KvitteringPage.class);
         mountPage("internal/selftest", SelfTestPage.class);
-        Application.get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
+        get().getRequestLoggerSettings().setRequestLoggerEnabled(true);
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
         getResourceSettings().getStringResourceLoaders().add(0, new CmsResourceLoader(cmsContentRetriever));
-
         Datoformat.brukLocaleFra(LocaleFromWicketSession.INSTANCE);
-    }
-
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
+        get().getSecuritySettings().setAuthorizationStrategy(new BehaviorPolicyAuthorizationStrategy(pep));
     }
 
     @Override

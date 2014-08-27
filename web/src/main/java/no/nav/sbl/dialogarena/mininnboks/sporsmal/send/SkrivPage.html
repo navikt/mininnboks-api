@@ -4,7 +4,8 @@
 <wicket:extend>
     <h1 class="diger"><wicket:message key="send-sporsmal.still-sporsmal.ny-melding-overskrift">[[Ny melding til NAV]]</wicket:message></h1>
     <article class="send-sporsmal-container send-panel">
-
+        <div wicket:id="diskresjonskode"><wicket:message key="innboks.diskresjonskode"></wicket:message></div>
+        <div class="avbryt"><a wicket:id="tilInnboks" href="#"><wicket:message key="send-sporsmal.tilbake-til-innboks">[[Avbryt]]</wicket:message></a></div>
         <form wicket:id="sporsmal-form">
             <div class="sporsmal-header">
                 <img class="meldingikon" src="img/melding_graa.svg"/>

@@ -21,10 +21,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.joda.time.DateTime;
@@ -34,19 +31,28 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 
 import static java.util.Arrays.asList;
+import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
+import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
+import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
+import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
+import static no.nav.modig.wicket.model.ModelUtils.not;
 
 public class SkrivPage extends BasePage {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SkrivPage.class);
     @Inject
     private HenvendelseService service;
-    private static final Logger LOG = LoggerFactory.getLogger(SkrivPage.class);
 
     public SkrivPage(PageParameters parameters) {
+
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.setTemagruppe(Temagruppe.valueOf(parameters.get("temagruppe").toString()));
         CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(sporsmal);
-        add(new SporsmalForm("sporsmal-form", model));
+        add(new SporsmalForm("sporsmal-form", model).add(accessRestriction(RENDER).withAttributes(actionId("innsending"), resourceId(""))));
+        add(new WebMarkupContainer("diskresjonskode").add(visibleIf(not(new PropertyModel<Boolean>(get("sporsmal-form"), "isRenderAllowed")))));
+        add(new BookmarkablePageLink<>("tilInnboks", Innboks.class));
+
     }
 
     private final class SporsmalForm extends Form<Sporsmal> {
