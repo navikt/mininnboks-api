@@ -22,7 +22,7 @@ public class MockApplicationContext {
             @Override
             public HentDiskresjonskodeResponse hentDiskresjonskode(HentDiskresjonskodeRequest request) {
                 HentDiskresjonskodeResponse hentDiskresjonskodeResponse = new HentDiskresjonskodeResponse();
-                hentDiskresjonskodeResponse.setDiskresjonskode("6");
+                hentDiskresjonskodeResponse.setDiskresjonskode("7");
                 return hentDiskresjonskodeResponse;
             }
         };
