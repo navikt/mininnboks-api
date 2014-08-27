@@ -43,7 +43,7 @@ import java.util.HashMap;
 @ComponentScan(basePackageClasses = {DiskresjonskodeService.class})
 public class ApplicationContext implements ApplicationContextAware {
 
-    public static org.springframework.context.ApplicationContext CONTEXT;
+    public static org.springframework.context.ApplicationContext context;
 
     @Bean
     public static SendInnHenvendelsePortType sendInnHenvendelseSystemUser() {
@@ -154,6 +154,6 @@ public class ApplicationContext implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(org.springframework.context.ApplicationContext applicationContext) throws BeansException {
-        ApplicationContext.CONTEXT = applicationContext;
+        ApplicationContext.context = applicationContext;
     }
 }

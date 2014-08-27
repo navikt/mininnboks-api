@@ -12,7 +12,7 @@ import org.jboss.security.xacml.sunxacml.cond.EvaluationResult;
 import java.net.URI;
 
 import static java.util.Arrays.asList;
-import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationContext.CONTEXT;
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationContext.context;
 
 public class DiskresjonskodeLocator extends StorageAttributeLocator {
 
@@ -32,7 +32,7 @@ public class DiskresjonskodeLocator extends StorageAttributeLocator {
     }
 
     private String getDiskresjonskode(String resourceValue) {
-        return CONTEXT.getBean(DiskresjonskodeService.class).getDiskresjonskode(resourceValue);
+        return context.getBean(DiskresjonskodeService.class).getDiskresjonskode(resourceValue);
     }
 
     @Override
