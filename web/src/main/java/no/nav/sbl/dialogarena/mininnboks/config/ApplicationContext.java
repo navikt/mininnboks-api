@@ -19,6 +19,8 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.Inns
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
+import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
+import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
@@ -118,12 +120,23 @@ public class ApplicationContext implements ApplicationContextAware {
                 false);
     }
 
-    @Bean
+    /**@Bean
     public DiskresjonskodePortType diskresjonskodePortType() {
         return createPortType(System.getProperty("diskresjonskode.ws.url"),
                 "classpath:wsdl/Diskresjonskode.wsdl",
                 DiskresjonskodePortType.class,
                 true);
+    }**/
+    @Bean
+    public DiskresjonskodePortType diskresjonskodePortType() {
+        return new DiskresjonskodePortType() {
+            @Override
+            public HentDiskresjonskodeResponse hentDiskresjonskode(HentDiskresjonskodeRequest request) {
+                HentDiskresjonskodeResponse hentDiskresjonskodeResponse = new HentDiskresjonskodeResponse();
+                hentDiskresjonskodeResponse.setDiskresjonskode("7");
+                return hentDiskresjonskodeResponse;
+            }
+        };
     }
 
     @Bean
