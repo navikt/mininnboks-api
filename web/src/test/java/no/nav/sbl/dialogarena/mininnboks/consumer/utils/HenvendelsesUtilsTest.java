@@ -116,12 +116,12 @@ public class HenvendelsesUtilsTest {
                 .withBehandlingsId(ID_2)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
+                .withLestDato(LEST_DATO)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLMeldingTilBruker()
                                 .withFritekst(FRITEKST)
                                 .withTemagruppe(TEMAGRUPPE.name())
-                                .withSporsmalsId(ID_1)
-                                .withLestDato(LEST_DATO)));
+                                .withSporsmalsId(ID_1)));
     }
 
     private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingTilBrukerSomReferat() {
@@ -130,11 +130,11 @@ public class HenvendelsesUtilsTest {
                 .withBehandlingsId(ID_3)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
+                .withLestDato(LEST_DATO)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLMeldingTilBruker()
                                 .withFritekst(FRITEKST)
                                 .withTemagruppe(TEMAGRUPPE.name())
-                                .withLestDato(LEST_DATO)
                                 .withKanal(KANAL)));
     }
 

@@ -47,7 +47,7 @@ public class HenvendelsesUtils {
                     henvendelse.traadId = svarEllerReferat.getSporsmalsId();
                 }
                 henvendelse.temagruppe = Temagruppe.valueOf(svarEllerReferat.getTemagruppe());
-                henvendelse.markerSomLest(svarEllerReferat.getLestDato());
+                henvendelse.markerSomLest(info.getLestDato());
                 henvendelse.fritekst = svarEllerReferat.getFritekst();
                 henvendelse.kanal = svarEllerReferat.getKanal();
                 return henvendelse;
