@@ -22,6 +22,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -52,11 +53,12 @@ public class SkrivPage extends BasePage {
 
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.setTemagruppe(Temagruppe.valueOf(parameters.get("temagruppe").toString()));
-        CompoundPropertyModel<Sporsmal> model = new CompoundPropertyModel<>(sporsmal);
-        add(new SporsmalForm("sporsmal-form", model).add(accessRestriction(RENDER).withAttributes(actionId("innsending"), resourceId(""))));
-        add(new WebMarkupContainer("diskresjonskode").add(visibleIf(not(new PropertyModel<Boolean>(get("sporsmal-form"), "isRenderAllowed")))));
-        add(new BookmarkablePageLink<>("tilInnboks", Innboks.class));
+        add(new SporsmalForm("sporsmal-form", new CompoundPropertyModel<>(sporsmal))
+                .add(accessRestriction(RENDER).withAttributes(actionId("innsending"), resourceId(""))));
 
+        IModel<Boolean> ikkeTilgang = not(new PropertyModel<Boolean>(get("sporsmal-form"), "isRenderAllowed"));
+        add(new WebMarkupContainer("diskresjonskode").add(visibleIf(ikkeTilgang)));
+        add(new BookmarkablePageLink<>("tilInnboks", Innboks.class).add(visibleIf(ikkeTilgang)));
     }
 
     private final class SporsmalForm extends Form<Sporsmal> {
