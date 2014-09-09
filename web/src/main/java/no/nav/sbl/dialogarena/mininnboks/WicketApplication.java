@@ -5,6 +5,7 @@ import no.nav.modig.frontend.FrontendConfigurator;
 import no.nav.modig.security.tilgangskontroll.policy.pep.EnforcementPoint;
 import no.nav.modig.security.tilgangskontroll.wicket.BehaviorPolicyAuthorizationStrategy;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
+import no.nav.modig.wicket.selftest.HealthCheck;
 import no.nav.modig.wicket.selftest.JsonResourceReference;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.LocaleFromWicketSession;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
@@ -68,6 +69,7 @@ public class WicketApplication extends WebApplication {
         mountPage("sporsmal/velgtemagruppe", VelgTemagruppePage.class);
         mountPage("sporsmal/skriv/${temagruppe}", SkrivPage.class);
         mountPage("sporsmal/kvittering", KvitteringPage.class);
+        mountPage("internal/isAlive", HealthCheck.class);
         mountPage("internal/selftest", SelfTestPage.class);
         mountResource("internal/selftest.json", new JsonResourceReference(SelfTestPage.class));
         get().getRequestLoggerSettings().setRequestLoggerEnabled(true);

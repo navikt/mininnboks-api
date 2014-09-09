@@ -12,6 +12,7 @@ import no.nav.modig.security.tilgangskontroll.policy.pdp.DecisionPoint;
 import no.nav.modig.security.tilgangskontroll.policy.pdp.picketlink.PicketLinkDecisionPoint;
 import no.nav.modig.security.tilgangskontroll.policy.pep.EnforcementPoint;
 import no.nav.modig.security.tilgangskontroll.policy.pep.PEPImpl;
+import no.nav.modig.wicket.services.HealthCheckService;
 import no.nav.sbl.dialogarena.mininnboks.WicketApplication;
 import no.nav.sbl.dialogarena.mininnboks.consumer.DiskresjonskodeService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
@@ -148,6 +149,11 @@ public class ApplicationContext implements ApplicationContextAware {
     @Bean
     public HenvendelseService henvendelseService() {
         return new HenvendelseService.Default(henvendelseSSO(), sendInnHenvendelseSSO(), innsynHenvendelseSSO());
+    }
+
+    @Bean
+    public HealthCheckService healthCheck() {
+        return new HealthCheckService();
     }
 
     @Bean
