@@ -8,6 +8,7 @@ public class Sporsmal extends EnhancedTextAreaModel {
 
     private Temagruppe temagruppe;
     public DateTime innsendingsTidspunkt;
+    public boolean betingelserAkseptert = false;
 
     public void setTemagruppe(Temagruppe temagruppe) {
         this.temagruppe = temagruppe;

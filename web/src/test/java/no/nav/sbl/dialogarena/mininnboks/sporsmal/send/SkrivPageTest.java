@@ -24,24 +24,36 @@ public class SkrivPageTest extends WicketPageTest {
     }
 
     @Test
-    public void testSkrivPageKomponenter() {
+    public void skrivPageKomponenter() {
         wicketTester.should().containComponent(withId("sporsmal-form").and(ofType(Form.class)))
                 .should().inComponent(withId("sporsmal-form")).containComponent(withId("temagruppe").and(ofType(Label.class)))
                 .should().inComponent(withId("sporsmal-form")).containComponent(withId("temagruppe-liste").and(ofType(ListView.class)))
                 .should().inComponent(withId("sporsmal-form")).containComponent(withId("tekstfelt").and(ofType(EnhancedTextArea.class)))
+                .should().inComponent(withId("sporsmal-form")).containComponent(withId("betingelseValg").and(ofType(BetingelseValgPanel.class)))
                 .should().inComponent(withId("sporsmal-form")).containComponent(withId("send").and(ofType(AjaxSubmitLink.class)))
                 .should().inComponent(withId("sporsmal-form")).containComponent(withId("avbryt").and(ofType(Link.class)));
     }
 
     @Test
-    public void testSporsmalsinnsendingTomTekst() {
-        wicketTester.click().link(withId("send")).should().beOn(SkrivPage.class);
+    public void sporsmalsinnsendingTomTekst() {
+        wicketTester.inForm(withId("sporsmal-form"))
+                .toggleCheckbox(withId("betingelserCheckbox")).andReturn()
+                .click().link(withId("send")).should().beOn(SkrivPage.class);
     }
 
     @Test
-    public void testSporsmalsinnsendingMedTekst() {
-        wicketTester.inForm(withId("sporsmal-form")).write("tekstfelt:text", "Dette er en tekst.").andReturn()
+    public void sporsmalsinnsendingMedTekstAkseptertBetingelser() {
+        wicketTester.inForm(withId("sporsmal-form"))
+                .toggleCheckbox(withId("betingelserCheckbox"))
+                .write("tekstfelt:text", "Dette er en tekst.").andReturn()
                 .click().link(withId("send"))
                 .should().beOn(KvitteringPage.class);
+    }
+
+    @Test
+    public void sporsmalsinnsendingMedTekstIkkeAkseptertBetingelser() {
+        wicketTester.inForm(withId("sporsmal-form"))
+                .write("tekstfelt:text", "Dette er en tekst.").andReturn()
+                .click().link(withId("send")).should().beOn(SkrivPage.class);
     }
 }

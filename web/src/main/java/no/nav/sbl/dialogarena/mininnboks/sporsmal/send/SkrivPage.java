@@ -46,6 +46,7 @@ import static no.nav.modig.wicket.model.ModelUtils.not;
 public class SkrivPage extends BasePage {
 
     private static final Logger LOG = LoggerFactory.getLogger(SkrivPage.class);
+
     @Inject
     private HenvendelseService service;
 
@@ -77,14 +78,19 @@ public class SkrivPage extends BasePage {
             AjaxSubmitLink send = new AjaxSubmitLink("send") {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                    try {
-                        Sporsmal spsm = getModelObject();
-                        spsm.innsendingsTidspunkt = DateTime.now();
-                        service.stillSporsmal(spsm.getFritekst(), spsm.getTemagruppe(), SubjectHandler.getSubjectHandler().getUid());
-                        setResponsePage(KvitteringPage.class);
-                    } catch (Exception e) {
-                        LOG.error("Feil ved innsending av spørsmål", e);
-                        error(new StringResourceModel("send-sporsmal.still-sporsmal.underliggende-feil", SkrivPage.this, null).getString());
+                    Sporsmal spsm = getModelObject();
+                    if (spsm.betingelserAkseptert) {
+                        try {
+                            spsm.innsendingsTidspunkt = DateTime.now();
+                            service.stillSporsmal(spsm.getFritekst(), spsm.getTemagruppe(), SubjectHandler.getSubjectHandler().getUid());
+                            setResponsePage(KvitteringPage.class);
+                        } catch (Exception e) {
+                            LOG.error("Feil ved innsending av spørsmål", e);
+                            error(getString("send-sporsmal.still-sporsmal.underliggende-feil"));
+                            target.add(feedbackPanel);
+                        }
+                    } else {
+                        error(getString("send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert"));
                         target.add(feedbackPanel);
                     }
                 }
@@ -116,6 +122,8 @@ public class SkrivPage extends BasePage {
                 }
             };
             endreTemagruppeWrapper.add(endreTemagruppe);
+
+            add(new BetingelseValgPanel("betingelseValg", model));
 
             add(temagruppeOverskrift, endreTemagruppeWrapper, enhancedTextArea, feedbackPanel, send, avbryt);
         }
