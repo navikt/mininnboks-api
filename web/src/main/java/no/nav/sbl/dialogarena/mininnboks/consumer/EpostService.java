@@ -18,9 +18,9 @@ import static no.nav.modig.lang.collections.TransformerUtils.castTo;
 
 public interface EpostService {
 
-    public String hentEpostadresse() throws Exception;
+    String hentEpostadresse() throws Exception;
 
-    public class Default implements EpostService {
+    class Default implements EpostService {
 
         private final BrukerprofilPortType brukerprofil;
 

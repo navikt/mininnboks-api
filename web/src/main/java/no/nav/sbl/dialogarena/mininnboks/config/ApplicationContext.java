@@ -29,7 +29,6 @@ import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -157,7 +156,7 @@ public class ApplicationContext implements ApplicationContextAware {
     }
 
     @Override
-    public void setApplicationContext(org.springframework.context.ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(org.springframework.context.ApplicationContext applicationContext) {
         ApplicationContext.context = applicationContext;
     }
 
