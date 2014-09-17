@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 
@@ -9,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SAMTALEREFERAT;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.ARBD;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.FMLI;
 import static org.joda.time.DateTime.now;

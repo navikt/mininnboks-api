@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks;
 
 import no.nav.modig.wicket.component.urlparsinglabel.URLParsingMultiLineLabel;
-import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;

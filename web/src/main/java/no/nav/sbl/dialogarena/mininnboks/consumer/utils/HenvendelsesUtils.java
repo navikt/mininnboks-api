@@ -6,13 +6,13 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFr
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadata;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
-import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.commons.collections15.Transformer;
 
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SAMTALEREFERAT;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR;
 
 public class HenvendelsesUtils {
 
