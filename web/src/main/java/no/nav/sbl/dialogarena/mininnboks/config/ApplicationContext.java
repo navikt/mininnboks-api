@@ -15,11 +15,15 @@ import no.nav.modig.security.tilgangskontroll.policy.pep.PEPImpl;
 import no.nav.modig.wicket.services.HealthCheckService;
 import no.nav.sbl.dialogarena.mininnboks.WicketApplication;
 import no.nav.sbl.dialogarena.mininnboks.consumer.DiskresjonskodeService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
+import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
+import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
@@ -46,12 +50,113 @@ public class ApplicationContext implements ApplicationContextAware {
 
     public static org.springframework.context.ApplicationContext context;
 
+    private SendInnHenvendelsePortType sendInnHenvendelseSSO() {
+        return createPortType(System.getProperty("send.inn.henvendelse.ws.url"),
+                "classpath:SendInnHenvendelse.wsdl",
+                SendInnHenvendelsePortType.class,
+                true);
+    }
+
+    private HenvendelsePortType henvendelseSSO() {
+        return createPortType(System.getProperty("henvendelse.ws.url"),
+                "classpath:Henvendelse.wsdl",
+                HenvendelsePortType.class,
+                true);
+    }
+
+    private InnsynHenvendelsePortType innsynHenvendelseSSO() {
+        return createPortType(System.getProperty("innsyn.henvendelse.ws.url"),
+                "classpath:InnsynHenvendelse.wsdl",
+                InnsynHenvendelsePortType.class,
+                true);
+    }
+
+    private BrukerprofilPortType brukerprofilSSO() {
+        return createPortType(System.getProperty("brukerprofil.ws.url"),
+                "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
+                BrukerprofilPortType.class,
+                true);
+    }
+
     @Bean
     public static SendInnHenvendelsePortType sendInnHenvendelseSystemUser() {
         return createPortType(System.getProperty("send.inn.henvendelse.ws.url"),
                 "classpath:SendInnHenvendelse.wsdl",
                 SendInnHenvendelsePortType.class,
                 false);
+    }
+
+    @Bean
+    public HenvendelsePortType henvendelseSystemUser() {
+        return createPortType(System.getProperty("henvendelse.ws.url"),
+                "classpath:Henvendelse.wsdl",
+                HenvendelsePortType.class,
+                false);
+    }
+
+    @Bean
+    public InnsynHenvendelsePortType innsynHenvendelseSystemUser() {
+        return createPortType(System.getProperty("innsyn.henvendelse.ws.url"),
+                "classpath:InnsynHenvendelse.wsdl",
+                InnsynHenvendelsePortType.class,
+                false);
+    }
+
+    @Bean
+    public BrukerprofilPortType brukerprofilSystemUser() {
+        return createPortType(System.getProperty("brukerprofil.ws.url"),
+                "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
+                BrukerprofilPortType.class,
+                false);
+    }
+
+    @Bean
+    public DiskresjonskodePortType diskresjonskodePortType() {
+        return createPortType(System.getProperty("diskresjonskode.ws.url"),
+            "classpath:wsdl/Diskresjonskode.wsdl",
+            DiskresjonskodePortType.class,
+            true);
+    }
+
+    @Bean
+    public WicketApplication wicket() {
+        return new WicketApplication();
+    }
+
+    @Bean
+    public HenvendelseService henvendelseService() {
+        return new HenvendelseService.Default(henvendelseSSO(), sendInnHenvendelseSSO(), innsynHenvendelseSSO());
+    }
+
+    @Bean
+    public EpostService epostService() {
+        return new EpostService.Default(brukerprofilSSO());
+    }
+
+    @Bean
+    public HealthCheckService healthCheck() {
+        return new HealthCheckService();
+    }
+
+    @Bean
+    public EnforcementPoint pep() throws IOException {
+        PEPImpl pep = new PEPImpl(pdp());
+        pep.setRequestEnrichers(Arrays.asList(new SecurityContextRequestEnricher(), new EnvironmentRequestEnricher()));
+        return pep;
+    }
+
+    /*
+     * PDP (Policy Decision Point) inneholder regelsett for tilgang, og avgjør hvorvidt bruker får tilgang. I første omgang vil
+     * PDP være en integrert del av applikasjonen, men det er mulig at PDP vil trekkes ut som en tjeneste senere.
+     */
+    @Bean
+    public DecisionPoint pdp() throws IOException {
+        return new PicketLinkDecisionPoint(new ClassPathResource("pdp/policy-config.xml").getURL());
+    }
+
+    @Override
+    public void setApplicationContext(org.springframework.context.ApplicationContext applicationContext) throws BeansException {
+        ApplicationContext.context = applicationContext;
     }
 
     private static <T> T createPortType(String address, String wsdlUrl, Class<T> serviceClass, boolean externalService) {
@@ -82,84 +187,4 @@ public class ApplicationContext implements ApplicationContextAware {
         return portType;
     }
 
-    private HenvendelsePortType henvendelseSSO() {
-        return createPortType(System.getProperty("henvendelse.ws.url"),
-                "classpath:Henvendelse.wsdl",
-                HenvendelsePortType.class,
-                true);
-    }
-
-    private SendInnHenvendelsePortType sendInnHenvendelseSSO() {
-        return createPortType(System.getProperty("send.inn.henvendelse.ws.url"),
-                "classpath:SendInnHenvendelse.wsdl",
-                SendInnHenvendelsePortType.class,
-                true);
-    }
-
-    private InnsynHenvendelsePortType innsynHenvendelseSSO() {
-        return createPortType(System.getProperty("innsyn.henvendelse.ws.url"),
-                "classpath:InnsynHenvendelse.wsdl",
-                InnsynHenvendelsePortType.class,
-                true);
-    }
-
-    @Bean
-    public HenvendelsePortType henvendelseSystemUser() {
-        return createPortType(System.getProperty("henvendelse.ws.url"),
-                "classpath:Henvendelse.wsdl",
-                HenvendelsePortType.class,
-                false);
-    }
-
-    @Bean
-    public InnsynHenvendelsePortType innsynHenvendelseSystemUser() {
-        return createPortType(System.getProperty("innsyn.henvendelse.ws.url"),
-                "classpath:InnsynHenvendelse.wsdl",
-                InnsynHenvendelsePortType.class,
-                false);
-    }
-
-    @Bean
-    public DiskresjonskodePortType diskresjonskodePortType() {
-        return createPortType(System.getProperty("diskresjonskode.ws.url"),
-            "classpath:wsdl/Diskresjonskode.wsdl",
-            DiskresjonskodePortType.class,
-            true);
-    }
-
-    @Bean
-    public WicketApplication wicket() {
-        return new WicketApplication();
-    }
-
-    @Bean
-    public HenvendelseService henvendelseService() {
-        return new HenvendelseService.Default(henvendelseSSO(), sendInnHenvendelseSSO(), innsynHenvendelseSSO());
-    }
-
-    @Bean
-    public HealthCheckService healthCheck() {
-        return new HealthCheckService();
-    }
-
-    @Bean
-    public EnforcementPoint pep() throws IOException {
-        PEPImpl pep = new PEPImpl(pdp());
-        pep.setRequestEnrichers(Arrays.asList(new SecurityContextRequestEnricher(), new EnvironmentRequestEnricher()));
-        return pep;
-    }
-
-    /*
-     * PDP (Policy Decision Point) inneholder regelsett for tilgang, og avgjør hvorvidt bruker får tilgang. I første omgang vil
-     * PDP være en integrert del av applikasjonen, men det er mulig at PDP vil trekkes ut som en tjeneste senere.
-     */
-    @Bean
-    public DecisionPoint pdp() throws IOException {
-        return new PicketLinkDecisionPoint(new ClassPathResource("pdp/policy-config.xml").getURL());
-    }
-
-    @Override
-    public void setApplicationContext(org.springframework.context.ApplicationContext applicationContext) throws BeansException {
-        ApplicationContext.context = applicationContext;
-    }
 }

@@ -1,5 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
+import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.EpostServiceMock;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseServiceMock;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
@@ -16,6 +18,7 @@ public class MockApplicationContext {
     public HenvendelseService henvendelseService() {
         return new HenvendelseServiceMock();
     }
+
     @Bean
     public DiskresjonskodePortType diskresjonskodePortType() {
         return new DiskresjonskodePortType() {
@@ -27,4 +30,10 @@ public class MockApplicationContext {
             }
         };
     }
+
+    @Bean
+    public EpostService epostService() {
+        return new EpostServiceMock();
+    }
+
 }

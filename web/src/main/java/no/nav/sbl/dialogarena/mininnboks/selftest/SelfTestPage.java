@@ -4,6 +4,7 @@ import no.nav.modig.wicket.selftest.SelfTestBase;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,9 @@ public class SelfTestPage extends SelfTestBase {
 
     @Inject
     private InnsynHenvendelsePortType innsynHenvendelse;
+
+    @Inject
+    private BrukerprofilPortType brukerprofil;
 
     public SelfTestPage(PageParameters params) throws IOException {
         super("Mininnboks", params);
@@ -95,12 +99,25 @@ public class SelfTestPage extends SelfTestBase {
         return new AvhengighetStatus("INNSYN_HENVENDELSE_TJENESTE_PING", status, currentTimeMillis() - start);
     }
 
+    private AvhengighetStatus getBrukerprofilStatus() {
+        long start = currentTimeMillis();
+        String status = SelfTestBase.STATUS_ERROR;
+        try {
+            brukerprofil.ping();
+            status = SelfTestBase.STATUS_OK;
+        } catch (Exception e) {
+            logger.warn("<<<<<<Error Contacting Brukerprofil WS: " + e.getMessage(), e);
+        }
+        return new AvhengighetStatus("BRUKERPROFIL_TJENESTE_PING", status, currentTimeMillis() - start);
+    }
+
     @Override
     protected void addToStatusList(List<AvhengighetStatus> statusList) {
         statusList.add(getHenvendelseWSStatus());
         statusList.add(getSendHenvendelseWSStatus());
         statusList.add(getInnsynHenvendelseWSStatus());
         statusList.add(getCmsStatus());
+        statusList.add(getBrukerprofilStatus());
     }
 
 }

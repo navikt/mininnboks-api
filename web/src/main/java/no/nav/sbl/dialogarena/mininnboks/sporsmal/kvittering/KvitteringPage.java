@@ -10,5 +10,7 @@ public class KvitteringPage extends BasePage {
     public KvitteringPage() {
         add(new ExternalLink("til-inngangsporten", System.getProperty("inngangsporten.link.url")));
         add(new BookmarkablePageLink<Void>("til-mine-henvendelser", Innboks.class));
+        add(new EpostPanel("epostPanel"));
     }
+
 }
