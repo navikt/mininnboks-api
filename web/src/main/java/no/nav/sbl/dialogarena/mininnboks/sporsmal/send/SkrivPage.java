@@ -46,6 +46,8 @@ import static no.nav.modig.wicket.model.ModelUtils.not;
 public class SkrivPage extends BasePage {
 
     private static final Logger LOG = LoggerFactory.getLogger(SkrivPage.class);
+    public static final String IKKE_AKSEPTERT_FEILMELDING_PROPERTY = "send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert";
+    public static final String UNDERLIGGENDE_FEIL_FEILMELDING_PROPERTY = "send-sporsmal.still-sporsmal.underliggende-feil";
 
     @Inject
     private HenvendelseService service;
@@ -86,11 +88,11 @@ public class SkrivPage extends BasePage {
                             setResponsePage(KvitteringPage.class);
                         } catch (Exception e) {
                             LOG.error("Feil ved innsending av spørsmål", e);
-                            error(getString("send-sporsmal.still-sporsmal.underliggende-feil"));
+                            error(getString(UNDERLIGGENDE_FEIL_FEILMELDING_PROPERTY));
                             target.add(feedbackPanel);
                         }
                     } else {
-                        error(getString("send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert"));
+                        error(getString(IKKE_AKSEPTERT_FEILMELDING_PROPERTY));
                         target.add(feedbackPanel);
                     }
                 }
@@ -134,4 +136,5 @@ public class SkrivPage extends BasePage {
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skriv.js")));
         }
     }
+
 }
