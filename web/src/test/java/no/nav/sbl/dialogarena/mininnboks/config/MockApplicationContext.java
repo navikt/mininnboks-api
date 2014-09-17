@@ -1,12 +1,11 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
+import no.nav.modig.core.context.SubjectHandler;
+import no.nav.sbl.dialogarena.mininnboks.consumer.DiskresjonskodeService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.EpostServiceMock;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseServiceMock;
-import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
+import no.nav.tjeneste.virksomhet.brukerprofil.v1.HentKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -20,20 +19,31 @@ public class MockApplicationContext {
     }
 
     @Bean
-    public DiskresjonskodePortType diskresjonskodePortType() {
-        return new DiskresjonskodePortType() {
+    public DiskresjonskodeService diskresjonskodeService() {
+        return new DiskresjonskodeService() {
             @Override
-            public HentDiskresjonskodeResponse hentDiskresjonskode(HentDiskresjonskodeRequest request) {
-                HentDiskresjonskodeResponse hentDiskresjonskodeResponse = new HentDiskresjonskodeResponse();
-                hentDiskresjonskodeResponse.setDiskresjonskode("7");
-                return hentDiskresjonskodeResponse;
+            public String getDiskresjonskode(String fnr) {
+                return "7";
             }
         };
     }
 
     @Bean
     public EpostService epostService() {
-        return new EpostServiceMock();
+        return new EpostService() {
+            @Override
+            public String hentEpostadresse() throws Exception {
+                String brukerId = SubjectHandler.getSubjectHandler().getUid();
+                if (brukerId.startsWith("2")) {
+                    return "epostadresse@example.com";
+                } else if (brukerId.startsWith("9")) {
+                    Exception e = new HentKontaktinformasjonOgPreferanserPersonIkkeFunnet("Dette er message fra HentKontaktinformasjonOgPreferanserPersonIkkeFunnet");
+                    throw new Exception("Person med id '" + brukerId + "': " + e.getMessage(), e);
+                } else {
+                    return "";
+                }
+            }
+        };
     }
 
 }

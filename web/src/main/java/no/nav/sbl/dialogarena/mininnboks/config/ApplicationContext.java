@@ -76,6 +76,13 @@ public class ApplicationContext implements ApplicationContextAware {
                 true);
     }
 
+    private DiskresjonskodePortType diskresjonskodeSSO() {
+        return createPortType(System.getProperty("diskresjonskode.ws.url"),
+                "classpath:wsdl/Diskresjonskode.wsdl",
+                DiskresjonskodePortType.class,
+                true);
+    }
+
     @Bean
     public static SendInnHenvendelsePortType sendInnHenvendelseSystemUser() {
         return createPortType(System.getProperty("send.inn.henvendelse.ws.url"),
@@ -109,14 +116,6 @@ public class ApplicationContext implements ApplicationContextAware {
     }
 
     @Bean
-    public DiskresjonskodePortType diskresjonskodePortType() {
-        return createPortType(System.getProperty("diskresjonskode.ws.url"),
-            "classpath:wsdl/Diskresjonskode.wsdl",
-            DiskresjonskodePortType.class,
-            true);
-    }
-
-    @Bean
     public WicketApplication wicket() {
         return new WicketApplication();
     }
@@ -129,6 +128,11 @@ public class ApplicationContext implements ApplicationContextAware {
     @Bean
     public EpostService epostService() {
         return new EpostService.Default(brukerprofilSSO());
+    }
+
+    @Bean
+    public DiskresjonskodeService diskresjonskodeService() {
+        return new DiskresjonskodeService.Default(diskresjonskodeSSO());
     }
 
     @Bean

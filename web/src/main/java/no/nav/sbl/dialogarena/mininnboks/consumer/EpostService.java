@@ -22,7 +22,7 @@ public interface EpostService {
 
     public class Default implements EpostService {
 
-        private BrukerprofilPortType brukerprofil;
+        private final BrukerprofilPortType brukerprofil;
 
         public Default(BrukerprofilPortType brukerprofilPortType) {
             this.brukerprofil = brukerprofilPortType;
