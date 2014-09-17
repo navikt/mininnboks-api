@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
@@ -157,6 +158,7 @@ public class MinInnboksApplicationContext implements ApplicationContextAware {
     }
 
     @Override
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public void setApplicationContext(ApplicationContext applicationContext) {
         MinInnboksApplicationContext.context = applicationContext;
     }
