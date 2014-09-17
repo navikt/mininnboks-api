@@ -20,8 +20,8 @@ public class NyesteMeldingPanel extends Panel {
         List<Henvendelse> henvendelser = model.getObject().henvendelser;
         Henvendelse nyesteHenvendelse = getNyesteHenvendelse(henvendelser);
 
-        add(new AvsenderBilde("avsender-bilde", nyesteHenvendelse));
-        add(new Label("sendt-dato", kortMedTid(nyesteHenvendelse.opprettet)));
+        add(new AvsenderBilde("avsenderBilde", nyesteHenvendelse));
+        add(new Label("sendtDato", kortMedTid(nyesteHenvendelse.opprettet)));
         add(new Label("temagruppe",
                 new StringResourceModel(nyesteHenvendelse.type.name(), this, null).getString()
                         + ": " + new StringResourceModel(nyesteHenvendelse.temagruppe.name(), this, null).getString()));

@@ -41,7 +41,7 @@ public class Innboks extends BasePage {
     public Innboks() {
         traaderModel = new CompoundPropertyModel<>(tilTraader(service.hentAlleHenvendelser(innloggetBruker())));
 
-        final Link<Void> skrivNyKnapp = new Link<Void>("skriv-ny") {
+        final Link<Void> skrivNyKnapp = new Link<Void>("skrivNy") {
             @Override
             public void onClick() {
                 setResponsePage(VelgTemagruppePage.class);

@@ -17,12 +17,12 @@ public class TidligereMeldingerPanel extends Panel {
     public TidligereMeldingerPanel(String id, IModel<TraadVM> model) {
         super(id, model);
 
-        add(new ListView<Henvendelse>("tidligere-meldinger", getTidligereHenvendelser(model.getObject().henvendelser)) {
+        add(new ListView<Henvendelse>("tidligereMeldinger", getTidligereHenvendelser(model.getObject().henvendelser)) {
             @Override
             protected void populateItem(ListItem<Henvendelse> item) {
                 Henvendelse henvendelse = item.getModelObject();
-                item.add(new AvsenderBilde("avsender-bilde", henvendelse));
-                item.add(new Label("sendt-dato", kortMedTid(henvendelse.opprettet)));
+                item.add(new AvsenderBilde("avsenderBilde", henvendelse));
+                item.add(new Label("sendtDato", kortMedTid(henvendelse.opprettet)));
                 item.add(new Label("temagruppe",
                         new StringResourceModel(henvendelse.type.name(), TidligereMeldingerPanel.this, null).getString()
                                 + ": " + new StringResourceModel(henvendelse.temagruppe.name(), TidligereMeldingerPanel.this, null).getString()));
