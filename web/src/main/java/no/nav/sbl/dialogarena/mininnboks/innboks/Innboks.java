@@ -80,12 +80,12 @@ public class Innboks extends BasePage {
                         attributes.setAllowDefault(true);
                     }
                 });
-                item.add(new NyesteMeldingPanel("nyeste-melding", item.getModel()));
-                item.add(new TidligereMeldingerPanel("tidligere-meldinger", item.getModel()));
+                item.add(new NyesteMeldingPanel("nyesteMelding", item.getModel()));
+                item.add(new TidligereMeldingerPanel("tidligereMeldinger", item.getModel()));
             }
         });
 
-        add(new WebMarkupContainer("tom-innboks").add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
+        add(new WebMarkupContainer("tomInnboks").add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
     }
 
     private static String innloggetBruker() {

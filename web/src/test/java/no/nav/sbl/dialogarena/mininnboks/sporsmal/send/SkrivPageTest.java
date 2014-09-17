@@ -25,25 +25,25 @@ public class SkrivPageTest extends WicketPageTest {
 
     @Test
     public void skrivPageKomponenter() {
-        wicketTester.should().containComponent(withId("sporsmal-form").and(ofType(Form.class)))
-                .should().inComponent(withId("sporsmal-form")).containComponent(withId("temagruppe").and(ofType(Label.class)))
-                .should().inComponent(withId("sporsmal-form")).containComponent(withId("temagruppe-liste").and(ofType(ListView.class)))
-                .should().inComponent(withId("sporsmal-form")).containComponent(withId("tekstfelt").and(ofType(EnhancedTextArea.class)))
-                .should().inComponent(withId("sporsmal-form")).containComponent(withId("betingelseValg").and(ofType(BetingelseValgPanel.class)))
-                .should().inComponent(withId("sporsmal-form")).containComponent(withId("send").and(ofType(AjaxSubmitLink.class)))
-                .should().inComponent(withId("sporsmal-form")).containComponent(withId("avbryt").and(ofType(Link.class)));
+        wicketTester.should().containComponent(withId("sporsmalForm").and(ofType(Form.class)))
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("temagruppe").and(ofType(Label.class)))
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("temagruppeListe").and(ofType(ListView.class)))
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("tekstfelt").and(ofType(EnhancedTextArea.class)))
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("betingelseValg").and(ofType(BetingelseValgPanel.class)))
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("send").and(ofType(AjaxSubmitLink.class)))
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("avbryt").and(ofType(Link.class)));
     }
 
     @Test
     public void sporsmalsinnsendingTomTekst() {
-        wicketTester.inForm(withId("sporsmal-form"))
+        wicketTester.inForm(withId("sporsmalForm"))
                 .toggleCheckbox(withId("betingelserCheckbox")).andReturn()
                 .click().link(withId("send")).should().beOn(SkrivPage.class);
     }
 
     @Test
     public void sporsmalsinnsendingMedTekstAkseptertBetingelser() {
-        wicketTester.inForm(withId("sporsmal-form"))
+        wicketTester.inForm(withId("sporsmalForm"))
                 .toggleCheckbox(withId("betingelserCheckbox"))
                 .write("tekstfelt:text", "Dette er en tekst.").andReturn()
                 .click().link(withId("send"))
@@ -52,7 +52,7 @@ public class SkrivPageTest extends WicketPageTest {
 
     @Test
     public void sporsmalsinnsendingMedTekstIkkeAkseptertBetingelser() {
-        wicketTester.inForm(withId("sporsmal-form"))
+        wicketTester.inForm(withId("sporsmalForm"))
                 .write("tekstfelt:text", "Dette er en tekst.").andReturn()
                 .click().link(withId("send")).should().beOn(SkrivPage.class);
     }

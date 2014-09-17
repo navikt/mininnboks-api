@@ -21,8 +21,6 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.Inns
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;

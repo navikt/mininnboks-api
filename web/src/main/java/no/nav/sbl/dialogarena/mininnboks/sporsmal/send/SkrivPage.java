@@ -54,10 +54,10 @@ public class SkrivPage extends BasePage {
 
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.setTemagruppe(Temagruppe.valueOf(parameters.get("temagruppe").toString()));
-        add(new SporsmalForm("sporsmal-form", new CompoundPropertyModel<>(sporsmal))
+        add(new SporsmalForm("sporsmalForm", new CompoundPropertyModel<>(sporsmal))
                 .add(accessRestriction(RENDER).withAttributes(actionId("innsending"), resourceId(""))));
 
-        IModel<Boolean> ikkeTilgang = not(new PropertyModel<Boolean>(get("sporsmal-form"), "isRenderAllowed"));
+        IModel<Boolean> ikkeTilgang = not(new PropertyModel<Boolean>(get("sporsmalForm"), "isRenderAllowed"));
         add(new WebMarkupContainer("diskresjonskode").add(visibleIf(ikkeTilgang)));
         add(new BookmarkablePageLink<>("tilInnboks", Innboks.class).add(visibleIf(ikkeTilgang)));
     }
@@ -103,9 +103,9 @@ public class SkrivPage extends BasePage {
 
             Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
 
-            final WebMarkupContainer endreTemagruppeWrapper = new WebMarkupContainer("endre-temagruppe-wrapper");
+            final WebMarkupContainer endreTemagruppeWrapper = new WebMarkupContainer("endreTemagruppeWrapper");
             endreTemagruppeWrapper.setOutputMarkupId(true);
-            ListView<Temagruppe> endreTemagruppe = new ListView<Temagruppe>("temagruppe-liste", asList(Temagruppe.values())) {
+            ListView<Temagruppe> endreTemagruppe = new ListView<Temagruppe>("temagruppeListe", asList(Temagruppe.values())) {
                 @Override
                 protected void populateItem(final ListItem<Temagruppe> item) {
                     final Temagruppe temagruppe = item.getModelObject();

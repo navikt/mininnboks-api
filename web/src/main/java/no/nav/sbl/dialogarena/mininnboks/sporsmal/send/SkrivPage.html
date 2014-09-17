@@ -6,16 +6,16 @@
     <article class="send-sporsmal-container send-panel">
         <div wicket:id="diskresjonskode"><wicket:message key="innboks.diskresjonskode"></wicket:message></div>
         <div class="avbryt"><a wicket:id="tilInnboks" href="#"><wicket:message key="send-sporsmal.tilbake-til-innboks">[[Avbryt]]</wicket:message></a></div>
-        <form wicket:id="sporsmal-form">
+        <form wicket:id="sporsmalForm">
             <div class="sporsmal-header">
                 <img class="meldingikon" src="img/melding_graa.svg"/>
                 <h2 class="deloverskrift"><wicket:message key="send-sporsmal.still-sporsmal.deloverskrift">[[Skriv melding]]</wicket:message></h2>
                 <hr class="robust-strek"/>
             </div>
             <h3 wicket:id="temagruppe" class="temagruppe-overskrift"></h3><div class="pil-ned"></div>
-            <div wicket:id="endre-temagruppe-wrapper" class="endre-temagruppe-wrapper">
+            <div wicket:id="endreTemagruppeWrapper" class="endre-temagruppe-wrapper">
                 <ul class="endre-temagruppe">
-                    <wicket:container wicket:id="temagruppe-liste">
+                    <wicket:container wicket:id="temagruppeListe">
                         <li wicket:id="temagruppe"/>
                     </wicket:container>
                 </ul>
