@@ -5,6 +5,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 
 import java.util.List;
@@ -23,8 +24,11 @@ public class NyesteMeldingPanel extends Panel {
         add(new AvsenderBilde("avsenderBilde", nyesteHenvendelse));
         add(new Label("sendtDato", kortMedTid(nyesteHenvendelse.opprettet)));
         add(new Label("temagruppe",
-                new StringResourceModel(nyesteHenvendelse.type.name(), this, null).getString()
-                        + ": " + new StringResourceModel(nyesteHenvendelse.temagruppe.name(), this, null).getString()));
+                new StringResourceModel("melding.temagruppe", null, new Object[]{
+                        new ResourceModel(nyesteHenvendelse.type.name()),
+                        new ResourceModel(nyesteHenvendelse.temagruppe.name())
+                })
+        ));
         add(new Label("traadlengde", henvendelser.size()));
         add(new URLParsingMultiLineLabel("fritekst", nyesteHenvendelse.fritekst));
     }
