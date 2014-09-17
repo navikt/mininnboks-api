@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT_OPPMOTE;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL_SKRIFTLIG;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR_SKRIFTLIG;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.ARBD;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.FMLI;
 import static org.joda.time.DateTime.now;
@@ -24,7 +24,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         Random random = new Random();
 
         Henvendelse traad1Spsm = new Henvendelse("" + random.nextInt());
-        traad1Spsm.type = SPORSMAL;
+        traad1Spsm.type = SPORSMAL_SKRIFTLIG;
         traad1Spsm.traadId = "" + random.nextInt();
         traad1Spsm.opprettet = now().minusWeeks(2);
         traad1Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
@@ -40,7 +40,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         henvendelser.put(traad1Spsm.id, traad1Spsm);
 
         Henvendelse traad1Svar1 = new Henvendelse("" + random.nextInt());
-        traad1Svar1.type = SVAR;
+        traad1Svar1.type = SVAR_SKRIFTLIG;
         traad1Svar1.traadId = traad1Spsm.traadId;
         traad1Svar1.opprettet = now().minusDays(6);
         traad1Svar1.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
@@ -51,7 +51,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         henvendelser.put(traad1Svar1.id, traad1Svar1);
 
         Henvendelse traad1Svar2 = new Henvendelse("" + random.nextInt());
-        traad1Svar2.type = SVAR;
+        traad1Svar2.type = SVAR_SKRIFTLIG;
         traad1Svar2.traadId = traad1Spsm.traadId;
         traad1Svar2.opprettet = now().minusDays(1);
         traad1Svar2.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
@@ -66,7 +66,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         henvendelser.put(traad1Svar2.id, traad1Svar2);
 
         Henvendelse traad2Referat = new Henvendelse("" + random.nextInt());
-        traad2Referat.type = SAMTALEREFERAT;
+        traad2Referat.type = SAMTALEREFERAT_OPPMOTE;
         traad2Referat.traadId =  "" + random.nextInt();
         traad2Referat.opprettet = now().minusHours(20);
         traad2Referat.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
@@ -82,7 +82,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         henvendelser.put(traad2Referat.id, traad2Referat);
 
         Henvendelse traad3Spsm = new Henvendelse("" + random.nextInt());
-        traad3Spsm.type = SPORSMAL;
+        traad3Spsm.type = SPORSMAL_SKRIFTLIG;
         traad3Spsm.traadId = "" + random.nextInt();
         traad3Spsm.opprettet = now().minusWeeks(12);
         traad3Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
@@ -92,7 +92,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         henvendelser.put(traad3Spsm.id, traad3Spsm);
 
         Henvendelse traad3Svar = new Henvendelse("" + random.nextInt());
-        traad3Svar.type = SVAR;
+        traad3Svar.type = SVAR_SKRIFTLIG;
         traad3Svar.traadId = traad3Spsm.traadId;
         traad3Svar.opprettet = now();
         traad3Svar.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
@@ -106,7 +106,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         henvendelser.put(traad3Svar.id, traad3Svar);
 
         Henvendelse traad4Spsm = new Henvendelse("" + random.nextInt());
-        traad4Spsm.type = SPORSMAL;
+        traad4Spsm.type = SPORSMAL_SKRIFTLIG;
         traad4Spsm.traadId = "" + random.nextInt();
         traad4Spsm.opprettet = now().minusHours(1);
         traad4Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
@@ -125,7 +125,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
     public WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
         Random random = new Random();
         Henvendelse spsm = new Henvendelse("" + random.nextInt());
-        spsm.type = SPORSMAL;
+        spsm.type = SPORSMAL_SKRIFTLIG;
         spsm.traadId = "" + random.nextInt();
         spsm.fritekst = fritekst;
         spsm.temagruppe = temagruppe;

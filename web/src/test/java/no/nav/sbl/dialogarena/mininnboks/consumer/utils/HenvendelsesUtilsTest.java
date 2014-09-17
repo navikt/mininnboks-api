@@ -16,9 +16,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SAMTALEREFERAT_OPPMOTE;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL_SKRIFTLIG;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SVAR_SKRIFTLIG;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -48,7 +48,7 @@ public class HenvendelsesUtilsTest {
 
         assertThat(sporsmal.id, is(ID_1));
         assertThat(sporsmal.traadId, is(ID_1));
-        assertThat(sporsmal.type, is(SPORSMAL));
+        assertThat(sporsmal.type, is(SPORSMAL_SKRIFTLIG));
         assertThat(sporsmal.fritekst, is(FRITEKST));
         assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
         assertThat(sporsmal.opprettet, is(OPPRETTET_DATO));
@@ -68,7 +68,7 @@ public class HenvendelsesUtilsTest {
 
         assertThat(sporsmal.id, is(ID_2));
         assertThat(sporsmal.traadId, is(ID_1));
-        assertThat(sporsmal.type, is(SVAR));
+        assertThat(sporsmal.type, is(SVAR_SKRIFTLIG));
         assertThat(sporsmal.fritekst, is(FRITEKST));
         assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
         assertThat(sporsmal.opprettet, is(OPPRETTET_DATO));
@@ -88,7 +88,7 @@ public class HenvendelsesUtilsTest {
 
         assertThat(sporsmal.id, is(ID_3));
         assertThat(sporsmal.traadId, is(ID_3));
-        assertThat(sporsmal.type, is(SAMTALEREFERAT));
+        assertThat(sporsmal.type, is(SAMTALEREFERAT_OPPMOTE));
         assertThat(sporsmal.fritekst, is(FRITEKST));
         assertThat(sporsmal.kanal, is(KANAL));
         assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
@@ -100,7 +100,7 @@ public class HenvendelsesUtilsTest {
 
     private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingFraBruker() {
         return new XMLHenvendelse()
-                .withHenvendelseType(XMLHenvendelseType.SPORSMAL.name())
+                .withHenvendelseType(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name())
                 .withBehandlingsId(ID_1)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
@@ -112,7 +112,7 @@ public class HenvendelsesUtilsTest {
 
     private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingTilBrukerSomSvar() {
         return new XMLHenvendelse()
-                .withHenvendelseType(XMLHenvendelseType.SVAR.name())
+                .withHenvendelseType(XMLHenvendelseType.SVAR_SKRIFTLIG.name())
                 .withBehandlingsId(ID_2)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
@@ -126,7 +126,7 @@ public class HenvendelsesUtilsTest {
 
     private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingTilBrukerSomReferat() {
         return new XMLHenvendelse()
-                .withHenvendelseType(XMLHenvendelseType.REFERAT.name())
+                .withHenvendelseType(XMLHenvendelseType.REFERAT_OPPMOTE.name())
                 .withBehandlingsId(ID_3)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)

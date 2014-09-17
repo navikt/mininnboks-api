@@ -12,12 +12,15 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.Henvendels
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.REFERAT;
-import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SPORSMAL;
-import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SVAR;
+import static java.util.Arrays.asList;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.REFERAT_OPPMOTE;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.REFERAT_TELEFON;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SPORSMAL_SKRIFTLIG;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SVAR_OPPMOTE;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SVAR_SKRIFTLIG;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SVAR_TELEFON;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
 import static org.joda.time.DateTime.now;
@@ -48,7 +51,7 @@ public interface HenvendelseService {
         public WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
             XMLHenvendelse info =
                     new XMLHenvendelse()
-                            .withHenvendelseType(SPORSMAL.name())
+                            .withHenvendelseType(SPORSMAL_SKRIFTLIG.name())
                             .withOpprettetDato(now())
                             .withAvsluttetDato(now())
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
@@ -58,19 +61,25 @@ public interface HenvendelseService {
 
             return sendInnHenvendelsePortType.sendInnHenvendelse(
                     new WSSendInnHenvendelseRequest()
-                            .withType(SPORSMAL.name())
+                            .withType(SPORSMAL_SKRIFTLIG.name())
                             .withFodselsnummer(fodselsnummer)
                             .withAny(info));
         }
 
         @Override
         public void merkHenvendelseSomLest(Henvendelse henvendelse) {
-            innsynHenvendelsePortType.merkSomLest(new ArrayList<>(Arrays.asList(henvendelse.id)));
+            innsynHenvendelsePortType.merkSomLest(new ArrayList<>(asList(henvendelse.id)));
         }
 
         @Override
         public List<Henvendelse> hentAlleHenvendelser(String fodselsnummer) {
-            List<String> typer = Arrays.asList(SPORSMAL.name(), SVAR.name(), REFERAT.name());
+            List<String> typer = asList(
+                    SPORSMAL_SKRIFTLIG.name(),
+                    SVAR_SKRIFTLIG.name(),
+                    SVAR_OPPMOTE.name(),
+                    SVAR_TELEFON.name(),
+                    REFERAT_OPPMOTE.name(),
+                    REFERAT_TELEFON.name());
             return on(henvendelsePortType.hentHenvendelseListe(
                     new WSHentHenvendelseListeRequest()
                             .withFodselsnummer(fodselsnummer)
