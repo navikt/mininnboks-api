@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(ApplicationContext.class)
+@Import(MinInnboksApplicationContext.class)
 public class MockApplicationContext {
     @Bean
     public HenvendelseService henvendelseService() {
