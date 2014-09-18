@@ -47,6 +47,7 @@ import java.util.HashMap;
 @ComponentScan(basePackageClasses = {DiskresjonskodeService.class})
 public class MinInnboksApplicationContext implements ApplicationContextAware {
 
+    @SuppressFBWarnings("MS_CANNOT_BE_FINAL")
     public static ApplicationContext context;
 
     private SendInnHenvendelsePortType sendInnHenvendelseSSO() {
