@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+
+    <div wicket:id="harEpostContainer" class="registrert-epost">
+        <wicket:message key="send-sporsmal.bekreftelse.du-mottar-epost">
+            [[Vi tipser deg på denne e-postadressen så snart ditt svar foreligger]]
+        </wicket:message>
+        <div class="epostadresse">
+            <div wicket:id="epostAdresse">[[Selve e-postadressen]]</div>
+            <a wicket:id="tilEndringAvEpost">
+                <wicket:message key="send-sporsmal.bekreftelse.endre-epostadresse">[[Endre registrert epostadresse]]</wicket:message>
+            </a>
+        </div>
+    </div>
+
+    <div wicket:id="manglerEpostContainer" class="mangler-epost">
+        <wicket:message key="send-sporsmal.bekreftelse.du-kan-motta-epost">
+            [[Oppgi din e-postadresse og vi tipser deg så snart ditt svar foreligger]]
+        </wicket:message>
+        <a wicket:id="tilRegistreringAvEpost" class="knapp-link-stor brukerprofil-link">
+            <wicket:message key="send-sporsmal.bekreftelse.registrer-epostadresse">[[Oppgi epostadresse]]</wicket:message>
+        </a>
+    </div>
+
+    <div wicket:id="tpsUtilgjengeligContainer" class="tps-utilgjengelig">
+        <div>
+            <wicket:message key="send-sporsmal.bekreftelse.kunne-ikke-hente-epost">
+                [[Vi kunne ikke hente din e-postadresse akkurat nå]]
+            </wicket:message>
+        </div>
+        <a wicket:id="tilBrukerprofil">
+            <wicket:message key="send-sporsmal.bekreftelse.til-brukerprofil">[[Til brukerprofil]]</wicket:message>
+        </a>
+    </div>
+
+</wicket:panel>
+</body>
+</html>

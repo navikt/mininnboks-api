@@ -12,7 +12,7 @@ import org.jboss.security.xacml.sunxacml.cond.EvaluationResult;
 import java.net.URI;
 
 import static java.util.Arrays.asList;
-import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationContext.context;
+import static no.nav.sbl.dialogarena.mininnboks.config.MinInnboksApplicationContext.context;
 
 public class DiskresjonskodeLocator extends StorageAttributeLocator {
 

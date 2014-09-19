@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks;
 
-import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -18,9 +18,9 @@ import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.ER_LEST;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.NYESTE_OVERST;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse.TRAAD_ID;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ER_LEST;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.NYESTE_OVERST;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.TRAAD_ID;
 
 public class TraadVM implements Serializable {
 

@@ -1,12 +1,12 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks;
 
-import no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.WebApplication;
 
-import static no.nav.sbl.dialogarena.mininnboks.consumer.Henvendelsetype.SPORSMAL_SKRIFTLIG;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL_SKRIFTLIG;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.SAMTALEREFERAT;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.SVAR;
 

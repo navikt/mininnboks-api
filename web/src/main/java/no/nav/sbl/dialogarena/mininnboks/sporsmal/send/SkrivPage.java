@@ -46,6 +46,8 @@ import static no.nav.modig.wicket.model.ModelUtils.not;
 public class SkrivPage extends BasePage {
 
     private static final Logger LOG = LoggerFactory.getLogger(SkrivPage.class);
+    public static final String IKKE_AKSEPTERT_FEILMELDING_PROPERTY = "send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert";
+    public static final String UNDERLIGGENDE_FEIL_FEILMELDING_PROPERTY = "send-sporsmal.still-sporsmal.underliggende-feil";
 
     @Inject
     private HenvendelseService service;
@@ -54,10 +56,10 @@ public class SkrivPage extends BasePage {
 
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.setTemagruppe(Temagruppe.valueOf(parameters.get("temagruppe").toString()));
-        add(new SporsmalForm("sporsmal-form", new CompoundPropertyModel<>(sporsmal))
+        add(new SporsmalForm("sporsmalForm", new CompoundPropertyModel<>(sporsmal))
                 .add(accessRestriction(RENDER).withAttributes(actionId("innsending"), resourceId(""))));
 
-        IModel<Boolean> ikkeTilgang = not(new PropertyModel<Boolean>(get("sporsmal-form"), "isRenderAllowed"));
+        IModel<Boolean> ikkeTilgang = not(new PropertyModel<Boolean>(get("sporsmalForm"), "isRenderAllowed"));
         add(new WebMarkupContainer("diskresjonskode").add(visibleIf(ikkeTilgang)));
         add(new BookmarkablePageLink<>("tilInnboks", Innboks.class).add(visibleIf(ikkeTilgang)));
     }
@@ -86,11 +88,11 @@ public class SkrivPage extends BasePage {
                             setResponsePage(KvitteringPage.class);
                         } catch (Exception e) {
                             LOG.error("Feil ved innsending av spørsmål", e);
-                            error(getString("send-sporsmal.still-sporsmal.underliggende-feil"));
+                            error(getString(UNDERLIGGENDE_FEIL_FEILMELDING_PROPERTY));
                             target.add(feedbackPanel);
                         }
                     } else {
-                        error(getString("send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert"));
+                        error(getString(IKKE_AKSEPTERT_FEILMELDING_PROPERTY));
                         target.add(feedbackPanel);
                     }
                 }
@@ -103,9 +105,9 @@ public class SkrivPage extends BasePage {
 
             Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
 
-            final WebMarkupContainer endreTemagruppeWrapper = new WebMarkupContainer("endre-temagruppe-wrapper");
+            final WebMarkupContainer endreTemagruppeWrapper = new WebMarkupContainer("endreTemagruppeWrapper");
             endreTemagruppeWrapper.setOutputMarkupId(true);
-            ListView<Temagruppe> endreTemagruppe = new ListView<Temagruppe>("temagruppe-liste", asList(Temagruppe.values())) {
+            ListView<Temagruppe> endreTemagruppe = new ListView<Temagruppe>("temagruppeListe", asList(Temagruppe.values())) {
                 @Override
                 protected void populateItem(final ListItem<Temagruppe> item) {
                     final Temagruppe temagruppe = item.getModelObject();
@@ -134,4 +136,5 @@ public class SkrivPage extends BasePage {
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skriv.js")));
         }
     }
+
 }

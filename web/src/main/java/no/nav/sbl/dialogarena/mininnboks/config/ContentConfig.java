@@ -38,7 +38,7 @@ public class ContentConfig {
 
     @Bean
     public ContentRetriever enonicContentRetriever() {
-        // Egen bønne for å hooke opp @Cachable
+        // Egen bønne for å hooke opp @Cacheable
         return new HttpContentRetriever();
     }
 

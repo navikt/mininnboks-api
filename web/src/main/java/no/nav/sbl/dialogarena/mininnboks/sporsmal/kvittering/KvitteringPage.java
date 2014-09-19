@@ -8,7 +8,9 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 public class KvitteringPage extends BasePage {
 
     public KvitteringPage() {
-        add(new ExternalLink("til-inngangsporten", System.getProperty("inngangsporten.link.url")));
-        add(new BookmarkablePageLink<Void>("til-mine-henvendelser", Innboks.class));
+        add(new ExternalLink("tilInngangsporten", System.getProperty("inngangsporten.link.url")));
+        add(new BookmarkablePageLink<Void>("tilMineHenvendelser", Innboks.class));
+        add(new EpostPanel("epostPanel"));
     }
+
 }

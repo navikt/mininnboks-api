@@ -18,7 +18,7 @@ public class InnboksTest extends WicketPageTest {
 
     @Test
     public void testInnboksKomponenter() {
-        wicketTester.should().containComponent(ofType(Link.class).and(withId("skriv-ny")))
+        wicketTester.should().containComponent(ofType(Link.class).and(withId("skrivNy")))
                 .should().containComponent(ofType(NyesteMeldingPanel.class))
                 .should().containComponent(ofType(TidligereMeldingerPanel.class))
                 .should().containComponent(ofType(AvsenderBilde.class));
@@ -26,7 +26,7 @@ public class InnboksTest extends WicketPageTest {
 
     @Test
     public void testSkrivNyLenke() {
-        wicketTester.click().link(withId("skriv-ny")).should().beOn(VelgTemagruppePage.class);
+        wicketTester.click().link(withId("skrivNy")).should().beOn(VelgTemagruppePage.class);
     }
 
 }
