@@ -28,6 +28,8 @@ import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
 
+    public static final String KONTAKT_NAV_SAKSTEMA = "KNA";
+
     WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer);
 
     List<Henvendelse> hentAlleHenvendelser(String fodselsnummer);
@@ -55,6 +57,7 @@ public interface HenvendelseService {
                             .withHenvendelseType(SPORSMAL_SKRIFTLIG.name())
                             .withOpprettetDato(now())
                             .withAvsluttetDato(now())
+                            .withTema(KONTAKT_NAV_SAKSTEMA)
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(temagruppe.name())
