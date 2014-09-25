@@ -12,7 +12,6 @@ import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
 import no.nav.sbl.dialogarena.mininnboks.selftest.SelfTestPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.send.SkrivPage;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.VelgTemagruppePage;
 import no.nav.sbl.dialogarena.time.Datoformat;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
@@ -66,7 +65,6 @@ public class WicketApplication extends WebApplication {
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
         mountPage("innboks", Innboks.class);
-        mountPage("sporsmal/velgtemagruppe", VelgTemagruppePage.class);
         mountPage("sporsmal/skriv/${temagruppe}", SkrivPage.class);
         mountPage("sporsmal/kvittering", KvitteringPage.class);
         mountPage("internal/isAlive", HealthCheck.class);
