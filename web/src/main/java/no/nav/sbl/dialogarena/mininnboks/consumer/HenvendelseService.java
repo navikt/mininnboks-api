@@ -58,6 +58,7 @@ public interface HenvendelseService {
                             .withOpprettetDato(now())
                             .withAvsluttetDato(now())
                             .withTema(KONTAKT_NAV_SAKSTEMA)
+                            .withBehandlingskjedeId(null)
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(temagruppe.name())

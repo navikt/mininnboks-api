@@ -26,7 +26,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
 
         Henvendelse traad1Spsm = new Henvendelse("" + random.nextInt());
         traad1Spsm.type = SPORSMAL_SKRIFTLIG;
-        traad1Spsm.traadId = "" + random.nextInt();
+        traad1Spsm.traadId = traad1Spsm.id;
         traad1Spsm.opprettet = now().minusWeeks(2);
         traad1Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
@@ -68,7 +68,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
 
         Henvendelse traad2Referat = new Henvendelse("" + random.nextInt());
         traad2Referat.type = SAMTALEREFERAT_OPPMOTE;
-        traad2Referat.traadId =  "" + random.nextInt();
+        traad2Referat.traadId =  traad2Referat.id;
         traad2Referat.opprettet = now().minusHours(20);
         traad2Referat.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
@@ -84,11 +84,10 @@ public class HenvendelseServiceMock implements HenvendelseService {
 
         Henvendelse traad3Spsm = new Henvendelse("" + random.nextInt());
         traad3Spsm.type = SPORSMAL_SKRIFTLIG;
-        traad3Spsm.traadId = "" + random.nextInt();
+        traad3Spsm.traadId = traad3Spsm.id;
         traad3Spsm.opprettet = now().minusWeeks(12);
-        traad3Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
-                "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum";
-        traad3Spsm.temagruppe = ARBD;
+        traad3Spsm.fritekst = null;
+        traad3Spsm.temagruppe = null;
         traad3Spsm.markerSomLest(traad3Spsm.opprettet);
         henvendelser.put(traad3Spsm.id, traad3Spsm);
 
@@ -96,19 +95,13 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad3Svar.type = SVAR_SKRIFTLIG;
         traad3Svar.traadId = traad3Spsm.traadId;
         traad3Svar.opprettet = now();
-        traad3Svar.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
-                "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
-                " iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto" +
-                " odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend" +
-                " option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit" +
-                " eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
-                " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas";
-        traad3Svar.temagruppe = traad3Spsm.temagruppe;
+        traad3Svar.fritekst = null;
+        traad3Svar.temagruppe = null;
         henvendelser.put(traad3Svar.id, traad3Svar);
 
         Henvendelse traad4Spsm = new Henvendelse("" + random.nextInt());
         traad4Spsm.type = SPORSMAL_SKRIFTLIG;
-        traad4Spsm.traadId = "" + random.nextInt();
+        traad4Spsm.traadId = traad4Spsm.id;
         traad4Spsm.opprettet = now().minusHours(1);
         traad4Spsm.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +

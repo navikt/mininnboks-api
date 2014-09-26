@@ -2,10 +2,8 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMelding;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadata;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
@@ -16,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.fromValue;
 
 public class HenvendelsesUtils {
 
@@ -37,37 +36,39 @@ public class HenvendelsesUtils {
         @Override
         public Henvendelse transform(Object wsMelding) {
             XMLHenvendelse info = (XMLHenvendelse) wsMelding;
-            XMLMetadataListe metadataListe = info.getMetadataListe();
-            XMLMetadata metadata = metadataListe.getMetadata().get(0);
 
             Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
             henvendelse.opprettet = info.getOpprettetDato();
             henvendelse.avsluttet = info.getAvsluttetDato();
-            henvendelse.traadId = info.getBehandlingsId();
-
-            if (metadata instanceof XMLMeldingFraBruker) {
-                XMLMeldingFraBruker sporsmal = (XMLMeldingFraBruker) metadata;
-                henvendelse.type = Henvendelsetype.SPORSMAL_SKRIFTLIG;
-                henvendelse.temagruppe = Temagruppe.valueOf(sporsmal.getTemagruppe());
-                henvendelse.fritekst = sporsmal.getFritekst();
+            henvendelse.traadId = info.getBehandlingskjedeId();
+            henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
+            if (henvendelse.type.equals(Henvendelsetype.SPORSMAL_SKRIFTLIG)) {
                 henvendelse.markerSomLest();
-                return henvendelse;
-            } else if (metadata instanceof XMLMeldingTilBruker) {
-                XMLMeldingTilBruker svarEllerReferat = (XMLMeldingTilBruker) metadata;
-                XMLHenvendelseType henvendelseType = XMLHenvendelseType.fromValue(info.getHenvendelseType());
-                henvendelse.type = HENVENDELSETYPE_MAP.get(henvendelseType);
-                if(svarEllerReferat.getSporsmalsId() != null){
-                    henvendelse.traadId = svarEllerReferat.getSporsmalsId();
-                }
-                henvendelse.temagruppe = Temagruppe.valueOf(svarEllerReferat.getTemagruppe());
-                henvendelse.markerSomLest(info.getLestDato());
-                henvendelse.fritekst = svarEllerReferat.getFritekst();
-                henvendelse.kanal = svarEllerReferat.getKanal();
-                return henvendelse;
             } else {
-                throw new RuntimeException("Behandlingsinformasjon sin XMLMetadata er ikke av typen XMLMeldingFraBruker eller XMLMeldingTilBruker. Ukjent type: " + metadata);
+                henvendelse.markerSomLest(info.getLestDato());
             }
+
+            if (innholdErKassert(info)) {
+                henvendelse.temagruppe = null;
+                henvendelse.fritekst = null;
+                henvendelse.kanal = null;
+                return henvendelse;
+            }
+
+            XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
+            henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
+            henvendelse.fritekst = xmlMelding.getFritekst();
+
+            if (xmlMelding instanceof XMLMeldingTilBruker) {
+                XMLMeldingTilBruker svarEllerReferat = (XMLMeldingTilBruker) xmlMelding;
+                henvendelse.kanal = svarEllerReferat.getKanal();
+            }
+            return henvendelse;
         }
     };
+
+    private static boolean innholdErKassert(XMLHenvendelse info) {
+        return info.getMetadataListe() == null;
+    }
 
 }

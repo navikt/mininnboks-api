@@ -1,7 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks;
 
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -27,7 +28,6 @@ public class TraadVM implements Serializable {
     public final String id;
     public final List<Henvendelse> henvendelser;
     public final IModel<Boolean> lukket;
-
     public TraadVM(String id, List<Henvendelse> henvendelser) {
         this.id = id;
         this.henvendelser = henvendelser;
@@ -63,7 +63,7 @@ public class TraadVM implements Serializable {
     public static List<TraadVM> tilTraader(List<Henvendelse> henvendelser) {
         List<Henvendelse> sortert = sortertPaaOpprettetDato(henvendelser);
         Map<String, List<Henvendelse>> traader = on(sortert).reduce(indexBy(TRAAD_ID), new LinkedHashMap<String, List<Henvendelse>>());
-        return on(traader.values()).map(TIL_TRAAD_VM).collect();
+        return on(traader.values()).filter(ROTHENVENDELSEN_EKSISTERER).map(TIL_TRAAD_VM).collect();
     }
 
     private static List<Henvendelse> sortertPaaOpprettetDato(List<Henvendelse> henvendelser) {
@@ -76,6 +76,19 @@ public class TraadVM implements Serializable {
         @Override
         public TraadVM transform(List<Henvendelse> henvendelser) {
             return new TraadVM(henvendelser.get(0).traadId, henvendelser);
+        }
+    };
+
+    private static final Predicate<List<Henvendelse>> ROTHENVENDELSEN_EKSISTERER = new Predicate<List<Henvendelse>>() {
+        @Override
+        public boolean evaluate(List<Henvendelse> henvendelser) {
+            return on(henvendelser).exists(ID_ER_LIK_TRAAD_ID);
+        }
+    };
+    private static final Predicate<Henvendelse> ID_ER_LIK_TRAAD_ID = new Predicate<Henvendelse>() {
+        @Override
+        public boolean evaluate(Henvendelse henvendelse) {
+            return henvendelse.id.equals(henvendelse.traadId);
         }
     };
 

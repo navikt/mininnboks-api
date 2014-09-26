@@ -21,6 +21,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SKRIFTLIG;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -37,6 +38,7 @@ public class HenvendelsesUtilsTest {
     private static final DateTime LEST_DATO = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 3));
     private static final Temagruppe TEMAGRUPPE = Temagruppe.FMLI;
     private static final String KANAL = "kanal";
+    private static final String NAVIDENT = "navident";
 
     @Test
     public void skalTransformereTilHenvendelseMedFelterForXMLMeldingFraBruker() {
@@ -74,8 +76,8 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.opprettet, is(OPPRETTET_DATO));
         assertThat(sporsmal.avsluttet, is(AVSLUTTET_DATO));
         assertThat(sporsmal.getLestDato(), is(LEST_DATO));
+        assertThat(sporsmal.kanal, is(KANAL));
         assertTrue(sporsmal.erLest());
-        assertNull(sporsmal.kanal);
     }
 
     @Test
@@ -98,16 +100,29 @@ public class HenvendelsesUtilsTest {
         assertTrue(sporsmal.erLest());
     }
 
+    @Test
+    public void taklerAtInnholdetErBlittSlettet() {
+        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBrukerSomReferat();
+        info.setMetadataListe(null);
+
+        Henvendelse sporsmal = TIL_HENVENDELSE.transform(info);
+
+        assertThat(sporsmal.fritekst, nullValue());
+        assertThat(sporsmal.temagruppe, nullValue());
+    }
+
     private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingFraBruker() {
         return new XMLHenvendelse()
                 .withHenvendelseType(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name())
                 .withBehandlingsId(ID_1)
+                .withBehandlingskjedeId(ID_1)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLMeldingFraBruker()
                                 .withFritekst(FRITEKST)
-                                .withTemagruppe(TEMAGRUPPE.name())));
+                                .withTemagruppe(TEMAGRUPPE.name())
+                ));
     }
 
     private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingTilBrukerSomSvar() {
@@ -117,17 +132,21 @@ public class HenvendelsesUtilsTest {
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
                 .withLestDato(LEST_DATO)
+                .withBehandlingskjedeId(ID_1)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLMeldingTilBruker()
                                 .withFritekst(FRITEKST)
                                 .withTemagruppe(TEMAGRUPPE.name())
-                                .withSporsmalsId(ID_1)));
+                                .withKanal(KANAL)
+                                .withNavident(NAVIDENT)
+                ));
     }
 
     private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingTilBrukerSomReferat() {
         return new XMLHenvendelse()
                 .withHenvendelseType(XMLHenvendelseType.REFERAT_OPPMOTE.name())
                 .withBehandlingsId(ID_3)
+                .withBehandlingskjedeId(ID_3)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
                 .withLestDato(LEST_DATO)
@@ -135,7 +154,9 @@ public class HenvendelsesUtilsTest {
                         new XMLMeldingTilBruker()
                                 .withFritekst(FRITEKST)
                                 .withTemagruppe(TEMAGRUPPE.name())
-                                .withKanal(KANAL)));
+                                .withKanal(KANAL)
+                                .withNavident(NAVIDENT)
+                ));
     }
 
 }

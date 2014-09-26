@@ -31,7 +31,7 @@
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>dialogarena-behandlingsinformasjon</artifactId>
-            <version>0.0.22</version>
+            <version>0.0.25</version>
         </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>

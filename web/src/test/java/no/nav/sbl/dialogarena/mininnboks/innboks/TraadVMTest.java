@@ -15,17 +15,19 @@ import static no.nav.modig.lang.option.Optional.optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.joda.time.DateTime.now;
 
 public class TraadVMTest {
 
 
     @Test
     public void skalSamleHenvendelserBasertPaaTraader() {
-        String traadId1 = "1";
-        String traadId2 = "2";
+        Henvendelse henvendelse1 = lagForsteHenvendelseITraad();
+        Henvendelse henvendelse2 = lagForsteHenvendelseITraad();
 
-        Henvendelse henvendelse1 = lagHenvendelse(traadId1);
-        Henvendelse henvendelse2 = lagHenvendelse(traadId2);
+        String traadId1 = henvendelse1.traadId;
+        String traadId2 = henvendelse2.traadId;
+
         Henvendelse henvendelse3 = lagHenvendelse(traadId1);
         Henvendelse henvendelse4 = lagHenvendelse(traadId2);
 
@@ -43,14 +45,35 @@ public class TraadVMTest {
     }
 
     @Test
-    public void traaderErSortertPaaDato() {
-        String traadId1 = "1";
-        String traadId2 = "2";
+    public void filtrererUtTraaderSomIkkeHarEnRothenvendelse() {
+        //Etter en viss periode (5 år i skrivende stund) skal henvendelser skjules helt. Derfor kan det hende at spørsmålet ikke kommer med når man spør Henvendelse.
+        //Frittstående referater og spørsmål skal alltid ha behandlingskjedeId lik sin egen behandlingsId, så de skal ikke filtreres bort.
 
-        Henvendelse henvendelse1 = lagHenvendelse(traadId1, DateTime.now().minusDays(1));
-        Henvendelse henvendelse2 = lagHenvendelse(traadId2, DateTime.now());
-        Henvendelse henvendelse3 = lagHenvendelse(traadId1, DateTime.now().minusDays(2));
-        Henvendelse henvendelse4 = lagHenvendelse(traadId2, DateTime.now().minusDays(4));
+        Henvendelse henvendelse1 = lagForsteHenvendelseITraad();
+        Henvendelse henvendelse2 = lagForsteHenvendelseITraad();
+
+        String traadId1 = henvendelse1.traadId;
+        String traadId2 = henvendelse2.traadId;
+
+        Henvendelse henvendelse3 = lagHenvendelse(traadId1);
+        Henvendelse henvendelse4 = lagHenvendelse(traadId2);
+        Henvendelse henvendelse5 = lagHenvendelse(traadId1);
+
+        List<TraadVM> traadListe = TraadVM.tilTraader(asList(henvendelse2, henvendelse3, henvendelse4, henvendelse5));
+
+        assertThat(traadListe.size(), is(1));
+    }
+
+    @Test
+    public void traaderErSortertPaaDato() {
+        Henvendelse henvendelse1 = lagForsteHenvendelseITraad(now().minusDays(4));
+        Henvendelse henvendelse2 = lagForsteHenvendelseITraad(now().minusDays(2));
+
+        String traadId1 = henvendelse1.traadId;
+        String traadId2 = henvendelse2.traadId;
+
+        Henvendelse henvendelse3 = lagHenvendelse(traadId1, now().minusDays(1));
+        Henvendelse henvendelse4 = lagHenvendelse(traadId2, now());
 
         List<TraadVM> traadListe = TraadVM.tilTraader(asList(henvendelse1, henvendelse2, henvendelse3, henvendelse4));
 
@@ -60,15 +83,16 @@ public class TraadVMTest {
 
     @Test
     public void henvendelserSortertIHverTraad() {
-        String traadId = "1";
+        Henvendelse henvendelse1 = lagForsteHenvendelseITraad(now().minusDays(1));
 
-        Henvendelse henvendelse1 = lagHenvendelse(traadId, DateTime.now());
-        Henvendelse henvendelse2 = lagHenvendelse(traadId, DateTime.now().minusDays(1));
-        Henvendelse henvendelse3 = lagHenvendelse(traadId, DateTime.now().plusDays(1));
+        String traadId = henvendelse1.traadId;
+
+        Henvendelse henvendelse2 = lagHenvendelse(traadId, now().plusDays(1));
+        Henvendelse henvendelse3 = lagHenvendelse(traadId, now());
 
         List<TraadVM> traadListe = TraadVM.tilTraader(asList(henvendelse1, henvendelse2, henvendelse3));
 
-        assertThat(traadListe.get(0).henvendelser, is(asList(henvendelse3, henvendelse1, henvendelse2)));
+        assertThat(traadListe.get(0).henvendelser, is(asList(henvendelse2, henvendelse3, henvendelse1)));
     }
 
     @Test
@@ -103,7 +127,7 @@ public class TraadVMTest {
     }
 
     private static Henvendelse lagHenvendelse(String traadId) {
-        return lagHenvendelse(traadId, DateTime.now());
+        return lagHenvendelse(traadId, now());
     }
 
     private static Henvendelse lagHenvendelse(String traadId, DateTime opprettet) {
@@ -112,5 +136,17 @@ public class TraadVMTest {
         henvendelse.opprettet = opprettet;
         return henvendelse;
     }
+
+    private static Henvendelse lagForsteHenvendelseITraad() {
+        return lagForsteHenvendelseITraad(now());
+    }
+
+    private static Henvendelse lagForsteHenvendelseITraad(DateTime opprettet) {
+        Henvendelse henvendelse = new Henvendelse(UUID.randomUUID().toString());
+        henvendelse.traadId = henvendelse.id;
+        henvendelse.opprettet = opprettet;
+        return henvendelse;
+    }
+
 
 }
