@@ -7,11 +7,14 @@ import no.nav.modig.content.ContentRetriever;
 import no.nav.modig.content.ValueRetriever;
 import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
 import no.nav.modig.content.enonic.HttpContentRetriever;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +27,10 @@ public class ContentConfig {
     private static final String DEFAULT_LOCALE = "nb";
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/systemsider/Modernisering/minehenvendelser/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innhold_nb";
+    private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
+
+    @Value("${appres.cms.url}")
+    private String appresUrl;
 
     @Bean
     public ValueRetriever siteContentRetriever(ContentRetriever contentRetriever) throws URISyntaxException {
@@ -34,6 +41,11 @@ public class ContentConfig {
         return new ValuesFromContentWithResourceBundleFallback(
                 asList(INNHOLDSTEKSTER_NB_NO_LOCAL), contentRetriever,
                 uris, DEFAULT_LOCALE);
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
     @Bean
@@ -53,17 +65,26 @@ public class ContentConfig {
 
     @Bean
     public DecoratorFilter decoratorFilter() {
-        EnonicContentRetriever enonicContentRetriever = new EnonicContentRetriever("mininnboks");
-        enonicContentRetriever.setBaseUrl(System.getProperty("appres.cms.url"));
-        enonicContentRetriever.setHttpTimeoutMillis(5000);
-        enonicContentRetriever.setRefreshIntervalSeconds(1800);
-
         DecoratorFilter decoratorFilter = new DecoratorFilter();
+        decoratorFilter.setContentRetriever(appresContentRetriever());
+        decoratorFilter.setNoDecoratePatterns(NO_DECORATOR_PATTERNS);
         decoratorFilter.setFragmentsUrl("common-html/v1/navno");
-        decoratorFilter.setContentRetriever(enonicContentRetriever);
         decoratorFilter.setApplicationName("Min Innboks");
-        decoratorFilter.setFragmentNames(asList("resources","header", "footer-withmenu"));
+        decoratorFilter.setFragmentNames(asList(
+                "header-withmenu",
+                "footer-withmenu",
+                "inline-js-variables"
+        ));
 
         return decoratorFilter;
     }
+
+    private EnonicContentRetriever appresContentRetriever() {
+        EnonicContentRetriever contentRetriever = new EnonicContentRetriever("saksoversikt");
+        contentRetriever.setBaseUrl(appresUrl);
+        contentRetriever.setRefreshIntervalSeconds(1800);
+        contentRetriever.setHttpTimeoutMillis(10000);
+        return contentRetriever;
+    }
+
 }

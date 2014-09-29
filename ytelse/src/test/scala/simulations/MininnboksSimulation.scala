@@ -11,6 +11,7 @@ class MininnboksSimulation extends Simulation {
   final val BASE_URL = "https://tjenester-" + ENV + ".nav.no"
   val userCredentials = csv("brukere.csv").circular
   val password = "Eifel123"
+  // System.getProperty???
   val nrUsers: Int = Integer.getInteger("nrUsers", 1)
   val rampTime: Long = java.lang.Long.getLong("rampTime", 1L)
 
