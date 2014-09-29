@@ -7,7 +7,6 @@ import no.nav.modig.content.ContentRetriever;
 import no.nav.modig.content.ValueRetriever;
 import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
 import no.nav.modig.content.enonic.HttpContentRetriever;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -28,9 +27,6 @@ public class ContentConfig {
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/systemsider/Modernisering/minehenvendelser/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innhold_nb";
     private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
-
-    @Value("${appres.cms.url}")
-    private String appresUrl;
 
     @Bean
     public ValueRetriever siteContentRetriever(ContentRetriever contentRetriever) throws URISyntaxException {
@@ -81,7 +77,7 @@ public class ContentConfig {
 
     private EnonicContentRetriever appresContentRetriever() {
         EnonicContentRetriever contentRetriever = new EnonicContentRetriever("saksoversikt");
-        contentRetriever.setBaseUrl(appresUrl);
+        contentRetriever.setBaseUrl(System.getProperty("appres.cms.url"));
         contentRetriever.setRefreshIntervalSeconds(1800);
         contentRetriever.setHttpTimeoutMillis(10000);
         return contentRetriever;
