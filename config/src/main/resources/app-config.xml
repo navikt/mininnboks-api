@@ -18,6 +18,7 @@
         <baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link"/>
         <baseUrl alias="appres.cms" mapToProperty="appres.cms"/>
         <baseUrl alias="temavelger.link" mapToProperty="temavelger.link"/>
+        <baseUrl alias="brukerprofil.link" mapToProperty="brukerprofil.link"/>
 
         <webservice alias="domene.Brukerdialog:Henvendelse_v2" mapToProperty="henvendelse.ws"/>
         <webservice alias="virksomhet:Brukerprofil_v1" mapToProperty="brukerprofil.ws"/>
