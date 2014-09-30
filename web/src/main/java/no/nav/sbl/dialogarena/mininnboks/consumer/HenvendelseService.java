@@ -28,7 +28,7 @@ import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
 
-    public static final String KONTAKT_NAV_SAKSTEMA = "KNA";
+    static final String KONTAKT_NAV_SAKSTEMA = "KNA";
 
     WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer);
 
