@@ -2,11 +2,15 @@
 <html xmlns:wicket="http://wicket.apache.org" lang="no">
 <wicket:head>
     <title><wicket:message key="mininnboks.tittel" /></title>
-    {{fragment.resources}}
 </wicket:head>
 <body>
 <div class="pagewrapper">
-    {{fragment.header}}
+    <nav>
+        <a href="#mainmenu" accesskey="h" class="visuallyhidden focusable">Til hovedmeny</a>
+        <a href="#maincontent" accesskey="i" class="visuallyhidden focusable">Til hovedinnhold</a>
+    </nav>
+    {{fragment.inline-js-variables}}
+    {{fragment.header-withmenu}}
     <main id="maincontent" class="mininnboks-omslag" tabindex="-1" role="main">
         <wicket:child/>
     </main>
