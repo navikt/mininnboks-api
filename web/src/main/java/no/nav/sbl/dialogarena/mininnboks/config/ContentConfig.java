@@ -24,7 +24,7 @@ import static java.util.Arrays.asList;
 public class ContentConfig {
 
     private static final String DEFAULT_LOCALE = "nb";
-    private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/systemsider/Modernisering/minehenvendelser/nb/tekster";
+    private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/app/mininnboks/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innhold_nb";
     private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
 
