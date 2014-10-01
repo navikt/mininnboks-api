@@ -85,7 +85,7 @@
                         <nb>innhold_nb.properties</nb>
                     </propertiesFiler>
                     <menyPunktPaths>
-                        <nb>/site/2/systemsider/Modernisering/minehenvendelser/nb/tekster</nb>
+                        <nb>/site/18/app/mininnboks/nb/tekster</nb>
                     </menyPunktPaths>
                 </configuration>
             </plugin>
