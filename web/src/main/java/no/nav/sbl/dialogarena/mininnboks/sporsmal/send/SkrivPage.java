@@ -1,5 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.sporsmal.send;
 
+import com.vaynberg.wicket.select2.Response;
+import com.vaynberg.wicket.select2.Select2Choice;
+import com.vaynberg.wicket.select2.TextChoiceProvider;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextArea;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
@@ -8,25 +11,24 @@ import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.Sporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
-import org.apache.wicket.ajax.AjaxEventBehavior;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.TemagruppeDropdown;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.joda.time.DateTime;
@@ -35,11 +37,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
+import java.util.Collection;
+
 import static java.util.Arrays.asList;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
-import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.not;
 
@@ -68,9 +71,6 @@ public class SkrivPage extends BasePage {
 
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
-
-            final Label temagruppeOverskrift = new Label("temagruppe", new StringResourceModel("${temagruppe}", model));
-            temagruppeOverskrift.setOutputMarkupId(true);
 
             EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model);
 
@@ -105,29 +105,12 @@ public class SkrivPage extends BasePage {
 
             Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
 
-            final WebMarkupContainer endreTemagruppeWrapper = new WebMarkupContainer("endreTemagruppeWrapper");
-            endreTemagruppeWrapper.setOutputMarkupId(true);
-            ListView<Temagruppe> endreTemagruppe = new ListView<Temagruppe>("temagruppeListe", asList(Temagruppe.values())) {
-                @Override
-                protected void populateItem(final ListItem<Temagruppe> item) {
-                    final Temagruppe temagruppe = item.getModelObject();
-                    final Label temagruppeLabel = new Label("temagruppe", new ResourceModel(temagruppe.toString()));
-                    temagruppeLabel.add(hasCssClassIf("valgt", Model.of(temagruppe == SporsmalForm.this.getModelObject().getTemagruppe())));
-                    temagruppeLabel.add(new AjaxEventBehavior("click") {
-                        @Override
-                        protected void onEvent(AjaxRequestTarget target) {
-                            SporsmalForm.this.getModelObject().setTemagruppe(temagruppe);
-                            target.add(temagruppeOverskrift, endreTemagruppeWrapper);
-                        }
-                    });
-                    item.add(temagruppeLabel);
-                }
-            };
-            endreTemagruppeWrapper.add(endreTemagruppe);
+            IModel<Temagruppe> temagruppeSelected = Model.of(getModelObject().getTemagruppe());
+            TemagruppeDropdown temagruppeDropdown = new TemagruppeDropdown("temagruppeDropdown", temagruppeSelected);
 
             add(new BetingelseValgPanel("betingelseValg", model));
 
-            add(temagruppeOverskrift, endreTemagruppeWrapper, enhancedTextArea, feedbackPanel, send, avbryt);
+            add(temagruppeDropdown, enhancedTextArea, feedbackPanel, send, avbryt);
         }
 
         @Override
