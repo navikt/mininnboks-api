@@ -14,6 +14,10 @@ public class TemagruppeDropdown extends Select2Choice<Temagruppe> {
 
     public TemagruppeDropdown(String id, IModel<Temagruppe> model) {
         super(id, model, new TemagruppeProvider());
+
+        getSettings().setMinimumResultsForSearch(-1);
+        getSettings().setContainerCssClass("temagruppevalg");
+        getSettings().setWidth("365px");
     }
 
     static class TemagruppeProvider extends TextChoiceProvider<Temagruppe> {
@@ -35,7 +39,7 @@ public class TemagruppeDropdown extends Select2Choice<Temagruppe> {
         @Override
         public Collection<Temagruppe> toChoices(Collection<String> ids) {
             for (Temagruppe temagruppe : Temagruppe.values()) {
-                if (ids.contains(getId(temagruppe))) {
+                if (ids.contains(temagruppe.name())) {
                     return asList(temagruppe);
                 }
             }
