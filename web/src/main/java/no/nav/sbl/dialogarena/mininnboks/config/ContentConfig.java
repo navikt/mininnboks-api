@@ -30,7 +30,7 @@ public class ContentConfig {
 
     @Bean
     public ValueRetriever siteContentRetriever(ContentRetriever contentRetriever) throws URISyntaxException {
-        String cmsBaseUrl = System.getProperty("dialogarena.cms.url");
+        String cmsBaseUrl = System.getProperty("appres.cms.url");
         Map<String, List<URI>> uris = new HashMap<>();
         uris.put(DEFAULT_LOCALE,
                 asList(new URI(cmsBaseUrl + INNHOLDSTEKSTER_NB_NO_REMOTE)));
@@ -76,7 +76,7 @@ public class ContentConfig {
     }
 
     private EnonicContentRetriever appresContentRetriever() {
-        EnonicContentRetriever contentRetriever = new EnonicContentRetriever("saksoversikt");
+        EnonicContentRetriever contentRetriever = new EnonicContentRetriever("mininnboks");
         contentRetriever.setBaseUrl(System.getProperty("appres.cms.url"));
         contentRetriever.setRefreshIntervalSeconds(1800);
         contentRetriever.setHttpTimeoutMillis(10000);
