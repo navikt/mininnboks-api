@@ -28,7 +28,7 @@ public class TemagruppeDropdown extends Select2Choice<Temagruppe> {
 
         @Override
         protected Object getId(Temagruppe choice) {
-            return String.valueOf(choice.ordinal());
+            return choice.name();
         }
 
         @Override
