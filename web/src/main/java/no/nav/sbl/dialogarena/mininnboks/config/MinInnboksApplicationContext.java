@@ -36,6 +36,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -50,71 +51,76 @@ public class MinInnboksApplicationContext implements ApplicationContextAware {
     @SuppressFBWarnings("MS_CANNOT_BE_FINAL")
     public static ApplicationContext context;
 
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
     private SendInnHenvendelsePortType sendInnHenvendelseSSO() {
         return createPortType(System.getProperty("send.inn.henvendelse.ws.url"),
-                "classpath:SendInnHenvendelse.wsdl",
-                SendInnHenvendelsePortType.class,
-                true);
+            "classpath:SendInnHenvendelse.wsdl",
+            SendInnHenvendelsePortType.class,
+            true);
     }
 
     private HenvendelsePortType henvendelseSSO() {
         return createPortType(System.getProperty("henvendelse.ws.url"),
-                "classpath:Henvendelse.wsdl",
-                HenvendelsePortType.class,
-                true);
+            "classpath:Henvendelse.wsdl",
+            HenvendelsePortType.class,
+            true);
     }
 
     private InnsynHenvendelsePortType innsynHenvendelseSSO() {
         return createPortType(System.getProperty("innsyn.henvendelse.ws.url"),
-                "classpath:InnsynHenvendelse.wsdl",
-                InnsynHenvendelsePortType.class,
-                true);
+            "classpath:InnsynHenvendelse.wsdl",
+            InnsynHenvendelsePortType.class,
+            true);
     }
 
     private BrukerprofilPortType brukerprofilSSO() {
         return createPortType(System.getProperty("brukerprofil.ws.url"),
-                "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
-                BrukerprofilPortType.class,
-                true);
+            "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
+            BrukerprofilPortType.class,
+            true);
     }
 
     private DiskresjonskodePortType diskresjonskodeSSO() {
         return createPortType(System.getProperty("diskresjonskode.ws.url"),
-                "classpath:wsdl/Diskresjonskode.wsdl",
-                DiskresjonskodePortType.class,
-                true);
+            "classpath:wsdl/Diskresjonskode.wsdl",
+            DiskresjonskodePortType.class,
+            true);
     }
 
     @Bean
     public static SendInnHenvendelsePortType sendInnHenvendelseSystemUser() {
         return createPortType(System.getProperty("send.inn.henvendelse.ws.url"),
-                "classpath:SendInnHenvendelse.wsdl",
-                SendInnHenvendelsePortType.class,
-                false);
+            "classpath:SendInnHenvendelse.wsdl",
+            SendInnHenvendelsePortType.class,
+            false);
     }
 
     @Bean
     public HenvendelsePortType henvendelseSystemUser() {
         return createPortType(System.getProperty("henvendelse.ws.url"),
-                "classpath:Henvendelse.wsdl",
-                HenvendelsePortType.class,
-                false);
+            "classpath:Henvendelse.wsdl",
+            HenvendelsePortType.class,
+            false);
     }
 
     @Bean
     public InnsynHenvendelsePortType innsynHenvendelseSystemUser() {
         return createPortType(System.getProperty("innsyn.henvendelse.ws.url"),
-                "classpath:InnsynHenvendelse.wsdl",
-                InnsynHenvendelsePortType.class,
-                false);
+            "classpath:InnsynHenvendelse.wsdl",
+            InnsynHenvendelsePortType.class,
+            false);
     }
 
     @Bean
     public BrukerprofilPortType brukerprofilSystemUser() {
         return createPortType(System.getProperty("brukerprofil.ws.url"),
-                "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
-                BrukerprofilPortType.class,
-                false);
+            "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
+            BrukerprofilPortType.class,
+            false);
     }
 
     @Bean
@@ -172,10 +178,10 @@ public class MinInnboksApplicationContext implements ApplicationContextAware {
         proxy.getFeatures().addAll(Arrays.asList(new WSAddressingFeature(), new LoggingFeature()));
         proxy.setProperties(new HashMap<String, Object>());
         proxy.getProperties().put("jaxb.additionalContextClasses", new Class[]{
-                XMLHenvendelse.class,
-                XMLMetadataListe.class,
-                XMLMeldingFraBruker.class,
-                XMLMeldingTilBruker.class});
+            XMLHenvendelse.class,
+            XMLMetadataListe.class,
+            XMLMeldingFraBruker.class,
+            XMLMeldingTilBruker.class});
 
         T portType = proxy.create(serviceClass);
         Client client = ClientProxy.getClient(portType);

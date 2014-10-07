@@ -7,10 +7,14 @@ import no.nav.modig.content.ContentRetriever;
 import no.nav.modig.content.ValueRetriever;
 import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
 import no.nav.modig.content.enonic.HttpContentRetriever;
+import org.apache.wicket.Application;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
+import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 
 @Configuration
+@EnableScheduling
 public class ContentConfig {
 
     private static final String DEFAULT_LOCALE = "nb";
@@ -28,20 +33,22 @@ public class ContentConfig {
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innhold_nb";
     private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
 
-    @Bean
-    public ValueRetriever siteContentRetriever(ContentRetriever contentRetriever) throws URISyntaxException {
-        String cmsBaseUrl = System.getProperty("appres.cms.url");
-        Map<String, List<URI>> uris = new HashMap<>();
-        uris.put(DEFAULT_LOCALE,
-                asList(new URI(cmsBaseUrl + INNHOLDSTEKSTER_NB_NO_REMOTE)));
-        return new ValuesFromContentWithResourceBundleFallback(
-                asList(INNHOLDSTEKSTER_NB_NO_LOCAL), contentRetriever,
-                uris, DEFAULT_LOCALE);
-    }
+    @Value("${appres.cms.url}")
+    private String appresUrl;
 
     @Bean
-    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
+    public ValueRetriever siteContentRetriever() throws URISyntaxException {
+        Map<String, List<URI>> uris = new HashMap<>();
+        uris.put(DEFAULT_LOCALE,
+            asList(new URI(appresUrl + INNHOLDSTEKSTER_NB_NO_REMOTE)));
+        return new ValuesFromContentWithResourceBundleFallback(
+            asList(INNHOLDSTEKSTER_NB_NO_LOCAL), enonicContentRetriever(),
+            uris, DEFAULT_LOCALE);
+    }
+
+    @Bean(name = "appresUrl")
+    public String appresUrl() {
+        return appresUrl;
     }
 
     @Bean
@@ -51,11 +58,11 @@ public class ContentConfig {
     }
 
     @Bean
-    public CmsContentRetriever cmsContentRetriever(ValueRetriever valueRetriever) throws URISyntaxException {
+    public CmsContentRetriever cmsContentRetriever() throws URISyntaxException {
         CmsContentRetriever cmsContentRetriever = new CmsContentRetriever();
         cmsContentRetriever.setDefaultLocale(DEFAULT_LOCALE);
-        cmsContentRetriever.setTeksterRetriever(valueRetriever);
-        cmsContentRetriever.setArtikkelRetriever(valueRetriever);
+        cmsContentRetriever.setTeksterRetriever(siteContentRetriever());
+        cmsContentRetriever.setArtikkelRetriever(siteContentRetriever());
         return cmsContentRetriever;
     }
 
@@ -67,9 +74,9 @@ public class ContentConfig {
         decoratorFilter.setFragmentsUrl("common-html/v1/navno");
         decoratorFilter.setApplicationName("Min Innboks");
         decoratorFilter.setFragmentNames(asList(
-                "header-withmenu",
-                "footer-withmenu",
-                "inline-js-variables"
+            "header-withmenu",
+            "footer-withmenu",
+            "inline-js-variables"
         ));
 
         return decoratorFilter;
@@ -77,10 +84,17 @@ public class ContentConfig {
 
     private EnonicContentRetriever appresContentRetriever() {
         EnonicContentRetriever contentRetriever = new EnonicContentRetriever("mininnboks");
-        contentRetriever.setBaseUrl(System.getProperty("appres.cms.url"));
+        contentRetriever.setBaseUrl(appresUrl);
         contentRetriever.setRefreshIntervalSeconds(1800);
         contentRetriever.setHttpTimeoutMillis(10000);
         return contentRetriever;
+    }
+
+    @Inject
+    private Application application;
+    @Scheduled(fixedDelay = 1 * 60 * 1000)
+    private void clearCacheTask() {
+        application.getResourceSettings().getLocalizer().clearCache();
     }
 
 }
