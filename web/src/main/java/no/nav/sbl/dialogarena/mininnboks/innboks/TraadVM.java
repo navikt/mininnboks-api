@@ -2,11 +2,13 @@ package no.nav.sbl.dialogarena.mininnboks.innboks;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.innboks.utils.VisningUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,16 +24,35 @@ import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ER_LEST;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.NYESTE_OVERST;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.TRAAD_ID;
+import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.VisningUtils.henvendelseStatusTekst;
+import static no.nav.sbl.dialogarena.time.Datoformat.kortMedTid;
 
 public class TraadVM implements Serializable {
 
     public final String id;
     public final List<Henvendelse> henvendelser;
     public final IModel<Boolean> lukket;
+    public final IModel<String> statusTekst;
+    public final IModel<String> ariaTekst;
+
     public TraadVM(String id, List<Henvendelse> henvendelser) {
         this.id = id;
         this.henvendelser = henvendelser;
         this.lukket = new CompoundPropertyModel<>(true);
+        this.statusTekst = Model.of(henvendelseStatusTekst(getNyesteHenvendelse(henvendelser)));
+        this.ariaTekst = Model.of(lagARIAHjelpeStreng(this));
+    }
+
+    public static String lagARIAHjelpeStreng(TraadVM traad) {
+        Henvendelse nyesteHenvendelse = getNyesteHenvendelse(traad.henvendelser);
+        String statusTekst = VisningUtils.henvendelseStatusTekst(nyesteHenvendelse);
+
+        return String.format(
+                "%d meldinger.\nStatus: %s\nNyeste Melding: %s",
+                traad.henvendelser.size(),
+                statusTekst,
+                kortMedTid(nyesteHenvendelse.opprettet)
+        );
     }
 
     public void markerSomLest(HenvendelseService service) {
@@ -41,6 +62,12 @@ public class TraadVM implements Serializable {
                 service.merkHenvendelseSomLest(henvendelse);
             }
         }
+        oppdater();
+    }
+
+    public void oppdater() {
+        this.statusTekst.setObject(henvendelseStatusTekst(getNyesteHenvendelse(henvendelser)));
+        this.ariaTekst.setObject(lagARIAHjelpeStreng(this));
     }
 
     public static Henvendelse getNyesteHenvendelse(List<Henvendelse> henvendelser) {

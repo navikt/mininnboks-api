@@ -12,7 +12,6 @@ import java.util.List;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.getNyesteHenvendelse;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.getFritekstModel;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.henvendelseTemagruppeKey;
-import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.VisningUtils.henvendelseStatusTekstKey;
 import static no.nav.sbl.dialogarena.time.Datoformat.kortMedTid;
 
 public class NyesteMeldingPanel extends GenericPanel<TraadVM> {
@@ -24,11 +23,10 @@ public class NyesteMeldingPanel extends GenericPanel<TraadVM> {
         Henvendelse nyesteHenvendelse = getNyesteHenvendelse(henvendelser);
 
         add(new AvsenderBilde("avsenderBilde", nyesteHenvendelse));
-        add(new Label("status", new ResourceModel(henvendelseStatusTekstKey(nyesteHenvendelse))));
+        add(new Label("status", model.getObject().statusTekst));
         add(new Label("sendtDato", kortMedTid(nyesteHenvendelse.opprettet)));
         add(new Label("temagruppe", new ResourceModel(henvendelseTemagruppeKey(nyesteHenvendelse))));
         add(new Label("traadlengde", henvendelser.size()).setVisibilityAllowed(henvendelser.size() > 2));
         add(new URLParsingMultiLineLabel("fritekst", getFritekstModel(nyesteHenvendelse)));
     }
-
 }
