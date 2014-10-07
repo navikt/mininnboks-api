@@ -7,8 +7,10 @@ import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -54,12 +56,21 @@ public class Innboks extends BasePage {
                 item.add(hasCssClassIf("lest", erLest(traadVM.henvendelser)));
                 item.add(hasCssClassIf("closed", traadVM.lukket));
 
-                item.add(new AjaxLink<Void>("flipp") {
+                AjaxLink<Void> flipp = new AjaxLink<Void>("flipp") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         traadClickBehaviour(item, target);
                     }
-                });
+                };
+                Label ariahelper = new Label("ariahelper", "Vis eller skjul innholdet, " + item.getModelObject().henvendelser.size() + " meldinger");
+
+                WebMarkupContainer traadcontainer = new WebMarkupContainer("traadcontainer");
+                TidligereMeldingerPanel tidligereMeldinger = new TidligereMeldingerPanel("tidligereMeldinger", item.getModel());
+                NyesteMeldingPanel nyesteMelding = new NyesteMeldingPanel("nyesteMelding", item.getModel());
+
+                flipp.add(new AttributeAppender("aria-controls", traadcontainer.getMarkupId()));
+                flipp.add(new AttributeAppender("aria-labelledby", ariahelper.getMarkupId()));
+
                 item.add(new AjaxEventBehavior("click") {
                     @Override
                     protected void onEvent(AjaxRequestTarget target) {
@@ -74,11 +85,11 @@ public class Innboks extends BasePage {
                         attributes.setAllowDefault(true);
                     }
                 });
-                item.add(new NyesteMeldingPanel("nyesteMelding", item.getModel()));
-                item.add(new TidligereMeldingerPanel("tidligereMeldinger", item.getModel()));
+                flipp.add(ariahelper);
+                traadcontainer.add(nyesteMelding, tidligereMeldinger);
+                item.add(flipp, traadcontainer);
             }
         });
-
         add(new WebMarkupContainer("tomInnboks").add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
     }
 
