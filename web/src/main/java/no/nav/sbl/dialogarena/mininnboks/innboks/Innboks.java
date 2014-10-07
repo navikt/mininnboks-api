@@ -3,6 +3,8 @@ package no.nav.sbl.dialogarena.mininnboks.innboks;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.innboks.utils.VisningUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
@@ -18,6 +20,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import javax.inject.Inject;
@@ -30,7 +33,9 @@ import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.not;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.erLest;
+import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.getNyesteHenvendelse;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.tilTraader;
+import static no.nav.sbl.dialogarena.time.Datoformat.kortMedTid;
 import static org.apache.wicket.markup.head.JavaScriptHeaderItem.forReference;
 
 public class Innboks extends BasePage {
@@ -62,7 +67,7 @@ public class Innboks extends BasePage {
                         traadClickBehaviour(item, target);
                     }
                 };
-                Label ariahelper = new Label("ariahelper", "Vis eller skjul innholdet, " + item.getModelObject().henvendelser.size() + " meldinger");
+                Label ariahelper = new Label("ariahelper", lagARIAHjelpeStreng(item.getModelObject()));
 
                 WebMarkupContainer traadcontainer = new WebMarkupContainer("traadcontainer");
                 TidligereMeldingerPanel tidligereMeldinger = new TidligereMeldingerPanel("tidligereMeldinger", item.getModel());
@@ -91,6 +96,19 @@ public class Innboks extends BasePage {
             }
         });
         add(new WebMarkupContainer("tomInnboks").add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
+    }
+
+    private String lagARIAHjelpeStreng(TraadVM traad) {
+        Henvendelse nyesteHenvendelse = getNyesteHenvendelse(traad.henvendelser);
+        String statusTekstKey = VisningUtils.henvendelseStatusTekstKey(nyesteHenvendelse);
+        ResourceModel statusTekst = new ResourceModel(statusTekstKey, "Ingen verdi fra CMS");
+
+        return String.format(
+                "%d meldinger.\nStatus: %s\nNyesteMelding: %s",
+                traad.henvendelser.size(),
+                statusTekst.getObject(),
+                kortMedTid(nyesteHenvendelse.opprettet)
+        );
     }
 
     private static String innloggetBruker() {
