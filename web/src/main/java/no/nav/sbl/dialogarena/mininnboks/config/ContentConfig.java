@@ -69,7 +69,9 @@ public class ContentConfig {
         decoratorFilter.setFragmentNames(asList(
                 "header-withmenu",
                 "footer-withmenu",
-                "inline-js-variables"
+                "inline-js-variables",
+                "webstats-ga",
+                "skiplinks"
         ));
 
         return decoratorFilter;
