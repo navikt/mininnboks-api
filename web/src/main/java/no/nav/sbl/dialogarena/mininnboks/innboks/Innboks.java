@@ -102,12 +102,25 @@ public class Innboks extends BasePage {
 
     private void traadClickBehaviour(ListItem<TraadVM> item, AjaxRequestTarget target) {
         TraadVM traadVM = item.getModelObject();
+
         if (!erLest(traadVM.henvendelser).getObject()) {
+            target.appendJavaScript(String.format(
+                    "Innboks.markerSomLest('%s');",
+                    item.getMarkupId()
+            ));
             traadVM.markerSomLest(service);
         }
+        target.appendJavaScript(String.format(
+                "Innboks.oppdaterTraadStatus('%s', '%s', '%s');",
+                item.getMarkupId(),
+                item.getModelObject().statusTekst.getObject(),
+                item.getModelObject().ariaTekst.getObject()
+        ));
         traadVM.lukket.setObject(!traadVM.lukket.getObject());
-        traadVM.oppdater();
-        target.add(item);
+        target.appendJavaScript(String.format(
+                "Innboks.toggleTraad('%s');",
+                item.getMarkupId()
+        ));
     }
 
     private IModel<Boolean> tomInnboksModel() {

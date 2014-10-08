@@ -9,6 +9,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,10 +49,10 @@ public class TraadVM implements Serializable {
         String statusTekst = VisningUtils.henvendelseStatusTekst(nyesteHenvendelse);
 
         return String.format(
-                "%d meldinger.\nStatus: %s\nNyeste Melding: %s",
+                "%d meldinger. NyesteMelding: %s %s",
                 traad.henvendelser.size(),
-                statusTekst,
-                kortMedTid(nyesteHenvendelse.opprettet)
+                kortMedTid(nyesteHenvendelse.opprettet),
+                statusTekst
         );
     }
 
@@ -62,10 +63,6 @@ public class TraadVM implements Serializable {
                 service.merkHenvendelseSomLest(henvendelse);
             }
         }
-        oppdater();
-    }
-
-    public void oppdater() {
         this.statusTekst.setObject(henvendelseStatusTekst(getNyesteHenvendelse(henvendelser)));
         this.ariaTekst.setObject(lagARIAHjelpeStreng(this));
     }
@@ -118,5 +115,4 @@ public class TraadVM implements Serializable {
             return henvendelse.id.equals(henvendelse.traadId);
         }
     };
-
 }

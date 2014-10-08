@@ -7,7 +7,6 @@ import org.apache.wicket.model.ResourceModel;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL_SKRIFTLIG;
 
 public class VisningUtils {
-
     public static String henvendelseStatusTekst(Henvendelse henvendelse) {
         if (henvendelse.type == null) {
             return "Fant ingen status";
