@@ -21,10 +21,11 @@ var Innboks = (function () {
         $traad.find('ariahelper').text(ariaStatus);
     }
     $(document).ready(function () {
-        $('innboks-container').on('keydown', '.flipp', function (event) {
+        $('#innboks-container').on('keydown', '.flipp', function (event) {
             if (event.keyCode === 32) {
                 var $flipp = $(event.currentTarget);
                 $flipp.click();
+                event.preventDefault();
             }
         });
     });

@@ -67,7 +67,6 @@ public class Innboks extends BasePage {
                 WebMarkupContainer traadcontainer = new WebMarkupContainer("traadcontainer");
 
                 TidligereMeldingerPanel tidligereMeldinger = new TidligereMeldingerPanel("tidligereMeldinger", item.getModel());
-                tidligereMeldinger.add(visibleIf(not(item.getModelObject().lukket)));
 
                 NyesteMeldingPanel nyesteMelding = new NyesteMeldingPanel("nyesteMelding", item.getModel());
 
