@@ -12,6 +12,7 @@ import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.TemagruppeDropdown;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -22,6 +23,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.joda.time.DateTime;
@@ -61,9 +63,11 @@ public class SkrivPage extends BasePage {
 
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
-            
-            EnhancedTextAreaConfigurator config = new EnhancedTextAreaConfigurator().withPlaceholderTextKey("skriv-sporsmal.fritekst.placeholder");
+
+            String placeholderTextKey = "skriv-sporsmal.fritekst.placeholder";
+            EnhancedTextAreaConfigurator config = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(placeholderTextKey);
             EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, config);
+            enhancedTextArea.get("text").add(new AttributeAppender("aria-label", new ResourceModel(placeholderTextKey)));
 
             final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
             feedbackPanel.setOutputMarkupId(true);
