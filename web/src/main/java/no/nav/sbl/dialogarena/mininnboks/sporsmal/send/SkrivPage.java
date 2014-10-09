@@ -10,8 +10,8 @@ import no.nav.sbl.dialogarena.mininnboks.sporsmal.Sporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -76,10 +76,10 @@ public class SkrivPage extends BasePage {
             final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
             feedbackPanel.setOutputMarkupId(true);
 
-            AjaxSubmitLink send = new AjaxSubmitLink("send") {
+            IndicatingAjaxButton send = new IndicatingAjaxButton("send", this) {
                 @Override
-                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                    Sporsmal spsm = getModelObject();
+                protected void onSubmit(AjaxRequestTarget target, Form form) {
+                    Sporsmal spsm = model.getObject();
                     if (spsm.betingelserAkseptert) {
                         try {
                             spsm.innsendingsTidspunkt = DateTime.now();
