@@ -12,9 +12,6 @@
 
     <resources>
         <baseUrl alias="appres.cms" mapToProperty="appres.cms"/>
-        <baseUrl alias="dialogarena.footer" mapToProperty="dialogarena.footer"/>
-        <baseUrl alias="mininnboks.navigasjonslink" mapToProperty="mininnboks.navigasjonslink"/>
-        <baseUrl alias="dokumentinnsending.link" mapToProperty="dokumentinnsending.link"/>
         <baseUrl alias="dittnav.link" mapToProperty="dittnav.link"/>
         <baseUrl alias="temavelger.link" mapToProperty="temavelger.link"/>
         <baseUrl alias="brukerprofil.link" mapToProperty="brukerprofil.link"/>
