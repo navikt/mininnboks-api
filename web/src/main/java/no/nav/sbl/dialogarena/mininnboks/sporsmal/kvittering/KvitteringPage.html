@@ -14,13 +14,15 @@
             <wicket:container wicket:id="epostPanel" id="epostpanel"/>
             <hr class="robust-strek"/>
         </div>
-        <a wicket:id="tilDittNav" class="knapp-link-stor">
+
+        <a wicket:id="tilMinInnboks" class="knapp-link-stor">
+            <wicket:message key="send-sporsmal.bekreftelse.til-meldingsboksen">[[Til min innboks]]</wicket:message>
+        </a>
+    </article>
+    <div class="avbryt">
+        <a wicket:id="tilDittNav">
             <wicket:message key="send-sporsmal.bekreftelse.til-ditt-nav">[[Til Ditt NAV]]</wicket:message>
         </a>
-
-        <div class="avbryt"><a wicket:id="tilMineHenvendelser">
-            <wicket:message key="send-sporsmal.bekreftelse.til-meldingsboksen">[[Til min innboks]]</wicket:message>
-        </a></div>
-    </article>
+    </div>
 </wicket:extend>
 </html>

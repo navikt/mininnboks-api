@@ -9,7 +9,7 @@ public class KvitteringPage extends BasePage {
 
     public KvitteringPage() {
         add(new ExternalLink("tilDittNav", System.getProperty("dittnav.link.url")));
-        add(new BookmarkablePageLink<Void>("tilMineHenvendelser", Innboks.class));
+        add(new BookmarkablePageLink<Void>("tilMinInnboks", Innboks.class));
         add(new EpostPanel("epostPanel"));
     }
 
