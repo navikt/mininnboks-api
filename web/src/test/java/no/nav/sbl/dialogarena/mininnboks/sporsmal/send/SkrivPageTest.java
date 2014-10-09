@@ -7,8 +7,8 @@ import no.nav.sbl.dialogarena.mininnboks.config.HenvendelseServiceMockContext;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.TemagruppeDropdown;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.junit.Before;
@@ -47,7 +47,7 @@ public class SkrivPageTest extends WicketPageTest {
     public void lasterSkrivPageKomponenter() {
         wicketTester.should().containComponent(withId("sporsmalForm").and(ofType(Form.class)))
                 .printComponentsTree()
-                .should().inComponent(withId("sporsmalForm")).containComponent(withId("temagruppeDropdown").and(ofType(TemagruppeDropdown.class)))
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("temagruppe").and(ofType(DropDownChoice.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("tekstfelt").and(ofType(EnhancedTextArea.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("betingelseValg").and(ofType(BetingelseValgPanel.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("send").and(ofType(AjaxSubmitLink.class)))

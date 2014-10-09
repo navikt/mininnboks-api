@@ -9,13 +9,15 @@ import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.Sporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.TemagruppeDropdown;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -32,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
+import static java.util.Arrays.asList;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
@@ -43,6 +46,7 @@ public class SkrivPage extends BasePage {
     private static final Logger LOG = LoggerFactory.getLogger(SkrivPage.class);
     public static final String IKKE_AKSEPTERT_FEILMELDING_PROPERTY = "send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert";
     public static final String UNDERLIGGENDE_FEIL_FEILMELDING_PROPERTY = "send-sporsmal.still-sporsmal.underliggende-feil";
+    public static final JavaScriptResourceReference SELECTMENU_JS = new JavaScriptResourceReference(SkrivPage.class, "jquery-ui-selectmenu.min.js");
 
     @Inject
     private HenvendelseService service;
@@ -100,8 +104,12 @@ public class SkrivPage extends BasePage {
 
             Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
 
-            IModel<Temagruppe> temagruppeSelected = new PropertyModel<>(getModelObject(), "temagruppe");
-            TemagruppeDropdown temagruppeDropdown = new TemagruppeDropdown("temagruppeDropdown", temagruppeSelected);
+            DropDownChoice<Temagruppe> temagruppeDropdown = new DropDownChoice<>("temagruppe", asList(Temagruppe.values()), new ChoiceRenderer<Temagruppe>() {
+                @Override
+                public Object getDisplayValue(Temagruppe object) {
+                    return getString(object.name());
+                }
+            });
 
             add(new BetingelseValgPanel("betingelseValg", model));
 
@@ -112,6 +120,7 @@ public class SkrivPage extends BasePage {
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skriv.js")));
+            response.render(OnDomReadyHeaderItem.forScript("$('.temagruppevelger').selectmenu({appendTo:'.temagruppevelger-wrapper'});"));
         }
     }
 

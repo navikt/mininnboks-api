@@ -15,38 +15,6 @@
       margin: 20px 0 30px 0;
       padding: 0 1em;
     }
-
-    .temagruppevalg {
-      &:not(.select2-container-active) > a {
-        border: 1px solid @borderGraa;
-      }
-      &.select2-container-active > a {
-        border: 1px dashed @morkeBlaa;
-      }
-      //For dropdown se styles for .select2-results
-      a {
-        height: 30px;
-        background: none;
-        border-radius: 0;
-        padding: 0;
-        box-shadow: none;
-        span {
-          margin-right: 0;
-          margin-top: 0.1rem;
-        }
-        div {
-          .pil-ned;
-          margin-top: 0.65rem;
-          margin-right: 1em;
-          background: none;
-          border-radius: 0;
-          b {
-            background: none;
-            border: 0;
-          }
-        }
-      }
-    }
     .charcounter {
       margin-bottom: 1em;
     }
@@ -186,7 +154,71 @@ ul.feedbackPanel {
   border-right: 8px solid transparent;
   border-top: 8px solid @morkeBlaa;
 }
-
-div.select2-drop-active {
-  border: 1px solid #aaa;
+.temagruppevelger-wrapper {
+  position: relative;
+  .temagruppevelger {
+    width: 365px;
+  }
+  .ui-front {
+    z-index: 100;
+  }
+  .ui-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: block;
+    outline: none;
+    .ui-menu-item {
+      position: relative;
+      margin: 0;
+      padding: 0.5em 1em;
+      cursor: pointer;
+      min-height: 0;
+    }
+    .ui-state-focus, .ui-state-active {
+      background-color: #0067c5;
+      color: #fff;
+    }
+  }
+  .ui-selectmenu-menu {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    background-color: #fff;
+    box-shadow: 0 5px 8px 0 #cccccc;
+  }
+  .ui-selectmenu-open {
+    display: block;
+  }
+  .ui-selectmenu-button {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #fff;
+    border: 1px solid #cccccc;
+    span {
+      &.ui-icon {
+        position: absolute;
+        height: 0;
+        width: 0;
+        border: 8px solid transparent;
+        border-top-color: #0067c5;
+        right: 1em;
+        top: 12px;
+      }
+      &.ui-selectmenu-text {
+        padding: 0.5em 1em;
+        display: block;
+        line-height: 1.4;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
 }
