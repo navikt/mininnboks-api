@@ -12,14 +12,10 @@
                 <h2 class="deloverskrift"><wicket:message key="send-sporsmal.still-sporsmal.deloverskrift">[[Skriv melding]]</wicket:message></h2>
                 <hr class="robust-strek"/>
             </div>
-            <h3 wicket:id="temagruppe" class="temagruppe-overskrift"></h3><div class="pil-ned"></div>
-            <div wicket:id="endreTemagruppeWrapper" class="endre-temagruppe-wrapper">
-                <ul class="endre-temagruppe">
-                    <wicket:container wicket:id="temagruppeListe">
-                        <li wicket:id="temagruppe"/>
-                    </wicket:container>
-                </ul>
+            <div class="temagruppeWrapper">
+                <input wicket:id="temagruppeDropdown" type="hidden" />
             </div>
+
             <p class="hjelpetekst"><wicket:message key="send-sporsmal.still-sporsmal.hjelpetekst">[[Hjelpetekst]]</wicket:message></p>
 
             <wicket:container wicket:id="tekstfelt" />
@@ -28,7 +24,7 @@
 
             <div wicket:id="betingelseValg"></div>
 
-            <div><a wicket:id="send" class="send-link knapp-hoved-stor" href="#"><wicket:message key="send-sporsmal.still-sporsmal.send-inn">[[Send inn]]</wicket:message></a></div>
+            <div><a wicket:id="send" class="send-link knapp-hoved-stor" href="#" role="button"><wicket:message key="send-sporsmal.still-sporsmal.send-inn">[[Send inn]]</wicket:message></a></div>
             <div class="avbryt"><a wicket:id="avbryt" href="#"><wicket:message key="send-sporsmal.still-sporsmal.avbryt">[[Avbryt]]</wicket:message></a></div>
         </form>
     </article>

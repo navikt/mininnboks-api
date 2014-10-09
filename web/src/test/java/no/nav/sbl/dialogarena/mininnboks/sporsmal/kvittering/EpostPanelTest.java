@@ -2,7 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering;
 
 import no.nav.sbl.dialogarena.mininnboks.WicketPageTest;
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.EpostServiceMockContext;
+import no.nav.sbl.dialogarena.mininnboks.config.EpostServiceMockContext;
 import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;

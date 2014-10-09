@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.selftest;
 
 import no.nav.modig.wicket.selftest.SelfTestBase;
+import no.nav.sbl.dialogarena.mininnboks.config.ContentConfig;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
@@ -27,6 +28,9 @@ public class SelfTestPage extends SelfTestBase {
     private static final Logger logger = LoggerFactory.getLogger(SelfTestPage.class);
 
     @Inject
+    private ContentConfig contentConfig;
+
+    @Inject
     private HenvendelsePortType henvendelse;
 
     @Inject
@@ -43,16 +47,15 @@ public class SelfTestPage extends SelfTestBase {
     }
 
     private AvhengighetStatus getCmsStatus() {
-        String cmsBaseUrl = System.getProperty("dialogarena.cms.url");
         long start = currentTimeMillis();
         int statusCode = 0;
         HttpURLConnection connection = null;
         try {
-            connection = (HttpURLConnection) new URL(cmsBaseUrl).openConnection();
+            connection = (HttpURLConnection) new URL(contentConfig.appresUrl()).openConnection();
             connection.setConnectTimeout(10000);
             statusCode = connection.getResponseCode();
         } catch (IOException e) {
-            logger.warn("Cms not reachable on " + cmsBaseUrl);
+            logger.warn("Cms not reachable on " + contentConfig.appresUrl());
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -60,7 +63,7 @@ public class SelfTestPage extends SelfTestBase {
         }
 
         String status = HTTP_OK == statusCode ? SelfTestBase.STATUS_OK : SelfTestBase.STATUS_ERROR;
-        return new AvhengighetStatus("ENONIC_CMS", status, currentTimeMillis() - start, format("URL: %s", cmsBaseUrl));
+        return new AvhengighetStatus("ENONIC_CMS", status, currentTimeMillis() - start, format("URL: %s", contentConfig.appresUrl()));
     }
 
     private AvhengighetStatus getHenvendelseWSStatus() {

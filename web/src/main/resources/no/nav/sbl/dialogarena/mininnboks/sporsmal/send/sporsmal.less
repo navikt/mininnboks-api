@@ -1,6 +1,7 @@
 @containerWidth: 650px;
 @morkeBlaa: #0067c5;
 @navRodt: #c30000;
+@borderGraa: #cccccc;
 
 .send-panel {
   form {
@@ -14,37 +15,34 @@
       margin: 20px 0 30px 0;
       padding: 0 1em;
     }
-    .pil-ned {
-      cursor: pointer;
-      display: inline-block;
-      margin-bottom: 0;
-      margin-left: 0.5rem;
-    }
-    .endre-temagruppe-wrapper {
-      display: none;
-      margin: 0;
-      .endre-temagruppe {
-        list-style: none;
-        max-width: 365px;
-        width: 100%;
-        text-align: left;
-        margin: 0 auto;
-        padding: 1rem 2rem;
-        border: 1px solid #cccccc;
-        box-shadow: 0 5px 8px 0 #cccccc;
-        position: absolute;
-        left: 0;
-        right: 0;
-        background-color: #fff;
-        li {
-          cursor: pointer;
-          &:not(:last-child) {
-            margin-bottom: 0.5rem;
-          }
-          &.valgt {
-            color: @morkeBlaa;
-            list-style: disc;
-            font-weight: bold;
+
+    .temagruppevalg {
+      &:not(.select2-container-active) > a {
+        border: 1px solid @borderGraa;
+      }
+      &.select2-container-active > a {
+        border: 1px dashed @morkeBlaa;
+      }
+      //For dropdown se styles for .select2-results
+      a {
+        height: 30px;
+        background: none;
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none;
+        span {
+          margin-right: 0;
+          margin-top: 0.1rem;
+        }
+        div {
+          .pil-ned;
+          margin-top: 0.65rem;
+          margin-right: 1em;
+          background: none;
+          border-radius: 0;
+          b {
+            background: none;
+            border: 0;
           }
         }
       }
@@ -136,9 +134,14 @@ ul.feedbackPanel {
   margin-top: 1em;
   label {
     margin-bottom: 0;
+    background-position: 1px 3px !important;
+    padding: 2px 4px 0 32px !important;
   }
   a {
     font-size: 0.85rem;
+  }
+  >input:focus + label {
+    border: 1px dashed @morkeBlaa;
   }
 }
 
@@ -174,4 +177,8 @@ ul.feedbackPanel {
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-top: 8px solid @morkeBlaa;
+}
+
+div.select2-drop-active {
+  border: 1px solid #aaa;
 }

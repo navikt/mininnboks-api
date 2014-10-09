@@ -1,6 +1,5 @@
 @rammeborder: #ddd;
 @backgroundColor: #f1f1f1;
-@dodgerblue: #1e90ff;
 @maxwidth: 640px;
 @traadPadding: 40px;
 @toggleHeight: @traadPadding * 2 + 80px;
@@ -12,12 +11,10 @@
 .top-bar {
   border-bottom: 1px solid @rammeborder;
   .innboks-navigasjon {
+    text-align: center;
     max-width: @maxwidth;
     margin: 0 auto;
     padding: 20px 0;
-    .skriv-ny-link {
-      float: right;
-    }
   }
 }
 
@@ -43,13 +40,15 @@
     margin: 0 auto;
     background-image: url("../img/flipp_aapen.svg");
     background-repeat: no-repeat;
+    .ariahelper {
+      display: none;
+    }
   }
   &.closed {
     cursor: pointer;
     height: @toggleHeight;
-    .nyeste-melding
-     .fritekst {
-      height: 1rem;
+    .nyeste-melding .fritekst {
+      height: 2rem;
     }
     .tidligere-melding {
       display: none;
@@ -99,20 +98,25 @@
 
   .header {
     line-height: 1.2em;
-    margin-bottom: 1em;
+  }
+
+  .status-tekst {
+    vertical-align: middle;
+    font-size: 0.8rem;
   }
 
   .dato {
     margin: 0;
     font-family: Arial, sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: normal;
     text-transform: uppercase;
   }
 
   .temagruppe {
     margin: 0;
-    text-transform: capitalize;
+    display: inline-block;
+    vertical-align: middle;
   }
 
   .venstre-kolonne {
@@ -130,13 +134,9 @@
     &:not(.closed) {
       background-color: #fff;
     }
-    .nyeste-melding {
-      .header {
-        .status-indikator {
-          border: 1px solid @dodgerblue;
-          background-color: transparent;
-        }
-      }
+    .nyeste-melding .header .status-container .status-indikator {
+      border: 1px solid #0067c5;
+      background-color: transparent;
     }
   }
 
@@ -149,31 +149,24 @@
 
   .nyeste-melding {
     .header {
-      .status-indikator {
-        display: inline-block;
-        vertical-align: middle;
-        background-color: @dodgerblue;
-        width: 1em;
-        height: 1em;
-        border-radius: 50%;
-      }
-
-      .temagruppe {
-        margin-left: 5px;
-        display: inline-block;
-        vertical-align: middle;
+      .status-container {
+        margin-bottom: 0.5rem;
+        .status-indikator {
+          display: inline-block;
+          vertical-align: middle;
+          background-color: #0067c5;
+          width: 1em;
+          height: 1em;
+          border-radius: 50%;
+        }
       }
 
       .traadlengde {
         float: right;
-        height: 22px;
-        width: 26px;
-        padding: 1px 1px 0 0;
-        font-size: 0.85em;
-        background-image: url("../img/snakkeboble.svg");
-        background-repeat: no-repeat;
-        color: white;
-        text-align: center;
+        padding-right: 2em;
+        line-height: 21px;
+        font-weight: bold;
+        background: url(../img/melding_flere.svg) no-repeat right;
       }
     }
     .fritekst {
@@ -187,6 +180,11 @@
     border: 1px solid @rammeborder;
     padding: 20px;
     margin-top: 40px;
+
+    .status-tekst {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
 
     p:last-child {
       margin-bottom: 0;

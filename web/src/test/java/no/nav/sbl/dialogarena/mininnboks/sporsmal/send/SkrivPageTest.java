@@ -3,15 +3,14 @@ package no.nav.sbl.dialogarena.mininnboks.sporsmal.send;
 import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextArea;
 import no.nav.modig.wicket.test.internal.Parameters;
 import no.nav.sbl.dialogarena.mininnboks.WicketPageTest;
+import no.nav.sbl.dialogarena.mininnboks.config.HenvendelseServiceMockContext;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseServiceMockContext;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.TemagruppeDropdown;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListView;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;
@@ -47,8 +46,8 @@ public class SkrivPageTest extends WicketPageTest {
     @Test
     public void lasterSkrivPageKomponenter() {
         wicketTester.should().containComponent(withId("sporsmalForm").and(ofType(Form.class)))
-                .should().inComponent(withId("sporsmalForm")).containComponent(withId("temagruppe").and(ofType(Label.class)))
-                .should().inComponent(withId("sporsmalForm")).containComponent(withId("temagruppeListe").and(ofType(ListView.class)))
+                .printComponentsTree()
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("temagruppeDropdown").and(ofType(TemagruppeDropdown.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("tekstfelt").and(ofType(EnhancedTextArea.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("betingelseValg").and(ofType(BetingelseValgPanel.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("send").and(ofType(AjaxSubmitLink.class)))

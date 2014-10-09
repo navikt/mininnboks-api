@@ -9,7 +9,7 @@
     <div class="top-bar">
         <div class="innboks-navigasjon clearfix">
             <a wicket:id="skrivNy" class="skriv-ny-link knapp-link-liten"><wicket:message key="innboks.toppmeny.skriv-ny-melding"/></a>
-            <div wicket:id="diskresjonskode"><wicket:message key="innboks.diskresjonskode"></wicket:message></div>
+            <div wicket:id="diskresjonskode"><wicket:message key="innboks.diskresjonskode" /></div>
         </div>
     </div>
     <div id="innboks-container">
@@ -18,12 +18,14 @@
             <div class="robust"><wicket:message key="innboks.tom-innboks-melding"/></div>
         </section>
         <section wicket:id="traader" class="traad toggleable">
-            <div wicket:id="flipp" class="flipp"></div>
-            <div class="traadcontainer clearfix">
+            <a wicket:id="flipp" class="flipp" role="button">
+                <span wicket:id="ariahelper" class="ariahelper"></span>
+            </a>
+            <div wicket:id="traadcontainer" class="traadcontainer clearfix" aria-expanded="false" aria-atomic="true" aria-live="polite">
                 <wicket:container wicket:id="nyesteMelding"></wicket:container>
-                <div class="hoyre-kolonne">
+                <section class="hoyre-kolonne">
                     <wicket:container wicket:id="tidligereMeldinger"></wicket:container>
-                </div>
+                </section>
             </div>
         </section>
     </div>

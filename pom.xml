@@ -21,11 +21,6 @@
         <module>ytelse</module>
     </modules>
 
-    <properties>
-        <dialogarena.cms.url>http://e32apvl026.oera-t.local:8080</dialogarena.cms.url>
-    </properties>
-
-
     <build>
 
         <pluginManagement>
@@ -85,7 +80,7 @@
                         <nb>innhold_nb.properties</nb>
                     </propertiesFiler>
                     <menyPunktPaths>
-                        <nb>/site/2/systemsider/Modernisering/minehenvendelser/nb/tekster</nb>
+                        <nb>/site/18/app/mininnboks/nb/tekster</nb>
                     </menyPunktPaths>
                 </configuration>
             </plugin>
