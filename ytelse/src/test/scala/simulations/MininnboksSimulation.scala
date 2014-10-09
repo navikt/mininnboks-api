@@ -27,7 +27,7 @@ class MininnboksSimulation extends Simulation {
     """Content-Type""" -> """application/x-www-form-urlencoded; charset=UTF-8""",
     """Pragma""" -> """no-cache""",
     """Wicket-Ajax""" -> """true""",
-    """Wicket-Ajax-BaseURL""" -> """sporsmal/skriv/HJELPEMIDLER""",
+    """Wicket-Ajax-BaseURL""" -> """sporsmal/skriv/ARBD""",
     """X-Requested-With""" -> """XMLHttpRequest""")
 
   val scn = scenario("Scenario Name")
@@ -56,13 +56,13 @@ class MininnboksSimulation extends Simulation {
 
     .exec(
       http("take a shortcut to page for sending in question")
-        .get( """/mininnboks/sporsmal/skriv/HJELPEMIDLER""")
+        .get( """/mininnboks/sporsmal/skriv/ARBD""")
         .headers(standard_headers)
         .check(regex("Skriv melding").exists))
 
     .exec(
       http("sending the actual question")
-        .post( """/mininnboks/sporsmal/skriv/HJELPEMIDLER?2-1.IBehaviorListener.0-sporsmal~form-send=""")
+        .post( """/mininnboks/sporsmal/skriv/ARBD?2-1.IBehaviorListener.0-sporsmal~form-send=""")
         .headers(ajaxHeaders)
         .formParam( """tekstfelt:text""", """Dette er en melding som er sendt av gatling. Er den ikke fin?""")
         .formParam( """send""", """1""")
