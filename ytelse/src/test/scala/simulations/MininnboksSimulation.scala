@@ -1,5 +1,7 @@
 package simulations
 
+import java.lang.Double._
+
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -10,8 +12,8 @@ class MininnboksSimulation extends Simulation {
   final val ENV = System.getProperty("environment", "t3")
   final val BASE_URL = "https://tjenester-" + ENV + ".nav.no"
   val password = "Eifel123"
-  val nrUsers: Int = Integer.getInteger("nrUsers", 1)
-  val rampTime: Long = java.lang.Long.getLong("rampTime", 1L)
+  val usersPerSec: Double = valueOf(System.getProperty("usersPerSec"))
+  val duration: Double = valueOf(System.getProperty("duration.minutes"))
 
   val httpConf = http
     .baseURL(BASE_URL)
@@ -87,5 +89,5 @@ class MininnboksSimulation extends Simulation {
         .headers(standard_headers)
         .check(regex("You are logged out").exists))
 
-  setUp(scn.inject(rampUsers(nrUsers) over (rampTime seconds))).protocols(httpConf)
+  setUp(scn.inject(constantUsersPerSec(usersPerSec) during (duration minutes))).protocols(httpConf)
 }
