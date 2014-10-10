@@ -7,11 +7,9 @@ import scala.concurrent.duration._
 
 class MininnboksSimulation extends Simulation {
 
-  final val ENV = System.getProperty("environment", "t11")
+  final val ENV = System.getProperty("environment", "t3")
   final val BASE_URL = "https://tjenester-" + ENV + ".nav.no"
-  val userCredentials = csv("brukere.csv").circular
   val password = "Eifel123"
-  // System.getProperty???
   val nrUsers: Int = Integer.getInteger("nrUsers", 1)
   val rampTime: Long = java.lang.Long.getLong("rampTime", 1L)
 
@@ -31,7 +29,7 @@ class MininnboksSimulation extends Simulation {
     """X-Requested-With""" -> """XMLHttpRequest""")
 
   val scn = scenario("Scenario Name")
-    .feed(userCredentials)
+    .feed(csv("brukere.csv").random)
 
     .exec(
       http("Go to login page with correct parameters")
@@ -61,22 +59,33 @@ class MininnboksSimulation extends Simulation {
         .check(regex("Skriv melding").exists))
 
     .exec(
-      http("sending the actual question")
-        .post( """/mininnboks/sporsmal/skriv/ARBD?2-1.IBehaviorListener.0-sporsmal~form-send=""")
+      http("accept terms")
+        .post( """/mininnboks/sporsmal/skriv/ARBD?2-1.IBehaviorListener.0-sporsmalForm-betingelseValg-betingelserCheckbox=""")
         .headers(ajaxHeaders)
-        .formParam( """tekstfelt:text""", """Dette er en melding som er sendt av gatling. Er den ikke fin?""")
+        .formParam( """betingelseValg:betingelserCheckbox""", """on"""))
+
+    .exec(
+      http("send question")
+        .post( """/mininnboks/sporsmal/skriv/ARBD?2-1.IBehaviorListener.0-sporsmalForm-send=""")
+        .headers(ajaxHeaders)
+        .formParam( """id6_hf_0""", """""")
+        .formParam( """temagruppe""", """0""")
+        .formParam( """tekstfelt:text""", """gatling:mininnboks""")
+        .formParam( """betingelseValg:betingelserCheckbox""", """on""")
         .formParam( """send""", """1""")
         .check(regex("kvittering").exists))
 
-    .exec(http("seeing receipt page")
-    .get( """/mininnboks/sporsmal/kvittering""")
-    .headers(standard_headers)
-    .check(regex("du vil få svar ").exists))
+    .exec(
+      http("seeing receipt page")
+        .get( """/mininnboks/sporsmal/kvittering""")
+        .headers(standard_headers)
+        .check(regex("du vil få svar ").exists))
 
-    .exec(http("logging out")
-    .get( """/esso/UI/Logout""")
-    .headers(standard_headers)
-    .check(regex("You are logged out").exists))
+    .exec(
+      http("logging out")
+        .get( """/esso/UI/Logout""")
+        .headers(standard_headers)
+        .check(regex("You are logged out").exists))
 
   setUp(scn.inject(rampUsers(nrUsers) over (rampTime seconds))).protocols(httpConf)
 }
