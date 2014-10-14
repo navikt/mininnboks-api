@@ -126,11 +126,16 @@ ul.feedbackPanel {
   p {
     font-size: 1em;
   }
-  a {
-    &.godta {
-      margin-top: 2em;
-    }
+  a[class^="svar"] {
+    width: 270px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
     display: block;
+
+    &.svar-godta {
+      margin-top: 4em;
+    }
   }
 }
 
