@@ -35,6 +35,8 @@ public class BetingelseValgPanel extends Panel {
         final ModigModalWindow vilkar = new ModigModalWindow("betingelser");
         vilkar.setInitialWidth(700);
         vilkar.setInitialHeight(750);
+        vilkar.setOnShownJavaScript("setTimeout(function(){$('.betingelsepanel :focusable').first().focus();}, 10);");
+        vilkar.setOnCloseJavaScript("setTimeout(function(){$('.betingelsevalgpanel a').first().focus();}, 10);");
         vilkar.setContent(new BetingelsePanel(vilkar.getContentId(), vilkarAkseptertModel, vilkar));
         add(vilkar);
 
