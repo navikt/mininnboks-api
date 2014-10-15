@@ -62,7 +62,8 @@ public class WicketApplication extends WebApplication {
                 .addLess(new PackageResourceReference(Innboks.class, "innboks.less"),
                         new PackageResourceReference(SkrivPage.class, "sporsmal.less"))
                 .withResourcePacking(this.usesDeploymentConfig())
-                .addScripts(SkrivPage.SELECTMENU_JS)
+                .addScripts(SkrivPage.JQUERY_JS)
+                .addCss(SkrivPage.JQUERY_CSS)
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
         mountPage("innboks", Innboks.class);

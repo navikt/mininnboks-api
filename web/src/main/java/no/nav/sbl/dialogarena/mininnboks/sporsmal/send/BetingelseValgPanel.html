@@ -6,7 +6,14 @@
         <input type="checkbox" wicket:id="betingelserCheckbox"/>
         <label wicket:for="betingelserCheckbox"><span><wicket:message key="send-sporsmal.still-sporsmal.betingelser.sjekkboks" /></span></label>
         <div><a wicket:id="visBetingelser" href="#"><wicket:message key="send-sporsmal.still-sporsmal.betingelser.vis" /></a></div>
-        <div wicket:id="betingelser"></div>
+        <div class="betingelser">
+            <div class="betingelsepanel" role="document">
+                <h1><wicket:message key="send-sporsmal.still-sporsmal.betingelser.overskrift"/></h1>
+                <p><wicket:message key="send-sporsmal.still-sporsmal.betingelser.tekst"/></p>
+                <a href="#" class="svar-godta knapp-hoved-stor"><wicket:message key="send-sporsmal.still-sporsmal.betingelser.godta"/></a>
+                <a href="#" class="svar-avbryt"><wicket:message key="send-sporsmal.still-sporsmal.betingelser.ikke-godta"/></a>
+            </div>
+        </div>
     </div>
 </wicket:panel>
 </html>
