@@ -10,15 +10,13 @@ import org.apache.wicket.model.PropertyModel;
 
 public class BetingelseValgPanel extends Panel {
 
-    private final AjaxCheckBox checkbox;
-
     public BetingelseValgPanel(String id, IModel<Sporsmal> model) {
         super(id);
         setOutputMarkupId(true);
 
         PropertyModel<Boolean> vilkarAkseptertModel = new PropertyModel<>(model, "betingelserAkseptert");
 
-        checkbox = new AjaxCheckBox("betingelserCheckbox", vilkarAkseptertModel) {
+        AjaxCheckBox checkbox = new AjaxCheckBox("betingelserCheckbox", vilkarAkseptertModel) {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 target.add(this);
