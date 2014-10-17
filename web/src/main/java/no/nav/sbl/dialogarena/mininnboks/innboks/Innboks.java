@@ -17,12 +17,14 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import javax.inject.Inject;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
@@ -35,12 +37,17 @@ import static org.apache.wicket.markup.head.JavaScriptHeaderItem.forReference;
 
 public class Innboks extends BasePage {
 
+    public static final String TOM_INNBOKS = "innboks.tom-innboks-melding";
+    public static final String EXCEPTION = "innboks.kunne-ikke-hente-meldinger";
+
     private final IModel<List<TraadVM>> traaderModel;
     @Inject
     private HenvendelseService service;
 
+    private IModel<Boolean> kunneIkkeHenteTraader = Model.of(false);
+
     public Innboks() {
-        traaderModel = new CompoundPropertyModel<>(tilTraader(service.hentAlleHenvendelser(innloggetBruker())));
+        traaderModel = new CompoundPropertyModel<>(hentTraader());
 
         final ExternalLink skrivNyKnapp = new ExternalLink("skrivNy", System.getProperty("temavelger.link.url"));
 
@@ -92,7 +99,26 @@ public class Innboks extends BasePage {
                 item.add(flipp, traadcontainer);
             }
         });
-        add(new WebMarkupContainer("tomInnboks").add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
+        WebMarkupContainer innboksTilbakeMeldingWrapper = new WebMarkupContainer("tomInnboks");
+        innboksTilbakeMeldingWrapper.add(new Label("innboks-tilbakemelding", getTilbakeMeldingString()));
+        add(innboksTilbakeMeldingWrapper.add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
+    }
+
+    private String getTilbakeMeldingString() {
+        String key = TOM_INNBOKS;
+        if (kunneIkkeHenteTraader.getObject()) {
+            key = EXCEPTION;
+        }
+        return getString(key);
+    }
+
+    private List<TraadVM> hentTraader() {
+        try {
+            return tilTraader(service.hentAlleHenvendelser(innloggetBruker()));
+        }catch (Exception e) {
+            kunneIkkeHenteTraader.setObject(true);
+            return asList();
+        }
     }
 
     private static String innloggetBruker() {
@@ -139,7 +165,7 @@ public class Innboks extends BasePage {
 
     @Override
     protected void onBeforeRender() {
-        traaderModel.setObject(tilTraader(service.hentAlleHenvendelser(innloggetBruker())));
+        traaderModel.setObject(hentTraader());
         super.onBeforeRender();
     }
 }
