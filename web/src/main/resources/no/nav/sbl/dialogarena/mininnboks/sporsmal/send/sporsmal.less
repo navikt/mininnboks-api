@@ -197,7 +197,12 @@ ul.feedbackPanel {
     left: 0;
     display: none;
     background-color: #fff;
-    box-shadow: 0 5px 8px 0 #cccccc;
+    box-shadow: 0 5px 8px 0 #ccc;
+
+    ul {
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+    }
   }
   .ui-selectmenu-open {
     display: block;
@@ -221,6 +226,7 @@ ul.feedbackPanel {
         top: 22px;
       }
       &.ui-selectmenu-text {
+        text-align: center;
         padding: 0.5em 1em;
         display: block;
         line-height: 1.4;
