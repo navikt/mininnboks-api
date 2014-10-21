@@ -223,3 +223,21 @@
     width: 100%;
   }
 }
+
+@media print {
+  .site-coltrols-toolbar, .topnavsection-wrapper, .sitefooter, .top-bar, .traadlengde {
+    .no-print;
+  }
+  a[href]:after {
+    content: "" !important;
+  }
+  h1.diger {
+    margin: 0;
+  }
+  .traad .tidligere-melding:after {
+    border-bottom-color: #fff;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
