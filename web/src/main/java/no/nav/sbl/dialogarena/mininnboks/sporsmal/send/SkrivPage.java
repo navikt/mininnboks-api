@@ -15,6 +15,7 @@ import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -74,6 +75,9 @@ public class SkrivPage extends BasePage {
             EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, config);
             enhancedTextArea.get("text").add(new AttributeAppender("aria-label", new ResourceModel(placeholderTextKey)));
 
+            Label tekstLabel = new Label("tekstfelt-label", getString("skriv-sporsmal.fritekst.placeholder"));
+            tekstLabel.add(new AttributeAppender("for", enhancedTextArea.get("text").getMarkupId()));
+
             final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
             feedbackPanel.setOutputMarkupId(true);
 
@@ -114,7 +118,7 @@ public class SkrivPage extends BasePage {
 
             add(new BetingelseValgPanel("betingelseValg", model));
 
-            add(temagruppeDropdown, enhancedTextArea, feedbackPanel, send, avbryt);
+            add(temagruppeDropdown, enhancedTextArea, tekstLabel, feedbackPanel, send, avbryt);
         }
 
         @Override
