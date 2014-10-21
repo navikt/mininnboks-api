@@ -61,7 +61,6 @@ public class Innboks extends BasePage {
                 item.setOutputMarkupId(true);
 
                 item.add(hasCssClassIf("lest", erLest(traadVM.henvendelser)));
-                item.add(hasCssClassIf("closed", traadVM.lukket));
 
                 AjaxLink<Void> flipp = new AjaxLink<Void>("flipp") {
                     @Override
