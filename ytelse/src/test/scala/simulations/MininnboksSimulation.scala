@@ -34,17 +34,12 @@ class MininnboksSimulation extends Simulation {
     .feed(csv("brukere.csv").random)
 
     .exec(
-      http("Go to login page with correct parameters")
-        .get("https://tjenester-" + ENV + ".nav.no/esso/UI/Login?goto=https://tjenester-" + ENV + ".nav.no/mininnboks/&service=level4Service")
-        .headers(standard_headers)
-        .check(regex("OpenAM").exists))
-
-    .exec(
       http("logging in")
         .post("/esso/UI/Login")
         .headers(standard_headers)
         .formParam("IDToken1", "${brukernavn}")
         .formParam("IDToken2", password)
+        .queryParam("service", "level4Service")
         .queryParam("goto", BASE_URL + "/mininnboks/")
         .check(regex("Min Innboks").exists))
 
