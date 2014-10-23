@@ -10,7 +10,6 @@ import no.nav.sbl.dialogarena.mininnboks.sporsmal.Sporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -41,6 +40,7 @@ import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resour
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.not;
+import static org.apache.wicket.AttributeModifier.append;
 
 public class SkrivPage extends BasePage {
 
@@ -73,10 +73,10 @@ public class SkrivPage extends BasePage {
             String placeholderTextKey = "skriv-sporsmal.fritekst.placeholder";
             EnhancedTextAreaConfigurator config = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(placeholderTextKey);
             EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, config);
-            enhancedTextArea.get("text").add(new AttributeAppender("aria-label", new ResourceModel(placeholderTextKey)));
+            enhancedTextArea.get("text").add(append("aria-label", new ResourceModel(placeholderTextKey)));
 
             Label tekstLabel = new Label("tekstfelt-label", getString("skriv-sporsmal.fritekst.placeholder"));
-            tekstLabel.add(new AttributeAppender("for", enhancedTextArea.get("text").getMarkupId()));
+            tekstLabel.add(append("for", enhancedTextArea.get("text").getMarkupId()));
 
             final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
             feedbackPanel.setOutputMarkupId(true);

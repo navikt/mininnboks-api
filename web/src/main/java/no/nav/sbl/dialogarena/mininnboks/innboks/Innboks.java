@@ -7,7 +7,6 @@ import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -33,6 +32,7 @@ import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.not;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.erLest;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.tilTraader;
+import static org.apache.wicket.AttributeModifier.append;
 import static org.apache.wicket.markup.head.JavaScriptHeaderItem.forReference;
 
 public class Innboks extends BasePage {
@@ -76,8 +76,8 @@ public class Innboks extends BasePage {
 
                 NyesteMeldingPanel nyesteMelding = new NyesteMeldingPanel("nyesteMelding", item.getModel());
 
-                flipp.add(new AttributeAppender("aria-controls", traadcontainer.getMarkupId()));
-                flipp.add(new AttributeAppender("aria-labelledby", ariahelper.getMarkupId()));
+                flipp.add(append("aria-controls", traadcontainer.getMarkupId()));
+                flipp.add(append("aria-labelledby", ariahelper.getMarkupId()));
 
                 item.add(new AjaxEventBehavior("click") {
                     @Override
@@ -114,7 +114,7 @@ public class Innboks extends BasePage {
     private List<TraadVM> hentTraader() {
         try {
             return tilTraader(service.hentAlleHenvendelser(innloggetBruker()));
-        }catch (Exception e) {
+        } catch (Exception e) {
             kunneIkkeHenteTraader.setObject(true);
             return asList();
         }
