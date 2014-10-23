@@ -13,7 +13,6 @@ import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.getNyesteHenvend
 import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.getFritekstModel;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.henvendelseTemagruppeKey;
 import static no.nav.sbl.dialogarena.time.Datoformat.kortMedTid;
-import static org.apache.wicket.AttributeModifier.append;
 
 public class NyesteMeldingPanel extends GenericPanel<TraadVM> {
 
@@ -27,10 +26,7 @@ public class NyesteMeldingPanel extends GenericPanel<TraadVM> {
         add(new Label("status", model.getObject().statusTekst));
         add(new Label("sendtDato", kortMedTid(nyesteHenvendelse.opprettet)));
         add(new Label("temagruppe", new ResourceModel(henvendelseTemagruppeKey(nyesteHenvendelse))));
-        add(new Label("traadlengde", henvendelser.size())
-                        .setVisibilityAllowed(henvendelser.size() > 2)
-                        .add(append("aria-label", String.format("%d meldinger i tråden", henvendelser.size())))
-        );
+        add(new Label("traadlengde", henvendelser.size()).setVisibilityAllowed(henvendelser.size() > 2));
         add(new URLParsingMultiLineLabel("fritekst", getFritekstModel(nyesteHenvendelse)));
     }
 }

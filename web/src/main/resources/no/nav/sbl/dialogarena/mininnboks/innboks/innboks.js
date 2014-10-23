@@ -9,10 +9,12 @@ var Innboks = (function () {
     }
 
     function $toggleTraad($traad) {
-        $traad.toggleClass('closed');
-        $traad.find('[aria-expanded]').attr('aria-expanded', function(ind, attr){
+        function toggle(ind, attr) {
             return attr !== 'true';
-        });
+        }
+        $traad.toggleClass('closed');
+        $traad.find('[aria-expanded]').attr('aria-expanded', toggle);
+        $traad.find('.flipp').attr('aria-pressed', toggle)
     }
 
     function oppdaterTraadStatus(traadID, nyStatus, ariaStatus) {

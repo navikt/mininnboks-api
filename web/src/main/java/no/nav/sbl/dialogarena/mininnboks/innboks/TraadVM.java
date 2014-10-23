@@ -48,7 +48,7 @@ public class TraadVM implements Serializable {
         String statusTekst = VisningUtils.henvendelseStatusTekst(nyesteHenvendelse);
 
         return String.format(
-                "%d meldinger. NyesteMelding: %s %s",
+                "%d meldinger. Nyeste melding: %s %s",
                 traad.henvendelser.size(),
                 kortMedTid(nyesteHenvendelse.opprettet),
                 statusTekst
