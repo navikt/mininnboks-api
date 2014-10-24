@@ -20,4 +20,11 @@ $(document).ready(function(){
     });
 
     $('body').animate({scrollTop: $('.siteheader').outerHeight()}, 250);
+
+    //Skalering av temagruppe dropdown pga jQuery kopierer computed style.
+    function oppdaterTemavelgerStorrelse(){
+        $('.temagruppevelger').selectmenu("refresh");
+    }
+    $(window).resize(oppdaterTemavelgerStorrelse);
+    $(window).on('orientationchange', oppdaterTemavelgerStorrelse);
 });
