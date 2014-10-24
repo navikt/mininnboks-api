@@ -24,11 +24,7 @@ $(document).ready(function(){
     //Skalering av temagruppe dropdown og modal pga jQuery kopierer computed style.
     function oppdaterTemavelgerStorrelse(){
         $('.temagruppevelger').selectmenu("refresh");
-
-        if ($('.betingelser').dialog("isOpen")) {
-            var modalBredde = minmaxWidth(320, 700);
-            $('.betingelser').dialog("option", {width: modalBredde});
-        }
+        $('.betingelser').dialog("option", {width: minmaxWidth(320, 700)});
     }
     function minmaxWidth(min, max) {
         var width = $(window).width();
