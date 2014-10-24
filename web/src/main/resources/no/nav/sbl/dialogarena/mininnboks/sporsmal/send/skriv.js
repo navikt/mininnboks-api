@@ -7,7 +7,7 @@ $(document).on('keydown', function(e) {
 });
 $(document).ready(function(){
     $('.temagruppevelger').selectmenu({appendTo:'.temagruppevelger-wrapper'});
-    $('.betingelser').dialog({autoOpen: false, width: 700, modal: true, resizable: false});
+    $('.betingelser').dialog({autoOpen: false, width: minmaxWidth(320, 700), modal: true, resizable: false});
 
     $('a[class^="svar"]').click(function(e) {
         var $cb = $('.betingelsevalgpanel input[type=checkbox]:first');
@@ -21,10 +21,20 @@ $(document).ready(function(){
 
     $('body').animate({scrollTop: $('.siteheader').outerHeight()}, 250);
 
-    //Skalering av temagruppe dropdown pga jQuery kopierer computed style.
+    //Skalering av temagruppe dropdown og modal pga jQuery kopierer computed style.
     function oppdaterTemavelgerStorrelse(){
         $('.temagruppevelger').selectmenu("refresh");
+
+        if ($('.betingelser').dialog("isOpen")) {
+            var modalBredde = minmaxWidth(320, 700);
+            $('.betingelser').dialog("option", {width: modalBredde});
+        }
     }
+    function minmaxWidth(min, max) {
+        var width = $(window).width();
+        return Math.min(Math.max(width, min), max);
+    }
+
     $(window).resize(oppdaterTemavelgerStorrelse);
     $(window).on('orientationchange', oppdaterTemavelgerStorrelse);
 });
