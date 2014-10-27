@@ -29,6 +29,12 @@ h1 {
   margin: 1em;
 }
 
+hr {
+  margin: 40px 0;
+  border: none;
+  border-top: 1px solid #d1d1d1;
+}
+
 .sporsmal-header {
   margin-bottom: 30px;
 }
@@ -50,13 +56,26 @@ h1 {
   &.bekreftelse-panel {
     margin-bottom: 1rem;
   }
+  .robust-strek {
+    margin-bottom: 30px !important;
+  }
+}
+
+.registrert-epost, .mangler-epost, .tps-utilgjengelig {
+  font-size: 17px;
+  font-weight: 600;
+  font-family: Modus, Arial, Helvetica, sans-serif;
+  a {
+    font-weight: normal;
+    font-family: Modus, Arial, Helvetica, sans-serif;
+  }
 }
 
 .registrert-epost {
   .epostadresse {
     background-color: @backgroundColor;
     max-width: 400px;
-    margin-top: 15px;
+    margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -66,26 +85,12 @@ h1 {
   margin-bottom: 1rem;
   .brukerprofil-link {
     display: block;
-    margin-top: 10px;
+    margin-top: 20px;
   }
 }
 
 .tps-utilgjengelig {
   color: @navRodt;
-}
-
-hr.robust-strek {
-  border: none;
-  background-color: transparent;
-  margin-top: 0;
-}
-
-hr.skillestrek-sporsmal {
-  margin: 40px auto;
-  width: 100%;
-  height: 1px;
-  border-style: none;
-  background-color: #ddd;
 }
 
 ul.feedbackPanel {
@@ -135,14 +140,6 @@ ul.feedbackPanel {
   }
   a {
     text-decoration: underline;
-  }
-  hr {
-    margin: 40px 0;
-    border: none;
-    border-top: 1px solid #d1d1d1;
-  }
-  .robust-strek {
-    margin-bottom: 30px !important;
   }
   .svar-godta {
     text-decoration: none;
