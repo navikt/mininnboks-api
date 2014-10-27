@@ -7,7 +7,7 @@ $(document).on('keydown', function(e) {
 });
 $(document).ready(function(){
     $('.temagruppevelger').selectmenu({appendTo:'.temagruppevelger-wrapper'});
-    $('.betingelser').dialog({autoOpen: false, width: minmaxWidth(320, 700), modal: true, resizable: false});
+    $('.betingelser').dialog({autoOpen: false, width: minmaxWidth(320, 650), modal: true, resizable: false});
 
     $('a[class^="svar"]').click(function(e) {
         var $cb = $('.betingelsevalgpanel input[type=checkbox]:first');
@@ -22,15 +22,15 @@ $(document).ready(function(){
     $('body').animate({scrollTop: $('.siteheader').outerHeight()}, 250);
 
     //Skalering av temagruppe dropdown og modal pga jQuery kopierer computed style.
-    function oppdaterTemavelgerStorrelse(){
+    function oppdaterKomponenter(){
         $('.temagruppevelger').selectmenu("refresh");
-        $('.betingelser').dialog("option", {width: minmaxWidth(320, 700)});
+        $('.betingelser').dialog("option", {width: minmaxWidth(320, 650)});
     }
     function minmaxWidth(min, max) {
         var width = $(window).width();
         return Math.min(Math.max(width, min), max);
     }
 
-    $(window).resize(oppdaterTemavelgerStorrelse);
-    $(window).on('orientationchange', oppdaterTemavelgerStorrelse);
+    $(window).resize(oppdaterKomponenter);
+    $(window).on('orientationchange', oppdaterKomponenter);
 });

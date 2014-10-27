@@ -19,7 +19,7 @@
       margin-bottom: 1em;
     }
     .send-link {
-      margin-top: 1em;
+      margin-top: 40px;
     }
   }
 }
@@ -33,14 +33,11 @@ h1 {
   margin-bottom: 30px;
 }
 
-.meldingikon {
-  margin-bottom: 10px;
-}
-
 .deloverskrift {
+  line-height: 2.1rem;
   font-size: 2.1rem;
   font-weight: normal;
-  margin-bottom: 10px;
+  margin: 30px 0 15px;
 }
 
 .send-sporsmal-container {
@@ -48,7 +45,7 @@ h1 {
   background-color: white;
   text-align: center;
   margin: 40px auto 60px auto;
-  padding: 2em;
+  padding: 30px 30px 40px;
   overflow: hidden;
   &.bekreftelse-panel {
     margin-bottom: 1rem;
@@ -108,14 +105,16 @@ ul.feedbackPanel {
   label {
     background-position: 1px 3px !important;
     border: 1px dashed transparent;
+    margin: 0 !important;
     height: 2rem;
     span {
       display: inline-block;
-      width: 20rem;
+      width: 18rem;
     }
   }
-  a {
+  .vilkarlenke {
     font-size: 0.85rem;
+    text-decoration: underline;
   }
   >input:focus + label {
     border: 1px dashed @morkeBlaa;
@@ -123,10 +122,30 @@ ul.feedbackPanel {
 }
 
 .betingelsepanel {
-  padding: 1em;
-
-  p {
-    font-size: 1em;
+  padding: 0 10px 40px;
+  p, ul {
+    font-size: 14px;
+    strong {
+      font-family: Modus, Arial, Helvetica, sans-serif;
+      font-size: 17px;
+    }
+  }
+  h1 {
+    margin: 0 0 15px;
+  }
+  a {
+    text-decoration: underline;
+  }
+  hr {
+    margin: 40px 0;
+    border: none;
+    border-top: 1px solid #d1d1d1;
+  }
+  .robust-strek {
+    margin-bottom: 30px !important;
+  }
+  .svar-godta {
+    text-decoration: none;
   }
 }
 .betingelser {
@@ -136,20 +155,17 @@ ul.feedbackPanel {
     margin-right: auto;
     text-align: center;
     display: block;
-
-    &.svar-godta {
-      margin-top: 4em;
-    }
   }
 }
 
 .avbryt {
-  margin-top: 1em;
+  margin-top: 20px;
   text-align: center;
   a {
     color: @morkeBlaa;
     text-decoration: none;
     font-size: 1.25em;
+    font-family: Modus, Arial, Helvetica, sans-serif;
     &:hover {
       text-decoration: underline;
     }
