@@ -223,6 +223,16 @@
     width: 100%;
   }
 }
+.contrast {
+  .toggleable {
+    .flipp {
+      background: url("../img/flipp_aapen_kontrast.svg") no-repeat center;
+    }
+    &.closed .flipp {
+      background-image: url("../img/flipp_lukket_kontrast.svg");
+    }
+  }
+}
 
 @media print {
   .site-coltrols-toolbar, .topnavsection-wrapper, .sitefooter, .top-bar, .traadlengde {

@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -25,9 +26,9 @@ public class EpostPanel extends Panel {
         WebMarkupContainer tpsUtilgjengeligContainer = new WebMarkupContainer("tpsUtilgjengeligContainer");
 
 
-        String brukersEpostadresse = null;
+        String brukersEpostadresse = "nut@test.com";
         try {
-            brukersEpostadresse = epostService.hentEpostadresse();
+//            brukersEpostadresse = epostService.hentEpostadresse();
 
             harEpostContainer.setVisibilityAllowed(!brukersEpostadresse.isEmpty());
             manglerEpostContainer.setVisibilityAllowed(brukersEpostadresse.isEmpty());
@@ -38,9 +39,11 @@ public class EpostPanel extends Panel {
             manglerEpostContainer.setVisibilityAllowed(false);
             tpsUtilgjengeligContainer.setVisibilityAllowed(true);
         }
+        BrukerprofilLink tilEndringAvEpost = new BrukerprofilLink("tilEndringAvEpost");
+        tilEndringAvEpost.add(AttributeModifier.replace("aria-label", "Endre mailen: "+brukersEpostadresse));
 
         harEpostContainer.add(new Label("epostAdresse", brukersEpostadresse));
-        harEpostContainer.add(new BrukerprofilLink("tilEndringAvEpost"));
+        harEpostContainer.add(tilEndringAvEpost);
         add(harEpostContainer);
 
         manglerEpostContainer.add(new BrukerprofilLink("tilRegistreringAvEpost"));
