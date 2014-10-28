@@ -1,4 +1,5 @@
 @rammeborder: #ddd;
+@contrastRammeborder: #525252;
 @backgroundColor: #f1f1f1;
 @maxwidth: 640px;
 @traadPadding: 40px;
@@ -231,6 +232,12 @@
     &.closed .flipp {
       background-image: url("../img/flipp_lukket_kontrast.svg");
     }
+  }
+  .traad {
+    border-bottom: 5px solid @contrastRammeborder;
+  }
+  .top-bar {
+    border-bottom: 5px solid @contrastRammeborder;
   }
 }
 

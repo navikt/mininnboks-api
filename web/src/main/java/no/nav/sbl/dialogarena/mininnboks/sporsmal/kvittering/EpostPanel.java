@@ -26,9 +26,9 @@ public class EpostPanel extends Panel {
         WebMarkupContainer tpsUtilgjengeligContainer = new WebMarkupContainer("tpsUtilgjengeligContainer");
 
 
-        String brukersEpostadresse = "nut@test.com";
+        String brukersEpostadresse = null;
         try {
-//            brukersEpostadresse = epostService.hentEpostadresse();
+            brukersEpostadresse = epostService.hentEpostadresse();
 
             harEpostContainer.setVisibilityAllowed(!brukersEpostadresse.isEmpty());
             manglerEpostContainer.setVisibilityAllowed(brukersEpostadresse.isEmpty());
