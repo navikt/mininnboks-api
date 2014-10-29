@@ -13,8 +13,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -66,17 +66,14 @@ public class SkrivPage extends BasePage {
     }
 
     private final class SporsmalForm extends Form<Sporsmal> {
+        public static final String PLACEHOLDER_TEXT_KEY = "skriv-sporsmal.fritekst.placeholder";
 
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            String placeholderTextKey = "skriv-sporsmal.fritekst.placeholder";
-            EnhancedTextAreaConfigurator config = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(placeholderTextKey);
+            EnhancedTextAreaConfigurator config = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(PLACEHOLDER_TEXT_KEY);
             EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, config);
-            enhancedTextArea.get("text").add(append("aria-label", new ResourceModel(placeholderTextKey)));
-
-            Label tekstLabel = new Label("tekstfelt-label", getString("skriv-sporsmal.fritekst.placeholder"));
-            tekstLabel.add(append("for", enhancedTextArea.get("text").getMarkupId()));
+            enhancedTextArea.get("text").add(append("aria-label", new ResourceModel(PLACEHOLDER_TEXT_KEY)));
 
             final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
             feedbackPanel.setOutputMarkupId(true);
@@ -85,24 +82,20 @@ public class SkrivPage extends BasePage {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form form) {
                     Sporsmal spsm = model.getObject();
-                    if (spsm.betingelserAkseptert) {
-                        try {
-                            spsm.innsendingsTidspunkt = DateTime.now();
-                            service.stillSporsmal(spsm.getFritekst(), spsm.getTemagruppe(), SubjectHandler.getSubjectHandler().getUid());
-                            setResponsePage(KvitteringPage.class);
-                        } catch (Exception e) {
-                            LOG.error("Feil ved innsending av spørsmål", e);
-                            error(getString(UNDERLIGGENDE_FEIL_FEILMELDING_PROPERTY));
-                            target.add(feedbackPanel);
-                        }
-                    } else {
-                        error(getString(IKKE_AKSEPTERT_FEILMELDING_PROPERTY));
+                    try {
+                        spsm.innsendingsTidspunkt = DateTime.now();
+                        service.stillSporsmal(spsm.getFritekst(), spsm.getTemagruppe(), SubjectHandler.getSubjectHandler().getUid());
+                        setResponsePage(KvitteringPage.class);
+                    } catch (Exception e) {
+                        LOG.error("Feil ved innsending av spørsmål", e);
+                        error(getString(UNDERLIGGENDE_FEIL_FEILMELDING_PROPERTY));
                         target.add(feedbackPanel);
                     }
                 }
 
                 @Override
                 protected void onError(AjaxRequestTarget target, Form<?> form) {
+                    target.appendJavaScript("SkrivFormValidator.validateAll()");
                     target.add(feedbackPanel);
                 }
             };
@@ -116,15 +109,23 @@ public class SkrivPage extends BasePage {
                 }
             });
 
+            add(temagruppeDropdown, enhancedTextArea, feedbackPanel, send, avbryt);
             add(new BetingelseValgPanel("betingelseValg", model));
-
-            add(temagruppeDropdown, enhancedTextArea, tekstLabel, feedbackPanel, send, avbryt);
         }
 
         @Override
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
+            String jsValidatorConfig = String.format("{'form': %s,'textareaPlaceholder': '%s', 'textareaErrorMessage': '%s', 'checkboxErrorMessage': '%s'}",
+                    "$('.mininnboks-omslag form').get(0)",
+                    new ResourceModel(PLACEHOLDER_TEXT_KEY).getObject(),
+                    new ResourceModel("send-sporsmal.still-sporsmal.text.tomt").getObject(),
+                    new ResourceModel(IKKE_AKSEPTERT_FEILMELDING_PROPERTY).getObject());
+
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skriv.js")));
+            response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skrivValidator.js")));
+            response.render(OnDomReadyHeaderItem.forScript("window.SkrivFormValidator = new SkrivFormValidator("+jsValidatorConfig+");"));
+
         }
     }
 
