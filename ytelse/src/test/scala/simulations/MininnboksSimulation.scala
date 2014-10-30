@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 
 class MininnboksSimulation extends Simulation {
 
-  final val ENV = System.getProperty("environment", "t3")
+  final val ENV = System.getProperty("environment")
   final val BASE_URL = "https://tjenester-" + ENV + ".nav.no"
   val password = "Eifel123"
   val usersPerSec: Double = valueOf(System.getProperty("usersPerSec"))
