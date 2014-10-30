@@ -47,7 +47,7 @@ class MininnboksSimulation extends Simulation {
       http("check to see if logged in properly")
         .get( """/mininnboks/""")
         .headers(standard_headers)
-        .check(regex("Min Innboks").exists))
+        .check(regex("Din dialog med NAV").exists))
 
     .exec(
       http("take a shortcut to page for sending in question")
