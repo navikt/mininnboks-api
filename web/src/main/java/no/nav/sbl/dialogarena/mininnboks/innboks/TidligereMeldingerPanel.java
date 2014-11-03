@@ -12,7 +12,7 @@ import org.apache.wicket.model.ResourceModel;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.getTidligereHenvendelser;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.getFritekstModel;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.henvendelseTemagruppeKey;
-import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.VisningUtils.forsteDelAvMeldingstype;
+import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.VisningUtils.henvendelseStatusTekst;
 import static no.nav.sbl.dialogarena.time.Datoformat.kortMedTid;
 
 public class TidligereMeldingerPanel extends Panel {
@@ -25,7 +25,7 @@ public class TidligereMeldingerPanel extends Panel {
             protected void populateItem(ListItem<Henvendelse> item) {
                 Henvendelse henvendelse = item.getModelObject();
                 item.add(new AvsenderBilde("avsenderBilde", henvendelse));
-                item.add(new Label("type", new ResourceModel(forsteDelAvMeldingstype(henvendelse.type))));
+                item.add(new Label("status", henvendelseStatusTekst(henvendelse)));
                 item.add(new Label("sendtDato", kortMedTid(henvendelse.opprettet)));
                 item.add(new Label("temagruppe", new ResourceModel(henvendelseTemagruppeKey(henvendelse))));
                 item.add(new URLParsingMultiLineLabel("fritekst", getFritekstModel(henvendelse)));
