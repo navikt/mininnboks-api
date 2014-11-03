@@ -74,6 +74,7 @@ public class ContentConfig {
         decoratorFilter.setFragmentsUrl("common-html/v1/navno");
         decoratorFilter.setApplicationName("Min Innboks");
         decoratorFilter.setFragmentNames(asList(
+            "resources",
             "header-withmenu",
             "footer-withmenu",
             "inline-js-variables",
