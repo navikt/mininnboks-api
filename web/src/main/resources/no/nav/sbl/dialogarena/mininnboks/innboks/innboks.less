@@ -7,10 +7,6 @@
 
 .mininnboks-omslag {
   padding-top: 45px;
-
-  p, .paragraph {
-    font-size: 1em;
-  }
 }
 
 .top-bar {
@@ -211,6 +207,7 @@
     }
   }
 }
+
 .wicket-ajax-indicator {
   display: block;
 }
@@ -228,6 +225,7 @@
     width: 100%;
   }
 }
+
 .contrast {
   .toggleable {
     .flipp {
@@ -249,23 +247,36 @@
   .site-coltrols-toolbar, .topnavsection-wrapper, .sitefooter, .top-bar, .traadlengde {
     .no-print;
   }
+
   a[href]:after {
     content: "" !important;
   }
+
   h1.diger {
     margin: 0;
   }
+
   .traad .tidligere-melding:after {
     border-bottom-color: #fff;
   }
+
   .no-print {
     display: none !important;
   }
+
   .contrast .mininnboks-omslag * {
     background-color: white !important;
     color: black !important;
   }
+
   .traad {
     page-break-inside: avoid;
   }
+}
+
+.pagewrapper {
+  height: auto;
+  min-height: 100%;
+  margin-bottom: -184px;
+  padding-bottom: -184px;
 }
