@@ -7,7 +7,7 @@ $(document).on('keydown', function(e) {
 });
 $(document).ready(function(){
     $('.temagruppevelger').selectmenu({appendTo:'.temagruppevelger-wrapper'});
-    $('.betingelser').dialog({autoOpen: false, width: minmaxWidth(320, 650), modal: true, resizable: false});
+    $('.betingelser').dialog({autoOpen: false, width: minmaxWidth(320, 650), modal: true, resizable: false, position: {of: "#maincontent"}});
 
     $('a[class^="svar"]').click(function(e) {
         var $cb = $('.betingelsevalgpanel input[type=checkbox]:first');
