@@ -9,6 +9,7 @@ import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
@@ -48,7 +49,7 @@ public class SkrivPageTest extends WicketPageTest {
     public void lasterSkrivPageKomponenter() {
         wicketTester.should().containComponent(withId("sporsmalForm").and(ofType(Form.class)))
                 .printComponentsTree()
-                .should().inComponent(withId("sporsmalForm")).containComponent(withId("temagruppe").and(ofType(DropDownChoice.class)))
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("temagruppe").and(ofType(Label.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("tekstfelt").and(ofType(EnhancedTextArea.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("betingelseValg").and(ofType(BetingelseValgPanel.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("send").and(ofType(IndicatingAjaxButton.class)))
