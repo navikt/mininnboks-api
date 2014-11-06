@@ -75,7 +75,7 @@ public class SkrivPage extends BasePage {
             EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, config);
             enhancedTextArea.get("text").add(append("aria-label", new ResourceModel(PLACEHOLDER_TEXT_KEY)));
 
-            final FeedbackPanel feedbackPanel = new FeedbackPanel("validering");
+            final FeedbackPanel feedbackPanel = new AriaFeedbackPanel("validering");
             feedbackPanel.setOutputMarkupId(true);
 
             IndicatingAjaxButton send = new IndicatingAjaxButton("send", this) {
