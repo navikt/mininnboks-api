@@ -15,8 +15,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -34,7 +33,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-import static java.util.Arrays.asList;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
@@ -71,6 +69,8 @@ public class SkrivPage extends BasePage {
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
+            Label temagruppe = new Label("temagruppe", getString(model.getObject().getTemagruppe().name()));
+
             EnhancedTextAreaConfigurator config = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(PLACEHOLDER_TEXT_KEY);
             EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, config);
             enhancedTextArea.get("text").add(append("aria-label", new ResourceModel(PLACEHOLDER_TEXT_KEY)));
@@ -102,14 +102,7 @@ public class SkrivPage extends BasePage {
 
             Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
 
-            DropDownChoice<Temagruppe> temagruppeDropdown = new DropDownChoice<>("temagruppe", asList(Temagruppe.values()), new ChoiceRenderer<Temagruppe>() {
-                @Override
-                public Object getDisplayValue(Temagruppe object) {
-                    return getString(object.name());
-                }
-            });
-
-            add(temagruppeDropdown, enhancedTextArea, feedbackPanel, send, avbryt);
+            add(temagruppe, enhancedTextArea, feedbackPanel, send, avbryt);
             add(new BetingelseValgPanel("betingelseValg", model));
         }
 
@@ -124,7 +117,7 @@ public class SkrivPage extends BasePage {
 
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skriv.js")));
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skrivValidator.js")));
-            response.render(OnDomReadyHeaderItem.forScript("window.SkrivFormValidator = new SkrivFormValidator("+jsValidatorConfig+");"));
+            response.render(OnDomReadyHeaderItem.forScript("window.SkrivFormValidator = new SkrivFormValidator(" + jsValidatorConfig + ");"));
 
         }
     }

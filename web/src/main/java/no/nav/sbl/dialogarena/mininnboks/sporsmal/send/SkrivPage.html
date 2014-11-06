@@ -12,10 +12,9 @@
                 <h2 class="stor deloverskrift"><wicket:message key="send-sporsmal.still-sporsmal.deloverskrift">[[Skriv melding]]</wicket:message></h2>
                 <div class="robust-strek"></div>
             </div>
-            <div class="temagruppevelger-wrapper">
-                <label wicket:for="temagruppe" class="hidden"><wicket:message key="send-sporsmal.temavelger.tittel"></wicket:message></label>
-                <select wicket:id="temagruppe" class="temagruppevelger"></select>
-            </div>
+
+            <b><wicket:message key="send-sporsmal.tema.tittel"></wicket:message></b>
+            <span wicket:id="temagruppe"></span>
 
             <p class="hjelpetekst"><wicket:message key="send-sporsmal.still-sporsmal.hjelpetekst">[[Hjelpetekst]]</wicket:message></p>
             <label wicket:for="tekstfelt:text" class="hidden"><wicket:message key="skriv-sporsmal.fritekst.placeholder"></wicket:message></label>
