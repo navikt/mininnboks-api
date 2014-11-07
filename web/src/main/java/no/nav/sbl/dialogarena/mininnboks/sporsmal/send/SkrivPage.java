@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks.sporsmal.send;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextArea;
 import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextAreaConfigurator;
+import no.nav.modig.wicket.errorhandling.aria.AriaFeedbackPanel;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
