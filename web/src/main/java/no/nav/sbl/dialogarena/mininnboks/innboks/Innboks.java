@@ -13,11 +13,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import javax.inject.Inject;
@@ -27,8 +23,7 @@ import static java.util.Arrays.asList;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
-import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
-import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
+import static no.nav.modig.wicket.conditional.ConditionalUtils.*;
 import static no.nav.modig.wicket.model.ModelUtils.not;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.erLest;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.tilTraader;
@@ -61,6 +56,7 @@ public class Innboks extends BasePage {
                 item.setOutputMarkupId(true);
 
                 item.add(hasCssClassIf("lest", erLest(traadVM.henvendelser)));
+                item.add(hasCssClassIf("closed", traadVM.lukket));
 
                 AjaxLink<Void> flipp = new AjaxLink<Void>("flipp") {
                     @Override
@@ -68,9 +64,12 @@ public class Innboks extends BasePage {
                         traadClickBehaviour(item, target);
                     }
                 };
+                flipp.add(attributeIf("aria-pressed", "true", not(traadVM.lukket), true));
+
                 Label ariahelper = new Label("ariahelper", traadVM.ariaTekst);
 
                 WebMarkupContainer traadcontainer = new WebMarkupContainer("traadcontainer");
+                traadcontainer.add(attributeIf("aria-expanded", "true", not(traadVM.lukket), true));
 
                 TidligereMeldingerPanel tidligereMeldinger = new TidligereMeldingerPanel("tidligereMeldinger", item.getModel());
 
@@ -125,26 +124,13 @@ public class Innboks extends BasePage {
     }
 
     private void traadClickBehaviour(ListItem<TraadVM> item, AjaxRequestTarget target) {
-        TraadVM traadVM = item.getModelObject();
+        IModel<TraadVM> traadVM = item.getModel();
 
-        if (!erLest(traadVM.henvendelser).getObject()) {
-            target.appendJavaScript(String.format(
-                    "Innboks.markerSomLest('%s');",
-                    item.getMarkupId()
-            ));
-            traadVM.markerSomLest(service);
+        if (!erLest(traadVM.getObject().henvendelser).getObject()) {
+            traadVM.getObject().markerSomLest(service);
         }
-        target.appendJavaScript(String.format(
-                "Innboks.oppdaterTraadStatus('%s', '%s', '%s');",
-                item.getMarkupId(),
-                item.getModelObject().statusTekst.getObject(),
-                item.getModelObject().ariaTekst.getObject()
-        ));
-        traadVM.lukket.setObject(!traadVM.lukket.getObject());
-        target.appendJavaScript(String.format(
-                "Innboks.toggleTraad('%s');",
-                item.getMarkupId()
-        ));
+        traadVM.getObject().lukket.setObject(!traadVM.getObject().lukket.getObject());
+        target.add(item);
     }
 
     private IModel<Boolean> tomInnboksModel() {
