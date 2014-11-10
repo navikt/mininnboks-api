@@ -15,7 +15,6 @@
             this.$form.find('input,textarea').each(function(index, element){
                 var wasValid = this.validate({currentTarget: element});
                 if (!wasValid && firstNonValidElement) {
-                    console.log('setting focus to ', element);
                     $(element).blur().focus();
                     firstNonValidElement = false;
                 }
@@ -49,7 +48,7 @@
             }
         },
         validateTextArea: function ($el) {
-            if ($el.val().length === 0 || $el.val() === this.config.textareaPlaceholder) {
+            if ($el.val().length === 0 || $el.val() === this.config.textareaPlaceholder || $el.val().length > this.config.maxLength) {
                 $el.attr('aria-invalid', 'true');
                 $el.attr('aria-describedBy', 'aria-error-'+$el.attr('id'));
                 $el.addClass('validation-error')

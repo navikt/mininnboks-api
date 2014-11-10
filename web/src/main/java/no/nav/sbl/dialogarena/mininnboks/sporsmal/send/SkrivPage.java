@@ -66,14 +66,15 @@ public class SkrivPage extends BasePage {
 
     private final class SporsmalForm extends Form<Sporsmal> {
         public static final String PLACEHOLDER_TEXT_KEY = "skriv-sporsmal.fritekst.placeholder";
+        private final EnhancedTextAreaConfigurator textAreaConfigurator;
 
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
             Label temagruppe = new Label("temagruppe", getString(model.getObject().getTemagruppe().name()));
 
-            EnhancedTextAreaConfigurator config = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(PLACEHOLDER_TEXT_KEY);
-            EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, config);
+            textAreaConfigurator = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(PLACEHOLDER_TEXT_KEY);
+            EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, textAreaConfigurator);
             enhancedTextArea.get("text").add(append("aria-label", new ResourceModel(PLACEHOLDER_TEXT_KEY)));
 
             final FeedbackPanel feedbackPanel = new AriaFeedbackPanel("validering");
@@ -110,11 +111,12 @@ public class SkrivPage extends BasePage {
         @Override
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
-            String jsValidatorConfig = String.format("{'form': %s,'textareaPlaceholder': '%s', 'textareaErrorMessage': '%s', 'checkboxErrorMessage': '%s'}",
+            String jsValidatorConfig = String.format("{'form': %s,'textareaPlaceholder': '%s', 'textareaErrorMessage': '%s', 'checkboxErrorMessage': '%s', maxLength: %d}",
                     "$('.mininnboks-omslag form').get(0)",
                     new ResourceModel(PLACEHOLDER_TEXT_KEY).getObject(),
                     new ResourceModel("send-sporsmal.still-sporsmal.text.tomt").getObject(),
-                    new ResourceModel(IKKE_AKSEPTERT_FEILMELDING_PROPERTY).getObject());
+                    new ResourceModel(IKKE_AKSEPTERT_FEILMELDING_PROPERTY).getObject(),
+                    textAreaConfigurator.getMaxCharCount());
 
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skriv.js")));
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skrivValidator.js")));
