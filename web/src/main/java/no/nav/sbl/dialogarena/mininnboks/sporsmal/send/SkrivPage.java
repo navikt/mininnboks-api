@@ -10,6 +10,7 @@ import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.Sporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -71,7 +72,9 @@ public class SkrivPage extends BasePage {
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            Label temagruppe = new Label("temagruppe", getString(model.getObject().getTemagruppe().name()));
+            String valgtTemagruppe = model.getObject().getTemagruppe().name();
+            Label temagruppe = new Label("temagruppe", getString(valgtTemagruppe));
+            temagruppe.add(AttributeModifier.replace("aria-label", getString("send-sporsmal.tema.tittel")+valgtTemagruppe));
 
             textAreaConfigurator = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(PLACEHOLDER_TEXT_KEY);
             EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, textAreaConfigurator);
