@@ -61,8 +61,10 @@ public class SkrivPage extends BasePage {
                 .add(accessRestriction(RENDER).withAttributes(actionId("innsending"), resourceId(""))));
 
         IModel<Boolean> ikkeTilgang = not(new PropertyModel<Boolean>(get("sporsmalForm"), "isRenderAllowed"));
+        WebMarkupContainer tilInnboksWrapper = new WebMarkupContainer("tilInnboksWrapper");
+        tilInnboksWrapper.add(new BookmarkablePageLink<>("tilInnboks", Innboks.class));
         add(new WebMarkupContainer("diskresjonskode").add(visibleIf(ikkeTilgang)));
-        add(new BookmarkablePageLink<>("tilInnboks", Innboks.class).add(visibleIf(ikkeTilgang)));
+        add(tilInnboksWrapper.add(visibleIf(ikkeTilgang)));
     }
 
     private final class SporsmalForm extends Form<Sporsmal> {

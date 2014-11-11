@@ -15,6 +15,12 @@
       margin: 20px 0 30px 0;
       padding: 0 1em;
     }
+    .feilmelding {
+      margin-bottom: 30px;
+      >ul {
+        text-align: left;
+      }
+    }
     .charcounter {
       margin-bottom: 1em;
     }
@@ -55,16 +61,23 @@ hr {
   background-color: white;
   text-align: center;
   margin: 40px auto 60px auto;
-  padding: 30px 30px 40px;
+  padding: 30px 30px 20px;
   overflow: hidden;
   &.bekreftelse-panel {
     margin-bottom: 1rem;
+
+    h2.deloverskrift {
+      line-height: 2.5rem;
+    }
   }
   .robust-strek {
     margin-bottom: 30px !important;
   }
 }
-
+.kvittering.avbryt {
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
 .registrert-epost, .mangler-epost, .tps-utilgjengelig {
   font-size: 17px;
   font-weight: 600;
@@ -119,7 +132,8 @@ ul.feedbackPanel {
     margin: 0 !important;
     height: 2rem;
     &.validation-error {
-      .errorBase;
+//      .errorBase;
+      background-image: url("../img/check_tab_feil.svg");
     }
     span {
       display: inline-block;

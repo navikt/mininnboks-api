@@ -5,7 +5,7 @@
     <h1 class="diger"><wicket:message key="send-sporsmal.still-sporsmal.ny-melding-overskrift">[[Ny melding til NAV]]</wicket:message></h1>
     <article class="send-sporsmal-container send-panel">
         <div wicket:id="diskresjonskode"><wicket:message key="innboks.diskresjonskode"></wicket:message></div>
-        <div class="avbryt"><a wicket:id="tilInnboks" href="#"><wicket:message key="send-sporsmal.tilbake-til-innboks">[[Avbryt]]</wicket:message></a></div>
+        <div wicket:id="tilInnboksWrapper" class="avbryt"><a wicket:id="tilInnboks" href="#"><wicket:message key="send-sporsmal.tilbake-til-innboks">[[Avbryt]]</wicket:message></a></div>
         <form wicket:id="sporsmalForm">
             <div class="sporsmal-header">
                 <img src="img/melding_graa.svg" wicket:message="alt:meldingikon.alternativ.tekst"/>
@@ -15,11 +15,12 @@
 
             <strong wicket:id="temagruppe"></strong>
 
+
             <p class="hjelpetekst"><wicket:message key="send-sporsmal.still-sporsmal.hjelpetekst">[[Hjelpetekst]]</wicket:message></p>
+            <div wicket:id="validering" role="alert" aria-live="assertive" aria-atomic="true" class="feilmelding"></div>
             <label wicket:for="tekstfelt:text" class="hidden"><wicket:message key="skriv-sporsmal.fritekst.placeholder"></wicket:message></label>
             <wicket:container wicket:id="tekstfelt" />
             <label class="hidden"><wicket:message key="send-sporsmal.still-sporsmal.text.tomt"></wicket:message></label>
-            <div wicket:id="validering" role="alert" aria-live="assertive" aria-atomic="true"></div>
 
             <div wicket:id="betingelseValg"></div>
 
