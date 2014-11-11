@@ -74,8 +74,8 @@ public class SkrivPage extends BasePage {
         private SporsmalForm(String id, final CompoundPropertyModel<Sporsmal> model) {
             super(id, model);
 
-            String valgtTemagruppe = model.getObject().getTemagruppe().name();
-            Label temagruppe = new Label("temagruppe", getString(valgtTemagruppe));
+            String valgtTemagruppe = getString(model.getObject().getTemagruppe().name());
+            Label temagruppe = new Label("temagruppe", valgtTemagruppe);
             temagruppe.add(AttributeModifier.replace("aria-label", getString("send-sporsmal.tema.tittel")+valgtTemagruppe));
 
             textAreaConfigurator = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(PLACEHOLDER_TEXT_KEY);
