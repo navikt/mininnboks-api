@@ -7,6 +7,10 @@
 
 .mininnboks-omslag {
   padding-top: 45px;
+
+  h1.diger {
+    margin-bottom: 40px;
+  }
 }
 
 .top-bar {
@@ -15,7 +19,7 @@
     text-align: center;
     max-width: @maxwidth;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 0px 0 20px;
   }
 }
 
@@ -47,8 +51,14 @@
     .nyeste-melding .fritekst {
       height: 2rem;
     }
+    .fritekst {
+      p {
+        margin-bottom: 0px;
+      }
+    }
     .tidligere-melding {
       display: none;
+      margin-top: 20px;
     }
     .flipp {
       background-image: url("../img/flipp_lukket.svg");
@@ -66,6 +76,14 @@
   border-bottom: 1px solid @rammeborder;
   padding: 40px 0;
 
+  &:last-child {
+    margin-bottom: 0px;
+    border: 0px;
+    padding: 40px 0 60px;
+    &.closed {
+      height: 180px;
+    }
+  }
   .traadcontainer {
     max-width: @maxwidth;
     margin: 0 auto;
@@ -139,6 +157,7 @@
 
   p {
     line-height: 1.25rem;
+    margin-bottom: 0px;
   }
   a {
     font-size: 1em;
@@ -176,7 +195,7 @@
     background-color: @backgroundColor;
     border: 1px solid @rammeborder;
     padding: 20px;
-    margin-top: 40px;
+    margin-top: 30px;
 
     .status-tekst {
       display: block;
