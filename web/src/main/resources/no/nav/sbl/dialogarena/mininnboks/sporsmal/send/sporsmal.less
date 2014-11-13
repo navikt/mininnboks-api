@@ -153,7 +153,6 @@ ul.feedbackPanel {
     margin: 0 !important;
     height: 2rem;
     &.validation-error {
-//      .errorBase;
       background-image: url("../img/check_tab_feil.svg");
     }
     span {
@@ -165,13 +164,8 @@ ul.feedbackPanel {
     font-size: 0.85rem;
     text-decoration: underline;
   }
-  > input:focus + label {
-    &:not(.validation-error) {
-      border: 1px dashed @morkeBlaa;
-    }
-    &.validation-error {
-      border-style: dashed;
-    }
+  input:focus + label {
+    border: 1px dashed @morkeBlaa;
   }
 }
 
