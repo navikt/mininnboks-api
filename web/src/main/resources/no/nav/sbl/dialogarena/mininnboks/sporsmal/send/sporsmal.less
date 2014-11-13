@@ -50,10 +50,10 @@ hr {
 }
 
 .deloverskrift {
-  line-height: 2.1rem;
+  line-height: 2.5rem;
   font-size: 2.1rem;
   font-weight: normal;
-  margin: 30px 0 15px;
+  margin: 16px 0 15px;
 }
 
 .send-sporsmal-container {
@@ -61,17 +61,33 @@ hr {
   background-color: white;
   text-align: center;
   margin: 40px auto 60px auto;
-  padding: 30px 30px 20px;
+  padding: 30px 30px 40px;
   overflow: hidden;
   &.bekreftelse-panel {
     margin-bottom: 1rem;
-
-    h2.deloverskrift {
-      line-height: 2.5rem;
-    }
   }
   .robust-strek {
     margin-bottom: 30px !important;
+  }
+}
+.tekstfelt {
+  position: relative;
+
+  .tekst-feilmelding {
+    position: absolute;
+    color: #c30000;
+    bottom: 0px;
+    left: 0px;
+  }
+}
+.checkbox {
+  position: relative;
+
+  .checkbox-feilmelding {
+    position: relative;
+    color: #c30000;
+    top: -15px;
+    left: 10px;
   }
 }
 .kvittering.avbryt {
@@ -82,19 +98,24 @@ hr {
   font-size: 17px;
   font-weight: 600;
   font-family: Modus, Arial, Helvetica, sans-serif;
-  a {
-    font-weight: normal;
-    font-family: Modus, Arial, Helvetica, sans-serif;
-  }
-}
-
-.registrert-epost {
   .epostadresse {
-    background-color: @backgroundColor;
-    max-width: 400px;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
+    position: relative;
+    a {
+      font-size: 17px;
+      font-weight: normal;
+      font-family: Modus, Arial, Helvetica, sans-serif;
+
+      &:after {
+        content: '';
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        background-image: url("../img/rediger_hover.svg");
+        position: relative;
+        top: 2px;
+        left: 6px;
+      }
+    }
   }
 }
 
@@ -137,7 +158,7 @@ ul.feedbackPanel {
     }
     span {
       display: inline-block;
-      width: 19rem;
+      width: 17rem;
     }
   }
   .vilkarlenke {
@@ -186,7 +207,6 @@ ul.feedbackPanel {
 
 .avbryt {
   margin-top: 20px;
-  margin-bottom: 20px;
   text-align: center;
   a {
     color: @morkeBlaa;

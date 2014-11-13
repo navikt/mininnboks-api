@@ -3,9 +3,12 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
     <div class="betingelsevalgpanel">
-        <input type="checkbox" wicket:id="betingelserCheckbox"/>
-        <label wicket:for="betingelserCheckbox"><span><wicket:message key="send-sporsmal.still-sporsmal.betingelser.sjekkboks" /></span></label>
-        <a wicket:id="visBetingelser" href="#" class="vilkarlenke"><wicket:message key="send-sporsmal.still-sporsmal.betingelser.vis" /></a>
+        <div class="checkbox">
+            <input type="checkbox" wicket:id="betingelserCheckbox"/>
+            <label wicket:for="betingelserCheckbox"><span><wicket:message key="send-sporsmal.still-sporsmal.betingelser.sjekkboks" /></span></label>
+            <a wicket:id="visBetingelser" href="#" class="vilkarlenke"><wicket:message key="send-sporsmal.still-sporsmal.betingelser.vis" /></a>
+            <p wicket:id="checkbox-feilmelding" class="checkbox-feilmelding" role="alert" aria-live="assertive" aria-atomic="true"></p>
+        </div>
         <div class="betingelser">
             <div class="betingelsepanel" role="document">
                 <h1 class="stor" tabindex="0"><wicket:message key="send-sporsmal.still-sporsmal.betingelser.overskrift"/></h1>

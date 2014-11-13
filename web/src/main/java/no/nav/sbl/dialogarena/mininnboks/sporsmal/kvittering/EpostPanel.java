@@ -39,10 +39,9 @@ public class EpostPanel extends Panel {
             manglerEpostContainer.setVisibilityAllowed(false);
             tpsUtilgjengeligContainer.setVisibilityAllowed(true);
         }
-        BrukerprofilLink tilEndringAvEpost = new BrukerprofilLink("tilEndringAvEpost");
-        tilEndringAvEpost.add(AttributeModifier.replace("aria-label", "Endre mailen: "+brukersEpostadresse));
+        ExternalLink tilEndringAvEpost = new ExternalLink("tilEndringAvEpost", System.getProperty("brukerprofil.link.url"), brukersEpostadresse);
+        tilEndringAvEpost.add(AttributeModifier.replace("aria-label", "Endre mailen: " + brukersEpostadresse));
 
-        harEpostContainer.add(new Label("epostAdresse", brukersEpostadresse));
         harEpostContainer.add(tilEndringAvEpost);
         add(harEpostContainer);
 

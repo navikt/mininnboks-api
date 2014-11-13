@@ -21,7 +21,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -39,7 +38,10 @@ import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.action
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
+import static no.nav.modig.wicket.model.ModelUtils.both;
 import static no.nav.modig.wicket.model.ModelUtils.not;
+import static no.nav.sbl.dialogarena.mininnboks.sporsmal.VisningsUtils.componentHasErrors;
+import static no.nav.sbl.dialogarena.mininnboks.sporsmal.VisningsUtils.numberOfErrorMessages;
 import static org.apache.wicket.AttributeModifier.append;
 
 public class SkrivPage extends BasePage {
@@ -76,15 +78,27 @@ public class SkrivPage extends BasePage {
 
             String valgtTemagruppe = getString(model.getObject().getTemagruppe().name());
             Label temagruppe = new Label("temagruppe", valgtTemagruppe);
-            temagruppe.add(AttributeModifier.replace("aria-label", getString("send-sporsmal.tema.tittel")+valgtTemagruppe));
+            temagruppe.add(AttributeModifier.replace("aria-label", getString("send-sporsmal.tema.tittel") + valgtTemagruppe));
+
+            final AriaFeedbackPanel feedbackPanel = new AriaFeedbackPanel("validering");
+            feedbackPanel.setOutputMarkupPlaceholderTag(true);
+            feedbackPanel.add(visibleIf(numberOfErrorMessages(feedbackPanel, 2)));
 
             textAreaConfigurator = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(PLACEHOLDER_TEXT_KEY);
-            EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, textAreaConfigurator);
+            final EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, textAreaConfigurator);
             enhancedTextArea.get("text").add(append("aria-label", new ResourceModel(PLACEHOLDER_TEXT_KEY)));
 
-            final FeedbackPanel feedbackPanel = new AriaFeedbackPanel("validering");
-            feedbackPanel.setOutputMarkupId(true);
+            final Label tekstfeltFeilmelding = new Label("tekstfelt-feilmelding", "Tekstfeltet kan ikke være tomt.");
+            tekstfeltFeilmelding.setOutputMarkupPlaceholderTag(true);
+            tekstfeltFeilmelding.add(
+                    visibleIf(both(
+                                    componentHasErrors(enhancedTextArea.get("text"), feedbackPanel))
+                                    .and(numberOfErrorMessages(feedbackPanel, 1))
+                    )
+            );
 
+
+            final BetingelseValgPanel betingelseValgPanel = new BetingelseValgPanel("betingelseValg", model, feedbackPanel);
             IndicatingAjaxButton send = new IndicatingAjaxButton("send", this) {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form form) {
@@ -102,16 +116,18 @@ public class SkrivPage extends BasePage {
 
                 @Override
                 protected void onError(AjaxRequestTarget target, Form<?> form) {
+                    target.add(feedbackPanel, tekstfeltFeilmelding);
+                    betingelseValgPanel.oppdater(target);
                     target.appendJavaScript("SkrivFormValidator.validateAll()");
-                    target.add(feedbackPanel);
                 }
             };
 
             Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
 
-            add(temagruppe, enhancedTextArea, feedbackPanel, send, avbryt);
-            add(new BetingelseValgPanel("betingelseValg", model));
+            add(temagruppe, enhancedTextArea, tekstfeltFeilmelding, feedbackPanel, send, avbryt);
+            add(betingelseValgPanel);
         }
+
 
         @Override
         public void renderHead(IHeaderResponse response) {

@@ -18,9 +18,12 @@
 
             <p class="hjelpetekst"><wicket:message key="send-sporsmal.still-sporsmal.hjelpetekst">[[Hjelpetekst]]</wicket:message></p>
             <div wicket:id="validering" role="alert" aria-live="assertive" aria-atomic="true" class="feilmelding"></div>
-            <label wicket:for="tekstfelt:text" class="hidden"><wicket:message key="skriv-sporsmal.fritekst.placeholder"></wicket:message></label>
-            <wicket:container wicket:id="tekstfelt" />
-            <label class="hidden"><wicket:message key="send-sporsmal.still-sporsmal.text.tomt"></wicket:message></label>
+            <div class="tekstfelt">
+                <label wicket:for="tekstfelt:text" class="hidden"><wicket:message key="skriv-sporsmal.fritekst.placeholder"></wicket:message></label>
+                <wicket:container wicket:id="tekstfelt" />
+                <span wicket:id="tekstfelt-feilmelding" class="tekst-feilmelding" role="alert" aria-live="assertive" aria-atomic="true"></span>
+                <label class="hidden"><wicket:message key="send-sporsmal.still-sporsmal.text.tomt"></wicket:message></label>
+            </div>
 
             <div wicket:id="betingelseValg"></div>
 

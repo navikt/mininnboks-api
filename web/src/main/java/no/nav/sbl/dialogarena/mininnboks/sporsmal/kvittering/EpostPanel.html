@@ -7,12 +7,9 @@
         <wicket:message key="send-sporsmal.bekreftelse.du-mottar-epost">
             [[Vi tipser deg på denne e-postadressen så snart ditt svar foreligger]]
         </wicket:message>
-        <div class="epostadresse" tabindex="0">
-            <div wicket:id="epostAdresse">[[Selve e-postadressen]]</div>
-            <a wicket:id="tilEndringAvEpost">
-                <wicket:message key="send-sporsmal.bekreftelse.endre-epostadresse">[[Endre registrert epostadresse]]</wicket:message>
-            </a>
-        </div>
+        <p class="epostadresse">
+            <a wicket:id="tilEndringAvEpost" wicket:message="alt:send-sporsmal.bekreftelse.endre-epostadresse">[[Selve e-postadressen]]</a>
+        </p>
     </div>
 
     <div wicket:id="manglerEpostContainer" class="mangler-epost">
