@@ -297,7 +297,18 @@ ul.feedbackPanel {
     }
   }
 }
+.contrast {
+  .ui-dialog {
+    border: 3px solid white;
 
+    .ui-dialog-titlebar-close {
+      background-color: white !important;
+      .ui-button-text {
+        background-color: transparent !important;
+      }
+    }
+  }
+}
 .ui-dialog {
   background-color: white;
 }
