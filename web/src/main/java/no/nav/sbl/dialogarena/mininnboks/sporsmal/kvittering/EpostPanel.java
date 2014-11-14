@@ -3,7 +3,6 @@ package no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering;
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.slf4j.Logger;

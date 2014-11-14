@@ -2,7 +2,6 @@ package no.nav.sbl.dialogarena.mininnboks.sporsmal;
 
 import no.nav.modig.wicket.errorhandling.aria.AriaFeedbackPanel;
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -25,7 +24,7 @@ public class VisningsUtils {
                 for (FeedbackMessage message : feedbackPanel.getMessages()) {
                     Component reporter = message.getReporter();
 
-                    if (reporter.equals(component)){
+                    if (reporter.equals(component)) {
                         return true;
                     }
                 }
