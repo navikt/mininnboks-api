@@ -98,7 +98,7 @@ public class Innboks extends BasePage {
             }
         });
         WebMarkupContainer innboksTilbakeMeldingWrapper = new WebMarkupContainer("tomInnboks");
-        innboksTilbakeMeldingWrapper.add(new Label("innboks-tilbakemelding", getTilbakeMeldingModel()));
+        innboksTilbakeMeldingWrapper.add(new Label("innboks-tilbakemelding", getString(TOM_INNBOKS)).setEscapeModelStrings(false));
         add(innboksTilbakeMeldingWrapper.add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
     }
 
