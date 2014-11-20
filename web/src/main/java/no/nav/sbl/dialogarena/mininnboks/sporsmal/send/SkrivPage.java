@@ -38,8 +38,7 @@ import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.action
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
-import static no.nav.modig.wicket.model.ModelUtils.both;
-import static no.nav.modig.wicket.model.ModelUtils.not;
+import static no.nav.modig.wicket.model.ModelUtils.*;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.VisningsUtils.componentHasErrors;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.VisningsUtils.numberOfErrorMessages;
 import static org.apache.wicket.AttributeModifier.append;
@@ -82,7 +81,6 @@ public class SkrivPage extends BasePage {
 
             final AriaFeedbackPanel feedbackPanel = new AriaFeedbackPanel("validering");
             feedbackPanel.setOutputMarkupPlaceholderTag(true);
-            feedbackPanel.add(visibleIf(numberOfErrorMessages(feedbackPanel, 2)));
 
             textAreaConfigurator = new EnhancedTextAreaConfigurator().withPlaceholderTextKey(PLACEHOLDER_TEXT_KEY);
             final EnhancedTextArea enhancedTextArea = new EnhancedTextArea("tekstfelt", model, textAreaConfigurator);
@@ -110,7 +108,8 @@ public class SkrivPage extends BasePage {
                     } catch (Exception e) {
                         LOG.error("Feil ved innsending av spørsmål", e);
                         error(getString(UNDERLIGGENDE_FEIL_FEILMELDING_PROPERTY));
-                        target.add(feedbackPanel);
+                        betingelseValgPanel.oppdater(target);
+                        target.add(feedbackPanel, tekstfeltFeilmelding);
                     }
                 }
 
@@ -123,6 +122,12 @@ public class SkrivPage extends BasePage {
             };
 
             Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
+
+            feedbackPanel.add(visibleIf(either(
+                                    numberOfErrorMessages(feedbackPanel, 2))
+                                    .or(componentHasErrors(send, feedbackPanel))
+                    )
+            );
 
             add(temagruppe, enhancedTextArea, tekstfeltFeilmelding, feedbackPanel, send, avbryt);
             add(betingelseValgPanel);
