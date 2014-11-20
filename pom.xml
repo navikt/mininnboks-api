@@ -11,7 +11,7 @@
 
     <name>Dialogarena - mininnboks</name>
     <artifactId>mininnboks</artifactId>
-    <version>1.13-SNAPSHOT</version>
+    <version>1.13</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -110,7 +110,7 @@
     <scm>
         <developerConnection>scm:git:http://stash.devillo.no/scm/dial/mininnboks.git</developerConnection>
         <url>http://stash.devillo.no:7990/projects/DIAL/repos/mininnboks/browse</url>
-		<tag>HEAD</tag>
+		<tag>mininnboks-1.13</tag>
 	</scm>
 
     <reporting>
