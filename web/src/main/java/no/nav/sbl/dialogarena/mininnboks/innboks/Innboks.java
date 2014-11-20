@@ -98,16 +98,12 @@ public class Innboks extends BasePage {
             }
         });
         WebMarkupContainer innboksTilbakeMeldingWrapper = new WebMarkupContainer("tomInnboks");
-        innboksTilbakeMeldingWrapper.add(new Label("innboks-tilbakemelding", getTilbakeMeldingString()));
+        innboksTilbakeMeldingWrapper.add(new Label("innboks-tilbakemelding", getTilbakeMeldingModel()));
         add(innboksTilbakeMeldingWrapper.add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
     }
 
-    private String getTilbakeMeldingString() {
-        String key = TOM_INNBOKS;
-        if (kunneIkkeHenteTraader.getObject()) {
-            key = EXCEPTION;
-        }
-        return getString(key);
+    private IModel<String> getTilbakeMeldingModel() {
+        return new ResourceModel(kunneIkkeHenteTraader.getObject() ? EXCEPTION : TOM_INNBOKS);
     }
 
     private List<TraadVM> hentTraader() {
