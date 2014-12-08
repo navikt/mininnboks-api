@@ -5,26 +5,29 @@
     <h1 class="diger"><wicket:message key="send-sporsmal.still-sporsmal.ny-melding-overskrift">[[Ny melding til NAV]]</wicket:message></h1>
     <article class="send-sporsmal-container send-panel">
         <div wicket:id="diskresjonskode"><wicket:message key="innboks.diskresjonskode"></wicket:message></div>
-        <div class="avbryt"><a wicket:id="tilInnboks" href="#"><wicket:message key="send-sporsmal.tilbake-til-innboks">[[Avbryt]]</wicket:message></a></div>
+        <div wicket:id="tilInnboksWrapper" class="avbryt"><a wicket:id="tilInnboks" href="#"><wicket:message key="send-sporsmal.tilbake-til-innboks">[[Avbryt]]</wicket:message></a></div>
         <form wicket:id="sporsmalForm">
             <div class="sporsmal-header">
-                <img class="meldingikon" src="img/melding_graa.svg"/>
-                <h2 class="deloverskrift"><wicket:message key="send-sporsmal.still-sporsmal.deloverskrift">[[Skriv melding]]</wicket:message></h2>
-                <hr class="robust-strek"/>
+                <img src="img/melding_graa.svg" wicket:message="alt:meldingikon.alternativ.tekst"/>
+                <h2 class="stor deloverskrift"><wicket:message key="send-sporsmal.still-sporsmal.deloverskrift">[[Skriv melding]]</wicket:message></h2>
+                <div class="robust-strek"></div>
             </div>
-            <div class="temagruppeWrapper">
-                <input wicket:id="temagruppeDropdown" type="hidden" />
-            </div>
+
+            <strong wicket:id="temagruppe"></strong>
+
 
             <p class="hjelpetekst"><wicket:message key="send-sporsmal.still-sporsmal.hjelpetekst">[[Hjelpetekst]]</wicket:message></p>
-
-            <wicket:container wicket:id="tekstfelt" />
-
-            <div wicket:id="validering"></div>
+            <div wicket:id="validering" role="alert" aria-live="assertive" aria-atomic="true" class="feilmelding"></div>
+            <div class="tekstfelt">
+                <label wicket:for="tekstfelt:text" class="hidden"><wicket:message key="skriv-sporsmal.fritekst.placeholder"></wicket:message></label>
+                <wicket:container wicket:id="tekstfelt" />
+                <span wicket:id="tekstfelt-feilmelding" class="tekst-feilmelding" role="alert" aria-live="assertive" aria-atomic="true"></span>
+                <label class="hidden"><wicket:message key="send-sporsmal.still-sporsmal.text.tomt"></wicket:message></label>
+            </div>
 
             <div wicket:id="betingelseValg"></div>
 
-            <div><a wicket:id="send" class="send-link knapp-hoved-stor" href="#" role="button"><wicket:message key="send-sporsmal.still-sporsmal.send-inn">[[Send inn]]</wicket:message></a></div>
+            <div><input type="submit" wicket:id="send" class="send-link knapp-hoved-stor" role="button" wicket:message="value:send-sporsmal.still-sporsmal.send-inn" /></div>
             <div class="avbryt"><a wicket:id="avbryt" href="#"><wicket:message key="send-sporsmal.still-sporsmal.avbryt">[[Avbryt]]</wicket:message></a></div>
         </form>
     </article>

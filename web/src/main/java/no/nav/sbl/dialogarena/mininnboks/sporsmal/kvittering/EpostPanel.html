@@ -7,19 +7,16 @@
         <wicket:message key="send-sporsmal.bekreftelse.du-mottar-epost">
             [[Vi tipser deg på denne e-postadressen så snart ditt svar foreligger]]
         </wicket:message>
-        <div class="epostadresse">
-            <div wicket:id="epostAdresse">[[Selve e-postadressen]]</div>
-            <a wicket:id="tilEndringAvEpost">
-                <wicket:message key="send-sporsmal.bekreftelse.endre-epostadresse">[[Endre registrert epostadresse]]</wicket:message>
-            </a>
-        </div>
+        <p class="epostadresse">
+            <a wicket:id="tilEndringAvEpost" wicket:message="alt:send-sporsmal.bekreftelse.endre-epostadresse">[[Selve e-postadressen]]</a>
+        </p>
     </div>
 
     <div wicket:id="manglerEpostContainer" class="mangler-epost">
         <wicket:message key="send-sporsmal.bekreftelse.du-kan-motta-epost">
             [[Oppgi din e-postadresse og vi tipser deg så snart ditt svar foreligger]]
         </wicket:message>
-        <a wicket:id="tilRegistreringAvEpost" class="knapp-link-stor brukerprofil-link">
+        <a wicket:id="tilRegistreringAvEpost" class="brukerprofil-link">
             <wicket:message key="send-sporsmal.bekreftelse.registrer-epostadresse">[[Oppgi epostadresse]]</wicket:message>
         </a>
     </div>
@@ -34,6 +31,8 @@
             <wicket:message key="send-sporsmal.bekreftelse.til-brukerprofil">[[Til brukerprofil]]</wicket:message>
         </a>
     </div>
+
+    <hr />
 
 </wicket:panel>
 </body>

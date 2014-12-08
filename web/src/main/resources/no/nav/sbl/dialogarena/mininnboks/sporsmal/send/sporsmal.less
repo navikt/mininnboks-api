@@ -15,43 +15,21 @@
       margin: 20px 0 30px 0;
       padding: 0 1em;
     }
-
-    .temagruppevalg {
-      &:not(.select2-container-active) > a {
-        border: 1px solid @borderGraa;
-      }
-      &.select2-container-active > a {
-        border: 1px dashed @morkeBlaa;
-      }
-      //For dropdown se styles for .select2-results
-      a {
-        height: 30px;
-        background: none;
-        border-radius: 0;
-        padding: 0;
-        box-shadow: none;
-        span {
-          margin-right: 0;
-          margin-top: 0.1rem;
-        }
-        div {
-          .pil-ned;
-          margin-top: 0.65rem;
-          margin-right: 1em;
-          background: none;
-          border-radius: 0;
-          b {
-            background: none;
-            border: 0;
-          }
-        }
+    .feilmelding {
+      margin-bottom: 30px;
+      >ul {
+        text-align: left;
       }
     }
     .charcounter {
       margin-bottom: 1em;
     }
     .send-link {
-      margin-top: 1em;
+      margin-top: 40px;
+    }
+    strong {
+      font-size: 17px;
+      font-family: Modus, Arial, Helvetica, sans-serif;
     }
   }
 }
@@ -61,18 +39,21 @@ h1 {
   margin: 1em;
 }
 
+hr {
+  margin: 40px 0;
+  border: none;
+  border-top: 1px solid #d1d1d1;
+}
+
 .sporsmal-header {
   margin-bottom: 30px;
 }
 
-.meldingikon {
-  margin-bottom: 10px;
-}
-
 .deloverskrift {
+  line-height: 2.5rem;
   font-size: 2.1rem;
   font-weight: normal;
-  margin-bottom: 10px;
+  margin: 16px 0 15px;
 }
 
 .send-sporsmal-container {
@@ -80,42 +61,74 @@ h1 {
   background-color: white;
   text-align: center;
   margin: 40px auto 60px auto;
-  padding: 2em;
+  padding: 30px 30px 40px;
   overflow: hidden;
+  &.bekreftelse-panel {
+    margin-bottom: 1rem;
+  }
+  .robust-strek {
+    margin-bottom: 30px !important;
+  }
 }
+.tekstfelt {
+  position: relative;
 
-.registrert-epost {
+  .tekst-feilmelding {
+    position: absolute;
+    color: #c30000;
+    bottom: 0px;
+    left: 0px;
+  }
+}
+.checkbox {
+  position: relative;
+
+  .checkbox-feilmelding {
+    position: relative;
+    color: #c30000;
+    top: -15px;
+    left: 10px;
+  }
+}
+.kvittering.avbryt {
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+.registrert-epost, .mangler-epost, .tps-utilgjengelig {
+  font-size: 17px;
+  font-weight: 600;
+  font-family: Modus, Arial, Helvetica, sans-serif;
   .epostadresse {
-    background-color: @backgroundColor;
-    max-width: 400px;
-    margin-top: 15px;
-    margin-left: auto;
-    margin-right: auto;
+    position: relative;
+    a {
+      font-size: 17px;
+      font-weight: normal;
+      font-family: Modus, Arial, Helvetica, sans-serif;
+
+      &:after {
+        content: '';
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        background-image: url("../img/rediger_hover.svg");
+        position: relative;
+        top: 2px;
+        left: 6px;
+      }
+    }
   }
 }
 
 .mangler-epost {
+  margin-bottom: 1rem;
   .brukerprofil-link {
-    margin-top: 10px;
+    display: block;
+    margin-top: 20px;
   }
 }
 
 .tps-utilgjengelig {
   color: @navRodt;
-}
-
-hr.robust-strek {
-  border: none;
-  background-color: transparent;
-  margin-top: 0;
-}
-
-hr.skillestrek-sporsmal {
-  margin: 40px auto;
-  width: 100%;
-  height: 1px;
-  border-style: none;
-  background-color: #ddd;
 }
 
 ul.feedbackPanel {
@@ -129,42 +142,71 @@ ul.feedbackPanel {
     content: "* ";
   }
 }
-
+.expandingtextarea.validation-error {
+  .errorBase;
+}
 .betingelsevalgpanel {
   margin-top: 1em;
   label {
-    margin-bottom: 0;
     background-position: 1px 3px !important;
-    padding: 2px 4px 0 32px !important;
+    border: 1px dashed transparent;
+    margin: 0 !important;
+    height: 2rem;
+    &.validation-error {
+      background-image: url("../img/check_tab_feil.svg");
+    }
+    span {
+      display: inline-block;
+      width: 18rem;
+    }
   }
-  a {
+  .vilkarlenke {
     font-size: 0.85rem;
+    text-decoration: underline;
   }
-  >input:focus + label {
+  input:focus + label {
     border: 1px dashed @morkeBlaa;
   }
 }
 
 .betingelsepanel {
-  padding: 1em;
-  p {
-    font-size: 1em;
+  padding: 0 10px 40px;
+  p, ul {
+    font-size: 14px;
+    strong {
+      font-family: Modus, Arial, Helvetica, sans-serif;
+      font-size: 17px;
+    }
+  }
+  h1 {
+    margin: 0 0 15px;
   }
   a {
-    &.godta {
-      margin-top: 2em;
-    }
+    text-decoration: underline;
+  }
+  .svar-godta {
+    text-decoration: none;
+  }
+}
+
+.betingelser {
+  a[class^="svar"] {
+    width: 270px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
     display: block;
   }
 }
 
 .avbryt {
-  margin-top: 1em;
+  margin-top: 20px;
   text-align: center;
   a {
     color: @morkeBlaa;
     text-decoration: none;
     font-size: 1.25em;
+    font-family: Modus, Arial, Helvetica, sans-serif;
     &:hover {
       text-decoration: underline;
     }
@@ -179,6 +221,132 @@ ul.feedbackPanel {
   border-top: 8px solid @morkeBlaa;
 }
 
-div.select2-drop-active {
-  border: 1px solid #aaa;
+.temagruppevelger-wrapper {
+  position: relative;
+  .temagruppevelger {
+    width: 100%;
+    min-width: 120px;
+    max-width: 365px;
+  }
+  .ui-front {
+    z-index: 100;
+  }
+  .ui-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: block;
+    outline: none;
+    .ui-menu-item {
+      position: relative;
+      margin: 0;
+      padding: 0.5em 1em;
+      cursor: pointer;
+      min-height: 0;
+    }
+    .ui-state-focus, .ui-state-active {
+      background-color: #0067c5;
+      color: #fff;
+    }
+  }
+  .ui-selectmenu-menu {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    background-color: #fff;
+    box-shadow: 0 5px 8px 0 #ccc;
+
+    ul {
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+    }
+  }
+  .ui-selectmenu-open {
+    display: block;
+  }
+  .ui-selectmenu-button {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #fff;
+    border: 1px solid #cccccc;
+    span {
+      &.ui-icon {
+        position: absolute;
+        height: 0;
+        width: 0;
+        border: 8px solid transparent;
+        border-top-color: #0067c5;
+        right: 1em;
+        top: 22px;
+      }
+      &.ui-selectmenu-text {
+        text-align: center;
+        padding: 0.5em 1em;
+        display: block;
+        line-height: 1.4;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+.contrast {
+  .ui-dialog {
+    border: 3px solid white;
+
+    .ui-dialog-titlebar-close {
+      background-color: white !important;
+      .ui-button-text {
+        background-color: transparent !important;
+      }
+    }
+  }
+}
+.ui-dialog {
+  background-color: white;
+}
+
+.ui-widget-overlay {
+  background-color: black;
+  opacity: 0.7;
+}
+
+.ui-dialog-titlebar > button[title="Close"] {
+  width: 26px;
+  height: 26px;
+  background-color: white;
+  background-position: 5px 5px;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTUuMzFweCIgaGVpZ2h0PSIxNS4yMnB4IiB2aWV3Qm94PSIwIDAgMTUuMzEgMTUuMjIiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE1LjMxIDE1LjIyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwb2x5Z29uIHBvaW50cz0iMTQuNjc5LDIuMjI0IDEyLjkwOSwwLjQ1MyA3LjU5Nyw1Ljc2NSAyLjI4NSwwLjQ1MyAwLjUxNCwyLjIyNCA1LjgyNiw3LjUzNiAwLjUxNCwxMi44NDggMi4yODUsMTQuNjE3IA0KCTcuNTk3LDkuMzA3IDEyLjkwOSwxNC42MTcgMTQuNjc5LDEyLjg0OCA5LjM2Nyw3LjUzNiAiLz4NCjwvc3ZnPg0K") !important;
+  border: 1px solid #d1d1d1;
+}
+
+.errorBase {
+  background-color: #ffe7e7;
+  border: 1px solid #ffa294;
+  border-top: 1px solid #ce0000;
+  color: #c60000 !important;
+}
+@media only screen and (max-width: 600px) {
+  .tekstfelt span.tekst-feilmelding {
+    position: relative;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .betingelsevalgpanel {
+    label span {
+      width: auto;
+    }
+    a {
+      margin-top: 1em;
+      display: block;
+    }
+  }
 }

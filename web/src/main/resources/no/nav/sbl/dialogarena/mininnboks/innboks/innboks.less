@@ -1,11 +1,17 @@
 @rammeborder: #ddd;
+@contrastRammeborder: #525252;
 @backgroundColor: #f1f1f1;
 @maxwidth: 640px;
 @traadPadding: 40px;
 @toggleHeight: @traadPadding * 2 + 80px;
+@lenkeHoverBlaa: #0067c5;
 
 .mininnboks-omslag {
   padding-top: 45px;
+
+  h1.diger {
+    margin-bottom: 40px;
+  }
 }
 
 .top-bar {
@@ -14,12 +20,12 @@
     text-align: center;
     max-width: @maxwidth;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 0px 0 20px;
   }
 }
 
 .tom-innboks {
-  margin-top: 200px;
+  margin: 150px 0;
   text-align: center;
   &.ingen-meldinger {
     display: none;
@@ -33,13 +39,9 @@
     cursor: pointer;
     position: absolute;
     height: 27px;
-    width: 57px;
+    width: 100%;
     top: -4px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    background-image: url("../img/flipp_aapen.svg");
-    background-repeat: no-repeat;
+    background: url("../img/flipp_aapen.svg") no-repeat center;
     .ariahelper {
       display: none;
     }
@@ -50,8 +52,14 @@
     .nyeste-melding .fritekst {
       height: 2rem;
     }
+    .fritekst {
+      p {
+        margin-bottom: 0px;
+      }
+    }
     .tidligere-melding {
       display: none;
+      margin-top: 20px;
     }
     .flipp {
       background-image: url("../img/flipp_lukket.svg");
@@ -69,6 +77,14 @@
   border-bottom: 1px solid @rammeborder;
   padding: 40px 0;
 
+  &:last-child {
+    margin-bottom: 0px;
+    border: 0px;
+    padding: 40px 0 60px;
+    &.closed {
+      height: 180px;
+    }
+  }
   .traadcontainer {
     max-width: @maxwidth;
     margin: 0 auto;
@@ -142,6 +158,7 @@
 
   p {
     line-height: 1.25rem;
+    margin-bottom: 0px;
   }
   a {
     font-size: 1em;
@@ -179,7 +196,7 @@
     background-color: @backgroundColor;
     border: 1px solid @rammeborder;
     padding: 20px;
-    margin-top: 40px;
+    margin-top: 30px;
 
     .status-tekst {
       display: block;
@@ -209,4 +226,78 @@
       margin-left: -16px;
     }
   }
+}
+
+.wicket-ajax-indicator {
+  display: block;
+}
+@media only screen and (max-width: 680px) {
+  .traadcontainer {
+    padding: 0 20px;
+  }
+}
+@media only screen and (max-width: 600px) {
+
+  .traad .venstre-kolonne {
+    display: none;
+  }
+
+  .traad .hoyre-kolonne {
+    width: 100%;
+  }
+}
+
+.contrast {
+  .toggleable {
+    .flipp {
+      background: url("../img/flipp_aapen_kontrast.svg") no-repeat center;
+    }
+    &.closed .flipp {
+      background-image: url("../img/flipp_lukket_kontrast.svg");
+    }
+  }
+  .traad {
+    border-bottom: 5px solid @contrastRammeborder;
+  }
+  .top-bar {
+    border-bottom: 5px solid @contrastRammeborder;
+  }
+}
+
+@media print {
+  .site-coltrols-toolbar, .topnavsection-wrapper, .sitefooter, .top-bar, .traadlengde {
+    .no-print;
+  }
+
+  a[href]:after {
+    content: "" !important;
+  }
+
+  h1.diger {
+    margin: 0;
+  }
+
+  .traad .tidligere-melding:after {
+    border-bottom-color: #fff;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .contrast .mininnboks-omslag * {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .traad {
+    page-break-inside: avoid;
+  }
+}
+
+.pagewrapper {
+  height: auto;
+  min-height: 100%;
+  margin-bottom: -196px;
+  padding-bottom: 196px;
 }

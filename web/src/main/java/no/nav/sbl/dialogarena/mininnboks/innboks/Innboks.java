@@ -7,40 +7,42 @@ import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import javax.inject.Inject;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
-import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
-import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
+import static no.nav.modig.wicket.conditional.ConditionalUtils.*;
 import static no.nav.modig.wicket.model.ModelUtils.not;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.erLest;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.tilTraader;
+import static org.apache.wicket.AttributeModifier.append;
 import static org.apache.wicket.markup.head.JavaScriptHeaderItem.forReference;
 
 public class Innboks extends BasePage {
+
+    public static final String TOM_INNBOKS = "innboks.tom-innboks-melding";
+    public static final String EXCEPTION = "innboks.kunne-ikke-hente-meldinger";
 
     private final IModel<List<TraadVM>> traaderModel;
     @Inject
     private HenvendelseService service;
 
+    private IModel<Boolean> kunneIkkeHenteTraader = Model.of(false);
+
     public Innboks() {
-        traaderModel = new CompoundPropertyModel<>(tilTraader(service.hentAlleHenvendelser(innloggetBruker())));
+        traaderModel = new CompoundPropertyModel<>(hentTraader());
 
         final ExternalLink skrivNyKnapp = new ExternalLink("skrivNy", System.getProperty("temavelger.link.url"));
 
@@ -62,14 +64,19 @@ public class Innboks extends BasePage {
                         traadClickBehaviour(item, target);
                     }
                 };
-                Label ariahelper = new Label("ariahelper", "Vis eller skjul innholdet, " + item.getModelObject().henvendelser.size() + " meldinger");
+                flipp.add(attributeIf("aria-pressed", "true", not(traadVM.lukket), true));
+
+                Label ariahelper = new Label("ariahelper", traadVM.ariaTekst);
 
                 WebMarkupContainer traadcontainer = new WebMarkupContainer("traadcontainer");
+                traadcontainer.add(attributeIf("aria-expanded", "true", not(traadVM.lukket), true));
+
                 TidligereMeldingerPanel tidligereMeldinger = new TidligereMeldingerPanel("tidligereMeldinger", item.getModel());
+
                 NyesteMeldingPanel nyesteMelding = new NyesteMeldingPanel("nyesteMelding", item.getModel());
 
-                flipp.add(new AttributeAppender("aria-controls", traadcontainer.getMarkupId()));
-                flipp.add(new AttributeAppender("aria-labelledby", ariahelper.getMarkupId()));
+                flipp.add(append("aria-controls", traadcontainer.getMarkupId()));
+                flipp.add(append("aria-labelledby", ariahelper.getMarkupId()));
 
                 item.add(new AjaxEventBehavior("click") {
                     @Override
@@ -90,7 +97,22 @@ public class Innboks extends BasePage {
                 item.add(flipp, traadcontainer);
             }
         });
-        add(new WebMarkupContainer("tomInnboks").add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
+        WebMarkupContainer innboksTilbakeMeldingWrapper = new WebMarkupContainer("tomInnboks");
+        innboksTilbakeMeldingWrapper.add(new Label("innboks-tilbakemelding", getTilbakeMeldingModel()).setEscapeModelStrings(false));
+        add(innboksTilbakeMeldingWrapper.add(hasCssClassIf("ingen-meldinger", tomInnboksModel())));
+    }
+
+    private IModel<String> getTilbakeMeldingModel() {
+        return new ResourceModel(kunneIkkeHenteTraader.getObject() ? EXCEPTION : TOM_INNBOKS);
+    }
+
+    private List<TraadVM> hentTraader() {
+        try {
+            return tilTraader(service.hentAlleHenvendelser(innloggetBruker()));
+        } catch (Exception e) {
+            kunneIkkeHenteTraader.setObject(true);
+            return asList();
+        }
     }
 
     private static String innloggetBruker() {
@@ -98,13 +120,13 @@ public class Innboks extends BasePage {
     }
 
     private void traadClickBehaviour(ListItem<TraadVM> item, AjaxRequestTarget target) {
-        TraadVM traadVM = item.getModelObject();
-        if (!erLest(traadVM.henvendelser).getObject()) {
-            traadVM.markerSomLest(service);
-            target.appendJavaScript("Innboks.markerSomLest('" + item.getMarkupId() + "');");
+        IModel<TraadVM> traadVM = item.getModel();
+
+        if (!erLest(traadVM.getObject().henvendelser).getObject()) {
+            traadVM.getObject().markerSomLest(service);
         }
-        traadVM.lukket.setObject(!traadVM.lukket.getObject());
-        target.appendJavaScript("Innboks.toggleTraad('" + item.getMarkupId() + "');");
+        traadVM.getObject().lukket.setObject(!traadVM.getObject().lukket.getObject());
+        target.add(item);
     }
 
     private IModel<Boolean> tomInnboksModel() {
@@ -124,7 +146,7 @@ public class Innboks extends BasePage {
 
     @Override
     protected void onBeforeRender() {
-        traaderModel.setObject(tilTraader(service.hentAlleHenvendelser(innloggetBruker())));
+        traaderModel.setObject(hentTraader());
         super.onBeforeRender();
     }
 }

@@ -7,20 +7,22 @@
     </h1>
     <article class="send-sporsmal-container bekreftelse-panel">
         <div class="sporsmal-header">
-            <div class="robust-ikon-gront-sjekk"></div>
-            <h2 class="medium">
+            <img src="img/info_gronn.svg" wicket:message="alt:kvitteringikon.alternativ.tekst"/>
+            <h2 class="stor deloverskrift">
                 <wicket:message key="send-sporsmal.bekreftelse.antall-dager">[[Takk, du vil få svar i løpet av x virkedager]]</wicket:message>
             </h2>
+            <div class="robust-strek"></div>
             <wicket:container wicket:id="epostPanel" id="epostpanel"/>
-            <hr class="robust-strek"/>
         </div>
-        <a wicket:id="tilDittNav" class="knapp-link-stor">
+
+        <a wicket:id="tilMinInnboks" class="knapp-link-stor">
+            <wicket:message key="send-sporsmal.bekreftelse.til-meldingsboksen">[[Til min innboks]]</wicket:message>
+        </a>
+    </article>
+    <div class="kvittering avbryt">
+        <a wicket:id="tilDittNav">
             <wicket:message key="send-sporsmal.bekreftelse.til-ditt-nav">[[Til Ditt NAV]]</wicket:message>
         </a>
-
-        <div class="avbryt"><a wicket:id="tilMineHenvendelser">
-            <wicket:message key="send-sporsmal.bekreftelse.til-meldingsboksen">[[Til min innboks]]</wicket:message>
-        </a></div>
-    </article>
+    </div>
 </wicket:extend>
 </html>
