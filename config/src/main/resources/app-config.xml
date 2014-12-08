@@ -2,31 +2,31 @@
 <application xmlns="http://appconfig.aura.nav.no" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://appconfig.aura.nav.no http://maven.adeo.no/xsd/appconfig.xsd">
 
-    <name>minehenvendelser</name>
+    <name>mininnboks</name>
 
-    <selftestPagePath>/minehenvendelser/internal/selftest?status</selftestPagePath>
+    <selftestPagePath>/mininnboks/internal/selftest?status</selftestPagePath>
 
     <artifacts>
-        <ear groupId="no.nav.sbl.dialogarena" artifactId="minehenvendelser-jee"/>
+        <ear groupId="no.nav.sbl.dialogarena" artifactId="mininnboks-jee"/>
     </artifacts>
 
     <resources>
-        <webservice alias="virksomhet:Brukerprofil_v1" mapToProperty="brukerprofil.ws"/>
-        <webservice alias="virksomhet:BehandleBrukerprofil_v1" mapToProperty="behandlebrukerprofil.ws"/>
-        <baseUrl alias="dialogarena.cms" mapToProperty="dialogarena.cms"/>
-        <baseUrl alias="dialogarena.footer" mapToProperty="dialogarena.footer"/>
-        <baseUrl alias="minehenvendelser.navigasjonslink" mapToProperty="minehenvendelser.navigasjonslink"/>
-        <baseUrl alias="dokumentinnsending.link" mapToProperty="dokumentinnsending.link"/>
-        <baseUrl alias="inngangsporten.link" mapToProperty="inngangsporten.link"/>
+        <baseUrl alias="appres.cms" mapToProperty="appres.cms"/>
+        <baseUrl alias="dittnav.link" mapToProperty="dittnav.link"/>
+        <baseUrl alias="temavelger.link" mapToProperty="temavelger.link"/>
+        <baseUrl alias="brukerprofil.link" mapToProperty="brukerprofil.link"/>
 
-        <webservice alias="domene.Brukerdialog:HenvendelseMeldingerService_v1" mapToProperty="henvendelse.meldinger.ws"/>
-        <webservice alias="domene.Brukerdialog:SporsmalinnsendingService_v1" mapToProperty="henvendelse.spsminnsending.ws"/>
+        <webservice alias="domene.Brukerdialog:Henvendelse_v2" mapToProperty="henvendelse.ws"/>
+        <webservice alias="virksomhet:Brukerprofil_v1" mapToProperty="brukerprofil.ws"/>
+        <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="diskresjonskode.ws"/>
+        <webservice alias="domene.Brukerdialog:SendInnHenvendelse_v1" mapToProperty="send.inn.henvendelse.ws"/>
+        <webservice alias="domene.Brukerdialog:InnsynHenvendelse_v1" mapToProperty="innsyn.henvendelse.ws"/>
     </resources>
 
-    <security serviceUserResourceAlias="srvMinehenvendelser">
+    <security serviceUserResourceAlias="srvmininnboks">
         <logins>
             <openAm>
-                <contextRoot>minehenvendelser</contextRoot>
+                <contextRoot>mininnboks</contextRoot>
             </openAm>
         </logins>
     </security>

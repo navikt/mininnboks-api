@@ -1,41 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>no.nav.sbl.dialogarena</groupId>
         <artifactId>dialogarena</artifactId>
         <version>3</version>
     </parent>
 
-    <name>Dialogarena - dininnboks</name>
-    <artifactId>dininnboks</artifactId>
-    <version>2.0.3-SNAPSHOT</version>
+    <name>Dialogarena - mininnboks</name>
+    <artifactId>mininnboks</artifactId>
+    <version>1.14</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>config</module>
         <module>web</module>
         <module>jee</module>
+        <module>ytelse</module>
     </modules>
 
-    <properties>
-        <dialogarena.cms.url>http://e32apvl026.oera-t.local:8080</dialogarena.cms.url>
-    </properties>
-
     <build>
+
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.apache.cxf</groupId>
-                    <artifactId>cxf-codegen-plugin</artifactId>
-                    <version>2.7.7</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>no.nav.maven.plugins</groupId>
-                    <artifactId>jboss-maven-plugin</artifactId>
-                    <version>3.4.0</version>
-                </plugin>
                 <plugin>
                     <groupId>no.nav.maven.plugins</groupId>
                     <artifactId>modig-scm-plugin</artifactId>
@@ -88,12 +77,10 @@
                 <configuration>
                     <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
                     <propertiesFiler>
-                        <nb>sbl-webkomponenter_nb.properties</nb>
                         <nb>innhold_nb.properties</nb>
                     </propertiesFiler>
                     <menyPunktPaths>
-                        <nb>/site/2/systemsider/Modernisering/sbl-webkomponenter/nb/tekster</nb>
-                        <nb>/site/2/systemsider/Modernisering/minehenvendelser/nb/tekster</nb>
+                        <nb>/site/18/app/mininnboks/nb/tekster</nb>
                     </menyPunktPaths>
                 </configuration>
             </plugin>
@@ -117,12 +104,13 @@
                 </executions>
             </plugin>
         </plugins>
+
     </build>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@a34apvl029.devillo.no:7999/dial/dininnboks.git</developerConnection>
-        <url>http://a34apvl029.devillo.no:7990/projects/DIAL/repos/dininnboks/browse</url>
-		<tag>HEAD</tag>
+        <developerConnection>scm:git:http://stash.devillo.no/scm/dial/mininnboks.git</developerConnection>
+        <url>http://stash.devillo.no:7990/projects/DIAL/repos/mininnboks/browse</url>
+		<tag>mininnboks-1.14</tag>
 	</scm>
 
     <reporting>
@@ -160,7 +148,6 @@
                     </plugins>
                 </pluginManagement>
             </build>
-
         </profile>
         <profile>
             <id>sonar</id>
@@ -174,4 +161,5 @@
             </properties>
         </profile>
     </profiles>
+
 </project>

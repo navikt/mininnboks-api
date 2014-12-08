@@ -5,10 +5,10 @@
 
 <!-- extracted from realm, / -->
 <Policies>
-    <Policy name="Minehenvendelser_001" referralPolicy="false" active="true" >
-        <Rule name="rule_Minehenvendelser_001_02">
+    <Policy name="Mininnboks_001" referralPolicy="false" active="true" >
+        <Rule name="rule_Mininnboks_001_02">
             <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/minehenvendelser/*?*" />
+            <ResourceName name="https://${DomainName}/mininnboks/*?*" />
             <AttributeValuePair>
                 <Attribute name="POST" />
                 <Value>allow</Value>
@@ -18,9 +18,9 @@
                 <Value>allow</Value>
             </AttributeValuePair>
         </Rule>
-        <Rule name="rule_Minehenvendelser_001_01">
+        <Rule name="rule_Mininnboks_001_01">
             <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/minehenvendelser/*" />
+            <ResourceName name="https://${DomainName}/mininnboks/*" />
             <AttributeValuePair>
                 <Attribute name="POST" />
                 <Value>allow</Value>
@@ -30,9 +30,9 @@
                 <Value>allow</Value>
             </AttributeValuePair>
         </Rule>
-        <Rule name="rule_Minehenvendelser_001_04">
+        <Rule name="rule_Mininnboks_001_04">
             <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/minehenvendelser/" />
+            <ResourceName name="https://${DomainName}/mininnboks/" />
             <AttributeValuePair>
                 <Attribute name="POST" />
                 <Value>allow</Value>
@@ -42,58 +42,9 @@
                 <Value>allow</Value>
             </AttributeValuePair>
         </Rule>
-        <Rule name="rule_Minehenvendelser_001_03">
+        <Rule name="rule_Mininnboks_001_03">
             <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/minehenvendelser" />
-            <AttributeValuePair>
-                <Attribute name="POST" />
-                <Value>allow</Value>
-            </AttributeValuePair>
-            <AttributeValuePair>
-                <Attribute name="GET" />
-                <Value>allow</Value>
-            </AttributeValuePair>
-        </Rule>
-
-        <Rule name="rule_Minehenvendelser_001_05">
-            <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/minehenvendelser-rs/*?*" />
-            <AttributeValuePair>
-                <Attribute name="POST" />
-                <Value>allow</Value>
-            </AttributeValuePair>
-            <AttributeValuePair>
-                <Attribute name="GET" />
-                <Value>allow</Value>
-            </AttributeValuePair>
-        </Rule>
-        <Rule name="rule_Minehenvendelser_001_06">
-            <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/minehenvendelser-rs/*" />
-            <AttributeValuePair>
-                <Attribute name="POST" />
-                <Value>allow</Value>
-            </AttributeValuePair>
-            <AttributeValuePair>
-                <Attribute name="GET" />
-                <Value>allow</Value>
-            </AttributeValuePair>
-        </Rule>
-        <Rule name="rule_Minehenvendelser_001_07">
-            <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/minehenvendelser-rs/" />
-            <AttributeValuePair>
-                <Attribute name="POST" />
-                <Value>allow</Value>
-            </AttributeValuePair>
-            <AttributeValuePair>
-                <Attribute name="GET" />
-                <Value>allow</Value>
-            </AttributeValuePair>
-        </Rule>
-        <Rule name="rule_Minehenvendelser_001_08">
-            <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/minehenvendelser-rs" />
+            <ResourceName name="https://${DomainName}/mininnboks" />
             <AttributeValuePair>
                 <Attribute name="POST" />
                 <Value>allow</Value>
@@ -105,14 +56,14 @@
         </Rule>
 
         <Subjects>
-            <Subject name="subject_Minehenvendelser_001_01" type="AuthenticatedUsers" includeType="inclusive">
+            <Subject name="subject_Mininnboks_001_01" type="AuthenticatedUsers" includeType="inclusive">
             </Subject>
         </Subjects>
         <Conditions>
-            <Condition name="condition_Minehenvendelser_001_AuthenticationLevel" type="AuthLevelCondition">
+            <Condition name="condition_Mininnboks_001_AuthenticationLevel" type="AuthLevelCondition">
                 <AttributeValuePair>
                     <Attribute name="AuthLevel"/>
-                    <Value>/:4</Value>
+                    <Value>4</Value>
                 </AttributeValuePair>
             </Condition>
         </Conditions>
