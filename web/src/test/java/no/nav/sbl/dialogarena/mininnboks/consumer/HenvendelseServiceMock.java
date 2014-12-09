@@ -22,9 +22,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
     Map<String, Henvendelse> henvendelser = new HashMap<>();
 
     public HenvendelseServiceMock() {
-        Random random = new Random();
-
-        Henvendelse traad1Spsm = new Henvendelse("" + random.nextInt());
+        Henvendelse traad1Spsm = new Henvendelse("1");
         traad1Spsm.type = SPORSMAL_SKRIFTLIG;
         traad1Spsm.traadId = traad1Spsm.id;
         traad1Spsm.opprettet = now().minusWeeks(2);
@@ -40,7 +38,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad1Spsm.markerSomLest(traad1Spsm.opprettet);
         henvendelser.put(traad1Spsm.id, traad1Spsm);
 
-        Henvendelse traad1Svar1 = new Henvendelse("" + random.nextInt());
+        Henvendelse traad1Svar1 = new Henvendelse("11");
         traad1Svar1.type = SVAR_SKRIFTLIG;
         traad1Svar1.traadId = traad1Spsm.traadId;
         traad1Svar1.opprettet = now().minusDays(6);
@@ -51,7 +49,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad1Svar1.markerSomLest(now().minusDays(4));
         henvendelser.put(traad1Svar1.id, traad1Svar1);
 
-        Henvendelse traad1Svar2 = new Henvendelse("" + random.nextInt());
+        Henvendelse traad1Svar2 = new Henvendelse("12");
         traad1Svar2.type = SVAR_SKRIFTLIG;
         traad1Svar2.traadId = traad1Spsm.traadId;
         traad1Svar2.opprettet = now().minusDays(1);
@@ -66,7 +64,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad1Svar2.markerSomLest();
         henvendelser.put(traad1Svar2.id, traad1Svar2);
 
-        Henvendelse traad2Referat = new Henvendelse("" + random.nextInt());
+        Henvendelse traad2Referat = new Henvendelse("2");
         traad2Referat.type = SAMTALEREFERAT_OPPMOTE;
         traad2Referat.traadId =  traad2Referat.id;
         traad2Referat.opprettet = now().minusHours(20);
@@ -82,7 +80,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad2Referat.kanal = "Kanal";
         henvendelser.put(traad2Referat.id, traad2Referat);
 
-        Henvendelse traad3Spsm = new Henvendelse("" + random.nextInt());
+        Henvendelse traad3Spsm = new Henvendelse("3");
         traad3Spsm.type = SPORSMAL_SKRIFTLIG;
         traad3Spsm.traadId = traad3Spsm.id;
         traad3Spsm.opprettet = now().minusWeeks(12);
@@ -91,7 +89,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad3Spsm.markerSomLest(traad3Spsm.opprettet);
         henvendelser.put(traad3Spsm.id, traad3Spsm);
 
-        Henvendelse traad3Svar = new Henvendelse("" + random.nextInt());
+        Henvendelse traad3Svar = new Henvendelse("31");
         traad3Svar.type = SVAR_SKRIFTLIG;
         traad3Svar.traadId = traad3Spsm.traadId;
         traad3Svar.opprettet = now();
@@ -99,7 +97,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad3Svar.temagruppe = null;
         henvendelser.put(traad3Svar.id, traad3Svar);
 
-        Henvendelse traad4Spsm = new Henvendelse("" + random.nextInt());
+        Henvendelse traad4Spsm = new Henvendelse("4");
         traad4Spsm.type = SPORSMAL_SKRIFTLIG;
         traad4Spsm.traadId = traad4Spsm.id;
         traad4Spsm.opprettet = now().minusHours(1);

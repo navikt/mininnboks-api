@@ -8,17 +8,21 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnLoadHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.*;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.util.string.StringValue;
 
 import javax.inject.Inject;
 import java.util.List;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
@@ -30,30 +34,38 @@ import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.tilTraader;
 import static org.apache.wicket.AttributeModifier.append;
 import static org.apache.wicket.markup.head.JavaScriptHeaderItem.forReference;
 
-public class Innboks extends BasePage {
+public class Innboks extends BasePage<List<TraadVM>> {
 
     public static final String TOM_INNBOKS = "innboks.tom-innboks-melding";
     public static final String EXCEPTION = "innboks.kunne-ikke-hente-meldinger";
+    public static final String TRAAD_ID_PARAMETER_NAME = "id";
 
-    private final IModel<List<TraadVM>> traaderModel;
+    private String valgtTraadWicketId;
+
     @Inject
     private HenvendelseService service;
 
     private IModel<Boolean> kunneIkkeHenteTraader = Model.of(false);
 
-    public Innboks() {
-        traaderModel = new CompoundPropertyModel<>(hentTraader());
+    public Innboks(PageParameters parameters) {
+        setModel(new CompoundPropertyModel<>(hentTraader()));
 
+        final StringValue valgtTraadId = parameters.get(TRAAD_ID_PARAMETER_NAME);
         final ExternalLink skrivNyKnapp = new ExternalLink("skrivNy", System.getProperty("temavelger.link.url"));
 
         add(skrivNyKnapp.add(accessRestriction(RENDER).withAttributes(actionId("innsending"), resourceId(""))));
         add(new WebMarkupContainer("diskresjonskode").add(visibleIf(not(new PropertyModel<Boolean>(skrivNyKnapp, "isRenderAllowed")))));
 
-        add(new ListView<TraadVM>("traader", traaderModel) {
+        add(new ListView<TraadVM>("traader", getModel()) {
             @Override
             protected void populateItem(final ListItem<TraadVM> item) {
                 final TraadVM traadVM = item.getModelObject();
                 item.setOutputMarkupId(true);
+
+                if (!valgtTraadId.isEmpty() && valgtTraadId.toString().equals(traadVM.id)) {
+                    traadVM.lukket.setObject(false);
+                    valgtTraadWicketId = item.getMarkupId();
+                }
 
                 item.add(hasCssClassIf("lest", erLest(traadVM.henvendelser)));
                 item.add(hasCssClassIf("closed", traadVM.lukket));
@@ -96,6 +108,13 @@ public class Innboks extends BasePage {
                 traadcontainer.add(nyesteMelding, tidligereMeldinger);
                 item.add(flipp, traadcontainer);
             }
+
+            @Override
+            public void renderHead(IHeaderResponse response) {
+                if(!valgtTraadId.isEmpty()){
+                    response.render(OnLoadHeaderItem.forScript(format("window.location.hash = '%s'", valgtTraadWicketId)));
+                }
+            }
         });
         WebMarkupContainer innboksTilbakeMeldingWrapper = new WebMarkupContainer("tomInnboks");
         innboksTilbakeMeldingWrapper.add(new Label("innboks-tilbakemelding", getTilbakeMeldingModel()).setEscapeModelStrings(false));
@@ -133,7 +152,7 @@ public class Innboks extends BasePage {
         return new AbstractReadOnlyModel<Boolean>() {
             @Override
             public Boolean getObject() {
-                return !traaderModel.getObject().isEmpty();
+                return !getModelObject().isEmpty();
             }
         };
     }
@@ -146,7 +165,7 @@ public class Innboks extends BasePage {
 
     @Override
     protected void onBeforeRender() {
-        traaderModel.setObject(hentTraader());
+        setModelObject(hentTraader());
         super.onBeforeRender();
     }
 }
