@@ -4,15 +4,9 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SAMTALEREFERAT_OPPMOTE;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL_SKRIFTLIG;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SKRIFTLIG;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.ARBD;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.FMLI;
 import static org.joda.time.DateTime.now;
@@ -66,7 +60,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
 
         Henvendelse traad2Referat = new Henvendelse("2");
         traad2Referat.type = SAMTALEREFERAT_OPPMOTE;
-        traad2Referat.traadId =  traad2Referat.id;
+        traad2Referat.traadId = traad2Referat.id;
         traad2Referat.opprettet = now().minusHours(20);
         traad2Referat.fritekst = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. " +
                 "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum" +
@@ -111,6 +105,32 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad4Spsm.temagruppe = FMLI;
         traad4Spsm.markerSomLest(traad4Spsm.opprettet);
         henvendelser.put(traad4Spsm.id, traad4Spsm);
+
+        Henvendelse traad5Spsm = new Henvendelse("5");
+        traad5Spsm.type = SPORSMAL_MODIA_UTGAAENDE;
+        traad5Spsm.traadId = traad5Spsm.id;
+        traad5Spsm.opprettet = now().minusHours(6);
+        traad5Spsm.fritekst = "Spørsmål fra NAV-ansatt";
+        traad5Spsm.temagruppe = FMLI;
+        traad5Spsm.markerSomLest(traad5Spsm.opprettet);
+        henvendelser.put(traad5Spsm.id, traad5Spsm);
+
+        Henvendelse traad5Svar1 = new Henvendelse("51");
+        traad5Svar1.type = SVAR_SBL_INNGAAENDE;
+        traad5Svar1.traadId = traad5Spsm.id;
+        traad5Svar1.opprettet = now().minusHours(3);
+        traad5Svar1.fritekst = "Svar fra NAV-bruker";
+        traad5Svar1.temagruppe = FMLI;
+        traad5Svar1.markerSomLest(traad5Svar1.opprettet);
+        henvendelser.put(traad5Svar1.id, traad5Svar1);
+
+        Henvendelse traad6Spsm = new Henvendelse("6");
+        traad6Spsm.type = SPORSMAL_MODIA_UTGAAENDE;
+        traad6Spsm.traadId = traad6Spsm.id;
+        traad6Spsm.opprettet = now().minusHours(1);
+        traad6Spsm.fritekst = "Spørsmål fra NAV-ansatt";
+        traad6Spsm.temagruppe = FMLI;
+        henvendelser.put(traad6Spsm.id, traad6Spsm);
     }
 
     @Override

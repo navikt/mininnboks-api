@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks.innboks.utils;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import org.apache.wicket.model.ResourceModel;
 
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL_SKRIFTLIG;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.UTGAAENDE;
 
 public class VisningUtils {
     public static String henvendelseStatusTekst(Henvendelse henvendelse) {
@@ -16,7 +16,7 @@ public class VisningUtils {
 
     private static String henvendelseStatusTekstKey(Henvendelse henvendelse) {
         String key = String.format("henvendelse.status.%s", henvendelse.type.name());
-        if (henvendelse.type != SPORSMAL_SKRIFTLIG) {
+        if (UTGAAENDE.contains(henvendelse.type)) {
             key += String.format(".%s", henvendelse.erLest() ? "lest" : "ulest");
         }
         return key;
