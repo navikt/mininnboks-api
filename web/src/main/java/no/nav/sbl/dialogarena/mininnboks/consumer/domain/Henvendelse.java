@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.domain;
 
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 

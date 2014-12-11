@@ -6,7 +6,7 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMelding;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.apache.commons.collections15.Transformer;
 
 import java.util.HashMap;
@@ -19,8 +19,8 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.
 
 public class HenvendelsesUtils {
 
-    public static final List<Henvendelsetype> INNGAAENDE = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
-    public static final List<Henvendelsetype> UTGAAENDE = asList(SPORSMAL_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON);
+    public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
+    public static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON);
 
     public static final Map<XMLHenvendelseType, Henvendelsetype> HENVENDELSETYPE_MAP = new HashMap<XMLHenvendelseType, Henvendelsetype>() {
         {
@@ -45,7 +45,7 @@ public class HenvendelsesUtils {
             henvendelse.avsluttet = info.getAvsluttetDato();
             henvendelse.traadId = info.getBehandlingskjedeId();
             henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
-            if (INNGAAENDE.contains(henvendelse.type)) {
+            if (FRA_BRUKER.contains(henvendelse.type)) {
                 henvendelse.markerSomLest();
             } else {
                 henvendelse.markerSomLest(info.getLestDato());

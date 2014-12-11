@@ -5,11 +5,18 @@
 </head>
 <body>
 <wicket:extend>
-    <h1 class="diger"><wicket:message key="innboks.overskrift" /></h1>
+    <h1 class="diger">
+        <wicket:message key="innboks.overskrift"/>
+    </h1>
     <div class="top-bar">
         <div class="innboks-navigasjon clearfix">
-            <a wicket:id="skrivNy" class="skriv-ny-link knapp-hoved-liten"><wicket:message key="innboks.toppmeny.skriv-ny-melding"/></a>
-            <div wicket:id="diskresjonskode"><wicket:message key="innboks.diskresjonskode" /></div>
+            <a wicket:id="skrivNy" class="skriv-ny-link knapp-hoved-liten">
+                <wicket:message key="innboks.toppmeny.skriv-ny-melding"/>
+            </a>
+
+            <div wicket:id="diskresjonskode">
+                <wicket:message key="innboks.diskresjonskode"/>
+            </div>
         </div>
     </div>
     <div id="innboks-container">
@@ -21,7 +28,10 @@
             <a wicket:id="flipp" class="flipp" role="button" aria-pressed="false">
                 <span wicket:id="ariahelper" class="ariahelper"></span>
             </a>
-            <div wicket:id="traadcontainer" class="traadcontainer clearfix" aria-expanded="false" aria-atomic="true" aria-live="polite">
+
+            <div wicket:id="traadcontainer" class="traadcontainer clearfix" aria-expanded="false" aria-atomic="true"
+                 aria-live="polite">
+                <div wicket:id="besvareMelding"></div>
                 <wicket:container wicket:id="nyesteMelding"></wicket:container>
                 <section class="hoyre-kolonne">
                     <wicket:container wicket:id="tidligereMeldinger"></wicket:container>

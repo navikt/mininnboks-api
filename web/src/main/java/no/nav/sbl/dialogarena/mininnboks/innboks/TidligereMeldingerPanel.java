@@ -27,7 +27,7 @@ public class TidligereMeldingerPanel extends Panel {
                 item.add(new AvsenderBilde("avsenderBilde", henvendelse));
                 item.add(new Label("status", henvendelseStatusTekst(henvendelse)));
                 item.add(new Label("sendtDato", kortMedTid(henvendelse.opprettet)));
-                item.add(new Label("temagruppe", new ResourceModel(henvendelseTemagruppeKey(henvendelse))));
+                item.add(new Label("temagruppe", new ResourceModel(henvendelseTemagruppeKey(henvendelse.temagruppe))));
                 item.add(new URLParsingMultiLineLabel("fritekst", getFritekstModel(henvendelse)));
             }
         });

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+    <article class="nyeste-melding clearfix">
+        <input wicket:id="besvareKnapp" type="button" class="knapp-hoved-liten" value="Besvar"/>
+
+        <div wicket:id="besvareContainer">
+            <div class="venstre-kolonne">
+                <div class="avsender-bilde-ramme">
+                    <img src="img/siluett.svg" alt="Melding fra deg">
+                </div>
+            </div>
+            <div class="hoyre-kolonne">
+
+                <div class="header">
+                    <h3 wicket:id="temagruppe" class="medium temagruppe"></h3>
+                </div>
+                <form wicket:id="form">
+                    <wicket:container wicket:id="fritekst"/>
+                    <div>
+                        <input wicket:id="sendSvar" type="submit" class="knapp-hoved-liten" role="button" value="Send"/>
+                    </div>
+                    <div class="avbryt">
+                        <a wicket:id="avbryt" href="#">Avbryt</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+</wicket:panel>
+</html>

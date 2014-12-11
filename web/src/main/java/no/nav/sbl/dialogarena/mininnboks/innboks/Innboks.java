@@ -1,8 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks;
 
 import no.nav.modig.core.context.SubjectHandler;
+import no.nav.modig.wicket.events.annotations.RefreshOnEvents;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.mininnboks.innboks.besvare.BesvareMeldingPanel;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
@@ -31,9 +33,11 @@ import static no.nav.modig.wicket.conditional.ConditionalUtils.*;
 import static no.nav.modig.wicket.model.ModelUtils.not;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.erLest;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM.tilTraader;
+import static no.nav.sbl.dialogarena.mininnboks.utils.Event.HENVENDELSE_BESVART;
 import static org.apache.wicket.AttributeModifier.append;
 import static org.apache.wicket.markup.head.JavaScriptHeaderItem.forReference;
 
+@RefreshOnEvents(HENVENDELSE_BESVART)
 public class Innboks extends BasePage<List<TraadVM>> {
 
     public static final String TOM_INNBOKS = "innboks.tom-innboks-melding";
@@ -83,12 +87,9 @@ public class Innboks extends BasePage<List<TraadVM>> {
                 WebMarkupContainer traadcontainer = new WebMarkupContainer("traadcontainer");
                 traadcontainer.add(attributeIf("aria-expanded", "true", not(traadVM.lukket), true));
 
-                TidligereMeldingerPanel tidligereMeldinger = new TidligereMeldingerPanel("tidligereMeldinger", item.getModel());
-
-                NyesteMeldingPanel nyesteMelding = new NyesteMeldingPanel("nyesteMelding", item.getModel());
-
                 flipp.add(append("aria-controls", traadcontainer.getMarkupId()));
                 flipp.add(append("aria-labelledby", ariahelper.getMarkupId()));
+                flipp.add(ariahelper);
 
                 item.add(new AjaxEventBehavior("click") {
                     @Override
@@ -104,14 +105,17 @@ public class Innboks extends BasePage<List<TraadVM>> {
                         attributes.setAllowDefault(true);
                     }
                 });
-                flipp.add(ariahelper);
-                traadcontainer.add(nyesteMelding, tidligereMeldinger);
+
+                traadcontainer.add(
+                        new BesvareMeldingPanel("besvareMelding", item.getModel()),
+                        new NyesteMeldingPanel("nyesteMelding", item.getModel()),
+                        new TidligereMeldingerPanel("tidligereMeldinger", item.getModel()));
                 item.add(flipp, traadcontainer);
             }
 
             @Override
             public void renderHead(IHeaderResponse response) {
-                if(!valgtTraadId.isEmpty()){
+                if (!valgtTraadId.isEmpty()) {
                     response.render(OnLoadHeaderItem.forScript(format("window.location.hash = '%s'", valgtTraadWicketId)));
                 }
             }

@@ -1,8 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseRequest;
@@ -25,6 +27,8 @@ public interface HenvendelseService {
 
     WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer);
 
+    WSSendInnHenvendelseResponse sendSvar(String fritekst, Temagruppe temagruppe, String traadId, String fodselsnummer);
+
     List<Henvendelse> hentAlleHenvendelser(String fodselsnummer);
 
     void merkHenvendelseSomLest(Henvendelse henvendelse);
@@ -45,9 +49,10 @@ public interface HenvendelseService {
 
         @Override
         public WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
+            String xmlHenvendelseType = SPORSMAL_SKRIFTLIG.name();
             XMLHenvendelse info =
                     new XMLHenvendelse()
-                            .withHenvendelseType(SPORSMAL_SKRIFTLIG.name())
+                            .withHenvendelseType(xmlHenvendelseType)
                             .withOpprettetDato(now())
                             .withAvsluttetDato(now())
                             .withTema(KONTAKT_NAV_SAKSTEMA)
@@ -59,7 +64,29 @@ public interface HenvendelseService {
 
             return sendInnHenvendelsePortType.sendInnHenvendelse(
                     new WSSendInnHenvendelseRequest()
-                            .withType(SPORSMAL_SKRIFTLIG.name())
+                            .withType(xmlHenvendelseType)
+                            .withFodselsnummer(fodselsnummer)
+                            .withAny(info));
+        }
+
+        @Override
+        public WSSendInnHenvendelseResponse sendSvar(String fritekst, Temagruppe temagruppe, String traadId, String fodselsnummer) {
+            String xmlHenvendelseType = SVAR_SBL_INNGAAENDE.name();
+            XMLHenvendelse info =
+                    new XMLHenvendelse()
+                            .withHenvendelseType(xmlHenvendelseType)
+                            .withOpprettetDato(now())
+                            .withAvsluttetDato(now())
+                            .withTema(KONTAKT_NAV_SAKSTEMA)
+                            .withBehandlingskjedeId(traadId)
+                            .withMetadataListe(new XMLMetadataListe().withMetadata(
+                                    new XMLMeldingFraBruker()
+                                            .withTemagruppe(temagruppe.name())
+                                            .withFritekst(fritekst)));
+
+            return sendInnHenvendelsePortType.sendInnHenvendelse(
+                    new WSSendInnHenvendelseRequest()
+                            .withType(xmlHenvendelseType)
                             .withFodselsnummer(fodselsnummer)
                             .withAny(info));
         }

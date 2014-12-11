@@ -1,15 +1,14 @@
 package no.nav.sbl.dialogarena.mininnboks.sporsmal.send;
 
-import no.nav.modig.core.context.SubjectHandler;
 import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextArea;
 import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextAreaConfigurator;
 import no.nav.modig.wicket.errorhandling.aria.AriaFeedbackPanel;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.Sporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
@@ -34,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
+import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
@@ -103,7 +103,7 @@ public class SkrivPage extends BasePage {
                     Sporsmal spsm = model.getObject();
                     try {
                         spsm.innsendingsTidspunkt = DateTime.now();
-                        service.stillSporsmal(spsm.getFritekst(), spsm.getTemagruppe(), SubjectHandler.getSubjectHandler().getUid());
+                        service.stillSporsmal(spsm.getFritekst(), spsm.getTemagruppe(), getSubjectHandler().getUid());
                         setResponsePage(KvitteringPage.class);
                     } catch (Exception e) {
                         LOG.error("Feil ved innsending av spørsmål", e);

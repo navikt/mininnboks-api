@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks.utils;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -18,8 +19,8 @@ public class KassertInnholdUtils {
         }
     }
 
-    public static String henvendelseTemagruppeKey(Henvendelse henvendelse) {
-        return henvendelse.temagruppe != null ? henvendelse.temagruppe.name() : TEMAGRUPPE_UKJENT_KEY;
+    public static String henvendelseTemagruppeKey(Temagruppe temagruppe) {
+        return temagruppe != null ? temagruppe.name() : TEMAGRUPPE_UKJENT_KEY;
     }
 }
 

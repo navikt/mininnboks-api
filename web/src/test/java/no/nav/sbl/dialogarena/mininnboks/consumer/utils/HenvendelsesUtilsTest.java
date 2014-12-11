@@ -2,7 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.joda.time.DateTime;
 import org.junit.Test;
 

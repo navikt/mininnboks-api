@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.sporsmal;
 
 import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextAreaModel;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.joda.time.DateTime;
 
 public class Sporsmal extends EnhancedTextAreaModel {

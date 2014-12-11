@@ -1,14 +1,14 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 
 import java.util.*;
 
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.ARBD;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe.FMLI;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.ARBD;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.FMLI;
 import static org.joda.time.DateTime.now;
 
 public class HenvendelseServiceMock implements HenvendelseService {
@@ -145,6 +145,20 @@ public class HenvendelseServiceMock implements HenvendelseService {
         spsm.markerSomLest();
         henvendelser.put(spsm.id, spsm);
         return new WSSendInnHenvendelseResponse().withBehandlingsId(spsm.id);
+    }
+
+    @Override
+    public WSSendInnHenvendelseResponse sendSvar(String fritekst, Temagruppe temagruppe, String traadId, String fodselsnummer) {
+        Random random = new Random();
+        Henvendelse svar = new Henvendelse(String.valueOf(random.nextInt()));
+        svar.type = SVAR_SBL_INNGAAENDE;
+        svar.traadId = traadId;
+        svar.fritekst = fritekst;
+        svar.temagruppe = temagruppe;
+        svar.opprettet = now();
+        svar.markerSomLest();
+        henvendelser.put(svar.id, svar);
+        return new WSSendInnHenvendelseResponse().withBehandlingsId(svar.id);
     }
 
     @Override

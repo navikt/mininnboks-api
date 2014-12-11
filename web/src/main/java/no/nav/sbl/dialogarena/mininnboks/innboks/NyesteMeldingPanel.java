@@ -25,7 +25,7 @@ public class NyesteMeldingPanel extends GenericPanel<TraadVM> {
         add(new AvsenderBilde("avsenderBilde", nyesteHenvendelse));
         add(new Label("status", model.getObject().statusTekst));
         add(new Label("sendtDato", kortMedTid(nyesteHenvendelse.opprettet)));
-        add(new Label("temagruppe", new ResourceModel(henvendelseTemagruppeKey(nyesteHenvendelse))));
+        add(new Label("temagruppe", new ResourceModel(henvendelseTemagruppeKey(nyesteHenvendelse.temagruppe))));
         add(new Label("traadlengde", henvendelser.size()).setVisibilityAllowed(henvendelser.size() > 2));
         add(new URLParsingMultiLineLabel("fritekst", getFritekstModel(nyesteHenvendelse)));
     }
