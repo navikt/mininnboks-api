@@ -37,23 +37,19 @@ public class InnboksTest extends WicketPageTest {
                 .should().containComponent(ofType(AvsenderBilde.class));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void aapnerTraadMedIdFraPageParameter() {
         String valgtTraadId = henvendelser.get(1).traadId;
 
         wicketTester.goTo(Innboks.class, new Parameters().param("id", valgtTraadId));
 
-        int antallTraader = ((List<TraadVM>) wicketTester.tester.getComponentFromLastRenderedPage("traader").getDefaultModelObject()).size();
-        for (int i = 0; i < antallTraader; i++) {
-            TraadVM traadVM = (TraadVM) wicketTester.tester.getComponentFromLastRenderedPage("traader:" + i).getDefaultModelObject();
-            if (valgtTraadId.equals(traadVM.id)) {
-                assertThat(traadVM.lukket.getObject(), is(false));
+        List<TraadVM> traader = ((Innboks) wicketTester.tester.getLastRenderedPage()).getModelObject();
+        for (TraadVM traad : traader) {
+            if (valgtTraadId.equals(traad.id)) {
+                assertThat(traad.lukket.getObject(), is(false));
             } else {
-                assertThat(traadVM.lukket.getObject(), is(true));
+                assertThat(traad.lukket.getObject(), is(true));
             }
         }
     }
-
-
 }
