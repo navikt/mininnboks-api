@@ -1,12 +1,17 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMelding;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.temagruppe.Temagruppe;
 import org.apache.commons.collections15.Transformer;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.fromValue;
@@ -58,8 +63,8 @@ public class HenvendelsesUtils {
             henvendelse.fritekst = xmlMelding.getFritekst();
 
             if (xmlMelding instanceof XMLMeldingTilBruker) {
-                XMLMeldingTilBruker svarEllerReferat = (XMLMeldingTilBruker) xmlMelding;
-                henvendelse.kanal = svarEllerReferat.getKanal();
+                XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
+                henvendelse.kanal = meldingTilBruker.getKanal();
             }
             return henvendelse;
         }
