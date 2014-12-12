@@ -157,7 +157,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         svar.temagruppe = temagruppe;
         svar.opprettet = now();
         svar.markerSomLest();
-        henvendelser.put(svar.id, svar);
+//        henvendelser.put(svar.id, svar);
         return new WSSendInnHenvendelseResponse().withBehandlingsId(svar.id);
     }
 

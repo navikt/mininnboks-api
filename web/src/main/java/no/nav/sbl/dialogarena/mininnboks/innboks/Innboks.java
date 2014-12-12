@@ -106,10 +106,12 @@ public class Innboks extends BasePage<List<TraadVM>> {
                     }
                 });
 
+                NyesteMeldingPanel nyesteMelding = new NyesteMeldingPanel("nyesteMelding", item.getModel());
+                TidligereMeldingerPanel tidligereMeldinger = new TidligereMeldingerPanel("tidligereMeldinger", item.getModel());
                 traadcontainer.add(
-                        new BesvareMeldingPanel("besvareMelding", item.getModelObject()),
-                        new NyesteMeldingPanel("nyesteMelding", item.getModel()),
-                        new TidligereMeldingerPanel("tidligereMeldinger", item.getModel()));
+                        new BesvareMeldingPanel("besvareMelding", item.getModelObject(), nyesteMelding, tidligereMeldinger),
+                        nyesteMelding,
+                        tidligereMeldinger);
                 item.add(flipp, traadcontainer);
             }
 

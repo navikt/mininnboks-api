@@ -4,8 +4,10 @@ import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextArea;
 import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextAreaModel;
 import no.nav.modig.wicket.errorhandling.aria.AriaFeedbackPanel;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -27,7 +29,9 @@ import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.both;
 import static no.nav.modig.wicket.model.ModelUtils.not;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SBL_INNGAAENDE;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.henvendelseTemagruppeKey;
+import static org.joda.time.DateTime.now;
 
 public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> implements Serializable {
 
@@ -40,11 +44,11 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
 
     private final AriaFeedbackPanel feedbackPanel;
 
-    public BesvareMeldingPanel(String id, final TraadVM traadVM) {
+    public BesvareMeldingPanel(String id, final TraadVM traadVM, final Component... oppdaterbareKomponenter) {
         super(id, new CompoundPropertyModel<>(new Svar(traadVM.id, traadVM.temagruppe)));
         setOutputMarkupId(true);
 
-        add(visibleIf(both(not(traadVM.lukket)).and(traadVM.kanBesvares())));
+        add(visibleIf(not(traadVM.lukket)));
 
         AjaxLink<TraadVM> besvareKnapp = new AjaxLink<TraadVM>("besvareKnapp", Model.of(traadVM)) {
             @Override
@@ -53,7 +57,7 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
                 target.add(BesvareMeldingPanel.this);
             }
         };
-        besvareKnapp.add(visibleIf(both(not(traadVM.besvareModus)).and(not(traadVM.lukket))));
+        besvareKnapp.add(visibleIf(both(not(traadVM.besvareModus)).and(not(traadVM.lukket)).and(traadVM.kanBesvares())));
 
         Form<Svar> form = new Form<>("form", getModel());
         form.add(new EnhancedTextArea("fritekst", getModel()));
@@ -65,7 +69,7 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
         form.add(new AjaxSubmitLink("sendSvar") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                sendSvar(target);
+                sendSvar(target, traadVM, oppdaterbareKomponenter);
             }
 
             @Override
@@ -88,13 +92,13 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
                 new Label("temagruppe", new ResourceModel(henvendelseTemagruppeKey(getModelObject().temagruppe))),
                 form);
 
-        KvitteringPanel kvittering = new KvitteringPanel("kvittering", getModel());
+        KvitteringPanel kvittering = new KvitteringPanel("kvittering");
         kvittering.add(visibleIf(meldingBesvart));
 
         add(besvareKnapp, besvareContainer, kvittering);
     }
 
-    private void sendSvar(AjaxRequestTarget target) {
+    private void sendSvar(AjaxRequestTarget target, TraadVM traadVM, Component... oppdaterbareKomponenter) {
         try {
             henvendelseService.sendSvar(
                     getModelObject().getFritekst(),
@@ -102,13 +106,29 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
                     getModelObject().traadId,
                     getSubjectHandler().getUid());
 
-            target.add(BesvareMeldingPanel.this);
+            traadVM.henvendelser.add(0, lagMidlertidigHenvendelse());
+
             meldingBesvart.setObject(true);
+
+            target.add(BesvareMeldingPanel.this);
+            target.add(oppdaterbareKomponenter);
         } catch (Exception e) {
             LOG.debug("Feil ved innsending av svar", e);
             error(getString("besvare.feilmelding.innsending"));
             target.add(feedbackPanel);
         }
+    }
+
+    private Henvendelse lagMidlertidigHenvendelse() {
+        Henvendelse henvendelse = new Henvendelse("midlertidig");
+        henvendelse.traadId = getModelObject().traadId;
+        henvendelse.temagruppe = getModelObject().temagruppe;
+        henvendelse.fritekst = getModelObject().getFritekst();
+        henvendelse.type = SVAR_SBL_INNGAAENDE;
+        henvendelse.opprettet = now();
+        henvendelse.markerSomLest();
+
+        return henvendelse;
     }
 
     public static class Svar extends EnhancedTextAreaModel {

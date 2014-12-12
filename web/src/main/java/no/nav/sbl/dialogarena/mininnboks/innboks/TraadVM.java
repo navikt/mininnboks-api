@@ -22,7 +22,6 @@ import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.*;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE;
-import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.VisningUtils.henvendelseStatusTekst;
 import static no.nav.sbl.dialogarena.time.Datoformat.kortMedTid;
 
 public class TraadVM implements Serializable {
@@ -30,7 +29,7 @@ public class TraadVM implements Serializable {
     public final String id;
     public final List<Henvendelse> henvendelser;
     public final IModel<Boolean> lukket, besvareModus;
-    public final IModel<String> statusTekst, ariaTekst;
+    public final IModel<String> ariaTekst;
     public final Temagruppe temagruppe;
 
     public TraadVM(String id, Temagruppe temagruppe, List<Henvendelse> henvendelser) {
@@ -39,7 +38,6 @@ public class TraadVM implements Serializable {
         this.henvendelser = henvendelser;
         this.lukket = new CompoundPropertyModel<>(true);
         this.besvareModus = new CompoundPropertyModel<>(false);
-        this.statusTekst = Model.of(henvendelseStatusTekst(getNyesteHenvendelse(henvendelser)));
         this.ariaTekst = Model.of(lagARIAHjelpeStreng(this));
     }
 
@@ -62,7 +60,6 @@ public class TraadVM implements Serializable {
                 service.merkHenvendelseSomLest(henvendelse);
             }
         }
-        this.statusTekst.setObject(henvendelseStatusTekst(getNyesteHenvendelse(henvendelser)));
         this.ariaTekst.setObject(lagARIAHjelpeStreng(this));
     }
 
@@ -70,8 +67,22 @@ public class TraadVM implements Serializable {
         return henvendelser.isEmpty() ? null : on(henvendelser).collect(NYESTE_OVERST).get(0);
     }
 
-    public static List<Henvendelse> getTidligereHenvendelser(List<Henvendelse> henvendelser) {
-        return henvendelser.isEmpty() ? henvendelser : on(henvendelser).collect(NYESTE_OVERST).subList(1, henvendelser.size());
+    public IModel<Henvendelse> nyesteHenvendelse() {
+        return new AbstractReadOnlyModel<Henvendelse>() {
+            @Override
+            public Henvendelse getObject() {
+                return henvendelser.isEmpty() ? null : on(henvendelser).collect(NYESTE_OVERST).get(0);
+            }
+        };
+    }
+
+    public IModel<List<Henvendelse>> tidligereHenvendelser() {
+        return new AbstractReadOnlyModel<List<Henvendelse>>() {
+            @Override
+            public List<Henvendelse> getObject() {
+                return henvendelser.isEmpty() ? henvendelser : on(henvendelser).collect(NYESTE_OVERST).subList(1, henvendelser.size());
+            }
+        };
     }
 
     public static IModel<Boolean> erLest(final List<Henvendelse> henvendelser) {
@@ -88,6 +99,24 @@ public class TraadVM implements Serializable {
             @Override
             public Boolean getObject() {
                 return getNyesteHenvendelse(henvendelser).type == SPORSMAL_MODIA_UTGAAENDE;
+            }
+        };
+    }
+
+    public IModel<Integer> getTraadlengde() {
+        return new AbstractReadOnlyModel<Integer>() {
+            @Override
+            public Integer getObject() {
+                return henvendelser.size();
+            }
+        };
+    }
+
+    public IModel<Boolean> visTraadlengde() {
+        return new AbstractReadOnlyModel<Boolean>() {
+            @Override
+            public Boolean getObject() {
+                return henvendelser.size() > 2;
             }
         };
     }
