@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering;
 
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
+import no.nav.sbl.dialogarena.mininnboks.panels.EpostPanel;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 

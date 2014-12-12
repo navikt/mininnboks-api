@@ -9,32 +9,34 @@ import no.nav.sbl.dialogarena.mininnboks.innboks.TraadVM;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.io.Serializable;
 
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.both;
 import static no.nav.modig.wicket.model.ModelUtils.not;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.henvendelseTemagruppeKey;
-import static no.nav.sbl.dialogarena.mininnboks.utils.Event.HENVENDELSE_BESVART;
 
-public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> {
+public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(BesvareMeldingPanel.class);
 
     @Inject
     private HenvendelseService henvendelseService;
+
+    private final IModel<Boolean> meldingBesvart = Model.of(false);
 
     private final AriaFeedbackPanel feedbackPanel;
 
@@ -52,9 +54,6 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
             }
         };
         besvareKnapp.add(visibleIf(both(not(traadVM.besvareModus)).and(not(traadVM.lukket))));
-
-        WebMarkupContainer besvareContainer = new WebMarkupContainer("besvareContainer");
-        besvareContainer.add(visibleIf(traadVM.besvareModus));
 
         Form<Svar> form = new Form<>("form", getModel());
         form.add(new EnhancedTextArea("fritekst", getModel()));
@@ -82,11 +81,17 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
             }
         });
 
+        WebMarkupContainer besvareContainer = new WebMarkupContainer("besvareContainer");
+        besvareContainer.add(visibleIf(both(traadVM.besvareModus).and(not(meldingBesvart))));
+
         besvareContainer.add(
                 new Label("temagruppe", new ResourceModel(henvendelseTemagruppeKey(getModelObject().temagruppe))),
                 form);
 
-        add(besvareKnapp, besvareContainer);
+        KvitteringPanel kvittering = new KvitteringPanel("kvittering", getModel());
+        kvittering.add(visibleIf(meldingBesvart));
+
+        add(besvareKnapp, besvareContainer, kvittering);
     }
 
     private void sendSvar(AjaxRequestTarget target) {
@@ -97,7 +102,8 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
                     getModelObject().traadId,
                     getSubjectHandler().getUid());
 
-            send(getPage(), Broadcast.BREADTH, HENVENDELSE_BESVART);
+            target.add(BesvareMeldingPanel.this);
+            meldingBesvart.setObject(true);
         } catch (Exception e) {
             LOG.debug("Feil ved innsending av svar", e);
             error(getString("besvare.feilmelding.innsending"));

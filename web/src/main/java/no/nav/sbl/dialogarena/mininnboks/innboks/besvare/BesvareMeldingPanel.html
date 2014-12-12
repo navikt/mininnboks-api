@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-    <article class="nyeste-melding clearfix">
-        <input wicket:id="besvareKnapp" type="button" class="knapp-hoved-liten" value="Besvar"/>
+    <article class="nyeste-melding besvare-melding clearfix">
+        <input wicket:id="besvareKnapp" type="button" class="knapp-hoved-liten besvare-knapp" value="Besvar"/>
 
         <div wicket:id="besvareContainer">
             <div class="venstre-kolonne">
@@ -20,12 +20,13 @@
                     <wicket:container wicket:id="fritekst"/>
                     <div wicket:id="feedback"></div>
                     <div>
-                        <input wicket:id="sendSvar" type="submit" class="knapp-hoved-liten" role="button" value="Send"/>
+                        <input wicket:id="sendSvar" type="submit" class="knapp-hoved-liten send-knapp" role="button" value="Send"/>
                     </div>
-                    <a wicket:id="avbryt" href="#">Avbryt</a>
+                    <a wicket:id="avbryt" href="#" class="avbryt-knapp">Avbryt</a>
                 </form>
             </div>
         </div>
+        <div wicket:id="kvittering"></div>
     </article>
 </wicket:panel>
 </html>

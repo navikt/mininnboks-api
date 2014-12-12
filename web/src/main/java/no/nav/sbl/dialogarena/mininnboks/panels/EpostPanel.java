@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering;
+package no.nav.sbl.dialogarena.mininnboks.panels;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
 import org.apache.wicket.AttributeModifier;
