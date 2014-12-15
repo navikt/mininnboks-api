@@ -23,6 +23,10 @@
         <webservice alias="domene.Brukerdialog:InnsynHenvendelse_v1" mapToProperty="innsyn.henvendelse.ws"/>
     </resources>
 
+    <exposed-services>
+        <exposedUrl name="mininnboks" path="/mininnboks"/>
+    </exposed-services>
+
     <security serviceUserResourceAlias="srvmininnboks">
         <logins>
             <openAm>
