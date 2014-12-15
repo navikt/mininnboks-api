@@ -4,7 +4,7 @@
 
     <name>mininnboks</name>
 
-    <selftestPagePath>/mininnboks/internal/selftest?status</selftestPagePath>
+    <selftestPagePath>/mininnboks/internal/selftest</selftestPagePath>
 
     <artifacts>
         <ear groupId="no.nav.sbl.dialogarena" artifactId="mininnboks-jee"/>
