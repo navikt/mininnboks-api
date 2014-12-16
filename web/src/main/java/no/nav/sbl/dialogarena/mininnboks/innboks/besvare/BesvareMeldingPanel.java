@@ -38,7 +38,7 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
     private HenvendelseService henvendelseService;
 
     public BesvareMeldingPanel(String id, final TraadVM traadVM, final Component... oppdaterbareKomponenter) {
-        super(id, new CompoundPropertyModel<>(new Svar(traadVM.id, traadVM.temagruppe)));
+        super(id, new CompoundPropertyModel<>(new Svar(traadVM)));
         setOutputMarkupId(true);
 
         AjaxLink<TraadVM> besvareKnapp = new AjaxLink<TraadVM>("besvareKnapp", Model.of(traadVM)) {
@@ -67,10 +67,20 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
     public static class Svar extends EnhancedTextAreaModel {
         public final String traadId;
         public final Temagruppe temagruppe;
+        private final TraadVM traadVM;
 
-        public Svar(String traadId, Temagruppe temagruppe) {
-            this.traadId = traadId;
-            this.temagruppe = temagruppe;
+        public Svar(TraadVM traadVM) {
+            this.traadId = traadVM.id;
+            this.temagruppe = traadVM.temagruppe;
+            this.traadVM = traadVM;
+        }
+
+        public String getEksternAktor() {
+            return traadVM.nyesteHenvendelse().getObject().eksternAktor;
+        }
+
+        public String getTilknyttetEnhet() {
+            return traadVM.nyesteHenvendelse().getObject().tilknyttetEnhet;
         }
 
         public String getFritekst() {
@@ -113,14 +123,11 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
         }
 
         private void sendSvar(AjaxRequestTarget target, TraadVM traadVM, Component... oppdaterbareKomponenter) {
+            Henvendelse henvendelse = opprettHenvendelse();
             try {
-                henvendelseService.sendSvar(
-                        getModelObject().getFritekst(),
-                        getModelObject().temagruppe,
-                        getModelObject().traadId,
-                        getSubjectHandler().getUid());
+                henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
 
-                traadVM.henvendelser.add(0, lagMidlertidigHenvendelse());
+                traadVM.henvendelser.add(0, henvendelse);
                 traadVM.meldingBesvart.setObject(true);
 
                 target.add(BesvareMeldingPanel.this);
@@ -132,11 +139,13 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
             }
         }
 
-        private Henvendelse lagMidlertidigHenvendelse() {
+        private Henvendelse opprettHenvendelse() {
             Henvendelse henvendelse = new Henvendelse("midlertidig");
             henvendelse.traadId = getModelObject().traadId;
             henvendelse.temagruppe = getModelObject().temagruppe;
             henvendelse.fritekst = getModelObject().getFritekst();
+            henvendelse.eksternAktor = getModelObject().getEksternAktor();
+            henvendelse.tilknyttetEnhet = getModelObject().getTilknyttetEnhet();
             henvendelse.type = SVAR_SBL_INNGAAENDE;
             henvendelse.opprettet = now();
             henvendelse.markerSomLest();

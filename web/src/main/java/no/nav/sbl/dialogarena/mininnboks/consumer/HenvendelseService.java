@@ -1,8 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
@@ -27,7 +25,7 @@ public interface HenvendelseService {
 
     WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer);
 
-    WSSendInnHenvendelseResponse sendSvar(String fritekst, Temagruppe temagruppe, String traadId, String fodselsnummer);
+    WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String uid);
 
     List<Henvendelse> hentAlleHenvendelser(String fodselsnummer);
 
@@ -70,7 +68,7 @@ public interface HenvendelseService {
         }
 
         @Override
-        public WSSendInnHenvendelseResponse sendSvar(String fritekst, Temagruppe temagruppe, String traadId, String fodselsnummer) {
+        public WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String fodselsnummer) {
             String xmlHenvendelseType = SVAR_SBL_INNGAAENDE.name();
             XMLHenvendelse info =
                     new XMLHenvendelse()
@@ -78,11 +76,13 @@ public interface HenvendelseService {
                             .withOpprettetDato(now())
                             .withAvsluttetDato(now())
                             .withTema(KONTAKT_NAV_SAKSTEMA)
-                            .withBehandlingskjedeId(traadId)
+                            .withBehandlingskjedeId(henvendelse.traadId)
+                            .withEksternAktor(henvendelse.eksternAktor)
+                            .withTilknyttetEnhet(henvendelse.tilknyttetEnhet)
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
-                                            .withTemagruppe(temagruppe.name())
-                                            .withFritekst(fritekst)));
+                                            .withTemagruppe(henvendelse.temagruppe.name())
+                                            .withFritekst(henvendelse.fritekst)));
 
             return sendInnHenvendelsePortType.sendInnHenvendelse(
                     new WSSendInnHenvendelseRequest()

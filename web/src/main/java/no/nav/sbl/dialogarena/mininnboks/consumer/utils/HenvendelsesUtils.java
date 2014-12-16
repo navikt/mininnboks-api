@@ -1,17 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMelding;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import org.apache.commons.collections15.Transformer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.fromValue;
@@ -44,6 +37,8 @@ public class HenvendelsesUtils {
             henvendelse.opprettet = info.getOpprettetDato();
             henvendelse.avsluttet = info.getAvsluttetDato();
             henvendelse.traadId = info.getBehandlingskjedeId();
+            henvendelse.eksternAktor = info.getEksternAktor();
+            henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
             henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
             if (FRA_BRUKER.contains(henvendelse.type)) {
                 henvendelse.markerSomLest();

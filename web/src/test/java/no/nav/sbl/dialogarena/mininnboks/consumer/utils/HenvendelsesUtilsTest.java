@@ -6,9 +6,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static no.nav.modig.lang.collections.IterUtils.on;
@@ -33,6 +31,7 @@ public class HenvendelsesUtilsTest {
     private static final Temagruppe TEMAGRUPPE = Temagruppe.FMLI;
     private static final String KANAL = "kanal";
     private static final String NAVIDENT = "navident";
+    public static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
 
     @Test
     public void transformererXMLHenvendelseSomSporsmalFraBruker() {
@@ -83,6 +82,8 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.getLestDato(), is(LEST_DATO));
         assertThat(sporsmal.erLest(), is(true));
         assertThat(sporsmal.kanal, is(KANAL));
+        assertThat(sporsmal.eksternAktor, is(NAVIDENT));
+        assertThat(sporsmal.tilknyttetEnhet, is(TILKNYTTET_ENHET));
     }
 
     @Test
@@ -159,6 +160,8 @@ public class HenvendelsesUtilsTest {
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
                 .withLestDato(LEST_DATO)
+                .withEksternAktor(NAVIDENT)
+                .withTilknyttetEnhet(TILKNYTTET_ENHET)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLMeldingTilBruker()
                                 .withFritekst(FRITEKST)

@@ -156,13 +156,13 @@ public class HenvendelseServiceMock implements HenvendelseService {
     }
 
     @Override
-    public WSSendInnHenvendelseResponse sendSvar(String fritekst, Temagruppe temagruppe, String traadId, String fodselsnummer) {
+    public WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String fodselsnummer) {
         Random random = new Random();
         Henvendelse svar = new Henvendelse(String.valueOf(random.nextInt()));
         svar.type = SVAR_SBL_INNGAAENDE;
-        svar.traadId = traadId;
-        svar.fritekst = fritekst;
-        svar.temagruppe = temagruppe;
+        svar.traadId = henvendelse.traadId;
+        svar.fritekst = henvendelse.fritekst;
+        svar.temagruppe = henvendelse.temagruppe;
         svar.opprettet = now();
         svar.markerSomLest();
         henvendelser.put(svar.id, svar);

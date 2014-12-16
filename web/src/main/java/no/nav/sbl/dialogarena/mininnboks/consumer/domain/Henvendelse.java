@@ -21,7 +21,7 @@ public class Henvendelse implements Serializable {
     }
 
     public final String id;
-    public String traadId, fritekst, kanal;
+    public String traadId, fritekst, kanal, eksternAktor, tilknyttetEnhet;
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
