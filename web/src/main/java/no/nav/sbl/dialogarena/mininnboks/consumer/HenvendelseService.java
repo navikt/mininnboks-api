@@ -2,7 +2,6 @@ package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseRequest;
@@ -23,7 +22,7 @@ public interface HenvendelseService {
 
     String KONTAKT_NAV_SAKSTEMA = "KNA";
 
-    WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer);
+    WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer);
 
     WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String uid);
 
@@ -46,7 +45,7 @@ public interface HenvendelseService {
         }
 
         @Override
-        public WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
+        public WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer) {
             String xmlHenvendelseType = SPORSMAL_SKRIFTLIG.name();
             XMLHenvendelse info =
                     new XMLHenvendelse()
@@ -57,9 +56,8 @@ public interface HenvendelseService {
                             .withBehandlingskjedeId(null)
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
-                                            .withTemagruppe(temagruppe.name())
-                                            .withFritekst(fritekst)));
-
+                                            .withTemagruppe(henvendelse.temagruppe.name())
+                                            .withFritekst(henvendelse.fritekst)));
             return sendInnHenvendelsePortType.sendInnHenvendelse(
                     new WSSendInnHenvendelseRequest()
                             .withType(xmlHenvendelseType)
@@ -83,7 +81,6 @@ public interface HenvendelseService {
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(henvendelse.temagruppe.name())
                                             .withFritekst(henvendelse.fritekst)));
-
             return sendInnHenvendelsePortType.sendInnHenvendelse(
                     new WSSendInnHenvendelseRequest()
                             .withType(xmlHenvendelseType)

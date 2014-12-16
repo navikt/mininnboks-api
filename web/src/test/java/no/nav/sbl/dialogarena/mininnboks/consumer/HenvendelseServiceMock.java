@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 
 import java.util.*;
@@ -142,13 +141,11 @@ public class HenvendelseServiceMock implements HenvendelseService {
     }
 
     @Override
-    public WSSendInnHenvendelseResponse stillSporsmal(String fritekst, Temagruppe temagruppe, String fodselsnummer) {
+    public WSSendInnHenvendelseResponse stillSporsmal(Henvendelse spsm, String fodselsnummer) {
         Random random = new Random();
-        Henvendelse spsm = new Henvendelse("" + random.nextInt());
+        spsm.id = String.valueOf(random.nextInt());
         spsm.type = SPORSMAL_SKRIFTLIG;
         spsm.traadId = "" + random.nextInt();
-        spsm.fritekst = fritekst;
-        spsm.temagruppe = temagruppe;
         spsm.opprettet = now();
         spsm.markerSomLest();
         henvendelser.put(spsm.id, spsm);
@@ -156,13 +153,10 @@ public class HenvendelseServiceMock implements HenvendelseService {
     }
 
     @Override
-    public WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String fodselsnummer) {
+    public WSSendInnHenvendelseResponse sendSvar(Henvendelse svar, String fodselsnummer) {
         Random random = new Random();
-        Henvendelse svar = new Henvendelse(String.valueOf(random.nextInt()));
+        svar.id = String.valueOf(random.nextInt());
         svar.type = SVAR_SBL_INNGAAENDE;
-        svar.traadId = henvendelse.traadId;
-        svar.fritekst = henvendelse.fritekst;
-        svar.temagruppe = henvendelse.temagruppe;
         svar.opprettet = now();
         svar.markerSomLest();
         henvendelser.put(svar.id, svar);

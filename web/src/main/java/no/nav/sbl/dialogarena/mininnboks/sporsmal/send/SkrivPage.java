@@ -5,6 +5,7 @@ import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextAreaConfigurat
 import no.nav.modig.wicket.errorhandling.aria.AriaFeedbackPanel;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.Sporsmal;
@@ -12,18 +13,13 @@ import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.markup.head.*;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -38,7 +34,9 @@ import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.action
 import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
 import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
-import static no.nav.modig.wicket.model.ModelUtils.*;
+import static no.nav.modig.wicket.model.ModelUtils.both;
+import static no.nav.modig.wicket.model.ModelUtils.either;
+import static no.nav.modig.wicket.model.ModelUtils.not;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.VisningsUtils.componentHasErrors;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.VisningsUtils.numberOfErrorMessages;
 import static org.apache.wicket.AttributeModifier.append;
@@ -90,8 +88,8 @@ public class SkrivPage extends BasePage {
             tekstfeltFeilmelding.setOutputMarkupPlaceholderTag(true);
             tekstfeltFeilmelding.add(
                     visibleIf(both(
-                                    componentHasErrors(enhancedTextArea.get("text"), feedbackPanel))
-                                    .and(numberOfErrorMessages(feedbackPanel, 1))
+                            componentHasErrors(enhancedTextArea.get("text"), feedbackPanel))
+                            .and(numberOfErrorMessages(feedbackPanel, 1))
                     )
             );
 
@@ -103,7 +101,8 @@ public class SkrivPage extends BasePage {
                     Sporsmal spsm = model.getObject();
                     try {
                         spsm.innsendingsTidspunkt = DateTime.now();
-                        service.stillSporsmal(spsm.getFritekst(), spsm.getTemagruppe(), getSubjectHandler().getUid());
+                        Henvendelse henvendelse = new Henvendelse(spsm.getFritekst(), spsm.getTemagruppe());
+                        service.stillSporsmal(henvendelse, getSubjectHandler().getUid());
                         setResponsePage(KvitteringPage.class);
                     } catch (Exception e) {
                         LOG.error("Feil ved innsending av spørsmål", e);
@@ -124,9 +123,9 @@ public class SkrivPage extends BasePage {
             Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
 
             feedbackPanel.add(visibleIf(either(
-                                    numberOfErrorMessages(feedbackPanel, 2))
-                                    .or(componentHasErrors(send, feedbackPanel))
-                    )
+                    numberOfErrorMessages(feedbackPanel, 2))
+                    .or(componentHasErrors(send, feedbackPanel))
+            )
             );
 
             add(temagruppe, enhancedTextArea, tekstfeltFeilmelding, feedbackPanel, send, avbryt);

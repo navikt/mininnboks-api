@@ -16,16 +16,21 @@ import static no.nav.sbl.dialogarena.time.Datoformat.kortMedTid;
 
 public class Henvendelse implements Serializable {
 
-    public Henvendelse(String id) {
-        this.id = id;
-    }
-
-    public final String id;
+    public String id;
     public String traadId, fritekst, kanal, eksternAktor, tilknyttetEnhet;
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
     private DateTime lestDato;
+
+    public Henvendelse(String id) {
+        this.id = id;
+    }
+
+    public Henvendelse(String fritekst, Temagruppe temagruppe) {
+        this.fritekst = fritekst;
+        this.temagruppe = temagruppe;
+    }
 
     public void markerSomLest(DateTime lestDato) {
         this.lestDato = lestDato;

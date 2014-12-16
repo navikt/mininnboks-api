@@ -5,8 +5,9 @@ import no.nav.modig.wicket.test.internal.Parameters;
 import no.nav.sbl.dialogarena.mininnboks.WicketPageTest;
 import no.nav.sbl.dialogarena.mininnboks.config.HenvendelseServiceMockContext;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
-import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
+import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -70,7 +71,7 @@ public class SkrivPageTest extends WicketPageTest {
                 .write("tekstfelt:text", "Dette er en tekst.").andReturn()
                 .click().ajaxButton(withId("send"));
 
-        verify(henvendelseService).stillSporsmal(anyString(), any(Temagruppe.class), anyString());
+        verify(henvendelseService).stillSporsmal(any(Henvendelse.class), anyString());
     }
 
     @Test
@@ -100,7 +101,7 @@ public class SkrivPageTest extends WicketPageTest {
 
     @Test
     public void girEgenFeilmeldingDersomBaksystemetFeiler() {
-        when(henvendelseService.stillSporsmal(anyString(), any(Temagruppe.class), anyString())).thenThrow(new RuntimeException());
+        when(henvendelseService.stillSporsmal(any(Henvendelse.class), anyString())).thenThrow(new RuntimeException());
 
         wicketTester.inForm(withId("sporsmalForm"))
                 .toggleCheckbox(withId("betingelserCheckbox"))
