@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.mininnboks.innboks;
+package no.nav.sbl.dialogarena.mininnboks.innboks.traader;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
@@ -6,15 +6,10 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.sbl.dialogarena.mininnboks.innboks.utils.VisningUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.*;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
@@ -28,7 +23,7 @@ public class TraadVM implements Serializable {
 
     public final String id;
     public final List<Henvendelse> henvendelser;
-    public final IModel<Boolean> lukket, besvareModus;
+    public final IModel<Boolean> lukket, besvareModus, meldingBesvart;
     public final IModel<String> ariaTekst;
     public final Temagruppe temagruppe;
 
@@ -38,6 +33,7 @@ public class TraadVM implements Serializable {
         this.henvendelser = henvendelser;
         this.lukket = new CompoundPropertyModel<>(true);
         this.besvareModus = new CompoundPropertyModel<>(false);
+        this.meldingBesvart = new CompoundPropertyModel<>(false);
         this.ariaTekst = Model.of(lagARIAHjelpeStreng(this));
     }
 

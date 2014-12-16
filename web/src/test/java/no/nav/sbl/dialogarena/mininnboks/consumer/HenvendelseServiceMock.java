@@ -131,6 +131,14 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad6Spsm.fritekst = "Spørsmål fra NAV-ansatt";
         traad6Spsm.temagruppe = FMLI;
         henvendelser.put(traad6Spsm.id, traad6Spsm);
+
+        Henvendelse traad7Spsm = new Henvendelse("7");
+        traad7Spsm.type = SPORSMAL_MODIA_UTGAAENDE;
+        traad7Spsm.traadId = traad7Spsm.id;
+        traad7Spsm.opprettet = now().minusHours(1);
+        traad7Spsm.fritekst = "Spørsmål fra NAV-ansatt 2";
+        traad7Spsm.temagruppe = ARBD;
+        henvendelser.put(traad7Spsm.id, traad7Spsm);
     }
 
     @Override

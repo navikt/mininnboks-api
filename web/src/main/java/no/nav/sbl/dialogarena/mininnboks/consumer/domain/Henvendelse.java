@@ -47,15 +47,17 @@ public class Henvendelse implements Serializable {
         String imgUrl = WebApplication.get().getServletContext().getContextPath() + "/img/";
         if (FRA_NAV.contains(type)) {
             return imgUrl + "nav-logo.svg";
+        } else {
+            return imgUrl + "siluett.svg";
         }
-        return imgUrl + "siluett.svg";
     }
 
     public String getAvsenderBildeAltKey() {
         if (FRA_NAV.contains(type)) {
             return "innboks.avsender.nav";
+        } else {
+            return "innboks.avsender.bruker";
         }
-        return "innboks.avsender.bruker";
     }
 
     public String getSendtDato() {

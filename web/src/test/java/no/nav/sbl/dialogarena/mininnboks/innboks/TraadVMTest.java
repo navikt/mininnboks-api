@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.innboks;
 
 import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.innboks.traader.TraadVM;
 import org.apache.wicket.model.IModel;
 import org.joda.time.DateTime;
 import org.junit.Test;

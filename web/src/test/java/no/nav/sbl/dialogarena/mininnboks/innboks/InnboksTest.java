@@ -4,6 +4,7 @@ import no.nav.modig.wicket.test.internal.Parameters;
 import no.nav.sbl.dialogarena.mininnboks.WicketPageTest;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.innboks.traader.*;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,12 +1,11 @@
-package no.nav.sbl.dialogarena.mininnboks.innboks;
+package no.nav.sbl.dialogarena.mininnboks.innboks.traader;
 
 import no.nav.modig.wicket.component.urlparsinglabel.URLParsingMultiLineLabel;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.innboks.AvsenderBilde;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.GenericPanel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.*;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.getFritekstModel;
