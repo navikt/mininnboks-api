@@ -129,6 +129,8 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad6Spsm.opprettet = now().minusHours(1);
         traad6Spsm.fritekst = "Spørsmål fra NAV-ansatt";
         traad6Spsm.temagruppe = FMLI;
+        traad6Spsm.eksternAktor = "n139112";
+        traad6Spsm.tilknyttetEnhet = "1234";
         henvendelser.put(traad6Spsm.id, traad6Spsm);
 
         Henvendelse traad7Spsm = new Henvendelse("7");
@@ -137,6 +139,8 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad7Spsm.opprettet = now().minusHours(1);
         traad7Spsm.fritekst = "Spørsmål fra NAV-ansatt 2";
         traad7Spsm.temagruppe = ARBD;
+        traad7Spsm.eksternAktor = "n139112";
+        traad7Spsm.tilknyttetEnhet = "1234";
         henvendelser.put(traad7Spsm.id, traad7Spsm);
     }
 
