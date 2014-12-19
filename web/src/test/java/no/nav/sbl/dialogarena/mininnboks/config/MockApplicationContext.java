@@ -3,20 +3,14 @@ package no.nav.sbl.dialogarena.mininnboks.config;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.sbl.dialogarena.mininnboks.consumer.DiskresjonskodeService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseServiceMock;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.HentKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(MinInnboksApplicationContext.class)
+@Import({MinInnboksApplicationContext.class, MockHenvendelseServiceConfig.class})
 public class MockApplicationContext {
-    @Bean
-    public HenvendelseService henvendelseService() {
-        return new HenvendelseServiceMock();
-    }
 
     @Bean
     public DiskresjonskodeService diskresjonskodeService() {
