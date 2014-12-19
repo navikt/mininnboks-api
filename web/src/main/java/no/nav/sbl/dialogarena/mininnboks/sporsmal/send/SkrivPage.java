@@ -37,8 +37,8 @@ import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.both;
 import static no.nav.modig.wicket.model.ModelUtils.either;
 import static no.nav.modig.wicket.model.ModelUtils.not;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.VisningsUtils.componentHasErrors;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.VisningsUtils.numberOfErrorMessages;
+import static no.nav.sbl.dialogarena.mininnboks.sporsmal.FeedbackUtils.componentHasErrors;
+import static no.nav.sbl.dialogarena.mininnboks.sporsmal.FeedbackUtils.numberOfErrorMessages;
 import static org.apache.wicket.AttributeModifier.append;
 
 public class SkrivPage extends BasePage {

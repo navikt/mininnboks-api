@@ -15,8 +15,8 @@ import org.apache.wicket.validation.ValidationError;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.both;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.VisningsUtils.componentHasErrors;
-import static no.nav.sbl.dialogarena.mininnboks.sporsmal.VisningsUtils.numberOfErrorMessages;
+import static no.nav.sbl.dialogarena.mininnboks.sporsmal.FeedbackUtils.componentHasErrors;
+import static no.nav.sbl.dialogarena.mininnboks.sporsmal.FeedbackUtils.numberOfErrorMessages;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.send.SkrivPage.IKKE_AKSEPTERT_FEILMELDING_PROPERTY;
 
 public class BetingelseValgPanel extends Panel {

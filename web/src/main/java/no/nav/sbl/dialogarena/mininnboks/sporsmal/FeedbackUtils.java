@@ -6,7 +6,7 @@ import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
-public class VisningsUtils {
+public abstract class FeedbackUtils {
 
     public static AbstractReadOnlyModel<Boolean> numberOfErrorMessages(final AriaFeedbackPanel feedbackPanel, final int numberOfMessages) {
         return new AbstractReadOnlyModel<Boolean>() {

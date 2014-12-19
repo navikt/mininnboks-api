@@ -1,11 +1,14 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks;
 
 import no.nav.modig.lang.option.Optional;
+import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.innboks.traader.TraadVM;
 import org.apache.wicket.model.IModel;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,9 +20,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.joda.time.DateTime.now;
+import static org.mockito.Mockito.verify;
 
 public class TraadVMTest {
 
+    private HenvendelseService service;
+
+    @Before
+    public void setUp() {
+        service = Mockito.mock(HenvendelseService.class);
+    }
 
     @Test
     public void skalSamleHenvendelserBasertPaaTraader() {
@@ -108,6 +118,25 @@ public class TraadVMTest {
         List<Henvendelse> henvendelser = asList(lagHenvendelse(true), lagHenvendelse(true));
         IModel<Boolean> erLest = TraadVM.erLest(henvendelser);
         assertThat(erLest.getObject(), is(true));
+    }
+
+    @Test
+    public void setterAlleMeldingerSomLestDersomTraadMarkeresSomLest() {
+        Henvendelse henvendelse1 = lagForsteHenvendelseITraad(now());
+        Henvendelse henvendelse2 = lagHenvendelse(henvendelse1.id);
+        List<TraadVM> traadVMListe = TraadVM.tilTraader(asList(henvendelse1, henvendelse2));
+
+        assertThat(traadVMListe.size(), is(1));
+        assertThat(henvendelse1.erLest(), is(false));
+        assertThat(henvendelse2.erLest(), is(false));
+
+        TraadVM traadVM = traadVMListe.get(0);
+        traadVM.markerSomLest(service);
+
+        verify(service).merkHenvendelseSomLest(henvendelse1);
+        verify(service).merkHenvendelseSomLest(henvendelse2);
+        assertThat(henvendelse1.erLest(), is(true));
+        assertThat(henvendelse2.erLest(), is(true));
     }
 
     private static Optional<TraadVM> traadVMMedTraadId(String traadId, List<TraadVM> traadVMList) {

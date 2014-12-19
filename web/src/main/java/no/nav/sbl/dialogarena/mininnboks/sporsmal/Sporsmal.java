@@ -22,8 +22,4 @@ public class Sporsmal extends EnhancedTextAreaModel {
         return text;
     }
 
-    public boolean harTemagruppe() {
-        return temagruppe != null;
-    }
-
 }

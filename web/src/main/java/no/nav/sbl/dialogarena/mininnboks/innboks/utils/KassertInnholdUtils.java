@@ -6,7 +6,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-public class KassertInnholdUtils {
+public abstract class KassertInnholdUtils {
 
     public static final String INNHOLD_KASSERT_KEY = "innhold.kassert";
     public static final String TEMAGRUPPE_UKJENT_KEY = "temagruppe.kassert";
