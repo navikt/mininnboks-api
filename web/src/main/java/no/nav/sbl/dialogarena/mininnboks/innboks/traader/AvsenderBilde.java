@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.mininnboks.innboks;
+package no.nav.sbl.dialogarena.mininnboks.innboks.traader;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import org.apache.wicket.AttributeModifier;

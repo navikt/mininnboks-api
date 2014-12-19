@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks;
 
 import no.nav.modig.core.context.SubjectHandler;
-import no.nav.modig.wicket.events.annotations.RefreshOnEvents;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.innboks.traader.TraadVM;
@@ -26,10 +25,8 @@ import static no.nav.modig.wicket.conditional.ConditionalUtils.hasCssClassIf;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.not;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.traader.TraadVM.tilTraader;
-import static no.nav.sbl.dialogarena.mininnboks.utils.Event.HENVENDELSE_BESVART;
 import static org.apache.wicket.markup.head.JavaScriptHeaderItem.forReference;
 
-@RefreshOnEvents(HENVENDELSE_BESVART)
 public class Innboks extends BasePage<List<TraadVM>> {
 
     public static final String TOM_INNBOKS = "innboks.tom-innboks-melding";

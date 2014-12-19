@@ -2,7 +2,6 @@ package no.nav.sbl.dialogarena.mininnboks.innboks.traader;
 
 import no.nav.modig.wicket.component.urlparsinglabel.URLParsingMultiLineLabel;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.innboks.AvsenderBilde;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.*;
