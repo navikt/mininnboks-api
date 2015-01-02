@@ -11,7 +11,7 @@ public class SporsmalVarsel {
 
     public SporsmalVarsel(String traadId, Date opprettetDato, Henvendelsetype type) {
         this.traadId = traadId;
-        this.opprettetDato = opprettetDato;
+        this.opprettetDato = new Date(opprettetDato.getTime());
         this.type = type;
     }
 }

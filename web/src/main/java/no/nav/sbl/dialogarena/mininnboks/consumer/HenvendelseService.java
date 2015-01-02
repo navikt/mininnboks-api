@@ -20,7 +20,7 @@ import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
 
-    public String KONTAKT_NAV_SAKSTEMA = "KNA";
+    String KONTAKT_NAV_SAKSTEMA = "KNA";
 
     WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer);
 
