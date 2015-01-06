@@ -24,7 +24,9 @@
     </resources>
 
     <exposed-services>
-        <exposedUrl name="mininnboks" path="/mininnboks"/>
+        <exposedUrl name="mininnboks" path="/mininnboks">
+            <exportToZone>ALL</exportToZone>
+        </exposedUrl>
     </exposed-services>
 
     <security serviceUserResourceAlias="srvmininnboks">
