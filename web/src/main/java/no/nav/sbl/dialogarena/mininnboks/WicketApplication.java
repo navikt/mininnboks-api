@@ -36,9 +36,10 @@ import static no.nav.modig.frontend.MetaTag.XUA_IE_EDGE;
  */
 public class WicketApplication extends WebApplication {
 
+    public static final String INNBOKS_PATH = "innboks";
+
     @Inject
     private ApplicationContext applicationContext;
-
     @Inject
     private CmsContentRetriever cmsContentRetriever;
     @Inject
@@ -66,7 +67,7 @@ public class WicketApplication extends WebApplication {
                 .addCss(SkrivPage.JQUERY_CSS)
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
-        mountPage("innboks", Innboks.class);
+        mountPage(INNBOKS_PATH, Innboks.class);
         mountPage("sporsmal/skriv/${temagruppe}", SkrivPage.class);
         mountPage("sporsmal/kvittering", KvitteringPage.class);
         mountPage("internal/isAlive", HealthCheck.class);
