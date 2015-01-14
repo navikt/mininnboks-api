@@ -30,19 +30,19 @@ public class TraaderListView extends ListView<TraadVM> {
     @Inject
     private HenvendelseService service;
 
-    private StringValue valgtTraadId;
+    private StringValue valgtId;
     private String valgtTraadWicketId;
 
-    public TraaderListView(String id, IModel<List<TraadVM>> model, StringValue valgtTraadId) {
+    public TraaderListView(String id, IModel<List<TraadVM>> model, StringValue valgtId) {
         super(id, model);
-        this.valgtTraadId = valgtTraadId;
+        this.valgtId = valgtId;
     }
 
     @Override
     protected void populateItem(final ListItem<TraadVM> item) {
         final TraadVM traadVM = item.getModelObject();
 
-        if (!valgtTraadId.isEmpty() && valgtTraadId.toString().equals(traadVM.id)) {
+        if (!valgtId.isEmpty() && traadVM.inneholderHenvendelseMedId(valgtId.toString())) {
             traadVM.lukket.setObject(false);
             valgtTraadWicketId = item.getMarkupId();
         }
@@ -100,7 +100,7 @@ public class TraaderListView extends ListView<TraadVM> {
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        if (!valgtTraadId.isEmpty()) {
+        if (!valgtId.isEmpty()) {
             response.render(OnLoadHeaderItem.forScript(format("window.location.hash = '%s'", valgtTraadWicketId)));
         }
     }

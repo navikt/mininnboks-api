@@ -84,6 +84,13 @@ public class Henvendelse implements Serializable {
         }
     };
 
+    public static final Transformer<Henvendelse, String> ID = new Transformer<Henvendelse, String>() {
+        @Override
+        public String transform(Henvendelse henvendelse) {
+            return henvendelse.id;
+        }
+    };
+
     public static final Transformer<Henvendelse, String> TRAAD_ID = new Transformer<Henvendelse, String>() {
         @Override
         public String transform(Henvendelse henvendelse) {

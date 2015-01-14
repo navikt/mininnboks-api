@@ -117,6 +117,10 @@ public class TraadVM implements Serializable {
         };
     }
 
+    public Boolean inneholderHenvendelseMedId(String id) {
+        return on(henvendelser).exists(where(Henvendelse.ID, equalTo(id)));
+    }
+
     public static List<TraadVM> tilTraader(List<Henvendelse> henvendelser) {
         List<Henvendelse> sortert = on(henvendelser).collect(NYESTE_OVERST);
         Map<String, List<Henvendelse>> traader = on(sortert).reduce(indexBy(TRAAD_ID), new LinkedHashMap<String, List<Henvendelse>>());
