@@ -6,17 +6,15 @@ import no.nav.sbl.dialogarena.mininnboks.innboks.traader.TraadVM;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.GenericPanel;
-import org.apache.wicket.model.*;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 
 import java.io.Serializable;
 
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
 import static no.nav.modig.wicket.model.ModelUtils.both;
 import static no.nav.modig.wicket.model.ModelUtils.not;
-import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.henvendelseTemagruppeKey;
 
 public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> implements Serializable {
 
@@ -32,19 +30,16 @@ public class BesvareMeldingPanel extends GenericPanel<BesvareMeldingPanel.Svar> 
             }
         };
 
-        WebMarkupContainer besvareContainer = new WebMarkupContainer("besvareContainer");
-        besvareContainer.add(
-                new Label("temagruppe", new ResourceModel(henvendelseTemagruppeKey(getModelObject().temagruppe))),
-                new SvarForm("form", getModel(), traadVM, this, traadListItemParent));
+        SvarForm form = new SvarForm("form", getModel(), traadVM, this, traadListItemParent);
 
         KvitteringPanel kvittering = new KvitteringPanel("kvittering");
 
         add(visibleIf(not(traadVM.lukket)));
         besvareKnapp.add(visibleIf(both(not(traadVM.besvareModus)).and(not(traadVM.lukket)).and(traadVM.kanBesvares())));
-        besvareContainer.add(visibleIf(both(traadVM.besvareModus).and(not(traadVM.meldingBesvart))));
+        form.add(visibleIf(both(traadVM.besvareModus).and(not(traadVM.meldingBesvart))));
         kvittering.add(visibleIf(traadVM.meldingBesvart));
 
-        add(besvareKnapp, besvareContainer, kvittering);
+        add(besvareKnapp, form, kvittering);
     }
 
     public static class Svar extends EnhancedTextAreaModel {

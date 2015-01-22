@@ -1,26 +1,22 @@
 package no.nav.sbl.dialogarena.mininnboks.innboks.besvare;
 
 import no.nav.sbl.dialogarena.mininnboks.WicketPageTest;
-import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.sbl.dialogarena.mininnboks.innboks.traader.TraadVM;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.annotation.Bean;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
-import static no.nav.modig.wicket.test.matcher.ComponentMatchers.thatIsInvisible;
-import static no.nav.modig.wicket.test.matcher.ComponentMatchers.thatIsVisible;
-import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
+import static no.nav.modig.wicket.test.matcher.ComponentMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.mock;
 
 public class BesvareMeldingPanelTest extends WicketPageTest {
 
@@ -30,24 +26,15 @@ public class BesvareMeldingPanelTest extends WicketPageTest {
     public static final String FRITEKST = "fritekst";
     public static final Temagruppe TEMAGRUPPE = Temagruppe.ARBD;
 
-    @Bean
-    public HenvendelseService henvendelseService() {
-        return mock(HenvendelseService.class);
-    }
-
-    @Inject
-    private HenvendelseService henvendelseService;
-
     private TraadVM traadVM;
     private Henvendelse henvendelse;
-    private Component oppdaterbarKomponent;
     private BesvareMeldingPanel besvareMeldingPanel;
 
     @Before
     public void setUp() {
         henvendelse = opprettHenvendelse();
         traadVM = new TraadVM(ID, Temagruppe.ARBD, new ArrayList<>(asList(henvendelse)));
-        oppdaterbarKomponent = new WebMarkupContainer("containerSomSkalOppdateres");
+        Component oppdaterbarKomponent = new WebMarkupContainer("containerSomSkalOppdateres");
         oppdaterbarKomponent.setOutputMarkupId(true);
         besvareMeldingPanel = new BesvareMeldingPanel("besvareMeldingPanel", traadVM, oppdaterbarKomponent);
     }
@@ -69,57 +56,57 @@ public class BesvareMeldingPanelTest extends WicketPageTest {
     }
 
     @Test
-    public void alleKomponenterErUsynligeDersomTraadenErAapenMenIkkeKanBesvares() {
+    public void alleKomponenterErSkjultNaarTraadenErAapenMenIkkeKanBesvares() {
         traadVM.lukket.setObject(false);
 
         wicketTester.goToPageWith(besvareMeldingPanel)
                 .should().containComponent(thatIsInvisible().and(withId("besvareKnapp")))
-                .should().containComponent(thatIsInvisible().and(withId("besvareContainer")))
+                .should().containComponent(thatIsInvisible().and(withId("form")))
                 .should().containComponent(thatIsInvisible().and(withId("kvittering")));
     }
 
     @Test
-    public void kunBesvarKnappErSynligDersomTraadenErAapenOgKanBesvares() {
+    public void kunBesvarKnappSynligNaarTraadenErAapenOgKanBesvares() {
         initierAapentBesvareMeldingPanel();
 
         wicketTester.goToPageWith(besvareMeldingPanel)
                 .should().containComponent(thatIsVisible().and(withId("besvareKnapp")))
-                .should().containComponent(thatIsInvisible().and(withId("besvareContainer")))
+                .should().containComponent(thatIsInvisible().and(withId("form")))
                 .should().containComponent(thatIsInvisible().and(withId("kvittering")));
     }
 
     @Test
-    public void besvarKnappBlirUsynligOgBesvarContainerVisesDersomManTrykkerBesvar() {
+    public void besvarKnappSkjulesOgFormVisesNaarManTrykkerBesvar() {
         initierAapentBesvareMeldingPanel();
 
         wicketTester.goToPageWith(besvareMeldingPanel)
                 .click().link(withId("besvareKnapp"))
                 .should().containComponent(thatIsInvisible().and(withId("besvareKnapp")))
-                .should().containComponent(thatIsVisible().and(withId("besvareContainer")))
+                .should().containComponent(thatIsVisible().and(withId("form")))
                 .should().containComponent(thatIsInvisible().and(withId("kvittering")));
     }
 
     @Test
-    public void kunBesvarKnappErSynligDersomManAvbryterBesvarelse() {
+    public void kunBesvarKnappErSynligNaarManAvbryter() {
         initierAapentBesvareMeldingPanel();
 
         wicketTester.goToPageWith(besvareMeldingPanel)
                 .click().link(withId("besvareKnapp"))
                 .click().link(withId("avbryt"))
                 .should().containComponent(thatIsVisible().and(withId("besvareKnapp")))
-                .should().containComponent(thatIsInvisible().and(withId("besvareContainer")))
+                .should().containComponent(thatIsInvisible().and(withId("form")))
                 .should().containComponent(thatIsInvisible().and(withId("kvittering")));
     }
 
     @Test
-    public void besvarKnappOgBesvarContainerBlirUsynligOgKvitteringVisesDersomManBesvarer() {
+    public void kvitteringVisesNaarManBesvarer() {
         initierAapentBesvareMeldingPanel();
 
         aapneBesvareMeldingPanelOgBesvar();
 
         wicketTester
                 .should().containComponent(thatIsInvisible().and(withId("besvareKnapp")))
-                .should().containComponent(thatIsInvisible().and(withId("besvareContainer")))
+                .should().containComponent(thatIsInvisible().and(withId("form")))
                 .should().containComponent(thatIsVisible().and(withId("kvittering")));
     }
 
@@ -140,7 +127,7 @@ public class BesvareMeldingPanelTest extends WicketPageTest {
     private void aapneBesvareMeldingPanelOgBesvar() {
         wicketTester.goToPageWith(besvareMeldingPanel)
                 .click().link(withId("besvareKnapp"))
-                .inForm("besvareMeldingPanel:besvareContainer:form")
+                .inForm("besvareMeldingPanel:form")
                 .write("fritekst:text", FRITEKST)
                 .submitWithAjaxButton(withId("sendSvar"));
     }

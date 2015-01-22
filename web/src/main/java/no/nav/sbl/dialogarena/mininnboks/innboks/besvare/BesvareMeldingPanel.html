@@ -5,27 +5,18 @@
     <article class="nyeste-melding besvare-melding clearfix">
         <input wicket:id="besvareKnapp" type="button" class="knapp-hoved-liten besvare-knapp" value="Besvar"/>
 
-        <div wicket:id="besvareContainer">
-            <div class="venstre-kolonne">
-                <div class="avsender-bilde-ramme">
-                    <img src="img/siluett.svg" alt="Melding fra deg">
-                </div>
+        <form wicket:id="form">
+            <h3 class="medium header">
+                <wicket:message key="besvare.overskrift"/>
+            </h3>
+            <wicket:container wicket:id="fritekst"/>
+            <div wicket:id="feedback"></div>
+            <div>
+                <input wicket:id="sendSvar" type="submit" class="knapp-hoved-liten send-knapp" role="button"
+                       value="Send"/>
             </div>
-            <div class="hoyre-kolonne">
-
-                <div class="header">
-                    <h3 wicket:id="temagruppe" class="medium temagruppe"></h3>
-                </div>
-                <form wicket:id="form">
-                    <wicket:container wicket:id="fritekst"/>
-                    <div wicket:id="feedback"></div>
-                    <div>
-                        <input wicket:id="sendSvar" type="submit" class="knapp-hoved-liten send-knapp" role="button" value="Send"/>
-                    </div>
-                    <a wicket:id="avbryt" href="#" class="avbryt-knapp">Avbryt</a>
-                </form>
-            </div>
-        </div>
+            <a wicket:id="avbryt" href="#" class="avbryt-knapp">Avbryt</a>
+        </form>
         <div wicket:id="kvittering"></div>
     </article>
 </wicket:panel>
