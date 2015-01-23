@@ -2,5 +2,8 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.domain;
 
 public enum Temagruppe {
     ARBD,
-    FMLI
+    FMLI,
+    HJLPM,
+    BIL,
+    ORT_HJE
 }
