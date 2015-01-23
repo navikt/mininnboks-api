@@ -13,15 +13,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.
 
 public class SporsmalVarselUtils {
 
-    public static List<SporsmalVarsel> hentUlesteSporsmal(List<Henvendelse> henvendelser) {
-        return varsler(henvendelser, ULEST_HENVENDELSE);
-    }
-
-    public static List<SporsmalVarsel> hentUbesvarteSporsmal(List<Henvendelse> henvendelser) {
-        return varsler(henvendelser, UBESVART_HENVENDELSE);
-    }
-
-    private static List<SporsmalVarsel> varsler(List<Henvendelse> henvendelser, Predicate<Henvendelse> predicate) {
+    public static List<SporsmalVarsel> hentUbehandledeSporsmal(List<Henvendelse> henvendelser) {
         HashMap<String, Henvendelse> nyesteHenvendelserITraad = new HashMap<>();
 
         for (Henvendelse henvendelse : on(henvendelser).collect(NYESTE_OVERST)) {
@@ -30,27 +22,28 @@ public class SporsmalVarselUtils {
             }
         }
 
-        return on(nyesteHenvendelserITraad.values()).filter(predicate).map(HENVENDELSE_TIL_SPORSMAL_VARSEL).collect();
+        return on(nyesteHenvendelserITraad.values()).filter(ULEST_ELLER_UBESVART).map(TIL_SPORSMAL_VARSEL).collect();
     }
 
-    private static final Transformer<Henvendelse, SporsmalVarsel> HENVENDELSE_TIL_SPORSMAL_VARSEL = new Transformer<Henvendelse, SporsmalVarsel>() {
+    private static final Transformer<Henvendelse, SporsmalVarsel> TIL_SPORSMAL_VARSEL = new Transformer<Henvendelse, SporsmalVarsel>() {
         @Override
         public SporsmalVarsel transform(Henvendelse henvendelse) {
-            return new SporsmalVarsel(henvendelse.traadId, henvendelse.opprettet.toDate(), henvendelse.type);
+            return new SporsmalVarsel(henvendelse);
         }
     };
 
-    private static final Predicate<Henvendelse> UBESVART_HENVENDELSE = new Predicate<Henvendelse>() {
+    private static final Predicate<Henvendelse> ULEST_ELLER_UBESVART = new Predicate<Henvendelse>() {
         @Override
         public boolean evaluate(Henvendelse henvendelse) {
-            return henvendelse.type == SPORSMAL_MODIA_UTGAAENDE;
+            return erUlest(henvendelse) || erUbesvart(henvendelse);
         }
     };
 
-    private static final Predicate<Henvendelse> ULEST_HENVENDELSE = new Predicate<Henvendelse>() {
-        @Override
-        public boolean evaluate(Henvendelse henvendelse) {
-            return !henvendelse.erLest();
-        }
-    };
+    public static boolean erUbesvart(Henvendelse henvendelse) {
+        return henvendelse.type == SPORSMAL_MODIA_UTGAAENDE;
+    }
+
+    public static boolean erUlest(Henvendelse henvendelse) {
+        return !henvendelse.erLest();
+    }
 }
