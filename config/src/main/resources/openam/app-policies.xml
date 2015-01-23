@@ -72,16 +72,7 @@
     <Policy name="Mininnboks_002" referralPolicy="false" active="true">
         <Rule name="rule_Mininnboks_002_01">
             <ServiceName name="iPlanetAMWebAgentService"/>
-            <ResourceName name="https://${DomainName}/mininnboks/tjenester/sporsmal/ulest"/>
-            <AttributeValuePair>
-                <Attribute name="GET"/>
-                <Value>allow</Value>
-            </AttributeValuePair>
-        </Rule>
-
-        <Rule name="rule_Mininnboks_002_02">
-            <ServiceName name="iPlanetAMWebAgentService"/>
-            <ResourceName name="https://${DomainName}/mininnboks/tjenester/sporsmal/ubesvart"/>
+            <ResourceName name="https://${DomainName}/mininnboks/tjenester/sporsmal/*"/>
             <AttributeValuePair>
                 <Attribute name="GET"/>
                 <Value>allow</Value>
