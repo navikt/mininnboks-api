@@ -2,8 +2,6 @@ package no.nav.sbl.dialogarena.mininnboks;
 
 import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.frontend.FrontendConfigurator;
-import no.nav.modig.security.tilgangskontroll.policy.pep.EnforcementPoint;
-import no.nav.modig.security.tilgangskontroll.wicket.BehaviorPolicyAuthorizationStrategy;
 import no.nav.modig.wicket.configuration.ApplicationSettingsConfig;
 import no.nav.modig.wicket.selftest.HealthCheck;
 import no.nav.modig.wicket.selftest.JsonResourceReference;
@@ -27,9 +25,7 @@ import javax.inject.Inject;
 import java.util.Locale;
 
 import static no.nav.modig.frontend.FrontendModules.EKSTERNFLATE;
-import static no.nav.modig.frontend.MetaTag.CHARSET_UTF8;
-import static no.nav.modig.frontend.MetaTag.VIEWPORT_SCALE_1;
-import static no.nav.modig.frontend.MetaTag.XUA_IE_EDGE;
+import static no.nav.modig.frontend.MetaTag.*;
 
 /**
  * Kontekst for wicket
@@ -42,8 +38,6 @@ public class WicketApplication extends WebApplication {
     private ApplicationContext applicationContext;
     @Inject
     private CmsContentRetriever cmsContentRetriever;
-    @Inject
-    private EnforcementPoint pep;
 
     public static WicketApplication get() {
         return (WicketApplication) Application.get();
@@ -77,7 +71,6 @@ public class WicketApplication extends WebApplication {
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
         getResourceSettings().getStringResourceLoaders().add(0, new CmsResourceLoader(cmsContentRetriever));
         Datoformat.brukLocaleFra(LocaleFromWicketSession.INSTANCE);
-        get().getSecuritySettings().setAuthorizationStrategy(new BehaviorPolicyAuthorizationStrategy(pep));
     }
 
     @Override

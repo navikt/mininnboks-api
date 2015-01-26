@@ -22,7 +22,6 @@
         <modig-lang.version>2.0.2</modig-lang.version>
         <modig-wicket.version>2.0.41</modig-wicket.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <spring.security.version>3.1.0.RELEASE</spring.security.version>
         <spring.version>4.1.2.RELEASE</spring.version>
         <wicket.version>6.17.0</wicket.version>
     </properties>
@@ -49,12 +48,6 @@
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>innsyn-henvendelse</artifactId>
             <version>0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tjenester.pip</groupId>
-            <artifactId>nav-pip-diskresjonskode-v1-tjenestespesifikasjon</artifactId>
-            <version>1.1.0</version>
-            <classifier>jaxws</classifier>
         </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
@@ -155,11 +148,6 @@
         </dependency>
         <dependency>
             <groupId>no.nav.modig</groupId>
-            <artifactId>modig-security-wicket</artifactId>
-            <version>${modig-security.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-sts</artifactId>
             <version>${modig-security.version}</version>
             <exclusions>
@@ -180,11 +168,6 @@
             <artifactId>modig-security-loginmodule</artifactId>
             <version>${modig-security.version}</version>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.modig</groupId>
-            <artifactId>modig-security-authorization</artifactId>
-            <version>${modig-security.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.modig</groupId>
@@ -216,13 +199,6 @@
             <artifactId>modig-wicket-test</artifactId>
             <version>1.0.0</version>
             <scope>test</scope>
-        </dependency>
-
-        <!--Security-->
-        <dependency>
-            <groupId>org.jboss.security</groupId>
-            <artifactId>jbossxacml</artifactId>
-            <version>2.0.9.Final</version>
         </dependency>
 
         <!--Wicket-->
@@ -278,17 +254,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>
             <exclusions>
                 <exclusion>
@@ -360,12 +325,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>no.nav.sbl</groupId>
             <artifactId>innholdshenter</artifactId>
             <version>2.3</version>
@@ -430,12 +389,6 @@
             <groupId>net.sourceforge.collections</groupId>
             <artifactId>collections-generic</artifactId>
             <version>4.01</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>annotations</artifactId>
-            <version>3.0.0</version>
         </dependency>
 
         <!--Testing-->

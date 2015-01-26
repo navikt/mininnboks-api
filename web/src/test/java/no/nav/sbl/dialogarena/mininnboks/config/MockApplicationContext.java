@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
 import no.nav.modig.core.context.SubjectHandler;
-import no.nav.sbl.dialogarena.mininnboks.consumer.DiskresjonskodeService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.HentKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import org.springframework.context.annotation.Bean;
@@ -11,16 +10,6 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({MinInnboksApplicationContext.class, MockHenvendelseServiceConfig.class})
 public class MockApplicationContext {
-
-    @Bean
-    public DiskresjonskodeService diskresjonskodeService() {
-        return new DiskresjonskodeService() {
-            @Override
-            public String getDiskresjonskode(String fnr) {
-                return "7";
-            }
-        };
-    }
 
     @Bean
     public EpostService epostService() {

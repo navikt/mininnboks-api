@@ -13,13 +13,18 @@ import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
-import org.apache.wicket.markup.head.*;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.*;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -30,13 +35,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
-import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.actionId;
-import static no.nav.modig.security.tilgangskontroll.utils.AttributeUtils.resourceId;
-import static no.nav.modig.security.tilgangskontroll.utils.WicketAutorizationUtils.accessRestriction;
 import static no.nav.modig.wicket.conditional.ConditionalUtils.visibleIf;
-import static no.nav.modig.wicket.model.ModelUtils.both;
-import static no.nav.modig.wicket.model.ModelUtils.either;
-import static no.nav.modig.wicket.model.ModelUtils.not;
+import static no.nav.modig.wicket.model.ModelUtils.*;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.FeedbackUtils.componentHasErrors;
 import static no.nav.sbl.dialogarena.mininnboks.sporsmal.FeedbackUtils.numberOfErrorMessages;
 import static org.apache.wicket.AttributeModifier.append;
@@ -56,8 +56,7 @@ public class SkrivPage extends BasePage {
 
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.setTemagruppe(Temagruppe.valueOf(parameters.get("temagruppe").toString()));
-        add(new SporsmalForm("sporsmalForm", new CompoundPropertyModel<>(sporsmal))
-                .add(accessRestriction(RENDER).withAttributes(actionId("innsending"), resourceId(""))));
+        add(new SporsmalForm("sporsmalForm", new CompoundPropertyModel<>(sporsmal)));
 
         IModel<Boolean> ikkeTilgang = not(new PropertyModel<Boolean>(get("sporsmalForm"), "isRenderAllowed"));
         WebMarkupContainer tilInnboksWrapper = new WebMarkupContainer("tilInnboksWrapper");
