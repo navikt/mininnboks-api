@@ -6,6 +6,8 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.innboks.traader.TraadVM;
 import no.nav.sbl.dialogarena.mininnboks.innboks.traader.TraaderListView;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -76,6 +78,15 @@ public class Innboks extends BasePage<List<TraadVM>> {
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
         response.render(forReference(new JavaScriptResourceReference(Innboks.class, "innboks.js")));
+
+        String jsValidatorConfig = String.format("{'form': %s,'textareaPlaceholder': '%s', 'textareaErrorMessage': '%s', 'checkboxErrorMessage': '%s', maxLength: %d}",
+                "'.besvare-melding'",
+                new ResourceModel("skriv-sporsmal.fritekst.placeholder").getObject(),
+                new ResourceModel("send-sporsmal.still-sporsmal.text.tomt").getObject(),
+                new ResourceModel("send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert").getObject(),
+                1000);
+        response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(BasePage.class, "skrivValidator.js")));
+        response.render(OnDomReadyHeaderItem.forScript("new SkrivFormValidator(" + jsValidatorConfig + ");"));
     }
 
     @Override

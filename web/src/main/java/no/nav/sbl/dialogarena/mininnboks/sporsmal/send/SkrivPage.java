@@ -115,7 +115,7 @@ public class SkrivPage extends BasePage {
                 protected void onError(AjaxRequestTarget target, Form<?> form) {
                     target.add(feedbackPanel, tekstfeltFeilmelding);
                     betingelseValgPanel.oppdater(target);
-                    target.appendJavaScript("SkrivFormValidator.validateAll()");
+                    target.appendJavaScript("Validator.validateAll()");
                 }
             };
 
@@ -135,16 +135,16 @@ public class SkrivPage extends BasePage {
         @Override
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
-            String jsValidatorConfig = String.format("{'form': %s,'textareaPlaceholder': '%s', 'textareaErrorMessage': '%s', 'checkboxErrorMessage': '%s', maxLength: %d}",
-                    "$('.mininnboks-omslag form').get(0)",
+            String jsValidatorConfig = String.format("{'form': '%s','textareaPlaceholder': '%s', 'textareaErrorMessage': '%s', 'checkboxErrorMessage': '%s', maxLength: %d}",
+                    ".mininnboks-omslag form",
                     new ResourceModel(PLACEHOLDER_TEXT_KEY).getObject(),
                     new ResourceModel("send-sporsmal.still-sporsmal.text.tomt").getObject(),
                     new ResourceModel(IKKE_AKSEPTERT_FEILMELDING_PROPERTY).getObject(),
                     textAreaConfigurator.getMaxCharCount());
 
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skriv.js")));
-            response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skrivValidator.js")));
-            response.render(OnDomReadyHeaderItem.forScript("window.SkrivFormValidator = new SkrivFormValidator(" + jsValidatorConfig + ");"));
+            response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(BasePage.class, "skrivValidator.js")));
+            response.render(OnDomReadyHeaderItem.forScript("window.Validator = new SkrivFormValidator(" + jsValidatorConfig + ");"));
 
         }
     }

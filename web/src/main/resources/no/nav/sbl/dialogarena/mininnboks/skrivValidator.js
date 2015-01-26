@@ -3,16 +3,15 @@
 
     var SkrivValidator = function (config) {
         this.config = config;
-        this.$form = $(config.form);
-        this.$form.on('blur', 'input,textarea', this.validate.bind(this));
-        this.$form.on('change', 'input', this.validate.bind(this));
-        this.$form.on('keyup', 'textarea', this.validate.bind(this));
+        $(document).on('blur', this.config.form + ' input,textarea', this.validate.bind(this));
+        $(document).on('change', this.config.form + ' input', this.validate.bind(this));
+        $(document).on('keyup', this.config.form + ' textarea', this.validate.bind(this));
     };
 
     $.extend(SkrivValidator.prototype, {
-        validateAll: function(){
+        validateAll: function () {
             var firstNonValidElement = true;
-            this.$form.find('input,textarea').each(function(index, element){
+            $(document).find(this.config.form + ' input,textarea').each(function (index, element) {
                 var wasValid = this.validate({currentTarget: element});
                 if (!wasValid && firstNonValidElement) {
                     $(element).blur().focus();
@@ -35,7 +34,7 @@
         validateCheckbox: function ($el) {
             if (!$el.prop('checked')) {
                 $el.attr('aria-invalid', 'true');
-                $el.attr('aria-describedBy', 'aria-error-'+$el.attr('id'));
+                $el.attr('aria-describedBy', 'aria-error-' + $el.attr('id'));
                 $el.next('label').addClass('validation-error');
                 this.showErrorMessage(this.config.checkboxErrorMessage);
                 return false;
@@ -50,7 +49,7 @@
         validateTextArea: function ($el) {
             if ($el.val().length === 0 || $el.val() === this.config.textareaPlaceholder || $el.val().length > this.config.maxLength) {
                 $el.attr('aria-invalid', 'true');
-                $el.attr('aria-describedBy', 'aria-error-'+$el.attr('id'));
+                $el.attr('aria-describedBy', 'aria-error-' + $el.attr('id'));
                 $el.addClass('validation-error')
                     .nextAll('label').addClass('validation-error');
                 this.showErrorMessage(this.config.textareaErrorMessage);
@@ -64,10 +63,10 @@
                 return true;
             }
         },
-        showErrorMessage: function(message) {
+        showErrorMessage: function (message) {
 
         },
-        hideErrorMessage: function(message){
+        hideErrorMessage: function (message) {
 
         }
     });
