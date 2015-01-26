@@ -81,9 +81,9 @@ public class Innboks extends BasePage<List<TraadVM>> {
 
         String jsValidatorConfig = String.format("{'form': %s,'textareaPlaceholder': '%s', 'textareaErrorMessage': '%s', 'checkboxErrorMessage': '%s', maxLength: %d}",
                 "'.besvare-melding'",
-                new ResourceModel("skriv-sporsmal.fritekst.placeholder").getObject(),
-                new ResourceModel("send-sporsmal.still-sporsmal.text.tomt").getObject(),
-                new ResourceModel("send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert").getObject(),
+                getString("skriv-sporsmal.fritekst.placeholder"),
+                getString("send-sporsmal.still-sporsmal.text.tomt"),
+                getString("send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert"),
                 1000);
         response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(BasePage.class, "skrivValidator.js")));
         response.render(OnDomReadyHeaderItem.forScript("new SkrivFormValidator(" + jsValidatorConfig + ");"));

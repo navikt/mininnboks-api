@@ -87,8 +87,8 @@ public class SkrivPage extends BasePage {
             tekstfeltFeilmelding.setOutputMarkupPlaceholderTag(true);
             tekstfeltFeilmelding.add(
                     visibleIf(both(
-                            componentHasErrors(enhancedTextArea.get("text"), feedbackPanel))
-                            .and(numberOfErrorMessages(feedbackPanel, 1))
+                                    componentHasErrors(enhancedTextArea.get("text"), feedbackPanel))
+                                    .and(numberOfErrorMessages(feedbackPanel, 1))
                     )
             );
 
@@ -122,9 +122,9 @@ public class SkrivPage extends BasePage {
             Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
 
             feedbackPanel.add(visibleIf(either(
-                    numberOfErrorMessages(feedbackPanel, 2))
-                    .or(componentHasErrors(send, feedbackPanel))
-            )
+                                    numberOfErrorMessages(feedbackPanel, 2))
+                                    .or(componentHasErrors(send, feedbackPanel))
+                    )
             );
 
             add(temagruppe, enhancedTextArea, tekstfeltFeilmelding, feedbackPanel, send, avbryt);
@@ -137,10 +137,10 @@ public class SkrivPage extends BasePage {
             super.renderHead(response);
             String jsValidatorConfig = String.format("{'form': '%s','textareaPlaceholder': '%s', 'textareaErrorMessage': '%s', 'textareaErrorMessageLength': '%s', 'checkboxErrorMessage': '%s', maxLength: %d}",
                     ".mininnboks-omslag form",
-                    new ResourceModel(PLACEHOLDER_TEXT_KEY).getObject(),
-                    new ResourceModel("send-sporsmal.still-sporsmal.text.tomt").getObject(),
-                    new ResourceModel("send-sporsmal.still-sporsmal.text.forlang", "Tekset en for lang.").getObject(),
-                    new ResourceModel(IKKE_AKSEPTERT_FEILMELDING_PROPERTY).getObject(),
+                    getString(PLACEHOLDER_TEXT_KEY),
+                    getString("send-sporsmal.still-sporsmal.text.tomt"),
+                    getString("send-sporsmal.still-sporsmal.text.forlang"),
+                    getString(IKKE_AKSEPTERT_FEILMELDING_PROPERTY),
                     textAreaConfigurator.getMaxCharCount());
 
             response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(SkrivPage.class, "skriv.js")));
