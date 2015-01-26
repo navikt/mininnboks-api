@@ -135,10 +135,11 @@ public class SkrivPage extends BasePage {
         @Override
         public void renderHead(IHeaderResponse response) {
             super.renderHead(response);
-            String jsValidatorConfig = String.format("{'form': '%s','textareaPlaceholder': '%s', 'textareaErrorMessage': '%s', 'checkboxErrorMessage': '%s', maxLength: %d}",
+            String jsValidatorConfig = String.format("{'form': '%s','textareaPlaceholder': '%s', 'textareaErrorMessage': '%s', 'textareaErrorMessageLength': '%s', 'checkboxErrorMessage': '%s', maxLength: %d}",
                     ".mininnboks-omslag form",
                     new ResourceModel(PLACEHOLDER_TEXT_KEY).getObject(),
                     new ResourceModel("send-sporsmal.still-sporsmal.text.tomt").getObject(),
+                    new ResourceModel("send-sporsmal.still-sporsmal.text.forlang", "Tekset en for lang.").getObject(),
                     new ResourceModel(IKKE_AKSEPTERT_FEILMELDING_PROPERTY).getObject(),
                     textAreaConfigurator.getMaxCharCount());
 

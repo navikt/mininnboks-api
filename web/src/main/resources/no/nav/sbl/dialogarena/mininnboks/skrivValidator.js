@@ -52,6 +52,11 @@
                 $el.attr('aria-describedBy', 'aria-error-' + $el.attr('id'));
                 $el.addClass('validation-error')
                     .nextAll('label').addClass('validation-error');
+                if ($el.val().length > this.config.maxLength) {
+                    $el.nextAll('.tekst-feilmelding').show().text(this.config.textareaErrorMessageLength);
+                } else {
+                    $el.nextAll('.tekst-feilmelding').show().text(this.config.textareaErrorMessage);
+                }
                 this.showErrorMessage(this.config.textareaErrorMessage);
                 return false;
             } else {
@@ -59,6 +64,7 @@
                 $el.removeAttr('aria-describedBy');
                 $el.removeClass('validation-error')
                     .nextAll('label').removeClass('validation-error');
+                $el.nextAll('.tekst-feilmelding').hide();
                 this.hideErrorMessage(this.config.textareaErrorMessage);
                 return true;
             }
