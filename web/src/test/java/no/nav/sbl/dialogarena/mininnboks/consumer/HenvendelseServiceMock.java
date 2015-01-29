@@ -6,8 +6,7 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.mel
 import java.util.*;
 
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.ARBD;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.FMLI;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.*;
 import static org.joda.time.DateTime.now;
 
 public class HenvendelseServiceMock implements HenvendelseService {
@@ -101,7 +100,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
                 " option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit" +
                 " eorum claritatem. Investigationes demonstraverunt https://www.nav.no/no/Person/Hjelpemidler/Tjenester+og+produkter/Hjelpemidler/Om+hjelpemidler.358874.cms lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui" +
                 " sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam http://www.test.no/?id=1&id=2 nunc putamus parum claram, anteposuerit litterarum formas";
-        traad4Spsm.temagruppe = FMLI;
+        traad4Spsm.temagruppe = HJLPM;
         traad4Spsm.markerSomLest(traad4Spsm.opprettet);
         henvendelser.put(traad4Spsm.id, traad4Spsm);
 
@@ -110,7 +109,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad5Spsm.traadId = traad5Spsm.id;
         traad5Spsm.opprettet = now().minusHours(6);
         traad5Spsm.fritekst = "Spørsmål fra NAV-ansatt";
-        traad5Spsm.temagruppe = FMLI;
+        traad5Spsm.temagruppe = ORT_HJE;
         traad5Spsm.markerSomLest(traad5Spsm.opprettet);
         henvendelser.put(traad5Spsm.id, traad5Spsm);
 
@@ -119,7 +118,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad5Svar1.traadId = traad5Spsm.id;
         traad5Svar1.opprettet = now().minusHours(3);
         traad5Svar1.fritekst = "Svar fra NAV-bruker";
-        traad5Svar1.temagruppe = FMLI;
+        traad5Svar1.temagruppe = traad5Spsm.temagruppe;
         traad5Svar1.markerSomLest(traad5Svar1.opprettet);
         henvendelser.put(traad5Svar1.id, traad5Svar1);
 
@@ -128,7 +127,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad6Spsm.traadId = traad6Spsm.id;
         traad6Spsm.opprettet = now().minusHours(1);
         traad6Spsm.fritekst = "Spørsmål fra NAV-ansatt";
-        traad6Spsm.temagruppe = FMLI;
+        traad6Spsm.temagruppe = OVRG;
         traad6Spsm.eksternAktor = "n139112";
         traad6Spsm.tilknyttetEnhet = "1234";
         henvendelser.put(traad6Spsm.id, traad6Spsm);
@@ -138,7 +137,7 @@ public class HenvendelseServiceMock implements HenvendelseService {
         traad7Spsm.traadId = traad7Spsm.id;
         traad7Spsm.opprettet = now().minusHours(1);
         traad7Spsm.fritekst = "Spørsmål fra NAV-ansatt 2";
-        traad7Spsm.temagruppe = ARBD;
+        traad7Spsm.temagruppe = BIL;
         traad7Spsm.eksternAktor = "n139112";
         traad7Spsm.tilknyttetEnhet = "1234";
         henvendelser.put(traad7Spsm.id, traad7Spsm);
