@@ -3,28 +3,25 @@ package no.nav.sbl.dialogarena.mininnboks.innboks.besvare;
 import no.nav.sbl.dialogarena.mininnboks.WicketPageTest;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.sbl.dialogarena.mininnboks.innboks.traader.TraadVM;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
-import static no.nav.modig.wicket.test.matcher.ComponentMatchers.*;
+import static no.nav.modig.wicket.test.matcher.ComponentMatchers.thatIsInvisible;
+import static no.nav.modig.wicket.test.matcher.ComponentMatchers.thatIsVisible;
+import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
+import static no.nav.sbl.dialogarena.mininnboks.TestUtils.lagForsteHenvendelseITraad;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class BesvareMeldingPanelTest extends WicketPageTest {
 
-    public static final String ID = "id";
-    public static final String EKSTERN_AKTOR = "eksternAktor";
-    public static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
     public static final String FRITEKST = "fritekst";
-    public static final Temagruppe TEMAGRUPPE = Temagruppe.ARBD;
 
     private TraadVM traadVM;
     private Henvendelse henvendelse;
@@ -32,21 +29,11 @@ public class BesvareMeldingPanelTest extends WicketPageTest {
 
     @Before
     public void setUp() {
-        henvendelse = opprettHenvendelse();
-        traadVM = new TraadVM(ID, Temagruppe.ARBD, new ArrayList<>(asList(henvendelse)));
+        henvendelse = lagForsteHenvendelseITraad();
+        traadVM = new TraadVM(henvendelse.traadId, henvendelse.temagruppe, new ArrayList<>(asList(henvendelse)));
         Component oppdaterbarKomponent = new WebMarkupContainer("containerSomSkalOppdateres");
         oppdaterbarKomponent.setOutputMarkupId(true);
         besvareMeldingPanel = new BesvareMeldingPanel("besvareMeldingPanel", traadVM, oppdaterbarKomponent);
-    }
-
-    private static Henvendelse opprettHenvendelse() {
-        Henvendelse henvendelse = new Henvendelse(ID, TEMAGRUPPE);
-        henvendelse.traadId = ID;
-        henvendelse.type = Henvendelsetype.SPORSMAL_SKRIFTLIG;
-        henvendelse.opprettet = DateTime.now();
-        henvendelse.eksternAktor = EKSTERN_AKTOR;
-        henvendelse.tilknyttetEnhet = TILKNYTTET_ENHET;
-        return henvendelse;
     }
 
     @Test
@@ -118,10 +105,10 @@ public class BesvareMeldingPanelTest extends WicketPageTest {
 
         Henvendelse svar = traadVM.nyesteHenvendelse().getObject();
         assertThat(svar.fritekst, is(FRITEKST));
-        assertThat(svar.temagruppe, is(TEMAGRUPPE));
-        assertThat(svar.traadId, is(ID));
-        assertThat(svar.eksternAktor, is(EKSTERN_AKTOR));
-        assertThat(svar.tilknyttetEnhet, is(TILKNYTTET_ENHET));
+        assertThat(svar.temagruppe, is(henvendelse.temagruppe));
+        assertThat(svar.traadId, is(henvendelse.id));
+        assertThat(svar.eksternAktor, is(henvendelse.eksternAktor));
+        assertThat(svar.tilknyttetEnhet, is(henvendelse.tilknyttetEnhet));
     }
 
     private void aapneBesvareMeldingPanelOgBesvar() {

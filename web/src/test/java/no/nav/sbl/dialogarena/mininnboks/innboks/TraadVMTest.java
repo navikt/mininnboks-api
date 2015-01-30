@@ -5,17 +5,17 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.innboks.traader.TraadVM;
 import org.apache.wicket.model.IModel;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.Arrays.asList;
 import static no.nav.modig.lang.option.Optional.none;
 import static no.nav.modig.lang.option.Optional.optional;
+import static no.nav.sbl.dialogarena.mininnboks.TestUtils.lagForsteHenvendelseITraad;
+import static no.nav.sbl.dialogarena.mininnboks.TestUtils.lagHenvendelse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
@@ -147,36 +147,5 @@ public class TraadVMTest {
         }
         return none();
     }
-
-    private static Henvendelse lagHenvendelse(boolean erLest) {
-        Henvendelse henvendelse = new Henvendelse(UUID.randomUUID().toString());
-        if (erLest) {
-            henvendelse.markerSomLest();
-        }
-        return henvendelse;
-    }
-
-    private static Henvendelse lagHenvendelse(String traadId) {
-        return lagHenvendelse(traadId, now());
-    }
-
-    private static Henvendelse lagHenvendelse(String traadId, DateTime opprettet) {
-        Henvendelse henvendelse = new Henvendelse(UUID.randomUUID().toString());
-        henvendelse.traadId = traadId;
-        henvendelse.opprettet = opprettet;
-        return henvendelse;
-    }
-
-    private static Henvendelse lagForsteHenvendelseITraad() {
-        return lagForsteHenvendelseITraad(now());
-    }
-
-    private static Henvendelse lagForsteHenvendelseITraad(DateTime opprettet) {
-        Henvendelse henvendelse = new Henvendelse(UUID.randomUUID().toString());
-        henvendelse.traadId = henvendelse.id;
-        henvendelse.opprettet = opprettet;
-        return henvendelse;
-    }
-
 
 }
