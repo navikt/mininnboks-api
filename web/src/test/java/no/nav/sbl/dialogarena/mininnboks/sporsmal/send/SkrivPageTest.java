@@ -44,6 +44,11 @@ public class SkrivPageTest extends WicketPageTest {
         wicketTester.goTo(SkrivPage.class, new Parameters().param("temagruppe", Temagruppe.ARBD.name()));
     }
 
+    @Test(expected = RuntimeException.class)
+    public void kasterExceptionDersomTemagruppeParameteretIkkeRepresentererEnGyldigTemagruppeForSporsmal() {
+        wicketTester.goTo(SkrivPage.class, new Parameters().param("temagruppe", Temagruppe.OVRG.name()));
+    }
+
     @Test
     public void lasterSkrivPageKomponenter() {
         wicketTester.should().containComponent(withId("sporsmalForm").and(ofType(Form.class)))

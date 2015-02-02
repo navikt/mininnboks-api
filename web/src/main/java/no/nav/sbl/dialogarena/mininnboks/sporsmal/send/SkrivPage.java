@@ -55,7 +55,7 @@ public class SkrivPage extends BasePage {
     public SkrivPage(PageParameters parameters) {
 
         Sporsmal sporsmal = new Sporsmal();
-        sporsmal.setTemagruppe(Temagruppe.valueOf(parameters.get("temagruppe").toString()));
+        sporsmal.setTemagruppe(extractTemagruppe(parameters.get("temagruppe").toString()));
         add(new SporsmalForm("sporsmalForm", new CompoundPropertyModel<>(sporsmal)));
 
         IModel<Boolean> ikkeTilgang = not(new PropertyModel<Boolean>(get("sporsmalForm"), "isRenderAllowed"));
@@ -63,6 +63,14 @@ public class SkrivPage extends BasePage {
         tilInnboksWrapper.add(new BookmarkablePageLink<>("tilInnboks", Innboks.class));
         add(new WebMarkupContainer("diskresjonskode").add(visibleIf(ikkeTilgang)));
         add(tilInnboksWrapper.add(visibleIf(ikkeTilgang)));
+    }
+
+    private Temagruppe extractTemagruppe(String temagruppeParameter) {
+        Temagruppe temagruppe = Temagruppe.valueOf(temagruppeParameter);
+        if(!Temagruppe.GODKJENTE_FOR_INNGAAENDE_SPORSMAAL.contains(temagruppe)){
+            throw new RuntimeException("Temagruppe " + temagruppeParameter + " er ikke gydlig.");
+        }
+        return temagruppe;
     }
 
     private final class SporsmalForm extends Form<Sporsmal> {
