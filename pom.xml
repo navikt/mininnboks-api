@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>no.nav.sbl.dialogarena</groupId>
-        <artifactId>dialogarena</artifactId>
-        <version>3</version>
+        <groupId>no.nav.sbl</groupId>
+        <artifactId>mor-pom</artifactId>
+        <version>2</version>
     </parent>
 
     <name>Dialogarena - mininnboks</name>
@@ -20,6 +20,10 @@
         <module>jee</module>
         <module>ytelse</module>
     </modules>
+
+    <properties>
+        <sonar.exclusions>*SelfTestPage.*</sonar.exclusions>
+    </properties>
 
     <build>
 
@@ -44,28 +48,6 @@
                         <goals>
                             <goal>failon-unwanted-dependencies</goal>
                             <goal>report-unapproved-dependencies</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>jacoco-prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <propertyName>jacoco.agent.argLine</propertyName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>jacoco-report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -129,37 +111,5 @@
             </plugin>
         </plugins>
     </reporting>
-
-    <profiles>
-        <profile>
-            <id>default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <artifactId>maven-surefire-plugin</artifactId>
-                            <configuration>
-                                <argLine>${jacoco.agent.argLine}</argLine>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-        <profile>
-            <id>sonar</id>
-            <activation>
-                <property>
-                    <name>sonar.host.url</name>
-                </property>
-            </activation>
-            <properties>
-                <sonar.jacoco.excludes>*SelfTestPage.*</sonar.jacoco.excludes>
-            </properties>
-        </profile>
-    </profiles>
 
 </project>
