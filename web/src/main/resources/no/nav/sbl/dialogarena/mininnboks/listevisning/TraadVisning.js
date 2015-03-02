@@ -7,11 +7,11 @@ var TraadVisning = React.createClass({
     render: function () {
         var dato = moment(this.props.melding.opprettet.millis).format('Do MMMM YYYY, [kl.] HH:mm');
         return (
-            <section className="traadvisning">
+            <a className="traadvisning" href={"/mininnboks/traad/" + this.props.melding.traadId}>
                 <h2>{dato}</h2>
                 <h3>{this.props.melding.statusTekst} om {this.props.melding.temagruppe}</h3>
                 <p>{this.props.melding.fritekst}</p>
-            </section>
+            </a>
         )
     }
 });
