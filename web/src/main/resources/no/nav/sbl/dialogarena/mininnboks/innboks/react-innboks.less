@@ -1,0 +1,41 @@
+.traader-container {
+  max-width: 600px;
+  margin: 0 auto;
+  .traadvisning {
+    background-color: #ffffff;
+    padding: 16px 30px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    h2, h3, p {
+      font-family: Arial, sans-serif;
+      font-weight: normal;
+      font-size: 14px;
+    }
+    h3 {
+      font-weight: bold;
+    }
+    p {
+      word-wrap: break-word;
+      height: 40px;
+      overflow: hidden;
+      a {
+        -ms-word-break: break-all;
+        word-break: break-all;
+      }
+    }
+
+    &:hover {
+      margin-left: 1px;
+      margin-bottom: 6px;
+      border-left: 1px solid #cec6c6;
+      border-bottom: 1px solid #cec6c6;
+    }
+
+    &:active {
+      background-color: #0264c6;
+      h2, h3, p {
+        color: white;
+      }
+    }
+  }
+}

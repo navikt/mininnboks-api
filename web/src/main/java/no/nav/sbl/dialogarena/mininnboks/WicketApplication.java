@@ -56,7 +56,9 @@ public class WicketApplication extends WebApplication {
         new FrontendConfigurator()
                 .withModules(EKSTERNFLATE)
                 .addMetas(CHARSET_UTF8, VIEWPORT_SCALE_1, XUA_IE_EDGE)
-                .addLess(new PackageResourceReference(Innboks.class, "innboks.less"),
+                .addLess(
+                        new PackageResourceReference(Innboks.class, "innboks.less"),
+                        new PackageResourceReference(Innboks.class, "react-innboks.less"),
                         new PackageResourceReference(SkrivPage.class, "sporsmal.less"))
                 .withResourcePacking(this.usesDeploymentConfig())
                 .addScripts(
