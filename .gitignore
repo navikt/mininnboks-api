@@ -7,6 +7,7 @@
 
 target
 web/node_modules
+npm-debug.log
 
 .classpath
 .project
