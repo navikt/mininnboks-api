@@ -24,6 +24,7 @@
         <slf4j.version>1.7.5</slf4j.version>
         <spring.version>4.1.2.RELEASE</spring.version>
         <wicket.version>6.17.0</wicket.version>
+        <jackson.version>2.4.3</jackson.version>
     </properties>
 
     <dependencies>
@@ -319,9 +320,13 @@
         <!--Diverse-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.4.3</version>
-            <scope>runtime</scope>
+            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>

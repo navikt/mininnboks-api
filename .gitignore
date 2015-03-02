@@ -6,6 +6,7 @@
 *.log
 
 target
+web/node_modules
 
 .classpath
 .project

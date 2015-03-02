@@ -7,6 +7,7 @@ import no.nav.modig.wicket.selftest.HealthCheck;
 import no.nav.modig.wicket.selftest.JsonResourceReference;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.LocaleFromWicketSession;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
+import no.nav.sbl.dialogarena.mininnboks.innboks.ReactInnboks;
 import no.nav.sbl.dialogarena.mininnboks.selftest.SelfTestPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.send.SkrivPage;
@@ -17,6 +18,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
@@ -57,11 +59,16 @@ public class WicketApplication extends WebApplication {
                 .addLess(new PackageResourceReference(Innboks.class, "innboks.less"),
                         new PackageResourceReference(SkrivPage.class, "sporsmal.less"))
                 .withResourcePacking(this.usesDeploymentConfig())
-                .addScripts(SkrivPage.JQUERY_JS)
+                .addScripts(
+                        SkrivPage.JQUERY_JS,
+                        new JavaScriptResourceReference(WicketApplication.class, "build/React.js"),
+                        new JavaScriptResourceReference(WicketApplication.class, "build/Listevisning.js")
+                )
                 .addCss(SkrivPage.JQUERY_CSS)
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
         mountPage(INNBOKS_PATH, Innboks.class);
+        mountPage("reactinnboks", ReactInnboks.class);
         mountPage("sporsmal/skriv/${temagruppe}", SkrivPage.class);
         mountPage("sporsmal/kvittering", KvitteringPage.class);
         mountPage("internal/isAlive", HealthCheck.class);

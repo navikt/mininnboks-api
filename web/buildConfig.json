@@ -1,0 +1,12 @@
+{
+  "namespace": {
+    "base": "NAVJS",
+    "components": "Components"
+  },
+  "srcPath": "./src/main/resources/no/nav/sbl/dialogarena/mininnboks/",
+  "targetPath": "./target/classes/no/nav/sbl/dialogarena/mininnboks/build/",
+  "navReact": "React",
+  "components": [
+    "listevisning"
+  ]
+}
