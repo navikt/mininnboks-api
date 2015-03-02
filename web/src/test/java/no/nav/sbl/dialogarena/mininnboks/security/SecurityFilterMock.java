@@ -1,19 +1,12 @@
 package no.nav.sbl.dialogarena.mininnboks.security;
 
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
 import no.nav.modig.core.context.SubjectHandlerUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 public class SecurityFilterMock implements Filter {
 
@@ -38,7 +31,7 @@ public class SecurityFilterMock implements Filter {
         }
         String fnr = (String) req.getSession().getAttribute("fnr");
         if (fnr == null) {
-            throw new RuntimeException("Du må sende med ?fnr=xxxx for å logge på");
+            fnr = "10108000398";
         }
 
         SubjectHandlerUtils.setEksternBruker(fnr, 4, null);
