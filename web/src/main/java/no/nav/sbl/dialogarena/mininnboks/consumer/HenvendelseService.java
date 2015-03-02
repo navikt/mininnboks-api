@@ -7,6 +7,7 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.Sen
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentBehandlingskjedeRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public interface HenvendelseService {
     WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String uid);
 
     List<Henvendelse> hentAlleHenvendelser(String fodselsnummer);
+
+    List<Henvendelse> hentTraad(String behandlingskjedeId);
 
     void merkHenvendelseSomLest(Henvendelse henvendelse);
 
@@ -109,6 +112,12 @@ public interface HenvendelseService {
                             .withFodselsnummer(fodselsnummer)
                             .withTyper(typer))
                     .getAny())
+                    .map(TIL_HENVENDELSE).collect();
+        }
+
+        @Override
+        public List<Henvendelse> hentTraad(String behandlingskjedeId) {
+            return on(henvendelsePortType.hentBehandlingskjede(new WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).getAny())
                     .map(TIL_HENVENDELSE).collect();
         }
     }

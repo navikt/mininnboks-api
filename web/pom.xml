@@ -38,7 +38,7 @@
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>henvendelse-informasjon-v2</artifactId>
-            <version>0.3</version>
+            <version>0.6</version>
         </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>

@@ -5,6 +5,9 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.mel
 
 import java.util.*;
 
+import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.*;
 import static org.joda.time.DateTime.now;
@@ -185,6 +188,11 @@ public class HenvendelseServiceMock implements HenvendelseService {
     @Override
     public List<Henvendelse> hentAlleHenvendelser(String fnr) {
         return new ArrayList<>(henvendelser.values());
+    }
+
+    @Override
+    public List<Henvendelse> hentTraad(String behandlingskjedeId) {
+        return on(henvendelser.values()).filter(where(Henvendelse.TRAAD_ID, equalTo(behandlingskjedeId))).collect();
     }
 
     @Override
