@@ -5,7 +5,7 @@ var ListeVisning = React.createClass({
     getInitialState: function () {
         return {traader: []};
     },
-    componentDidMount: function (fnr) {
+    componentDidMount: function () {
         $.get('/mininnboks/tjenester/henvendelse/traader/').done(function (data) {
             this.setState(({
                 traader: data
@@ -21,7 +21,7 @@ var ListeVisning = React.createClass({
                 <h1 className="diger">Innboks</h1>
                 <div className="top-bar">
                     <div className="innboks-navigasjon clearfix">
-                        <a className="skriv-ny-link knapp-hoved-liten" href="https://www-t4.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Kontakt+oss/skriv+til+oss/">Skriv ny melding</a>
+                        <a className="skriv-ny-link knapp-link-liten" href="https://www-t4.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Kontakt+oss/skriv+til+oss/">Skriv ny melding</a>
                     </div>
                 </div>
                 <div className="traader-container">

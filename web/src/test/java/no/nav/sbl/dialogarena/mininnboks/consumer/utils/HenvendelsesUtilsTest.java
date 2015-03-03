@@ -1,21 +1,28 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
+import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class HenvendelsesUtilsTest {
 
@@ -33,12 +40,19 @@ public class HenvendelsesUtilsTest {
     private static final String NAVIDENT = "navident";
     public static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
 
+    private PropertyResolver propertyResolver = mock(PropertyResolver.class);
+
+    @Before
+    public void setup() {
+        when(propertyResolver.getProperty(anyString())).thenReturn("value");
+    }
+
     @Test
     public void transformererXMLHenvendelseSomSporsmalFraBruker() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1);
         List<XMLHenvendelse> infoList = asList(info);
 
-        List<Henvendelse> henvendelserListe = on(infoList).map(TIL_HENVENDELSE).collect();
+        List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
         Henvendelse sporsmal = henvendelserListe.get(0);
 
         assertStandardFelter(sporsmal);
@@ -55,7 +69,7 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, ID_2, ID_2);
         List<XMLHenvendelse> infoList = asList(info);
 
-        List<Henvendelse> henvendelserListe = on(infoList).map(TIL_HENVENDELSE).collect();
+        List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
         Henvendelse svar = henvendelserListe.get(0);
 
         assertStandardFelter(svar);
@@ -72,7 +86,7 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, ID_3, ID_3);
         List<XMLHenvendelse> infoList = asList(info);
 
-        List<Henvendelse> henvendelserListe = on(infoList).map(TIL_HENVENDELSE).collect();
+        List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
         Henvendelse sporsmal = henvendelserListe.get(0);
 
         assertStandardFelter(sporsmal);
@@ -91,7 +105,7 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SVAR_SKRIFTLIG, ID_4, ID_1);
         List<XMLHenvendelse> infoList = asList(info);
 
-        List<Henvendelse> henvendelserListe = on(infoList).map(TIL_HENVENDELSE).collect();
+        List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
         Henvendelse svar = henvendelserListe.get(0);
 
         assertStandardFelter(svar);
@@ -108,7 +122,7 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
         List<XMLHenvendelse> infoList = asList(info);
 
-        List<Henvendelse> henvendelserListe = on(infoList).map(TIL_HENVENDELSE).collect();
+        List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
         Henvendelse referat = henvendelserListe.get(0);
 
         assertStandardFelter(referat);
@@ -121,13 +135,16 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
-    public void taklerAtInnholdetErBlittSlettet() {
+    public void hvisInnholdetErBorteBlirHenvendelsenMerketSomKassert() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
         info.setMetadataListe(null);
 
-        Henvendelse referat = TIL_HENVENDELSE.transform(info);
+        when(propertyResolver.getProperty("innhold.kassert")).thenReturn("Innholdet er kassert");
+        when(propertyResolver.getProperty("temagruppe.kassert")).thenReturn("Kassert");
+        Henvendelse referat = tilHenvendelse(propertyResolver).transform(info);
 
-        assertThat(referat.fritekst, nullValue());
+        assertThat(referat.fritekst, is("Innholdet er kassert"));
+        assertThat(referat.statusTekst, is("Kassert"));
         assertThat(referat.temagruppe, nullValue());
     }
 

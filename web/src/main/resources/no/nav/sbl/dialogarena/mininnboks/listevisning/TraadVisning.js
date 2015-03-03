@@ -9,7 +9,7 @@ var TraadVisning = React.createClass({
         return (
             <a className="traadvisning" href={"/mininnboks/traad/" + this.props.melding.traadId}>
                 <h2>{dato}</h2>
-                <h3>{this.props.melding.statusTekst} om {this.props.melding.temagruppe}</h3>
+                <h3>{this.props.melding.statusTekst}</h3>
                 <p>{this.props.melding.fritekst}</p>
             </a>
         )

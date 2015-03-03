@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
+import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
@@ -52,12 +53,14 @@ public class HenvendelseServiceTest {
     private SendInnHenvendelsePortType sendInnHenvendelsePortType;
     @Mock
     private InnsynHenvendelsePortType innsynHenvendelsePortType;
+    @Mock
+    private PropertyResolver propertyResolver;
 
-    private HenvendelseService henvendelseService;
+    private HenvendelseService.Default henvendelseService;
 
     @Before
     public void setUp() {
-        henvendelseService = new HenvendelseService.Default(henvendelsePortType, sendInnHenvendelsePortType, innsynHenvendelsePortType);
+        henvendelseService = new HenvendelseService.Default(henvendelsePortType, sendInnHenvendelsePortType, innsynHenvendelsePortType, propertyResolver);
 
         List<Object> henvendelseListe = new ArrayList<>();
         henvendelseListe.add(new XMLHenvendelse().withHenvendelseType(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name()).withBehandlingsId("id"));

@@ -1,10 +1,18 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMelding;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
+import no.nav.modig.content.PropertyResolver;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.apache.commons.collections15.Transformer;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.fromValue;
@@ -28,45 +36,58 @@ public abstract class HenvendelsesUtils {
         }
     };
 
-    public static final Transformer<Object, Henvendelse> TIL_HENVENDELSE = new Transformer<Object, Henvendelse>() {
-        @Override
-        public Henvendelse transform(Object wsMelding) {
-            XMLHenvendelse info = (XMLHenvendelse) wsMelding;
+    public static Transformer<Object, Henvendelse> tilHenvendelse(final PropertyResolver propertyResolver) {
+        return new Transformer<Object, Henvendelse>() {
+            @Override
+            public Henvendelse transform(Object wsMelding) {
+                XMLHenvendelse info = (XMLHenvendelse) wsMelding;
 
-            Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
-            henvendelse.opprettet = info.getOpprettetDato();
-            henvendelse.avsluttet = info.getAvsluttetDato();
-            henvendelse.traadId = info.getBehandlingskjedeId();
-            henvendelse.eksternAktor = info.getEksternAktor();
-            henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
-            henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
-            if (FRA_BRUKER.contains(henvendelse.type)) {
-                henvendelse.markerSomLest();
-            } else {
-                henvendelse.markerSomLest(info.getLestDato());
-            }
+                Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
+                henvendelse.opprettet = info.getOpprettetDato();
+                henvendelse.avsluttet = info.getAvsluttetDato();
+                henvendelse.traadId = info.getBehandlingskjedeId();
+                henvendelse.eksternAktor = info.getEksternAktor();
+                henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
+                henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
+                if (FRA_BRUKER.contains(henvendelse.type)) {
+                    henvendelse.markerSomLest();
+                } else {
+                    henvendelse.markerSomLest(info.getLestDato());
+                }
 
-            if (innholdErKassert(info)) {
-                henvendelse.temagruppe = null;
-                henvendelse.fritekst = null;
-                henvendelse.kanal = null;
+                if (innholdErKassert(info)) {
+                    henvendelse.kassert = true;
+                    henvendelse.fritekst = propertyResolver.getProperty("innhold.kassert");
+                    henvendelse.statusTekst = propertyResolver.getProperty("temagruppe.kassert");
+                    henvendelse.temagruppe = null;
+                    henvendelse.kanal = null;
+                    return henvendelse;
+                }
+
+                XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
+                henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
+                henvendelse.temagruppeNavn = propertyResolver.getProperty(henvendelse.temagruppe.name());
+                henvendelse.statusTekst = statusTekst(henvendelse, propertyResolver);
+                henvendelse.fritekst = xmlMelding.getFritekst();
+
+                if (xmlMelding instanceof XMLMeldingTilBruker) {
+                    XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
+                    henvendelse.kanal = meldingTilBruker.getKanal();
+                }
                 return henvendelse;
             }
-
-            XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
-            henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
-            henvendelse.fritekst = xmlMelding.getFritekst();
-
-            if (xmlMelding instanceof XMLMeldingTilBruker) {
-                XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
-                henvendelse.kanal = meldingTilBruker.getKanal();
-            }
-            return henvendelse;
-        }
-    };
+        };
+    }
 
     private static boolean innholdErKassert(XMLHenvendelse info) {
         return info.getMetadataListe() == null;
+    }
+
+    private static String statusTekst(Henvendelse henvendelse, PropertyResolver resolver) {
+        String type = resolver.getProperty(String.format("status.%s", henvendelse.type.name()));
+        String temagruppe = resolver.getProperty(henvendelse.temagruppe.name());
+        return String.format(type, temagruppe);
+
     }
 
 }

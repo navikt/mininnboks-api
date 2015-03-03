@@ -11,16 +11,16 @@ import static java.util.Collections.reverseOrder;
 import static no.nav.modig.lang.collections.ComparatorUtils.compareWith;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.FRA_NAV;
 import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.henvendelseTemagruppeKey;
-import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.VisningUtils.henvendelseStatusTekst;
 import static no.nav.sbl.dialogarena.time.Datoformat.kortMedTid;
 
 public class Henvendelse implements Serializable {
 
     public String id;
-    public String traadId, fritekst, kanal, eksternAktor, tilknyttetEnhet;
+    public String traadId, fritekst, kanal, eksternAktor, tilknyttetEnhet, temagruppeNavn, statusTekst;
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
+    public Boolean kassert = false;
     private DateTime lestDato;
 
     public Henvendelse(String id) {
@@ -67,10 +67,6 @@ public class Henvendelse implements Serializable {
 
     public String getSendtDato() {
         return kortMedTid(opprettet);
-    }
-
-    public String getStatusTekst() {
-        return henvendelseStatusTekst(Henvendelse.this);
     }
 
     public String getTemagruppeKey() {

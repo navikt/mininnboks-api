@@ -58,7 +58,7 @@
                 <artifactId>modig-content-maven-plugin</artifactId>
                 <version>1.1.1</version>
                 <configuration>
-                    <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
+                    <propertiesFilesRoot>${project.basedir}/web/src/main/resources/no/nav/sbl/dialogarena/mininnboks/</propertiesFilesRoot>
                     <propertiesFiler>
                         <nb>innhold_nb.properties</nb>
                     </propertiesFiler>

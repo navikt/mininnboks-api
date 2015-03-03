@@ -12,9 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
-import static no.nav.modig.wicket.test.matcher.ComponentMatchers.thatIsInvisible;
-import static no.nav.modig.wicket.test.matcher.ComponentMatchers.thatIsVisible;
-import static no.nav.modig.wicket.test.matcher.ComponentMatchers.withId;
+import static no.nav.modig.wicket.test.matcher.ComponentMatchers.*;
 import static no.nav.sbl.dialogarena.mininnboks.TestUtils.lagForsteHenvendelseITraad;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

@@ -1,6 +1,9 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
+import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
@@ -16,7 +19,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
 import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
 import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
@@ -35,16 +38,19 @@ public interface HenvendelseService {
 
     class Default implements HenvendelseService {
 
+        private final PropertyResolver resolver;
+
         private final HenvendelsePortType henvendelsePortType;
 
         private final SendInnHenvendelsePortType sendInnHenvendelsePortType;
 
         private final InnsynHenvendelsePortType innsynHenvendelsePortType;
 
-        public Default(HenvendelsePortType henvendelsePortType, SendInnHenvendelsePortType sendInnHenvendelsePortType, InnsynHenvendelsePortType innsynHenvendelsePortType) {
+        public Default(HenvendelsePortType henvendelsePortType, SendInnHenvendelsePortType sendInnHenvendelsePortType, InnsynHenvendelsePortType innsynHenvendelsePortType, PropertyResolver resolver) {
             this.henvendelsePortType = henvendelsePortType;
             this.sendInnHenvendelsePortType = sendInnHenvendelsePortType;
             this.innsynHenvendelsePortType = innsynHenvendelsePortType;
+            this.resolver = resolver;
         }
 
         @Override
@@ -112,13 +118,13 @@ public interface HenvendelseService {
                             .withFodselsnummer(fodselsnummer)
                             .withTyper(typer))
                     .getAny())
-                    .map(TIL_HENVENDELSE).collect();
+                    .map(tilHenvendelse(resolver)).collect();
         }
 
         @Override
         public List<Henvendelse> hentTraad(String behandlingskjedeId) {
             return on(henvendelsePortType.hentBehandlingskjede(new WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).getAny())
-                    .map(TIL_HENVENDELSE).collect();
+                    .map(tilHenvendelse(resolver)).collect();
         }
     }
 }

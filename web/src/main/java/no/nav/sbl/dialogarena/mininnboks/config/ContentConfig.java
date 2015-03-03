@@ -2,11 +2,9 @@ package no.nav.sbl.dialogarena.mininnboks.config;
 
 import no.nav.innholdshenter.common.EnonicContentRetriever;
 import no.nav.innholdshenter.filter.DecoratorFilter;
-import no.nav.modig.content.CmsContentRetriever;
-import no.nav.modig.content.ContentRetriever;
-import no.nav.modig.content.ValueRetriever;
-import no.nav.modig.content.ValuesFromContentWithResourceBundleFallback;
+import no.nav.modig.content.*;
 import no.nav.modig.content.enonic.HttpContentRetriever;
+import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import org.apache.wicket.Application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -30,11 +28,16 @@ public class ContentConfig {
 
     private static final String DEFAULT_LOCALE = "nb";
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/app/mininnboks/nb/tekster";
-    private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innhold_nb";
+    private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "no.nav.sbl.dialogarena.mininnboks.innhold_nb";
     private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
 
     @Value("${appres.cms.url}")
     private String appresUrl;
+
+    @Bean
+    public PropertyResolver propertyResolver(CmsContentRetriever contentRetriever) {
+        return new PropertyResolver(contentRetriever, BasePage.class.getResourceAsStream("innhold_nb.properties"));
+    }
 
     @Bean
     public ValueRetriever siteContentRetriever() throws URISyntaxException {
