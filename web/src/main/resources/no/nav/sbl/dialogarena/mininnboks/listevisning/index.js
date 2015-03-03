@@ -14,7 +14,7 @@ var ListeVisning = React.createClass({
     },
     render: function () {
         var traader = this.state.traader.map(function (traad) {
-            return <TraadVisning melding={traad}/>;
+            return <TraadVisning traad={traad}/>;
         });
         return (
             <div>

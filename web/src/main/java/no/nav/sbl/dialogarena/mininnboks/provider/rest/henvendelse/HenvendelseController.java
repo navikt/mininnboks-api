@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad;
 import org.apache.commons.collections15.Transformer;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,14 +31,21 @@ public class HenvendelseController {
     private HenvendelseService henvendelseService;
 
     @RequestMapping(value = "traader", method = GET)
-    public List<Henvendelse> nyesteHenvendelseIHverTraad() {
+    public List<Traad> traader() {
         String fnr = getSubjectHandler().getUid();
         List<Henvendelse> henvendelser = henvendelseService.hentAlleHenvendelser(fnr);
-        Map<String, List<Henvendelse>> traader = on(henvendelser).reduce(indexBy(TRAAD_ID));
+        final Map<String, List<Henvendelse>> traader = on(henvendelser).reduce(indexBy(TRAAD_ID));
 
-        return on(traader.values())
+        List<Henvendelse> nyeste = on(traader.values())
                 .map(max(compareWith(OPPRETTET)))
                 .collect(Henvendelse.NYESTE_OVERST);
+
+        return on(nyeste).map(new Transformer<Henvendelse, Traad>() {
+            @Override
+            public Traad transform(Henvendelse henvendelse) {
+                return new Traad(traader.get(henvendelse.traadId).size(), henvendelse);
+            }
+        }).collect();
     }
 
     @RequestMapping(value = "{id}", method = GET)
