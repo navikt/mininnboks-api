@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Import;
 
 import javax.inject.Inject;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Configuration
 @Import(MockApplicationContext.class)
@@ -25,6 +27,8 @@ public class PageTestContext {
 
     @Bean
     public PropertyResolver propertyResolver() {
-        return mock(PropertyResolver.class);
+        PropertyResolver resolver = mock(PropertyResolver.class);
+        when(resolver.getProperty(anyString())).thenReturn("value");
+        return resolver;
     }
 }
