@@ -37,7 +37,7 @@ public class HenvendelseController {
 
         return on(traader.values())
                 .map(max(compareWith(OPPRETTET)))
-                .collect();
+                .collect(Henvendelse.NYESTE_OVERST);
     }
 
     @RequestMapping(value = "{id}", method = GET)
