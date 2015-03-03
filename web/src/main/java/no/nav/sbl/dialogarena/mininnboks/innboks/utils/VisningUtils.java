@@ -18,7 +18,7 @@ public abstract class VisningUtils {
     private static String henvendelseStatusTekstKey(Henvendelse henvendelse) {
         String key = String.format("henvendelse.status.%s", henvendelse.type.name());
         if (FRA_NAV.contains(henvendelse.type)) {
-            key += String.format(".%s", henvendelse.erLest() ? "lest" : "ulest");
+            key += String.format(".%s", henvendelse.isLest() ? "lest" : "ulest");
         }
         return key;
     }

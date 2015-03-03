@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static java.util.Arrays.asList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.*;
@@ -136,7 +137,7 @@ public class HenvendelseMockContext {
                 .withBehandlingsId(behandlingsId.toString())
                 .withBehandlingskjedeId(behandlingskjedeId.toString())
                 .withOpprettetDato(opprettet)
-                .withLestDato(opprettet.isAfter(DateTime.now().minusWeeks(1)) ? null : opprettet.plusWeeks(1))
+                .withLestDato(lestDato(type, opprettet))
                 .withHenvendelseType(type.toString())
                 .withMetadataListe(kassert ? null : new XMLMetadataListe().withMetadata(new XMLMelding() {
                     @Override
@@ -150,6 +151,16 @@ public class HenvendelseMockContext {
                     }
                 }));
 
+    }
+
+    private static DateTime lestDato(XMLHenvendelseType type, DateTime opprettet) {
+        if (asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE).contains(type)) {
+            return opprettet;
+        } else if (opprettet.isBefore(DateTime.now().minusWeeks(1))) {
+            return opprettet.plusWeeks(1);
+        } else {
+            return null;
+        }
     }
 
     private static String halvpartenEllerMer(String text) {

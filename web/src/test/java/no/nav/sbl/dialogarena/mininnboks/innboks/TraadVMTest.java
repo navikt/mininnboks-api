@@ -127,16 +127,16 @@ public class TraadVMTest {
         List<TraadVM> traadVMListe = TraadVM.tilTraader(asList(henvendelse1, henvendelse2));
 
         assertThat(traadVMListe.size(), is(1));
-        assertThat(henvendelse1.erLest(), is(false));
-        assertThat(henvendelse2.erLest(), is(false));
+        assertThat(henvendelse1.isLest(), is(false));
+        assertThat(henvendelse2.isLest(), is(false));
 
         TraadVM traadVM = traadVMListe.get(0);
         traadVM.markerSomLest(service);
 
         verify(service).merkHenvendelseSomLest(henvendelse1);
         verify(service).merkHenvendelseSomLest(henvendelse2);
-        assertThat(henvendelse1.erLest(), is(true));
-        assertThat(henvendelse2.erLest(), is(true));
+        assertThat(henvendelse1.isLest(), is(true));
+        assertThat(henvendelse2.isLest(), is(true));
     }
 
     private static Optional<TraadVM> traadVMMedTraadId(String traadId, List<TraadVM> traadVMList) {

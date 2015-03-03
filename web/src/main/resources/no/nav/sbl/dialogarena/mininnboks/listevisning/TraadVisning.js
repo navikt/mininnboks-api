@@ -5,12 +5,14 @@ moment.locale('nb');
 
 var TraadVisning = React.createClass({
     render: function () {
-        var dato = moment(this.props.melding.opprettet.millis).format('Do MMMM YYYY, [kl.] HH:mm');
+        var melding = this.props.melding;
+        var dato = moment(melding.opprettet.millis).format('Do MMMM YYYY, [kl.] HH:mm');
         return (
-            <a className="traadvisning" href={"/mininnboks/traad/" + this.props.melding.traadId}>
+            <a className="traadvisning" href={"/mininnboks/traad/" + melding.traadId}>
                 <h2>{dato}</h2>
-                <h3>{this.props.melding.statusTekst}</h3>
-                <p>{this.props.melding.fritekst}</p>
+            {!melding.lest ? <img src="/mininnboks/img/melding_ny.svg" className="melding-info" /> : null}
+                <h3>{melding.statusTekst}</h3>
+                <p>{melding.fritekst}</p>
             </a>
         )
     }

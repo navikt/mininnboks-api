@@ -60,7 +60,7 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.traadId, is(ID_1));
         assertThat(sporsmal.type, is(SPORSMAL_SKRIFTLIG));
         assertThat(sporsmal.getLestDato(), is(notNullValue()));
-        assertThat(sporsmal.erLest(), is(true));
+        assertThat(sporsmal.isLest(), is(true));
         assertThat(sporsmal.kanal, is(nullValue()));
     }
 
@@ -77,7 +77,7 @@ public class HenvendelsesUtilsTest {
         assertThat(svar.traadId, is(ID_2));
         assertThat(svar.type, is(SVAR_SBL_INNGAAENDE));
         assertThat(svar.getLestDato(), is(notNullValue()));
-        assertThat(svar.erLest(), is(true));
+        assertThat(svar.isLest(), is(true));
         assertThat(svar.kanal, is(nullValue()));
     }
 
@@ -94,7 +94,7 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.traadId, is(ID_3));
         assertThat(sporsmal.type, is(SPORSMAL_MODIA_UTGAAENDE));
         assertThat(sporsmal.getLestDato(), is(LEST_DATO));
-        assertThat(sporsmal.erLest(), is(true));
+        assertThat(sporsmal.isLest(), is(true));
         assertThat(sporsmal.kanal, is(KANAL));
         assertThat(sporsmal.eksternAktor, is(NAVIDENT));
         assertThat(sporsmal.tilknyttetEnhet, is(TILKNYTTET_ENHET));
@@ -113,7 +113,7 @@ public class HenvendelsesUtilsTest {
         assertThat(svar.traadId, is(ID_1));
         assertThat(svar.type, is(SVAR_SKRIFTLIG));
         assertThat(svar.getLestDato(), is(LEST_DATO));
-        assertThat(svar.erLest(), is(true));
+        assertThat(svar.isLest(), is(true));
         assertThat(svar.kanal, is(KANAL));
     }
 
@@ -130,7 +130,7 @@ public class HenvendelsesUtilsTest {
         assertThat(referat.traadId, is(ID_5));
         assertThat(referat.type, is(SAMTALEREFERAT_OPPMOTE));
         assertThat(referat.getLestDato(), is(LEST_DATO));
-        assertThat(referat.erLest(), is(true));
+        assertThat(referat.isLest(), is(true));
         assertThat(referat.kanal, is(KANAL));
     }
 

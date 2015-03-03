@@ -44,6 +44,6 @@ public class SporsmalVarselUtils {
     }
 
     public static boolean erUlest(Henvendelse henvendelse) {
-        return !henvendelse.erLest();
+        return !henvendelse.isLest();
     }
 }

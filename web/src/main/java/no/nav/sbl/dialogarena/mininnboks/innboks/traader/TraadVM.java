@@ -51,7 +51,7 @@ public class TraadVM implements Serializable {
 
     public void markerSomLest(HenvendelseService service) {
         for (Henvendelse henvendelse : henvendelser) {
-            if (!henvendelse.erLest()) {
+            if (!henvendelse.isLest()) {
                 henvendelse.markerSomLest();
                 service.merkHenvendelseSomLest(henvendelse);
             }
