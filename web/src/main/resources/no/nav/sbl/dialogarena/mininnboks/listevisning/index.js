@@ -1,5 +1,5 @@
 var React = require('react');
-var TraadVisning = require('./TraadVisning');
+var TraadPreview = require('./TraadPreview');
 
 var ListeVisning = React.createClass({
     getInitialState: function () {
@@ -14,7 +14,7 @@ var ListeVisning = React.createClass({
     },
     render: function () {
         var traader = this.state.traader.map(function (traad) {
-            return <TraadVisning traad={traad}/>;
+            return <TraadPreview traad={traad}/>;
         });
         return (
             <div>

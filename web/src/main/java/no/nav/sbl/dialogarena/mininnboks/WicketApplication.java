@@ -8,6 +8,7 @@ import no.nav.modig.wicket.selftest.JsonResourceReference;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.LocaleFromWicketSession;
 import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
 import no.nav.sbl.dialogarena.mininnboks.innboks.ReactInnboks;
+import no.nav.sbl.dialogarena.mininnboks.innboks.ReactTraad;
 import no.nav.sbl.dialogarena.mininnboks.selftest.SelfTestPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.send.SkrivPage;
@@ -64,13 +65,15 @@ public class WicketApplication extends WebApplication {
                 .addScripts(
                         SkrivPage.JQUERY_JS,
                         new JavaScriptResourceReference(WicketApplication.class, "build/React.js"),
-                        new JavaScriptResourceReference(WicketApplication.class, "build/Listevisning.js")
+                        new JavaScriptResourceReference(WicketApplication.class, "build/Listevisning.js"),
+                        new JavaScriptResourceReference(WicketApplication.class, "build/Traadvisning.js")
                 )
                 .addCss(SkrivPage.JQUERY_CSS)
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
         mountPage(INNBOKS_PATH, Innboks.class);
         mountPage("reactinnboks", ReactInnboks.class);
+        mountPage("traad/${id}", ReactTraad.class);
         mountPage("sporsmal/skriv/${temagruppe}", SkrivPage.class);
         mountPage("sporsmal/kvittering", KvitteringPage.class);
         mountPage("internal/isAlive", HealthCheck.class);

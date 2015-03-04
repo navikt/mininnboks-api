@@ -5,7 +5,7 @@ moment.locale('nb');
 var AntallMeldinger = require('./AntallMeldinger');
 var MeldingStatus = require('./MeldingStatus');
 
-var TraadVisning = React.createClass({
+var TraadPreview = React.createClass({
     render: function () {
         var melding = this.props.traad.nyesteHenvendelse;
         var dato = moment(melding.opprettet.millis).format('Do MMMM YYYY, [kl.] HH:mm');
@@ -23,4 +23,4 @@ var TraadVisning = React.createClass({
     }
 });
 
-module.exports = TraadVisning;
+module.exports = TraadPreview;
