@@ -9,6 +9,11 @@
     margin-bottom: 5px;
     color: #000000;
     text-decoration: none;
+    &.lest {
+      h2, h3, p {
+        color: #6e6f72
+      }
+    }
     h2, h3, p {
       font-family: Arial, sans-serif;
       font-weight: normal;
@@ -21,22 +26,35 @@
       word-wrap: break-word;
       height: 40px;
       overflow: hidden;
+      margin: 0;
       a {
         -ms-word-break: break-all;
         word-break: break-all;
       }
     }
 
-    img {
+    .ikon {
       position: absolute;
-      height: 12px;
+      height: 10px;
       &.melding-info {
-        top: 54px;
-        left: 7px;
+        top: 55px;
+        left: 10px;
       }
-      &.antall {
+      &.antall-to {
         top: 21px;
-        right: 7px;
+        right: 10px;
+        width: 10px;
+        background: url(/mininnboks/img/melding_ett%20innlegg.svg) no-repeat right;
+      }
+      &.antall-flere {
+        top: 21px;
+        right: 10px;
+        padding-right: 14px;
+        line-height: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #6e6f72;
+        background: url(/mininnboks/img/melding_flere%20innlegg.svg) no-repeat right;
       }
     }
 
