@@ -154,9 +154,24 @@
   .traad-container {
     padding-left: 0;
     padding-right: 0;
-  }
 
-  .melding-container img {
-    margin-right: 3%;
+    .melding-container {
+      .melding {
+        width: 80%;
+      }
+      &.fra-bruker img {
+        margin-right: 5%;
+      }
+      &.fra-nav img {
+        margin-left: 5%;
+      }
+    }
+  }
+}
+
+@media (max-width: 460px) {
+  .traad-container .melding-container img {
+    height: 23px;
+    margin-top: 43px;
   }
 }
