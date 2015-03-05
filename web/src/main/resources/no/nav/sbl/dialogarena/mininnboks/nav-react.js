@@ -1,3 +1,7 @@
+window.NAVJS = window.NAVJS || {};
+window.NAVJS.Components = window.NAVJS.Components || {};
+
+
 //Vår egen polyfill for console
 (function(con){
     "use strict";
