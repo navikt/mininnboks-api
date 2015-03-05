@@ -49,6 +49,8 @@ public abstract class HenvendelsesUtils {
                 henvendelse.eksternAktor = info.getEksternAktor();
                 henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
                 henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
+                henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
+                henvendelse.fraNav = !henvendelse.fraBruker;
                 if (FRA_BRUKER.contains(henvendelse.type)) {
                     henvendelse.markerSomLest();
                 } else {

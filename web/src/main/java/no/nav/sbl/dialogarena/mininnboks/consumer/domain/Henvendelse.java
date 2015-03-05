@@ -20,7 +20,7 @@ public class Henvendelse implements Serializable {
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
-    public Boolean kassert = false;
+    public Boolean fraNav, fraBruker, kassert = false;
     private DateTime lestDato;
 
     public Henvendelse(String id) {

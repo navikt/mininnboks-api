@@ -18,8 +18,7 @@ import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.modig.lang.collections.ComparatorUtils.compareWith;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.OPPRETTET;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.TRAAD_ID;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.*;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
@@ -38,7 +37,7 @@ public class HenvendelseController {
 
         List<Henvendelse> nyeste = on(traader.values())
                 .map(max(compareWith(OPPRETTET)))
-                .collect(Henvendelse.NYESTE_OVERST);
+                .collect(NYESTE_OVERST);
 
         return on(nyeste).map(new Transformer<Henvendelse, Traad>() {
             @Override
@@ -48,9 +47,9 @@ public class HenvendelseController {
         }).collect();
     }
 
-    @RequestMapping(value = "{id}", method = GET)
+    @RequestMapping(value = "traad/{id}", method = GET)
     public List<Henvendelse> hentTraad(@PathVariable String id) {
-        return henvendelseService.hentTraad(id);
+        return on(henvendelseService.hentTraad(id)).collect(NYESTE_OVERST);
     }
 
     private static <T> Transformer<List<T>, T> max(final Comparator<? super T> comparator) {
