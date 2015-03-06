@@ -6,7 +6,7 @@ var ListeVisning = React.createClass({
         return {traader: []};
     },
     componentDidMount: function () {
-        $.get('/mininnboks/tjenester/henvendelse/traader/').done(function (data) {
+        $.get('/mininnboks/tjenester/traader/').done(function (data) {
             this.setState(({
                 traader: data
             }));

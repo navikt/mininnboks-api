@@ -1,27 +1,14 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest;
 
-import org.springframework.context.annotation.ComponentScan;
+import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController;
+import no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalController;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Configuration
-@EnableWebMvc
-@ComponentScan(basePackageClasses = RestConfig.class)
-public class RestConfig extends WebMvcConfigurerAdapter {
+public class RestConfig extends ResourceConfig {
 
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        super.configureMessageConverters(converters);
-        MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
-        jsonConverter.setSupportedMediaTypes(asList(APPLICATION_JSON));
-        converters.add(jsonConverter);
+    public RestConfig() {
+        super(DateTimeObjectMapperProvider.class, SporsmalController.class, HenvendelseController.class);
     }
 }

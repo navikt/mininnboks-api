@@ -6,7 +6,7 @@ moment.locale('nb');
 var Melding = React.createClass({
     render: function() {
         var melding = this.props.melding;
-        var dato = moment(melding.opprettet.millis).format('Do MMMM YYYY, [kl.] HH:mm');
+        var dato = moment(melding.opprettet).format('Do MMMM YYYY, [kl.] HH:mm');
 
         return (
             <div className="melding">

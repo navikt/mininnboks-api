@@ -10,7 +10,7 @@ var TraadVisning = React.createClass({
         };
     },
     componentDidMount: function () {
-        $.get('/mininnboks/tjenester/henvendelse/traad/' + this.props.id).done(function (data) {
+        $.get('/mininnboks/tjenester/traader/' + this.props.id).done(function (data) {
             this.setState(data);
         }.bind(this));
     },
