@@ -87,7 +87,7 @@ function createStandaloneName(component) {
 }
 
 gulp.task('dev', function () {
-    browserifyTask(false, {
+    browserifyTask(true, {
         file: config.
             srcPath + 'nav-react.js',
         name: 'React',

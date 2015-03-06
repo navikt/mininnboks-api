@@ -1,24 +1,28 @@
 var React = require('react');
 var MeldingContainer = require('./MeldingContainer');
+var Knapper = require('./Knapper');
 
 var TraadVisning = React.createClass({
     getInitialState: function () {
-        return {traad: []};
+        return {
+            meldinger: [],
+            kanBesvares: false
+        };
     },
     componentDidMount: function () {
         $.get('/mininnboks/tjenester/henvendelse/traad/' + this.props.id).done(function (data) {
-            this.setState(({
-                traad: data
-            }));
+            this.setState(data);
         }.bind(this));
     },
     render: function () {
-        console.log(this.state.traad);
-        var meldingItems = this.state.traad.map(function (melding) {
+        var traad = this.state;
+        console.log(traad);
+        var meldingItems = traad.meldinger.map(function (melding) {
             return <MeldingContainer melding={melding} />
         });
         return (
             <div className="innboks-container traad-container">
+                <Knapper kanBesvares={traad.kanBesvares} />
                 {meldingItems}
             </div>
         );
