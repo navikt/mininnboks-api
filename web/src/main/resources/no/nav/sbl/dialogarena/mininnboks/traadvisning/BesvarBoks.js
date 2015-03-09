@@ -5,13 +5,17 @@ var BesvarBoks = React.createClass({
     onSubmit: function () {
         this.props.besvar(this.refs.textarea.getInput());
     },
+    skjul: function (event) {
+        event.preventDefault();
+        this.props.skjul();
+    },
     render: function () {
-        return (
-            <div className="besvarContainer">
+        return this.props.vis ?
+            (<div className="besvar-container">
                 <ExpandingTextArea placeholder="Skriv et svar" ref="textarea" />
                 <input type="button" className="knapp-hoved-liten" value="Send svar" onClick={this.onSubmit} />
-            </div>
-        )
+                <a href="#" onClick={this.skjul}>Avbryt</a>
+            </div>) : null;
     }
 });
 

@@ -1,7 +1,8 @@
 var React = require('react');
 
 var Knapper = React.createClass({
-    besvar: function () {
+    besvar: function (event) {
+        event.preventDefault();
         if (this.props.kanBesvares) {
             this.props.besvar();
         }

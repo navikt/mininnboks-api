@@ -7,7 +7,7 @@ var TraadVisning = React.createClass({
     getInitialState: function () {
         return {
             meldinger: [],
-            nyeste: {},
+            nyeste: {temagruppeNavn: ''},
             kanBesvares: false,
             besvares: false
         };
@@ -19,6 +19,9 @@ var TraadVisning = React.createClass({
     },
     visBesvarBoks: function () {
         this.setState({besvares: true});
+    },
+    skjulBesvarBoks: function () {
+        this.setState({besvares: false});
     },
     leggTilMelding: function (fritekst) {
         var meldinger = this.state.meldinger.splice(0);
@@ -40,8 +43,8 @@ var TraadVisning = React.createClass({
                 <h1 className="diger">{this.state.nyeste.kassert ? 'Kassert dialog' : 'Dialog om ' + this.state.nyeste.temagruppeNavn}</h1>
                 <div className="innboks-container traad-container">
                     <Knapper kanBesvares={this.state.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
-                {this.state.besvares ? <BesvarBoks besvar={this.leggTilMelding} /> : null}
-                {meldingItems}
+                    <BesvarBoks besvar={this.leggTilMelding} vis={this.state.besvares} skjul={this.skjulBesvarBoks} />
+                    {meldingItems}
                 </div>
             </div>
         );
