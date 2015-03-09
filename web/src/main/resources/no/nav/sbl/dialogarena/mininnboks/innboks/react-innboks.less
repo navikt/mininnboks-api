@@ -129,7 +129,7 @@
     }
   }
 
-  .melding p {
+  .melding .fritekst {
     height: 40px;
     overflow: hidden;
   }
@@ -181,6 +181,37 @@
     .ikon.melding-info.lest {
       background: url(/mininnboks/img/melding_ny_hvit.svg) no-repeat right;
     }
+  }
+}
+
+.textareamirror, .expandingtextarea {
+  padding: 1em;
+  line-height: 1.1rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.textareamirror {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+.expandingtextarea {
+  resize: none;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  height: 140px;
+  margin: 0 0 1em 0;
+  &.invalid {
+  }
+}
+
+.tegnIgjen {
+  font-weight: 600;
+  &.invalid {
+    color: #c20001;
   }
 }
 
