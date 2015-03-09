@@ -7,6 +7,7 @@ var TraadVisning = React.createClass({
     getInitialState: function () {
         return {
             meldinger: [],
+            nyeste: {},
             kanBesvares: false,
             besvares: false
         };
@@ -21,7 +22,6 @@ var TraadVisning = React.createClass({
     },
     leggTilMelding: function (fritekst) {
         var meldinger = this.state.meldinger.splice(0);
-        console.log(meldinger[0]);
         meldinger.unshift({
             fritekst: fritekst,
             opprettet: new Date(),
@@ -36,10 +36,13 @@ var TraadVisning = React.createClass({
             return <MeldingContainer melding={melding} />
         });
         return (
-            <div className="innboks-container traad-container">
-                <Knapper kanBesvares={this.state.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
+            <div>
+                <h1 className="diger">{this.state.nyeste.kassert ? 'Kassert dialog' : 'Dialog om ' + this.state.nyeste.temagruppeNavn}</h1>
+                <div className="innboks-container traad-container">
+                    <Knapper kanBesvares={this.state.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
                 {this.state.besvares ? <BesvarBoks besvar={this.leggTilMelding} /> : null}
                 {meldingItems}
+                </div>
             </div>
         );
     }

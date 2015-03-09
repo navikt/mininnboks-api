@@ -9,9 +9,7 @@ var Knapper = React.createClass({
     render: function () {
         var info =
             <div className="info-boks">
-                <p>Denne samtalen er avsluttet og du kan ikke svare på meldingen. Hvis du vil stille et nytt spørsmål kan du starte en
-                    <a href="#">ny tråd</a>
-                </p>
+                <p>Denne samtalen er avsluttet og du kan ikke svare på meldingen. Hvis du vil stille et nytt spørsmål kan du starte en <a href="#">ny tråd</a></p>
             </div>;
 
         return (
