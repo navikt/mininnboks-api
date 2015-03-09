@@ -1,5 +1,6 @@
 var React = require('react');
 var TraadPreview = require('./TraadPreview');
+var TomInnboks = require('./TomInnboks');
 
 var ListeVisning = React.createClass({
     getInitialState: function () {
@@ -25,10 +26,10 @@ var ListeVisning = React.createClass({
                     </div>
                 </div>
                 <div className="innboks-container">
-                    {traader}
+                    {traader.length == 0 ? <TomInnboks /> : traader}
                 </div>
             </div>
-        )
+        );
     }
 });
 
