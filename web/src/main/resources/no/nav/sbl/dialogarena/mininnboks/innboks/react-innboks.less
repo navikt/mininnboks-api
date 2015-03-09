@@ -53,9 +53,17 @@
     &:not(:last-of-type) {
       margin-bottom: 30px;
     }
-    img {
-      height: 40px;
+    .logo {
+      float: left;
       margin-top: 34px;
+      width: 15%;
+      height: 35px;
+      position: relative;
+      img {
+        position: absolute;
+        top: 0;
+        height: 35px;
+      }
     }
     .melding {
       width: 85%;
@@ -80,8 +88,11 @@
       }
     }
     &.fra-bruker {
-      img {
+      .logo {
         float: right;
+        img {
+          right: 8px;
+        }
       }
       .melding {
         float: left;
@@ -93,8 +104,11 @@
       }
     }
     &.fra-nav {
-      img {
+      .logo {
         float: left;
+        img {
+          left: 0;
+        }
       }
       .melding {
         float: right;
@@ -236,24 +250,32 @@
   .traad-container {
     padding-left: 0;
     padding-right: 0;
-
-    .melding-container {
-      .melding {
-        width: 80%;
-      }
-      &.fra-bruker img {
-        margin-right: 5%;
-      }
-      &.fra-nav img {
-        margin-left: 5%;
-      }
-    }
   }
 }
 
-@media (max-width: 460px) {
-  .traad-container .melding-container img {
-    height: 23px;
-    margin-top: 43px;
+@media (max-width: 520px) {
+  .traad-container .melding-container {
+    .melding {
+      width: 88%;
+    }
+    .logo {
+      border-radius: 50%;
+      height: 1.2em;
+      width: 1.2em;
+      margin-top: 44px;
+    }
+    img {
+      display: none;
+    }
+  }
+
+  .fra-bruker .logo {
+    margin-right: 0.3em;
+    background-color: #777777;
+  }
+
+  .fra-nav .logo {
+    margin-left: 0.3em;
+    background-color: #c30202;
   }
 }

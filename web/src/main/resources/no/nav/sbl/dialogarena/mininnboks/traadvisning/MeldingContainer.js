@@ -8,7 +8,7 @@ var MeldingContainer = React.createClass({
         var imgSrc = melding.fraBruker ? '/mininnboks/img/personligoppmote.svg' : '/mininnboks/img/nav-logo.svg';
         return (
             <div className={className}>
-                <img src={imgSrc} />
+                <div className="logo"><img src={imgSrc} /></div>
                 <Melding melding={melding} />
             </div>
         );
