@@ -24,15 +24,24 @@ var TraadVisning = React.createClass({
         this.setState({besvares: false});
     },
     leggTilMelding: function (fritekst) {
-        var meldinger = this.state.meldinger.splice(0);
-        meldinger.unshift({
-            fritekst: fritekst,
-            opprettet: new Date(),
-            fraBruker: true,
-            fraNav: false,
-            statusTekst: 'Svar om ' + meldinger[0].temagruppeNavn
+        $.ajax({
+            type: 'POST',
+            url: '/mininnboks/tjenester/traader/ny',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({traadId: this.state.nyeste.traadId, fritekst: fritekst}),
+            success: function() {
+                var meldinger = this.state.meldinger.splice(0);
+                meldinger.unshift({
+                    fritekst: fritekst,
+                    opprettet: new Date(),
+                    fraBruker: true,
+                    fraNav: false,
+                    statusTekst: 'Svar om ' + meldinger[0].temagruppeNavn
+                });
+                this.setState({meldinger: meldinger, kanBesvares: false, besvares: false});
+            }.bind(this)
         });
-        this.setState({meldinger: meldinger, kanBesvares: false, besvares: false});
     },
     render: function () {
         var meldingItems = this.state.meldinger.map(function (melding) {

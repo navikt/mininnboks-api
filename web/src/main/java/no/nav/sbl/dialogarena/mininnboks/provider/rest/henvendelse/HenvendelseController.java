@@ -2,7 +2,9 @@ package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Svar;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import org.apache.commons.collections15.Transformer;
 
 import javax.inject.Inject;
@@ -15,7 +17,9 @@ import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.TRAAD_ID;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SBL_INNGAAENDE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad.NYESTE_FORST;
+import static org.joda.time.DateTime.now;
 
 @Path("/traader")
 @Produces(APPLICATION_JSON)
@@ -49,6 +53,25 @@ public class HenvendelseController {
     @Path("/lest/{id}")
     public void markerSomLest(@PathParam("id") String id) {
         henvendelseService.merkSomLest(id);
+    }
+
+    @POST
+    @Path("/ny")
+    @Consumes(APPLICATION_JSON)
+    public String sendSvar(Svar svar) {
+        assert svar.fritekst.length() > 0 && svar.fritekst.length() <= 1000;
+        Traad traad = hentTraad(svar.traadId);
+
+        Henvendelse henvendelse = new Henvendelse(svar.fritekst, traad.nyeste.temagruppe);
+        henvendelse.traadId = svar.traadId;
+        henvendelse.eksternAktor = traad.nyeste.eksternAktor;
+        henvendelse.tilknyttetEnhet = traad.nyeste.tilknyttetEnhet;
+        henvendelse.type = SVAR_SBL_INNGAAENDE;
+        henvendelse.opprettet = now();
+        henvendelse.markerSomLest();
+        WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
+
+        return response.getBehandlingsId();
     }
 
 }
