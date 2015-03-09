@@ -17,6 +17,9 @@
         <baseUrl alias="temavelger.link" mapToProperty="temavelger.link"/>
         <baseUrl alias="brukerprofil.link" mapToProperty="brukerprofil.link"/>
 
+        <credential alias="srvmininnboks" mapToProperty="systembruker"/>
+        <applicationCertificate alias="srvmininnboks"/>
+
         <webservice alias="domene.Brukerdialog:Henvendelse_v2" mapToProperty="henvendelse.ws"/>
         <webservice alias="virksomhet:Brukerprofil_v1" mapToProperty="brukerprofil.ws"/>
         <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="diskresjonskode.ws"/>
