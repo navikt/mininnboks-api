@@ -14,7 +14,6 @@ var ExpandingTextArea = React.createClass({
         return this.state.input;
     },
     erValid: function () {
-        console.log(this.state.antallTegn);
         this.setState({valid: this.state.antallTegn <= this.props.maksAntallTegn && this.state.antallTegn !== 0});
     },
     settPlaceholder: function () {
