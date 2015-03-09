@@ -6,14 +6,11 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad;
 import org.apache.commons.collections15.Transformer;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.*;
 import java.util.List;
 import java.util.Map;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
@@ -21,7 +18,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.TRAA
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad.NYESTE_FORST;
 
 @Path("/traader")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(APPLICATION_JSON)
 public class HenvendelseController {
 
 
@@ -46,6 +43,12 @@ public class HenvendelseController {
     @Path("/{id}")
     public Traad hentTraad(@PathParam("id") String id) {
         return new Traad(henvendelseService.hentTraad(id));
+    }
+
+    @POST
+    @Path("/lest/{id}")
+    public void markerSomLest(@PathParam("id") String id) {
+        henvendelseService.merkSomLest(id);
     }
 
 }

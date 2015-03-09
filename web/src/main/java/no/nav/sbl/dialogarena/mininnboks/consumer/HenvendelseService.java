@@ -19,6 +19,10 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
 import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
+import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ER_LEST;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ID;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
 import static org.joda.time.DateTime.now;
 
@@ -35,6 +39,8 @@ public interface HenvendelseService {
     List<Henvendelse> hentTraad(String behandlingskjedeId);
 
     void merkHenvendelseSomLest(Henvendelse henvendelse);
+
+    void merkSomLest(String behandlingskjedeId);
 
     class Default implements HenvendelseService {
 
@@ -100,6 +106,13 @@ public interface HenvendelseService {
         @Override
         public void merkHenvendelseSomLest(Henvendelse henvendelse) {
             innsynHenvendelsePortType.merkSomLest(new ArrayList<>(asList(henvendelse.id)));
+        }
+
+        @Override
+        public void merkSomLest(String behandlingskjedeId) {
+            List<Henvendelse> traad = hentTraad(behandlingskjedeId);
+            List<String> ids = on(traad).filter(where(ER_LEST, equalTo(false))).map(ID).collect();
+            innsynHenvendelsePortType.merkSomLest(ids);
         }
 
         @Override
