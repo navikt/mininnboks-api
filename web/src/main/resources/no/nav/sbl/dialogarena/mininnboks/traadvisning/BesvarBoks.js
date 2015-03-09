@@ -3,7 +3,10 @@ var ExpandingTextArea = require('./ExpandingTextArea');
 
 var BesvarBoks = React.createClass({
     onSubmit: function () {
-        this.props.besvar(this.refs.textarea.getInput());
+        var textarea = this.refs.textarea;
+        if (textarea.erValid()) {
+            this.props.besvar(textarea.getInput());
+        }
     },
     skjul: function (event) {
         event.preventDefault();

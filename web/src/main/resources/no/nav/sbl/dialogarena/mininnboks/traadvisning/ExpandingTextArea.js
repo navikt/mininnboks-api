@@ -2,19 +2,24 @@ var React = require('react');
 
 var ExpandingTextArea = React.createClass({
     getDefaultProps: function () {
-        return {maksAntallTegn: 1000, minHoydePx: 140, placeholder: ''}
+        return {minAntallTegn: 1, maksAntallTegn: 1000, minHoydePx: 140, placeholder: ''}
     },
     getInitialState: function () {
-        return {input: '', antallTegn: 0, valid: true}
+        return {input: '', touched: false}
     },
     componentDidMount: function () {
         this.settPlaceholder();
+        $(this.refs.expandingtextarea.getDOMNode()).focus();
     },
     getInput: function () {
         return this.state.input;
     },
     erValid: function () {
-        this.setState({valid: this.state.antallTegn <= this.props.maksAntallTegn && this.state.antallTegn !== 0});
+        if (this.state.touched) {
+            var antallTegn = this.antallTegn();
+            return antallTegn <= this.props.maksAntallTegn && antallTegn >= this.props.minAntallTegn;
+        }
+        return true;
     },
     settPlaceholder: function () {
         var placeholder = this.props.placeholder;
@@ -38,18 +43,19 @@ var ExpandingTextArea = React.createClass({
                 }
             });
     },
-    onTextAreaInput: function (event) {
+    onTextAreaChange: function (event) {
         this.setState({input: event.target.value});
-        this.sjekkAntallTegn(event);
+        this.touch();
         this.justerTextAreaHoyde();
-        this.erValid();
+    },
+    touch: function () {
+        this.setState({touched: true})
+    },
+    antallTegn: function () {
+        return this.state.input === this.props.placeholder ? 0 : this.state.input.length;
     },
     tegnIgjen: function () {
-        return this.props.maksAntallTegn - this.state.antallTegn;
-    },
-    sjekkAntallTegn: function (event) {
-        var tekst = $(event.target).val();
-        this.setState({antallTegn: tekst === this.props.placeholder ? 0 : tekst.length});
+        return this.props.maksAntallTegn - this.antallTegn();
     },
     justerTextAreaHoyde: function () {
         var $mirror = $(this.refs.textareamirror.getDOMNode());
@@ -62,12 +68,12 @@ var ExpandingTextArea = React.createClass({
     },
     render: function () {
         var ingenTegnIgjenClass = this.tegnIgjen() >= 0 ? '' : 'invalid';
-        var validClass = this.state.valid ? '' : 'invalid';
+        var validClass = this.erValid() ? '' : 'invalid';
 
         return (
             <div>
-                <div ref="textareamirror" className="textareamirror"></div>
-                <textarea ref="expandingtextarea" className={'expandingtextarea ' + validClass} onInput={this.onTextAreaInput} onFocus={this.sjekkAntallTegn}></textarea>
+                <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>
+                <textarea ref="expandingtextarea" className={'expandingtextarea ' + validClass} onChange={this.onTextAreaChange} onBlur={this.touch}></textarea>
                 <div>
                     <span className={'tegnIgjen ' + ingenTegnIgjenClass}>{this.tegnIgjen()}</span>
                     <span> Tegn igjen</span>
