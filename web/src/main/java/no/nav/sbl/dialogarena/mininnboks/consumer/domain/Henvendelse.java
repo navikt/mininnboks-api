@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.domain;
 
 import org.apache.commons.collections15.Transformer;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -9,9 +8,6 @@ import java.util.Comparator;
 
 import static java.util.Collections.reverseOrder;
 import static no.nav.modig.lang.collections.ComparatorUtils.compareWith;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.FRA_NAV;
-import static no.nav.sbl.dialogarena.mininnboks.innboks.utils.KassertInnholdUtils.henvendelseTemagruppeKey;
-import static no.nav.sbl.dialogarena.time.Datoformat.kortMedTid;
 
 public class Henvendelse implements Serializable {
 
@@ -46,31 +42,6 @@ public class Henvendelse implements Serializable {
 
     public boolean isLest() {
         return lestDato != null;
-    }
-
-    public String getAvsenderBildeUrl() {
-        String imgUrl = WebApplication.get().getServletContext().getContextPath() + "/img/";
-        if (FRA_NAV.contains(type)) {
-            return imgUrl + "nav-logo.svg";
-        } else {
-            return imgUrl + "siluett.svg";
-        }
-    }
-
-    public String getAvsenderBildeAltKey() {
-        if (FRA_NAV.contains(type)) {
-            return "innboks.avsender.nav";
-        } else {
-            return "innboks.avsender.bruker";
-        }
-    }
-
-    public String getSendtDato() {
-        return kortMedTid(opprettet);
-    }
-
-    public String getTemagruppeKey() {
-        return henvendelseTemagruppeKey(temagruppe);
     }
 
     public static final Transformer<Henvendelse, DateTime> OPPRETTET = new Transformer<Henvendelse, DateTime>() {
