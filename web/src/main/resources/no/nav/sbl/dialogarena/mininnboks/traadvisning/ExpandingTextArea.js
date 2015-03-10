@@ -5,7 +5,7 @@ var ExpandingTextArea = React.createClass({
         return {minAntallTegn: 1, maksAntallTegn: 1000, minHoydePx: 140, placeholder: ''}
     },
     getInitialState: function () {
-        return {input: '', touched: false}
+        return {input: '', touched: false, validationMessages: []}
     },
     componentDidMount: function () {
         this.settPlaceholder();
@@ -15,18 +15,13 @@ var ExpandingTextArea = React.createClass({
         return this.state.input;
     },
     erValid: function () {
-        if (this.state.touched) {
-            var antallTegn = this.antallTegn();
-            return antallTegn <= this.props.maksAntallTegn && antallTegn >= this.props.minAntallTegn;
-        }
-        return true;
+        return this.state.validationMessages.length === 0;
     },
     settPlaceholder: function () {
         var placeholder = this.props.placeholder;
         if (placeholder.length === 0) {
             return;
         }
-
         $(this.refs.expandingtextarea.getDOMNode())
             .val(placeholder)
             .css('color', '#999')
@@ -44,18 +39,29 @@ var ExpandingTextArea = React.createClass({
             });
     },
     onTextAreaChange: function (event) {
-        this.setState({input: event.target.value});
-        this.touch();
+        var tekst = event.target.value;
+        this.setState({input: tekst});
         this.justerTextAreaHoyde();
+        this.valider(tekst);
     },
-    touch: function () {
-        this.setState({touched: true})
+    onTextAreaBlur: function (event) {
+        this.valider(event.target.value);
     },
-    antallTegn: function () {
-        return this.state.input === this.props.placeholder ? 0 : this.state.input.length;
+    valider: function (tekst) {
+        var antallTegn = this.antallTegn(tekst);
+        var validationMessages = [];
+        if (antallTegn > this.props.maksAntallTegn) {
+            validationMessages.push('Teksten er for lang')
+        } else if (antallTegn < this.props.minAntallTegn) {
+            validationMessages.push('Tekstfeltet er tomt');
+        }
+        this.setState({touched: true, validationMessages: validationMessages});
+    },
+    antallTegn: function (input) {
+        return input === this.props.placeholder ? 0 : input.length;
     },
     tegnIgjen: function () {
-        return this.props.maksAntallTegn - this.antallTegn();
+        return this.props.maksAntallTegn - this.antallTegn(this.state.input);
     },
     justerTextAreaHoyde: function () {
         var $mirror = $(this.refs.textareamirror.getDOMNode());
@@ -69,12 +75,16 @@ var ExpandingTextArea = React.createClass({
     render: function () {
         var ingenTegnIgjenClass = this.tegnIgjen() >= 0 ? '' : 'invalid';
         var validClass = this.erValid() ? '' : 'invalid';
+        var validationMessages = this.state.validationMessages.map(function (validationMessage) {
+            return (<span className="validation-message">{validationMessage}</span>);
+        });
 
         return (
-            <div>
+            <div className="expandingtextarea">
                 <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>
-                <textarea ref="expandingtextarea" className={'expandingtextarea ' + validClass} onChange={this.onTextAreaChange} onBlur={this.touch}></textarea>
+                <textarea ref="expandingtextarea" className={validClass} onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur}></textarea>
                 <div>
+                    {validationMessages}
                     <span className={'tegnIgjen ' + ingenTegnIgjenClass}>{this.tegnIgjen()}</span>
                     <span> Tegn igjen</span>
                 </div>
