@@ -1,14 +1,17 @@
 var cache = {};
+var promise = undefined;
+
 init();
 
-function init(){
-    $.get('/mininnboks/tjenester/resources').done(function(result){
+function init() {
+    promise = $.get('/mininnboks/tjenester/resources').done(function (result) {
         cache = result;
     });
 }
 
 module.exports = {
-    get: function(key){
+    promise: promise,
+    get: function(key) {
         return cache[key];
     }
 };
