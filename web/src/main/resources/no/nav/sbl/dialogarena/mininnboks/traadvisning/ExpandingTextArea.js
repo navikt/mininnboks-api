@@ -82,7 +82,8 @@ var ExpandingTextArea = React.createClass({
         return (
             <div className="expandingtextarea">
                 <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>
-                <textarea ref="textarea" aria-invalid={!this.erValid()} aria-describedby="validation-messages" className={validClass}
+                <textarea ref="textarea" className={validClass}
+                    aria-label={this.props.placeholder} aria-invalid={!this.erValid()} aria-describedby="validation-messages"
                     onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur} />
                 <div id="validation-messages">
                     {validationMessages}
