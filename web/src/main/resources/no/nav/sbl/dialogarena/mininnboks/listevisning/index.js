@@ -1,6 +1,7 @@
 var React = require('react');
 var TraaderContainer = require('./TraaderContainer');
 var resources = require('resources');
+var Snurrepipp = require('../innboks/Snurrepipp');
 
 var ListeVisning = React.createClass({
     getInitialState: function () {
@@ -24,9 +25,7 @@ var ListeVisning = React.createClass({
     },
     render: function () {
         if (!this.state.hentet) {
-            return <div className="innboks-container snurrepipp">
-                <img src='/mininnboks/img/ajaxloader/graa/loader_graa_128.gif' />
-            </div>;
+            return <Snurrepipp />
         } else {
             return (
                 <div>

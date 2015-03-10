@@ -2,19 +2,34 @@ var React = require('react');
 var BesvarBoks = require('./BesvarBoks');
 var MeldingContainer = require('./MeldingContainer');
 var Knapper = require('./Knapper');
+var resources = require('resources');
+var Snurrepipp = require('../innboks/Snurrepipp');
 
 var TraadVisning = React.createClass({
     getInitialState: function () {
         return {
-            meldinger: [],
-            nyeste: {temagruppeNavn: ''},
-            kanBesvares: false,
-            besvares: false
+            hentet: false,
+            feilet: false,
+            traad: {}
         };
     },
     componentDidMount: function () {
         $.get('/mininnboks/tjenester/traader/' + this.props.id).done(function (data) {
             this.setState(data);
+        }.bind(this));
+        var traadPromise = $.get('/mininnboks/tjenester/traader/' + this.props.id);
+        $.when(traadPromise, resources.promise).then(function (data) {
+            if (data[1] === "success") {
+                this.setState({
+                    traad: data[0],
+                    hentet: true
+                });
+            } else {
+                this.setState({
+                    hentet: true,
+                    feilet: true
+                })
+            }
         }.bind(this));
     },
     visBesvarBoks: function () {
@@ -29,7 +44,7 @@ var TraadVisning = React.createClass({
             url: '/mininnboks/tjenester/traader/ny',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify({traadId: this.state.nyeste.traadId, fritekst: fritekst}),
+            data: JSON.stringify({traadId: this.state.traad.nyeste.traadId, fritekst: fritekst}),
             success: function() {
                 var meldinger = this.state.meldinger.splice(0);
                 meldinger.unshift({
@@ -39,24 +54,28 @@ var TraadVisning = React.createClass({
                     fraNav: false,
                     statusTekst: 'Svar om ' + meldinger[0].temagruppeNavn
                 });
-                this.setState({meldinger: meldinger, kanBesvares: false, besvares: false});
+                this.setState({traad: {meldinger: meldinger, kanBesvares: false, besvares: false}});
             }.bind(this)
         });
     },
     render: function () {
-        var meldingItems = this.state.meldinger.map(function (melding) {
-            return <MeldingContainer melding={melding} />
-        });
-        return (
-            <div>
-                <h1 className="diger">{this.state.nyeste.kassert ? 'Kassert dialog' : 'Dialog om ' + this.state.nyeste.temagruppeNavn}</h1>
-                <div className="innboks-container traad-container">
-                    <Knapper kanBesvares={this.state.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
-                    <BesvarBoks besvar={this.leggTilMelding} vis={this.state.besvares} skjul={this.skjulBesvarBoks} />
+        if (!this.state.hentet) {
+            return <Snurrepipp />
+        } else {
+            var meldingItems = this.state.traad.meldinger.map(function (melding) {
+                return <MeldingContainer melding={melding} />
+            });
+            return (
+                <div>
+                    <h1 className="diger">{this.state.traad.nyeste.kassert ? 'Kassert dialog' : 'Dialog om ' + this.state.traad.nyeste.temagruppeNavn}</h1>
+                    <div className="innboks-container traad-container">
+                        <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.traad.besvares} besvar={this.visBesvarBoks} />
+                        <BesvarBoks besvar={this.leggTilMelding} vis={this.state.traad.besvares} skjul={this.skjulBesvarBoks} />
                     {meldingItems}
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 });
 
