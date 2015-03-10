@@ -2,22 +2,22 @@ var React = require('react');
 
 var ExpandingTextArea = React.createClass({
     getDefaultProps: function () {
-        return {minAntallTegn: 1, maksAntallTegn: 1000, minHoydePx: 140, placeholder: ''}
+        return {minChars: 1, maxChars: 1000, minHeightPx: 140, placeholder: ''}
     },
     getInitialState: function () {
         return {input: '', touched: false, validationMessages: []}
     },
     componentDidMount: function () {
-        this.settPlaceholder();
+        this.setPlaceholder();
         $(this.refs.textarea.getDOMNode()).focus();
     },
     getInput: function () {
         return this.state.input;
     },
-    erValid: function () {
+    isValid: function () {
         return this.state.validationMessages.length === 0;
     },
-    settPlaceholder: function () {
+    setPlaceholder: function () {
         var placeholder = this.props.placeholder;
         if (placeholder.length === 0) {
             return;
@@ -39,42 +39,42 @@ var ExpandingTextArea = React.createClass({
             });
     },
     onTextAreaChange: function (event) {
-        var tekst = event.target.value;
-        this.setState({input: tekst});
-        this.justerTextAreaHoyde();
-        this.valider(tekst);
+        var text = event.target.value;
+        this.setState({input: text});
+        this.adjustTextAreaHeight();
+        this.validate(text);
     },
     onTextAreaBlur: function (event) {
-        this.valider(event.target.value);
+        this.validate(event.target.value);
     },
-    valider: function (tekst) {
-        var antallTegn = this.antallTegn(tekst);
+    validate: function (tekst) {
+        var charCount = this.charCount(tekst);
         var validationMessages = [];
-        if (antallTegn > this.props.maksAntallTegn) {
+        if (charCount > this.props.maxChars) {
             validationMessages.push('Teksten er for lang')
-        } else if (antallTegn < this.props.minAntallTegn) {
+        } else if (charCount < this.props.minChars) {
             validationMessages.push('Tekstfeltet er tomt');
         }
         this.setState({touched: true, validationMessages: validationMessages});
     },
-    antallTegn: function (input) {
+    charCount: function (input) {
         return input === this.props.placeholder ? 0 : input.length;
     },
-    tegnIgjen: function () {
-        return this.props.maksAntallTegn - this.antallTegn(this.state.input);
+    charsLeft: function () {
+        return this.props.maxChars - this.charCount(this.state.input);
     },
-    justerTextAreaHoyde: function () {
+    adjustTextAreaHeight: function () {
         var $mirror = $(this.refs.textareamirror.getDOMNode());
         var $textarea = $(this.refs.textarea.getDOMNode());
         $mirror
             .outerWidth($textarea.outerWidth())
             .text($textarea.val() + '\n');
         $textarea
-            .outerHeight(Math.max($mirror.outerHeight(), this.props.minHoydePx) + 'px');
+            .outerHeight(Math.max($mirror.outerHeight(), this.props.minHeightPx) + 'px');
     },
     render: function () {
-        var ingenTegnIgjenClass = this.tegnIgjen() >= 0 ? '' : 'invalid';
-        var validClass = this.erValid() ? '' : 'invalid';
+        var noMoreCharsClass = this.charsLeft() >= 0 ? '' : 'invalid';
+        var validClass = this.isValid() ? '' : 'invalid';
         var validationMessages = this.state.validationMessages.map(function (validationMessage) {
             return (<span className="validation-message">{validationMessage}</span>);
         });
@@ -83,12 +83,12 @@ var ExpandingTextArea = React.createClass({
             <div className="expandingtextarea">
                 <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>
                 <textarea ref="textarea" className={validClass}
-                    aria-label={this.props.placeholder} aria-invalid={!this.erValid()} aria-describedby="validation-messages"
+                    aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby="validation-messages"
                     onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur} />
                 <div id="validation-messages">
                     {validationMessages}
                 </div>
-                <span className={'tegnIgjen ' + ingenTegnIgjenClass}>{this.tegnIgjen()}</span>
+                <span className={'charsLeft ' + noMoreCharsClass}>{this.charsLeft()}</span>
                 <span> Tegn igjen</span>
             </div>
         )

@@ -4,7 +4,7 @@ var ExpandingTextArea = require('./ExpandingTextArea');
 var BesvarBoks = React.createClass({
     onSubmit: function () {
         var textarea = this.refs.textarea;
-        if (textarea.erValid()) {
+        if (textarea.isValid()) {
             this.props.besvar(textarea.getInput());
         }
     },
