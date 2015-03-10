@@ -4,6 +4,8 @@ var MeldingContainer = require('./MeldingContainer');
 var Knapper = require('./Knapper');
 var resources = require('resources');
 var Snurrepipp = require('../innboks/Snurrepipp');
+var format = require('string-format');
+
 
 var TraadVisning = React.createClass({
     getInitialState: function () {
@@ -65,9 +67,10 @@ var TraadVisning = React.createClass({
             var meldingItems = this.state.traad.meldinger.map(function (melding) {
                 return <MeldingContainer melding={melding} />
             });
+            var overskrift = this.state.traad.nyeste.kassert ? resources.get('traadvisning.overskrift.kassert') : format(resources.get('traadvisning.overskrift'), this.state.traad.nyeste.temagruppeNavn);
             return (
                 <div>
-                    <h1 className="diger">{this.state.traad.nyeste.kassert ? 'Kassert dialog' : 'Dialog om ' + this.state.traad.nyeste.temagruppeNavn}</h1>
+                    <h1 className="diger">{overskrift}</h1>
                     <div className="innboks-container traad-container">
                         <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.traad.besvares} besvar={this.visBesvarBoks} />
                         <BesvarBoks besvar={this.leggTilMelding} vis={this.state.traad.besvares} skjul={this.skjulBesvarBoks} />
