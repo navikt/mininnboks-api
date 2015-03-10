@@ -62,6 +62,7 @@ public class WicketApplication extends WebApplication {
                 .addScripts(
                         SkrivPage.JQUERY_JS,
                         new JavaScriptResourceReference(WicketApplication.class, "build/React.js"),
+                        new JavaScriptResourceReference(WicketApplication.class, "build/Resources.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Listevisning.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Traadvisning.js")
                 )

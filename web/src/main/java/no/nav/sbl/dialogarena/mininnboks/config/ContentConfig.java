@@ -13,14 +13,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.inject.Inject;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Arrays.asList;
+import static no.nav.modig.lang.collections.IterUtils.on;
+import static no.nav.modig.lang.collections.TransformerUtils.castTo;
 
 @Configuration
 @EnableScheduling
@@ -30,14 +31,23 @@ public class ContentConfig {
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/app/mininnboks/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "no.nav.sbl.dialogarena.mininnboks.innhold_nb";
     private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
+    private InputStream enonicFallback = BasePage.class.getResourceAsStream("innhold_nb.properties");
 
     @Value("${appres.cms.url}")
     private String appresUrl;
 
     @Bean
     public PropertyResolver propertyResolver(CmsContentRetriever contentRetriever) {
-        return new PropertyResolver(contentRetriever, BasePage.class.getResourceAsStream("innhold_nb.properties"));
+        return new PropertyResolver(contentRetriever, enonicFallback);
     }
+
+    @Bean
+    public List<String> keys() throws IOException {
+        Properties properties = new Properties();
+        properties.load(enonicFallback);
+        return on(properties.keySet()).map(castTo(String.class)).collect();
+    }
+
 
     @Bean
     public ValueRetriever siteContentRetriever() throws URISyntaxException {

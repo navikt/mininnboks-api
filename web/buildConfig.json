@@ -8,6 +8,7 @@
   "navReact": "React",
   "components": [
     "listevisning",
-    "traadvisning"
+    "traadvisning",
+    "resources"
   ]
 }
