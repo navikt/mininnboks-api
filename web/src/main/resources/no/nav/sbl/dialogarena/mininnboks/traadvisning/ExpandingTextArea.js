@@ -9,7 +9,7 @@ var ExpandingTextArea = React.createClass({
     },
     componentDidMount: function () {
         this.settPlaceholder();
-        $(this.refs.expandingtextarea.getDOMNode()).focus();
+        $(this.refs.textarea.getDOMNode()).focus();
     },
     getInput: function () {
         return this.state.input;
@@ -22,7 +22,7 @@ var ExpandingTextArea = React.createClass({
         if (placeholder.length === 0) {
             return;
         }
-        $(this.refs.expandingtextarea.getDOMNode())
+        $(this.refs.textarea.getDOMNode())
             .val(placeholder)
             .css('color', '#999')
             .focus(function () {
@@ -65,7 +65,7 @@ var ExpandingTextArea = React.createClass({
     },
     justerTextAreaHoyde: function () {
         var $mirror = $(this.refs.textareamirror.getDOMNode());
-        var $textarea = $(this.refs.expandingtextarea.getDOMNode());
+        var $textarea = $(this.refs.textarea.getDOMNode());
         $mirror
             .outerWidth($textarea.outerWidth())
             .text($textarea.val() + '\n');
@@ -82,12 +82,13 @@ var ExpandingTextArea = React.createClass({
         return (
             <div className="expandingtextarea">
                 <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>
-                <textarea ref="expandingtextarea" className={validClass} onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur}></textarea>
-                <div>
+                <textarea ref="textarea" aria-invalid={!this.erValid()} aria-describedby="validation-messages" className={validClass}
+                    onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur} />
+                <div id="validation-messages">
                     {validationMessages}
-                    <span className={'tegnIgjen ' + ingenTegnIgjenClass}>{this.tegnIgjen()}</span>
-                    <span> Tegn igjen</span>
                 </div>
+                <span className={'tegnIgjen ' + ingenTegnIgjenClass}>{this.tegnIgjen()}</span>
+                <span> Tegn igjen</span>
             </div>
         )
     }
