@@ -7,7 +7,6 @@ import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
-import no.nav.sbl.dialogarena.mininnboks.innboks.Innboks;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.Sporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import org.apache.wicket.AttributeModifier;
@@ -19,8 +18,7 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -60,7 +58,7 @@ public class SkrivPage extends BasePage {
 
         IModel<Boolean> ikkeTilgang = not(new PropertyModel<Boolean>(get("sporsmalForm"), "isRenderAllowed"));
         WebMarkupContainer tilInnboksWrapper = new WebMarkupContainer("tilInnboksWrapper");
-        tilInnboksWrapper.add(new BookmarkablePageLink<>("tilInnboks", Innboks.class));
+        tilInnboksWrapper.add(new ExternalLink("tilInnboks", "/mininnboks"));
         add(new WebMarkupContainer("diskresjonskode").add(visibleIf(ikkeTilgang)));
         add(tilInnboksWrapper.add(visibleIf(ikkeTilgang)));
     }
@@ -127,7 +125,7 @@ public class SkrivPage extends BasePage {
                 }
             };
 
-            Link<Void> avbryt = new BookmarkablePageLink<>("avbryt", Innboks.class);
+            ExternalLink avbryt = new ExternalLink("avbryt", "/mininnboks");
 
             feedbackPanel.add(visibleIf(either(
                                     numberOfErrorMessages(feedbackPanel, 2))

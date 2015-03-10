@@ -11,7 +11,7 @@ import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;
@@ -57,7 +57,7 @@ public class SkrivPageTest extends WicketPageTest {
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("tekstfelt").and(ofType(EnhancedTextArea.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("betingelseValg").and(ofType(BetingelseValgPanel.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("send").and(ofType(IndicatingAjaxButton.class)))
-                .should().inComponent(withId("sporsmalForm")).containComponent(withId("avbryt").and(ofType(Link.class)));
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("avbryt").and(ofType(ExternalLink.class)));
     }
 
     @Test
