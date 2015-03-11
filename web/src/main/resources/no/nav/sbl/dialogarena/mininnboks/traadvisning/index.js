@@ -42,10 +42,12 @@ var TraadVisning = React.createClass({
         this.setState({besvares: false});
     },
     leggTilMelding: function (fritekst) {
-        $.post({
+        $.ajax({
+            type: 'POST',
             url: '/mininnboks/tjenester/traader/ny',
+            dataType: 'json',
             contentType: 'application/json',
-            data: {traadId: this.state.traad.nyeste.traadId, fritekst: fritekst}
+            data: JSON.stringify({traadId: this.state.traad.nyeste.traadId, fritekst: fritekst})
         }).done(function () {
             var meldinger = this.state.meldinger.splice(0);
             meldinger.unshift({
