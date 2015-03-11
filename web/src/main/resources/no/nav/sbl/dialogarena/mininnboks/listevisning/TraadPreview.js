@@ -1,7 +1,7 @@
 var React = require('react');
 var AntallMeldinger = require('./AntallMeldinger');
 var MeldingStatus = require('./MeldingStatus');
-var Melding = require('../innboks/Melding');
+var Melding = require('../Melding');
 
 var TraadPreview = React.createClass({
     markSomLest: function() {

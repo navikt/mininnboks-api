@@ -1,5 +1,5 @@
 var React = require('react');
-var Melding = require('../innboks/Melding');
+var Melding = require('../Melding');
 
 var MeldingContainer = React.createClass({
     render: function() {
@@ -9,7 +9,7 @@ var MeldingContainer = React.createClass({
         return (
             <div className={className}>
                 <div className="logo"><img src={imgSrc} /></div>
-                <Melding melding={melding} />
+                <Melding melding={melding} lagLenkerAvURL={true} />
             </div>
         );
     }

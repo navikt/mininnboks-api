@@ -3,7 +3,7 @@ var BesvarBoks = require('./BesvarBoks');
 var MeldingContainer = require('./MeldingContainer');
 var Knapper = require('./Knapper');
 var resources = require('resources');
-var Snurrepipp = require('../innboks/Snurrepipp');
+var Snurrepipp = require('snurrepipp');
 var format = require('string-format');
 
 

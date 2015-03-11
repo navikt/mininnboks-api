@@ -25,8 +25,6 @@ var browserifyTask = function (isDev, component) {
     bundler.transform(reactify);
     bundler.transform(globalShim.configure(createShimConfigurationFor(component)));
 
-    bundler.ignore('j');
-
     if (component.name !== config.navReact) {
         bundler.ignore('react');
         bundler.ignore('react');

@@ -1,7 +1,7 @@
 var React = require('react');
 var TraaderContainer = require('./TraaderContainer');
 var resources = require('resources');
-var Snurrepipp = require('../innboks/Snurrepipp');
+var Snurrepipp = require('snurrepipp');
 
 var ListeVisning = React.createClass({
     getInitialState: function () {
@@ -9,19 +9,7 @@ var ListeVisning = React.createClass({
     },
     componentDidMount: function () {
         var traaderPromise = $.get('/mininnboks/tjenester/traader/');
-        $.when(traaderPromise, resources.promise).then(function (data) {
-            if (data[1] === "success") {
-                this.setState({
-                    traader: data[0],
-                    hentet: true
-                });
-            } else {
-                this.setState({
-                    feilet: true,
-                    hentet: true
-                })
-            }
-        }.bind(this));
+        $.when(traaderPromise, resources.promise).then(okCallback.bind(this), feiletCallback.bind(this));
     },
     render: function () {
         if (!this.state.hentet) {
@@ -41,5 +29,22 @@ var ListeVisning = React.createClass({
         }
     }
 });
+
+function okCallback(data) {
+    if (data[1] === "success") {
+        this.setState({
+            traader: data[0],
+            hentet: true
+        });
+    } else {
+        this.setState({
+            feilet: true,
+            hentet: true
+        })
+    }
+}
+function feiletCallback(data) {
+    console.error('FEILET');
+}
 
 module.exports = ListeVisning;
