@@ -12,6 +12,7 @@ var TraadVisning = React.createClass({
         return {
             hentet: false,
             feilet: false,
+            besvares: false,
             traad: {}
         };
     },
@@ -72,8 +73,8 @@ var TraadVisning = React.createClass({
                 <div>
                     <h1 className="diger">{overskrift}</h1>
                     <div className="innboks-container traad-container">
-                        <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.traad.besvares} besvar={this.visBesvarBoks} />
-                        <BesvarBoks besvar={this.leggTilMelding} vis={this.state.traad.besvares} skjul={this.skjulBesvarBoks} />
+                        <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
+                        <BesvarBoks besvar={this.leggTilMelding} vis={this.state.besvares} skjul={this.skjulBesvarBoks} />
                     {meldingItems}
                     </div>
                 </div>
