@@ -57,7 +57,7 @@ var TraadVisning = React.createClass({
                     fraNav: false,
                     statusTekst: 'Svar om ' + meldinger[0].temagruppeNavn
                 });
-                this.setState({traad: {meldinger: meldinger, kanBesvares: false, besvares: false}});
+                this.setState({traad: {meldinger: meldinger, kanBesvares: false, nyeste: meldinger[0]}, besvares: false});
             }.bind(this)
         });
     },
