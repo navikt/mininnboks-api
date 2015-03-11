@@ -25,7 +25,6 @@ import static org.joda.time.DateTime.now;
 @Produces(APPLICATION_JSON)
 public class HenvendelseController {
 
-
     @Inject
     private HenvendelseService henvendelseService;
 
@@ -61,6 +60,9 @@ public class HenvendelseController {
     public String sendSvar(Svar svar) {
         assert svar.fritekst.length() > 0 && svar.fritekst.length() <= 1000;
         Traad traad = hentTraad(svar.traadId);
+        if(!traad.kanBesvares){
+            throw new RuntimeException("Kan ikke sende svar på en tråd hvor nyeste henvendelse ikke er et spørsmål til bruker");
+        }
 
         Henvendelse henvendelse = new Henvendelse(svar.fritekst, traad.nyeste.temagruppe);
         henvendelse.traadId = svar.traadId;
