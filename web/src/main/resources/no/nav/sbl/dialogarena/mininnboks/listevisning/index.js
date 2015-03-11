@@ -2,10 +2,11 @@ var React = require('react');
 var TraaderContainer = require('./TraaderContainer');
 var resources = require('resources');
 var Snurrepipp = require('snurrepipp');
+var Feilmelding = require('feilmelding');
 
 var ListeVisning = React.createClass({
     getInitialState: function () {
-        return {traader: [], hentet: false, feilet: false};
+        return {traader: [], hentet: false, feilet: {status: false}};
     },
     componentDidMount: function () {
         var traaderPromise = $.get('/mininnboks/tjenester/traader/');
@@ -14,6 +15,10 @@ var ListeVisning = React.createClass({
     render: function () {
         if (!this.state.hentet) {
             return <Snurrepipp />
+        } else if (this.state.feilet.status) {
+            return <div className="innboks-container">
+                <Feilmelding melding='Noe gikk feil' />
+            </div>;
         } else {
             return (
                 <div>
@@ -44,7 +49,10 @@ function okCallback(data) {
     }
 }
 function feiletCallback(data) {
-    console.error('FEILET');
+    this.setState({
+        feilet: {status: true, melding: 'Kunne ikke hente ut dine meldinger.'},
+        hentet: true
+    });
 }
 
 module.exports = ListeVisning;

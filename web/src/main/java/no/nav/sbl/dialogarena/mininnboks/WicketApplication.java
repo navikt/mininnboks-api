@@ -63,6 +63,7 @@ public class WicketApplication extends WebApplication {
                         new JavaScriptResourceReference(WicketApplication.class, "build/React.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Utils.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Snurrepipp.js"),
+                        new JavaScriptResourceReference(WicketApplication.class, "build/Feilmelding.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Resources.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Listevisning.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Traadvisning.js")
