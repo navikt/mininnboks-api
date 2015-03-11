@@ -60,7 +60,7 @@ public class HenvendelseController {
     public String sendSvar(Svar svar) {
         assert svar.fritekst.length() > 0 && svar.fritekst.length() <= 1000;
         Traad traad = hentTraad(svar.traadId);
-        if(!traad.kanBesvares){
+        if (!traad.kanBesvares) {
             throw new RuntimeException("Kan ikke sende svar på en tråd hvor nyeste henvendelse ikke er et spørsmål til bruker");
         }
 
