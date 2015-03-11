@@ -30,7 +30,10 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.*;
 @Configuration
 public class HenvendelseMockContext {
     List<XMLHenvendelse> henvendelser = new ArrayList<XMLHenvendelse>() {{
-        addAll(lagBehandlingskjede(OVRG, DateTime.now().minusDays(1), SPORSMAL_MODIA_UTGAAENDE));
+        addAll(lagBehandlingskjede(FMLI, DateTime.now().minusDays(1), SPORSMAL_MODIA_UTGAAENDE));
+        addAll(lagBehandlingskjede(ARBD, DateTime.now().minusDays(2), SPORSMAL_MODIA_UTGAAENDE));
+        addAll(lagBehandlingskjede(ORT_HJE, DateTime.now().minusDays(3), SPORSMAL_MODIA_UTGAAENDE));
+        addAll(lagBehandlingskjede(OVRG, DateTime.now().minusDays(4), SPORSMAL_MODIA_UTGAAENDE));
         addAll(lagBehandlingskjede(FMLI, DateTime.now().minusDays(3), SPORSMAL_SKRIFTLIG));
         addAll(lagBehandlingskjede(PENS, DateTime.now().minusDays(4), SPORSMAL_SKRIFTLIG, SVAR_SKRIFTLIG, SPORSMAL_MODIA_UTGAAENDE, SVAR_SBL_INNGAAENDE, SVAR_SKRIFTLIG));
         addAll(lagBehandlingskjede(HJLPM, DateTime.now().minusWeeks(2), REFERAT_OPPMOTE));
