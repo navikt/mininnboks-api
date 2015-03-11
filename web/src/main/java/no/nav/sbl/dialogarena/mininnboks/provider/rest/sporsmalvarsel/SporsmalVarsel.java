@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static java.lang.System.getProperty;
 import static no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalVarselUtils.erUbesvart;
 import static no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalVarselUtils.erUlest;
 
@@ -35,6 +36,6 @@ public class SporsmalVarsel {
     }
 
     private String lagDirektelenkeTilTraad(String traadId) {
-        return System.getProperty("mininnboks.link.url") + "/";
+        return String.format("%s/traad/%s", getProperty("mininnboks.link.url"), traadId);
     }
 }
