@@ -10,12 +10,14 @@ var Knapper = React.createClass({
         }
     },
     render: function () {
-        var btnCls = format('knapp-{}-liten', this.props.kanBesvares && !this.props.besvares ? 'hoved' : 'deaktivert');
+        var skrivSvar = this.props.kanBesvares && !this.props.besvares ?
+            <button onClick={this.besvar} className="knapp-hoved-liten">{resources.get('traadvisning.skriv.svar.link')}</button> :
+            null;
 
         return (
             <div className="knapper">
-                <a href="/mininnboks" className="knapp-liten">{resources.get('traadvisning.innboks.link')}</a>
-                <button onClick={this.besvar} className={btnCls}>{resources.get('traadvisning.skriv.svar.link')}</button>
+                {skrivSvar}
+                <a href="/mininnboks">{resources.get('traadvisning.innboks.link')}</a>
             </div>
         )
     }

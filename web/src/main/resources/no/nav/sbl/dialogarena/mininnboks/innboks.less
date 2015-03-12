@@ -10,14 +10,10 @@
   }
 }
 
-.top-bar {
-  border-bottom: 1px solid @rammeborder;
-  .innboks-navigasjon {
-    text-align: center;
-    max-width: @maxwidth;
-    margin: 0 auto;
-    padding: 0px 0 20px;
-  }
+.innboks-navigasjon {
+  text-align: center;
+  margin: 0 auto;
+  padding: 0 0 30px;
 }
 
 h1 {
@@ -39,13 +35,15 @@ h1 {
 }
 
 .traad-container {
-  background-color: white;
   padding: 2em 4em;
   .knapper {
     text-align: center;
     margin-bottom: 30px;
-    [class*=knapp-] {
-      margin: 0 1em 0;
+    button {
+      margin-bottom: 1rem;
+    }
+    a {
+      display: block;
     }
   }
   .info-boks {
@@ -148,6 +146,7 @@ h1 {
       }
       .melding {
         float: right;
+        background-color: #ffffff;
         &:before, &:after {
           right: 100%;
         }
@@ -190,6 +189,7 @@ h1 {
   background-color: #ffffff;
   text-decoration: none;
   border: 2px solid transparent;
+  border-radius: 2px;
   &.lest {
     h2, h3, p {
       color: #6e6f72
@@ -233,10 +233,10 @@ h1 {
   }
 
   &:hover {
-    border-bottom: 2px solid #b7b1aa;
+    border-bottom: 1px solid #2968b1;
   }
 
-  &:active, &:focus {
+  &:active {
     background-color: #0264c6;
     h2, h3, p {
       color: white;
