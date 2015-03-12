@@ -1,19 +1,14 @@
 var React = require('react');
 
 var AntallMeldinger = React.createClass({
-    render: function() {
+    render: function () {
         var antall = this.props.antall;
-        if (antall == 1) {
-            return (
-                <div className="ikon antall-en"></div>
-            )
-        } else {
-            return (
-                <div className="ikon antall-flere">
-                    {antall}
-                </div>
-            )
-        }
+        var antallCls = antall === 1 ? 'ikon antall-en' : 'ikon antall-flere';
+        var antallTekst = antall === 1 ? null : antall;
+
+        return (
+            <div className={antallCls}>{antallTekst}</div>
+        );
     }
 });
 

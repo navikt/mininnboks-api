@@ -15,23 +15,24 @@ var ListeVisning = React.createClass({
     render: function () {
         if (!this.state.hentet) {
             return <Snurrepipp />
-        } else if (this.state.feilet.status) {
-            return <div className="innboks-container">
-                <Feilmelding melding='Noe gikk feil' />
-            </div>;
-        } else {
-            return (
-                <div>
-                    <h1 className="diger">{resources.get('innboks.overskrift')}</h1>
-                    <div className="top-bar">
-                        <div className="innboks-navigasjon clearfix">
-                            <a className="skriv-ny-link knapp-hoved-liten" href="https://www-t4.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Kontakt+oss/skriv+til+oss/">{resources.get('innboks.skriv.ny.link')}</a>
-                        </div>
-                    </div>
-                    <TraaderContainer traader={this.state.traader} />
-                </div>
-            );
         }
+        if (this.state.feilet.status) {
+            return <div className="innboks-container">
+                <Feilmelding melding={this.state.feilet.melding} />
+            </div>;
+        }
+
+        return (
+            <div>
+                <h1 className="diger">{resources.get('innboks.overskrift')}</h1>
+                <div className="top-bar">
+                    <div className="innboks-navigasjon clearfix">
+                        <a className="skriv-ny-link knapp-hoved-liten" href="https://www-t4.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Kontakt+oss/skriv+til+oss/">{resources.get('innboks.skriv.ny.link')}</a>
+                    </div>
+                </div>
+                <TraaderContainer traader={this.state.traader} />
+            </div>
+        );
     }
 });
 

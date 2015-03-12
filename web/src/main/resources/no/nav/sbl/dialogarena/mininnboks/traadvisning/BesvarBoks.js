@@ -1,5 +1,7 @@
 var React = require('react');
 var ExpandingTextArea = require('./ExpandingTextArea');
+var Snurrepipp = require('snurrepipp');
+
 
 var BesvarBoks = React.createClass({
     getInitialState: function () {
@@ -17,18 +19,27 @@ var BesvarBoks = React.createClass({
         this.props.skjul();
     },
     render: function () {
-        var knapper = this.state.sender ?
-            <img className="sender-spinner" src="/mininnboks/img/ajaxloader/hvit/loader_hvit_48.gif" /> :
-            <div>
-                <input type="button" className="knapp-hoved-liten" value="Send svar" onClick={this.onSubmit} />
-                <a href="#" onClick={this.skjul}>Avbryt</a>
-            </div>;
+        var knapper = <Snurrepipp storrelse="48" farge="hvit" />;
 
-        return this.props.vis ?
+        if (!this.state.sender) {
+            knapper = (
+                <div>
+                    <input type="button" className="knapp-hoved-liten" value="Send svar" onClick={this.onSubmit} />
+                    <a href="#" onClick={this.skjul}>Avbryt</a>
+                </div>
+            );
+        }
+
+        if (!this.props.vis) {
+            return null;
+        }
+
+        return (
             <div className="besvar-container">
                 <ExpandingTextArea placeholder="Skriv et svar" ref="textarea" />
                 {knapper}
-            </div> : null;
+            </div>
+        );
     }
 });
 
