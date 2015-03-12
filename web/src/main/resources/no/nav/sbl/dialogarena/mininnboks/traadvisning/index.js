@@ -5,6 +5,7 @@ var Knapper = require('./Knapper');
 var resources = require('resources');
 var Snurrepipp = require('snurrepipp');
 var Feilmelding = require('feilmelding');
+var InfoBoks = require('./InfoBoks');
 var format = require('string-format');
 
 var TraadVisning = React.createClass({
@@ -33,7 +34,16 @@ var TraadVisning = React.createClass({
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify({traadId: this.state.traad.nyeste.traadId, fritekst: fritekst})
-        }).done(leggTilMelding.bind(this));
+        }).done(leggTilMelding.bind(this, fritekst));
+    },
+    getInfoMelding: function () {
+        if (this.state.traad.avsluttet) {
+            return resources.get('traadvisning.kan.ikke.svare.info');
+        } else if (!this.state.traad.avsluttet && !this.state.traad.kanBesvares) {
+            return resources.get('send-svar.bekreftelse.du-mottar-epost');
+        } else {
+            return '';
+        }
     },
     render: function () {
         if (!this.state.hentet) {
@@ -58,7 +68,8 @@ var TraadVisning = React.createClass({
             <div>
                 <h1 className="diger">{overskrift}</h1>
                 <div className="innboks-container traad-container">
-                    <Knapper avsluttet={this.state.traad.avsluttet} kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
+                    <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
+                    <InfoBoks melding={this.getInfoMelding()} />
                     <BesvarBoks besvar={this.sendMelding} vis={this.state.besvares} skjul={this.skjulBesvarBoks} />
                     {meldingItems}
                 </div>
@@ -89,8 +100,8 @@ function feiletCallback(data) {
     })
 }
 
-function leggTilMelding() {
-    var meldinger = this.state.meldinger.splice(0);
+function leggTilMelding(fritekst) {
+    var meldinger = this.state.traad.meldinger.splice(0);
     meldinger.unshift({
         fritekst: fritekst,
         opprettet: new Date(),
