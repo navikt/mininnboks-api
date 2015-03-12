@@ -75,7 +75,7 @@ var TraadVisning = React.createClass({
                 <div>
                     <h1 className="diger">{overskrift}</h1>
                     <div className="innboks-container traad-container">
-                        <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
+                        <Knapper avsluttet={this.state.traad.avsluttet} kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
                         <BesvarBoks besvar={this.leggTilMelding} vis={this.state.besvares} skjul={this.skjulBesvarBoks} />
                     {meldingItems}
                     </div>

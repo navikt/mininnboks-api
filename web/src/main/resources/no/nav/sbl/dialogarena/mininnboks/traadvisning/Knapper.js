@@ -18,7 +18,7 @@ var Knapper = React.createClass({
                 <a href="#"
                     onClick={this.besvar}
                     className={'knapp-' + (this.props.kanBesvares && !this.props.besvares ? 'hoved' : 'deaktivert') + '-liten'}>{resources.get('traadvisning.skriv.svar.link')}</a>
-                {this.props.kanBesvares ? null : info}
+                {this.props.avsluttet ? info : null}
             </div>
         )
     }
