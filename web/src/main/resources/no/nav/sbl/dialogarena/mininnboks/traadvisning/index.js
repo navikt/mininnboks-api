@@ -40,8 +40,8 @@ var TraadVisning = React.createClass({
         if (this.state.traad.avsluttet) {
             return (
                 <InfoBoks>
-                    <p>{resources.get('traadvisning.kan.ikke.svare.info')}</p>
-                    <a href={resources.get('skriv.ny.link')}>{resources.get('traadvisning.kan.ikke.svare.lenke')}</a>
+                    <p>{resources.get('traadvisning.kan-ikke-svare.info')}</p>
+                    <a href={resources.get('skriv.ny.link')}>{resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
                 </InfoBoks>)
         } else if (!this.state.traad.avsluttet && !this.state.traad.kanBesvares) {
             var epost = resources.get('bruker.epost');

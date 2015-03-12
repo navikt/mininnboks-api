@@ -2,7 +2,7 @@ var React = require('react');
 
 var ExpandingTextArea = React.createClass({
     getDefaultProps: function () {
-        return {minChars: 1, maxChars: 1000, minHeightPx: 140, placeholder: ''}
+        return {minChars: 1, maxChars: 1000, minHeightPx: 140, placeholder: '', charsLeftText: 'Chars left'}
     },
     getInitialState: function () {
         return {input: '', touched: false, validationMessages: []}
@@ -89,7 +89,7 @@ var ExpandingTextArea = React.createClass({
                     {validationMessages}
                 </div>
                 <span className={'charsLeft ' + noMoreCharsClass}>{this.charsLeft()}</span>
-                <span> Tegn igjen</span>
+                <span>{' ' + this.props.charsLeftText}</span>
             </div>
         )
     }
