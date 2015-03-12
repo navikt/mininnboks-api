@@ -27,7 +27,7 @@ var ListeVisning = React.createClass({
                 <h1 className="diger">{resources.get('innboks.overskrift')}</h1>
                 <div className="top-bar">
                     <div className="innboks-navigasjon clearfix">
-                        <a className="skriv-ny-link knapp-hoved-liten" href="https://www-t4.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Kontakt+oss/skriv+til+oss/">{resources.get('innboks.skriv.ny.link')}</a>
+                        <a className="skriv-ny-link knapp-hoved-liten" href={resources.get('skriv.ny.link')}>{resources.get('innboks.skriv.ny.link')}</a>
                     </div>
                 </div>
                 <TraaderContainer traader={this.state.traader} />
