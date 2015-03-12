@@ -1,13 +1,16 @@
 var React = require('react');
 
 var InfoBoks = React.createClass({
-    getDefaultProps: function () {
-        return {melding: ''}
-    },
     render: function () {
+        var innerHTML = !this.props.melding && this.props.children ?
+            <div>{this.props.children}</div> :
+            <div dangerouslySetInnerHTML={{__html: this.props.melding}}></div>;
+
         return (
-            this.props.melding ? <div className="info-boks" dangerouslySetInnerHTML={{__html: this.props.melding}}></div> : null
-        )
+            <div className="info-boks">
+                {innerHTML}
+            </div>
+        );
     }
 });
 

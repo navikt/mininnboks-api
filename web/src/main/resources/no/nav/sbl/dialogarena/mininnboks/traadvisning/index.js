@@ -38,12 +38,28 @@ var TraadVisning = React.createClass({
     },
     getInfoMelding: function () {
         if (this.state.traad.avsluttet) {
-            return resources.get('traadvisning.kan.ikke.svare.info');
+            return (
+                <InfoBoks>
+                    <p>{resources.get('traadvisning.kan.ikke.svare.info')}</p>
+                    <a href={resources.get('skriv.ny.link')}>{resources.get('traadvisning.kan.ikke.svare.lenke')}</a>
+                </InfoBoks>)
         } else if (!this.state.traad.avsluttet && !this.state.traad.kanBesvares) {
-            return resources.get('send-svar.bekreftelse.du-mottar-epost');
-        } else {
-            return '';
+            var epost = resources.get('bruker.epost');
+            var infoTekst = epost ?
+                <p>{resources.get('traadvisning.send-svar.bekreftelse.du-mottar-epost')}</p> :
+                <p>{resources.get('traadvisning.send-svar.bekreftelse.kunne-ikke-hente-epost')}</p>;
+            var epostTekst = epost ?
+                <p>{epost}</p> :
+                <a href={resources.get('brukerprofil.link')}>{resources.get('send-sporsmal.bekreftelse.registrer-epostadresse')}</a>;
+
+            return (
+                <InfoBoks>
+                    {infoTekst}
+                    {epostTekst}
+                </InfoBoks>)
         }
+
+        return null;
     },
     render: function () {
         if (!this.state.hentet) {
@@ -69,7 +85,7 @@ var TraadVisning = React.createClass({
                 <h1 className="diger">{overskrift}</h1>
                 <div className="innboks-container traad-container">
                     <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
-                    <InfoBoks melding={this.getInfoMelding()} />
+                    {this.getInfoMelding()}
                     <BesvarBoks besvar={this.sendMelding} vis={this.state.besvares} skjul={this.skjulBesvarBoks} />
                     {meldingItems}
                 </div>
