@@ -124,7 +124,6 @@ function feiletCallback(data) {
 }
 
 function leggTilMelding(fritekst) {
-    console.log(this.state.traad);
     var meldinger = this.state.traad.meldinger.splice(0);
     meldinger.unshift({
         fritekst: fritekst,
