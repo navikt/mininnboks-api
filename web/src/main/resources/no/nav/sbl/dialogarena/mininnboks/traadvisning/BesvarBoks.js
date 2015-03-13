@@ -20,7 +20,7 @@ var BesvarBoks = React.createClass({
         this.props.skjul();
     },
     render: function () {
-        var knapper = <Snurrepipp storrelse="48" farge="hvit" />;
+        var knapper = <Snurrepipp storrelse="48" farge="graa" />;
 
         if (!this.state.sender) {
             knapper = (
