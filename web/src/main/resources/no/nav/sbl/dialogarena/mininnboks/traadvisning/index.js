@@ -120,6 +120,7 @@ function leggTilMelding(fritekst) {
     meldinger.unshift({
         fritekst: fritekst,
         opprettet: new Date(),
+        temagruppeNavn: this.state.traad.nyeste.temagruppeNavn,
         fraBruker: true,
         fraNav: false,
         statusTekst: 'Svar om ' + meldinger[0].temagruppeNavn
