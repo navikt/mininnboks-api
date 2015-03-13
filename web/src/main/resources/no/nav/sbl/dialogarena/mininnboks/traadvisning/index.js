@@ -31,7 +31,6 @@ var TraadVisning = React.createClass({
         $.ajax({
             type: 'POST',
             url: '/mininnboks/tjenester/traader/ny',
-            dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify({traadId: this.state.traad.nyeste.traadId, fritekst: fritekst})
         }).done(leggTilMelding.bind(this, fritekst));

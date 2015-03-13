@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
@@ -57,6 +58,7 @@ public class HenvendelseController {
     @POST
     @Path("/ny")
     @Consumes(APPLICATION_JSON)
+    @Produces(TEXT_PLAIN)
     public String sendSvar(Svar svar) {
         assert svar.fritekst.length() > 0 && svar.fritekst.length() <= 1000;
         Traad traad = hentTraad(svar.traadId);
