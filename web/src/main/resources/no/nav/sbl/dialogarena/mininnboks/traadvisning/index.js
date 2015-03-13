@@ -54,9 +54,9 @@ var TraadVisning = React.createClass({
                 <span>
                     {epost}
                     {' '}
-                    <a href={resources.get('brukerprofil.link')}>{resources.get('send-svar.bekreftelse.registrer-epostadresse')}</a>
+                    <a href={resources.get('brukerprofil.link')}>{resources.get('traadvisning.send-svar.bekreftelse.endre-epostadresse')}</a>
                 </span> :
-                <a href={resources.get('brukerprofil.link')}>{resources.get('send-svar.bekreftelse.registrer-epostadresse')}</a>;
+                <a href={resources.get('brukerprofil.link')}>{resources.get('traadvisning.send-svar.bekreftelse.registrer-epostadresse')}</a>;
 
             return (
                 <InfoBoks>
@@ -110,7 +110,7 @@ function okCallback(data) {
     } else {
         console.error('okCallback:: Kunne ikke hente ut tråd', data);
         this.setState({
-            feilet: {status: true, melding: 'Kunne ikke hente ut tråd.'},
+            feilet: {status: true, melding: resources.get('traadvisning.feilmelding.hentet-ikke-traad')},
             hentet: true
         })
     }
@@ -118,12 +118,13 @@ function okCallback(data) {
 function feiletCallback(data) {
     console.error('feiletCallback:: Kunne ikke hente ut tråd', data);
     this.setState({
-        feilet: {status: true, melding: 'Kunne ikke hente ut tråd.'},
+        feilet: {status: true, melding: resources.get('traadvisning.feilmelding.hentet-ikke-traad')},
         hentet: true
     })
 }
 
 function leggTilMelding(fritekst) {
+    console.log(this.state.traad);
     var meldinger = this.state.traad.meldinger.splice(0);
     meldinger.unshift({
         fritekst: fritekst,
