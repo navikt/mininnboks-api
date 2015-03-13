@@ -39,22 +39,30 @@ var TraadVisning = React.createClass({
         if (this.state.traad.avsluttet) {
             return (
                 <InfoBoks>
-                    <p>{resources.get('traadvisning.kan-ikke-svare.info')}</p>
-                    <a href={resources.get('skriv.ny.link')}>{resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
+                    <p>
+                        {resources.get('traadvisning.kan-ikke-svare.info')}
+                        {' '}
+                        <a href={resources.get('skriv.ny.link')}>{resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
+                    </p>
                 </InfoBoks>)
         } else if (!this.state.traad.avsluttet && !this.state.traad.kanBesvares) {
             var epost = resources.get('bruker.epost');
             var infoTekst = epost ?
-                <p>{resources.get('traadvisning.send-svar.bekreftelse.du-mottar-epost')}</p> :
-                <p>{resources.get('traadvisning.send-svar.bekreftelse.kunne-ikke-hente-epost')}</p>;
+                resources.get('traadvisning.send-svar.bekreftelse.du-mottar-epost') :
+                resources.get('traadvisning.send-svar.bekreftelse.kunne-ikke-hente-epost');
             var epostTekst = epost ?
-                <p>{epost}</p> :
-                <a href={resources.get('brukerprofil.link')}>{resources.get('send-sporsmal.bekreftelse.registrer-epostadresse')}</a>;
+                <span>
+                    {epost}
+                    {' '}
+                    <a href={resources.get('brukerprofil.link')}>{resources.get('send-svar.bekreftelse.registrer-epostadresse')}</a>
+                </span> :
+                <a href={resources.get('brukerprofil.link')}>{resources.get('send-svar.bekreftelse.registrer-epostadresse')}</a>;
 
             return (
                 <InfoBoks>
-                    {infoTekst}
-                    {epostTekst}
+                    <p>
+                        {infoTekst} {epostTekst}
+                    </p>
                 </InfoBoks>)
         }
 
