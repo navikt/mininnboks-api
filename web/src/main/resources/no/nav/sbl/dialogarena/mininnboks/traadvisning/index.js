@@ -81,7 +81,7 @@ var TraadVisning = React.createClass({
         }
 
         var meldingItems = this.state.traad.meldinger.map(function (melding) {
-            return <MeldingContainer melding={melding} />
+            return <MeldingContainer key={melding.id} melding={melding} />
         });
         var overskrift = this.state.traad.nyeste.kassert ?
             resources.get('traadvisning.overskrift.kassert') :

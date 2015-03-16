@@ -79,6 +79,10 @@ var ExpandingTextArea = React.createClass({
             return (<span className="validation-message">{validationMessage}</span>);
         });
 
+        validationMessages = React.addons.createFragment({
+            errorMessages: validationMessages
+        });
+
         return (
             <div className="expandingtextarea">
                 <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>

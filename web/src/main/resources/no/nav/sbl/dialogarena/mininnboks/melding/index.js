@@ -17,6 +17,9 @@ var Melding = React.createClass({
         var avsnitt = Utils.sanitize(melding.fritekst).split(/[\r\n]+/)
             .map(this.props.lagLenkerAvURL ? Utils.leggTilLenkerTags : Utils.voidTransformation)
             .map(Utils.tilParagraf(this.props.lagLenkerAvURL));
+        avsnitt = React.addons.createFragment({
+            avsnitt: avsnitt
+        });
 
         return (
             <div className="melding">

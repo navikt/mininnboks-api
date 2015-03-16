@@ -14,6 +14,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.FRA_NAV;
 
 public class Traad {
+    public final String traadId;
     public final List<Henvendelse> meldinger;
     public final Henvendelse nyeste;
     public final Boolean kanBesvares, avsluttet;
@@ -23,6 +24,7 @@ public class Traad {
         this.nyeste = this.meldinger.get(0);
         this.kanBesvares = SPORSMAL_MODIA_UTGAAENDE.equals(nyeste.type);
         this.avsluttet = FRA_NAV.contains(nyeste.type) && !kanBesvares;
+        this.traadId = this.nyeste.traadId;
     }
 
     public static final Transformer<Traad, Henvendelse> NYESTE = new Transformer<Traad, Henvendelse>() {
