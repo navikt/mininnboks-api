@@ -25,5 +25,4 @@ window.NAVJS.Components = window.NAVJS.Components || {};
     window.console = con;
 })(window.console);
 
-
-module.exports = require('react');
+module.exports = require('react/addons');
