@@ -76,7 +76,7 @@ public class HenvendelseController {
         return new NyHenvendelseResultat(response.getBehandlingsId());
     }
 
-    private static class NyHenvendelseResultat {
+    private static final class NyHenvendelseResultat {
         public final String behandlingsId;
 
         private NyHenvendelseResultat(String behandlingsId) {
