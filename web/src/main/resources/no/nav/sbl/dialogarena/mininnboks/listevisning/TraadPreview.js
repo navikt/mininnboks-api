@@ -1,7 +1,7 @@
 var React = require('react');
 var AntallMeldinger = require('./AntallMeldinger');
 var MeldingStatus = require('./MeldingStatus');
-var Melding = require('../Melding');
+var Melding = require('melding');
 
 var TraadPreview = React.createClass({
     markSomLest: function() {
@@ -9,7 +9,7 @@ var TraadPreview = React.createClass({
     },
     render: function () {
         var melding = this.props.traad.nyeste;
-        var className = 'traadvisning' + (melding.lest ? ' lest' : '');
+        var className = 'traadlistevisning' + (melding.lest ? ' lest' : '');
 
         return (
             <a className={className} href={"/mininnboks/traad/" + melding.traadId} onClick={this.markSomLest}>

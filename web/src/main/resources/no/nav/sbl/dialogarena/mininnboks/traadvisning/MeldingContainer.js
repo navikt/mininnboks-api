@@ -1,5 +1,5 @@
 var React = require('react');
-var Melding = require('../Melding');
+var Melding = require('melding');
 
 var MeldingContainer = React.createClass({
     render: function() {

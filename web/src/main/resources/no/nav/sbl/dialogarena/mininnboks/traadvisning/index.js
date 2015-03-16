@@ -5,7 +5,7 @@ var Knapper = require('./Knapper');
 var resources = require('resources');
 var Snurrepipp = require('snurrepipp');
 var Feilmelding = require('feilmelding');
-var InfoBoks = require('./InfoBoks');
+var InfoBoks = require('infoboks');
 var format = require('string-format');
 
 var TraadVisning = React.createClass({

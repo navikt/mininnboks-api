@@ -55,6 +55,10 @@ public class WicketApplication extends WebApplication {
                 .withModules(EKSTERNFLATE)
                 .addMetas(CHARSET_UTF8, VIEWPORT_SCALE_1, XUA_IE_EDGE)
                 .addLess(
+                        new PackageResourceReference(WicketApplication.class, "melding/melding.less"),
+                        new PackageResourceReference(WicketApplication.class, "infoboks/infoboks.less"),
+                        new PackageResourceReference(WicketApplication.class, "listevisning/listevisning.less"),
+                        new PackageResourceReference(WicketApplication.class, "traadvisning/traadvisning.less"),
                         new PackageResourceReference(WicketApplication.class, "innboks.less"),
                         new PackageResourceReference(SkrivPage.class, "sporsmal.less"))
                 .withResourcePacking(this.usesDeploymentConfig())
@@ -64,6 +68,8 @@ public class WicketApplication extends WebApplication {
                         new JavaScriptResourceReference(WicketApplication.class, "build/Utils.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Snurrepipp.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Feilmelding.js"),
+                        new JavaScriptResourceReference(WicketApplication.class, "build/Infoboks.js"),
+                        new JavaScriptResourceReference(WicketApplication.class, "build/Melding.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Resources.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Listevisning.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Traadvisning.js")
