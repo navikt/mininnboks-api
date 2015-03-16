@@ -134,7 +134,7 @@ public class HenvendelseMockContext {
     }
 
     private static XMLHenvendelse lagHenvendelse(Integer behandlingsId, Integer behandlingskjedeId, XMLHenvendelseType type, final Temagruppe tema, DateTime opprettet, Boolean kassert) {
-        final String tekst = halvpartenEllerMer(LOREM);
+        final String tekst = (int)((Math.random()*1000)) + halvpartenEllerMer(LOREM);
         return new XMLHenvendelse()
                 .withBehandlingsId(behandlingsId.toString())
                 .withBehandlingskjedeId(behandlingskjedeId.toString())
