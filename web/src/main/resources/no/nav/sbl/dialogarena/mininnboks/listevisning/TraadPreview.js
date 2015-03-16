@@ -13,9 +13,9 @@ var TraadPreview = React.createClass({
 
         return (
             <a className={className} href={"/mininnboks/traad/" + melding.traadId} onClick={this.markSomLest}>
+                <AntallMeldinger antall={this.props.traad.meldinger.length} />
                 <MeldingStatus  melding={melding} />
                 <Melding melding={melding} />
-                <AntallMeldinger antall={this.props.traad.meldinger.length} />
             </a>
         )
     }
