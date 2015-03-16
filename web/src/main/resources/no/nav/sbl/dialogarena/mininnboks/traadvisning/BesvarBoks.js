@@ -1,6 +1,6 @@
 var React = require('react');
 var resources = require('resources');
-var ExpandingTextArea = require('./ExpandingTextArea');
+var ExpandingTextArea = require('expandingtextarea');
 var Snurrepipp = require('snurrepipp');
 
 

@@ -57,6 +57,7 @@ public class WicketApplication extends WebApplication {
                 .addLess(
                         new PackageResourceReference(WicketApplication.class, "melding/melding.less"),
                         new PackageResourceReference(WicketApplication.class, "infoboks/infoboks.less"),
+                        new PackageResourceReference(WicketApplication.class, "expandingtextarea/expandingtextarea.less"),
                         new PackageResourceReference(WicketApplication.class, "listevisning/listevisning.less"),
                         new PackageResourceReference(WicketApplication.class, "traadvisning/traadvisning.less"),
                         new PackageResourceReference(WicketApplication.class, "innboks.less"),
@@ -69,6 +70,7 @@ public class WicketApplication extends WebApplication {
                         new JavaScriptResourceReference(WicketApplication.class, "build/Snurrepipp.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Feilmelding.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Infoboks.js"),
+                        new JavaScriptResourceReference(WicketApplication.class, "build/Expandingtextarea.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Melding.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Resources.js"),
                         new JavaScriptResourceReference(WicketApplication.class, "build/Listevisning.js"),
