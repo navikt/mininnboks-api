@@ -12,6 +12,7 @@ var Utils = {
     tilParagraf: function (kanInneholdeHTML) {
         if (kanInneholdeHTML) {
             return function (avsnitt) {
+                avsnitt = sanitize(avsnitt, {allowedTags: ['a']});
                 return <p dangerouslySetInnerHTML={{__html: avsnitt}}></p>;
             }
         } else {

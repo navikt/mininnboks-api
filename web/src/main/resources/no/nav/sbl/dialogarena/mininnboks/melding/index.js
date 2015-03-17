@@ -14,7 +14,7 @@ var Melding = React.createClass({
         var melding = this.props.melding;
         var dato = moment(melding.opprettet).format('Do MMMM YYYY, [kl.] HH:mm');
 
-        var avsnitt = Utils.sanitize(melding.fritekst).split(/[\r\n]+/)
+        var avsnitt = melding.fritekst.split(/[\r\n]+/)
             .map(this.props.lagLenkerAvURL ? Utils.leggTilLenkerTags : Utils.voidTransformation)
             .map(Utils.tilParagraf(this.props.lagLenkerAvURL));
         avsnitt = React.addons.createFragment({
