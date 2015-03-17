@@ -17,7 +17,7 @@ var Knapper = React.createClass({
         return (
             <div className="knapper">
                 {skrivSvar}
-                <a href="/mininnboks/">{resources.get('traadvisning.innboks.link')}</a>
+                <a href="/mininnboks">{resources.get('traadvisning.innboks.link')}</a>
             </div>
         )
     }
