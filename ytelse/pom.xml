@@ -10,15 +10,13 @@
     <packaging>pom</packaging>
 
     <properties>
+        <encoding>UTF-8</encoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <scala.version>2.10.4</scala.version>
-        <encoding>UTF-8</encoding>
-
+        <scala-maven-plugin.version>3.1.5</scala-maven-plugin.version>
         <gatling.version>2.0.0-RC6</gatling.version>
         <gatling-highcharts.version>2.0.0-RC6</gatling-highcharts.version>
-
-        <scala-maven-plugin.version>3.1.5</scala-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -75,7 +73,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>io.gatling</groupId>
                 <artifactId>gatling-maven-plugin</artifactId>
@@ -94,4 +91,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

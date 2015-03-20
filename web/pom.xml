@@ -18,13 +18,13 @@
         <hamcrest.version>1.3</hamcrest.version>
         <modig.frontend.version>1.1.102</modig.frontend.version>
         <modig-security.version> 1.0.24</modig-security.version>
-        <modig-content.version>2.0.3</modig-content.version>
+        <modig-content.version>2.0.7</modig-content.version>
         <modig-lang.version>2.0.2</modig-lang.version>
         <modig-wicket.version>2.0.41</modig-wicket.version>
         <slf4j.version>1.7.5</slf4j.version>
         <spring.version>4.1.2.RELEASE</spring.version>
         <wicket.version>6.17.0</wicket.version>
-        <jersey.version>2.16</jersey.version>
+        <jersey.version>2.17</jersey.version>
         <jackson.version>2.4.4</jackson.version>
     </properties>
 
@@ -78,7 +78,7 @@
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>common-jetty</artifactId>
-            <version>1.0.23</version>
+            <version>1.0.25</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -281,6 +281,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <!--Jersey-->
         <dependency>
@@ -309,13 +315,6 @@
             <groupId>org.glassfish.hk2.external</groupId>
             <artifactId>javax.inject</artifactId>
             <version>2.4.0-b06</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <!--Logging-->
@@ -373,6 +372,7 @@
         </dependency>
 
         <!--Diverse-->
+
         <dependency>
             <groupId>no.nav.sbl</groupId>
             <artifactId>innholdshenter</artifactId>
@@ -486,7 +486,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.3.2</version>
-
                 <executions>
                     <execution>
                         <id>npm install</id>
