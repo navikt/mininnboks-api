@@ -5,6 +5,7 @@ import no.nav.innholdshenter.filter.DecoratorFilter;
 import no.nav.modig.content.*;
 import no.nav.modig.content.enonic.HttpContentRetriever;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
+import org.apache.commons.io.Charsets;
 import org.apache.wicket.Application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -30,19 +33,20 @@ public class ContentConfig {
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/app/mininnboks/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "no.nav.sbl.dialogarena.mininnboks.innhold_nb";
     private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
+    private static final Reader propertiesSource = new InputStreamReader(BasePage.class.getResourceAsStream("innhold_nb.properties"), Charsets.UTF_8);
 
     @Value("${appres.cms.url}")
     private String appresUrl;
 
     @Bean
     public PropertyResolver propertyResolver(CmsContentRetriever contentRetriever) {
-        return new PropertyResolver(contentRetriever, BasePage.class.getResourceAsStream("innhold_nb.properties"));
+        return new PropertyResolver(contentRetriever, propertiesSource);
     }
 
     @Bean
     public List<String> keys() throws IOException {
         Properties properties = new Properties();
-        properties.load(BasePage.class.getResourceAsStream("innhold_nb.properties"));
+        properties.load(propertiesSource);
         return on(properties.keySet()).map(castTo(String.class)).collect();
     }
 
@@ -50,10 +54,10 @@ public class ContentConfig {
     public ValueRetriever siteContentRetriever() throws URISyntaxException {
         Map<String, List<URI>> uris = new HashMap<>();
         uris.put(DEFAULT_LOCALE,
-            asList(new URI(appresUrl + INNHOLDSTEKSTER_NB_NO_REMOTE)));
+                asList(new URI(appresUrl + INNHOLDSTEKSTER_NB_NO_REMOTE)));
         return new ValuesFromContentWithResourceBundleFallback(
-            asList(INNHOLDSTEKSTER_NB_NO_LOCAL), enonicContentRetriever(),
-            uris, DEFAULT_LOCALE);
+                asList(INNHOLDSTEKSTER_NB_NO_LOCAL), enonicContentRetriever(),
+                uris, DEFAULT_LOCALE);
     }
 
     @Bean(name = "appresUrl")
@@ -84,11 +88,11 @@ public class ContentConfig {
         decoratorFilter.setFragmentsUrl("common-html/v1/navno");
         decoratorFilter.setApplicationName("Min Innboks");
         decoratorFilter.setFragmentNames(asList(
-            "header-withmenu",
-            "footer-withmenu",
-            "inline-js-variables",
-            "webstats-ga",
-            "skiplinks"
+                "header-withmenu",
+                "footer-withmenu",
+                "inline-js-variables",
+                "webstats-ga",
+                "skiplinks"
         ));
 
         return decoratorFilter;
@@ -104,6 +108,7 @@ public class ContentConfig {
 
     @Inject
     private Application application;
+
     @Scheduled(fixedDelay = 1 * 60 * 1000)
     private void clearCacheTask() {
         application.getResourceSettings().getLocalizer().clearCache();
