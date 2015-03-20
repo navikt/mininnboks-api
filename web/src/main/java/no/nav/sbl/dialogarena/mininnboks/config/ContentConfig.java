@@ -33,20 +33,20 @@ public class ContentConfig {
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/app/mininnboks/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "no.nav.sbl.dialogarena.mininnboks.innhold_nb";
     private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
-    private static final Reader propertiesSource = new InputStreamReader(BasePage.class.getResourceAsStream("innhold_nb.properties"), Charsets.UTF_8);
+    private static final Reader PROPERTIES = new InputStreamReader(BasePage.class.getResourceAsStream("innhold_nb.properties"), Charsets.UTF_8);
 
     @Value("${appres.cms.url}")
     private String appresUrl;
 
     @Bean
     public PropertyResolver propertyResolver(CmsContentRetriever contentRetriever) {
-        return new PropertyResolver(contentRetriever, propertiesSource);
+        return new PropertyResolver(contentRetriever, PROPERTIES);
     }
 
     @Bean
     public List<String> keys() throws IOException {
         Properties properties = new Properties();
-        properties.load(propertiesSource);
+        properties.load(PROPERTIES);
         return on(properties.keySet()).map(castTo(String.class)).collect();
     }
 
