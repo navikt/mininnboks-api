@@ -4,12 +4,10 @@ import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -22,19 +20,16 @@ public class ResourcesController {
     private EpostService epostService;
     @Inject
     private PropertyResolver propertyResolver;
-    @Inject
-    @Named("keys")
-    private List<String> keys;
 
     @GET
     public Map<String, String> getResources() {
         Map<String, String> resources = new HashMap<>();
+
+        resources.putAll(propertyResolver.getAllProperties());
         resources.put("skriv.ny.link", System.getProperty("temavelger.link.url"));
         resources.put("brukerprofil.link", System.getProperty("brukerprofil.link.url"));
         resources.put("bruker.epost", epost());
-        for (String key : keys) {
-            resources.put(key, propertyResolver.getProperty(key));
-        }
+
         return resources;
     }
 

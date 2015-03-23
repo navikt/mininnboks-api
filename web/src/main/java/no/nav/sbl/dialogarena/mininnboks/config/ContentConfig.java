@@ -14,21 +14,20 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.inject.Inject;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.TransformerUtils.castTo;
 
 @Configuration
 @EnableScheduling
 public class ContentConfig {
-
     private static final String DEFAULT_LOCALE = "nb";
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/app/mininnboks/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "no.nav.sbl.dialogarena.mininnboks.innhold_nb";
@@ -41,13 +40,6 @@ public class ContentConfig {
     @Bean
     public PropertyResolver propertyResolver(CmsContentRetriever contentRetriever) {
         return new PropertyResolver(contentRetriever, PROPERTIES);
-    }
-
-    @Bean
-    public List<String> keys() throws IOException {
-        Properties properties = new Properties();
-        properties.load(PROPERTIES);
-        return on(properties.keySet()).map(castTo(String.class)).collect();
     }
 
     @Bean
