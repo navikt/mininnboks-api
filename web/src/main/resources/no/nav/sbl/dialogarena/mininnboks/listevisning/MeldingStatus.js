@@ -6,15 +6,21 @@ var MeldingStatus = React.createClass({
         var status = 'ikon melding-info';
         var statusTekst = "Meldingen er";
 
-        if (!melding.lest) {
-            status += ' lest';
-            statusTekst += 'lest.';
-        } else if (melding.type === 'SVAR_SBL_INNGAAENDE') {
+        if (melding.type === 'SPORSMAL_MODIA_UTGAAENDE') {
+            status += ' ubehandlet';
+            statusTekst += ' ubehandlet.';
+        } else if(melding.type == 'SVAR_SBL_INNGAAENDE') {
             status += ' besvart';
             statusTekst += ' besvart.';
         } else {
-            return null;
+            if(!melding.lest){
+                status += ' ubehandlet';
+                statusTekst += ' ubehandlet.';
+            } else {
+                return null;
+            }
         }
+
         return <div className={status} aria-label={statusTekst}/>;
     }
 });
