@@ -12,6 +12,8 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.mel
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentBehandlingskjedeRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +74,7 @@ public interface HenvendelseService {
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(henvendelse.temagruppe.name())
-                                            .withFritekst(henvendelse.fritekst)));
+                                            .withFritekst(cleanOutHtml(henvendelse.fritekst))));
             return sendInnHenvendelsePortType.sendInnHenvendelse(
                     new WSSendInnHenvendelseRequest()
                             .withType(xmlHenvendelseType)
@@ -95,12 +97,16 @@ public interface HenvendelseService {
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(henvendelse.temagruppe.name())
-                                            .withFritekst(henvendelse.fritekst)));
+                                            .withFritekst(cleanOutHtml(henvendelse.fritekst))));
             return sendInnHenvendelsePortType.sendInnHenvendelse(
                     new WSSendInnHenvendelseRequest()
                             .withType(xmlHenvendelseType)
                             .withFodselsnummer(fodselsnummer)
                             .withAny(info));
+        }
+
+        private static String cleanOutHtml(String text) {
+            return Jsoup.clean(text, Whitelist.none());
         }
 
         @Override
