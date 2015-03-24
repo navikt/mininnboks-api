@@ -1,9 +1,9 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
-import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.wicket.services.HealthCheckService;
 import no.nav.sbl.dialogarena.mininnboks.WicketApplication;
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.utils.CacheConfiguration;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
@@ -16,7 +16,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import static no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils.createPortType;
 
 @Configuration
-@Import({CacheConfig.class, ContentConfig.class, HenvendelseServiceConfig.class})
+@Import({CacheConfiguration.class, ContentConfig.class, HenvendelseServiceConfig.class})
 public class MinInnboksApplicationContext {
 
     @Bean
