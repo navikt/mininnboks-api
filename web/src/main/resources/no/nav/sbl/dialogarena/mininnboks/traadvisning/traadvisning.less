@@ -1,5 +1,6 @@
 .innboks-container.traad-container {
   max-width: 700px;
+  padding: 0 16px;
   .knapper {
     text-align: center;
     margin-bottom: 30px;
@@ -37,6 +38,9 @@
       width: 12%;
       height: 35px;
       position: relative;
+      .responsiveImg {
+        display: none;
+      }
       img {
         position: absolute;
         top: 0;
@@ -100,6 +104,39 @@
         &:before {
           border-right-color: #e5e5dc;
         }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .innboks-container.traad-container .melding-container {
+    .logo {
+      width: 11%;
+      margin-top: 44px;
+      .responsiveImg {
+        display: inline-block;
+        border-radius: 50%;
+        height: 1.2em;
+        width: 1.2em;
+      }
+      img {
+        display: none;
+      }
+    }
+    .melding {
+      width: 89%;
+    }
+    &.fra-bruker .logo {
+      text-align: right;
+      .responsiveImg {
+        background-color: #777777;
+      }
+    }
+    &.fra-nav .logo {
+      text-align: left;
+      .responsiveImg {
+        background-color: #c30202;
       }
     }
   }

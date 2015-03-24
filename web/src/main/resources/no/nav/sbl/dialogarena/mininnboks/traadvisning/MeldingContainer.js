@@ -8,7 +8,7 @@ var MeldingContainer = React.createClass({
         var imgSrc = melding.fraBruker ? '/mininnboks/img/personikon.svg' : '/mininnboks/img/nav-logo.svg';
         return (
             <div className={className}>
-                <div className="logo"><img src={imgSrc} /></div>
+                <div className="logo"><div className="responsiveImg"></div><img src={imgSrc} /></div>
                 <Melding melding={melding} lagLenkerAvURL={true} />
             </div>
         );
