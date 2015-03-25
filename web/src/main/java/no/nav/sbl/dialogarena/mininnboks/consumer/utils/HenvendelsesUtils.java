@@ -9,7 +9,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.apache.commons.collections15.Transformer;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -94,7 +94,7 @@ public abstract class HenvendelsesUtils {
 
     public static String cleanOutHtml(String text) {
         String clean = Jsoup.clean(text.replaceAll(LINE_BREAK, LINE_REPLACEMENT_STRING), Whitelist.none());
-        return StringEscapeUtils.unescapeHtml(clean).replaceAll(LINE_REPLACEMENT_STRING, LINE_BREAK);
+        return StringEscapeUtils.unescapeHtml4(clean).replaceAll(LINE_REPLACEMENT_STRING, LINE_BREAK);
     }
 
     private static String statusTekst(Henvendelse henvendelse, PropertyResolver resolver) {
