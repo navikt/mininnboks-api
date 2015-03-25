@@ -7,6 +7,7 @@ var Snurrepipp = require('snurrepipp');
 var Feilmelding = require('feilmelding');
 var InfoBoks = require('infoboks');
 var format = require('string-format');
+var Utils = require('utils');
 
 var TraadVisning = React.createClass({
     getInitialState: function () {
@@ -18,8 +19,15 @@ var TraadVisning = React.createClass({
         };
     },
     componentDidMount: function () {
-        var traaderPromise = $.get('/mininnboks/tjenester/traader/' + this.props.id);
-        $.when(traaderPromise, resources.promise).then(okCallback.bind(this), feiletCallback.bind(this));
+        var traaderDeferred = $.Deferred();
+        Utils.whenFinished([traaderDeferred.promise(), resources.promise]).then(okCallback.bind(this), feiletCallback.bind(this));
+        if (typeof this.props.id == 'string' && this.props.id.length > 0) {
+            $.get('/mininnboks/tjenester/traader/' + this.props.id)
+                .done(traaderDeferred.resolve.bind(traaderDeferred))
+                .fail(traaderDeferred.reject.bind(traaderDeferred));
+        } else {
+            traaderDeferred.reject();
+        }
     },
     visBesvarBoks: function () {
         this.setState({besvares: true});
@@ -102,18 +110,10 @@ var TraadVisning = React.createClass({
 });
 
 function okCallback(data) {
-    if (data[1] === "success") {
-        this.setState({
-            traad: data[0],
-            hentet: true
-        });
-    } else {
-        console.error('okCallback:: Kunne ikke hente ut tråd', data);
-        this.setState({
-            feilet: {status: true, melding: resources.get('traadvisning.feilmelding.hentet-ikke-traad')},
-            hentet: true
-        })
-    }
+    this.setState({
+        traad: data,
+        hentet: true
+    });
 }
 function feiletCallback(data) {
     console.error('feiletCallback:: Kunne ikke hente ut tråd', data);

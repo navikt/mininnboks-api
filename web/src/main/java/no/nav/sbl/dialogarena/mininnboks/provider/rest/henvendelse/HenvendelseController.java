@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
+import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Svar;
@@ -8,7 +9,10 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.mel
 import org.apache.commons.collections15.Transformer;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
 
@@ -44,8 +48,13 @@ public class HenvendelseController {
 
     @GET
     @Path("/{id}")
-    public Traad hentTraad(@PathParam("id") String id) {
-        return new Traad(henvendelseService.hentTraad(id));
+    public Response hentEnkeltTraad(@PathParam("id") String id) {
+        Optional<Traad> traad = hentTraad(id);
+        if (traad.isSome()) {
+            return Response.ok(traad.get()).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
+        }
     }
 
     @POST
@@ -57,9 +66,16 @@ public class HenvendelseController {
     @POST
     @Path("/ny")
     @Consumes(APPLICATION_JSON)
-    public NyHenvendelseResultat sendSvar(Svar svar) {
+    public NyHenvendelseResultat sendSvar(Svar svar, @Context HttpServletResponse httpResponse) {
         assert svar.fritekst.length() > 0 && svar.fritekst.length() <= 1000;
-        Traad traad = hentTraad(svar.traadId);
+        Optional<Traad> traadOptional = hentTraad(svar.traadId);
+        if (!traadOptional.isSome()) {
+            httpResponse.setStatus(Response.Status.NOT_FOUND.getStatusCode());
+            return null;
+        }
+
+        Traad traad = traadOptional.get();
+
         if (!traad.kanBesvares) {
             throw new RuntimeException("Kan ikke sende svar på en tråd hvor nyeste henvendelse ikke er et spørsmål til bruker");
         }
@@ -74,6 +90,15 @@ public class HenvendelseController {
         WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
 
         return new NyHenvendelseResultat(response.getBehandlingsId());
+    }
+
+    private Optional<Traad> hentTraad(String id) {
+        List<Henvendelse> meldinger = henvendelseService.hentTraad(id);
+        if (meldinger == null || meldinger.isEmpty()) {
+            return Optional.none();
+        } else {
+            return Optional.optional(new Traad(meldinger));
+        }
     }
 
     private static final class NyHenvendelseResultat {

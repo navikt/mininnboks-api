@@ -55,8 +55,9 @@
     <filter-mapping>
         <filter-name>decoratorFilter</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
     </filter-mapping>
-
 
     <filter>
         <filter-name>xframeoptions</filter-name>
@@ -109,5 +110,10 @@
         <servlet-name>restservlet</servlet-name>
         <url-pattern>/tjenester/*</url-pattern>
     </servlet-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/feil</location>
+    </error-page>
 
 </web-app>

@@ -23,6 +23,37 @@ var Utils = {
     },
     voidTransformation: function (x) {
         return x;
+    },
+    whenFinished: function (promiselist) {
+        var d = $.Deferred();
+        var result = [];
+        var resolved = 0;
+        var isRejected = false;
+
+        promiselist.forEach(function (promise, index) {
+            promise.always(function (data) {
+                result[index] = data;
+                resolved++;
+            }).fail(function () {
+                isRejected = true;
+                resolve();
+            }).done(function () {
+                resolve();
+            });
+        });
+
+        function resolve() {
+            if (resolved < promiselist.length) {
+                return;
+            }
+            if (isRejected) {
+                d.reject.apply(d, result);
+            } else {
+                d.resolve.apply(d, result);
+            }
+        }
+
+        return d.promise();
     }
 };
 
