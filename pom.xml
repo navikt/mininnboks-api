@@ -19,7 +19,6 @@
         <module>config</module>
         <module>web</module>
         <module>jee</module>
-        <module>ytelse</module>
     </modules>
 
     <properties>
