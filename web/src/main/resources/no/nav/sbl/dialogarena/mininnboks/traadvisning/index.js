@@ -83,7 +83,7 @@ var TraadVisning = React.createClass({
         if (this.state.feilet.status) {
             return (
                 <div className="innboks-container">
-                    <Feilmelding melding={this.state.feilet.melding} />
+                    <Feilmelding melding={this.state.feilet.melding} visIkon={true} />
                 </div>
             );
         }
