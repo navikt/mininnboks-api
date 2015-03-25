@@ -9,10 +9,9 @@ var Feilmelding = React.createClass({
     render: function () {
         return (
             <section className="feilmelding">
-                <div className="robust-ikon-feil-gra"></div>
-                <div className="stor">
+                <h1>
                     {this.props.melding}
-                </div>
+                </h1>
             </section>
         );
     }
