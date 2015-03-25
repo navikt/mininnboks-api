@@ -1,8 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
 import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
@@ -12,10 +10,7 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.mel
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentBehandlingskjedeRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -25,6 +20,7 @@ import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ER_LEST;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ID;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
 import static org.joda.time.DateTime.now;
 
@@ -39,8 +35,6 @@ public interface HenvendelseService {
     List<Henvendelse> hentAlleHenvendelser(String fodselsnummer);
 
     List<Henvendelse> hentTraad(String behandlingskjedeId);
-
-    void merkHenvendelseSomLest(Henvendelse henvendelse);
 
     void merkSomLest(String behandlingskjedeId);
 
@@ -103,15 +97,6 @@ public interface HenvendelseService {
                             .withType(xmlHenvendelseType)
                             .withFodselsnummer(fodselsnummer)
                             .withAny(info));
-        }
-
-        private static String cleanOutHtml(String text) {
-            return Jsoup.clean(text, Whitelist.none());
-        }
-
-        @Override
-        public void merkHenvendelseSomLest(Henvendelse henvendelse) {
-            innsynHenvendelsePortType.merkSomLest(new ArrayList<>(asList(henvendelse.id)));
         }
 
         @Override

@@ -1,24 +1,22 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMelding;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
 import no.nav.modig.content.PropertyResolver;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import org.apache.commons.collections15.Transformer;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.fromValue;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
 
 public abstract class HenvendelsesUtils {
+
+    private static final String LINE_REPLACEMENT_STRING = UUID.randomUUID().toString();
+    private static final String LINE_BREAK = "\n";
 
     public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
     public static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON);
@@ -70,7 +68,7 @@ public abstract class HenvendelsesUtils {
                 henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
                 henvendelse.temagruppeNavn = propertyResolver.getProperty(henvendelse.temagruppe.name());
                 henvendelse.statusTekst = statusTekst(henvendelse, propertyResolver);
-                henvendelse.fritekst = xmlMelding.getFritekst();
+                henvendelse.fritekst = cleanOutHtml(xmlMelding.getFritekst());
 
                 if (xmlMelding instanceof XMLMeldingTilBruker) {
                     XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
@@ -83,6 +81,11 @@ public abstract class HenvendelsesUtils {
 
     private static boolean innholdErKassert(XMLHenvendelse info) {
         return info.getMetadataListe() == null;
+    }
+
+    public static String cleanOutHtml(String text) {
+        String clean = Jsoup.clean(text.replaceAll(LINE_BREAK, LINE_REPLACEMENT_STRING), Whitelist.none());
+        return clean.replaceAll(LINE_REPLACEMENT_STRING, LINE_BREAK);
     }
 
     private static String statusTekst(Henvendelse henvendelse, PropertyResolver resolver) {

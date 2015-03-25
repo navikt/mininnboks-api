@@ -15,6 +15,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -153,6 +154,13 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
         assertThat(sporsmal.opprettet, is(OPPRETTET_DATO));
         assertThat(sporsmal.avsluttet, is(AVSLUTTET_DATO));
+    }
+
+    @Test
+    public void vaskerHtmlIFritekstMenBevarerLineEndings(){
+        String tekst = "<h1>Hei</h1> \n Hallo";
+        String cleanTekst = cleanOutHtml(tekst);
+        assertThat(cleanTekst, is("Hei \n Hallo"));
     }
 
     private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType type, String id, String kjedeId) {

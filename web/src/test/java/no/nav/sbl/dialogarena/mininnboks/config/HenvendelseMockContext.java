@@ -1,9 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMelding;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
 import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
@@ -18,9 +15,7 @@ import org.joda.time.DateTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
@@ -134,7 +129,7 @@ public class HenvendelseMockContext {
     }
 
     private static XMLHenvendelse lagHenvendelse(Integer behandlingsId, Integer behandlingskjedeId, XMLHenvendelseType type, final Temagruppe tema, DateTime opprettet, Boolean kassert) {
-        final String tekst = (int)((Math.random()*1000)) + halvpartenEllerMer(LOREM);
+        final String tekst = (int) ((Math.random() * 1000)) + halvpartenEllerMer(LOREM);
         return new XMLHenvendelse()
                 .withBehandlingsId(behandlingsId.toString())
                 .withBehandlingskjedeId(behandlingskjedeId.toString())
@@ -170,7 +165,7 @@ public class HenvendelseMockContext {
         return text.substring(0, end);
     }
 
-    private static final String LOREM = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore " +
+    private static final String LOREM = " <h1>Lorem</h1> ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore " +
             "\nhttps://navet.adeo.no/ansatt/Etatstjenester/Organisasjon+og+HR/Arbeidsmilj%C3%B8/Vil+lese+alle+svar.394779.cms\n" +
             "magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. " +
             "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et " +
