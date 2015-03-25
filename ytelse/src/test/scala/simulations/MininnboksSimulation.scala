@@ -12,8 +12,8 @@ class MininnboksSimulation extends Simulation {
   final val ENV = System.getProperty("environment")
   final val BASE_URL = "https://tjenester-" + ENV + ".nav.no"
   val password = "Eifel123"
-  val usersPerSec: Double = valueOf(System.getProperty("usersPerSec"))
-  val duration: Double = valueOf(System.getProperty("duration.minutes"))
+  val users: Integer = Integer.getInteger("users")
+  val duration: Double = valueOf(System.getProperty("duration"))
 
   val httpConf = http
     .baseURL(BASE_URL)
@@ -47,12 +47,13 @@ class MininnboksSimulation extends Simulation {
         .get( """/mininnboks/""")
         .headers(standard_headers)
         .check(regex("Din dialog med NAV").exists))
+    .pause(2)
 
     .exec(
       http("take a shortcut to page for sending in question")
         .get( """/mininnboks/sporsmal/skriv/ARBD""")
         .headers(standard_headers)
-        .check(regex("Skriv melding").exists))
+        .check(regex("Skriv til oss").exists))
 
     .exec(
       http("accept terms")
@@ -66,16 +67,16 @@ class MininnboksSimulation extends Simulation {
         .headers(ajaxHeaders)
         .formParam( """id6_hf_0""", """""")
         .formParam( """temagruppe""", """0""")
-        .formParam( """tekstfelt:text""", """gatling:mininnboks""")
+        .formParam( """tekstfelt:text""", """Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore excepturi quo tempore. Ab alias consectetur dolorem ducimus, ex exercitationem explicabo magni minima nobis omnis qui sapiente sequi soluta veniam voluptatibus?""")
         .formParam( """betingelseValg:betingelserCheckbox""", """on""")
         .formParam( """send""", """1""")
-        .check(regex("kvittering").exists))
+        .check(status.is(200)))
 
     .exec(
       http("seeing receipt page")
         .get( """/mininnboks/sporsmal/kvittering""")
         .headers(standard_headers)
-        .check(regex("du vil få svar ").exists))
+        .check(regex("Takk, du vil få svar").exists))
 
     .exec(
       http("logging out")
@@ -83,5 +84,5 @@ class MininnboksSimulation extends Simulation {
         .headers(standard_headers)
         .check(regex("You are logged out").exists))
 
-  setUp(scn.inject(constantUsersPerSec(usersPerSec) during (duration minutes))).protocols(httpConf)
+  setUp(scn.inject(rampUsers(users) over (duration minutes))).protocols(httpConf)
 }
