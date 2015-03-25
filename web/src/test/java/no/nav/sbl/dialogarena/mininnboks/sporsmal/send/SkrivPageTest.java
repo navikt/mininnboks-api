@@ -56,7 +56,7 @@ public class SkrivPageTest extends WicketPageTest {
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("temagruppe").and(ofType(Label.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("tekstfelt").and(ofType(EnhancedTextArea.class)))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("betingelseValg").and(ofType(BetingelseValgPanel.class)))
-                .should().inComponent(withId("sporsmalForm")).containComponent(withId("send").and(ofType(IndicatingAjaxButton.class)))
+                .should().inComponent(withId("sporsmalForm")).containComponent(withId("send"))
                 .should().inComponent(withId("sporsmalForm")).containComponent(withId("avbryt").and(ofType(ExternalLink.class)));
     }
 
