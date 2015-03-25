@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.sporsmal.send;
 
 import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextArea;
 import no.nav.modig.wicket.component.enhancedtextarea.EnhancedTextAreaConfigurator;
+import no.nav.modig.wicket.component.indicatingajaxbutton.IndicatingAjaxButtonWithImageUrl;
 import no.nav.modig.wicket.errorhandling.aria.AriaFeedbackPanel;
 import no.nav.sbl.dialogarena.mininnboks.BasePage;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
@@ -11,7 +12,6 @@ import no.nav.sbl.dialogarena.mininnboks.sporsmal.Sporsmal;
 import no.nav.sbl.dialogarena.mininnboks.sporsmal.kvittering.KvitteringPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -65,7 +65,7 @@ public class SkrivPage extends BasePage {
 
     private Temagruppe extractTemagruppe(String temagruppeParameter) {
         Temagruppe temagruppe = Temagruppe.valueOf(temagruppeParameter);
-        if(!Temagruppe.GODKJENTE_FOR_INNGAAENDE_SPORSMAAL.contains(temagruppe)){
+        if (!Temagruppe.GODKJENTE_FOR_INNGAAENDE_SPORSMAAL.contains(temagruppe)) {
             throw new RuntimeException("Temagruppe " + temagruppeParameter + " er ikke gydlig.");
         }
         return temagruppe;
@@ -100,7 +100,7 @@ public class SkrivPage extends BasePage {
 
 
             final BetingelseValgPanel betingelseValgPanel = new BetingelseValgPanel("betingelseValg", model, feedbackPanel);
-            IndicatingAjaxButton send = new IndicatingAjaxButton("send", this) {
+            IndicatingAjaxButtonWithImageUrl send = new IndicatingAjaxButtonWithImageUrl("send", this, "/mininnboks/img/ajaxloader/hvit/loader_hvit_48.gif") {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form form) {
                     Sporsmal spsm = model.getObject();

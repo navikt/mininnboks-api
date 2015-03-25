@@ -20,7 +20,7 @@
         <modig-security.version> 1.0.24</modig-security.version>
         <modig-content.version>2.0.8</modig-content.version>
         <modig-lang.version>2.0.2</modig-lang.version>
-        <modig-wicket.version>2.0.41</modig-wicket.version>
+        <modig-wicket.version>2.0.46</modig-wicket.version>
         <slf4j.version>1.7.5</slf4j.version>
         <spring.version>4.1.2.RELEASE</spring.version>
         <wicket.version>6.17.0</wicket.version>
