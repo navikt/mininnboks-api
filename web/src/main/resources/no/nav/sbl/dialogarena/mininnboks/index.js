@@ -1,9 +1,4 @@
 var React = require('react');
+var ListeVisning = require('./listevisning/ListeVisning');
 
-var MininnboksApp = React.createClass({
-    render: function () {
-        return (<h1>Hello, world!</h1>);
-    }
-});
-
-module.exports = MininnboksApp;
+React.render(<ListeVisning />, document.getElementById('mainapp'));

@@ -91,7 +91,7 @@
     </filter>
     <filter-mapping>
         <filter-name>wicket</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/sporsmal/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>

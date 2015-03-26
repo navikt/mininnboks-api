@@ -1,4 +1,5 @@
 var React = require('react');
+var $ = require('jquery');
 var BesvarBoks = require('./BesvarBoks');
 var MeldingContainer = require('./MeldingContainer');
 var Knapper = require('./Knapper');

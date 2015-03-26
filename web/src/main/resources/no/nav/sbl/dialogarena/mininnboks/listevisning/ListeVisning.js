@@ -1,8 +1,9 @@
 var React = require('react');
+var $ = require('jquery');
 var TraaderContainer = require('./TraaderContainer');
-var resources = require('resources');
-var Snurrepipp = require('snurrepipp');
-var Feilmelding = require('feilmelding');
+var resources = require('../resources/Resources');
+var Snurrepipp = require('../snurrepipp/Snurrepipp');
+var Feilmelding = require('../feilmelding/Feilmelding');
 
 var ListeVisning = React.createClass({
     getInitialState: function () {

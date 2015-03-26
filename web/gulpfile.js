@@ -10,7 +10,7 @@ var less = require('gulp-less');
 var concat = require('gulp-concat');
 
 var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
-var BUILD_DIR = './target/classes/no/nav/sbl/dialogarena/mininnboks/build/';
+var BUILD_DIR = './src/main/webapp/build/';
 var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/';
 
 function browserifyTask(isDev) {

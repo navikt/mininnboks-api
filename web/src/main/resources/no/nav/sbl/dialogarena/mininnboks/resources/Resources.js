@@ -1,3 +1,5 @@
+var $ = require('jquery');
+
 var cache = {};
 var promise = undefined;
 

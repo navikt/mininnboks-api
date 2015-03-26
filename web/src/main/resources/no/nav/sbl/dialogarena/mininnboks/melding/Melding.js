@@ -1,6 +1,6 @@
-var React = require('react');
+var React = require('react/addons');
 var moment = require('moment');
-var Utils = require('utils');
+var Utils = require('../utils/Utils');
 require('moment/locale/nb');
 moment.locale('nb');
 

@@ -1,4 +1,5 @@
 var React = require('react');
+var $ = require('jquery');
 
 var ExpandingTextArea = React.createClass({
     getDefaultProps: function () {

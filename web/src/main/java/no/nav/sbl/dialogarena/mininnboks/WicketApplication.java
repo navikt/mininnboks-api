@@ -80,10 +80,8 @@ public class WicketApplication extends WebApplication {
                 .addCss(SkrivPage.JQUERY_CSS)
                 .configure(this);
         new ApplicationSettingsConfig().configure(this);
-        mountPage("/innboks", ReactInnboks.class);
-        mountPage("traad/${id}", ReactTraad.class);
-        mountPage("sporsmal/skriv/${temagruppe}", SkrivPage.class);
-        mountPage("sporsmal/kvittering", KvitteringPage.class);
+        mountPage("skriv/${temagruppe}", SkrivPage.class);
+        mountPage("kvittering", KvitteringPage.class);
         mountPage("/feil", Feilside.class);
         mountPage("internal/isAlive", HealthCheck.class);
         mountPage("internal/selftest", SelfTestPage.class);

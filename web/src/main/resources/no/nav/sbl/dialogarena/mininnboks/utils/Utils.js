@@ -1,4 +1,5 @@
 var React = require('react');
+var $ = require('jquery');
 var sanitize = require('sanitize-html');
 
 var Utils = {

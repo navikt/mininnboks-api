@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <title>Min innboks</title>
+    <link rel="stylesheet" href="build/css/bundle.css">
+</head>
+<body>
+<div class="pagewrapper">
+    <nav>
+        <a href="#mainmenu" accesskey="h" class="visuallyhidden focusable">Til hovedmeny</a>
+        <a href="#maincontent" accesskey="i" class="visuallyhidden focusable">Til hovedinnhold</a>
+    </nav>
+    {{fragment.inline-js-variables}}
+    {{fragment.webstats-ga}}
+    {{fragment.skiplinks}}
+    {{fragment.header-withmenu}}
+    <main id="maincontent" class="mininnboks-omslag" tabindex="-1" role="main">
+        <div id="mainapp"></div>
+    </main>
+</div>
+{{fragment.footer-withmenu}}
+</body>
+<script src="build/js/mininnboks.js"></script>
+</html>

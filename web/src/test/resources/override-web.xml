@@ -15,16 +15,6 @@
         <param-value>no.nav.sbl.dialogarena.mininnboks.config.MockApplicationContext</param-value>
     </context-param>
 
-    <servlet>
-        <servlet-name>Brukerindeks</servlet-name>
-        <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.Brukerindeks</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>Brukerindeks</servlet-name>
-        <url-pattern>/index.html</url-pattern>
-    </servlet-mapping>
-
     <filter>
         <filter-name>HttpSessionSecurityIntegrationFilter</filter-name>
         <filter-class>no.nav.sbl.dialogarena.mininnboks.security.SecurityFilterMock</filter-class>
