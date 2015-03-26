@@ -6,12 +6,18 @@ var watchify = require('watchify');
 var reactify = require('reactify');
 var karma = require('karma').server;
 var notify = require('gulp-notify');
+var less = require('gulp-less');
+var concat = require('gulp-concat');
 
-var browserifyTask = function (isDev) {
+var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
+var BUILD_DIR = './target/classes/no/nav/sbl/dialogarena/mininnboks/build/';
+var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/';
+
+function browserifyTask(isDev) {
     console.log('Starting browserify in ' + (isDev ? 'development' : 'production') + ' mode');
     // Our app bundler
     var props = watchify.args;
-    props.entries = ['./src/main/resources/no/nav/sbl/dialogarena/mininnboks/index.js'];
+    props.entries = [SRC_DIR + 'index.js'];
     props.debug = isDev;
     props.cache = {};
     props.packageCache = {};
@@ -27,7 +33,7 @@ var browserifyTask = function (isDev) {
             message: '<%= error.message %>'
         }))
             .pipe(source('mininnboks.js'))
-            .pipe(gulp.dest('./target/classes/no/nav/sbl/dialogarena/mininnboks/build/'));
+            .pipe(gulp.dest(BUILD_DIR + 'js'));
     }
 
     bundler.on('update', function () {
@@ -38,13 +44,23 @@ var browserifyTask = function (isDev) {
     });
 
     return rebundle();
-};
+}
 
+function copyImg() {
+    return gulp.src(MODIG_FRONTEND + 'resources/META-INF/resources/img/**/*')
+        .pipe(gulp.dest(BUILD_DIR + 'img'));
+}
 
-gulp.task('dev', function () {
-    browserifyTask(true);
-});
+function buildLess() {
+    return gulp.src(SRC_DIR + '**/*.less')
+        .pipe(less())
+        .pipe(concat('bundle.css'))
+        .pipe(gulp.dest(BUILD_DIR + 'css'));
+
+}
 
 gulp.task('default', function () {
     browserifyTask(false);
+    buildLess();
+    copyImg();
 });
