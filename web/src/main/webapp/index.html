@@ -2,7 +2,11 @@
 <html lang="no">
 <head>
     <title>Min innboks</title>
+    <script src="jquery.min.js"/>
+    {{fragment.scripts}}
+    {{fragment.styles}}
     <link rel="stylesheet" href="build/css/bundle.css">
+    {{fragment.webstats-ga}}
 </head>
 <body>
 <div class="pagewrapper">
@@ -10,8 +14,6 @@
         <a href="#mainmenu" accesskey="h" class="visuallyhidden focusable">Til hovedmeny</a>
         <a href="#maincontent" accesskey="i" class="visuallyhidden focusable">Til hovedinnhold</a>
     </nav>
-    {{fragment.inline-js-variables}}
-    {{fragment.webstats-ga}}
     {{fragment.skiplinks}}
     {{fragment.header-withmenu}}
     <main id="maincontent" class="mininnboks-omslag" tabindex="-1" role="main">

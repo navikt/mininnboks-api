@@ -1,5 +1,4 @@
 var React = require('react');
-var $ = require('jquery');
 var TraaderContainer = require('./TraaderContainer');
 var resources = require('../resources/Resources');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');

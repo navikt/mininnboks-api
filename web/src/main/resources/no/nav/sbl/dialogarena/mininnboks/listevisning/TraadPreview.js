@@ -1,5 +1,4 @@
 var React = require('react');
-var $ = require('jquery');
 var AntallMeldinger = require('./AntallMeldinger');
 var MeldingStatus = require('./MeldingStatus');
 var Melding = require('../melding/Melding');

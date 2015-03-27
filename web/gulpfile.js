@@ -11,13 +11,20 @@ var concat = require('gulp-concat');
 
 var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
 var BUILD_DIR = './src/main/webapp/build/';
-var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/';
+var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources/';
 
 function browserifyTask(isDev) {
     console.log('Starting browserify in ' + (isDev ? 'development' : 'production') + ' mode');
     // Our app bundler
     var props = watchify.args;
-    props.entries = [SRC_DIR + 'index.js'];
+    props.entries = [
+        MODIG_FRONTEND + 'js/modig/AjaxLoader.js',
+        MODIG_FRONTEND + 'js/modig/dropdown.js',
+        MODIG_FRONTEND + 'js/modig/felles.js',
+        MODIG_FRONTEND + 'js/modig/tooltip.js',
+        MODIG_FRONTEND + 'js/modig/transitions.js',
+        SRC_DIR + 'index.js'
+    ];
     props.debug = isDev;
     props.cache = {};
     props.packageCache = {};
@@ -47,7 +54,7 @@ function browserifyTask(isDev) {
 }
 
 function copyImg() {
-    return gulp.src(MODIG_FRONTEND + 'resources/META-INF/resources/img/**/*')
+    return gulp.src(MODIG_FRONTEND + 'META-INF/resources/img/**/*')
         .pipe(gulp.dest(BUILD_DIR + 'img'));
 }
 
