@@ -28,6 +28,21 @@ public class Henvendelse implements Serializable {
         this.temagruppe = temagruppe;
     }
 
+    public Henvendelse withTraadId(String traadId) {
+        this.traadId = traadId;
+        return this;
+    }
+
+    public Henvendelse withType(Henvendelsetype type) {
+        this.type = type;
+        return this;
+    }
+
+    public Henvendelse withOpprettetTid(DateTime opprettetTid) {
+        this.opprettet = opprettetTid;
+        return this;
+    }
+
     public void markerSomLest(DateTime lestDato) {
         this.lestDato = lestDato;
     }
@@ -73,4 +88,5 @@ public class Henvendelse implements Serializable {
     };
 
     public static final Comparator<Henvendelse> NYESTE_OVERST = reverseOrder(compareWith(OPPRETTET));
+
 }

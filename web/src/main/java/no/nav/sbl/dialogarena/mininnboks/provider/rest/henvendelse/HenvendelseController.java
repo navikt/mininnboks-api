@@ -77,7 +77,8 @@ public class HenvendelseController {
         Traad traad = traadOptional.get();
 
         if (!traad.kanBesvares) {
-            throw new RuntimeException("Kan ikke sende svar på en tråd hvor nyeste henvendelse ikke er et spørsmål til bruker");
+            httpResponse.setStatus(Response.Status.NOT_ACCEPTABLE.getStatusCode());
+            return null;
         }
 
         Henvendelse henvendelse = new Henvendelse(svar.fritekst, traad.nyeste.temagruppe);
@@ -101,7 +102,7 @@ public class HenvendelseController {
         }
     }
 
-    private static final class NyHenvendelseResultat {
+    static final class NyHenvendelseResultat {
         public final String behandlingsId;
 
         private NyHenvendelseResultat(String behandlingsId) {
