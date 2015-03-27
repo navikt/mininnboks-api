@@ -7,6 +7,9 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Svar;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import org.apache.commons.collections15.Transformer;
+import org.apache.cxf.binding.soap.SoapFault;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +31,8 @@ import static org.joda.time.DateTime.now;
 @Path("/traader")
 @Produces(APPLICATION_JSON)
 public class HenvendelseController {
+
+    final Logger logger = LoggerFactory.getLogger(HenvendelseController.class);
 
     @Inject
     private HenvendelseService henvendelseService;
@@ -94,11 +99,16 @@ public class HenvendelseController {
     }
 
     private Optional<Traad> hentTraad(String id) {
-        List<Henvendelse> meldinger = henvendelseService.hentTraad(id);
-        if (meldinger == null || meldinger.isEmpty()) {
+        try {
+            List<Henvendelse> meldinger = henvendelseService.hentTraad(id);
+            if (meldinger == null || meldinger.isEmpty()) {
+                return Optional.none();
+            } else {
+                return Optional.optional(new Traad(meldinger));
+            }
+        } catch (SoapFault fault) {
+            logger.error("Fant ikke tråd med id: " + id, fault);
             return Optional.none();
-        } else {
-            return Optional.optional(new Traad(meldinger));
         }
     }
 

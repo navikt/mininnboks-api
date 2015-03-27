@@ -116,7 +116,6 @@ function okCallback(data) {
     });
 }
 function feiletCallback(data) {
-    console.error('feiletCallback:: Kunne ikke hente ut tråd', data);
     this.setState({
         feilet: {status: true, melding: resources.get('traadvisning.feilmelding.hentet-ikke-traad')},
         hentet: true
