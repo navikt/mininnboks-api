@@ -1,5 +1,5 @@
 var React = require('react');
-var resources = require('resources');
+var Resources = require('../resources/Resources');
 var format = require('string-format');
 
 var Knapper = React.createClass({
@@ -11,13 +11,13 @@ var Knapper = React.createClass({
     },
     render: function () {
         var skrivSvar = this.props.kanBesvares && !this.props.besvares ?
-            <button onClick={this.besvar} className="knapp-hoved-liten">{resources.get('traadvisning.skriv.svar.link')}</button> :
+            <button onClick={this.besvar} className="knapp-hoved-liten">{Resources.get('traadvisning.skriv.svar.link')}</button> :
             null;
 
         return (
             <div className="knapper">
                 {skrivSvar}
-                <a href="/mininnboks">{resources.get('traadvisning.innboks.link')}</a>
+                <a href="/mininnboks">{Resources.get('traadvisning.innboks.link')}</a>
             </div>
         )
     }

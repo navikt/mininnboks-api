@@ -2,12 +2,12 @@ var React = require('react');
 var BesvarBoks = require('./BesvarBoks');
 var MeldingContainer = require('./MeldingContainer');
 var Knapper = require('./Knapper');
-var resources = require('resources');
-var Snurrepipp = require('snurrepipp');
-var Feilmelding = require('feilmelding');
-var InfoBoks = require('infoboks');
+var Resources = require('../resources/Resources');
+var Snurrepipp = require('../snurrepipp/Snurrepipp');
+var Feilmelding = require('../feilmelding/Feilmelding');
+var InfoBoks = require('../infoboks/Infoboks');
 var format = require('string-format');
-var Utils = require('utils');
+var Utils = require('../utils/Utils');
 
 var TraadVisning = React.createClass({
     getInitialState: function () {
@@ -20,7 +20,7 @@ var TraadVisning = React.createClass({
     },
     componentDidMount: function () {
         var traaderDeferred = $.Deferred();
-        Utils.whenFinished([traaderDeferred.promise(), resources.promise]).then(okCallback.bind(this), feiletCallback.bind(this));
+        Utils.whenFinished([traaderDeferred.promise(), Resources.promise]).then(okCallback.bind(this), feiletCallback.bind(this));
         if (typeof this.props.id == 'string' && this.props.id.length > 0) {
             $.get('/mininnboks/tjenester/traader/' + this.props.id)
                 .done(traaderDeferred.resolve.bind(traaderDeferred))
@@ -48,23 +48,23 @@ var TraadVisning = React.createClass({
             return (
                 <InfoBoks>
                     <p>
-                        {resources.get('traadvisning.kan-ikke-svare.info')}
+                        {Resources.get('traadvisning.kan-ikke-svare.info')}
                         {' '}
-                        <a href={resources.get('skriv.ny.link')}>{resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
+                        <a href={Resources.get('skriv.ny.link')}>{Resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
                     </p>
                 </InfoBoks>)
         } else if (!this.state.traad.avsluttet && !this.state.traad.kanBesvares) {
-            var epost = resources.get('bruker.epost');
+            var epost = Resources.get('bruker.epost');
             var infoTekst = epost ?
-                resources.get('traadvisning.send-svar.bekreftelse.du-mottar-epost') :
-                resources.get('traadvisning.send-svar.bekreftelse.kunne-ikke-hente-epost');
+                Resources.get('traadvisning.send-svar.bekreftelse.du-mottar-epost') :
+                Resources.get('traadvisning.send-svar.bekreftelse.kunne-ikke-hente-epost');
             var epostTekst = epost ?
                 <span>
                     {epost}
                     {' '}
-                    <a href={resources.get('brukerprofil.link')}>{resources.get('traadvisning.send-svar.bekreftelse.endre-epostadresse')}</a>
+                    <a href={Resources.get('brukerprofil.link')}>{Resources.get('traadvisning.send-svar.bekreftelse.endre-epostadresse')}</a>
                 </span> :
-                <a href={resources.get('brukerprofil.link')}>{resources.get('traadvisning.send-svar.bekreftelse.registrer-epostadresse')}</a>;
+                <a href={Resources.get('brukerprofil.link')}>{Resources.get('traadvisning.send-svar.bekreftelse.registrer-epostadresse')}</a>;
 
             return (
                 <InfoBoks>
@@ -92,8 +92,8 @@ var TraadVisning = React.createClass({
             return <MeldingContainer key={melding.id} melding={melding} />
         });
         var overskrift = this.state.traad.nyeste.kassert ?
-            resources.get('traadvisning.overskrift.kassert') :
-            format(resources.get('traadvisning.overskrift'), this.state.traad.nyeste.temagruppeNavn);
+            Resources.get('traadvisning.overskrift.kassert') :
+            format(Resources.get('traadvisning.overskrift'), this.state.traad.nyeste.temagruppeNavn);
 
         return (
             <div>
@@ -118,7 +118,7 @@ function okCallback(data) {
 function feiletCallback(data) {
     console.error('feiletCallback:: Kunne ikke hente ut tråd', data);
     this.setState({
-        feilet: {status: true, melding: resources.get('traadvisning.feilmelding.hentet-ikke-traad')},
+        feilet: {status: true, melding: Resources.get('traadvisning.feilmelding.hentet-ikke-traad')},
         hentet: true
     })
 }

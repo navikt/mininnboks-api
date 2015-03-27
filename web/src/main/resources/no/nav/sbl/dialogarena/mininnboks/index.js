@@ -1,4 +1,4 @@
 var React = require('react');
-var ListeVisning = require('./listevisning/ListeVisning');
+var Router = require('./Router');
 
-React.render(<ListeVisning />, document.getElementById('mainapp'));
+React.render(<Router />, document.getElementById('mainapp'));
