@@ -29,13 +29,14 @@
     "browserify-global-shim": "^1.0.0",
     "moment": "^2.9.0",
     "sanitize-html": "^1.6.1",
-    "modig-frontend": "git+http://stash.devillo.no/scm/felles/modig-frontend.git#modig-frontend-1.1.103",
+    "modig-frontend": "git+http://stash.devillo.no/scm/felles/modig-frontend.git#modig-frontend-1.1.104",
     "gulp-less": "^3.0.2",
     "gulp-concat": "^2.5.2"
   },
   "dependencies": {
     "react": "^0.13.0",
     "string-format": "^0.5.0",
-    "page": "^1.6.1"
+    "page": "^1.6.1",
+    "nav-logger": "git+http://stash.devillo.no/scm/npmm/nav-logger.git#7fe517837bde9afc58eaedac94d49547ae921a13"
   }
 }
