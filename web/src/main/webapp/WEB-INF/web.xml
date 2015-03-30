@@ -97,15 +97,6 @@
     </filter-mapping>
 
     <servlet>
-        <servlet-name>main</servlet-name>
-        <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.MainServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>main</servlet-name>
-        <url-pattern>/traad/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>selftest</servlet-name>
         <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.SelfTestServlet</servlet-class>
     </servlet>
@@ -147,7 +138,7 @@
 
     <error-page>
         <error-code>404</error-code>
-        <location>/feil</location>
+        <location>/index.html</location>
     </error-page>
 
 </web-app>

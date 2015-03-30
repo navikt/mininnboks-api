@@ -21,8 +21,8 @@ var TraadVisning = React.createClass({
     componentDidMount: function () {
         var traaderDeferred = $.Deferred();
         Utils.whenFinished([traaderDeferred.promise(), Resources.promise]).then(okCallback.bind(this), feiletCallback.bind(this));
-        if (typeof this.props.id == 'string' && this.props.id.length > 0) {
-            $.get('/mininnboks/tjenester/traader/' + this.props.id)
+        if (typeof this.props.params.traadId == 'string' && this.props.params.traadId.length > 0) {
+            $.get('/mininnboks/tjenester/traader/' + this.props.params.traadId)
                 .done(traaderDeferred.resolve.bind(traaderDeferred))
                 .fail(traaderDeferred.reject.bind(traaderDeferred));
         } else {

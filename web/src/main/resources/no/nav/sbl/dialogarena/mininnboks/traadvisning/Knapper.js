@@ -1,4 +1,5 @@
 var React = require('react');
+var Link = require('react-router').Link;
 var Resources = require('../resources/Resources');
 var format = require('string-format');
 
@@ -17,7 +18,7 @@ var Knapper = React.createClass({
         return (
             <div className="knapper">
                 {skrivSvar}
-                <a href="/mininnboks">{Resources.get('traadvisning.innboks.link')}</a>
+                <Link to="innboks">{Resources.get('traadvisning.innboks.link')}</Link>
             </div>
         )
     }
