@@ -1,7 +1,7 @@
 var React = require('react');
 var TraadPreview = require('./TraadPreview');
-var Feilmelding = require('feilmelding');
-var resources = require('resources');
+var Feilmelding = require('../feilmelding/Feilmelding');
+var resources = require('../resources/Resources');
 
 var TraadContainer = React.createClass({
     render: function () {

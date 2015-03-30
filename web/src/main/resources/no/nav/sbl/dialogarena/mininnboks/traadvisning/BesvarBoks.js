@@ -1,7 +1,7 @@
 var React = require('react');
-var resources = require('resources');
-var ExpandingTextArea = require('expandingtextarea');
-var Snurrepipp = require('snurrepipp');
+var Resources = require('../resources/Resources');
+var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
+var Snurrepipp = require('../snurrepipp/Snurrepipp');
 
 
 var BesvarBoks = React.createClass({
@@ -25,8 +25,8 @@ var BesvarBoks = React.createClass({
         if (!this.state.sender) {
             knapper = (
                 <div>
-                    <input type="button" className="knapp-hoved-liten" value={resources.get('traadvisning.besvar.send')} onClick={this.onSubmit} />
-                    <a href="#" onClick={this.skjul}>{resources.get('traadvisning.besvar.avbryt')}</a>
+                    <input type="button" className="knapp-hoved-liten" value={Resources.get('traadvisning.besvar.send')} onClick={this.onSubmit} />
+                    <a href="#" onClick={this.skjul}>{Resources.get('traadvisning.besvar.avbryt')}</a>
                 </div>
             );
         }
@@ -37,7 +37,7 @@ var BesvarBoks = React.createClass({
 
         return (
             <div className="besvar-container">
-                <ExpandingTextArea placeholder={resources.get('traadvisning.besvar.tekstfelt.placeholder')} charsLeftText={resources.get('traadvisning.besvar.tekstfelt.tegnigjen')} ref="textarea" />
+                <ExpandingTextArea placeholder={Resources.get('traadvisning.besvar.tekstfelt.placeholder')} charsLeftText={Resources.get('traadvisning.besvar.tekstfelt.tegnigjen')} ref="textarea" />
                 {knapper}
             </div>
         );

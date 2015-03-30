@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:wicket="http://wicket.apache.org" lang="no">
-<wicket:head>
-    <title><wicket:message key="mininnboks.tittel" /></title>
+<html lang="no">
+<head>
+    <title>Min innboks</title>
+    <script src="/mininnboks/jquery.min.js"/>
     {{fragment.scripts}}
     {{fragment.styles}}
+    <link rel="stylesheet" href="/mininnboks/build/css/bundle.css">
     {{fragment.webstats-ga}}
-</wicket:head>
+</head>
 <body>
 <div class="pagewrapper">
     <nav>
@@ -15,9 +17,10 @@
     {{fragment.skiplinks}}
     {{fragment.header-withmenu}}
     <main id="maincontent" class="mininnboks-omslag" tabindex="-1" role="main">
-        <wicket:child/>
+        <div id="mainapp"></div>
     </main>
 </div>
 {{fragment.footer-withmenu}}
 </body>
+<script src="/mininnboks/build/js/mininnboks.js"></script>
 </html>

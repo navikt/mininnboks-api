@@ -11,7 +11,7 @@ function init() {
 
 module.exports = {
     promise: promise,
-    get: function(key) {
+    get: function (key) {
         return cache[key];
     }
 };

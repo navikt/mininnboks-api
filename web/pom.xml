@@ -16,7 +16,7 @@
     <properties>
         <cxf.version>2.7.6</cxf.version>
         <hamcrest.version>1.3</hamcrest.version>
-        <modig.frontend.version>1.1.102</modig.frontend.version>
+        <modig.frontend.version>1.1.104</modig.frontend.version>
         <modig-security.version> 1.0.24</modig-security.version>
         <modig-content.version>2.0.9</modig-content.version>
         <modig-lang.version>2.0.2</modig-lang.version>
@@ -66,8 +66,7 @@
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>common-web</artifactId>
-            <version>1.1.4</version>
-            <scope>runtime</scope>
+            <version>2.0.4</version>
         </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
@@ -86,6 +85,11 @@
                     <artifactId>javax.servlet</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>common-types</artifactId>
+            <version>1.2</version>
         </dependency>
 
         <!--Modig-->
@@ -286,6 +290,11 @@
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
         <!--Jersey-->

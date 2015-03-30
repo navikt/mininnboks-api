@@ -4,32 +4,34 @@ var source = require('vinyl-source-stream'); // Used to stream bundle for furthe
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify');
-var globalShim = require('browserify-global-shim');
 var karma = require('karma').server;
 var notify = require('gulp-notify');
+var less = require('gulp-less');
+var concat = require('gulp-concat');
 
-var config = require('./buildConfig.json');
+var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
+var BUILD_DIR = './src/main/webapp/build/';
+var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources/';
 
-var browserifyTask = function (isDev, component) {
-    console.log('starting browserify with options: ', isDev, component);
+function browserifyTask(isDev) {
+    console.log('Starting browserify in ' + (isDev ? 'development' : 'production') + ' mode');
     // Our app bundler
     var props = watchify.args;
-    props.entries = [component.file];
+    props.entries = [
+        MODIG_FRONTEND + 'js/modig/AjaxLoader.js',
+        MODIG_FRONTEND + 'js/modig/dropdown.js',
+        MODIG_FRONTEND + 'js/modig/felles.js',
+        MODIG_FRONTEND + 'js/modig/tooltip.js',
+        MODIG_FRONTEND + 'js/modig/transitions.js',
+        SRC_DIR + 'index.js'
+    ];
     props.debug = isDev;
-    props.standalone = createStandaloneName(component);
     props.cache = {};
     props.packageCache = {};
     props.fullPaths = isDev;
 
     var bundler = isDev ? watchify(browserify(props)) : browserify(props);
     bundler.transform(reactify);
-    bundler.transform(globalShim.configure(createShimConfigurationFor(component)));
-
-    if (component.name !== config.navReact) {
-        bundler.ignore('react');
-        bundler.ignore('react');
-    }
-
 
     function rebundle() {
         var stream = bundler.bundle();
@@ -37,73 +39,41 @@ var browserifyTask = function (isDev, component) {
             title: 'Compile error',
             message: '<%= error.message %>'
         }))
-            .pipe(source(capitalize(component.name) + ".js"))
-            .pipe(gulp.dest(config.targetPath));
+            .pipe(source('mininnboks.js'))
+            .pipe(gulp.dest(BUILD_DIR + 'js'));
     }
 
     bundler.on('update', function () {
         var start = new Date();
-        console.log('Rebundling: ' + component.name);
+        console.log('Rebundling');
         rebundle();
         console.log('Rebundled in ' + (new Date() - start) + 'ms');
     });
 
     return rebundle();
+}
+
+function copyImg() {
+    return gulp.src(MODIG_FRONTEND + 'META-INF/resources/img/**/*')
+        .pipe(gulp.dest(BUILD_DIR + 'img'));
+}
+
+var buildLess = function() {
+    console.log('Building less');
+    return gulp.src(SRC_DIR + '**/*.less')
+        .pipe(less())
+        .pipe(concat('bundle.css'))
+        .pipe(gulp.dest(BUILD_DIR + 'css'));
+
 };
 
-function toIndexFile(component) {
-    return {
-        file: config.srcPath + component + '/index.js',
-        name: component,
-        namespace: config.namespace.base + '.' + config.namespace.components
-    };
-}
-
-function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function createShimConfigurationFor(currentComponent) {
-    var shimConfig = [];
-    if (currentComponent.name !== 'React') {
-        var globalLocation = [config.namespace.base, 'React'].join('.');
-        shimConfig['react'] = globalLocation;
-        shimConfig['React'] = globalLocation;
-        shimConfig[config.navReact] = globalLocation;
-    }
-    config.components.map(toIndexFile).forEach(function(component){
-       if (currentComponent.name !== component.name) {
-           shimConfig[component.name] = createStandaloneName(component);
-       }
-    });
-    console.log('shim for ' , currentComponent.name, shimConfig);
-    return shimConfig;
-}
-
-function createStandaloneName(component) {
-    return component.namespace + '.' + capitalize(component.name);
-}
-
-gulp.task('dev', function () {
-    browserifyTask(true, {
-        file: config.
-            srcPath + 'nav-react.js',
-        name: 'React',
-        namespace: config.namespace.base
-    });
-    config.components
-        .map(toIndexFile)
-        .forEach(browserifyTask.bind(this, true));
-
+gulp.task('watch', function() {
+    browserifyTask(true);
+    gulp.watch(SRC_DIR + '**/*.less', buildLess);
 });
 
 gulp.task('default', function () {
-    browserifyTask(false, {
-        file: config.srcPath + 'nav-react.js',
-        name: 'React',
-        namespace: config.namespace.base
-    });
-    config.components
-        .map(toIndexFile)
-        .forEach(browserifyTask.bind(this, false));
+    browserifyTask(false);
+    buildLess();
+    copyImg();
 });

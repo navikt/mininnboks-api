@@ -91,10 +91,35 @@
     </filter>
     <filter-mapping>
         <filter-name>wicket</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/sporsmal/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
+
+    <servlet>
+        <servlet-name>selftest</servlet-name>
+        <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.SelfTestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>selftest</servlet-name>
+        <url-pattern>/internal/selftest</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>selftest-json</servlet-name>
+        <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.SelfTestJsonServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>selftest-json</servlet-name>
+        <url-pattern>/internal/selftest.json</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>isAlive</servlet-name>
+        <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.IsAliveServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>isAlive</servlet-name>
+        <url-pattern>/internal/isAlive</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>restservlet</servlet-name>
@@ -113,7 +138,7 @@
 
     <error-page>
         <error-code>404</error-code>
-        <location>/feil</location>
+        <location>/index.html</location>
     </error-page>
 
 </web-app>
