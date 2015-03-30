@@ -7,9 +7,10 @@ public class LogLinje {
     public String jsFileUrl;
     public String userAgent;
     public int lineNumber;
+    public int columnNumber;
 
     @Override
     public String toString() {
-        return message + " [url='"+url+"', jsFile='"+jsFileUrl+"', line='"+lineNumber+"', userAgent='"+userAgent+"']";
+        return message + " [url='"+url+"', jsFile='"+jsFileUrl+"', line='"+lineNumber+"', column='"+columnNumber+"', userAgent='"+userAgent+"']";
     }
 }

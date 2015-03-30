@@ -6,6 +6,9 @@ var RouteHandler = Router.RouteHandler;
 var ListeVisning = require('./listevisning/ListeVisning');
 var TraadVisning = require('./traadvisning/Traadvisning');
 
+//Include Logger for å få satt opp en global error handler
+var Logger = require('./Logger');
+
 var App = React.createClass({
     render: function () {
         return (
