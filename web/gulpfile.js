@@ -58,13 +58,19 @@ function copyImg() {
         .pipe(gulp.dest(BUILD_DIR + 'img'));
 }
 
-function buildLess() {
+var buildLess = function() {
+    console.log('Building less');
     return gulp.src(SRC_DIR + '**/*.less')
         .pipe(less())
         .pipe(concat('bundle.css'))
         .pipe(gulp.dest(BUILD_DIR + 'css'));
 
-}
+};
+
+gulp.task('watch', function() {
+    browserifyTask(true);
+    gulp.watch(SRC_DIR + '**/*.less', buildLess);
+});
 
 gulp.task('default', function () {
     browserifyTask(false);
