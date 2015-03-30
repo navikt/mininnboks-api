@@ -1,7 +1,7 @@
 var React = require('react');
 var page = require('page');
 var ListeVisning = require('./listevisning/ListeVisning');
-var TraadVisning = require('./traadvisning/TraadVisning');
+var TraadVisning = require('./traadvisning/Traadvisning');
 
 
 var Router = React.createClass({
