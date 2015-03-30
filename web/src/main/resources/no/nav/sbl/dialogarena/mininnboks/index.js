@@ -5,6 +5,7 @@ var DefaultRoute = Router.DefaultRoute;
 var RouteHandler = Router.RouteHandler;
 var ListeVisning = require('./listevisning/ListeVisning');
 var TraadVisning = require('./traadvisning/Traadvisning');
+var Skriv = require('./skriv/Skriv');
 
 //Include Logger for å få satt opp en global error handler
 var Logger = require('./Logger');
@@ -21,6 +22,7 @@ var routes = (
     <Route name="app" path="mininnboks/" handler={App}>
         <Route name="innboks" path="innboks" handler={ListeVisning}/>
         <Route name="traad" path="traad/:traadId" handler={TraadVisning}/>
+        <Route name="skriv" path="sporsmal/skriv/:temagruppe" handler={Skriv}/>
         <DefaultRoute handler={ListeVisning}/>
     </Route>
 );

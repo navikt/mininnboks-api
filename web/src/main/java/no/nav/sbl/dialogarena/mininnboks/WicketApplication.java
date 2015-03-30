@@ -15,7 +15,6 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
 
@@ -50,7 +49,6 @@ public class WicketApplication extends WebApplication {
         new FrontendConfigurator()
                 .withModules(EKSTERNFLATE)
                 .addMetas(CHARSET_UTF8, VIEWPORT_SCALE_1, XUA_IE_EDGE)
-                .addLess(new PackageResourceReference(SkrivPage.class, "sporsmal.less"))
                 .withResourcePacking(this.usesDeploymentConfig())
                 .addScripts(SkrivPage.JQUERY_JS)
                 .addCss(SkrivPage.JQUERY_CSS)
