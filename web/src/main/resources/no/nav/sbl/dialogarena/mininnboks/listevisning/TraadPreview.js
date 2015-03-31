@@ -5,14 +5,11 @@ var MeldingStatus = require('./MeldingStatus');
 var Melding = require('../melding/Melding');
 
 var TraadPreview = React.createClass({
-    contextTypes: {
-        router: React.PropTypes.func
-    },
-    onClick: function() {
+    onClick: function () {
         this.markerSomLest();
-        this.context.router.valgtTraad = this.props.traad;
+        this.props.setValgtTraad(this.props.traad);
     },
-    markerSomLest: function() {
+    markerSomLest: function () {
         $.post('/mininnboks/tjenester/traader/lest/' + this.props.traad.nyeste.traadId);
     },
     render: function () {

@@ -11,8 +11,8 @@ var TraadContainer = React.createClass({
             </div>
         } else {
             var traader = this.props.traader.map(function (traad) {
-                return <TraadPreview key={traad.traadId} traad={traad}/>;
-            });
+                return <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={this.props.setValgtTraad}/>;
+            }.bind(this));
             return <div className="innboks-container">{traader}</div>;
         }
     }

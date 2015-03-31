@@ -28,7 +28,7 @@ var ListeVisning = React.createClass({
                 <div className="innboks-navigasjon clearfix">
                     <a className="skriv-ny-link knapp-hoved-liten" href={resources.get('skriv.ny.link')}>{resources.get('innboks.skriv.ny.link')}</a>
                 </div>
-                <TraaderContainer traader={this.state.traader} />
+                <TraaderContainer traader={this.state.traader} setValgtTraad={this.props.setValgtTraad} />
             </div>
         );
     }

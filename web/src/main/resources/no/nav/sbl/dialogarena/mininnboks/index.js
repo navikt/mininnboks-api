@@ -10,9 +10,15 @@ var TraadVisning = require('./traadvisning/Traadvisning');
 var Logger = require('./Logger');
 
 var App = React.createClass({
+    getInitialState: function () {
+      return {valgtTraad: null}
+    },
+    setValgtTraad: function(traad) {
+        this.setState({valgtTraad: traad});
+    },
     render: function () {
         return (
-            <RouteHandler {...this.props}/>
+            <RouteHandler {...this.props} valgtTraad={this.state.valgtTraad} setValgtTraad={this.setValgtTraad}/>
         );
     }
 });
