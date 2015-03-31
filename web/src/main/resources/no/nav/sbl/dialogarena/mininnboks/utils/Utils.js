@@ -6,7 +6,7 @@ var Utils = {
         return sanitize(tekst);
     },
     leggTilLenkerTags: function (innhold) {
-        var uriRegex = /(([\w-]+:\/\/?|www(?:-\w+)?\.)[^\s()<>]+)/g;
+        var uriRegex = /(([\w-]+:\/\/?|www(?:-\w+)?\.)[^\s()<>]+\w)/g;
         return innhold.replace(uriRegex, '<a target="_blank" href="$1">$1</a>');
     },
     tilParagraf: function (kanInneholdeHTML) {
