@@ -6,7 +6,6 @@ var Snurrepipp = require('../snurrepipp/Snurrepipp');
 var Feilmelding = require('../feilmelding/Feilmelding');
 var InfoBoks = require('../infoboks/Infoboks');
 var format = require('string-format');
-var Utils = require('../utils/Utils');
 
 var TraadVisning = React.createClass({
     getInitialState: function () {
