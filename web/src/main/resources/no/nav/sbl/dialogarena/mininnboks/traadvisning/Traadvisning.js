@@ -122,7 +122,7 @@ function okCallback(data) {
 }
 function feiletCallback(data) {
     this.setState({
-        feilet: {status: true, melding: Resources.get('traadvisning.feilmelding.hentet-ikke-traad')},
+        feilet: {status: true, melding: Resources.get('traadvisning.feilmelding.hentet-ikke-traad') || 'Noe gikk galt'},
         hentet: true
     })
 }
