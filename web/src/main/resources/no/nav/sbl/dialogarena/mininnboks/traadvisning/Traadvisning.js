@@ -2,7 +2,6 @@ var React = require('react');
 var BesvarBoks = require('./BesvarBoks');
 var MeldingContainer = require('./MeldingContainer');
 var Knapper = require('./Knapper');
-var Resources = require('../resources/Resources');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 var Feilmelding = require('../feilmelding/Feilmelding');
 var InfoBoks = require('../infoboks/Infoboks');
@@ -19,16 +18,13 @@ var TraadVisning = React.createClass({
         };
     },
     componentDidMount: function () {
-        var traaderDeferred = $.Deferred();
-        Utils.whenFinished([traaderDeferred.promise(), Resources.promise]).then(okCallback.bind(this), feiletCallback.bind(this));
-        if(this.props.valgtTraad) {
-            traaderDeferred.resolve(this.props.valgtTraad);
+        if (this.props.valgtTraad) {
+            okCallback.call(this, this.props.valgtTraad);
         } else if (typeof this.props.params.traadId === 'string' && this.props.params.traadId.length > 0) {
             $.get('/mininnboks/tjenester/traader/' + this.props.params.traadId)
-                .done(traaderDeferred.resolve.bind(traaderDeferred))
-                .fail(traaderDeferred.reject.bind(traaderDeferred));
+                .then(okCallback.bind(this), feiletCallback.bind(this))
         } else {
-            traaderDeferred.reject();
+            feiletCallback.call(this, this.props.valgtTraad);
         }
     },
     visBesvarBoks: function () {
@@ -50,23 +46,23 @@ var TraadVisning = React.createClass({
             return (
                 <InfoBoks>
                     <p>
-                        {Resources.get('traadvisning.kan-ikke-svare.info')}
+                        {this.props.resources.get('traadvisning.kan-ikke-svare.info')}
                         {' '}
-                        <a href={Resources.get('skriv.ny.link')}>{Resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
+                        <a href={this.props.resources.get('skriv.ny.link')}>{this.props.resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
                     </p>
                 </InfoBoks>)
         } else if (!this.state.traad.avsluttet && !this.state.traad.kanBesvares) {
-            var epost = Resources.get('bruker.epost');
+            var epost = this.props.resources.get('bruker.epost');
             var infoTekst = epost ?
-                Resources.get('traadvisning.send-svar.bekreftelse.du-mottar-epost') :
-                Resources.get('traadvisning.send-svar.bekreftelse.kunne-ikke-hente-epost');
+                this.props.resources.get('traadvisning.send-svar.bekreftelse.du-mottar-epost') :
+                this.props.resources.get('traadvisning.send-svar.bekreftelse.kunne-ikke-hente-epost');
             var epostTekst = epost ?
                 <span>
                     {epost}
                     {' '}
-                    <a href={Resources.get('brukerprofil.link')}>{Resources.get('traadvisning.send-svar.bekreftelse.endre-epostadresse')}</a>
+                    <a href={this.props.resources.get('brukerprofil.link')}>{this.props.resources.get('traadvisning.send-svar.bekreftelse.endre-epostadresse')}</a>
                 </span> :
-                <a href={Resources.get('brukerprofil.link')}>{Resources.get('traadvisning.send-svar.bekreftelse.registrer-epostadresse')}</a>;
+                <a href={this.props.resources.get('brukerprofil.link')}>{this.props.resources.get('traadvisning.send-svar.bekreftelse.registrer-epostadresse')}</a>;
 
             return (
                 <InfoBoks>
@@ -94,16 +90,16 @@ var TraadVisning = React.createClass({
             return <MeldingContainer key={melding.id} melding={melding} />
         });
         var overskrift = this.state.traad.nyeste.kassert ?
-            Resources.get('traadvisning.overskrift.kassert') :
-            format(Resources.get('traadvisning.overskrift'), this.state.traad.nyeste.temagruppeNavn);
+            this.props.resources.get('traadvisning.overskrift.kassert') :
+            format(this.props.resources.get('traadvisning.overskrift'), this.state.traad.nyeste.temagruppeNavn);
 
         return (
             <div>
                 <h1 className="diger">{overskrift}</h1>
                 <div className="innboks-container traad-container">
-                    <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} />
+                    <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} resources={this.props.resources} />
                     {this.getInfoMelding()}
-                    <BesvarBoks besvar={this.sendMelding} vis={this.state.besvares} skjul={this.skjulBesvarBoks} />
+                    <BesvarBoks besvar={this.sendMelding} vis={this.state.besvares} skjul={this.skjulBesvarBoks} resources={this.props.resources} />
                     {meldingItems}
                 </div>
             </div>
@@ -117,9 +113,9 @@ function okCallback(data) {
         hentet: true
     });
 }
-function feiletCallback(data) {
+function feiletCallback() {
     this.setState({
-        feilet: {status: true, melding: Resources.get('traadvisning.feilmelding.hentet-ikke-traad') || 'Noe gikk galt'},
+        feilet: {status: true, melding: this.props.resources.get('traadvisning.feilmelding.hentet-ikke-traad')},
         hentet: true
     })
 }
