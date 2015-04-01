@@ -13,10 +13,13 @@ var Melding = React.createClass({
     render: function () {
         var melding = this.props.melding;
         var dato = moment(melding.opprettet).format('Do MMMM YYYY, [kl.] HH:mm');
+        var medUrl = function (innhold) {
+            return this.props.lagLenkerAvURL ? Utils.leggTilLenkerTags(innhold) : innhold;
+        }.bind(this);
 
         var avsnitt = melding.fritekst.split(/[\r\n]+/)
-            .map(this.props.lagLenkerAvURL ? Utils.leggTilLenkerTags : Utils.voidTransformation)
-            .map(Utils.tilParagraf(this.props.lagLenkerAvURL));
+            .map(medUrl)
+            .map(Utils.tilAvsnitt(this.props.lagLenkerAvURL));
         avsnitt = React.addons.createFragment({
             avsnitt: avsnitt
         });

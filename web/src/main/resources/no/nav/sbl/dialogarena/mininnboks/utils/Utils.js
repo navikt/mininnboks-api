@@ -9,7 +9,7 @@ var Utils = {
         var uriRegex = /(([\w-]+:\/\/?|www(?:-\w+)?\.)[^\s()<>]+\w)/g;
         return innhold.replace(uriRegex, '<a target="_blank" href="$1">$1</a>');
     },
-    tilParagraf: function (kanInneholdeHTML) {
+    tilAvsnitt: function (kanInneholdeHTML) {
         if (kanInneholdeHTML) {
             return function (avsnitt) {
                 avsnitt = sanitize(avsnitt, {allowedTags: ['a']});
@@ -20,9 +20,6 @@ var Utils = {
                 return <p>{avsnitt}</p>;
             }
         }
-    },
-    voidTransformation: function (x) {
-        return x;
     }
 };
 
