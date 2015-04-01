@@ -1,38 +1,41 @@
 var React = require('react');
 var Modal = require('../modal/Modal');
+var Resources = require('../resources/Resources');
+var Snurrepipp = require('../snurrepipp/Snurrepipp');
 
 var Betingelser = React.createClass({
     submit: function () {
     },
-    vis: function(){
+    vis: function () {
         this.refs.modal.open();
     },
-    skjul: function(){
+    skjul: function () {
         this.refs.modal.close();
     },
+    getInitialState: function () {
+        return {
+            hentet: false
+        };
+    },
+    componentDidMount: function () {
+        $.when(Resources.promise).then(function () {
+            this.setState({hentet: true})
+        }.bind(this))
+    },
     render: function () {
-        console.log('this.props', this.props);
+        if (!this.state.hentet) {
+            return <Snurrepipp />;
+        }
         return (
             <Modal ref="modal">
-                <form onSubmit={this.submit}>
-                    <h1 className="stor">Vilkårrene for å bruke denne tjenesten</h1>
+                <form onSubmit={this.submit} className="betingelserPanel">
+                    <h1 className="stor">{Resources.get("send-sporsmal.still-sporsmal.betingelser.overskrift")}</h1>
                     <div className="robust-strek"></div>
-                    <p>Innhold her</p>
-                    <p>Innhold her</p>
-                    <p>Innhold her</p>
-                    <ul>
-                        <li>Punktliste</li>
-                        <li>Punktliste</li>
-                        <li>Punktliste</li>
-                        <li>Punktliste</li>
-                    </ul>
-                    <p>Innhold her</p>
-                    <p>Innhold her</p>
-                    <p>Innhold her</p>
+                    <div dangerouslySetInnerHTML={{__html: Resources.get("send-sporsmal.still-sporsmal.betingelser.tekst")}}></div>
                     <hr />
-                    <a href="javascript:void(0)" class="svar-godta knapp-hoved-stor" onClick={this.props.godta}>Jeg godtar vilkårene</a>
+                    <a href="javascript:void(0)" className="svar-godta knapp-hoved-stor" onClick={this.props.godta}>{Resources.get("send-sporsmal.still-sporsmal.betingelser.godta")}</a>
                     <div className="avbryt">
-                        <a href="javascript:void(0)" class="svar-avbryt" onClick={this.props.avbryt}>Jeg godtar ikke vilkårene</a>
+                        <a href="javascript:void(0)" className="svar-avbryt" onClick={this.props.avbryt}>{Resources.get("send-sporsmal.still-sporsmal.betingelser.ikke-godta")}</a>
                     </div>
                 </form>
             </Modal>
