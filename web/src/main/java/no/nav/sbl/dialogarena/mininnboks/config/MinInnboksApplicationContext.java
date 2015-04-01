@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
 import no.nav.modig.cache.CacheConfig;
-import no.nav.sbl.dialogarena.mininnboks.WicketApplication;
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import org.springframework.context.annotation.Bean;
@@ -25,11 +24,6 @@ public class MinInnboksApplicationContext {
                 "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
                 BrukerprofilPortType.class,
                 true);
-    }
-
-    @Bean
-    public WicketApplication wicket() {
-        return new WicketApplication();
     }
 
     @Bean

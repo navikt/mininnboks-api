@@ -2,9 +2,6 @@ package no.nav.sbl.dialogarena.mininnboks.provider.rest.resources;
 
 import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
-import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
-import org.apache.wicket.protocol.http.mock.MockHttpSession;
-import org.apache.wicket.protocol.http.mock.MockServletContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +29,9 @@ public class ResourcesControllerTest {
     @InjectMocks
     ResourcesController controller;
 
+    HttpSession session = mock(HttpSession.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
+
     @Before
     public void setup() throws Exception {
         when(propertyResolver.getAllProperties()).thenReturn(new HashMap<String, String>() {{
@@ -38,25 +39,22 @@ public class ResourcesControllerTest {
             put("prop2", "val2");
             put("prop3", "val3");
         }});
+        when(session.getAttribute(ResourcesController.EPOST)).thenReturn("myMail@nav.no");
+        when(request.getSession()).thenReturn(session);
         when(epostService.hentEpostadresse()).thenReturn("myMail@nav.no");
     }
 
     @Test
     public void henterFraPropertyResolverOgLeggerTilEgneProperties() throws Exception {
-        HttpServletRequest request = new MockHttpServletRequest(null, new MockHttpSession(new MockServletContext(null, null)), null);
-
         Map<String, String> resources = controller.getResources(request);
-
         assertThat(resources.size(), is(6));
     }
 
     @Test
     public void kallTilEpostServiceBlirCachet() throws Exception {
-        MockHttpSession session = new MockHttpSession(new MockServletContext(null, null));
+        controller.getResources(request);
+        controller.getResources(request);
 
-        controller.getResources(new MockHttpServletRequest(null, session, null));
-        controller.getResources(new MockHttpServletRequest(null, session, null));
-
-        verify(epostService, times(1)).hentEpostadresse();
+        verify(epostService, times(0)).hentEpostadresse();
     }
 }

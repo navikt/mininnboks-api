@@ -8,8 +8,6 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Svar;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController.NyHenvendelseResultat;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
-import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
-import org.apache.wicket.protocol.http.mock.MockHttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -117,11 +115,11 @@ public class HenvendelseControllerTest {
         Svar svar = new Svar();
         svar.traadId = "1";
         svar.fritekst = "Tekst";
-        HttpServletResponse resp = new MockHttpServletResponse(new MockHttpServletRequest(null, null, null));
 
-        controller.sendSvar(svar, resp);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        controller.sendSvar(svar, response);
 
-        assertThat(resp.getStatus(), is(Response.Status.NOT_ACCEPTABLE.getStatusCode()));
+        verify(response).setStatus(Response.Status.NOT_ACCEPTABLE.getStatusCode());
     }
 
     @Test
@@ -129,11 +127,9 @@ public class HenvendelseControllerTest {
         Svar svar = new Svar();
         svar.traadId = "2";
         svar.fritekst = "Tekst";
-        HttpServletResponse resp = new MockHttpServletResponse(new MockHttpServletRequest(null, null, null));
 
-        NyHenvendelseResultat nyHenvendelseResultat = controller.sendSvar(svar, resp);
+        NyHenvendelseResultat nyHenvendelseResultat = controller.sendSvar(svar, mock(HttpServletResponse.class));
 
-        assertThat(resp.getStatus(), is(Response.Status.OK.getStatusCode()));
         assertThat(nyHenvendelseResultat.behandlingsId, is(not(nullValue())));
     }
 }

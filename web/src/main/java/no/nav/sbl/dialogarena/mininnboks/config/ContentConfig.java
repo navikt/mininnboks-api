@@ -4,16 +4,13 @@ import no.nav.innholdshenter.common.EnonicContentRetriever;
 import no.nav.innholdshenter.filter.DecoratorFilter;
 import no.nav.modig.content.*;
 import no.nav.modig.content.enonic.HttpContentRetriever;
-import no.nav.sbl.dialogarena.mininnboks.BasePage;
+import no.nav.sbl.dialogarena.mininnboks.ResourcesRoot;
 import org.apache.commons.io.Charsets;
-import org.apache.wicket.Application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.inject.Inject;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
@@ -32,7 +29,7 @@ public class ContentConfig {
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/app/mininnboks/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "no.nav.sbl.dialogarena.mininnboks.innhold_nb";
     private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
-    private static final Reader PROPERTIES = new InputStreamReader(BasePage.class.getResourceAsStream("innhold_nb.properties"), Charsets.UTF_8);
+    private static final Reader PROPERTIES = new InputStreamReader(ResourcesRoot.class.getResourceAsStream("innhold_nb.properties"), Charsets.UTF_8);
 
     @Value("${appres.cms.url}")
     private String appresUrl;
@@ -97,14 +94,6 @@ public class ContentConfig {
         contentRetriever.setRefreshIntervalSeconds(1800);
         contentRetriever.setHttpTimeoutMillis(10000);
         return contentRetriever;
-    }
-
-    @Inject
-    private Application application;
-
-    @Scheduled(fixedDelay = 1 * 60 * 1000)
-    private void clearCacheTask() {
-        application.getResourceSettings().getLocalizer().clearCache();
     }
 
 }
