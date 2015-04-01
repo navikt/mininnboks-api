@@ -1,11 +1,13 @@
 var React = require('react');
+var ValidatableMixin = require('../feedback/ValidatableMixin');
 
 var ExpandingTextArea = React.createClass({
+    mixins: [ValidatableMixin],
     getDefaultProps: function () {
         return {minChars: 1, maxChars: 1000, minHeightPx: 140, placeholder: '', charsLeftText: 'Chars left'}
     },
     getInitialState: function () {
-        return {input: '', touched: false, validationMessages: []}
+        return {input: ''}
     },
     componentDidMount: function () {
         this.setPlaceholder();
@@ -15,7 +17,7 @@ var ExpandingTextArea = React.createClass({
         return this.state.input;
     },
     isValid: function () {
-        return this.state.validationMessages.length === 0;
+        return this.getErrorMessages().length === 0;
     },
     setPlaceholder: function () {
         var placeholder = this.props.placeholder;
@@ -49,13 +51,13 @@ var ExpandingTextArea = React.createClass({
     },
     validate: function (tekst) {
         var charCount = this.charCount(tekst);
-        var validationMessages = [];
         if (charCount > this.props.maxChars) {
-            validationMessages.push('Teksten er for lang')
+            this.error('Teksten er for lang')
         } else if (charCount < this.props.minChars) {
-            validationMessages.push('Tekstfeltet er tomt');
+            this.error('Tekstfeltet er tomt');
+        } else {
+            this.valid()
         }
-        this.setState({touched: true, validationMessages: validationMessages});
     },
     charCount: function (input) {
         return input === this.props.placeholder ? 0 : input.length;
@@ -75,9 +77,9 @@ var ExpandingTextArea = React.createClass({
     render: function () {
         var noMoreCharsClass = this.charsLeft() >= 0 ? '' : 'invalid';
         var validClass = this.isValid() ? '' : 'invalid';
-        var validationMessages = this.state.validationMessages.map(function (validationMessage) {
+        var validationMessages = this.props.showInline ? this.getErrorMessages().map(function (validationMessage) {
             return (<span className="validation-message">{validationMessage}</span>);
-        });
+        }) : null;
 
         validationMessages = React.addons.createFragment({
             errorMessages: validationMessages

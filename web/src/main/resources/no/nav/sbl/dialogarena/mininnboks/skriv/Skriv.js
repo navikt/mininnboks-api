@@ -4,6 +4,7 @@ var Resources = require('../resources/Resources');
 var Utils = require('../utils/Utils');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
+var FeedbackForm = require('../feedback/FeedbackForm');
 
 var Skriv = React.createClass({
     getInitialState: function () {
@@ -19,7 +20,7 @@ var Skriv = React.createClass({
             <div className="innboks-container">
                 <h1 className="diger">{Resources.get('send-sporsmal.still-sporsmal.ny-melding-overskrift')}</h1>
                 <article className="send-sporsmal-container send-panel">
-                    <form>
+                    <FeedbackForm>
                         <div className="sporsmal-header">
                             <img src="/mininnboks/img/melding_graa.svg"
                                  alt={Resources.get("meldingikon.alternativ.tekst")}/>
@@ -49,7 +50,7 @@ var Skriv = React.createClass({
                                     value={Resources.get("send-sporsmal.still-sporsmal.send-inn")}/></div>
                         <div className="avbryt"><Link
                             to="innboks">{Resources.get("send-sporsmal.still-sporsmal.avbryt")}</Link></div>
-                    </form>
+                    </FeedbackForm>
                 </article>
             </div>
         ) : <Snurrepipp />;

@@ -2,6 +2,7 @@ var React = require('react');
 var Resources = require('../resources/Resources');
 var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
+var FeedbackForm = require('../feedback/FeedbackForm');
 
 
 var BesvarBoks = React.createClass({
@@ -9,9 +10,9 @@ var BesvarBoks = React.createClass({
         return {sender: false}
     },
     onSubmit: function () {
-        var textarea = this.refs.textarea;
-        if (textarea.isValid()) {
-            this.props.besvar(textarea.getInput());
+        var form = this.refs.form;
+        if (form.isValid()) {
+            this.props.besvar(form.getFeedbackRef('textarea').getInput());
             this.setState({sender: true});
         }
     },
@@ -36,10 +37,10 @@ var BesvarBoks = React.createClass({
         }
 
         return (
-            <div className="besvar-container">
-                <ExpandingTextArea placeholder={Resources.get('traadvisning.besvar.tekstfelt.placeholder')} charsLeftText={Resources.get('traadvisning.besvar.tekstfelt.tegnigjen')} ref="textarea" />
+            <FeedbackForm className="besvar-container" ref="form">
+                <ExpandingTextArea placeholder={Resources.get('traadvisning.besvar.tekstfelt.placeholder')} charsLeftText={Resources.get('traadvisning.besvar.tekstfelt.tegnigjen')} feedbackref="textarea" />
                 {knapper}
-            </div>
+            </FeedbackForm>
         );
     }
 });

@@ -11,6 +11,15 @@ var FeedbackForm = React.createClass({
     componentWillMount: function () {
         this.feedbackReporter = new FeedbackReporter(this.updateErrorMessages);
     },
+    isValid: function () {
+        return this.feedbackReporter.numberOfErrors() === 0;
+    },
+    getFeedbackRef: function (ref) {
+        return this.refs[ref] || {};
+    },
+    getFeedbackRefs: function () {
+        return this.refs;
+    },
     render: function () {
         var errors = this.state.errors;
         var feedback = null;
@@ -26,10 +35,11 @@ var FeedbackForm = React.createClass({
         }
 
         var elements = this.props.children.map(function (child) {
-            return React.addons.cloneWithProps(child, childrenProps)
+            var childProps = $.extend({}, childrenProps, {ref: child.props.feedbackref});
+            return React.addons.cloneWithProps(child, childProps);
         }.bind(this));
         return (
-            <form>
+            <form className={this.props.className}>
                 {elements}
                 <div>{feedback}</div>
             </form>
