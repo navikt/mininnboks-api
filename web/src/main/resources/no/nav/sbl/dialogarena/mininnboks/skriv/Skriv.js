@@ -20,7 +20,14 @@ var Skriv = React.createClass({
         var form = this.refs.form;
         form.validate();
         if (form.isValid()) {
-            console.log('sender spørsmål');
+            var temagruppe = this.props.params.temagruppe;
+            var fritekst = form.getFeedbackRef('textarea').getInput();
+            $.ajax({
+                type: 'POST',
+                url: '/mininnboks/tjenester/traader/sporsmal',
+                contentType: 'application/json',
+                data: JSON.stringify({temagruppe: temagruppe, fritekst: fritekst})
+            }).done(function() {console.log('sendt')});
         }
     },
     render: function () {
@@ -43,7 +50,7 @@ var Skriv = React.createClass({
                     <FeedbackForm ref="form">
                         <ExpandingTextArea placeholder={Resources.get('skriv-sporsmal.fritekst.placeholder')}
                                            charsLeftText={Resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
-                                           ref="textarea"/>
+                                           feedbackref="textarea"/>
 
                         <GodtaVilkar />
 

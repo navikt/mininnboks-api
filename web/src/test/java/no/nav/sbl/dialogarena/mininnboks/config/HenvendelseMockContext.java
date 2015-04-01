@@ -83,6 +83,9 @@ public class HenvendelseMockContext {
                 String behandlingsId = nextId().toString();
                 XMLHenvendelse henvendelse = (XMLHenvendelse) req.getAny();
                 henvendelse.setBehandlingsId(behandlingsId);
+                if (henvendelse.getBehandlingskjedeId() == null) {
+                    henvendelse.setBehandlingskjedeId(behandlingsId);
+                }
                 henvendelser.add(henvendelse);
                 return new WSSendInnHenvendelseResponse().withBehandlingsId(behandlingsId);
             }

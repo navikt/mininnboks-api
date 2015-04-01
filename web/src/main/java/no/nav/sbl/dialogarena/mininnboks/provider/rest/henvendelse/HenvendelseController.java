@@ -2,9 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
 import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Svar;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import org.apache.commons.collections15.Transformer;
 import org.apache.cxf.binding.soap.SoapFault;
@@ -69,10 +67,24 @@ public class HenvendelseController {
     }
 
     @POST
-    @Path("/ny")
+    @Path("/sporsmal")
+    @Consumes(APPLICATION_JSON)
+    public NyHenvendelseResultat sendSporsmal(Sporsmal sporsmal, @Context HttpServletResponse httpResponse) {
+        assertFritekst(sporsmal.fritekst);
+
+        Temagruppe temagruppe = Temagruppe.valueOf(sporsmal.temagruppe);
+        Henvendelse henvendelse = new Henvendelse(sporsmal.fritekst, temagruppe);
+        WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
+
+        return new NyHenvendelseResultat(response.getBehandlingsId());
+    }
+
+    @POST
+    @Path("/svar")
     @Consumes(APPLICATION_JSON)
     public NyHenvendelseResultat sendSvar(Svar svar, @Context HttpServletResponse httpResponse) {
-        assert svar.fritekst.length() > 0 && svar.fritekst.length() <= 1000;
+        assertFritekst(svar.fritekst);
+
         Optional<Traad> traadOptional = hentTraad(svar.traadId);
         if (!traadOptional.isSome()) {
             httpResponse.setStatus(Response.Status.NOT_FOUND.getStatusCode());
@@ -112,6 +124,10 @@ public class HenvendelseController {
         }
     }
 
+    private static void assertFritekst(String fritekst) {
+        assert fritekst.length() > 0 && fritekst.length() <= 1000;
+    }
+
     static final class NyHenvendelseResultat {
         public final String behandlingsId;
 
@@ -119,5 +135,6 @@ public class HenvendelseController {
             this.behandlingsId = behandlingsId;
         }
     }
+
 
 }
