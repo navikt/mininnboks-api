@@ -54,6 +54,7 @@ function browserifyTask(isDev) {
 }
 
 function copyImg() {
+    console.log('Copying images');
     return gulp.src(MODIG_FRONTEND + 'META-INF/resources/img/**/*')
         .pipe(gulp.dest(BUILD_DIR + 'img'));
 }
@@ -67,13 +68,15 @@ var buildLess = function() {
 
 };
 
-gulp.task('watch', function() {
-    browserifyTask(true);
-    gulp.watch(SRC_DIR + '**/*.less', buildLess);
-});
-
 gulp.task('default', function () {
     browserifyTask(false);
     buildLess();
     copyImg();
+});
+
+gulp.task('dev', function() {
+    buildLess();
+    copyImg();
+    browserifyTask(true);
+    gulp.watch(SRC_DIR + '**/*.less', buildLess);
 });
