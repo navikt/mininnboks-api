@@ -4,7 +4,8 @@ var Resources = require('../resources/Resources');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 
 var Betingelser = React.createClass({
-    submit: function () {
+    submit: function (e) {
+        e.preventDefault();
     },
     vis: function () {
         this.refs.modal.open();

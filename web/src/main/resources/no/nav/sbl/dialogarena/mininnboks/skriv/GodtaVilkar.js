@@ -1,6 +1,7 @@
 var React = require('react');
 var ValidatableMixin = require('../feedback/ValidatableMixin');
 var Resources = require('../resources/Resources');
+var Betingelser = require('./Betingelser');
 
 var GodtaVilkar = React.createClass({
     mixins: [ValidatableMixin],
@@ -12,7 +13,7 @@ var GodtaVilkar = React.createClass({
         this.setState({checked: checked});
         this.validate(checked);
     },
-    onBlur: function() {
+    onBlur: function () {
         this.validate();
     },
     validate: function (checked) {
@@ -25,6 +26,16 @@ var GodtaVilkar = React.createClass({
             this.error(Resources.get('send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert'));
         }
     },
+    visbetingelser: function (e) {
+        this.refs.betingelserPanel.vis();
+        e.preventDefault();
+    },
+    betingelseCallback: function (status) {
+        this.refs.betingelserPanel.skjul();
+        this.setState({
+            checked: status
+        });
+    },
     render: function () {
         var errorMessages = this.getErrorMessages();
         var validationErrorClass = errorMessages.length === 0 ? '' : 'validation-error error';
@@ -35,11 +46,14 @@ var GodtaVilkar = React.createClass({
             <div className="betingelsevalgpanel">
                 <div className="checkbox">
                     <input type="checkbox" name="betingelseValg:betingelserCheckbox" id="betingelser"
-                           onChange={this.onChange} onBlur={this.onBlur} checked={this.state.checked}/>
+                        onChange={this.onChange} onBlur={this.onBlur} checked={this.state.checked}/>
                     <label htmlFor="betingelser"
-                           className={validationErrorClass}><span>{Resources.get("send-sporsmal.still-sporsmal.betingelser.sjekkboks")}</span></label>
+                        className={validationErrorClass}>
+                        <span>{Resources.get("send-sporsmal.still-sporsmal.betingelser.sjekkboks")}</span>
+                    </label>
+                    <Betingelser ref="betingelserPanel" godta={this.betingelseCallback.bind(this, true)} avbryt={this.betingelseCallback.bind(this, false)}/>
                     <a href="#"
-                       className="vilkarlenke">{Resources.get("send-sporsmal.still-sporsmal.betingelser.vis")}</a>
+                        className="vilkarlenke" onClick={this.visbetingelser}>{Resources.get("send-sporsmal.still-sporsmal.betingelser.vis")}</a>
                     {inlineErrorMessage}
                 </div>
             </div>
