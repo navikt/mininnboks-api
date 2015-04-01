@@ -4,19 +4,24 @@ var MeldingStatus = React.createClass({
     render: function () {
         var melding = this.props.melding;
         var status = 'ikon melding-info';
-        var statusTekst = "Meldingen er";
+        var statusTekst;
 
         if (melding.type === 'SPORSMAL_MODIA_UTGAAENDE' || !melding.lest) {
             status += ' ubehandlet';
-            statusTekst += ' ubehandlet.';
+            statusTekst = 'Ubehandlet';
         } else if (melding.type == 'SVAR_SBL_INNGAAENDE') {
             status += ' besvart';
-            statusTekst += ' besvart.';
+            statusTekst = 'Besvart';
         } else {
             return null;
         }
 
-        return <div className={status} aria-label={statusTekst}/>;
+        return (
+            <div>
+                <p className="vekk">{statusTekst}</p>
+                <div className={status} aria-label={statusTekst}/>
+            </div>
+        );
     }
 });
 

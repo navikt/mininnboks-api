@@ -1,5 +1,4 @@
 var React = require('react');
-var Resources = require('../resources/Resources');
 var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 var FeedbackForm = require('../feedback/FeedbackForm');
@@ -26,8 +25,8 @@ var BesvarBoks = React.createClass({
         if (!this.state.sender) {
             knapper = (
                 <div>
-                    <input type="button" className="knapp-hoved-liten" value={Resources.get('traadvisning.besvar.send')} onClick={this.onSubmit} />
-                    <a href="#" onClick={this.skjul}>{Resources.get('traadvisning.besvar.avbryt')}</a>
+                    <input type="button" className="knapp-hoved-liten" value={this.props.resources.get('traadvisning.besvar.send')} onClick={this.onSubmit} />
+                    <a href="#" onClick={this.skjul}>{this.props.resources.get('traadvisning.besvar.avbryt')}</a>
                 </div>
             );
         }
@@ -38,7 +37,7 @@ var BesvarBoks = React.createClass({
 
         return (
             <FeedbackForm className="besvar-container" ref="form">
-                <ExpandingTextArea placeholder={Resources.get('traadvisning.besvar.tekstfelt.placeholder')} charsLeftText={Resources.get('traadvisning.besvar.tekstfelt.tegnigjen')} feedbackref="textarea" />
+                <ExpandingTextArea placeholder={this.props.resources.get('traadvisning.besvar.tekstfelt.placeholder')} charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')} feedbackref="textarea" />
                 {knapper}
             </FeedbackForm>
         );

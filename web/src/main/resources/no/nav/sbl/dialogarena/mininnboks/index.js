@@ -3,6 +3,7 @@ var Router = require('react-router');
 var Route = Router.Route;
 var DefaultRoute = Router.DefaultRoute;
 var RouteHandler = Router.RouteHandler;
+var resources = require('./resources/Resources');
 var ListeVisning = require('./listevisning/ListeVisning');
 var TraadVisning = require('./traadvisning/Traadvisning');
 var Skriv = require('./skriv/Skriv');
@@ -11,9 +12,20 @@ var Skriv = require('./skriv/Skriv');
 var Logger = require('./Logger');
 
 var App = React.createClass({
+    getInitialState: function () {
+        return {valgtTraad: null, resources: resources}
+    },
+    componentDidMount: function () {
+        this.state.resources.fetch().done(function () {
+            this.setState({resources: resources});
+        }.bind(this));
+    },
+    setValgtTraad: function (traad) {
+        this.setState({valgtTraad: traad});
+    },
     render: function () {
         return (
-            <RouteHandler {...this.props}/>
+            <RouteHandler {...this.props} {...this.state} setValgtTraad={this.setValgtTraad}/>
         );
     }
 });
