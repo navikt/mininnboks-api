@@ -5,6 +5,7 @@ var Utils = require('../utils/Utils');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
 var FeedbackForm = require('../feedback/FeedbackForm');
+var GodtaVilkar = require('./GodtaVilkar');
 
 var Skriv = React.createClass({
     getInitialState: function () {
@@ -15,41 +16,44 @@ var Skriv = React.createClass({
             this.setState({hentet: true})
         }.bind(this))
     },
+    onSubmit: function() {
+        var form = this.refs.form;
+        form.validate();
+        if (form.isValid()) {
+            console.log('sender spørsmål');
+        }
+    },
     render: function () {
         return this.state.hentet ? (
             <div className="innboks-container">
                 <h1 className="diger">{Resources.get('send-sporsmal.still-sporsmal.ny-melding-overskrift')}</h1>
                 <article className="send-sporsmal-container send-panel">
-                    <FeedbackForm>
-                        <div className="sporsmal-header">
-                            <img src="/mininnboks/img/melding_graa.svg"
-                                 alt={Resources.get("meldingikon.alternativ.tekst")}/>
+                    <div className="sporsmal-header">
+                        <img src="/mininnboks/img/melding_graa.svg"
+                             alt={Resources.get("meldingikon.alternativ.tekst")}/>
 
-                            <h2 className="stor deloverskrift">{Resources.get("send-sporsmal.still-sporsmal.deloverskrift")}</h2>
+                        <h2 className="stor deloverskrift">{Resources.get("send-sporsmal.still-sporsmal.deloverskrift")}</h2>
 
-                            <div className="robust-strek"></div>
-                        </div>
+                        <div className="robust-strek"></div>
+                    </div>
 
-                        <strong>{Resources.get(this.props.params.temagruppe)}</strong>
+                    <strong>{Resources.get(this.props.params.temagruppe)}</strong>
 
-
-                        <p className="hjelpetekst">{Resources.get("send-sporsmal.still-sporsmal.hjelpetekst")}</p>
+                    <p className="hjelpetekst">{Resources.get("send-sporsmal.still-sporsmal.hjelpetekst")}</p>
+                    <FeedbackForm ref="form">
                         <ExpandingTextArea placeholder={Resources.get('skriv-sporsmal.fritekst.placeholder')}
                                            charsLeftText={Resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
                                            ref="textarea"/>
 
-                        <div className="betingelsevalgpanel">
-                            <div className="checkbox">
-                                <input type="checkbox" name="betingelseValg:betingelserCheckbox" id="betingelser"/>
-                                <label htmlFor="betingelser"><span>{Resources.get("send-sporsmal.still-sporsmal.betingelser.sjekkboks")}</span></label>
-                                <a href="#" className="vilkarlenke">{Resources.get("send-sporsmal.still-sporsmal.betingelser.vis")}</a>
-                            </div>
-                        </div>
+                        <GodtaVilkar />
 
-                        <div><input type="submit" className="send-link knapp-hoved-stor" role="button"
-                                    value={Resources.get("send-sporsmal.still-sporsmal.send-inn")}/></div>
-                        <div className="avbryt"><Link
-                            to="innboks">{Resources.get("send-sporsmal.still-sporsmal.avbryt")}</Link></div>
+                        <div>
+                            <input type="button" className="send-link knapp-hoved-stor" role="button"
+                                   value={Resources.get("send-sporsmal.still-sporsmal.send-inn")} onClick={this.onSubmit} />
+                        </div>
+                        <div className="avbryt">
+                            <Link to="innboks">{Resources.get("send-sporsmal.still-sporsmal.avbryt")}</Link>
+                        </div>
                     </FeedbackForm>
                 </article>
             </div>

@@ -49,8 +49,9 @@ var ExpandingTextArea = React.createClass({
     onTextAreaBlur: function (event) {
         this.validate(event.target.value);
     },
-    validate: function (tekst) {
-        var charCount = this.charCount(tekst);
+    validate: function (text) {
+        text = text || this.state.input;
+        var charCount = this.charCount(text);
         if (charCount > this.props.maxChars) {
             this.error('Teksten er for lang')
         } else if (charCount < this.props.minChars) {

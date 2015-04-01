@@ -20,6 +20,14 @@ var FeedbackForm = React.createClass({
     getFeedbackRefs: function () {
         return this.refs;
     },
+    validate: function () {
+        for (var i in this.refs) {
+            var child = this.refs[i];
+            if (child.hasOwnProperty("validate")) {
+                child.validate();
+            }
+        }
+    },
     render: function () {
         var errors = this.state.errors;
         var feedback = null;
@@ -27,24 +35,34 @@ var FeedbackForm = React.createClass({
 
         if (this.feedbackReporter.numberOfErrors() === 1) {
             childrenProps.showInline = true;
-        } else {
+        } else if (this.feedbackReporter.numberOfErrors() > 1) {
             childrenProps.showInline = false;
-            feedback = errors.map(function (e) {
-                return <p>{e}</p>;
-            });
+            feedback =
+                <div role="alert" aria-live="assertive" aria-atomic="true" className="feilmelding">
+                    <ul className="feedbackPanel">
+                        {errors.map(function (e) {
+                            return <li className="feedbackPanelERROR"><span className="feedbackPanelERROR">{e}</span>
+                            </li>;
+                        })}
+                    </ul>
+                </div>
         }
 
         var elements = this.props.children.map(function (child) {
-            var childProps = $.extend({}, childrenProps, {ref: child.props.feedbackref});
+            var childProps = $.extend({}, childrenProps, {ref: child.props.feedbackref || generateRef()});
             return React.addons.cloneWithProps(child, childProps);
         }.bind(this));
         return (
             <form className={this.props.className}>
+                {feedback}
                 {elements}
-                <div>{feedback}</div>
             </form>
         );
     }
 });
+
+function generateRef() {
+    return "ref-" + Math.random();
+}
 
 module.exports = FeedbackForm;
