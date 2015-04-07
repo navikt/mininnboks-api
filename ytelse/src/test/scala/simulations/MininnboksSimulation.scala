@@ -19,24 +19,15 @@ class MininnboksSimulation extends Simulation {
     .baseURL(BASE_URL)
     .disableWarmUp
 
-  val standard_headers = Map( """Accept""" -> """text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8""")
-
-  val ajaxHeaders = Map(
-    """Accept""" -> """application/xml, text/xml, */*; q=0.01""",
-    """Cache-Control""" -> """no-cache""",
-    """Content-Type""" -> """application/x-www-form-urlencoded; charset=UTF-8""",
-    """Pragma""" -> """no-cache""",
-    """Wicket-Ajax""" -> """true""",
-    """Wicket-Ajax-BaseURL""" -> """sporsmal/skriv/ARBD""",
-    """X-Requested-With""" -> """XMLHttpRequest""")
+  val headers = Map( """Accept""" -> """text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8""")
 
   val scn = scenario("Scenario Name")
-    .feed(csv("brukere.csv").random)
+    .feed(csv("brukere_" + ENV + ".csv").random)
 
     .exec(
       http("logging in")
         .post("/esso/UI/Login")
-        .headers(standard_headers)
+        .headers(headers)
         .formParam("IDToken1", "${brukernavn}")
         .formParam("IDToken2", password)
         .queryParam("service", "level4Service")
@@ -45,44 +36,36 @@ class MininnboksSimulation extends Simulation {
     .exec(
       http("check to see if logged in properly")
         .get( """/mininnboks/""")
-        .headers(standard_headers)
+        .headers(headers)
         .check(regex("Din dialog med NAV").exists))
     .pause(2)
 
     .exec(
-      http("take a shortcut to page for sending in question")
-        .get( """/mininnboks/sporsmal/skriv/ARBD""")
-        .headers(standard_headers)
-        .check(regex("Skriv til oss").exists))
-
-    .exec(
-      http("accept terms")
-        .post( """/mininnboks/sporsmal/skriv/ARBD?2-1.IBehaviorListener.0-sporsmalForm-betingelseValg-betingelserCheckbox=""")
-        .headers(ajaxHeaders)
-        .formParam( """betingelseValg:betingelserCheckbox""", """on"""))
+      http("fetch resources")
+        .get("/mininnboks/tjenester/resources")
+        .headers(headers))
 
     .exec(
       http("send question")
-        .post( """/mininnboks/sporsmal/skriv/ARBD?2-1.IBehaviorListener.0-sporsmalForm-send=""")
-        .headers(ajaxHeaders)
-        .formParam( """id6_hf_0""", """""")
-        .formParam( """temagruppe""", """0""")
-        .formParam( """tekstfelt:text""", """Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore excepturi quo tempore. Ab alias consectetur dolorem ducimus, ex exercitationem explicabo magni minima nobis omnis qui sapiente sequi soluta veniam voluptatibus?""")
-        .formParam( """betingelseValg:betingelserCheckbox""", """on""")
-        .formParam( """send""", """1""")
-        .check(status.is(200)))
-
-    .exec(
-      http("seeing receipt page")
-        .get( """/mininnboks/sporsmal/kvittering""")
-        .headers(standard_headers)
-        .check(regex("Takk, du vil få svar").exists))
+        .post("/mininnboks/tjenester/traader/sporsmal")
+        .headers(headers)
+        .body(StringBody( """{"temagruppe":"ARBD","fritekst":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore excepturi quo tempore. Ab alias consectetur dolorem ducimus, ex exercitationem explicabo magni minima nobis omnis qui sapiente sequi soluta veniam voluptatibus?"}""")).asJSON)
 
     .exec(
       http("logging out")
-        .get( """/esso/UI/Logout""")
-        .headers(standard_headers)
+        .get("""/esso/UI/Logout""")
+        .headers(headers)
         .check(regex("You are logged out").exists))
+
+  val httpProtocol = http
+    .baseURL("http://localhost:8585")
+    .inferHtmlResources()
+    .acceptHeader("image/png,image/*;q=0.8,*/*;q=0.5")
+    .acceptEncodingHeader("gzip, deflate")
+    .acceptLanguageHeader("nb-no,nb;q=0.9,no-no;q=0.8,no;q=0.6,nn-no;q=0.5,nn;q=0.4,en-us;q=0.3,en;q=0.1")
+    .connection("keep-alive")
+    .contentTypeHeader("application/json; charset=UTF-8")
+    .userAgentHeader("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0")
 
   setUp(scn.inject(rampUsers(users) over (duration minutes))).protocols(httpConf)
 }
