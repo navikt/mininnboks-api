@@ -8,6 +8,10 @@ var karma = require('karma').server;
 var notify = require('gulp-notify');
 var less = require('gulp-less');
 var concat = require('gulp-concat');
+var gulpif = require('gulp-if');
+var uglifycss = require('gulp-uglifycss');
+var uglify = require('gulp-uglify');
+var streamify = require('gulp-streamify');
 
 var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
 var BUILD_DIR = './src/main/webapp/build/';
@@ -40,6 +44,7 @@ function browserifyTask(isDev) {
             message: '<%= error.message %>'
         }))
             .pipe(source('mininnboks.js'))
+            .pipe(gulpif(!isDev, streamify(uglify())))
             .pipe(gulp.dest(BUILD_DIR + 'js'));
     }
 
@@ -59,24 +64,25 @@ function copyImg() {
         .pipe(gulp.dest(BUILD_DIR + 'img'));
 }
 
-var buildLess = function() {
+var buildLess = function(isDev) {
     console.log('Building less');
     return gulp.src(SRC_DIR + '**/*.less')
         .pipe(less())
         .pipe(concat('bundle.css'))
+        .pipe(gulpif(!isDev, uglifycss()))
         .pipe(gulp.dest(BUILD_DIR + 'css'));
 
 };
 
 gulp.task('default', function () {
     browserifyTask(false);
-    buildLess();
+    buildLess(false);
     copyImg();
 });
 
 gulp.task('dev', function() {
-    buildLess();
+    buildLess(true);
     copyImg();
     browserifyTask(true);
-    gulp.watch(SRC_DIR + '**/*.less', buildLess);
+    gulp.watch(SRC_DIR + '**/*.less', buildLess.bind(this, true));
 });

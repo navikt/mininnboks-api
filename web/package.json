@@ -31,7 +31,11 @@
     "sanitize-html": "^1.6.1",
     "modig-frontend": "git+http://stash.devillo.no/scm/felles/modig-frontend.git#modig-frontend-1.1.104",
     "gulp-less": "^3.0.2",
-    "gulp-concat": "^2.5.2"
+    "gulp-concat": "^2.5.2",
+    "gulp-uglifycss": "^1.0.4",
+    "gulp-if": "^1.2.5",
+    "gulp-uglify": "^1.1.0",
+    "gulp-streamify": "0.0.5"
   },
   "dependencies": {
     "react": "^0.13.0",
