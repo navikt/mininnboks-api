@@ -23,10 +23,10 @@
 
     <properties>
         <sonar.exclusions>
-            *no/nav/sbl/dialogarena/mininnboks/config/*,
-            *no/nav/sbl/dialogarena/mininnboks/servlet/*,
-            *no/nav/sbl/dialogarena/mininnboks/rest/DateTimeObjectMapperProvider.java,
-            *no/nav/sbl/dialogarena/mininnboks/rest/RestConfig.java
+            no/nav/sbl/dialogarena/mininnboks/config/*,
+            no/nav/sbl/dialogarena/mininnboks/servlet/*,
+            no/nav/sbl/dialogarena/mininnboks/rest/DateTimeObjectMapperProvider.java,
+            no/nav/sbl/dialogarena/mininnboks/rest/RestConfig.java
         </sonar.exclusions>
     </properties>
 
