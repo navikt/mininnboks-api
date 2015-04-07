@@ -12,6 +12,7 @@ var gulpif = require('gulp-if');
 var uglifycss = require('gulp-uglifycss');
 var uglify = require('gulp-uglify');
 var streamify = require('gulp-streamify');
+var karma = require('karma').server;
 
 var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
 var BUILD_DIR = './src/main/webapp/build/';
@@ -85,4 +86,11 @@ gulp.task('dev', function() {
     copyImg();
     browserifyTask(true);
     gulp.watch(SRC_DIR + '**/*.less', buildLess.bind(this, true));
+});
+
+gulp.task('test', function () {
+    karma.start({
+        configFile: __dirname + '/karma.conf.js',
+        isSingleRun: true
+    });
 });
