@@ -43,13 +43,13 @@ var TraadVisning = React.createClass({
     getInfoMelding: function () {
         if (this.state.traad.avsluttet) {
             return (
-                <InfoBoks>
+                <InfoBoks.Info>
                     <p>
                         {this.props.resources.get('traadvisning.kan-ikke-svare.info')}
                         {' '}
                         <a href={this.props.resources.get('skriv.ny.link')}>{this.props.resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
                     </p>
-                </InfoBoks>)
+                </InfoBoks.Info>)
         } else if (!this.state.traad.avsluttet && !this.state.traad.kanBesvares) {
             var epost = this.props.resources.get('bruker.epost');
             var infoTekst = epost ?
@@ -64,11 +64,11 @@ var TraadVisning = React.createClass({
                 <a href={this.props.resources.get('brukerprofil.link')}>{this.props.resources.get('traadvisning.send-svar.bekreftelse.registrer-epostadresse')}</a>;
 
             return (
-                <InfoBoks>
+                <InfoBoks.Info>
                     <p>
                         {infoTekst} {epostTekst}
                     </p>
-                </InfoBoks>)
+                </InfoBoks.Info>)
         }
 
         return null;
