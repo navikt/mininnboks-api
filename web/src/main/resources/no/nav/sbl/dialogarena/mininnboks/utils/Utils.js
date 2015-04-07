@@ -1,5 +1,9 @@
 var React = require('react/addons');
 var sanitize = require('sanitize-html');
+var format = require('string-format');
+var moment = require('moment');
+require('moment/locale/nb');
+moment.locale('nb');
 
 var Utils = {
     sanitize: function (tekst) {
@@ -20,6 +24,21 @@ var Utils = {
                 return <p>{avsnitt}</p>;
             }
         }
+    },
+    ariaLabelForMelding: function(antallMeldinger, melding){
+        var behandlingsStatus = '';
+        if (melding.type === 'SPORSMAL_MODIA_UTGAAENDE' || !melding.lest) {
+            behandlingsStatus += 'Ubehandlet,';
+        } else if (melding.type == 'SVAR_SBL_INNGAAENDE') {
+            behandlingsStatus += 'Besvart,';
+        }
+        return format('{0} {1} {2}, {3}, {4}',
+            behandlingsStatus,
+            antallMeldinger,
+            antallMeldinger === 1 ? 'melding' : 'meldinger',
+            moment(melding.opprettet).format('Do MMMM YYYY, [kl.] HH:mm'),
+            melding.statusTekst
+        );
     }
 };
 

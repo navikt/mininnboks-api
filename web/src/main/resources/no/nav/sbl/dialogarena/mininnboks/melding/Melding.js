@@ -7,7 +7,8 @@ moment.locale('nb');
 var Melding = React.createClass({
     geDefaultProps: function () {
         return {
-            lagLenkerAvURL: false
+            lagLenkerAvURL: false,
+            skjulForSkjermleser: false
         }
     },
     render: function () {
@@ -25,7 +26,7 @@ var Melding = React.createClass({
         });
 
         return (
-            <div className="melding" aria-hidden="true">
+            <div className="melding" aria-hidden={this.props.skjulForSkjermleser} >
                 <h2>{dato}</h2>
                 <h3>{melding.statusTekst}</h3>
                 <div className="fritekst">{avsnitt}</div>
