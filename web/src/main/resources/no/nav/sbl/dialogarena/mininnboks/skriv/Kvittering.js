@@ -6,7 +6,7 @@ var Kvittering = React.createClass({
         return (
             <article className="send-sporsmal-container bekreftelse-panel">
                 <div className="sporsmal-header">
-                    <img src="/mininnboks/img/hake_stor02.svg" alt="Kvitteringsikon"/>
+                    <img src="/mininnboks/build/img/hake_stor02.svg" alt="Kvitteringsikon"/>
 
                     <h2 className="stor deloverskrift">{this.props.resources.get('send-sporsmal.bekreftelse.antall-dager')}</h2>
 

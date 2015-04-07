@@ -35,7 +35,7 @@ var Skriv = React.createClass({
                     <h1 className="diger">{this.props.resources.get('send-sporsmal.still-sporsmal.ny-melding-overskrift')}</h1>
                     <article className="send-sporsmal-container send-panel">
                         <div className="sporsmal-header">
-                            <img src="/mininnboks/img/melding_graa.svg"
+                            <img src="/mininnboks/build/img/melding_graa.svg"
                                  alt={this.props.resources.get("meldingikon.alternativ.tekst")}/>
 
                             <h2 className="stor deloverskrift">{this.props.resources.get("send-sporsmal.still-sporsmal.deloverskrift")}</h2>
