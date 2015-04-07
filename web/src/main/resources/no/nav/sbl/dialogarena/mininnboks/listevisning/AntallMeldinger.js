@@ -7,7 +7,7 @@ var AntallMeldinger = React.createClass({
         var antallTekst = antall === 1 ? null : antall;
 
         return (
-            <div className={antallCls}>{antallTekst}</div>
+            <div className={antallCls} aria-hidden="true">{antallTekst}</div>
         );
     }
 });

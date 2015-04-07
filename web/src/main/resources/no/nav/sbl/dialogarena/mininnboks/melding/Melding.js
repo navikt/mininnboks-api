@@ -25,7 +25,7 @@ var Melding = React.createClass({
         });
 
         return (
-            <div className="melding">
+            <div className="melding" aria-hidden="true">
                 <h2>{dato}</h2>
                 <h3>{melding.statusTekst}</h3>
                 <div className="fritekst">{avsnitt}</div>
