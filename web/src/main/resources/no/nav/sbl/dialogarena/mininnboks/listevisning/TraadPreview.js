@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var Link = require('react-router').Link;
 var AntallMeldinger = require('./AntallMeldinger');
 var MeldingStatus = require('./MeldingStatus');

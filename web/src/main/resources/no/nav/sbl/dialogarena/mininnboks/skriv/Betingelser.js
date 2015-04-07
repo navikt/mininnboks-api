@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var Modal = require('../modal/Modal');
 var Resources = require('../resources/Resources');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');

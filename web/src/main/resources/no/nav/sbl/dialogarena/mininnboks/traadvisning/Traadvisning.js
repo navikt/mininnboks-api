@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var BesvarBoks = require('./BesvarBoks');
 var MeldingContainer = require('./MeldingContainer');
 var Knapper = require('./Knapper');

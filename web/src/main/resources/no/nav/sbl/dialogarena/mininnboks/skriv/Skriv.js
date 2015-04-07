@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var Link = require('react-router').Link;
 var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
 var FeedbackForm = require('../feedback/FeedbackForm');

@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var ValidatableMixin = require('../feedback/ValidatableMixin');
 var Resources = require('../resources/Resources');
 var Betingelser = require('./Betingelser');

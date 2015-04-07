@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 var FeedbackForm = require('../feedback/FeedbackForm');

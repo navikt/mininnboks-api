@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var TraadPreview = require('./TraadPreview');
 var Feilmelding = require('../feilmelding/Feilmelding');
 

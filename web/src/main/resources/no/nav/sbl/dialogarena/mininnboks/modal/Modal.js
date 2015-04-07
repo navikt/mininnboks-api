@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var Portal = require('./ModalPortal.js');
 
 var Modal = React.createClass({

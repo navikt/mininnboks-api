@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var TraaderContainer = require('./TraaderContainer');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 var Feilmelding = require('../feilmelding/Feilmelding');
