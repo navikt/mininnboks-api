@@ -64,11 +64,11 @@ var TraadVisning = React.createClass({
                 <a href={this.props.resources.get('brukerprofil.link')}>{this.props.resources.get('traadvisning.send-svar.bekreftelse.registrer-epostadresse')}</a>;
 
             return (
-                <InfoBoks.Info>
+                <InfoBoks.Ok>
                     <p>
                         {infoTekst} {epostTekst}
                     </p>
-                </InfoBoks.Info>)
+                </InfoBoks.Ok>)
         }
 
         return null;
