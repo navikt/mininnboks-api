@@ -20,26 +20,29 @@ var BesvarBoks = React.createClass({
         this.props.skjul();
     },
     render: function () {
-        var knapper = <Snurrepipp storrelse="48" farge="graa" />;
-
-        if (!this.state.sender) {
-            knapper = (
-                <div>
-                    <input type="button" className="knapp-hoved-liten" value={this.props.resources.get('traadvisning.besvar.send')} onClick={this.onSubmit} />
-                    <a href="#" onClick={this.skjul}>{this.props.resources.get('traadvisning.besvar.avbryt')}</a>
-                </div>
-            );
-        }
-
         if (!this.props.vis) {
             return null;
         }
 
+        var knapper;
+        if (this.state.sender) {
+            knapper = <Snurrepipp storrelse="48" farge="graa" />;
+        } else {
+            knapper = (
+                <div>
+                    <input type="button" className="knapp-hoved-liten" value={this.props.resources.get('traadvisning.besvar.send')} onClick={this.onSubmit} />
+                    <a href="#" onClick={this.skjul} role="button">{this.props.resources.get('traadvisning.besvar.avbryt')}</a>
+                </div>
+            );
+        }
+
         return (
-            <FeedbackForm className="besvar-container" ref="form">
-                <ExpandingTextArea placeholder={this.props.resources.get('traadvisning.besvar.tekstfelt.placeholder')} charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')} feedbackref="textarea" />
+            <div aria-atomic="true" aria-live="polite">
+                <FeedbackForm className="besvar-container" ref="form">
+                    <ExpandingTextArea placeholder={this.props.resources.get('traadvisning.besvar.tekstfelt.placeholder')} charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')} feedbackref="textarea" />
                 {knapper}
-            </FeedbackForm>
+                </FeedbackForm>
+            </div>
         );
     }
 });

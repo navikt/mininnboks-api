@@ -6,9 +6,14 @@ var MeldingContainer = React.createClass({
         var melding = this.props.melding;
         var className = 'melding-container ' + (melding.fraBruker ? 'fra-bruker' : 'fra-nav');
         var imgSrc = melding.fraBruker ? '/mininnboks/build/img/personikon.svg' : '/mininnboks/build/img/nav-logo.svg';
+        var imgTekstKey = melding.fraBruker ? 'innboks.avsender.bruker' : 'innboks.avsender.nav';
+
         return (
             <div className={className}>
-                <div className="logo"><div className="responsiveImg"></div><img src={imgSrc} /></div>
+                <div className="logo" aria-label={this.props.resources.get(imgTekstKey)}>
+                    <div className="responsiveImg"></div>
+                    <img src={imgSrc} />
+                </div>
                 <Melding melding={melding} lagLenkerAvURL={true} />
             </div>
         );
