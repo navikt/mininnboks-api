@@ -16,9 +16,6 @@ var ExpandingTextArea = React.createClass({
     getInput: function () {
         return this.state.input;
     },
-    isValid: function () {
-        return this.getErrorMessages().length === 0;
-    },
     setPlaceholder: function () {
         var placeholder = this.props.placeholder;
         if (placeholder.length === 0) {
@@ -77,20 +74,15 @@ var ExpandingTextArea = React.createClass({
     },
     render: function () {
         var noMoreCharsClass = this.charsLeft() >= 0 ? '' : 'invalid';
-        var validClass = this.isValid() ? '' : 'invalid';
-        var validationMessages = this.props.showInline ? this.getErrorMessages().map(function (validationMessage) {
-            return (<span className="validation-message">{validationMessage}</span>);
-        }) : null;
+        var textareaClass = this.isValid() ? '' : 'invalid';
 
-        validationMessages = React.addons.createFragment({
-            errorMessages: validationMessages
-        });
+        var validationMessages = this.props.showInline ? this.getErrorElements() : null;
 
         return (
             <div className="expandingtextarea">
                 <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>
-                <textarea ref="textarea" className={validClass}
-                    aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby="validation-messages"
+                <textarea ref="textarea" className={textareaClass}
+                    aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId()}
                     onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur} />
                 <div id="validation-messages">
                     {validationMessages}

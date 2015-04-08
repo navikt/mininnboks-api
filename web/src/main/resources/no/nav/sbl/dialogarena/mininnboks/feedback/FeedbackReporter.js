@@ -1,3 +1,5 @@
+var React = require('react/addons');
+
 function FeedbackReporter(update) {
     this.update = update;
     this.errors = {};
@@ -7,21 +9,64 @@ FeedbackReporter.prototype.error = function (ref, errorMessages) {
         errorMessages = [errorMessages];
     }
     this.errors[ref] = errorMessages;
-    this.update(getAllErrorMessages(this.errors));
+    this.update($.extend({}, this.errors));
 };
 FeedbackReporter.prototype.ok = function (ref) {
     this.errors[ref] = [];
-    this.update(getAllErrorMessages(this.errors));
-
+    this.update($.extend({}, this.errors));
 };
 
-FeedbackReporter.prototype.numberOfErrors = function() {
+FeedbackReporter.prototype.numberOfErrors = function () {
     return getAllErrorMessages(this.errors).length;
 };
 
-FeedbackReporter.prototype.get = function(ref) {
+FeedbackReporter.prototype.get = function (ref) {
     return this.errors[ref] || [];
 };
+
+FeedbackReporter.prototype.getErrorElementsForComponent = function (ref, elementType) {
+    var messages = {};
+    messages[ref] = this.get(ref);
+    return toErrorElements(elementType, messages);
+};
+
+FeedbackReporter.prototype.getErrorMessageIdForComponent = function (ref) {
+    if (this.get(ref).length !== 0) {
+        return 'error-' + ref;
+    }
+    return '';
+};
+
+FeedbackReporter.prototype.getAllErrorElements = function (elementType) {
+    return toErrorElements(elementType, this.errors);
+};
+
+function toErrorElements(elementType, errors) {
+    var elementTypeComponents = (elementType || 'span.validation-message').split(".");
+    var tagType = elementTypeComponents[0];
+    var tagClass = '';
+
+    if (elementTypeComponents.length > 1) {
+        tagClass = elementTypeComponents[1];
+    }
+    var elements = [];
+    for (var key in errors) {
+        if (errors.hasOwnProperty(key)) {
+            var errorElements = errors[key].map(function (errorMessage) {
+                return React.createElement(tagType, {
+                    "className": tagClass,
+                    "id": 'error-' + key,
+                    "role": 'alert',
+                    "aria-live": 'assertive',
+                    "aria-atomic": true
+
+                }, errorMessage);
+            });
+            elements = elements.concat(errorElements);
+        }
+    }
+    return elements;
+}
 
 function getAllErrorMessages(errors) {
     var msg = [];

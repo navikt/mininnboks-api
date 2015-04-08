@@ -51,7 +51,7 @@ var Skriv = React.createClass({
                                                charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
                                                feedbackref="textarea"/>
 
-                            <GodtaVilkar />
+                            <GodtaVilkar feedbackref="godtavilkar" />
 
                             <div>
                                 <input type="button" className="send-link knapp-hoved-stor" role="button"

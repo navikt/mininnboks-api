@@ -1,19 +1,33 @@
+var React = require('react/addons');
+
 module.exports = {
     getInitialState: function () {
+        if (!this.props.hasOwnProperty('id')) {
+            throw new TypeError(this.constructor.displayName + " uses the ValidatableMixin, but has not been given an id. If it used within a FeedbackForm you should give it a 'feedbackref' props");
+        }
         return {
-            randomId: Math.random()
+            uuid: this.props.id
         };
     },
     getDefaultProps: function () {
         return {showInline: false};
     },
-    valid: function() {
-        this.props.reporter.ok(this.state.randomId);
+    valid: function () {
+        this.props.reporter.ok(this.state.uuid);
     },
-    error: function(msgs) {
-        this.props.reporter.error(this.state.randomId, msgs);
+    error: function (msgs) {
+        this.props.reporter.error(this.state.uuid, msgs);
     },
-    getErrorMessages: function() {
-        return this.props.reporter.get(this.state.randomId);
+    getErrorMessages: function () {
+        return this.props.reporter.get(this.state.uuid);
+    },
+    isValid: function(){
+        return this.getErrorMessages().length === 0;
+    },
+    getErrorElements: function (tagConfig) {
+        return this.props.reporter.getErrorElementsForComponent(this.state.uuid, tagConfig);
+    },
+    getErrorElementId: function () {
+        return this.props.reporter.getErrorMessageIdForComponent(this.state.uuid);
     }
 };
