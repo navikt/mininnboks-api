@@ -17,7 +17,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Path("/resources")
-@Produces(APPLICATION_JSON)
+@Produces(APPLICATION_JSON+"; charset=UTF-8")
 public class ResourcesController {
 
     public static final String EPOST = "bruker.epost";
@@ -28,18 +28,19 @@ public class ResourcesController {
 
     @GET
     public Map<String, String> getResources(@Context HttpServletRequest request) {
-        String epost = epost(request);
         Map<String, String> resources = new HashMap<>();
 
         resources.putAll(propertyResolver.getAllProperties());
         resources.put("skriv.ny.link", System.getProperty("temavelger.link.url"));
         resources.put("brukerprofil.link", System.getProperty("brukerprofil.link.url"));
-        resources.put("bruker.epost", epost);
+        try {
+            resources.put("bruker.epost", epost(request));
+        } catch (Exception ignored) {}
 
         return resources;
     }
 
-    private String epost(HttpServletRequest request) {
+    private String epost(HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession();
         String epost = (String) session.getAttribute(EPOST);
 
@@ -47,14 +48,11 @@ public class ResourcesController {
             return epost;
         }
 
-        try {
-            epost =  epostService.hentEpostadresse();
-            session.setAttribute(EPOST, epost);
+        epost = epostService.hentEpostadresse();
+        session.setAttribute(EPOST, epost);
 
-            return epost;
-        } catch (Exception e) {
-            return "";
-        }
+        return epost;
+
     }
 
 }
