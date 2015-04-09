@@ -35,6 +35,7 @@ var GodtaVilkar = React.createClass({
         this.setState({
             checked: status
         });
+        this.validate(status);
     },
     render: function () {
         var errorMessages = this.getErrorMessages();
