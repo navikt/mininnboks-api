@@ -54,7 +54,7 @@ var TraadVisning = React.createClass({
             var epost = this.props.resources.get('bruker.epost');
             var infoTekst = epost ?
                 this.props.resources.get('traadvisning.send-svar.bekreftelse.du-mottar-epost') :
-                this.props.resources.get('traadvisning.send-svar.bekreftelse.kunne-ikke-hente-epost');
+                this.props.resources.get('traadvisning.send-svar.bekreftelse.du-kan-motta-epost');
             var epostTekst = epost ?
                 <span>
                     {epost}
