@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var Portal = require('./ModalPortal.js');
 
 var Modal = React.createClass({
@@ -11,13 +11,18 @@ var Modal = React.createClass({
         return {
             title: {
                 text: 'Modal Title',
-                show: 'false',
+                show: false,
                 tag: 'h1'
             },
             description: {
                 text: '',
-                show: 'false',
+                show: false,
                 tag: 'div'
+            },
+            closeButton: {
+                text: '',
+                show: true,
+                tag: 'span'
             }
         }
     },
