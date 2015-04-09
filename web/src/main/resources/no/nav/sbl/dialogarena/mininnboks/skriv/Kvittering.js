@@ -1,12 +1,10 @@
 var React = require('react/addons');
 var Link = require('react-router').Link;
+var Epost = require('../Epost/Epost');
+
 
 var Kvittering = React.createClass({
     render: function () {
-        var epost = this.props.resources.get('bruker.epost');
-        var infoTekst = epost ?
-            this.props.resources.get('traadvisning.send-svar.bekreftelse.du-mottar-epost') :
-            this.props.resources.get('traadvisning.send-svar.bekreftelse.kunne-ikke-hente-epost');
         return (
             <article className="send-sporsmal-container bekreftelse-panel">
                 <div className="sporsmal-header">
@@ -16,15 +14,7 @@ var Kvittering = React.createClass({
 
                     <div className="robust-strek"></div>
 
-
-                    <div className="mangler-epost">
-                        {infoTekst}
-                        <a className="brukerprofil-link" href={this.props.resources.get('brukerprofil.link')}>
-                            {this.props.resources.get('send-sporsmal.bekreftelse.registrer-epostadresse')}
-                        </a>
-                    </div>
-
-
+                    <Epost resources={this.props.resources} erKvittering={true} className="mangler-epost" linkClass={'brukerprofil-link'}/>
                     <hr/>
                 </div>
                 <Link className="knapp-link-stor" to="innboks">{this.props.resources.get('send-sporsmal.bekreftelse.til-meldingsboksen')}</Link>
