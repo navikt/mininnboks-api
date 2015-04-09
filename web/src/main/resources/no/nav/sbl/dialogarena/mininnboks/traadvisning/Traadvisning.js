@@ -5,7 +5,9 @@ var Knapper = require('./Knapper');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 var Feilmelding = require('../feilmelding/Feilmelding');
 var InfoBoks = require('../infoboks/Infoboks');
+var Epost = require('../Epost/Epost');
 var format = require('string-format');
+
 
 var TraadVisning = React.createClass({
     getInitialState: function () {
@@ -51,23 +53,9 @@ var TraadVisning = React.createClass({
                     </p>
                 </InfoBoks.Info>)
         } else if (!this.state.traad.avsluttet && !this.state.traad.kanBesvares) {
-            var epost = this.props.resources.get('bruker.epost');
-            var infoTekst = epost ?
-                this.props.resources.get('traadvisning.send-svar.bekreftelse.du-mottar-epost') :
-                this.props.resources.get('traadvisning.send-svar.bekreftelse.du-kan-motta-epost');
-            var epostTekst = epost ?
-                <span>
-                    {epost}
-                    {' '}
-                    <a href={this.props.resources.get('brukerprofil.link')}>{this.props.resources.get('traadvisning.send-svar.bekreftelse.endre-epostadresse')}</a>
-                </span> :
-                <a href={this.props.resources.get('brukerprofil.link')}>{this.props.resources.get('traadvisning.send-svar.bekreftelse.registrer-epostadresse')}</a>;
-
             return (
                 <InfoBoks.Ok>
-                    <p>
-                        {infoTekst} {epostTekst}
-                    </p>
+                    <Epost resources={this.props.resources} />
                 </InfoBoks.Ok>)
         }
 

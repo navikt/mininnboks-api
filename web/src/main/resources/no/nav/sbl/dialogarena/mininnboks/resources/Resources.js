@@ -10,7 +10,12 @@ function fetch() {
     });
 }
 
+function hasKey(key) {
+    return cache.hasOwnProperty(key);
+}
+
 module.exports = {
     fetch: fetch,
-    get: get
+    get: get,
+    hasKey: hasKey
 };
