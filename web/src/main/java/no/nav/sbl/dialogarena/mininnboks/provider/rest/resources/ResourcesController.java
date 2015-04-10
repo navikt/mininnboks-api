@@ -2,6 +2,8 @@ package no.nav.sbl.dialogarena.mininnboks.provider.rest.resources;
 
 import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 public class ResourcesController {
 
     public static final String EPOST = "bruker.epost";
+    public static final Logger LOGGER = LoggerFactory.getLogger(ResourcesController.class);
     @Inject
     private EpostService epostService;
     @Inject
@@ -35,7 +38,9 @@ public class ResourcesController {
         resources.put("brukerprofil.link", System.getProperty("brukerprofil.link.url"));
         try {
             resources.put("bruker.epost", epost(request));
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            LOGGER.error("Feil mot TPS", e);
+        }
 
         return resources;
     }
