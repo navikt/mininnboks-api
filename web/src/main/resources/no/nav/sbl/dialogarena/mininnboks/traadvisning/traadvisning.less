@@ -113,15 +113,14 @@
   .traad-container .melding-container {
     .logo {
       width: 11%;
-      margin-top: 44px;
-      .responsiveImg {
-        display: inline-block;
-        border-radius: 50%;
-        height: 1.2em;
-        width: 1.2em;
-      }
+      z-index: 1;
+      height: initial;
+      padding-top: 6%;
+      top: 58px;
+      margin-top: -4%;
+
       img {
-        display: none;
+        height: 100%;
       }
     }
     .melding {
@@ -129,15 +128,12 @@
     }
     &.fra-bruker .logo {
       text-align: right;
-      .responsiveImg {
-        background-color: #777777;
+      img {
+        right: 0px;
       }
     }
     &.fra-nav .logo {
       text-align: left;
-      .responsiveImg {
-        background-color: #c30202;
-      }
     }
   }
 }

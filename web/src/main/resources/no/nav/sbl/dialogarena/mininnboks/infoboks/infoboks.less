@@ -1,9 +1,10 @@
 .info-boks {
   background: url(/mininnboks/build/img/info-graa.svg) no-repeat 12px;
   border: 1px solid #d1d1d1;
-  margin-bottom: 30px;
+  margin: 30px auto;
+  width: 76%;
   padding: 12px 12px 12px 56px;
-  text-align: left;
+  text-align:    left;
   div {
     border-left: 1px solid #d1d1d1;
     padding-left: 12px;
@@ -31,5 +32,10 @@
     div {
       border-left: 1px solid #f18a10;
     }
+  }
+}
+@media (max-width: 600px) {
+  .info-boks {
+    width: 100%;
   }
 }

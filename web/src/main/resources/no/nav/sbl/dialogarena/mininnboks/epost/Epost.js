@@ -29,7 +29,7 @@ var Epost = React.createClass({
             <a href={this.props.resources.get('brukerprofil.link')} className={this.props.linkClass}>{this.props.resources.get(getCMSKey(this.props.erKvittering, 'registrer-epostadresse'))}</a>;
 
         return (
-            <p className={this.props.className}>{infoTekst} {epostTekst}</p>
+            <p className={this.props.className}>{epostTekst} {infoTekst}</p>
         );
     }
 });

@@ -72,8 +72,6 @@ var TraadVisning = React.createClass({
             this.props.resources.get('traadvisning.overskrift.kassert') :
             format(this.props.resources.get('traadvisning.overskrift'), this.state.traad.nyeste.temagruppeNavn);
 
-        console.log('render', this.state.besvart);
-
         return (
             <div>
                 <h1 className="diger">{overskrift}</h1>
