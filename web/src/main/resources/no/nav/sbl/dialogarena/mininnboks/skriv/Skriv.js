@@ -4,6 +4,7 @@ var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
 var FeedbackForm = require('../feedback/FeedbackForm');
 var GodtaVilkar = require('./GodtaVilkar');
 var Kvittering = require('./Kvittering');
+var Feilmelding = require('../feilmelding/Feilmelding');
 
 var Skriv = React.createClass({
     getInitialState: function () {
@@ -27,11 +28,16 @@ var Skriv = React.createClass({
         }
     },
     render: function () {
+        console.log('props', this.props.params);
+        if (['ARBD', 'FMLI', 'HJLPM', 'ORT_HJE', 'BIL'].indexOf(this.props.params.temagruppe) < 0) {
+            return <Feilmelding melding="NO... Fy..." visIkon={true} />;
+        }
+
         if (this.state.sendt) {
             return <Kvittering resources={this.props.resources} />
         } else {
             return (
-                <div className="innboks-container">
+                <div>
                     <h1 className="diger">{this.props.resources.get('send-sporsmal.still-sporsmal.ny-melding-overskrift')}</h1>
                     <article className="send-sporsmal-container send-panel">
                         <div className="sporsmal-header">

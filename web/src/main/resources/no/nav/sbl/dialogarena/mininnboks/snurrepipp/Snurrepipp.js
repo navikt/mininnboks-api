@@ -11,7 +11,7 @@ module.exports = React.createClass({
     render: function () {
         var src = format('/mininnboks/build/img/ajaxloader/{}/loader_{}_{}.gif', this.props.farge, this.props.farge, this.props.storrelse);
         return (
-            <div className="innboks-container snurrepipp">
+            <div className="snurrepipp">
                 <img src={src} />
             </div>
         );

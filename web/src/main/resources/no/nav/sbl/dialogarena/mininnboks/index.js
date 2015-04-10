@@ -31,15 +31,20 @@ var App = React.createClass({
     },
     render: function () {
         var resourcesState = this.state.resources.getPromise().state();
+        var content;
         if (resourcesState === 'pending') {
-            return <Snurrepipp />
+            content = <Snurrepipp />
         } else if (resourcesState === 'rejected') {
-            return <Feilmelding visIkon={true} melding="Kunne ikke hente ut standardtekster for denne applikasjonen." />;
+            content = <Feilmelding visIkon={true} melding="Kunne ikke hente ut standardtekster for denne applikasjonen." />;
         } else {
-            return (
-                <RouteHandler {...this.props} {...this.state} setValgtTraad={this.setValgtTraad}/>
-            );
+            content = <RouteHandler {...this.props} {...this.state} setValgtTraad={this.setValgtTraad}/>;
         }
+
+        return (
+            <div className="innboks-container">
+                {content}
+            </div>
+        );
     }
 });
 

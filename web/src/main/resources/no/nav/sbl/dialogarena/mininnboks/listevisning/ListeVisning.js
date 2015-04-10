@@ -14,10 +14,14 @@ var ListeVisning = React.createClass({
         if (!this.state.hentet) {
             return <Snurrepipp />
         }
+
+        var content;
         if (this.state.feilet.status) {
-            return <div className="innboks-container">
-                <Feilmelding melding={this.state.feilet.melding} />
-            </div>;
+            content = <Feilmelding melding={this.state.feilet.melding} />;
+        } else if (this.state.traader.length == 0) {
+            content = <Feilmelding melding={this.props.resources.get('innboks.tom-innboks-melding')}/>;
+        } else {
+            content = <TraaderContainer traader={this.state.traader} setValgtTraad={this.props.setValgtTraad} resources={this.props.resources} />;
         }
 
         return (
@@ -26,7 +30,7 @@ var ListeVisning = React.createClass({
                 <div className="innboks-navigasjon clearfix">
                     <a className="skriv-ny-link knapp-hoved-liten" href={this.props.resources.get('skriv.ny.link')}>{this.props.resources.get('innboks.skriv.ny.link')}</a>
                 </div>
-                <TraaderContainer traader={this.state.traader} setValgtTraad={this.props.setValgtTraad} resources={this.props.resources} />
+                {content}
             </div>
         );
     }

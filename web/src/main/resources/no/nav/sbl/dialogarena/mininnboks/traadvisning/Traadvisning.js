@@ -66,11 +66,7 @@ var TraadVisning = React.createClass({
             return <Snurrepipp />
         }
         if (this.state.feilet.status) {
-            return (
-                <div className="innboks-container">
-                    <Feilmelding melding={this.state.feilet.melding} visIkon={true} />
-                </div>
-            );
+            return <Feilmelding melding={this.state.feilet.melding} visIkon={true} />;
         }
 
         var meldingItems = this.state.traad.meldinger.map(function (melding) {
@@ -84,7 +80,7 @@ var TraadVisning = React.createClass({
         return (
             <div>
                 <h1 className="diger">{overskrift}</h1>
-                <div className="innboks-container traad-container">
+                <div className="traad-container">
                     <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} resources={this.props.resources} />
                     {this.getInfoMelding()}
                     <BesvarBoks besvar={this.sendMelding} vis={this.state.besvares} skjul={this.skjulBesvarBoks} resources={this.props.resources} />
