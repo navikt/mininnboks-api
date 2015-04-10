@@ -6,6 +6,8 @@ var RouteHandler = Router.RouteHandler;
 var resources = require('./resources/Resources');
 var ListeVisning = require('./listevisning/ListeVisning');
 var TraadVisning = require('./traadvisning/Traadvisning');
+var Snurrepipp = require('./snurrepipp/Snurrepipp');
+var Feilmelding = require('./feilmelding/Feilmelding');
 var Skriv = require('./skriv/Skriv');
 
 //Include Logger for å få satt opp en global error handler
@@ -16,17 +18,28 @@ var App = React.createClass({
         return {valgtTraad: null, resources: resources}
     },
     componentDidMount: function () {
-        this.state.resources.fetch().done(function () {
-            this.setState({resources: resources});
-        }.bind(this));
+        var self = this;
+        this.state.resources.fetch()
+            .done(function () {
+                self.setState({resources: resources});
+            }).fail(function () {
+                self.setState({resources: resources});
+            });
     },
     setValgtTraad: function (traad) {
         this.setState({valgtTraad: traad});
     },
     render: function () {
-        return (
-            <RouteHandler {...this.props} {...this.state} setValgtTraad={this.setValgtTraad}/>
-        );
+        var resourcesState = this.state.resources.getPromise().state();
+        if (resourcesState === 'pending') {
+            return <Snurrepipp />
+        } else if (resourcesState === 'rejected') {
+            return <Feilmelding visIkon={true} melding="Kunne ikke hente ut standardtekster for denne applikasjonen." />;
+        } else {
+            return (
+                <RouteHandler {...this.props} {...this.state} setValgtTraad={this.setValgtTraad}/>
+            );
+        }
     }
 });
 

@@ -1,21 +1,30 @@
 var cache = {};
+var promise = $.Deferred().promise();
+
 
 function get(key) {
     return cache[key] || '';
 }
 
 function fetch() {
-    return $.get('/mininnboks/tjenester/resources').done(function (result) {
-        $.extend(cache, result);
-    });
+    promise = $.get('/mininnboks/tjenester/resources')
+        .done(function (result) {
+            $.extend(cache, result);
+        });
+    return promise;
 }
 
 function hasKey(key) {
     return cache.hasOwnProperty(key);
 }
 
+function getPromise() {
+    return promise;
+}
+
 module.exports = {
     fetch: fetch,
     get: get,
-    hasKey: hasKey
+    hasKey: hasKey,
+    getPromise: getPromise
 };
