@@ -1,6 +1,6 @@
 var React = require('react/addons');
 var Link = require('react-router').Link;
-var Epost = require('../Epost/Epost');
+var Epost = require('../epost/Epost');
 
 
 var Kvittering = React.createClass({
