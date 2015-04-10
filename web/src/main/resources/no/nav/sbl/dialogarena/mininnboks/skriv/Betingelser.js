@@ -30,7 +30,7 @@ var Betingelser = React.createClass({
         return (
             <Modal ref="modal">
                 <form onSubmit={this.submit} className="betingelserPanel">
-                    <h1 className="stor">{Resources.get("send-sporsmal.still-sporsmal.betingelser.overskrift")}</h1>
+                    <h1 className="stor" tabIndex="0">{Resources.get("send-sporsmal.still-sporsmal.betingelser.overskrift")}</h1>
                     <div className="robust-strek"></div>
                     <div dangerouslySetInnerHTML={{__html: Resources.get("send-sporsmal.still-sporsmal.betingelser.tekst")}}></div>
                     <hr />

@@ -5,7 +5,7 @@ var Knapper = require('./Knapper');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 var Feilmelding = require('../feilmelding/Feilmelding');
 var InfoBoks = require('../infoboks/Infoboks');
-var Epost = require('../Epost/Epost');
+var Epost = require('../epost/Epost');
 var format = require('string-format');
 
 
