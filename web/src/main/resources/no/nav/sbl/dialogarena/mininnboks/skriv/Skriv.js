@@ -5,6 +5,7 @@ var FeedbackForm = require('../feedback/FeedbackForm');
 var GodtaVilkar = require('./GodtaVilkar');
 var Kvittering = require('./Kvittering');
 var Feilmelding = require('../feilmelding/Feilmelding');
+var Snurrepipp = require('../snurrepipp/Snurrepipp');
 
 var Skriv = React.createClass({
     getInitialState: function () {
@@ -35,13 +36,30 @@ var Skriv = React.createClass({
         if (this.state.sendt) {
             return <Kvittering resources={this.props.resources} />
         } else {
+
+            var knapper;
+            if (this.state.sender) {
+                knapper = <Snurrepipp storrelse="48" farge="graa" />;
+            } else {
+                knapper = (<div>
+                    <div>
+                        <input type="button" className="send-link knapp-hoved-stor" role="button"
+                            value={this.props.resources.get("send-sporsmal.still-sporsmal.send-inn")}
+                            onClick={this.onSubmit}/>
+                    </div>
+                    <div className="avbryt">
+                        <Link to="innboks">{this.props.resources.get("send-sporsmal.still-sporsmal.avbryt")}</Link>
+                    </div>
+                </div>);
+            }
+
             return (
                 <div>
                     <h1 className="diger">{this.props.resources.get('send-sporsmal.still-sporsmal.ny-melding-overskrift')}</h1>
                     <article className="send-sporsmal-container send-panel">
                         <div className="sporsmal-header">
                             <img src="/mininnboks/build/img/melding_graa.svg"
-                                 alt={this.props.resources.get("meldingikon.alternativ.tekst")}/>
+                                alt={this.props.resources.get("meldingikon.alternativ.tekst")}/>
 
                             <h2 className="stor deloverskrift">{this.props.resources.get("send-sporsmal.still-sporsmal.deloverskrift")}</h2>
 
@@ -53,19 +71,12 @@ var Skriv = React.createClass({
                         <p className="hjelpetekst">{this.props.resources.get("send-sporsmal.still-sporsmal.hjelpetekst")}</p>
                         <FeedbackForm ref="form">
                             <ExpandingTextArea placeholder={this.props.resources.get('skriv-sporsmal.fritekst.placeholder')}
-                                               charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
-                                               feedbackref="textarea"/>
+                                charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
+                                feedbackref="textarea"/>
 
                             <GodtaVilkar feedbackref="godtavilkar" />
 
-                            <div>
-                                <input type="button" className="send-link knapp-hoved-stor" role="button"
-                                       value={this.props.resources.get("send-sporsmal.still-sporsmal.send-inn")}
-                                       onClick={this.onSubmit}/>
-                            </div>
-                            <div className="avbryt">
-                                <Link to="innboks">{this.props.resources.get("send-sporsmal.still-sporsmal.avbryt")}</Link>
-                            </div>
+                            {knapper}
                         </FeedbackForm>
                     </article>
                 </div>
