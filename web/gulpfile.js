@@ -19,7 +19,7 @@ var BUILD_DIR = './src/main/webapp/build/';
 var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources/';
 
 function browserifyTask(isDev) {
-    console.log('Starting browserify in ' + (isDev ? 'development' : 'production') + ' mode');
+    console.log('Starting browserify in ' + (isDev ? 'development' : 'production') + ' mode. NODE_ENV: ' + process.env.NODE_ENV);
     // Our app bundler
     var props = watchify.args;
     props.entries = [
@@ -76,12 +76,16 @@ var buildLess = function(isDev) {
 };
 
 gulp.task('default', function () {
+    process.env.NODE_ENV = 'production';
+
     browserifyTask(false);
     buildLess(false);
     copyImg();
 });
 
 gulp.task('dev', function() {
+    process.env.NODE_ENV = 'development';
+
     buildLess(true);
     copyImg();
     browserifyTask(true);
