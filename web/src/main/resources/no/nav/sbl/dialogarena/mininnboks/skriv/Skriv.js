@@ -28,7 +28,6 @@ var Skriv = React.createClass({
         }
     },
     render: function () {
-        console.log('props', this.props.params);
         if (['ARBD', 'FMLI', 'HJLPM', 'ORT_HJE', 'BIL'].indexOf(this.props.params.temagruppe) < 0) {
             return <Feilmelding melding="NO... Fy..." visIkon={true} />;
         }
