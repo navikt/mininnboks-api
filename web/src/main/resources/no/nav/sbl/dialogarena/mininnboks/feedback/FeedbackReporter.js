@@ -65,7 +65,7 @@ function toErrorElements(elementType, errors) {
             elements = elements.concat(errorElements);
         }
     }
-    return elements;
+    return React.addons.createFragment({elements: elements});
 }
 
 function getAllErrorMessages(errors) {

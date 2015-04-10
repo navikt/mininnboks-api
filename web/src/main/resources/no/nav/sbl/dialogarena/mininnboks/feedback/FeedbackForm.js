@@ -35,14 +35,12 @@ var FeedbackForm = React.createClass({
         if (this.feedbackReporter.numberOfErrors() === 1) {
             childrenProps.showInline = true;
         } else if (this.feedbackReporter.numberOfErrors() > 1) {
-            var errors = this.feedbackReporter.getAllErrorElements();
+            var errors = this.feedbackReporter.getAllErrorElements("li.feedbackPanelERROR");
             childrenProps.showInline = false;
             feedback =
                 <div role="alert" aria-live="assertive" aria-atomic="true" className="feilmelding">
                     <ul className="feedbackPanel">
-                        {errors.map(function (e) {
-                            return <li className="feedbackPanelERROR">{e}</li>;
-                        })}
+                        {errors}
                     </ul>
                 </div>
         }
@@ -52,7 +50,7 @@ var FeedbackForm = React.createClass({
                 return child;
             }
             var refId = child.props.feedbackref;
-            var childProps = $.extend({}, childrenProps, {ref: refId, id: refId});
+            var childProps = $.extend({}, childrenProps, {ref: refId, id: refId, key: refId});
             return React.addons.cloneWithProps(child, childProps);
         }.bind(this));
         return (
