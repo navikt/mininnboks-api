@@ -1,3 +1,4 @@
+require('./console-polyfill');
 var React = require('react/addons');
 var Router = require('react-router');
 var Route = Router.Route;
