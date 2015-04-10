@@ -32,12 +32,10 @@ var Utils = {
         } else if (melding.type == 'SVAR_SBL_INNGAAENDE') {
             behandlingsStatus += 'Besvart,';
         }
-        return format('{0} {1} {2}, {3}, {4}',
+        return format('{0} {1} {2}, {3}',
             behandlingsStatus,
             antallMeldinger,
-            antallMeldinger === 1 ? 'melding' : 'meldinger',
-            moment(melding.opprettet).format('Do MMMM YYYY, [kl.] HH:mm'),
-            melding.statusTekst
+            antallMeldinger === 1 ? 'melding' : 'meldinger'
         );
     }
 };

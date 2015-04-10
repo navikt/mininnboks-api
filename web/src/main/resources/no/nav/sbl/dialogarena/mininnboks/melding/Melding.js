@@ -8,7 +8,7 @@ var Melding = React.createClass({
     geDefaultProps: function () {
         return {
             lagLenkerAvURL: false,
-            skjulForSkjermleser: false
+            traadinfo: undefined
         }
     },
     render: function () {
@@ -25,10 +25,12 @@ var Melding = React.createClass({
             avsnitt: avsnitt
         });
 
+        var traadinfo = this.props.traadinfo ? <p className="vekk">{this.props.traadinfo}</p> : null;
         return (
-            <div className="melding" aria-hidden={this.props.skjulForSkjermleser} >
+            <div className="melding">
                 <h2>{dato}</h2>
-                <h3>{melding.statusTekst}</h3>
+                {traadinfo}
+                <p className="h3">{melding.statusTekst}</p>
                 <div className="fritekst">{avsnitt}</div>
             </div>
         )
