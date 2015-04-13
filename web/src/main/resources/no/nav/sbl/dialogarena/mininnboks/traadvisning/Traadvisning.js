@@ -44,17 +44,20 @@ var TraadVisning = React.createClass({
         }).done(leggTilMelding.bind(this, fritekst));
     },
     getInfoMelding: function () {
-        if (!this.state.traad.avsluttet) {
-            return null;
-        }
-        return (
-            <InfoBoks.Info>
+        if (this.state.traad.avsluttet) {
+            return (<InfoBoks.Info>
                 <p>
-                        {this.props.resources.get('traadvisning.kan-ikke-svare.info')}
-                        {' '}
+                    {this.props.resources.get('traadvisning.kan-ikke-svare.info')}
+                    {' '}
                     <a href={this.props.resources.get('skriv.ny.link')}>{this.props.resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
                 </p>
             </InfoBoks.Info>);
+        } else if (this.state.besvart) {
+            return (<InfoBoks.Ok>
+                <Epost resources={this.props.resources} />
+            </InfoBoks.Ok>);
+        }
+        return null;
     },
     render: function () {
         if (!this.state.hentet) {
@@ -79,9 +82,6 @@ var TraadVisning = React.createClass({
                     <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares} besvar={this.visBesvarBoks} resources={this.props.resources} />
                     {this.getInfoMelding()}
                     <BesvarBoks besvar={this.sendMelding} vis={this.state.besvares} skjul={this.skjulBesvarBoks} resources={this.props.resources} />
-                    {this.state.besvart ? <InfoBoks.Ok>
-                        <Epost resources={this.props.resources} />
-                    </InfoBoks.Ok> : null }
                     {meldingItems}
                 </div>
             </div>
