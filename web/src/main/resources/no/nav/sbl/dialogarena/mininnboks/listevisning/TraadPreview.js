@@ -7,11 +7,7 @@ var Utils = require('../utils/Utils');
 
 var TraadPreview = React.createClass({
     onClick: function () {
-        this.markerSomLest();
         this.props.setValgtTraad(this.props.traad);
-    },
-    markerSomLest: function () {
-        $.post('/mininnboks/tjenester/traader/lest/' + this.props.traad.nyeste.traadId);
     },
     render: function () {
         var melding = this.props.traad.nyeste;

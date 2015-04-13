@@ -94,6 +94,7 @@ function okCallback(data) {
         traad: data,
         hentet: true
     });
+    $.post('/mininnboks/tjenester/traader/lest/' + data.traadId);
 }
 function feiletCallback() {
     this.setState({
