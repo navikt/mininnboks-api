@@ -1,4 +1,4 @@
-@containerWidth: 650px;
+@containerWidth: 600px;
 @morkeBlaa: #0067c5;
 @navRodt: #c30000;
 @borderGraa: #cccccc;
@@ -76,8 +76,8 @@ hr {
   .tekst-feilmelding {
     position: absolute;
     color: #c30000;
-    bottom: 0px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
   }
 }
 .checkbox {
@@ -86,8 +86,8 @@ hr {
   .checkbox-feilmelding {
     position: relative;
     color: #c30000;
-    top: -15px;
-    left: 10px;
+    top: -5px;
+    left: -4px;
   }
 }
 .kvittering.avbryt {
@@ -159,6 +159,7 @@ ul.feedbackPanel {
   .vilkarlenke {
     font-size: 0.85rem;
     text-decoration: underline;
+    margin-left: 1em;
   }
   input:focus + label {
     border: 1px dashed @morkeBlaa;
@@ -198,15 +199,6 @@ ul.feedbackPanel {
 .avbryt {
   margin-top: 20px;
   text-align: center;
-  a {
-    color: @morkeBlaa;
-    text-decoration: none;
-    font-size: 1.25em;
-    font-family: Modus, Arial, Helvetica, sans-serif;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
 
 .pil-ned {
