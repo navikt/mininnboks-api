@@ -39,7 +39,7 @@ var Skriv = React.createClass({
 
             var knapper;
             if (this.state.sender) {
-                knapper = <Snurrepipp storrelse="48" farge="graa" />;
+                knapper = <Snurrepipp storrelse="48" farge="hvit" />;
             } else {
                 knapper = (<div>
                     <div>
