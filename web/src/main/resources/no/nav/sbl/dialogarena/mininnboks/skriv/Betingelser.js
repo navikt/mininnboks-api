@@ -34,9 +34,10 @@ var Betingelser = React.createClass({
                     <div className="robust-strek"></div>
                     <div dangerouslySetInnerHTML={{__html: Resources.get("send-sporsmal.still-sporsmal.betingelser.tekst")}}></div>
                     <hr />
-                    <a href="javascript:void(0)" className="svar-godta knapp-hoved-stor" onClick={this.props.godta}>{Resources.get("send-sporsmal.still-sporsmal.betingelser.godta")}</a>
+                    <a href="javascript:void(0)" className="svar-godta knapp-hoved-stor" role="button"
+                        onClick={this.props.godta} aria-controls="betingelser">{Resources.get("send-sporsmal.still-sporsmal.betingelser.godta")}</a>
                     <div className="avbryt">
-                        <a href="javascript:void(0)" className="svar-avbryt" onClick={this.props.avbryt}>{Resources.get("send-sporsmal.still-sporsmal.betingelser.ikke-godta")}</a>
+                        <a href="javascript:void(0)" className="svar-avbryt" onClick={this.props.avbryt} aria-controls="betingelser" role="button">{Resources.get("send-sporsmal.still-sporsmal.betingelser.ikke-godta")}</a>
                     </div>
                 </form>
             </Modal>

@@ -10,7 +10,7 @@ var GodtaVilkar = React.createClass({
     },
     onChange: function (event) {
         var checked = event.target.checked;
-        this.setState({checked: checked});
+        this.setState({checked: checked, ariastate: 'Checkbox '+(checked ? 'avkrysset' : 'ikke avkrysset')});
         this.validate(checked);
     },
     onBlur: function () {
@@ -32,10 +32,7 @@ var GodtaVilkar = React.createClass({
     },
     betingelseCallback: function (status) {
         this.refs.betingelserPanel.skjul();
-        this.setState({
-            checked: status
-        });
-        this.validate(status);
+        this.onChange({target: {checked: status}});
     },
     render: function () {
         var errorMessages = this.getErrorMessages();
@@ -44,6 +41,7 @@ var GodtaVilkar = React.createClass({
         return (
             <div className="betingelsevalgpanel">
                 <div className="checkbox">
+                    <span className="vekk" role="alert" aria-live="assertive" aria-atomic="true">{this.state.ariastate}</span>
                     <input type="checkbox" name="betingelseValg:betingelserCheckbox" id="betingelser"
                         onChange={this.onChange} onBlur={this.onBlur} checked={this.state.checked}
                         aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId()}
