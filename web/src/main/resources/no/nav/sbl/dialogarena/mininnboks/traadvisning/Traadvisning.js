@@ -53,7 +53,7 @@ var TraadVisning = React.createClass({
                 </p>
             </InfoBoks.Info>);
         } else if (this.state.besvart) {
-            return (<InfoBoks.Ok>
+            return (<InfoBoks.Ok focusOnRender={true}>
                 <Epost resources={this.props.resources} />
             </InfoBoks.Ok>);
         }
