@@ -30,13 +30,10 @@ var FeedbackForm = React.createClass({
     },
     render: function () {
         var feedback = null;
-        var childrenProps = {reporter: this.feedbackReporter};
+        var childrenProps = {reporter: this.feedbackReporter, showInline: true};
 
-        if (this.feedbackReporter.numberOfErrors() === 1) {
-            childrenProps.showInline = true;
-        } else if (this.feedbackReporter.numberOfErrors() > 1) {
+        if (this.feedbackReporter.numberOfErrors() > 1) {
             var errors = this.feedbackReporter.getAllErrorElements("li.feedbackPanelERROR");
-            childrenProps.showInline = false;
             feedback =
                 <div role="alert" aria-live="assertive" aria-atomic="true" className="feilmelding">
                     <ul className="feedbackPanel">

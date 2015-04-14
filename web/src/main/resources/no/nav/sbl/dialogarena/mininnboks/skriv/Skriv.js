@@ -30,7 +30,7 @@ var Skriv = React.createClass({
     },
     render: function () {
         if (['ARBD', 'FMLI', 'HJLPM', 'ORT_HJE', 'BIL'].indexOf(this.props.params.temagruppe) < 0) {
-            return <Feilmelding melding="NO... Fy..." visIkon={true} />;
+            return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon={true} />;
         }
 
         if (this.state.sendt) {
