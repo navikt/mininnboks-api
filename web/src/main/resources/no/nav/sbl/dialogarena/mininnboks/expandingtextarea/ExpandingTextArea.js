@@ -84,11 +84,11 @@ var ExpandingTextArea = React.createClass({
                 <textarea ref="textarea" className={textareaClass}
                     aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId()}
                     onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur} />
+                <span className={'charsLeft ' + noMoreCharsClass}>{this.charsLeft()}</span>
+                <span>{' ' + this.props.charsLeftText}</span>
                 <div id="validation-messages">
                     {validationMessages}
                 </div>
-                <span className={'charsLeft ' + noMoreCharsClass}>{this.charsLeft()}</span>
-                <span>{' ' + this.props.charsLeftText}</span>
             </div>
         )
     }
