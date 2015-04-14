@@ -37,7 +37,7 @@ var GodtaVilkar = React.createClass({
     render: function () {
         var errorMessages = this.getErrorMessages();
         var validationErrorClass = errorMessages.length === 0 ? '' : 'validation-error error';
-        var validationMessages = this.props.showInline ? this.getErrorElements('p.checkbox-feilmelding') : null;
+        var validationMessages = this.props.showInline ? this.getErrorElements('span.checkbox-feilmelding') : null;
         return (
             <div className="betingelsevalgpanel">
                 <div className="checkbox">
@@ -49,10 +49,9 @@ var GodtaVilkar = React.createClass({
                     <label htmlFor="betingelser"
                         className={validationErrorClass}>
                         <span>{Resources.get("send-sporsmal.still-sporsmal.betingelser.sjekkboks")}</span>
+                        <a href="#" className="vilkarlenke" onClick={this.visbetingelser}>{Resources.get("send-sporsmal.still-sporsmal.betingelser.vis")}</a>
                     </label>
                     <Betingelser ref="betingelserPanel" godta={this.betingelseCallback.bind(this, true)} avbryt={this.betingelseCallback.bind(this, false)}/>
-                    <a href="#"
-                        className="vilkarlenke" onClick={this.visbetingelser}>{Resources.get("send-sporsmal.still-sporsmal.betingelser.vis")}</a>
                     {validationMessages}
                 </div>
             </div>

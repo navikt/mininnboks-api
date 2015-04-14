@@ -17,7 +17,7 @@
     }
     .feilmelding {
       margin-bottom: 30px;
-      >ul {
+      > ul {
         text-align: left;
       }
     }
@@ -70,6 +70,7 @@ hr {
     margin-bottom: 30px !important;
   }
 }
+
 .tekstfelt {
   position: relative;
 
@@ -80,6 +81,7 @@ hr {
     left: 0;
   }
 }
+
 .checkbox {
   position: relative;
 
@@ -88,12 +90,16 @@ hr {
     color: #c30000;
     top: -5px;
     left: -4px;
+    display: block;
+    margin-top: 1rem;
   }
 }
+
 .kvittering.avbryt {
   margin-top: 40px;
   margin-bottom: 60px;
 }
+
 .mangler-epost {
   font-size: 17px;
   font-weight: 600;
@@ -138,9 +144,11 @@ ul.feedbackPanel {
     content: "* ";
   }
 }
+
 .expandingtextarea.validation-error {
   .errorBase;
 }
+
 .betingelsevalgpanel {
   margin-top: 1em;
   label {
@@ -152,14 +160,14 @@ ul.feedbackPanel {
       background-image: url("../img/check_tab_feil.svg");
     }
     span {
-      display: inline-block;
+      display: inline;
       width: 100%;
     }
-  }
-  .vilkarlenke {
-    font-size: 0.85rem;
-    text-decoration: underline;
-    margin-left: 1em;
+    .vilkarlenke {
+      font-size: 0.85rem;
+      text-decoration: underline;
+      margin-left: 1em;
+    }
   }
   input:focus + label {
     border: 1px dashed @morkeBlaa;
@@ -285,6 +293,7 @@ ul.feedbackPanel {
     }
   }
 }
+
 .contrast {
   .ui-dialog {
     border: 3px solid white;
@@ -297,6 +306,7 @@ ul.feedbackPanel {
     }
   }
 }
+
 .ui-dialog {
   background-color: white;
 }
@@ -322,23 +332,22 @@ ul.feedbackPanel {
   border-top: 1px solid #ce0000;
   color: #c60000 !important;
 }
+
 @media only screen and (max-width: 600px) {
   .tekstfelt span.tekst-feilmelding {
     position: relative;
   }
+
   .ui-dialog {
     top: 0 !important;
     margin-top: 16px;
   }
 }
+
 @media only screen and (max-width: 480px) {
   .betingelsevalgpanel {
     label span {
       width: auto;
-    }
-    a {
-      margin-bottom: 1em;
-      display: block;
     }
   }
 }
