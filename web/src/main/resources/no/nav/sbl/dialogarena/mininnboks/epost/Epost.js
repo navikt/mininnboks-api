@@ -24,9 +24,9 @@ var Epost = React.createClass({
             <span>
                     {epost}
                     {' '}
-                <a href={this.props.resources.get('brukerprofil.link')} className={this.props.linkClass}>{this.props.resources.get(getCMSKey(this.props.erKvittering, 'endre-epostadresse'))}</a>
+                <a href={this.props.resources.get('brukerprofil.link')} className={this.props.linkClass + ' lopendetekst'}>{this.props.resources.get(getCMSKey(this.props.erKvittering, 'endre-epostadresse'))}</a>
             </span> :
-            <a href={this.props.resources.get('brukerprofil.link')} className={this.props.linkClass}>{this.props.resources.get(getCMSKey(this.props.erKvittering, 'registrer-epostadresse'))}</a>;
+            <a href={this.props.resources.get('brukerprofil.link')} className={this.props.linkClass + ' lopendetekst'}>{this.props.resources.get(getCMSKey(this.props.erKvittering, 'registrer-epostadresse'))}</a>;
 
         return (
             <p className={this.props.className}>{epostTekst} {infoTekst}</p>

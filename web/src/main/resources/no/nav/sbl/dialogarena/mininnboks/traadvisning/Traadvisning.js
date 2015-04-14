@@ -49,7 +49,7 @@ var TraadVisning = React.createClass({
                 <p>
                     {this.props.resources.get('traadvisning.kan-ikke-svare.info')}
                     {' '}
-                    <a href={this.props.resources.get('skriv.ny.link')}>{this.props.resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
+                    <a href={this.props.resources.get('skriv.ny.link')} className="lopendetekst">{this.props.resources.get('traadvisning.kan-ikke-svare.lenke')}</a>
                 </p>
             </InfoBoks.Info>);
         } else if (this.state.besvart) {
