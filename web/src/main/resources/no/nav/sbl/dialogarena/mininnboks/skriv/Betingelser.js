@@ -3,6 +3,24 @@ var Modal = require('../modal/Modal');
 var Resources = require('../resources/Resources');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 
+var modalConfig = {
+    title: {
+        text: 'Betingelser modal',
+        show: false,
+        tag: 'h1.vekk'
+    },
+    description: {
+        text: '',
+        show: false,
+        tag: 'div.vekk'
+    },
+    closeButton: {
+        text: 'Lukk modal',
+        show: true,
+        tag: 'span.vekk'
+    }
+};
+
 var Betingelser = React.createClass({
     submit: function (e) {
         e.preventDefault();
@@ -28,7 +46,7 @@ var Betingelser = React.createClass({
             return <Snurrepipp />;
         }
         return (
-            <Modal ref="modal">
+            <Modal ref="modal" title={modalConfig.title} description={modalConfig.description} closeButton={modalConfig.closeButton}>
                 <form onSubmit={this.submit} className="betingelserPanel">
                     <h1 className="stor" tabIndex="0">{Resources.get("send-sporsmal.still-sporsmal.betingelser.overskrift")}</h1>
                     <div className="robust-strek"></div>
