@@ -42,7 +42,7 @@ var GodtaVilkar = React.createClass({
             <div className="betingelsevalgpanel">
                 <div className="checkbox">
                     <span className="vekk" role="alert" aria-live="assertive" aria-atomic="true">{this.state.ariastate}</span>
-                    <input type="checkbox" name="betingelseValg:betingelserCheckbox" id="betingelser"
+                    <input type="checkbox" name="betingelseValg:betingelserCheckbox" className="betingelseCheckboks" id="betingelser"
                         onChange={this.onChange} onBlur={this.onBlur} checked={this.state.checked}
                         aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId()}
                     />

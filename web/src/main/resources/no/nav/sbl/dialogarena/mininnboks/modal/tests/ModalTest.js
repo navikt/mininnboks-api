@@ -1,7 +1,7 @@
 require('./../../testConfig.js');
 var expect = require('chai').expect;
 var React = require('react/addons');
-var Modal = require('../index.js');
+var Modal = require('../Modal.js');
 var TestUtils = React.addons.TestUtils;
 
 function createModal(props, children) {

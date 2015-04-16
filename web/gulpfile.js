@@ -12,7 +12,6 @@ var gulpif = require('gulp-if');
 var uglifycss = require('gulp-uglifycss');
 var uglify = require('gulp-uglify');
 var streamify = require('gulp-streamify');
-var karma = require('karma').server;
 
 var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
 var BUILD_DIR = './src/main/webapp/build/';
