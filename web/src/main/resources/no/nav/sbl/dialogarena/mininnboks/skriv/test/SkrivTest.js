@@ -1,13 +1,13 @@
-require('../testConfig');
+require('../../testConfig');
 var chai = require('chai');
 var expect = chai.expect;
 var assert = chai.assert;
 var sinon = require('sinon');
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
-var stubRouterContext = require('../utils/stubRouterContext');
+var stubRouterContext = require('../../utils/stubRouterContext');
 
-var Skriv = require('./Skriv');
+var Skriv = require('../Skriv');
 
 var resourcesMock = {
     get: function () {
@@ -31,7 +31,7 @@ describe('Skriv Page', function () {
     });
 
     it('kan ikke sende uten å ha fylt ut tekst i tekstfeltet og godtatt vilkår', function () {
-        sinon.spy(skriv.getComponent().refs.form, 'validate')
+        sinon.spy(skriv.getComponent().refs.form, 'validate');
 
         TestUtils.Simulate.click(sendKnapp);
 
@@ -43,7 +43,7 @@ describe('Skriv Page', function () {
     });
 
     it('kan sende når det er tekst i tekstfeltet og vilkår er godatt', function () {
-        sinon.spy(skriv.getComponent().refs.form, 'validate')
+        sinon.spy(skriv.getComponent().refs.form, 'validate');
         var server = sinon.fakeServer.create();
         server.respondWith([200, {}, 'From fake server']);
 
