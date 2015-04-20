@@ -73,18 +73,19 @@ var ExpandingTextArea = React.createClass({
             .outerHeight(Math.max($mirror.outerHeight(), this.props.minHeightPx) + 'px');
     },
     render: function () {
-        var noMoreCharsClass = this.charsLeft() >= 0 ? '' : 'invalid';
+        var noMoreCharsClass = this.charsLeft() >= 0 ? '' : ' invalid';
         var textareaClass = this.isValid() ? '' : 'invalid';
 
-        var validationMessages = this.props.showInline ? this.getErrorElements() : null;
+        var validationMessages = this.props.showInline ? this.getErrorElements(undefined, '-inline') : null;
 
         return (
             <div className="expandingtextarea">
                 <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>
                 <textarea ref="textarea" className={textareaClass}
-                    aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId()}
+                    title={this.props.placeholder}
+                    aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId('-inline')}
                     onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur} />
-                <span className={'charsLeft ' + noMoreCharsClass}>{this.charsLeft()}</span>
+                <span className={'charsLeft' + noMoreCharsClass}>{this.charsLeft()}</span>
                 <span>{' ' + this.props.charsLeftText}</span>
                 <div id="validation-messages">
                     {validationMessages}

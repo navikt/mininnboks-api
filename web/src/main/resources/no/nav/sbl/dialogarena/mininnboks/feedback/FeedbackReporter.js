@@ -24,15 +24,16 @@ FeedbackReporter.prototype.get = function (ref) {
     return this.errors[ref] || [];
 };
 
-FeedbackReporter.prototype.getErrorElementsForComponent = function (ref, elementType) {
+FeedbackReporter.prototype.getErrorElementsForComponent = function (ref, elementType, idSuffix) {
     var messages = {};
     messages[ref] = this.get(ref);
-    return toErrorElements(elementType, messages);
+    return toErrorElements(elementType, messages, idSuffix);
 };
 
-FeedbackReporter.prototype.getErrorMessageIdForComponent = function (ref) {
+FeedbackReporter.prototype.getErrorMessageIdForComponent = function (ref, idSuffix) {
+    idSuffix = idSuffix || '';
     if (this.get(ref).length !== 0) {
-        return 'error-' + ref;
+        return 'error-' + ref + idSuffix;
     }
     return '';
 };
@@ -41,7 +42,8 @@ FeedbackReporter.prototype.getAllErrorElements = function (elementType) {
     return toErrorElements(elementType, this.errors);
 };
 
-function toErrorElements(elementType, errors) {
+function toErrorElements(elementType, errors, idSuffix) {
+    idSuffix = idSuffix || '';
     var elementTypeComponents = (elementType || 'span.validation-message').split(".");
     var tagType = elementTypeComponents[0];
     var tagClass = '';
@@ -55,7 +57,7 @@ function toErrorElements(elementType, errors) {
             var errorElements = errors[key].map(function (errorMessage) {
                 return React.createElement(tagType, {
                     "className": tagClass,
-                    "id": 'error-' + key,
+                    "id": 'error-' + key + idSuffix,
                     "role": 'alert',
                     "aria-live": 'assertive',
                     "aria-atomic": true

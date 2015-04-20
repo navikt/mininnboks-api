@@ -37,14 +37,14 @@ var GodtaVilkar = React.createClass({
     render: function () {
         var errorMessages = this.getErrorMessages();
         var validationErrorClass = errorMessages.length === 0 ? '' : 'validation-error error';
-        var validationMessages = this.props.showInline ? this.getErrorElements('span.checkbox-feilmelding') : null;
+        var validationMessages = this.props.showInline ? this.getErrorElements('span.checkbox-feilmelding', '-inline') : null;
         return (
             <div className="betingelsevalgpanel">
                 <div className="checkbox">
                     <span className="vekk" role="alert" aria-live="assertive" aria-atomic="true">{this.state.ariastate}</span>
                     <input type="checkbox" name="betingelseValg:betingelserCheckbox" className="betingelseCheckboks" id="betingelser"
                         onChange={this.onChange} onBlur={this.onBlur} checked={this.state.checked}
-                        aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId()}
+                        aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId('-inline')}
                     />
                     <label htmlFor="betingelser"
                         className={validationErrorClass}>

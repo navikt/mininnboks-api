@@ -24,10 +24,10 @@ module.exports = {
     isValid: function(){
         return this.getErrorMessages().length === 0;
     },
-    getErrorElements: function (tagConfig) {
-        return this.props.reporter.getErrorElementsForComponent(this.state.uuid, tagConfig);
+    getErrorElements: function (tagConfig, idSuffix) {
+        return this.props.reporter.getErrorElementsForComponent(this.state.uuid, tagConfig, idSuffix);
     },
-    getErrorElementId: function () {
-        return this.props.reporter.getErrorMessageIdForComponent(this.state.uuid);
+    getErrorElementId: function (idSuffix) {
+        return this.props.reporter.getErrorMessageIdForComponent(this.state.uuid, idSuffix);
     }
 };

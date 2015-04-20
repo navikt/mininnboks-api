@@ -43,7 +43,7 @@ var Skriv = React.createClass({
             } else {
                 knapper = (<div>
                     <div>
-                        <input type="button" className="send-link knapp-hoved-stor" role="button"
+                        <input type="submit" className="send-link knapp-hoved-stor" role="button"
                             value={this.props.resources.get("send-sporsmal.still-sporsmal.send-inn")}
                             onClick={this.onSubmit}/>
                     </div>

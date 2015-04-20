@@ -11,7 +11,7 @@ var MeldingContainer = React.createClass({
         return (
             <div className={className}>
                 <div className="logo" aria-label={this.props.resources.get(imgTekstKey)}>
-                    <img src={imgSrc} />
+                    <img src={imgSrc} alt={this.props.resources.get(imgTekstKey)} />
                 </div>
                 <Melding melding={melding} lagLenkerAvURL={true} />
             </div>
