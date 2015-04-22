@@ -111,8 +111,9 @@ function leggTilMelding(fritekst) {
         temagruppeNavn: this.state.traad.nyeste.temagruppeNavn,
         fraBruker: true,
         fraNav: false,
-        statusTekst: 'Svar om ' + meldinger[0].temagruppeNavn
+        statusTekst: this.props.resources.get('status.SVAR_SBL_INNGAAENDE').replace('%s', meldinger[0].temagruppeNavn)
     });
+
     this.setState({
         traad: {meldinger: meldinger, kanBesvares: false, nyeste: meldinger[0]},
         besvart: true,
