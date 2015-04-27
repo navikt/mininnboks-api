@@ -17,7 +17,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.UUID;
@@ -116,10 +115,9 @@ public class HenvendelseControllerTest {
         svar.traadId = "1";
         svar.fritekst = "Tekst";
 
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        controller.sendSvar(svar, response);
+        Response response = controller.sendSvar(svar);
 
-        verify(response).setStatus(Response.Status.NOT_ACCEPTABLE.getStatusCode());
+        assertThat(response.getStatus(), is(Response.Status.NOT_ACCEPTABLE.getStatusCode()));
     }
 
     @Test
@@ -128,7 +126,8 @@ public class HenvendelseControllerTest {
         svar.traadId = "2";
         svar.fritekst = "Tekst";
 
-        NyHenvendelseResultat nyHenvendelseResultat = controller.sendSvar(svar, mock(HttpServletResponse.class));
+
+        NyHenvendelseResultat nyHenvendelseResultat = ((NyHenvendelseResultat) controller.sendSvar(svar).getEntity());
 
         assertThat(nyHenvendelseResultat.behandlingsId, is(not(nullValue())));
     }

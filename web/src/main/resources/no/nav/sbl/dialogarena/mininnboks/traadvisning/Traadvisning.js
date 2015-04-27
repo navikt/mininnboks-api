@@ -41,7 +41,9 @@ var TraadVisning = React.createClass({
             url: '/mininnboks/tjenester/traader/svar',
             contentType: 'application/json',
             data: JSON.stringify({traadId: this.state.traad.nyeste.traadId, fritekst: fritekst})
-        }).done(leggTilMelding.bind(this, fritekst));
+        })
+            .done(leggTilMelding.bind(this, fritekst))
+            .fail(kunneIkkeLeggeTilMelding.bind(this));
     },
     getInfoMelding: function () {
         if (this.state.traad.avsluttet) {
@@ -118,6 +120,11 @@ function leggTilMelding(fritekst) {
         traad: {meldinger: meldinger, kanBesvares: false, nyeste: meldinger[0]},
         besvart: true,
         besvares: false
+    });
+}
+function kunneIkkeLeggeTilMelding() {
+    this.setState({
+        feilet: {status: true, melding: this.props.resources.get('besvare.feilmelding.innsending')}
     });
 }
 module.exports = TraadVisning;

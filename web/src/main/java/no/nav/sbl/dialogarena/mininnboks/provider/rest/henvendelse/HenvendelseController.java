@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.xml.ws.soap.SOAPFaultException;
 import java.util.List;
 import java.util.Map;
 
@@ -82,20 +83,17 @@ public class HenvendelseController {
     @POST
     @Path("/svar")
     @Consumes(APPLICATION_JSON)
-    public NyHenvendelseResultat sendSvar(Svar svar, @Context HttpServletResponse httpResponse) {
+    public Response sendSvar(Svar svar) {
         assertFritekst(svar.fritekst);
-
         Optional<Traad> traadOptional = hentTraad(svar.traadId);
         if (!traadOptional.isSome()) {
-            httpResponse.setStatus(Response.Status.NOT_FOUND.getStatusCode());
-            return null;
+            return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
 
         Traad traad = traadOptional.get();
 
         if (!traad.kanBesvares) {
-            httpResponse.setStatus(Response.Status.NOT_ACCEPTABLE.getStatusCode());
-            return null;
+            return Response.status(Response.Status.NOT_ACCEPTABLE.getStatusCode()).build();
         }
 
         Henvendelse henvendelse = new Henvendelse(svar.fritekst, traad.nyeste.temagruppe);
@@ -107,7 +105,7 @@ public class HenvendelseController {
         henvendelse.markerSomLest();
         WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
 
-        return new NyHenvendelseResultat(response.getBehandlingsId());
+        return Response.ok(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
     private Optional<Traad> hentTraad(String id) {
@@ -118,7 +116,7 @@ public class HenvendelseController {
             } else {
                 return Optional.optional(new Traad(meldinger));
             }
-        } catch (SoapFault fault) {
+        } catch (SoapFault | SOAPFaultException fault) {
             logger.error("Fant ikke tråd med id: " + id, fault);
             return Optional.none();
         }
