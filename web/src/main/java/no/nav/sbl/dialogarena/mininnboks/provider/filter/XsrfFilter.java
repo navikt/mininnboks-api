@@ -11,7 +11,7 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static no.nav.sbl.dialogarena.mininnboks.provider.sikkerhet.XsrfUtils.sjekkXsrfToken;
 import static no.nav.sbl.dialogarena.mininnboks.provider.sikkerhet.XsrfUtils.xsrfCookie;
 
-public class CsrfFilter implements Filter {
+public class XsrfFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
