@@ -119,7 +119,7 @@
 
     <filter>
         <filter-name>xsrf</filter-name>
-        <filter-class>no.nav.sbl.dialogarena.mininnboks.provider.filter.XsrfFilter</filter-class>
+        <filter-class>no.nav.sbl.dialogarena.mininnboks.provider.filter.CsrfFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>xsrf</filter-name>
