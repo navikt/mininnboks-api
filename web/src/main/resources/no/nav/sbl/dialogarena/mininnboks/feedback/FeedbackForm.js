@@ -42,14 +42,18 @@ var FeedbackForm = React.createClass({
                 </div>
         }
 
-        var elements = this.props.children.map(function (child) {
-            if (!child.props.hasOwnProperty('feedbackref')) {
-                return child;
-            }
-            var refId = child.props.feedbackref;
-            var childProps = $.extend({}, childrenProps, {ref: refId, id: refId, key: refId});
-            return React.addons.cloneWithProps(child, childProps);
-        }.bind(this));
+        var elements = this.props.children
+            .filter(function (child) {
+                return child ? true : false;
+            })
+            .map(function (child) {
+                if (!child.props.hasOwnProperty('feedbackref')) {
+                    return child;
+                }
+                var refId = child.props.feedbackref;
+                var childProps = $.extend({}, childrenProps, {ref: refId, id: refId, key: refId});
+                return React.addons.cloneWithProps(child, childProps);
+            }.bind(this));
         return (
             <form className={this.props.className}>
                 {feedback}

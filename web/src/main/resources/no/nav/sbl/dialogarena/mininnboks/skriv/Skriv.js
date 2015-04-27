@@ -5,13 +5,16 @@ var FeedbackForm = require('../feedback/FeedbackForm');
 var GodtaVilkar = require('./GodtaVilkar');
 var Kvittering = require('./Kvittering');
 var Feilmelding = require('../feilmelding/Feilmelding');
+var InfoBoks = require('../infoboks/Infoboks');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 
 var Skriv = React.createClass({
     getInitialState: function () {
-        return {sender: false, sendt: false};
+        return {sender: false, sendt: false, sendingfeilet: false};
     },
-    onSubmit: function () {
+    onSubmit: function (evt) {
+        evt.preventDefault();
+
         var form = this.refs.form;
         form.validate();
         if (form.isValid()) {
@@ -23,9 +26,13 @@ var Skriv = React.createClass({
                 url: '/mininnboks/tjenester/traader/sporsmal',
                 contentType: 'application/json',
                 data: JSON.stringify({temagruppe: temagruppe, fritekst: fritekst})
-            }).done(function () {
-                this.setState({sender: false, sendt: true});
-            }.bind(this));
+            })
+                .done(function () {
+                    this.setState({sender: false, sendt: true});
+                }.bind(this))
+                .fail(function () {
+                    this.setState({sendingfeilet: true, sender: false})
+                }.bind(this));
         }
     },
     render: function () {
@@ -52,6 +59,11 @@ var Skriv = React.createClass({
                     </div>
                 </div>);
             }
+            var infoboks = this.state.sendingfeilet ?
+                <InfoBoks.Feil>
+                    <p>{this.props.resources.get('send-sporsmal.still-sporsmal.underliggende-feil')}</p>
+                </InfoBoks.Feil>
+                : null;
 
             return (
                 <div>
@@ -70,6 +82,7 @@ var Skriv = React.createClass({
 
                         <p className="hjelpetekst">{this.props.resources.get("send-sporsmal.still-sporsmal.hjelpetekst")}</p>
                         <FeedbackForm ref="form">
+                            {infoboks}
                             <ExpandingTextArea placeholder={this.props.resources.get('skriv-sporsmal.fritekst.placeholder')}
                                 charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
                                 feedbackref="textarea"/>

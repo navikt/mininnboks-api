@@ -8,11 +8,22 @@ var BesvarBoks = React.createClass({
     getInitialState: function () {
         return {sender: false}
     },
-    onSubmit: function () {
+    onSubmit: function (evt) {
+        evt.preventDefault();
+
         var form = this.refs.form;
         if (form.isValid()) {
-            this.props.besvar(form.getFeedbackRef('textarea').getInput());
+            var submitPromise = this.props.besvar(form.getFeedbackRef('textarea').getInput());
             this.setState({sender: true});
+
+            if (!submitPromise) {
+                this.setState({sender: false})
+            } else {
+                submitPromise.always(function () {
+                    this.setState({sender: false})
+                }.bind(this));
+            }
+
         }
     },
     skjul: function (event) {

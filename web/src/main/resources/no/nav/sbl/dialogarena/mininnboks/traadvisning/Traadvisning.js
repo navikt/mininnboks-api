@@ -16,6 +16,7 @@ var TraadVisning = React.createClass({
             feilet: false,
             besvares: false,
             besvart: false,
+            sendingfeilet: false,
             traad: {}
         };
     },
@@ -36,7 +37,7 @@ var TraadVisning = React.createClass({
         this.setState({besvares: false});
     },
     sendMelding: function (fritekst) {
-        $.ajax({
+        return $.ajax({
             type: 'POST',
             url: '/mininnboks/tjenester/traader/svar',
             contentType: 'application/json',
@@ -58,6 +59,10 @@ var TraadVisning = React.createClass({
             return (<InfoBoks.Ok focusOnRender={true}>
                 <Epost resources={this.props.resources} />
             </InfoBoks.Ok>);
+        } else if (this.state.sendingfeilet) {
+            return (<InfoBoks.Feil>
+                <p>{this.props.resources.get('besvare.feilmelding.innsending')}</p>
+            </InfoBoks.Feil>);
         }
         return null;
     },
@@ -124,7 +129,7 @@ function leggTilMelding(fritekst) {
 }
 function kunneIkkeLeggeTilMelding() {
     this.setState({
-        feilet: {status: true, melding: this.props.resources.get('besvare.feilmelding.innsending')}
+        sendingfeilet: true
     });
 }
 module.exports = TraadVisning;
