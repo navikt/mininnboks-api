@@ -7,6 +7,8 @@ var Kvittering = require('./Kvittering');
 var Feilmelding = require('../feilmelding/Feilmelding');
 var InfoBoks = require('../infoboks/Infoboks');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
+var Utils = require('../utils/Utils');
+
 
 var Skriv = React.createClass({
     getInitialState: function () {
@@ -25,7 +27,8 @@ var Skriv = React.createClass({
                 type: 'POST',
                 url: '/mininnboks/tjenester/traader/sporsmal',
                 contentType: 'application/json',
-                data: JSON.stringify({temagruppe: temagruppe, fritekst: fritekst})
+                data: JSON.stringify({temagruppe: temagruppe, fritekst: fritekst}),
+                beforeSend: Utils.addXsrfHeader
             })
                 .done(function () {
                     this.setState({sender: false, sendt: true});

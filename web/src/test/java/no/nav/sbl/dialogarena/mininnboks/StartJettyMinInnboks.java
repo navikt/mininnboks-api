@@ -26,7 +26,10 @@ public class StartJettyMinInnboks {
         System.setProperty("innsyn.henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/InnsynHenvendelse_v1");
 		TestCertificates.setupKeyAndTrustStore();
 
-		final Jetty jetty = Jetty.usingWar(FilesAndDirs.WEBAPP_SOURCE).at("mininnboks").port(8585)
+		final Jetty jetty = Jetty.usingWar(FilesAndDirs.WEBAPP_SOURCE)
+				.at("mininnboks")
+				.port(8585)
+				.sslPort(8586)
 				.overrideWebXml(new File(FilesAndDirs.TEST_RESOURCES, "override-web.xml"))
 				.buildJetty();
         jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));

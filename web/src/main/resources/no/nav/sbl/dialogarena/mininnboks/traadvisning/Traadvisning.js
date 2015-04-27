@@ -7,6 +7,7 @@ var Feilmelding = require('../feilmelding/Feilmelding');
 var InfoBoks = require('../infoboks/Infoboks');
 var Epost = require('../epost/Epost');
 var format = require('string-format');
+var Utils = require('../utils/Utils');
 
 
 var TraadVisning = React.createClass({
@@ -41,7 +42,8 @@ var TraadVisning = React.createClass({
             type: 'POST',
             url: '/mininnboks/tjenester/traader/svar',
             contentType: 'application/json',
-            data: JSON.stringify({traadId: this.state.traad.nyeste.traadId, fritekst: fritekst})
+            data: JSON.stringify({traadId: this.state.traad.nyeste.traadId, fritekst: fritekst}),
+            beforeSend: Utils.addXsrfHeader
         })
             .done(leggTilMelding.bind(this, fritekst))
             .fail(kunneIkkeLeggeTilMelding.bind(this));
@@ -101,7 +103,11 @@ function okCallback(data) {
         traad: data,
         hentet: true
     });
-    $.post('/mininnboks/tjenester/traader/lest/' + data.traadId);
+    $.ajax({
+        type: 'POST',
+        url: '/mininnboks/tjenester/traader/lest/' + data.traadId,
+        beforeSend: Utils.addXsrfHeader
+    })
 }
 function feiletCallback() {
     this.setState({

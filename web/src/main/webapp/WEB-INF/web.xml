@@ -117,6 +117,15 @@
         <url-pattern>/tjenester/*</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>xsrf</filter-name>
+        <filter-class>no.nav.sbl.dialogarena.mininnboks.provider.filter.XsrfFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>xsrf</filter-name>
+        <servlet-name>restservlet</servlet-name>
+    </filter-mapping>
+
     <error-page>
         <error-code>404</error-code>
         <location>/index.html</location>

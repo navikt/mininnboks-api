@@ -25,7 +25,7 @@ var Utils = {
             }
         }
     },
-    ariaLabelForMelding: function(antallMeldinger, melding){
+    ariaLabelForMelding: function (antallMeldinger, melding) {
         var behandlingsStatus = '';
         if (melding.type === 'SPORSMAL_MODIA_UTGAAENDE' || !melding.lest) {
             behandlingsStatus += 'Ubehandlet,';
@@ -37,6 +37,14 @@ var Utils = {
             antallMeldinger,
             antallMeldinger === 1 ? 'melding' : 'meldinger'
         );
+    },
+    getCookie: function (name) {
+        var re = new RegExp(name + '=([^;]+)');
+        var match = re.exec(document.cookie);
+        return match !== null ? match[1] : '';
+    },
+    addXsrfHeader: function (xhr) {
+        xhr.setRequestHeader('X-XSRF-TOKEN', Utils.getCookie('XSRF-TOKEN-MININNBOKS'));
     }
 };
 
