@@ -42,7 +42,7 @@ public class XsrfUtils {
     public static void sjekkXsrfToken(String givenToken, HttpSession session) {
         String token = genererXsrfToken((String) session.getAttribute(SESSION_UUID_ID));
         if (!token.equals(givenToken)) {
-            throw new AuthorizationException("Feil token");
+            throw new AuthorizationException("XSRF sjekk feilet: Feil token");
         }
     }
 
