@@ -18,7 +18,9 @@ import static no.nav.modig.lang.option.Optional.optional;
  * Klasse som håndterer XSRF tokens
  */
 public class XsrfUtils {
-    private static final String SESSION_UUID_ID = "xsrfuuid";
+
+    public static final String SESSION_UUID_ID = "xsrfuuid";
+
     private static final String SECRET = "871128f0-558f-4c88-acee-466a48bb5e95";
 
     public static String genererXsrfToken(HttpSession session) {
