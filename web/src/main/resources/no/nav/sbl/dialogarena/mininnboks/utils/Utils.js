@@ -28,7 +28,7 @@ var Utils = {
     ariaLabelForMelding: function (antallMeldinger, melding) {
         var behandlingsStatus = '';
         if (melding.type === 'SPORSMAL_MODIA_UTGAAENDE' || !melding.lest) {
-            behandlingsStatus += 'Ubehandlet,';
+            behandlingsStatus += 'Ubesvart,';
         } else if (melding.type == 'SVAR_SBL_INNGAAENDE') {
             behandlingsStatus += 'Besvart,';
         }
