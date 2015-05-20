@@ -103,6 +103,7 @@ public class HenvendelseController {
         henvendelse.type = SVAR_SBL_INNGAAENDE;
         henvendelse.opprettet = now();
         henvendelse.markerSomLest();
+        henvendelse.erTilknyttetAnsatt = traad.nyeste.erTilknyttetAnsatt;
         WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
 
         return Response.ok(new NyHenvendelseResultat(response.getBehandlingsId())).build();
