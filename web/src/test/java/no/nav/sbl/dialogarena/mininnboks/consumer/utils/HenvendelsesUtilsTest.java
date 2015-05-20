@@ -39,7 +39,8 @@ public class HenvendelsesUtilsTest {
     private static final Temagruppe TEMAGRUPPE = Temagruppe.FMLI;
     private static final String KANAL = "kanal";
     private static final String NAVIDENT = "navident";
-    public static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
+    private static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
+    private static final Boolean ER_TILKNYTTET_ANSATT = false;
 
     private PropertyResolver propertyResolver = mock(PropertyResolver.class);
 
@@ -99,6 +100,7 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.kanal, is(KANAL));
         assertThat(sporsmal.eksternAktor, is(NAVIDENT));
         assertThat(sporsmal.tilknyttetEnhet, is(TILKNYTTET_ENHET));
+        assertThat(sporsmal.erTilknyttetAnsatt, is(ER_TILKNYTTET_ANSATT));
     }
 
     @Test
@@ -157,7 +159,7 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
-    public void vaskerHtmlIFritekstMenBevarerLineEndings(){
+    public void vaskerHtmlIFritekstMenBevarerLineEndings() {
         String tekst = "<h1>Hei</h1> \n Hallo";
         String cleanTekst = cleanOutHtml(tekst);
         assertThat(cleanTekst, is("Hei \n Hallo"));
@@ -187,6 +189,7 @@ public class HenvendelsesUtilsTest {
                 .withLestDato(LEST_DATO)
                 .withEksternAktor(NAVIDENT)
                 .withTilknyttetEnhet(TILKNYTTET_ENHET)
+                .withErTilknyttetAnsatt(ER_TILKNYTTET_ANSATT)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLMeldingTilBruker()
                                 .withFritekst(FRITEKST)

@@ -11,6 +11,7 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.mel
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
@@ -130,5 +131,28 @@ public class HenvendelseControllerTest {
         NyHenvendelseResultat nyHenvendelseResultat = ((NyHenvendelseResultat) controller.sendSvar(svar).getEntity());
 
         assertThat(nyHenvendelseResultat.behandlingsId, is(not(nullValue())));
+    }
+
+    @Test
+    public void kopiererNyesteErTilknyttetAnsattFlaggTilSvaret() {
+        Henvendelse henvendelse1 = new Henvendelse("1");
+        henvendelse1.erTilknyttetAnsatt = true;
+        henvendelse1.opprettet = now();
+        henvendelse1.type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE;
+        Henvendelse henvendelse2 = new Henvendelse("2");
+        henvendelse2.erTilknyttetAnsatt = false;
+        henvendelse2.opprettet = now();
+        List<Henvendelse> henvendelser = asList(henvendelse1, henvendelse2);
+        when(service.hentTraad(anyString())).thenReturn(henvendelser);
+
+        Svar svar = new Svar();
+        svar.fritekst = "fritekst";
+        svar.traadId = "0";
+        controller.sendSvar(svar);
+
+        ArgumentCaptor<Henvendelse> henvendelseArgumentCaptor = ArgumentCaptor.forClass(Henvendelse.class);
+        verify(service).sendSvar(henvendelseArgumentCaptor.capture(), anyString());
+
+        assertThat(henvendelseArgumentCaptor.getValue().erTilknyttetAnsatt, is(true));
     }
 }

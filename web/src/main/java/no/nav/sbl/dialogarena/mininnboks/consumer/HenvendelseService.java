@@ -90,6 +90,7 @@ public interface HenvendelseService {
                             .withBehandlingskjedeId(henvendelse.traadId)
                             .withEksternAktor(henvendelse.eksternAktor)
                             .withTilknyttetEnhet(henvendelse.tilknyttetEnhet)
+                            .withErTilknyttetAnsatt(henvendelse.erTilknyttetAnsatt)
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(henvendelse.temagruppe.name())
