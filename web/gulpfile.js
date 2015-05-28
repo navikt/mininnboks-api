@@ -4,7 +4,7 @@ var source = require('vinyl-source-stream'); // Used to stream bundle for furthe
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify');
-//var karma = require('karma').server;
+var karma = require('karma').server;
 var notify = require('gulp-notify');
 var less = require('gulp-less');
 var concat = require('gulp-concat');
@@ -92,8 +92,8 @@ gulp.task('dev', function() {
 });
 
 gulp.task('test', function () {
-    //karma.start({
-    //    configFile: __dirname + '/karma.conf.js',
-    //    isSingleRun: true
-    //});
+    karma.start({
+        configFile: __dirname + '/karma.conf.js',
+        isSingleRun: true
+    });
 });
