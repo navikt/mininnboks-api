@@ -2,10 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
 import no.nav.modig.core.context.ThreadLocalSubjectHandler;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Svar;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController.NyHenvendelseResultat;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import org.junit.Before;
@@ -17,15 +14,18 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.nCopies;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
 import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static org.apache.commons.lang3.StringUtils.join;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -154,5 +154,37 @@ public class HenvendelseControllerTest {
         verify(service).sendSvar(henvendelseArgumentCaptor.capture(), anyString());
 
         assertThat(henvendelseArgumentCaptor.getValue().erTilknyttetAnsatt, is(true));
+    }
+
+    @Test(expected = AssertionError.class)
+    public void smellerHvisTomFritekstISporsmal() {
+        Sporsmal sporsmal = new Sporsmal();
+        sporsmal.fritekst = "";
+        sporsmal.temagruppe = Temagruppe.ARBD.name();
+        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
+    }
+
+    @Test(expected = AssertionError.class)
+    public void smellerHvisForLangFritekstISporsmal() {
+        Sporsmal sporsmal = new Sporsmal();
+        sporsmal.fritekst = join(nCopies(1001, 'a'), "");
+        sporsmal.temagruppe = Temagruppe.ARBD.name();
+        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
+    }
+
+    @Test(expected = AssertionError.class)
+    public void smellerHvisAndreSosialtjenesterTemagruppeISporsmal() {
+        Sporsmal sporsmal = new Sporsmal();
+        sporsmal.fritekst = "";
+        sporsmal.temagruppe = Temagruppe.ANDRE_SOS.name();
+        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
+    }
+
+    @Test(expected = AssertionError.class)
+    public void smellerHvisPensjonTemagruppeISporsmal() {
+        Sporsmal sporsmal = new Sporsmal();
+        sporsmal.fritekst = "";
+        sporsmal.temagruppe = Temagruppe.PENS.name();
+        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
     }
 }

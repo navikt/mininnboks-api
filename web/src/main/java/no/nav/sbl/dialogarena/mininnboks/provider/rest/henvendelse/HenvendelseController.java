@@ -72,6 +72,7 @@ public class HenvendelseController {
     @Consumes(APPLICATION_JSON)
     public NyHenvendelseResultat sendSporsmal(Sporsmal sporsmal, @Context HttpServletResponse httpResponse) {
         assertFritekst(sporsmal.fritekst);
+        assertTemagruppe(sporsmal.temagruppe);
 
         Temagruppe temagruppe = Temagruppe.valueOf(sporsmal.temagruppe);
         Henvendelse henvendelse = new Henvendelse(sporsmal.fritekst, temagruppe);
@@ -125,6 +126,10 @@ public class HenvendelseController {
 
     private static void assertFritekst(String fritekst) {
         assert fritekst.length() > 0 && fritekst.length() <= 1000;
+    }
+
+    private static void assertTemagruppe(String temagruppe) {
+        assert Temagruppe.GODKJENTE_FOR_INNGAAENDE_SPORSMAAL.contains(Temagruppe.valueOf(temagruppe));
     }
 
     static final class NyHenvendelseResultat {
