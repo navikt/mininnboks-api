@@ -176,7 +176,7 @@ public class HenvendelseControllerTest {
     public void smellerHvisAndreSosialtjenesterTemagruppeISporsmal() {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = "";
-        sporsmal.temagruppe = Temagruppe.ANDRE_SOS.name();
+        sporsmal.temagruppe = Temagruppe.ANSOS.name();
         controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
     }
 

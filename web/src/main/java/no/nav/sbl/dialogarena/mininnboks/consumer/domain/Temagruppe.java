@@ -12,8 +12,8 @@ public enum Temagruppe {
     ORT_HJE,
     OVRG,
     PENS,
-    OK_SOS,
-    ANDRE_SOS;
+    OKSOS,
+    ANSOS;
 
-    public static final List<Temagruppe> GODKJENTE_FOR_INNGAAENDE_SPORSMAAL = asList(ARBD, FMLI, HJLPM, BIL, ORT_HJE, OK_SOS);
+    public static final List<Temagruppe> GODKJENTE_FOR_INNGAAENDE_SPORSMAAL = asList(ARBD, FMLI, HJLPM, BIL, ORT_HJE, OKSOS);
 }
