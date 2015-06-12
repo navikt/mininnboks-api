@@ -1,0 +1,43 @@
+.info-boks {
+  background: url(/mininnboks/build/img/info-graa.svg) no-repeat 12px;
+  border: 1px solid #d1d1d1;
+  margin: 30px auto;
+  width: 80%;
+  padding: 12px 12px 12px 56px;
+  text-align: left;
+  word-wrap: break-word;
+  div {
+    border-left: 1px solid #d1d1d1;
+    padding-left: 12px;
+    margin: 0;
+    p:first-child {
+      margin-top: 0;
+    }
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+  p, a {
+    font-size: 0.875rem;
+  }
+  &.ok {
+    background: url(/mininnboks/build/img/hake_stor02.svg) no-repeat 12px;
+    background-size: 32px;
+    div {
+      border-left: 1px solid #119a48;
+    }
+  }
+  &.feil {
+    background: url(/mininnboks/build/img/utropstegn-sirkel.svg) no-repeat 12px;
+    background-size: 32px;
+    div {
+      border-left: 1px solid #f18a10;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .info-boks {
+    width: 100%;
+  }
+}

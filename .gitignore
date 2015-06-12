@@ -6,6 +6,10 @@
 *.log
 
 target
+web/node_modules
+web/src/main/webapp/build
+
+npm-debug.log
 
 .classpath
 .project

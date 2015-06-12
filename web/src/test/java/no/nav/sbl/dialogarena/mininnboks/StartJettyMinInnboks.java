@@ -18,18 +18,21 @@ import static no.nav.modig.lang.collections.RunnableUtils.waitFor;
  */
 public class StartJettyMinInnboks {
 
-	public static void main(String[] args) {
-	    SystemProperties.setFrom("jetty-mininnboks.properties");
+    public static void main(String[] args) {
+        SystemProperties.setFrom("jetty-mininnboks.properties");
         System.setProperty(SubjectHandler.SUBJECTHANDLER_KEY, StaticSubjectHandler.class.getName());
         System.setProperty("henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/Henvendelse_v2");
         System.setProperty("send.inn.henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/SendInnHenvendelse_v1");
         System.setProperty("innsyn.henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/InnsynHenvendelse_v1");
-		TestCertificates.setupKeyAndTrustStore();
+        TestCertificates.setupKeyAndTrustStore();
 
-		final Jetty jetty = Jetty.usingWar(FilesAndDirs.WEBAPP_SOURCE).at("mininnboks").port(8585)
-				.overrideWebXml(new File(FilesAndDirs.TEST_RESOURCES, "override-web.xml"))
-				.buildJetty();
+        //Må ha https for csrf-token
+        final Jetty jetty = Jetty.usingWar(FilesAndDirs.WEBAPP_SOURCE)
+                .at("mininnboks")
+                .sslPort(8586)
+                .overrideWebXml(new File(FilesAndDirs.TEST_RESOURCES, "override-web.xml"))
+                .buildJetty();
         jetty.startAnd(first(waitFor(gotKeypress())).then(jetty.stop));
-	}
+    }
 
 }

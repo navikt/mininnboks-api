@@ -1,0 +1,40 @@
+{
+  "name": "min-innboks",
+  "version": "0.0.1",
+  "description": "Min innboks",
+  "author": "NAV",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^6.2.0",
+    "gulp": "^3.8.9",
+    "gulp-notify": "^1.4.2",
+    "gulp-util": "^3.0.0",
+    "reactify": "^1.1.0",
+    "vinyl-source-stream": "^0.1.1",
+    "watchify": "^2.1.1",
+    "gulp-rename": "^1.2.0",
+    "glob": "^4.3.5",
+    "mocha": "^2.1.0",
+    "react-tools": "^0.13.0",
+    "chai": "^2.0.0",
+    "sinon": "^1.14.1",
+    "browserify-global-shim": "^1.0.0",
+    "moment": "^2.9.0",
+    "sanitize-html": "^1.6.1",
+    "modig-frontend": "git+http://stash.devillo.no/scm/felles/modig-frontend.git#modig-frontend-1.1.107",
+    "gulp-less": "^3.0.2",
+    "gulp-concat": "^2.5.2",
+    "gulp-uglifycss": "^1.0.4",
+    "gulp-if": "^1.2.5",
+    "gulp-uglify": "^1.1.0",
+    "gulp-streamify": "0.0.5",
+    "jquery": "^2.1.3",
+    "object-assign": "^2.0.0"
+  },
+  "dependencies": {
+    "react": "^0.13.0",
+    "string-format": "^0.5.0",
+    "nav-logger": "git+http://stash.devillo.no/scm/npmm/nav-logger.git#7fe517837bde9afc58eaedac94d49547ae921a13",
+    "react-router": "^0.13.2"
+  }
+}

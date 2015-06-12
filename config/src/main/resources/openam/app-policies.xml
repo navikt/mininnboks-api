@@ -5,52 +5,52 @@
 
 <!-- extracted from realm, / -->
 <Policies>
-    <Policy name="Mininnboks_001" referralPolicy="false" active="true" >
+    <Policy name="Mininnboks_001" referralPolicy="false" active="true">
         <Rule name="rule_Mininnboks_001_02">
-            <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/mininnboks/*?*" />
+            <ServiceName name="iPlanetAMWebAgentService"/>
+            <ResourceName name="https://${DomainName}/mininnboks/*?*"/>
             <AttributeValuePair>
-                <Attribute name="POST" />
+                <Attribute name="POST"/>
                 <Value>allow</Value>
             </AttributeValuePair>
             <AttributeValuePair>
-                <Attribute name="GET" />
+                <Attribute name="GET"/>
                 <Value>allow</Value>
             </AttributeValuePair>
         </Rule>
         <Rule name="rule_Mininnboks_001_01">
-            <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/mininnboks/*" />
+            <ServiceName name="iPlanetAMWebAgentService"/>
+            <ResourceName name="https://${DomainName}/mininnboks/*"/>
             <AttributeValuePair>
-                <Attribute name="POST" />
+                <Attribute name="POST"/>
                 <Value>allow</Value>
             </AttributeValuePair>
             <AttributeValuePair>
-                <Attribute name="GET" />
+                <Attribute name="GET"/>
                 <Value>allow</Value>
             </AttributeValuePair>
         </Rule>
         <Rule name="rule_Mininnboks_001_04">
-            <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/mininnboks/" />
+            <ServiceName name="iPlanetAMWebAgentService"/>
+            <ResourceName name="https://${DomainName}/mininnboks/"/>
             <AttributeValuePair>
-                <Attribute name="POST" />
+                <Attribute name="POST"/>
                 <Value>allow</Value>
             </AttributeValuePair>
             <AttributeValuePair>
-                <Attribute name="GET" />
+                <Attribute name="GET"/>
                 <Value>allow</Value>
             </AttributeValuePair>
         </Rule>
         <Rule name="rule_Mininnboks_001_03">
-            <ServiceName name="iPlanetAMWebAgentService" />
-            <ResourceName name="https://${DomainName}/mininnboks" />
+            <ServiceName name="iPlanetAMWebAgentService"/>
+            <ResourceName name="https://${DomainName}/mininnboks"/>
             <AttributeValuePair>
-                <Attribute name="POST" />
+                <Attribute name="POST"/>
                 <Value>allow</Value>
             </AttributeValuePair>
             <AttributeValuePair>
-                <Attribute name="GET" />
+                <Attribute name="GET"/>
                 <Value>allow</Value>
             </AttributeValuePair>
         </Rule>
@@ -64,6 +64,31 @@
                 <AttributeValuePair>
                     <Attribute name="AuthLevel"/>
                     <Value>4</Value>
+                </AttributeValuePair>
+            </Condition>
+        </Conditions>
+    </Policy>
+
+    <Policy name="Mininnboks_002" referralPolicy="false" active="true">
+        <Rule name="rule_Mininnboks_002_01">
+            <ServiceName name="iPlanetAMWebAgentService"/>
+            <ResourceName name="https://${DomainName}/mininnboks/tjenester/sporsmal/*"/>
+            <AttributeValuePair>
+                <Attribute name="GET"/>
+                <Value>allow</Value>
+            </AttributeValuePair>
+        </Rule>
+
+        <Subjects>
+            <Subject name="subject_Mininnboks_002_01" type="AuthenticatedUsers" includeType="inclusive">
+            </Subject>
+        </Subjects>
+
+        <Conditions>
+            <Condition name="condition_Mininnboks_002_AuthenticationLevel" type="AuthLevelCondition">
+                <AttributeValuePair>
+                    <Attribute name="AuthLevel"/>
+                    <Value>3</Value>
                 </AttributeValuePair>
             </Condition>
         </Conditions>
