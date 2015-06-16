@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.resources;
 
 import no.nav.modig.content.PropertyResolver;
-import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class ResourcesController {
     public static final String EPOST = "bruker.epost";
     public static final Logger LOGGER = LoggerFactory.getLogger(ResourcesController.class);
     @Inject
-    private EpostService epostService;
+    private PersonService personService;
     @Inject
     private PropertyResolver propertyResolver;
 
@@ -53,7 +53,7 @@ public class ResourcesController {
             return epost;
         }
 
-        epost = epostService.hentEpostadresse();
+        epost = personService.hentEpostadresse();
         session.setAttribute(EPOST, epost);
 
         return epost;

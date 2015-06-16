@@ -43,23 +43,23 @@ public interface HenvendelseService {
     class Default implements HenvendelseService {
 
         private final PropertyResolver resolver;
-
         private final HenvendelsePortType henvendelsePortType;
-
         private final SendInnHenvendelsePortType sendInnHenvendelsePortType;
-
         private final InnsynHenvendelsePortType innsynHenvendelsePortType;
+        private final PersonService personService;
 
-        public Default(HenvendelsePortType henvendelsePortType, SendInnHenvendelsePortType sendInnHenvendelsePortType, InnsynHenvendelsePortType innsynHenvendelsePortType, PropertyResolver resolver) {
+        public Default(HenvendelsePortType henvendelsePortType, SendInnHenvendelsePortType sendInnHenvendelsePortType, InnsynHenvendelsePortType innsynHenvendelsePortType, PropertyResolver resolver, PersonService personService) {
             this.henvendelsePortType = henvendelsePortType;
             this.sendInnHenvendelsePortType = sendInnHenvendelsePortType;
             this.innsynHenvendelsePortType = innsynHenvendelsePortType;
             this.resolver = resolver;
+            this.personService = personService;
         }
 
         @Override
         public WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer) {
             String xmlHenvendelseType = SPORSMAL_SKRIFTLIG.name();
+            String enhet = personService.hentEnhet().getOrElse(null);
             XMLHenvendelse info =
                     new XMLHenvendelse()
                             .withHenvendelseType(xmlHenvendelseType)
@@ -67,6 +67,7 @@ public interface HenvendelseService {
                             .withAvsluttetDato(now())
                             .withTema(KONTAKT_NAV_SAKSTEMA)
                             .withBehandlingskjedeId(null)
+                            .withBrukersEnhet(enhet)
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(henvendelse.temagruppe.name())
@@ -81,6 +82,7 @@ public interface HenvendelseService {
         @Override
         public WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String fodselsnummer) {
             String xmlHenvendelseType = SVAR_SBL_INNGAAENDE.name();
+            String enhet = personService.hentEnhet().getOrElse(null);
             XMLHenvendelse info =
                     new XMLHenvendelse()
                             .withHenvendelseType(xmlHenvendelseType)
@@ -91,6 +93,7 @@ public interface HenvendelseService {
                             .withEksternAktor(henvendelse.eksternAktor)
                             .withTilknyttetEnhet(henvendelse.tilknyttetEnhet)
                             .withErTilknyttetAnsatt(henvendelse.erTilknyttetAnsatt)
+                            .withBrukersEnhet(enhet)
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(henvendelse.temagruppe.name())

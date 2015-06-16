@@ -27,6 +27,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SPORSMAL_SKRIFTLIG;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SVAR_SBL_INNGAAENDE;
+import static no.nav.modig.lang.option.Optional.optional;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService.KONTAKT_NAV_SAKSTEMA;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -43,6 +44,7 @@ public class HenvendelseServiceTest {
     public static final String TRAAD_ID = "traadId";
     public static final String EKSTERN_AKTOR = "eksternAktor";
     public static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
+    public static final String BRUKER_ENHET = "brukersEnhet";
     public static final Boolean ER_TILKNYTTET_ANSATT = false;
 
     @Captor
@@ -58,12 +60,14 @@ public class HenvendelseServiceTest {
     private InnsynHenvendelsePortType innsynHenvendelsePortType;
     @Mock
     private PropertyResolver propertyResolver;
+    @Mock
+    private PersonService personService;
 
     private HenvendelseService.Default henvendelseService;
 
     @Before
     public void setUp() {
-        henvendelseService = new HenvendelseService.Default(henvendelsePortType, sendInnHenvendelsePortType, innsynHenvendelsePortType, propertyResolver);
+        henvendelseService = new HenvendelseService.Default(henvendelsePortType, sendInnHenvendelsePortType, innsynHenvendelsePortType, propertyResolver, personService);
 
         List<Object> henvendelseListe = new ArrayList<>();
         henvendelseListe.add(new XMLHenvendelse().withHenvendelseType(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name()).withBehandlingsId("id"));
@@ -71,6 +75,7 @@ public class HenvendelseServiceTest {
                 new WSHentHenvendelseListeResponse().withAny(henvendelseListe));
         when(sendInnHenvendelsePortType.sendInnHenvendelse(any(WSSendInnHenvendelseRequest.class)))
                 .thenReturn(new WSSendInnHenvendelseResponse().withBehandlingsId("id"));
+        when(personService.hentEnhet()).thenReturn(optional(BRUKER_ENHET));
     }
 
     @Test
@@ -90,6 +95,7 @@ public class HenvendelseServiceTest {
         assertThat(xmlHenvendelse.getAvsluttetDato(), is(notNullValue()));
         assertThat(xmlHenvendelse.getTema(), is(KONTAKT_NAV_SAKSTEMA));
         assertThat(xmlHenvendelse.getBehandlingskjedeId(), is(nullValue()));
+        assertThat(xmlHenvendelse.getBrukersEnhet(), is(BRUKER_ENHET));
         XMLMeldingFraBruker meldingFraBruker = (XMLMeldingFraBruker) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
         assertThat(meldingFraBruker.getTemagruppe(), is(TEMAGRUPPE.name()));
         assertThat(meldingFraBruker.getFritekst(), is(FRITEKST));
@@ -119,6 +125,7 @@ public class HenvendelseServiceTest {
         assertThat(xmlHenvendelse.getEksternAktor(), is(EKSTERN_AKTOR));
         assertThat(xmlHenvendelse.getTilknyttetEnhet(), is(TILKNYTTET_ENHET));
         assertThat(xmlHenvendelse.isErTilknyttetAnsatt(), is(ER_TILKNYTTET_ANSATT));
+        assertThat(xmlHenvendelse.getBrukersEnhet(), is(BRUKER_ENHET));
         XMLMeldingFraBruker meldingFraBruker = (XMLMeldingFraBruker) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
         assertThat(meldingFraBruker.getTemagruppe(), is(TEMAGRUPPE.name()));
         assertThat(meldingFraBruker.getFritekst(), is(FRITEKST));

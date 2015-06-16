@@ -8,6 +8,7 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLElektroniskKomm
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLTelefonnummer;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
+import no.nav.tjeneste.virksomhet.person.v2.PersonV2;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,18 +21,20 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultEpostServiceTest {
+public class DefaultPersonServiceTest {
 
     private static final String EPOSTADRESSE = "epost@example.com";
     @Mock
     private BrukerprofilPortType brukerprofilPortType;
-    private EpostService.Default epostService;
+    @Mock
+    private PersonV2 personV2;
+    private PersonService.Default personService;
 
     @Before
     public void setUp() {
         System.setProperty("no.nav.modig.core.context.subjectHandlerImplementationClass", ThreadLocalSubjectHandler.class.getName());
 
-        epostService = new EpostService.Default(brukerprofilPortType);
+        personService = new PersonService.Default(brukerprofilPortType, personV2);
     }
 
     @Test
@@ -44,7 +47,7 @@ public class DefaultEpostServiceTest {
                         )
                 )
         );
-        assertThat(epostService.hentEpostadresse(), is(EPOSTADRESSE));
+        assertThat(personService.hentEpostadresse(), is(EPOSTADRESSE));
     }
 
     @Test
@@ -57,10 +60,10 @@ public class DefaultEpostServiceTest {
                         )
                 )
         );
-        assertThat(epostService.hentEpostadresse(), is(""));
+        assertThat(personService.hentEpostadresse(), is(""));
 
         when(brukerprofilPortType.hentKontaktinformasjonOgPreferanser(any(XMLHentKontaktinformasjonOgPreferanserRequest.class))).thenReturn(
                 new XMLHentKontaktinformasjonOgPreferanserResponse().withPerson(new XMLBruker()));
-        assertThat(epostService.hentEpostadresse(), is(""));
+        assertThat(personService.hentEpostadresse(), is(""));
     }
 }

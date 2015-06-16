@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.config;
 
 import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
@@ -14,8 +15,8 @@ import static no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils.creat
 public class HenvendelseServiceConfig {
 
     @Bean
-    public HenvendelseService henvendelseService(PropertyResolver resolver) {
-        return new HenvendelseService.Default(henvendelseSSO(), sendInnHenvendelseSSO(), innsynHenvendelseSSO(), resolver);
+    public HenvendelseService henvendelseService(PropertyResolver resolver, PersonService personService) {
+        return new HenvendelseService.Default(henvendelseSSO(), sendInnHenvendelseSSO(), innsynHenvendelseSSO(), resolver, personService);
     }
 
     private SendInnHenvendelsePortType sendInnHenvendelseSSO() {

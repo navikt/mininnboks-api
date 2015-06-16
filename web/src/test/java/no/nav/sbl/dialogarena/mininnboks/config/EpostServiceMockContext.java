@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
-import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +11,7 @@ public class EpostServiceMockContext extends MockApplicationContext {
 
     @Override
     @Bean
-    public EpostService epostService() {
-        return mock(EpostService.class);
+    public PersonService personService() {
+        return mock(PersonService.class);
     }
 }

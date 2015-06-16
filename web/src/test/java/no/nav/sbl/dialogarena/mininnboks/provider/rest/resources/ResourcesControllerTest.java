@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.resources;
 
 import no.nav.modig.content.PropertyResolver;
-import no.nav.sbl.dialogarena.mininnboks.consumer.EpostService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ import static org.springframework.test.util.MatcherAssertionErrors.assertThat;
 public class ResourcesControllerTest {
 
     @Mock
-    EpostService epostService;
+    PersonService personService;
     @Mock
     PropertyResolver propertyResolver;
 
@@ -41,7 +41,7 @@ public class ResourcesControllerTest {
         }});
         when(session.getAttribute(ResourcesController.EPOST)).thenReturn("myMail@nav.no");
         when(request.getSession()).thenReturn(session);
-        when(epostService.hentEpostadresse()).thenReturn("myMail@nav.no");
+        when(personService.hentEpostadresse()).thenReturn("myMail@nav.no");
     }
 
     @Test
@@ -55,6 +55,6 @@ public class ResourcesControllerTest {
         controller.getResources(request);
         controller.getResources(request);
 
-        verify(epostService, times(0)).hentEpostadresse();
+        verify(personService, times(0)).hentEpostadresse();
     }
 }

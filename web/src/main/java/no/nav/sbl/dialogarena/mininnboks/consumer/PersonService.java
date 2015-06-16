@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.modig.core.context.SubjectHandler;
+import no.nav.modig.lang.option.Optional;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.HentKontaktinformasjonOgPreferanserPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning;
@@ -10,22 +11,29 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLElektroniskAdre
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLElektroniskKommunikasjonskanal;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
+import no.nav.tjeneste.virksomhet.person.v2.PersonV2;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Bruker;
+import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonRequest;
 import org.apache.commons.collections15.Transformer;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.modig.lang.collections.PredicateUtils.isA;
 import static no.nav.modig.lang.collections.TransformerUtils.castTo;
+import static no.nav.modig.lang.option.Optional.optional;
 
-public interface EpostService {
+public interface PersonService {
 
     String hentEpostadresse() throws Exception;
+    Optional<String> hentEnhet();
 
-    class Default implements EpostService {
+    class Default implements PersonService {
 
         private final BrukerprofilPortType brukerprofil;
+        private final PersonV2 personV2;
 
-        public Default(BrukerprofilPortType brukerprofilPortType) {
+        public Default(BrukerprofilPortType brukerprofilPortType, PersonV2 personV2) {
             this.brukerprofil = brukerprofilPortType;
+            this.personV2 = personV2;
         }
 
         @Override
@@ -47,6 +55,17 @@ public interface EpostService {
                     .map(castTo(XMLEPost.class))
                     .map(IDENTIFIKATOR)
                     .getOrElse("");
+        }
+
+        @Override
+        public Optional<String> hentEnhet() {
+            String fnr = SubjectHandler.getSubjectHandler().getUid();
+            try {
+                Bruker bruker = (Bruker) personV2.hentKjerneinformasjon(new HentKjerneinformasjonRequest().withIdent(fnr)).getPerson();
+                return optional(bruker.getHarAnsvarligEnhet().getEnhet().getOrganisasjonselementID());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
 
         private static final Transformer<XMLElektroniskKommunikasjonskanal, XMLElektroniskAdresse> XML_ELEKTRONISK_ADRESSE = new Transformer<XMLElektroniskKommunikasjonskanal, XMLElektroniskAdresse>() {

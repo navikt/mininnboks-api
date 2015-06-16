@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks.config;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
 import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
@@ -37,8 +38,8 @@ public class HenvendelseMockContext {
     }};
 
     @Bean
-    public HenvendelseService henvendelseService(PropertyResolver resolver) {
-        return new HenvendelseService.Default(henvendelsePortType(), sendInnHenvendelsePortType(), innsynHenvendelsePortType(), resolver);
+    public HenvendelseService henvendelseService(PropertyResolver resolver, PersonService personService) {
+        return new HenvendelseService.Default(henvendelsePortType(), sendInnHenvendelsePortType(), innsynHenvendelsePortType(), resolver, personService);
     }
 
     private HenvendelsePortType henvendelsePortType() {
