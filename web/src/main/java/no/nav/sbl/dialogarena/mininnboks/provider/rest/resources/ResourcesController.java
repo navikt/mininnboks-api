@@ -16,10 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.GODKJENTE_FOR_INNGAAENDE_SPORSMAAL;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 @Path("/resources")
-@Produces(APPLICATION_JSON+"; charset=UTF-8")
+@Produces(APPLICATION_JSON + "; charset=UTF-8")
 public class ResourcesController {
 
     public static final String EPOST = "bruker.epost";
@@ -36,6 +38,7 @@ public class ResourcesController {
         resources.putAll(propertyResolver.getAllProperties());
         resources.put("skriv.ny.link", System.getProperty("temavelger.link.url"));
         resources.put("brukerprofil.link", System.getProperty("brukerprofil.link.url"));
+        resources.put("temagruppe.liste", collectionToDelimitedString(GODKJENTE_FOR_INNGAAENDE_SPORSMAAL, " "));
         try {
             resources.put("bruker.epost", epost(request));
         } catch (Exception e) {

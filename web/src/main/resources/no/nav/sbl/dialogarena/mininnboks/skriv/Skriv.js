@@ -14,6 +14,9 @@ var Skriv = React.createClass({
     getInitialState: function () {
         return {sender: false, sendt: false, sendingfeilet: false};
     },
+    componentWillMount: function () {
+        this.godkjenteForSporsmal = this.props.resources.get('temagruppe.liste').split(' ');
+    },
     onSubmit: function (evt) {
         evt.preventDefault();
 
@@ -39,23 +42,23 @@ var Skriv = React.createClass({
         }
     },
     render: function () {
-        if (['ARBD', 'FMLI', 'HJLPM', 'ORT_HJE', 'BIL', 'OKSOS'].indexOf(this.props.params.temagruppe) < 0) {
-            return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon={true} />;
+        if (this.godkjenteForSporsmal.indexOf(this.props.params.temagruppe) < 0) {
+            return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon={true}/>;
         }
 
         if (this.state.sendt) {
-            return <Kvittering resources={this.props.resources} />
+            return <Kvittering resources={this.props.resources}/>
         } else {
 
             var knapper;
             if (this.state.sender) {
-                knapper = <Snurrepipp storrelse="48" farge="hvit" />;
+                knapper = <Snurrepipp storrelse="48" farge="hvit"/>;
             } else {
                 knapper = (<div>
                     <div>
                         <input type="submit" className="send-link knapp-hoved-stor" role="button"
-                            value={this.props.resources.get("send-sporsmal.still-sporsmal.send-inn")}
-                            onClick={this.onSubmit}/>
+                               value={this.props.resources.get("send-sporsmal.still-sporsmal.send-inn")}
+                               onClick={this.onSubmit}/>
                     </div>
                     <div className="avbryt">
                         <Link to="innboks">{this.props.resources.get("send-sporsmal.still-sporsmal.avbryt")}</Link>
@@ -74,7 +77,7 @@ var Skriv = React.createClass({
                     <article className="send-sporsmal-container send-panel">
                         <div className="sporsmal-header">
                             <img src="/mininnboks/build/img/melding_graa.svg"
-                                alt={this.props.resources.get("meldingikon.alternativ.tekst")}/>
+                                 alt={this.props.resources.get("meldingikon.alternativ.tekst")}/>
 
                             <h2 className="stor deloverskrift">{this.props.resources.get("send-sporsmal.still-sporsmal.deloverskrift")}</h2>
 
@@ -86,11 +89,12 @@ var Skriv = React.createClass({
                         <p className="hjelpetekst">{this.props.resources.get("send-sporsmal.still-sporsmal.hjelpetekst")}</p>
                         <FeedbackForm ref="form">
                             {infoboks}
-                            <ExpandingTextArea placeholder={this.props.resources.get('skriv-sporsmal.fritekst.placeholder')}
+                            <ExpandingTextArea
+                                placeholder={this.props.resources.get('skriv-sporsmal.fritekst.placeholder')}
                                 charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
                                 feedbackref="textarea"/>
 
-                            <GodtaVilkar feedbackref="godtavilkar" />
+                            <GodtaVilkar feedbackref="godtavilkar"/>
 
                             {knapper}
                         </FeedbackForm>
