@@ -175,16 +175,8 @@ public class HenvendelseControllerTest {
     @Test(expected = AssertionError.class)
     public void smellerHvisAndreSosialtjenesterTemagruppeISporsmal() {
         Sporsmal sporsmal = new Sporsmal();
-        sporsmal.fritekst = "";
+        sporsmal.fritekst = "DUMMY";
         sporsmal.temagruppe = Temagruppe.ANSOS.name();
-        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
-    }
-
-    @Test(expected = AssertionError.class)
-    public void smellerHvisPensjonTemagruppeISporsmal() {
-        Sporsmal sporsmal = new Sporsmal();
-        sporsmal.fritekst = "";
-        sporsmal.temagruppe = Temagruppe.PENS.name();
         controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
     }
 }

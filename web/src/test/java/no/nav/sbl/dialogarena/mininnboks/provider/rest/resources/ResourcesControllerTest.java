@@ -47,7 +47,7 @@ public class ResourcesControllerTest {
     @Test
     public void henterFraPropertyResolverOgLeggerTilEgneProperties() throws Exception {
         Map<String, String> resources = controller.getResources(request);
-        assertThat(resources.size(), is(6));
+        assertThat(resources.size(), is(7));
     }
 
     @Test
