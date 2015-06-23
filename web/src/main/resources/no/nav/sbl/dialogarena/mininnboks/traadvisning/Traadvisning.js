@@ -116,7 +116,11 @@ function feiletCallback() {
     })
 }
 
-function leggTilMelding(fritekst) {
+function leggTilMelding(fritekst, response, status, xhr) {
+    if (xhr.status !== 201) {
+        kunneIkkeLeggeTilMelding.call(this, response, status, xhr);
+        return;
+    }
     var meldinger = this.state.traad.meldinger.splice(0);
     meldinger.unshift({
         fritekst: fritekst,
