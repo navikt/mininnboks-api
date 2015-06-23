@@ -33,8 +33,12 @@ var Skriv = React.createClass({
                 data: JSON.stringify({temagruppe: temagruppe, fritekst: fritekst}),
                 beforeSend: Utils.addXsrfHeader
             })
-                .done(function () {
-                    this.setState({sender: false, sendt: true});
+                .done(function (response, status, xhr) {
+                    if (xhr.status !== 201) {
+                        this.setState({sendingfeilet: true, sender: false})
+                    } else {
+                        this.setState({sender: false, sendt: true});
+                    }
                 }.bind(this))
                 .fail(function () {
                     this.setState({sendingfeilet: true, sender: false})
