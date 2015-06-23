@@ -130,6 +130,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
+        </dependency>
+        <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-security-core</artifactId>
             <version>${modig-security.version}</version>
@@ -431,6 +436,11 @@
             <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-security-ws</artifactId>
+            <version>1.0.24-NO_RESTEASY</version>
+        </dependency>
 
     </dependencies>
 
@@ -498,18 +508,18 @@
                         </configuration>
                     </execution>
                     <!--<execution>-->
-                        <!--<id>test</id>-->
-                        <!--<goals>-->
-                            <!--<goal>exec</goal>-->
-                        <!--</goals>-->
-                        <!--<phase>test</phase>-->
-                        <!--<configuration>-->
-                            <!--<executable>node</executable>-->
-                            <!--<arguments>-->
-                                <!--<argument>./node_modules/gulp/bin/gulp</argument>-->
-                                <!--<argument>test</argument>-->
-                            <!--</arguments>-->
-                        <!--</configuration>-->
+                    <!--<id>test</id>-->
+                    <!--<goals>-->
+                    <!--<goal>exec</goal>-->
+                    <!--</goals>-->
+                    <!--<phase>test</phase>-->
+                    <!--<configuration>-->
+                    <!--<executable>node</executable>-->
+                    <!--<arguments>-->
+                    <!--<argument>./node_modules/gulp/bin/gulp</argument>-->
+                    <!--<argument>test</argument>-->
+                    <!--</arguments>-->
+                    <!--</configuration>-->
                     <!--</execution>-->
                 </executions>
             </plugin>
