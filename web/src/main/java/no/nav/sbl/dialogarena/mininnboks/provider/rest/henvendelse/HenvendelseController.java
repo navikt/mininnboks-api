@@ -100,6 +100,7 @@ public class HenvendelseController {
         Henvendelse henvendelse = new Henvendelse(svar.fritekst, traad.nyeste.temagruppe);
         henvendelse.traadId = svar.traadId;
         henvendelse.eksternAktor = traad.nyeste.eksternAktor;
+        henvendelse.brukersEnhet = traad.eldste.brukersEnhet;
         henvendelse.tilknyttetEnhet = traad.nyeste.tilknyttetEnhet;
         henvendelse.type = SVAR_SBL_INNGAAENDE;
         henvendelse.opprettet = now();

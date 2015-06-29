@@ -82,7 +82,6 @@ public interface HenvendelseService {
         @Override
         public WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String fodselsnummer) {
             String xmlHenvendelseType = SVAR_SBL_INNGAAENDE.name();
-            String enhet = personService.hentEnhet().getOrElse(null);
             XMLHenvendelse info =
                     new XMLHenvendelse()
                             .withHenvendelseType(xmlHenvendelseType)
@@ -93,7 +92,7 @@ public interface HenvendelseService {
                             .withEksternAktor(henvendelse.eksternAktor)
                             .withTilknyttetEnhet(henvendelse.tilknyttetEnhet)
                             .withErTilknyttetAnsatt(henvendelse.erTilknyttetAnsatt)
-                            .withBrukersEnhet(enhet)
+                            .withBrukersEnhet(henvendelse.brukersEnhet)
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(henvendelse.temagruppe.name())

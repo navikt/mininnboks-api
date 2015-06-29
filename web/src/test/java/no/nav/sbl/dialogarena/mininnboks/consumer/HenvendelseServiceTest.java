@@ -106,6 +106,7 @@ public class HenvendelseServiceTest {
         Henvendelse henvendelse = new Henvendelse(FRITEKST, TEMAGRUPPE);
         henvendelse.traadId = TRAAD_ID;
         henvendelse.eksternAktor = EKSTERN_AKTOR;
+        henvendelse.brukersEnhet = BRUKER_ENHET;
         henvendelse.tilknyttetEnhet = TILKNYTTET_ENHET;
         henvendelse.erTilknyttetAnsatt = ER_TILKNYTTET_ANSATT;
 

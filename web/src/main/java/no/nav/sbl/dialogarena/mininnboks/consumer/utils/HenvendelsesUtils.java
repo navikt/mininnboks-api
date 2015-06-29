@@ -57,6 +57,7 @@ public abstract class HenvendelsesUtils {
                 henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
                 henvendelse.erTilknyttetAnsatt = info.isErTilknyttetAnsatt();
                 henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
+                henvendelse.brukersEnhet = info.getBrukersEnhet();
                 henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
                 henvendelse.fraNav = !henvendelse.fraBruker;
                 if (FRA_BRUKER.contains(henvendelse.type)) {

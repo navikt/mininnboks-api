@@ -16,12 +16,13 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils
 public class Traad {
     public final String traadId;
     public final List<Henvendelse> meldinger;
-    public final Henvendelse nyeste;
+    public final Henvendelse nyeste, eldste;
     public final Boolean kanBesvares, avsluttet;
 
     public Traad(List<Henvendelse> meldinger) {
         this.meldinger = on(meldinger).collect(NYESTE_OVERST);
         this.nyeste = this.meldinger.get(0);
+        this.eldste = this.meldinger.get(this.meldinger.size() - 1);
         this.kanBesvares = SPORSMAL_MODIA_UTGAAENDE.equals(nyeste.type);
         this.avsluttet = FRA_NAV.contains(nyeste.type) && !kanBesvares;
         this.traadId = this.nyeste.traadId;

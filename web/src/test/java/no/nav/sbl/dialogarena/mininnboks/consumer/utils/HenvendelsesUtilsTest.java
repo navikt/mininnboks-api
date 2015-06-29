@@ -41,6 +41,7 @@ public class HenvendelsesUtilsTest {
     private static final String NAVIDENT = "navident";
     private static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
     private static final Boolean ER_TILKNYTTET_ANSATT = false;
+    private static final String BRUKERS_ENHET = "1234";
 
     private PropertyResolver propertyResolver = mock(PropertyResolver.class);
 
@@ -64,6 +65,7 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.getLestDato(), is(notNullValue()));
         assertThat(sporsmal.isLest(), is(true));
         assertThat(sporsmal.kanal, is(nullValue()));
+        assertThat(sporsmal.brukersEnhet, is(BRUKERS_ENHET));
     }
 
     @Test
@@ -81,6 +83,8 @@ public class HenvendelsesUtilsTest {
         assertThat(svar.getLestDato(), is(notNullValue()));
         assertThat(svar.isLest(), is(true));
         assertThat(svar.kanal, is(nullValue()));
+        assertThat(svar.brukersEnhet, is(BRUKERS_ENHET));
+
     }
 
     @Test
@@ -101,6 +105,8 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.eksternAktor, is(NAVIDENT));
         assertThat(sporsmal.tilknyttetEnhet, is(TILKNYTTET_ENHET));
         assertThat(sporsmal.erTilknyttetAnsatt, is(ER_TILKNYTTET_ANSATT));
+        assertThat(sporsmal.brukersEnhet, is(BRUKERS_ENHET));
+
     }
 
     @Test
@@ -118,6 +124,7 @@ public class HenvendelsesUtilsTest {
         assertThat(svar.getLestDato(), is(LEST_DATO));
         assertThat(svar.isLest(), is(true));
         assertThat(svar.kanal, is(KANAL));
+        assertThat(svar.brukersEnhet, is(BRUKERS_ENHET));
     }
 
     @Test
@@ -135,6 +142,7 @@ public class HenvendelsesUtilsTest {
         assertThat(referat.getLestDato(), is(LEST_DATO));
         assertThat(referat.isLest(), is(true));
         assertThat(referat.kanal, is(KANAL));
+        assertThat(referat.brukersEnhet, is(BRUKERS_ENHET));
     }
 
     @Test
@@ -172,6 +180,7 @@ public class HenvendelsesUtilsTest {
                 .withBehandlingskjedeId(kjedeId)
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
+                .withBrukersEnhet(BRUKERS_ENHET)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLMeldingFraBruker()
                                 .withFritekst(FRITEKST)
@@ -188,6 +197,7 @@ public class HenvendelsesUtilsTest {
                 .withAvsluttetDato(AVSLUTTET_DATO)
                 .withLestDato(LEST_DATO)
                 .withEksternAktor(NAVIDENT)
+                .withBrukersEnhet(BRUKERS_ENHET)
                 .withTilknyttetEnhet(TILKNYTTET_ENHET)
                 .withErTilknyttetAnsatt(ER_TILKNYTTET_ANSATT)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(

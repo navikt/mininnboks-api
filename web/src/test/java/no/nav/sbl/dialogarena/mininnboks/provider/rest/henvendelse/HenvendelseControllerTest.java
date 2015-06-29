@@ -156,6 +156,30 @@ public class HenvendelseControllerTest {
         assertThat(henvendelseArgumentCaptor.getValue().erTilknyttetAnsatt, is(true));
     }
 
+    @Test
+    public void kopiererBrukersEnhetTilSvaret() {
+        String brukersEnhet = "1234";
+
+        Henvendelse henvendelse1 = new Henvendelse("1");
+        henvendelse1.opprettet = now().minusDays(1);
+        henvendelse1.type = Henvendelsetype.SPORSMAL_SKRIFTLIG;
+        henvendelse1.brukersEnhet = brukersEnhet;
+        Henvendelse henvendelse2 = new Henvendelse("2");
+        henvendelse2.opprettet = now();
+        henvendelse2.type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE;
+        when(service.hentTraad(anyString())).thenReturn(asList(henvendelse1, henvendelse2));
+
+        Svar svar = new Svar();
+        svar.fritekst = "fritekst";
+        svar.traadId = "0";
+        controller.sendSvar(svar);
+
+        ArgumentCaptor<Henvendelse> henvendelseArgumentCaptor = ArgumentCaptor.forClass(Henvendelse.class);
+        verify(service).sendSvar(henvendelseArgumentCaptor.capture(), anyString());
+
+        assertThat(henvendelseArgumentCaptor.getValue().brukersEnhet, is(brukersEnhet));
+    }
+
     @Test(expected = AssertionError.class)
     public void smellerHvisTomFritekstISporsmal() {
         Sporsmal sporsmal = new Sporsmal();
