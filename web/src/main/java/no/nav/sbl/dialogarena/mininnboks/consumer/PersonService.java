@@ -12,8 +12,6 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLElektroniskKomm
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
 import no.nav.tjeneste.virksomhet.person.v2.PersonV2;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Bruker;
-import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonRequest;
 import org.apache.commons.collections15.Transformer;
 
 import static no.nav.modig.lang.collections.IterUtils.on;
@@ -24,6 +22,7 @@ import static no.nav.modig.lang.option.Optional.optional;
 public interface PersonService {
 
     String hentEpostadresse() throws Exception;
+
     Optional<String> hentEnhet();
 
     class Default implements PersonService {
@@ -59,13 +58,17 @@ public interface PersonService {
 
         @Override
         public Optional<String> hentEnhet() {
-            String fnr = SubjectHandler.getSubjectHandler().getUid();
-            try {
-                Bruker bruker = (Bruker) personV2.hentKjerneinformasjon(new HentKjerneinformasjonRequest().withIdent(fnr)).getPerson();
-                return optional(bruker.getHarAnsvarligEnhet().getEnhet().getOrganisasjonselementID());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            // Mock frem til TPS er åpnet i SBS
+            return optional("0219");
+
+            // UTKOMMENTERT FREM TIL TPS ER ÅPNET I SBS
+//            String fnr = SubjectHandler.getSubjectHandler().getUid();
+//            try {
+//                Bruker bruker = (Bruker) personV2.hentKjerneinformasjon(new HentKjerneinformasjonRequest().withIdent(fnr)).getPerson();
+//                return optional(bruker.getHarAnsvarligEnhet().getEnhet().getOrganisasjonselementID());
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
         }
 
         private static final Transformer<XMLElektroniskKommunikasjonskanal, XMLElektroniskAdresse> XML_ELEKTRONISK_ADRESSE = new Transformer<XMLElektroniskKommunikasjonskanal, XMLElektroniskAdresse>() {
