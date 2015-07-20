@@ -8,8 +8,8 @@
   text-decoration: none;
   border: 1px solid #ffffff;
   border-radius: 2px;
-  &.lest {
-    h2, h3, p {
+  &.LEST, &.BESVART {
+    h3, p {
       color: #6e6f72
     }
   }
@@ -22,13 +22,13 @@
     position: absolute;
     height: 10px;
     &.melding-info {
-      top: 55px;
+      top: 22px;
       left: 10px;
       width: 16px;
-      &.ubehandlet {
+      &.IKKE_LEST {
         background: url(/mininnboks/build/img/melding_ny.svg) no-repeat right;
       }
-      &.besvart {
+      &.BESVART {
         background: url(/mininnboks/build/img/melding_besvart.svg) no-repeat right;
       }
     }
@@ -75,10 +75,10 @@
 }
 .contrast .innboks-container .traadlistevisning {
   .ikon.melding-info {
-    &.ubehandlet {
+    &.IKKE_LEST {
       background: url(/mininnboks/build/img/melding_ny_kontrast.svg) no-repeat right;
     }
-    &.besvart {
+    &.BESVART {
       background: url(/mininnboks/build/img/melding_besvart_kontrast.svg) no-repeat right;
     }
   }

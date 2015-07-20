@@ -28,9 +28,9 @@ var Melding = React.createClass({
         var traadinfo = this.props.traadinfo ? <p className="vekk">{this.props.traadinfo}</p> : null;
         return (
             <div className="melding">
-                <h2>{dato}</h2>
                 {traadinfo}
-                <p className="h3">{melding.statusTekst}</p>
+                <h3 className="status">{melding.statusTekst}</h3>
+                <p className="dato">{dato}</p>
                 <div className="fritekst">{avsnitt}</div>
             </div>
         )

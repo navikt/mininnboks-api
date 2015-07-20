@@ -35,6 +35,7 @@
     "react": "^0.13.0",
     "string-format": "^0.5.0",
     "nav-logger": "git+http://stash.devillo.no/scm/npmm/nav-logger.git#7fe517837bde9afc58eaedac94d49547ae921a13",
-    "react-router": "^0.13.2"
+    "react-router": "^0.13.2",
+    "keymirror": "^0.1.1"
   }
 }

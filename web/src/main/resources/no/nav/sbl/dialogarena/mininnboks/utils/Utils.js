@@ -4,6 +4,7 @@ var format = require('string-format');
 var moment = require('moment');
 require('moment/locale/nb');
 moment.locale('nb');
+var Constants = require('./Constants');
 
 var Utils = {
     sanitize: function (tekst) {
@@ -45,6 +46,17 @@ var Utils = {
     },
     addXsrfHeader: function (xhr) {
         xhr.setRequestHeader('X-XSRF-TOKEN', Utils.getCookie('XSRF-TOKEN-MININNBOKS'));
+    },
+    status: function (melding) {
+        if (melding.type === 'SVAR_SBL_INNGAAENDE') {
+            return Constants.BESVART;
+        } else if (!melding.lest) {
+            return Constants.IKKE_LEST;
+        } else if (melding.type === 'SPORSMAL_MODIA_UTGAAENDE') {
+            return Constants.LEST_UBESVART;
+        } else {
+            return Constants.LEST;
+        }
     }
 };
 
