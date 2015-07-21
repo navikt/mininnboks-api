@@ -18,7 +18,7 @@ var TraadPreview = React.createClass({
             <Link to="traad" params={{traadId: melding.traadId}} className={className} onClick={this.onClick}>
                 <AntallMeldinger antall={this.props.traad.meldinger.length}/>
                 <MeldingStatus melding={melding}/>
-                <Melding melding={melding} traadinfo={traadinfo}/>
+                <Melding melding={melding} traadinfo={traadinfo} purreSvar={true} resources={this.props.resources}/>
             </Link>
         )
     }
