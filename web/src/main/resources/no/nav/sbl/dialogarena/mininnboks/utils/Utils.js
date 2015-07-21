@@ -28,11 +28,21 @@ var Utils = {
     },
     ariaLabelForMelding: function (antallMeldinger, melding) {
         var behandlingsStatus = '';
-        if (melding.type === 'SPORSMAL_MODIA_UTGAAENDE' || !melding.lest) {
-            behandlingsStatus += 'Ubesvart,';
-        } else if (melding.type == 'SVAR_SBL_INNGAAENDE') {
-            behandlingsStatus += 'Besvart,';
+        switch (this.status(melding)) {
+            case Constants.BESVART:
+                behandlingsStatus += 'Besvart';
+                break;
+            case Constants.IKKE_LEST:
+                behandlingsStatus += 'Ikke lest';
+                break;
+            case Constants.LEST_UBESVART:
+                behandlingsStatus += 'Lest ubesvart';
+                break;
+            case Constants.LEST:
+                behandlingsStatus += 'Lest';
+                break;
         }
+        behandlingsStatus += ', ';
         return format('{0} {1} {2}, {3}',
             behandlingsStatus,
             antallMeldinger,
