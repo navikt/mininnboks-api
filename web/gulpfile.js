@@ -12,6 +12,7 @@ var gulpif = require('gulp-if');
 var uglifycss = require('gulp-uglifycss');
 var uglify = require('gulp-uglify');
 var streamify = require('gulp-streamify');
+var gutil = require('gulp-util');
 
 var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
 var BUILD_DIR = './src/main/webapp/build/';
@@ -44,7 +45,7 @@ function browserifyTask(isDev) {
             message: '<%= error.message %>'
         }))
             .pipe(source('mininnboks.js'))
-            .pipe(gulpif(!isDev, streamify(uglify())))
+            .pipe(gulpif(!isDev, streamify(uglify().on('error', gutil.log))))
             .pipe(gulp.dest(BUILD_DIR + 'js'));
     }
 

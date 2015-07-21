@@ -1,5 +1,5 @@
 var React = require('react/addons');
-var Melding = require('../melding/Melding');
+var Utils = require('../utils/Utils');
 
 var MeldingContainer = React.createClass({
     render: function() {
@@ -8,12 +8,28 @@ var MeldingContainer = React.createClass({
         var imgSrc = melding.fraBruker ? '/mininnboks/build/img/personikon.svg' : '/mininnboks/build/img/nav-logo.svg';
         var imgTekstKey = melding.fraBruker ? 'innboks.avsender.bruker' : 'innboks.avsender.nav';
 
+        var dato = Utils.prettyDate(melding.opprettet);
+        var medUrl = function (innhold) {
+            return Utils.leggTilLenkerTags(innhold);
+        }.bind(this);
+
+        var avsnitt = melding.fritekst.split(/[\r\n]+/)
+            .map(medUrl)
+            .map(Utils.tilAvsnitt(true));
+        avsnitt = React.addons.createFragment({
+            avsnitt: avsnitt
+        });
+
         return (
             <div className={className}>
                 <div className="logo" aria-label={this.props.resources.get(imgTekstKey)}>
                     <img src={imgSrc} alt={this.props.resources.get(imgTekstKey)} />
                 </div>
-                <Melding melding={melding} lagLenkerAvURL={true} />
+                <div className="melding">
+                    <h3 className="status">{melding.statusTekst}</h3>
+                    <p className="dato">{dato}</p>
+                    <div className="fritekst">{avsnitt}</div>
+                </div>
             </div>
         );
     }

@@ -26,28 +26,8 @@ var Utils = {
             }
         }
     },
-    ariaLabelForMelding: function (antallMeldinger, melding) {
-        var behandlingsStatus = '';
-        switch (this.status(melding)) {
-            case Constants.BESVART:
-                behandlingsStatus += 'Besvart';
-                break;
-            case Constants.IKKE_LEST:
-                behandlingsStatus += 'Ikke lest';
-                break;
-            case Constants.LEST_UBESVART:
-                behandlingsStatus += 'Lest ubesvart';
-                break;
-            case Constants.LEST:
-                behandlingsStatus += 'Lest';
-                break;
-        }
-        behandlingsStatus += ', ';
-        return format('{0} {1} {2}, {3}',
-            behandlingsStatus,
-            antallMeldinger,
-            antallMeldinger === 1 ? 'melding' : 'meldinger'
-        );
+    prettyDate: function (date) {
+        return moment(date).format('Do MMMM YYYY, [kl.] HH:mm');
     },
     getCookie: function (name) {
         var re = new RegExp(name + '=([^;]+)');
