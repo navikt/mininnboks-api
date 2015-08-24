@@ -43,12 +43,14 @@ class MininnboksSimulation extends Simulation {
     .exec(
       http("fetch resources")
         .get("/mininnboks/tjenester/resources")
-        .headers(headers))
+        .headers(headers)
+        .check(headerRegex("Set-Cookie", "XSRF-TOKEN-MININNBOKS=([^;]+)").saveAs("xsrfCookie")))
 
     .exec(
       http("send question")
         .post("/mininnboks/tjenester/traader/sporsmal")
         .headers(headers)
+        .header("X-XSRF-TOKEN", "${xsrfCookie}")
         .body(StringBody( """{"temagruppe":"ARBD","fritekst":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore excepturi quo tempore. Ab alias consectetur dolorem ducimus, ex exercitationem explicabo magni minima nobis omnis qui sapiente sequi soluta veniam voluptatibus?"}""")).asJSON)
 
     .exec(
