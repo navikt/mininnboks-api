@@ -31,7 +31,7 @@ class MininnboksSimulation extends Simulation {
         .formParam("IDToken1", "${brukernavn}")
         .formParam("IDToken2", password)
         .queryParam("service", "level4Service")
-        .queryParam("goto", BASE_URL + "/mininnboks/"))
+        .queryParam("goto", BASE_URL + "/mininnboks/sporsmal/skriv/ARBD"))
 
     .exec(
       http("check to see if logged in properly")
