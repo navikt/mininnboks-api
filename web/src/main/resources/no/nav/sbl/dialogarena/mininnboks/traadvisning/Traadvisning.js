@@ -5,7 +5,6 @@ var Knapper = require('./Knapper');
 var Snurrepipp = require('../snurrepipp/Snurrepipp');
 var Feilmelding = require('../feilmelding/Feilmelding');
 var InfoBoks = require('../infoboks/Infoboks');
-var Epost = require('../epost/Epost');
 var format = require('string-format');
 var Utils = require('../utils/Utils');
 
@@ -59,7 +58,7 @@ var TraadVisning = React.createClass({
             </InfoBoks.Info>);
         } else if (this.state.besvart) {
             return (<InfoBoks.Ok focusOnRender={true}>
-                <Epost resources={this.props.resources} />
+                <p>{this.props.resources.get('send-sporsmal.bekreftelse.varslingsinfo')}</p>
             </InfoBoks.Ok>);
         } else if (this.state.sendingfeilet) {
             return (<InfoBoks.Feil>

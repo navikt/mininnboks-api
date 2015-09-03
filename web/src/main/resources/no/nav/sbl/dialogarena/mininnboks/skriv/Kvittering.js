@@ -1,6 +1,5 @@
 var React = require('react/addons');
 var Link = require('react-router').Link;
-var Epost = require('../epost/Epost');
 
 
 var Kvittering = React.createClass({
@@ -14,7 +13,7 @@ var Kvittering = React.createClass({
 
                     <div className="robust-strek"></div>
 
-                    <Epost resources={this.props.resources} erKvittering={true} className="mangler-epost" linkClass={'brukerprofil-link'}/>
+                    <p>{this.props.resources.get('send-sporsmal.bekreftelse.varslingsinfo')}</p>
                     <hr/>
                 </div>
                 <Link className="knapp-link-stor" to="innboks">{this.props.resources.get('send-sporsmal.bekreftelse.til-meldingsboksen')}</Link>
