@@ -13,7 +13,7 @@ var Kvittering = React.createClass({
 
                     <div className="robust-strek"></div>
 
-                    <p dangerouslySetInnerHTML={{__html: this.props.resources.get("send-sporsmal.bekreftelse.varslingsinfo")}}></p>
+                    <p dangerouslySetInnerHTML={{__html: this.props.resources.get('send-sporsmal.bekreftelse.varslingsinfo')}}></p>
 
                     <hr/>
                 </div>
