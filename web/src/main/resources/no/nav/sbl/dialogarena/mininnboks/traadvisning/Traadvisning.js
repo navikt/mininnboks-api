@@ -58,7 +58,7 @@ var TraadVisning = React.createClass({
             </InfoBoks.Info>);
         } else if (this.state.besvart) {
             return (<InfoBoks.Ok focusOnRender={true}>
-                <p>{this.props.resources.get('send-sporsmal.bekreftelse.varslingsinfo')}</p>
+                <p dangerouslySetInnerHTML={{__html: this.props.resources.get("send-sporsmal.bekreftelse.varslingsinfo")}}></p>
             </InfoBoks.Ok>);
         } else if (this.state.sendingfeilet) {
             return (<InfoBoks.Feil>

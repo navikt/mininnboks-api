@@ -13,7 +13,8 @@ var Kvittering = React.createClass({
 
                     <div className="robust-strek"></div>
 
-                    <p>{this.props.resources.get('send-sporsmal.bekreftelse.varslingsinfo')}</p>
+                    <p dangerouslySetInnerHTML={{__html: this.props.resources.get("send-sporsmal.bekreftelse.varslingsinfo")}}></p>
+
                     <hr/>
                 </div>
                 <Link className="knapp-link-stor" to="innboks">{this.props.resources.get('send-sporsmal.bekreftelse.til-meldingsboksen')}</Link>
