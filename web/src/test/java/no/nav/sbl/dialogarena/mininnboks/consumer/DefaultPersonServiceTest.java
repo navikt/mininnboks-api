@@ -1,14 +1,13 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.modig.core.context.ThreadLocalSubjectHandler;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLBruker;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLEPost;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLElektroniskKommunikasjonskanal;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.informasjon.XMLTelefonnummer;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserRequest;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.meldinger.XMLHentKontaktinformasjonOgPreferanserResponse;
-import no.nav.tjeneste.virksomhet.person.v2.PersonV2;
+import no.nav.tjeneste.virksomhet.brukerprofil.v2.BrukerprofilV2;
+import no.nav.tjeneste.virksomhet.brukerprofil.v2.HentKontaktinformasjonOgPreferanserPersonIkkeFunnet;
+import no.nav.tjeneste.virksomhet.brukerprofil.v2.HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning;
+import no.nav.tjeneste.virksomhet.brukerprofil.v2.informasjon.WSAnsvarligEnhet;
+import no.nav.tjeneste.virksomhet.brukerprofil.v2.informasjon.WSBruker;
+import no.nav.tjeneste.virksomhet.brukerprofil.v2.meldinger.WSHentKontaktinformasjonOgPreferanserRequest;
+import no.nav.tjeneste.virksomhet.brukerprofil.v2.meldinger.WSHentKontaktinformasjonOgPreferanserResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,47 +22,24 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultPersonServiceTest {
 
-    private static final String EPOSTADRESSE = "epost@example.com";
     @Mock
-    private BrukerprofilPortType brukerprofilPortType;
-    @Mock
-    private PersonV2 personV2;
+    private BrukerprofilV2 brukerprofilV2;
     private PersonService.Default personService;
 
     @Before
     public void setUp() {
         System.setProperty("no.nav.modig.core.context.subjectHandlerImplementationClass", ThreadLocalSubjectHandler.class.getName());
 
-        personService = new PersonService.Default(brukerprofilPortType, personV2);
+        personService = new PersonService.Default(brukerprofilV2);
     }
 
     @Test
-    public void henterUtEpostadressenFraResponse() throws Exception {
-        when(brukerprofilPortType.hentKontaktinformasjonOgPreferanser(any(XMLHentKontaktinformasjonOgPreferanserRequest.class))).thenReturn(
-                new XMLHentKontaktinformasjonOgPreferanserResponse().withPerson(
-                        new XMLBruker().withElektroniskKommunikasjonskanal(
-                                new XMLElektroniskKommunikasjonskanal()
-                                        .withElektroniskAdresse(new XMLEPost().withIdentifikator(EPOSTADRESSE))
-                        )
-                )
-        );
-        assertThat(personService.hentEpostadresse(), is(EPOSTADRESSE));
+    public void henterEnhet() throws HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning, HentKontaktinformasjonOgPreferanserPersonIkkeFunnet {
+        String enhet = "1234";
+        when(brukerprofilV2.hentKontaktinformasjonOgPreferanser(any(WSHentKontaktinformasjonOgPreferanserRequest.class)))
+                .thenReturn(new WSHentKontaktinformasjonOgPreferanserResponse().withPerson(new WSBruker().withAnsvarligEnhet(new WSAnsvarligEnhet().withOrganisasjonselementID(enhet))));
+
+        assertThat(personService.hentEnhet().get(), is(enhet));
     }
 
-    @Test
-    public void girTomStringHvisDetIkkeFinnesEpostadresse() throws Exception {
-        when(brukerprofilPortType.hentKontaktinformasjonOgPreferanser(any(XMLHentKontaktinformasjonOgPreferanserRequest.class))).thenReturn(
-                new XMLHentKontaktinformasjonOgPreferanserResponse().withPerson(
-                        new XMLBruker().withElektroniskKommunikasjonskanal(
-                                new XMLElektroniskKommunikasjonskanal()
-                                        .withElektroniskAdresse(new XMLTelefonnummer().withIdentifikator("555-12345"))
-                        )
-                )
-        );
-        assertThat(personService.hentEpostadresse(), is(""));
-
-        when(brukerprofilPortType.hentKontaktinformasjonOgPreferanser(any(XMLHentKontaktinformasjonOgPreferanserRequest.class))).thenReturn(
-                new XMLHentKontaktinformasjonOgPreferanserResponse().withPerson(new XMLBruker()));
-        assertThat(personService.hentEpostadresse(), is(""));
-    }
 }

@@ -16,10 +16,14 @@ import org.apache.cxf.ws.addressing.WSAddressingFeature;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 public class PortTypeUtils {
     public static <T> T createPortType(String address, String wsdlUrl, Class<T> serviceClass, boolean externalService) {
         JaxWsProxyFactoryBean proxy = new JaxWsProxyFactoryBean();
-        proxy.setWsdlURL(wsdlUrl);
+        if (isNotBlank(wsdlUrl)) {
+            proxy.setWsdlURL(wsdlUrl);
+        }
         proxy.setAddress(address);
         proxy.setServiceClass(serviceClass);
         proxy.getFeatures().addAll(Arrays.asList(new WSAddressingFeature(), new LoggingFeature()));

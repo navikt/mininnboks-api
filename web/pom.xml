@@ -50,14 +50,8 @@
             <version>0.3</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>brukerprofil-tjenestespesifikasjon</artifactId>
-            <version>1.8</version>
-        </dependency>
-
-        <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>person-v2-tjenestespesifikasjon</artifactId>
+            <groupId>no.nav.sbl</groupId>
+            <artifactId>brukerprofil-v2-tjenestespesifikasjon</artifactId>
             <version>2.0.0</version>
         </dependency>
 
@@ -112,26 +106,6 @@
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.modig</groupId>
-            <artifactId>modig-security-ws</artifactId>
-            <version>${modig-security.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>xml-apis</groupId>
-                    <artifactId>xml-apis</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-            <version>1.4.01</version>
         </dependency>
         <dependency>
             <groupId>no.nav.modig</groupId>

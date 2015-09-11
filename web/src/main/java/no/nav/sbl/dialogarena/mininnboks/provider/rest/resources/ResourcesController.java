@@ -1,13 +1,9 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.resources;
 
 import no.nav.modig.content.PropertyResolver;
-import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -17,7 +13,6 @@ import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.GODKJENTE_FOR_INNGAAENDE_SPORSMAAL;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 @Path("/resources")
@@ -25,9 +20,6 @@ import static org.springframework.util.StringUtils.collectionToDelimitedString;
 public class ResourcesController {
 
     public static final String EPOST = "bruker.epost";
-    public static final Logger LOGGER = LoggerFactory.getLogger(ResourcesController.class);
-    @Inject
-    private PersonService personService;
     @Inject
     private PropertyResolver propertyResolver;
 
@@ -39,28 +31,8 @@ public class ResourcesController {
         resources.put("skriv.ny.link", System.getProperty("temavelger.link.url"));
         resources.put("brukerprofil.link", System.getProperty("brukerprofil.link.url"));
         resources.put("temagruppe.liste", collectionToDelimitedString(GODKJENTE_FOR_INNGAAENDE_SPORSMAAL, " "));
-        try {
-            resources.put("bruker.epost", epost(request));
-        } catch (Exception e) {
-            LOGGER.error("Feil mot TPS", e);
-        }
 
         return resources;
-    }
-
-    private String epost(HttpServletRequest request) throws Exception {
-        HttpSession session = request.getSession();
-        String epost = (String) session.getAttribute(EPOST);
-
-        if (!isBlank(epost)) {
-            return epost;
-        }
-
-        epost = personService.hentEpostadresse();
-        session.setAttribute(EPOST, epost);
-
-        return epost;
-
     }
 
 }
