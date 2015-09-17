@@ -12,7 +12,12 @@ var Utils = {
     },
     leggTilLenkerTags: function (innhold) {
         var uriRegex = /(([\w-]+:\/\/?|www(?:-\w+)?\.)[^\s()<>]+\w)/g;
-        return innhold.replace(uriRegex, '<a target="_blank" href="$1">$1</a>');
+        var httpRegex = /^(https?):\/\/.*$/;
+
+        return innhold.replace(uriRegex, function (match) {
+            match = match.match(httpRegex) ? match : 'http://' + match;
+            return '<a target="_blank" href="' + match + '">' + match + '</a>'
+        });
     },
     tilAvsnitt: function (kanInneholdeHTML) {
         if (kanInneholdeHTML) {
