@@ -31,13 +31,13 @@ class MininnboksSimulation extends Simulation {
         .formParam("IDToken1", "${brukernavn}")
         .formParam("IDToken2", password)
         .queryParam("service", "level4Service")
-        .queryParam("goto", BASE_URL + "/mininnboks/sporsmal/skriv/ARBD"))
+        .queryParam("goto", BASE_URL + "/mininnboks/"))
 
     .exec(
       http("check to see if logged in properly")
         .get( """/mininnboks/""")
         .headers(headers)
-        .check(regex("Din dialog med NAV").exists))
+        .check(regex("mininnboks-omslag").exists))
     .pause(2)
 
     .exec(
