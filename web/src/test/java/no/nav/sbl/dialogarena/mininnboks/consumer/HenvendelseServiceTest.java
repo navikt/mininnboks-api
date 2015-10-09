@@ -1,6 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
 import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
@@ -14,7 +16,9 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenven
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -25,9 +29,7 @@ import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHe
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SVAR_SBL_INNGAAENDE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService.KONTAKT_NAV_SAKSTEMA;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,6 +43,7 @@ public class HenvendelseServiceTest {
     public static final String TRAAD_ID = "traadId";
     public static final String EKSTERN_AKTOR = "eksternAktor";
     public static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
+    public static final Boolean ER_TILKNYTTET_ANSATT = false;
 
     @Captor
     private ArgumentCaptor<WSSendInnHenvendelseRequest> sendInnHenvendelseRequestArgumentCaptor;
@@ -98,6 +101,7 @@ public class HenvendelseServiceTest {
         henvendelse.traadId = TRAAD_ID;
         henvendelse.eksternAktor = EKSTERN_AKTOR;
         henvendelse.tilknyttetEnhet = TILKNYTTET_ENHET;
+        henvendelse.erTilknyttetAnsatt = ER_TILKNYTTET_ANSATT;
 
         henvendelseService.sendSvar(henvendelse, FNR);
 
@@ -114,6 +118,7 @@ public class HenvendelseServiceTest {
         assertThat(xmlHenvendelse.getBehandlingskjedeId(), is(TRAAD_ID));
         assertThat(xmlHenvendelse.getEksternAktor(), is(EKSTERN_AKTOR));
         assertThat(xmlHenvendelse.getTilknyttetEnhet(), is(TILKNYTTET_ENHET));
+        assertThat(xmlHenvendelse.isErTilknyttetAnsatt(), is(ER_TILKNYTTET_ANSATT));
         XMLMeldingFraBruker meldingFraBruker = (XMLMeldingFraBruker) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
         assertThat(meldingFraBruker.getTemagruppe(), is(TEMAGRUPPE.name()));
         assertThat(meldingFraBruker.getFritekst(), is(FRITEKST));

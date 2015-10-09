@@ -70,14 +70,14 @@ public class HenvendelseController {
     @POST
     @Path("/sporsmal")
     @Consumes(APPLICATION_JSON)
-    public NyHenvendelseResultat sendSporsmal(Sporsmal sporsmal, @Context HttpServletResponse httpResponse) {
+    public Response sendSporsmal(Sporsmal sporsmal, @Context HttpServletResponse httpResponse) {
         assertFritekst(sporsmal.fritekst);
 
         Temagruppe temagruppe = Temagruppe.valueOf(sporsmal.temagruppe);
         Henvendelse henvendelse = new Henvendelse(sporsmal.fritekst, temagruppe);
-        WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
 
-        return new NyHenvendelseResultat(response.getBehandlingsId());
+        WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
+        return Response.status(Response.Status.CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
     @POST
@@ -103,9 +103,10 @@ public class HenvendelseController {
         henvendelse.type = SVAR_SBL_INNGAAENDE;
         henvendelse.opprettet = now();
         henvendelse.markerSomLest();
-        WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
+        henvendelse.erTilknyttetAnsatt = traad.nyeste.erTilknyttetAnsatt;
 
-        return Response.ok(new NyHenvendelseResultat(response.getBehandlingsId())).build();
+        WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
+        return Response.status(Response.Status.CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
     private Optional<Traad> hentTraad(String id) {

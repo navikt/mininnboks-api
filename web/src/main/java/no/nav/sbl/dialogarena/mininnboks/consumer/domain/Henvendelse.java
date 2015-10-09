@@ -16,7 +16,7 @@ public class Henvendelse implements Serializable {
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
-    public Boolean fraNav, fraBruker, kassert = false;
+    public Boolean fraNav, fraBruker, kassert = false, erTilknyttetAnsatt;
     private DateTime lestDato;
 
     public Henvendelse(String id) {
