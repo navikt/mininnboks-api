@@ -17,7 +17,7 @@ var Knapper = React.createClass({
         return (
             <div className="knapper">
                 {skrivSvar}
-                <Link to="innboks" title="Tilbake til innboksen">{this.props.resources.get('traadvisning.innboks.link')}</Link>
+                <Link to="innboks" title="Tilbake til innboksen" className="tilbake-til-innboks-link">{this.props.resources.get('traadvisning.innboks.link')}</Link>
             </div>
         )
     }
