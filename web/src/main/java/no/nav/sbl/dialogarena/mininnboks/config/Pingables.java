@@ -1,12 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
-import no.nav.modig.security.ws.SystemSAMLOutInterceptor;
 import no.nav.sbl.dialogarena.types.Pingable;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
-import no.nav.tjeneste.virksomhet.brukerprofil.v1.BrukerprofilPortType;
-import no.nav.tjeneste.virksomhet.person.v2.PersonV2;
+import no.nav.tjeneste.virksomhet.brukerprofil.v2.BrukerprofilV2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +13,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static java.net.HttpURLConnection.HTTP_OK;
-import static no.nav.sbl.dialogarena.mininnboks.config.MinInnboksApplicationContext.personV2;
 import static no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils.createPortType;
 
 @Configuration
@@ -108,28 +105,11 @@ public class Pingables {
 
     @Bean
     public Pingable brukerprofilPing() {
-        final String navn = "BRUKERPROFIL";
-        final BrukerprofilPortType ws = createPortType(System.getProperty("brukerprofil.ws.url"),
-                "classpath:brukerprofil/no/nav/tjeneste/virksomhet/brukerprofil/v1/Brukerprofil.wsdl",
-                BrukerprofilPortType.class,
+        final String navn = "BRUKERPROFIL_V2";
+        final BrukerprofilV2 ws = createPortType(System.getProperty("brukerprofil.v2.url"),
+                "",
+                BrukerprofilV2.class,
                 false);
-        return new Pingable() {
-            @Override
-            public Ping ping() {
-                try {
-                    ws.ping();
-                    return Ping.lyktes(navn);
-                } catch (Exception e) {
-                    return Ping.feilet(navn, e);
-                }
-            }
-        };
-    }
-
-    @Bean
-    public Pingable personPing() {
-        final String navn = "PERSON";
-        final PersonV2 ws = personV2(new SystemSAMLOutInterceptor());
         return new Pingable() {
             @Override
             public Ping ping() {

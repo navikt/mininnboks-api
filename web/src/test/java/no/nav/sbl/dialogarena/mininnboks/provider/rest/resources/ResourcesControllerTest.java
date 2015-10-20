@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.resources;
 
 import no.nav.modig.content.PropertyResolver;
-import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,14 +14,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.util.MatcherAssertionErrors.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResourcesControllerTest {
 
-    @Mock
-    PersonService personService;
     @Mock
     PropertyResolver propertyResolver;
 
@@ -41,20 +39,12 @@ public class ResourcesControllerTest {
         }});
         when(session.getAttribute(ResourcesController.EPOST)).thenReturn("myMail@nav.no");
         when(request.getSession()).thenReturn(session);
-        when(personService.hentEpostadresse()).thenReturn("myMail@nav.no");
     }
 
     @Test
     public void henterFraPropertyResolverOgLeggerTilEgneProperties() throws Exception {
         Map<String, String> resources = controller.getResources(request);
-        assertThat(resources.size(), is(7));
+        assertThat(resources.size(), is(6));
     }
 
-    @Test
-    public void kallTilEpostServiceBlirCachet() throws Exception {
-        controller.getResources(request);
-        controller.getResources(request);
-
-        verify(personService, times(0)).hentEpostadresse();
-    }
 }

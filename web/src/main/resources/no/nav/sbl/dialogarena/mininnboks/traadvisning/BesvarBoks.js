@@ -37,23 +37,25 @@ var BesvarBoks = React.createClass({
 
         var knapper;
         if (this.state.sender) {
-            knapper = <Snurrepipp storrelse="48" farge="graa" />;
+            knapper = <Snurrepipp storrelse="48" farge="graa"/>;
         } else {
             knapper = (
                 <div>
-                    <input type="submit" className="knapp-hoved-liten" value={this.props.resources.get('traadvisning.besvar.send')} onClick={this.onSubmit} />
-                    <a href="#" onClick={this.skjul} role="button">{this.props.resources.get('traadvisning.besvar.avbryt')}</a>
+                    <input type="submit" className="knapp-hoved-liten"
+                           value={this.props.resources.get('traadvisning.besvar.send')} onClick={this.onSubmit}/>
+                    <a href="#" onClick={this.skjul}
+                       role="button">{this.props.resources.get('traadvisning.besvar.avbryt')}</a>
                 </div>
             );
         }
 
         return (
-            <div aria-atomic="true" aria-live="polite">
-                <FeedbackForm className="besvar-container" ref="form">
-                    <ExpandingTextArea placeholder={this.props.resources.get('traadvisning.besvar.tekstfelt.placeholder')} charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')} feedbackref="textarea" />
+            <FeedbackForm className="besvar-container" ref="form">
+                <ExpandingTextArea placeholder={this.props.resources.get('traadvisning.besvar.tekstfelt.placeholder')}
+                                   charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
+                                   feedbackref="textarea"/>
                 {knapper}
-                </FeedbackForm>
-            </div>
+            </FeedbackForm>
         );
     }
 });

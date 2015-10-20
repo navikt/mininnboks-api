@@ -32,7 +32,7 @@ var TraadPreview = React.createClass({
                 <div className="melding">
                     <p className="vekk">{skjermleserStatus[status]}</p>
 
-                    <h3 className="status">{melding.statusTekst}</h3>
+                    <h2 className="status">{melding.statusTekst}</h2>
 
                     <p className="vekk">{skjermleserAntall(antallMeldinger)}</p>
 
