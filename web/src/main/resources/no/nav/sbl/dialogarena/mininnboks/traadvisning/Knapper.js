@@ -11,13 +11,16 @@ var Knapper = React.createClass({
     },
     render: function () {
         var skrivSvar = this.props.kanBesvares && !this.props.besvares ?
-            <button onClick={this.besvar} className="knapp-hoved-liten">{this.props.resources.get('traadvisning.skriv.svar.link')}</button> :
+            <button onClick={this.besvar}
+                    className="knapp-hoved-liten">{this.props.resources.get('traadvisning.skriv.svar.link')}</button> :
             null;
 
         return (
             <div className="knapper">
                 {skrivSvar}
-                <Link to="innboks" title="Tilbake til innboksen" className="tilbake-til-innboks-link">{this.props.resources.get('traadvisning.innboks.link')}</Link>
+                <p>
+                    <Link to="innboks" title="Tilbake til innboksen">{this.props.resources.get('traadvisning.innboks.link')}</Link>
+                </p>
             </div>
         )
     }
