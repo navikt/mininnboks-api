@@ -12,13 +12,12 @@ import static no.nav.modig.lang.collections.ComparatorUtils.compareWith;
 public class Henvendelse implements Serializable {
 
     public String id;
-    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet, temagruppeNavn, statusTekst;
+    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet, temagruppeNavn, statusTekst, kontorsperreEnhet;
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
     public Boolean fraNav, fraBruker, kassert = false, erTilknyttetAnsatt;
     private DateTime lestDato;
-    public String kontorsperreEnhet;
 
     public Henvendelse(String id) {
         this.id = id;
