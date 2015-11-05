@@ -93,6 +93,7 @@ public interface HenvendelseService {
                             .withTilknyttetEnhet(henvendelse.tilknyttetEnhet)
                             .withErTilknyttetAnsatt(henvendelse.erTilknyttetAnsatt)
                             .withBrukersEnhet(henvendelse.brukersEnhet)
+                            .withKontorsperreEnhet(henvendelse.kontorsperreEnhet)
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(henvendelse.temagruppe.name())

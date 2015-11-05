@@ -42,6 +42,7 @@ public class HenvendelsesUtilsTest {
     private static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
     private static final Boolean ER_TILKNYTTET_ANSATT = false;
     private static final String BRUKERS_ENHET = "1234";
+    private static final String KONTORSPERRE_ENHET = "kontorsperreEnhet";
 
     private PropertyResolver propertyResolver = mock(PropertyResolver.class);
 
@@ -84,7 +85,7 @@ public class HenvendelsesUtilsTest {
         assertThat(svar.isLest(), is(true));
         assertThat(svar.kanal, is(nullValue()));
         assertThat(svar.brukersEnhet, is(BRUKERS_ENHET));
-
+        assertThat(svar.kontorsperreEnhet, is(KONTORSPERRE_ENHET));
     }
 
     @Test
@@ -181,6 +182,7 @@ public class HenvendelsesUtilsTest {
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
                 .withBrukersEnhet(BRUKERS_ENHET)
+                .withKontorsperreEnhet(KONTORSPERRE_ENHET)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLMeldingFraBruker()
                                 .withFritekst(FRITEKST)

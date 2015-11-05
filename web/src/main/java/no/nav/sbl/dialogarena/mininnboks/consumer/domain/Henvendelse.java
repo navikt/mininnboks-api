@@ -18,6 +18,7 @@ public class Henvendelse implements Serializable {
     public DateTime opprettet, avsluttet;
     public Boolean fraNav, fraBruker, kassert = false, erTilknyttetAnsatt;
     private DateTime lestDato;
+    public String kontorsperreEnhet;
 
     public Henvendelse(String id) {
         this.id = id;
