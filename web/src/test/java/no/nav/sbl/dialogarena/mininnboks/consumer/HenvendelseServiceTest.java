@@ -44,6 +44,7 @@ public class HenvendelseServiceTest {
     public static final String TRAAD_ID = "traadId";
     public static final String EKSTERN_AKTOR = "eksternAktor";
     public static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
+    public static final String KONTORSPERRE_ENHET = "kontorsperreEnhet";
     public static final String BRUKER_ENHET = "brukersEnhet";
     public static final Boolean ER_TILKNYTTET_ANSATT = false;
 
@@ -109,6 +110,7 @@ public class HenvendelseServiceTest {
         henvendelse.brukersEnhet = BRUKER_ENHET;
         henvendelse.tilknyttetEnhet = TILKNYTTET_ENHET;
         henvendelse.erTilknyttetAnsatt = ER_TILKNYTTET_ANSATT;
+        henvendelse.kontorsperreEnhet = KONTORSPERRE_ENHET;
 
         henvendelseService.sendSvar(henvendelse, FNR);
 
@@ -127,6 +129,7 @@ public class HenvendelseServiceTest {
         assertThat(xmlHenvendelse.getTilknyttetEnhet(), is(TILKNYTTET_ENHET));
         assertThat(xmlHenvendelse.isErTilknyttetAnsatt(), is(ER_TILKNYTTET_ANSATT));
         assertThat(xmlHenvendelse.getBrukersEnhet(), is(BRUKER_ENHET));
+        assertThat(xmlHenvendelse.getKontorsperreEnhet(), is(KONTORSPERRE_ENHET));
         XMLMeldingFraBruker meldingFraBruker = (XMLMeldingFraBruker) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
         assertThat(meldingFraBruker.getTemagruppe(), is(TEMAGRUPPE.name()));
         assertThat(meldingFraBruker.getFritekst(), is(FRITEKST));

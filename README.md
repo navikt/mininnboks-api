@@ -3,7 +3,7 @@ Mininnboks
 
 ## Forberedelser for å kjøre
 
-* Installer node.js, finnes på *F:\F2990\Felles Filer\3 Forvaltningsseksjonen\3.4 Kontor for brukerdialog\Portaler og SBL forvaltning\7. Teknisk\Programmer\nodejs*. Bruk nyeste versjon.
+* Installer node.js, finnes på *F:\F2990\Felles Filer\3 Forvaltningsseksjonen\3.4 Kontor for brukerdialog\Portaler og SBL forvaltning\7. Teknisk\Programmer\nodejs*. Ikke benytt nyeste versjon, men hold deg til 0.10.*-versjoner - det bygger iallefall OK  med v0.10.17 og v0.10.26.
 
 * Kjør følgende kommandoer i en terminal, (2a, 2b, 2c, 2d fra [denne confluence siden](http://confluence.adeo.no/display/AURA/Karma)):
 
