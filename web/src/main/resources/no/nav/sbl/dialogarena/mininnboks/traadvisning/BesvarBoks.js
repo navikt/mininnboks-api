@@ -43,8 +43,11 @@ var BesvarBoks = React.createClass({
                 <div>
                     <input type="submit" className="knapp-hoved-liten"
                            value={this.props.resources.get('traadvisning.besvar.send')} onClick={this.onSubmit}/>
-                    <a href="#" onClick={this.skjul}
-                       role="button">{this.props.resources.get('traadvisning.besvar.avbryt')}</a>
+
+                    <p>
+                        <a href="#" onClick={this.skjul}
+                           role="button">{this.props.resources.get('traadvisning.besvar.avbryt')}</a>
+                    </p>
                 </div>
             );
         }

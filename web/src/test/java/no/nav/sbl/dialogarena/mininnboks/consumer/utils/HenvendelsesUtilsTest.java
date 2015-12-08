@@ -9,10 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
@@ -42,6 +42,7 @@ public class HenvendelsesUtilsTest {
     private static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
     private static final Boolean ER_TILKNYTTET_ANSATT = false;
     private static final String BRUKERS_ENHET = "1234";
+    private static final String KONTORSPERRE_ENHET = "kontorsperreEnhet";
 
     private PropertyResolver propertyResolver = mock(PropertyResolver.class);
 
@@ -53,7 +54,7 @@ public class HenvendelsesUtilsTest {
     @Test
     public void transformererXMLHenvendelseSomSporsmalFraBruker() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1);
-        List<XMLHenvendelse> infoList = asList(info);
+        List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
         Henvendelse sporsmal = henvendelserListe.get(0);
@@ -71,7 +72,7 @@ public class HenvendelsesUtilsTest {
     @Test
     public void transformererXMLHenvendelseSomSvarFraBruker() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, ID_2, ID_2);
-        List<XMLHenvendelse> infoList = asList(info);
+        List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
         Henvendelse svar = henvendelserListe.get(0);
@@ -84,13 +85,13 @@ public class HenvendelsesUtilsTest {
         assertThat(svar.isLest(), is(true));
         assertThat(svar.kanal, is(nullValue()));
         assertThat(svar.brukersEnhet, is(BRUKERS_ENHET));
-
+        assertThat(svar.kontorsperreEnhet, is(KONTORSPERRE_ENHET));
     }
 
     @Test
     public void transformererXMLHenvendelseSomSporsmalTilBruker() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, ID_3, ID_3);
-        List<XMLHenvendelse> infoList = asList(info);
+        List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
         Henvendelse sporsmal = henvendelserListe.get(0);
@@ -112,7 +113,7 @@ public class HenvendelsesUtilsTest {
     @Test
     public void transformererXMLHenvendelseSomSvarTilBruker() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SVAR_SKRIFTLIG, ID_4, ID_1);
-        List<XMLHenvendelse> infoList = asList(info);
+        List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
         Henvendelse svar = henvendelserListe.get(0);
@@ -130,7 +131,7 @@ public class HenvendelsesUtilsTest {
     @Test
     public void transformererXMLHenvendelseSomReferatTilBruker() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
-        List<XMLHenvendelse> infoList = asList(info);
+        List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
         Henvendelse referat = henvendelserListe.get(0);
@@ -181,6 +182,7 @@ public class HenvendelsesUtilsTest {
                 .withOpprettetDato(OPPRETTET_DATO)
                 .withAvsluttetDato(AVSLUTTET_DATO)
                 .withBrukersEnhet(BRUKERS_ENHET)
+                .withKontorsperreEnhet(KONTORSPERRE_ENHET)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLMeldingFraBruker()
                                 .withFritekst(FRITEKST)

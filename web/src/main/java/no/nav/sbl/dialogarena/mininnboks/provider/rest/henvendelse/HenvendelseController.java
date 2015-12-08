@@ -106,6 +106,7 @@ public class HenvendelseController {
         henvendelse.opprettet = now();
         henvendelse.markerSomLest();
         henvendelse.erTilknyttetAnsatt = traad.nyeste.erTilknyttetAnsatt;
+        henvendelse.kontorsperreEnhet = traad.nyeste.kontorsperreEnhet;
 
         WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
         return Response.status(Response.Status.CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();

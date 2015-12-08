@@ -1,0 +1,27 @@
+.innboks-container, .react-modal-container {
+  @focus-farge: #ffbd66;
+  .outline-focus {
+    outline: 3px solid @focus-farge;
+  }
+  .focus-fill {
+    background-color: @focus-farge;
+  }
+
+  a.traadlistevisning:focus,
+  .knapp-hoved-liten:focus,
+  .knapp-hoved-stor:focus,
+  .expandingtextarea textarea:focus,
+  h1[tabindex="0"]:focus,
+  .closeButton:focus {
+    outline: none;
+    .outline-focus;
+  }
+  .betingelsevalgpanel input:focus + label {
+    border: none;
+    .outline-focus
+  }
+  a:focus:not(.traadlistevisning):not(.knapp-hoved-liten) {
+    outline: none;
+    .focus-fill;
+  }
+}
