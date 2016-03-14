@@ -11,6 +11,7 @@
     "gulp-util": "^3.0.0",
     "reactify": "^1.1.0",
     "vinyl-source-stream": "^0.1.1",
+    "chokidar": "git+http://github.com/paulmillr/chokidar.git#0.12.6",
     "watchify": "^2.1.1",
     "gulp-rename": "^1.2.0",
     "glob": "^4.3.5",
@@ -32,11 +33,10 @@
     "object-assign": "^2.0.0"
   },
   "dependencies": {
-    "react": "^0.13.0",
-    "string-format": "^0.5.0",
-    "nav-logger": "git+http://stash.devillo.no/scm/npmm/nav-logger.git#7fe517837bde9afc58eaedac94d49547ae921a13",
-    "react-router": "^0.13.2",
     "keymirror": "^0.1.1",
-    "gulp-util": "^3.0.6"
+    "nav-logger": "git+http://stash.devillo.no/scm/npmm/nav-logger.git#7fe517837bde9afc58eaedac94d49547ae921a13",
+    "react": "^0.13.0",
+    "react-router": "^0.13.2",
+    "string-format": "^0.5.0"
   }
 }

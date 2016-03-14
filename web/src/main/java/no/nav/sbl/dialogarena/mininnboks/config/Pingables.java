@@ -4,7 +4,7 @@ import no.nav.sbl.dialogarena.types.Pingable;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
-import no.nav.tjeneste.virksomhet.brukerprofil.v2.BrukerprofilV2;
+import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -105,10 +105,10 @@ public class Pingables {
 
     @Bean
     public Pingable brukerprofilPing() {
-        final String navn = "BRUKERPROFIL_V2";
-        final BrukerprofilV2 ws = createPortType(System.getProperty("brukerprofil.v2.url"),
+        final String navn = "BRUKERPROFIL_V3";
+        final BrukerprofilV3 ws = createPortType(System.getProperty("brukerprofil.v3.url"),
                 "",
-                BrukerprofilV2.class,
+                BrukerprofilV3.class,
                 false);
         return new Pingable() {
             @Override
