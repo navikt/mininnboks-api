@@ -83,6 +83,10 @@
 
     <logger name="org.apache.http.client.protocol.ResponseProcessCookies" level="ERROR"/>
 
+    <logger name="org.apache.cxf" level="OFF">
+        <appender-ref ref="infolog"/>
+    </logger>
+
     <root level="${ROOT_LOG_LEVEL:-ERROR}">
         <appender-ref ref="errorlog"/>
         <appender-ref ref="infolog"/>
