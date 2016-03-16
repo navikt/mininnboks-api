@@ -22,7 +22,7 @@
 
         <webservice alias="domene.Brukerdialog:Henvendelse_v2" mapToProperty="henvendelse.ws"/>
         <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="diskresjonskode.ws"/>
-        <webservice alias="virksomhet:Brukerprofil_v3" mapToProperty="brukerprofil.v2"/>
+        <webservice alias="virksomhet:Brukerprofil_v3" mapToProperty="brukerprofil.v3"/>
         <webservice alias="domene.Brukerdialog:SendInnHenvendelse_v1" mapToProperty="send.inn.henvendelse.ws"/>
         <webservice alias="domene.Brukerdialog:InnsynHenvendelse_v1" mapToProperty="innsyn.henvendelse.ws"/>
     </resources>
