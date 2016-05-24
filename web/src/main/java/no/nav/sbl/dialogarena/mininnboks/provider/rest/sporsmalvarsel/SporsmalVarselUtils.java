@@ -16,7 +16,8 @@ public class SporsmalVarselUtils {
     public static List<SporsmalVarsel> hentUbehandledeSporsmal(List<Henvendelse> henvendelser) {
         HashMap<String, Henvendelse> nyesteHenvendelserITraad = new HashMap<>();
 
-        henvendelser.stream().sorted(NYESTE_OVERST).collect(toList()).stream()
+        henvendelser.stream()
+                .sorted(NYESTE_OVERST)
                 .forEach(henvendelse -> {
                     if (!nyesteHenvendelserITraad.containsKey(henvendelse.traadId)) {
                         nyesteHenvendelserITraad.put(henvendelse.traadId, henvendelse);
