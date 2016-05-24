@@ -1,9 +1,11 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.tjeneste.virksomhet.brukerprofil.v2.BrukerprofilV2;
-import no.nav.tjeneste.virksomhet.brukerprofil.v2.informasjon.WSBruker;
-import no.nav.tjeneste.virksomhet.brukerprofil.v2.informasjon.WSPerson;
-import no.nav.tjeneste.virksomhet.brukerprofil.v2.meldinger.WSHentKontaktinformasjonOgPreferanserRequest;
+import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
+import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSBruker;
+import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSNorskIdent;
+import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSPerson;
+import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSPersonidenter;
+import no.nav.tjeneste.virksomhet.brukerprofil.v3.meldinger.WSHentKontaktinformasjonOgPreferanserRequest;
 
 import java.util.Optional;
 
@@ -12,23 +14,29 @@ import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 
 public interface PersonService {
 
+    WSPersonidenter identtype = new WSPersonidenter()
+            .withKodeRef("http://nav.no/kodeverk/Term/Personidenter/FNR/nb/F_c3_b8dselnummer?v=1")
+            .withValue("FNR");
+
     Optional<String> hentEnhet();
 
     class Default implements PersonService {
 
-        private final BrukerprofilV2 brukerprofilV2;
+        private final BrukerprofilV3 brukerprofilV3;
 
-        public Default(BrukerprofilV2 brukerprofilV2) {
-            this.brukerprofilV2 = brukerprofilV2;
+        public Default(BrukerprofilV3 brukerprofilV3) {
+            this.brukerprofilV3 = brukerprofilV3;
         }
 
         @Override
         public Optional<String> hentEnhet() {
             try {
                 String fnr = getSubjectHandler().getUid();
-                WSPerson person = brukerprofilV2.hentKontaktinformasjonOgPreferanser(new WSHentKontaktinformasjonOgPreferanserRequest().withPersonIdent(fnr)).getPerson();
+                WSNorskIdent ident = new WSNorskIdent().withType(identtype).withIdent(fnr);
+                WSHentKontaktinformasjonOgPreferanserRequest kontaktRequest = new WSHentKontaktinformasjonOgPreferanserRequest().withIdent(ident);
+                WSPerson person = brukerprofilV3.hentKontaktinformasjonOgPreferanser(kontaktRequest).getBruker();
                 WSBruker bruker = (WSBruker) person;
-                return of(bruker.getAnsvarligEnhet().getOrganisasjonselementID());
+                return of(bruker.getAnsvarligEnhet().getOrganisasjonselementId());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

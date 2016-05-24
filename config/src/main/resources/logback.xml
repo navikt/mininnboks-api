@@ -77,13 +77,17 @@
         <throwableExcluded>true</throwableExcluded>
     </appender>
 
-    <logger name="frontendlog" level="INFO" additivity="false">
+    <logger name="frontendlog" level="ERROR" additivity="false">
         <appender-ref ref="frontendappender"/>
     </logger>
 
     <logger name="org.apache.http.client.protocol.ResponseProcessCookies" level="ERROR"/>
 
-    <root level="${ROOT_LOG_LEVEL:-INFO}">
+    <logger name="org.apache.cxf" level="OFF">
+        <appender-ref ref="infolog"/>
+    </logger>
+
+    <root level="${ROOT_LOG_LEVEL:-ERROR}">
         <appender-ref ref="errorlog"/>
         <appender-ref ref="infolog"/>
         <appender-ref ref="debuglog"/>
