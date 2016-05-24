@@ -1,13 +1,13 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import org.apache.commons.collections15.Predicate;
-import org.apache.commons.collections15.Transformer;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
-import static no.nav.modig.lang.collections.IterUtils.on;
+import static java.util.stream.Collectors.toList;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.NYESTE_OVERST;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE;
 
@@ -16,28 +16,22 @@ public class SporsmalVarselUtils {
     public static List<SporsmalVarsel> hentUbehandledeSporsmal(List<Henvendelse> henvendelser) {
         HashMap<String, Henvendelse> nyesteHenvendelserITraad = new HashMap<>();
 
-        for (Henvendelse henvendelse : on(henvendelser).collect(NYESTE_OVERST)) {
-            if (!nyesteHenvendelserITraad.containsKey(henvendelse.traadId)) {
-                nyesteHenvendelserITraad.put(henvendelse.traadId, henvendelse);
-            }
-        }
+        henvendelser.stream().sorted(NYESTE_OVERST).collect(toList()).stream()
+                .forEach(henvendelse -> {
+                    if (!nyesteHenvendelserITraad.containsKey(henvendelse.traadId)) {
+                        nyesteHenvendelserITraad.put(henvendelse.traadId, henvendelse);
+                    }
+                });
 
-        return on(nyesteHenvendelserITraad.values()).filter(ULEST_ELLER_UBESVART).map(TIL_SPORSMAL_VARSEL).collect();
+        return nyesteHenvendelserITraad.values().stream()
+                .filter(ULEST_ELLER_UBESVART)
+                .map(TIL_SPORSMAL_VARSEL)
+                .collect(toList());
     }
 
-    private static final Transformer<Henvendelse, SporsmalVarsel> TIL_SPORSMAL_VARSEL = new Transformer<Henvendelse, SporsmalVarsel>() {
-        @Override
-        public SporsmalVarsel transform(Henvendelse henvendelse) {
-            return new SporsmalVarsel(henvendelse);
-        }
-    };
+    private static final Function<Henvendelse, SporsmalVarsel> TIL_SPORSMAL_VARSEL = henvendelse -> new SporsmalVarsel(henvendelse);
 
-    private static final Predicate<Henvendelse> ULEST_ELLER_UBESVART = new Predicate<Henvendelse>() {
-        @Override
-        public boolean evaluate(Henvendelse henvendelse) {
-            return erUlest(henvendelse) || erUbesvart(henvendelse);
-        }
-    };
+    private static final Predicate<Henvendelse> ULEST_ELLER_UBESVART = henvendelse -> erUlest(henvendelse) || erUbesvart(henvendelse);
 
     public static boolean erUbesvart(Henvendelse henvendelse) {
         return henvendelse.type == SPORSMAL_MODIA_UTGAAENDE;

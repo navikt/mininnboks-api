@@ -1,10 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
-import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
-import org.apache.commons.collections15.Transformer;
 import org.apache.cxf.binding.soap.SoapFault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +15,14 @@ import javax.ws.rs.core.Response;
 import javax.xml.ws.soap.SOAPFaultException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.groupingBy;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.TRAAD_ID;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SBL_INNGAAENDE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad.NYESTE_FORST;
@@ -40,21 +41,20 @@ public class HenvendelseController {
     public List<Traad> hentTraader() {
         String fnr = getSubjectHandler().getUid();
         List<Henvendelse> henvendelser = henvendelseService.hentAlleHenvendelser(fnr);
-        final Map<String, List<Henvendelse>> traader = on(henvendelser).reduce(indexBy(TRAAD_ID));
+        final Map<String, List<Henvendelse>> traader = henvendelser.stream()
+                .collect(groupingBy(TRAAD_ID));
 
-        return on(traader.values()).map(new Transformer<List<Henvendelse>, Traad>() {
-            @Override
-            public Traad transform(List<Henvendelse> henvendelser) {
-                return new Traad(henvendelser);
-            }
-        }).collect(NYESTE_FORST);
+        return traader.values().stream()
+                .map(henvendelse -> new Traad(henvendelse))
+                .sorted(NYESTE_FORST)
+                .collect(Collectors.toList());
     }
 
     @GET
     @Path("/{id}")
     public Response hentEnkeltTraad(@PathParam("id") String id) {
         Optional<Traad> traad = hentTraad(id);
-        if (traad.isSome()) {
+        if (traad.isPresent()) {
             return Response.ok(traad.get()).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
@@ -87,7 +87,7 @@ public class HenvendelseController {
     public Response sendSvar(Svar svar) {
         assertFritekst(svar.fritekst);
         Optional<Traad> traadOptional = hentTraad(svar.traadId);
-        if (!traadOptional.isSome()) {
+        if (!traadOptional.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
 
@@ -116,13 +116,13 @@ public class HenvendelseController {
         try {
             List<Henvendelse> meldinger = henvendelseService.hentTraad(id);
             if (meldinger == null || meldinger.isEmpty()) {
-                return Optional.none();
+                return empty();
             } else {
-                return Optional.optional(new Traad(meldinger));
+                return of(new Traad(meldinger));
             }
         } catch (SoapFault | SOAPFaultException fault) {
             logger.error("Fant ikke tråd med id: " + id, fault);
-            return Optional.none();
+            return empty();
         }
     }
 

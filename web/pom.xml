@@ -378,12 +378,6 @@
             <version>2.4</version>
         </dependency>
 
-        <dependency>
-            <groupId>net.sourceforge.collections</groupId>
-            <artifactId>collections-generic</artifactId>
-            <version>4.01</version>
-        </dependency>
-
         <!--Testing-->
         <dependency>
             <groupId>org.mockito</groupId>
