@@ -1,8 +1,7 @@
-var React = require('react/addons');
-var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
-var Snurrepipp = require('../snurrepipp/Snurrepipp');
-var FeedbackForm = require('../feedback/FeedbackForm');
-
+import React from 'react/addons';
+import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
+import Snurrepipp from '../snurrepipp/Snurrepipp';
+import FeedbackForm from '../feedback/FeedbackForm';
 
 var BesvarBoks = React.createClass({
     getInitialState: function () {

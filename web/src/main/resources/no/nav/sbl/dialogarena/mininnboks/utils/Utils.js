@@ -1,10 +1,10 @@
-var React = require('react/addons');
-var sanitize = require('sanitize-html');
-var format = require('string-format');
-var moment = require('moment');
+import React from 'react/addons';
+import sanitize from 'sanitize-html';
+import format from 'string-format';
+import moment from 'moment';
 require('moment/locale/nb');
 moment.locale('nb');
-var Constants = require('./Constants');
+import Constants from './Constants';
 
 var Utils = {
     sanitize: function (tekst) {

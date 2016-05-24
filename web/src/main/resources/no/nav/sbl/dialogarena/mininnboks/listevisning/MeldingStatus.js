@@ -1,6 +1,6 @@
-var React = require('react/addons');
-var Utils = require('../utils/Utils');
-var Constants = require('../utils/Constants');
+import React from 'react/addons';
+import Utils from '../utils/Utils';
+import Constants from '../utils/Constants';
 
 var MeldingStatus = React.createClass({
     render: function () {

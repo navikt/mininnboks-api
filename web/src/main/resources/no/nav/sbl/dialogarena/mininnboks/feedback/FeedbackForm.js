@@ -1,5 +1,5 @@
-var React = require('react/addons');
-var FeedbackReporter = require('./FeedbackReporter');
+import React from 'react/addons';
+import FeedbackReporter from './FeedbackReporter';
 
 var FeedbackForm = React.createClass({
     getInitialState: function () {

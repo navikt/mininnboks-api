@@ -1,4 +1,4 @@
-var keymirror = require('keymirror');
+import keymirror from 'keymirror';
 
 var Constants = keymirror({
     LEST: null,

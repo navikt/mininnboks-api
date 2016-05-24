@@ -1,5 +1,5 @@
-var React = require('react/addons');
-var format = require('string-format');
+import React from 'react/addons';
+import format from 'string-format';
 
 module.exports = React.createClass({
     getDefaultProps: function () {

@@ -1,5 +1,5 @@
-var React = require('react');
-var Portal = require('./ModalPortal.js');
+import React from 'react';
+import Portal from './ModalPortal.js';
 
 var Modal = React.createClass({
     getInitialState: function () {

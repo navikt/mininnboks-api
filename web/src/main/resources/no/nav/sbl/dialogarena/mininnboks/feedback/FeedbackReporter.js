@@ -1,4 +1,4 @@
-var React = require('react/addons');
+import React from 'react/addons';
 
 function FeedbackReporter(update) {
     this.update = update;

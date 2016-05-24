@@ -13,10 +13,17 @@ var uglifycss = require('gulp-uglifycss');
 var uglify = require('gulp-uglify');
 var streamify = require('gulp-streamify');
 var gutil = require('gulp-util');
-
+var babelify = require('babelify');
 var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
 var BUILD_DIR = './src/main/webapp/build/';
 var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources/';
+
+var babelifyReact = function (file) {
+    return babelify(file,
+        {
+            "presets": ["es2015", "react"]
+        });
+};
 
 function browserifyTask(isDev) {
     console.log('Starting browserify in ' + (isDev ? 'development' : 'production') + ' mode. NODE_ENV: ' + process.env.NODE_ENV);
@@ -36,7 +43,7 @@ function browserifyTask(isDev) {
     props.fullPaths = isDev;
 
     var bundler = isDev ? watchify(browserify(props)) : browserify(props);
-    bundler.transform(reactify);
+    bundler.transform(babelifyReact);
 
     function rebundle() {
         var stream = bundler.bundle();

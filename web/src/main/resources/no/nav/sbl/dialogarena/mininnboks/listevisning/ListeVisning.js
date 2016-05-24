@@ -1,7 +1,8 @@
-var React = require('react/addons');
-var TraaderContainer = require('./TraaderContainer');
-var Snurrepipp = require('../snurrepipp/Snurrepipp');
-var Feilmelding = require('../feilmelding/Feilmelding');
+import React from 'react/addons';
+import TraaderContainer from './TraaderContainer';
+import Snurrepipp from '../snurrepipp/Snurrepipp';
+import Feilmelding from '../feilmelding/Feilmelding';
+import { Link } from 'react-router';
 
 var ListeVisning = React.createClass({
     getInitialState: function () {
@@ -28,7 +29,7 @@ var ListeVisning = React.createClass({
             <div>
                 <h1 className="diger">{this.props.resources.get('innboks.overskrift')}</h1>
                 <div className="innboks-navigasjon clearfix">
-                    <a className="skriv-ny-link knapp-hoved-liten" href={this.props.resources.get('skriv.ny.link')}>{this.props.resources.get('innboks.skriv.ny.link')}</a>
+                     <Link to={this.props.resources.get('skriv.ny.link')} className="skriv-ny-link knapp-hoved-liten" >{this.props.resources.get('innboks.skriv.ny.link')}</Link>
                 </div>
                 {content}
             </div>

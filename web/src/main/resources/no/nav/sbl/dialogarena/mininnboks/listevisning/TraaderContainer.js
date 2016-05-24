@@ -1,6 +1,6 @@
-var React = require('react/addons');
-var TraadPreview = require('./TraadPreview');
-var Feilmelding = require('../feilmelding/Feilmelding');
+import React from 'react';
+import TraadPreview from './TraadPreview';
+import Feilmelding from '../feilmelding/Feilmelding';
 
 var TraadContainer = React.createClass({
     render: function () {

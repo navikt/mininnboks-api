@@ -1,5 +1,5 @@
-var React = require('react/addons');
-var Utils = require('../utils/Utils');
+import React from 'react/addons';
+import Utils from '../utils/Utils';
 
 var MeldingContainer = React.createClass({
     render: function() {

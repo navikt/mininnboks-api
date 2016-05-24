@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 var assign = Object.assign || require('object-assign');
 
 var stubRouterContext = function (Component, props, stubs) {

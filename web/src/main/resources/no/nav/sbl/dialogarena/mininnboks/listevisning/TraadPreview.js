@@ -24,7 +24,7 @@ var TraadPreview = React.createClass({
         var purring = melding.type === 'SPORSMAL_MODIA_UTGAAENDE' ?
             <span className="purring">{this.props.resources.get('purre.svar')}</span> : null;
         return (
-            <Link to="traad" params={{traadId: melding.traadId}} className={'traadlistevisning ' + status}
+            <Link to={`/mininnboks/traad/${melding.traadId}`} className={'traadlistevisning ' + status}
                   onClick={this.onClick}>
                 <AntallMeldinger antall={antallMeldinger}/>
                 <MeldingStatus melding={melding}/>

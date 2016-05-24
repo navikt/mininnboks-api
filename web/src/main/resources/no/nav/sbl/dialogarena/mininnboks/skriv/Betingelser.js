@@ -1,7 +1,7 @@
-var React = require('react/addons');
-var Modal = require('../modal/Modal');
-var Resources = require('../resources/Resources');
-var Snurrepipp = require('../snurrepipp/Snurrepipp');
+import React from 'react/addons';
+import Modal from '../modal/Modal';
+import Resources from '../resources/Resources';
+import Snurrepipp from '../snurrepipp/Snurrepipp';
 
 var modalConfig = {
     title: {

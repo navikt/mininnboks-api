@@ -1,5 +1,5 @@
-var React = require('react/addons');
-var ValidatableMixin = require('../feedback/ValidatableMixin');
+import React from 'react/addons';
+import ValidatableMixin from '../feedback/ValidatableMixin';
 
 var ExpandingTextArea = React.createClass({
     mixins: [ValidatableMixin],

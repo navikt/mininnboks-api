@@ -1,4 +1,4 @@
-var React = require('react/addons');
+import React from 'react/addons';
 
 var Epost = React.createClass({
     getDefaultProps: function(){

@@ -1,13 +1,12 @@
-var React = require('react/addons');
-var BesvarBoks = require('./BesvarBoks');
-var MeldingContainer = require('./MeldingContainer');
-var Knapper = require('./Knapper');
-var Snurrepipp = require('../snurrepipp/Snurrepipp');
-var Feilmelding = require('../feilmelding/Feilmelding');
-var InfoBoks = require('../infoboks/Infoboks');
-var format = require('string-format');
-var Utils = require('../utils/Utils');
-
+import React from 'react/addons';
+import BesvarBoks from'./BesvarBoks';
+import MeldingContainer from './MeldingContainer';
+import Knapper from './Knapper';
+import Snurrepipp from '../snurrepipp/Snurrepipp';
+import Feilmelding from '../feilmelding/Feilmelding';
+import InfoBoks from '../infoboks/Infoboks';
+import format from 'string-format';
+import Utils from '../utils/Utils';
 
 var TraadVisning = React.createClass({
     getInitialState: function () {

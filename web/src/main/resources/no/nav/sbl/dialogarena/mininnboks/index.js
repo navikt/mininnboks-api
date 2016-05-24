@@ -1,18 +1,16 @@
 require('./console-polyfill');
-var React = require('react/addons');
-var Router = require('react-router');
-var Route = Router.Route;
-var DefaultRoute = Router.DefaultRoute;
-var RouteHandler = Router.RouteHandler;
-var resources = require('./resources/Resources');
-var ListeVisning = require('./listevisning/ListeVisning');
-var TraadVisning = require('./traadvisning/Traadvisning');
-var Snurrepipp = require('./snurrepipp/Snurrepipp');
-var Feilmelding = require('./feilmelding/Feilmelding');
-var Skriv = require('./skriv/Skriv');
+import React from 'react/addons';
+import resources from './resources/Resources';
+import ListeVisning from './listevisning/ListeVisning';
+import TraadVisning from './traadvisning/Traadvisning';
+import Snurrepipp from './snurrepipp/Snurrepipp';
+import Feilmelding from './feilmelding/Feilmelding';
+import Skriv from './skriv/Skriv';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { render } from 'react-dom';
 
 //Include Logger for å få satt opp en global error handler
-var Logger = require('./Logger');
+import Logger from './Logger';
 
 var App = React.createClass({
     getInitialState: function () {
@@ -31,6 +29,7 @@ var App = React.createClass({
         this.setState({valgtTraad: traad});
     },
     render: function () {
+        var state = this.state;
         var resourcesState = this.state.resources.getPromise().state();
         var content;
         if (resourcesState === 'pending') {
@@ -38,7 +37,7 @@ var App = React.createClass({
         } else if (resourcesState === 'rejected') {
             content = <Feilmelding visIkon={true} melding="Kunne ikke hente ut standardtekster for denne applikasjonen." />;
         } else {
-            content = <RouteHandler {...this.props} {...this.state} setValgtTraad={this.setValgtTraad}/>;
+            content = React.cloneElement(this.props.children, {valgtTraad : state.valgtTraad, resources: state.resources, setValgtTraad : this.setValgtTraad});
         }
 
         return (
@@ -49,15 +48,16 @@ var App = React.createClass({
     }
 });
 
-var routes = (
-    <Route name="app" path="mininnboks/" handler={App}>
-        <Route name="innboks" path="innboks" handler={ListeVisning}/>
-        <Route name="traad" path="traad/:traadId" handler={TraadVisning}/>
-        <Route name="skriv" path="sporsmal/skriv/:temagruppe" handler={Skriv}/>
-        <DefaultRoute handler={ListeVisning}/>
-    </Route>
+const routes = (
+    <Router history={browserHistory}>
+        <Route path="mininnboks/" component={App}>
+            <IndexRoute component={ListeVisning} />
+            <Route path="traad/:traadId" component={TraadVisning}/>
+            <Route path="sporsmal/skriv/:temagruppe" component={Skriv}/>
+        </Route>
+    </Router>
 );
 
-Router.run(routes, Router.HistoryLocation, function (Handler, state) {
-    React.render(<Handler params={state.params}/>, document.getElementById("mainapp"));
+document.addEventListener('DOMContentLoaded', () => {
+    render(routes, document.getElementById('mainapp'));
 });

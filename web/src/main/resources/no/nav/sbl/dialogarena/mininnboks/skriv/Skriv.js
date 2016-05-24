@@ -65,7 +65,7 @@ var Skriv = React.createClass({
                                onClick={this.onSubmit}/>
                     </div>
                     <div className="avbryt">
-                        <Link to="innboks">{this.props.resources.get("send-sporsmal.still-sporsmal.avbryt")}</Link>
+                        <Link to="/mininnboks/">{this.props.resources.get("send-sporsmal.still-sporsmal.avbryt")}</Link>
                     </div>
                 </div>);
             }
@@ -108,5 +108,9 @@ var Skriv = React.createClass({
         }
     }
 });
+
+
+
+
 
 module.exports = Skriv;

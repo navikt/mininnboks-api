@@ -1,6 +1,6 @@
-var React = require('react/addons');
-var Link = require('react-router').Link;
-var format = require('string-format');
+import React from 'react/addons';
+import { Link } from 'react-router';
+import format from 'string-format';
 
 var Knapper = React.createClass({
     besvar: function (event) {
@@ -19,7 +19,7 @@ var Knapper = React.createClass({
             <div className="knapper">
                 {skrivSvar}
                 <p>
-                    <Link to="innboks" title="Tilbake til innboksen">{this.props.resources.get('traadvisning.innboks.link')}</Link>
+                    <Link to="/mininnboks/" title="Tilbake til innboksen">{this.props.resources.get('traadvisning.innboks.link')}</Link>
                 </p>
             </div>
         )
