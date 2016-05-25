@@ -31,6 +31,9 @@ var stubRouterContext = function (Component, props, stubs) {
         getRouteAtDepth: function () {
         },
         getRouteComponentAtDepth: function () {
+        },
+        createHref: function(localtion) {
+
         }
     }, stubs);
 

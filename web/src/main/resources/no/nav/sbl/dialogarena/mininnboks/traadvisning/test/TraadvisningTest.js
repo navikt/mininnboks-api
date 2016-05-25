@@ -7,14 +7,12 @@ import React from 'react';
 import stubRouterContext from '../../utils/stubRouterContext';
 import Traadvisning from '../Traadvisning';
 
-
-import { renderIntoDocument, createRenderer, scryRenderedDOMComponentsWithClass, findRenderedDOMComponentWithClass } from 'react-addons-test-utils';
+import { renderIntoDocument, scryRenderedDOMComponentsWithClass } from 'react-addons-test-utils';
 
 const assign = Object.assign || require('object-assign');
-// const { TestUtils } = React.addons;
 
 const resourcesMock = {
-    get: function () {
+    get() {
         return '';
     }
 };
@@ -61,50 +59,49 @@ const meldinger = [{
 
 const traad = {
     traadId: '1',
-    meldinger: meldinger,
+    meldinger,
     nyeste: meldinger[0],
     kanBesvares: true,
     avsluttet: false
 };
 
-// describe('Trådvisning initialisering', function () {
-//     before(function () {
-//         sinon.spy($, 'ajax');
-//     });
-//
-//     after(function () {
-//         $.ajax.restore();
-//     });
-//
-//     it('kan initialiseres med trådobjekt', function () {
-//         const TraadvisningWrapper = stubRouterContext(Traadvisning, assign({}, props, { valgtTraad: traad }));
-//         const traadvisning = renderIntoDocument(<TraadvisningWrapper />);
-//
-//         assert.isTrue(traadvisning.getComponent().state.hentet);
-//         expect(traadvisning.getComponent().state.traad.traadId).to.equal('1');
-//     });
-//
-//     it('kan initialiseres med trådid parameter', function () {
-//         const server = sinon.fakeServer.create();
-//         server.respondWith(/\/mininnboks\/tjenester\/traader\/(\d+)/, function (xhr, traadId) {
-//             console.log(traadId);
-//             expect(traadId).to.equal('1');
-//             xhr.respond(200, {}, traad);
-//         });
-//
-//         const TraadvisningWrapper = stubRouterContext(Traadvisning, assign({}, props, { params: { traadId: '1' } }));
-//         const traadvisning = renderIntoDocument(<TraadvisningWrapper />);
-//
-//         server.restore();
-//     });
-// });
-//
-// describe('Trådvisning', function () {
-//     it('viser tråd', function () {
-//         const TraadvisningWrapper = stubRouterContext(Traadvisning, assign({}, props, { valgtTraad: assign({}, traad) }));
-//         const traadvisning = renderIntoDocument(<TraadvisningWrapper />);
-//
-//         const meldingerContainer = scryRenderedDOMComponentsWithClass(traadvisning, 'melding-container');
-//         expect(meldingerContainer.length).to.equal(2);
-//     });
-// });
+describe('Trådvisning initialisering', () => {
+    before(() => {
+        sinon.spy($, 'ajax');
+    });
+
+    after(() => {
+        $.ajax.restore();
+    });
+
+    it('kan initialiseres med trådobjekt', () => {
+        const TraadvisningWrapper = stubRouterContext(Traadvisning, assign({}, props, { valgtTraad: traad }));
+        const traadvisning = renderIntoDocument(<TraadvisningWrapper />);
+
+        assert.isTrue(traadvisning.getComponent().state.hentet);
+        expect(traadvisning.getComponent().state.traad.traadId).to.equal('1');
+    });
+
+    it('kan initialiseres med trådid parameter', () => {
+        const server = sinon.fakeServer.create();
+        server.respondWith(/\/mininnboks\/tjenester\/traader\/(\d+)/, (xhr, traadId) => {
+            expect(traadId).to.equal('1');
+            xhr.respond(200, {}, traad);
+        });
+
+        const TraadvisningWrapper = stubRouterContext(Traadvisning, assign({}, props, { params: { traadId: '1' } }));
+        renderIntoDocument(<TraadvisningWrapper />);
+
+        server.restore();
+    });
+});
+
+describe('Trådvisning', () => {
+    it('viser tråd', () => {
+        const TraadvisningWrapper = stubRouterContext(Traadvisning, assign({}, props, { valgtTraad: assign({}, traad) }));
+        const traadvisning = renderIntoDocument(<TraadvisningWrapper />);
+
+        const meldingerContainer = scryRenderedDOMComponentsWithClass(traadvisning, 'melding-container');
+        expect(meldingerContainer.length).to.equal(2);
+    });
+});
