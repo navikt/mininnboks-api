@@ -23,7 +23,6 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.groupingBy;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.TRAAD_ID;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SBL_INNGAAENDE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad.NYESTE_FORST;
 import static org.joda.time.DateTime.now;
@@ -42,7 +41,7 @@ public class HenvendelseController {
         String fnr = getSubjectHandler().getUid();
         List<Henvendelse> henvendelser = henvendelseService.hentAlleHenvendelser(fnr);
         final Map<String, List<Henvendelse>> traader = henvendelser.stream()
-                .collect(groupingBy(TRAAD_ID));
+                .collect(groupingBy(henvendelse -> henvendelse.traadId));
 
         return traader.values().stream()
                 .map(henvendelse -> new Traad(henvendelse))

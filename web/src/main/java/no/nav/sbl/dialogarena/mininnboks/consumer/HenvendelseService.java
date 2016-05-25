@@ -18,7 +18,6 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ID;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
 import static org.joda.time.DateTime.now;
@@ -107,7 +106,7 @@ public interface HenvendelseService {
             List<Henvendelse> traad = hentTraad(behandlingskjedeId);
             List<String> ids = traad.stream()
                     .filter(henvendelse -> !henvendelse.isLest())
-                    .map(ID)
+                    .map(henvendelse -> henvendelse.id)
                     .collect(toList());
             innsynHenvendelsePortType.merkSomLest(ids);
         }

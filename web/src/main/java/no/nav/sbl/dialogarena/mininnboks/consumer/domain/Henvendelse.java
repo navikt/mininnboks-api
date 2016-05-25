@@ -4,7 +4,6 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.function.Function;
 
 import static java.util.Collections.reverseOrder;
 
@@ -58,12 +57,6 @@ public class Henvendelse implements Serializable {
         return lestDato != null;
     }
 
-    public static final Function<Henvendelse, DateTime> OPPRETTET = henvendelse -> henvendelse.opprettet;
-
-    public static final Function<Henvendelse, String> ID = henvendelse -> henvendelse.id;
-
-    public static final Function<Henvendelse, String> TRAAD_ID = henvendelse -> henvendelse.traadId;
-
-    public static final Comparator<Henvendelse> NYESTE_OVERST = reverseOrder(Comparator.comparing(OPPRETTET));
+    public static final Comparator<Henvendelse> NYESTE_OVERST = reverseOrder(Comparator.comparing(henvendelse -> henvendelse.opprettet));
 
 }

@@ -30,7 +30,7 @@ public class Traad {
         this.traadId = this.nyeste.traadId;
     }
 
-    public static final Function<Traad, DateTime> NYESTE_HENVENDELSE = traad -> Henvendelse.OPPRETTET.apply(traad.nyeste);
+    public static final Function<Traad, DateTime> NYESTE_HENVENDELSE = traad -> traad.nyeste.opprettet;
 
     public static final Comparator<Traad> NYESTE_FORST = reverseOrder(comparing(Traad.NYESTE_HENVENDELSE));
 }
