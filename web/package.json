@@ -21,7 +21,7 @@
     "browserify-global-shim": "^1.0.0",
     "moment": "^2.9.0",
     "sanitize-html": "^1.6.1",
-    "modig-frontend": "git+http://stash.devillo.no/scm/felles/modig-frontend.git#modig-frontend-1.1.117",
+    "modig-frontend": "git+http://stash.devillo.no/scm/felles/modig-frontend.git#modig-frontend-3.0.18",
     "gulp-less": "^3.0.2",
     "gulp-concat": "^2.5.2",
     "gulp-uglifycss": "^1.0.4",
