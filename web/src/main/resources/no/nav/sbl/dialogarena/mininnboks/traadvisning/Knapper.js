@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import { Link } from 'react-router';
 import format from 'string-format';
 

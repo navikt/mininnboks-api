@@ -1,5 +1,6 @@
-import React from 'react/addons';
+import React from 'react';
 import Utils from '../utils/Utils';
+import createFragment from 'react-addons-create-fragment';
 
 class MeldingContainer extends React.Component {
     render () {
@@ -16,7 +17,7 @@ class MeldingContainer extends React.Component {
         var avsnitt = melding.fritekst.split(/[\r\n]+/)
             .map(medUrl)
             .map(Utils.tilAvsnitt(true));
-        avsnitt = React.addons.createFragment({
+        avsnitt = createFragment({
             avsnitt: avsnitt
         });
 

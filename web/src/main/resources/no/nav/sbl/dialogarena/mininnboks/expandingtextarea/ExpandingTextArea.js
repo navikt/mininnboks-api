@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import ValidatableMixin from '../feedback/ValidatableMixin';
 
 var ExpandingTextArea = React.createClass({

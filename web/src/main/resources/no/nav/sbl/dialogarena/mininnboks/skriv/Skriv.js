@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import { Link } from 'react-router';
 import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
 import FeedbackForm from '../feedback/FeedbackForm';

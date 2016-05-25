@@ -1,5 +1,5 @@
 import './console-polyfill';
-import React from 'react/addons';
+import React from 'react';
 import resources from './resources/Resources';
 import ListeVisning from './listevisning/ListeVisning';
 import TraadVisning from './traadvisning/Traadvisning';

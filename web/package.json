@@ -47,7 +47,9 @@
     "karma-junit-reporter": "0.3.8",
     "karma-mocha": "^0.2.2",
     "karma-phantomjs-launcher": "git+http://stash.devillo.no/scm/npmm/karma-phantomjs-launcher.git#fe9bd9c2d7ce16622e6bf373318ad0fa5894c63c",
-    "karma-phantomjs-shim": "^1.2.0"
+    "karma-phantomjs-shim": "^1.2.0",
+    "react-addons-test-utils": "^0.14.8",
+    "react-addons-create-fragment": "^0.14.8"
   },
   "dependencies": {
     "react": "^0.14.8",

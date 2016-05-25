@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import BesvarBoks from'./BesvarBoks';
 import MeldingContainer from './MeldingContainer';
 import Knapper from './Knapper';

@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import ValidatableMixin from '../feedback/ValidatableMixin';
 import Resources from '../resources/Resources';
 import Betingelser from './Betingelser';

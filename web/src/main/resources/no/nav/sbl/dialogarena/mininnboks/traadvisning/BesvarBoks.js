@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import FeedbackForm from '../feedback/FeedbackForm';

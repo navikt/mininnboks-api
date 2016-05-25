@@ -93,7 +93,7 @@ var ModalPortal = React.createClass({
         }
 
         children.map(function (child) {
-            return React.addons.cloneWithProps(child, {
+            return cloneElement(child, {
                 modal: this.props.modal
             });
         }.bind(this));

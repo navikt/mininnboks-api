@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import Modal from '../modal/Modal';
 import Resources from '../resources/Resources';
 import Snurrepipp from '../snurrepipp/Snurrepipp';

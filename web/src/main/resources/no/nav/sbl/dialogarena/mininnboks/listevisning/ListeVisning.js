@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import TraaderContainer from './TraaderContainer';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Feilmelding from '../feilmelding/Feilmelding';

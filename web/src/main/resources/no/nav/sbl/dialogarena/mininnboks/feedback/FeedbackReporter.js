@@ -1,4 +1,5 @@
-import React from 'react/addons';
+import React from 'react';
+import createFragment from 'react-addons-create-fragment';
 
 function FeedbackReporter(update) {
     this.update = update;
@@ -67,7 +68,7 @@ function toErrorElements(elementType, errors, idSuffix) {
             elements = elements.concat(errorElements);
         }
     }
-    return React.addons.createFragment({elements: elements});
+    return createFragment({elements: elements});
 }
 
 function getAllErrorMessages(errors) {

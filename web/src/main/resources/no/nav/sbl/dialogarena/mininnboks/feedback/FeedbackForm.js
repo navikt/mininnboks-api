@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import FeedbackReporter from './FeedbackReporter';
 
 class FeedbackForm extends React.Component {
@@ -11,27 +11,27 @@ class FeedbackForm extends React.Component {
         this.getFeedbackRefs = this.getFeedbackRefs.bind(this);
         this.validate = this.validate.bind(this);
     }
-    
+
     updateErrorMessages (errors) {
         this.setState({errors: errors});
     }
-    
+
     componentWillMount () {
         this.feedbackReporter = new FeedbackReporter(this.updateErrorMessages);
     }
-    
+
     isValid () {
         return this.feedbackReporter.numberOfErrors() === 0;
     }
-    
+
     getFeedbackRef (ref) {
         return this.refs[ref] || {};
     }
-    
+
     getFeedbackRefs () {
         return this.refs;
     }
-    
+
     validate () {
         for (var i in this.refs) {
             var child = this.refs[i];
@@ -40,7 +40,7 @@ class FeedbackForm extends React.Component {
             }
         }
     }
-    
+
     render () {
         var feedback = null;
         var childrenProps = {reporter: this.feedbackReporter, showInline: true};
@@ -65,7 +65,7 @@ class FeedbackForm extends React.Component {
                 }
                 var refId = child.props.feedbackref;
                 var childProps = $.extend({}, childrenProps, {ref: refId, id: refId, key: refId});
-                return React.addons.cloneWithProps(child, childProps);
+                return cloneElement(child, childProps);
             }.bind(this));
         return (
             <form className={this.props.className}>

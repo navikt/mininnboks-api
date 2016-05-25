@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import Utils from '../utils/Utils';
 import Constants from '../utils/Constants';
 

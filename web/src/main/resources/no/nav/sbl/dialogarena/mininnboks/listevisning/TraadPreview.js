@@ -1,9 +1,10 @@
-import React from 'react/addons';
+import React from 'react';
 import { Link } from 'react-router';
 import AntallMeldinger from './AntallMeldinger';
 import MeldingStatus from './MeldingStatus';
 import Utils from '../utils/Utils';
 import Constants from '../utils/Constants';
+import createFragment from 'react-addons-create-fragment';
 
 class TraadPreview extends React.Component {
     constructor (props) {
@@ -23,7 +24,7 @@ class TraadPreview extends React.Component {
         var dato = Utils.prettyDate(melding.opprettet);
         var avsnitt = melding.fritekst.split(/[\r\n]+/)
             .map(Utils.tilAvsnitt());
-        avsnitt = React.addons.createFragment({
+        avsnitt = createFragment({
             avsnitt: avsnitt
         });
 
