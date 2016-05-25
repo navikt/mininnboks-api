@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.modig.lang.option.Optional;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSBruker;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSNorskIdent;
@@ -8,8 +7,10 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSPerson;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSPersonidenter;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.meldinger.WSHentKontaktinformasjonOgPreferanserRequest;
 
+import java.util.Optional;
+
+import static java.util.Optional.of;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
-import static no.nav.modig.lang.option.Optional.optional;
 
 public interface PersonService {
 
@@ -35,7 +36,7 @@ public interface PersonService {
                 WSHentKontaktinformasjonOgPreferanserRequest kontaktRequest = new WSHentKontaktinformasjonOgPreferanserRequest().withIdent(ident);
                 WSPerson person = brukerprofilV3.hentKontaktinformasjonOgPreferanser(kontaktRequest).getBruker();
                 WSBruker bruker = (WSBruker) person;
-                return optional(bruker.getAnsvarligEnhet().getOrganisasjonselementId());
+                return of(bruker.getAnsvarligEnhet().getOrganisasjonselementId());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

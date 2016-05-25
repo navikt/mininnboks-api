@@ -8,7 +8,6 @@ import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
-import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -17,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 import static java.util.Arrays.asList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.fromValue;
@@ -43,51 +43,48 @@ public abstract class HenvendelsesUtils {
         }
     };
 
-    public static Transformer<Object, Henvendelse> tilHenvendelse(final PropertyResolver propertyResolver) {
-        return new Transformer<Object, Henvendelse>() {
-            @Override
-            public Henvendelse transform(Object wsMelding) {
-                XMLHenvendelse info = (XMLHenvendelse) wsMelding;
+    public static Function<Object, Henvendelse> tilHenvendelse(final PropertyResolver propertyResolver) {
+        return wsMelding -> {
+            XMLHenvendelse info = (XMLHenvendelse) wsMelding;
 
-                Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
-                henvendelse.opprettet = info.getOpprettetDato();
-                henvendelse.avsluttet = info.getAvsluttetDato();
-                henvendelse.traadId = info.getBehandlingskjedeId();
-                henvendelse.eksternAktor = info.getEksternAktor();
-                henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
-                henvendelse.kontorsperreEnhet = info.getKontorsperreEnhet();
-                henvendelse.erTilknyttetAnsatt = info.isErTilknyttetAnsatt();
-                henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
-                henvendelse.brukersEnhet = info.getBrukersEnhet();
-                henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
-                henvendelse.fraNav = !henvendelse.fraBruker;
-                if (FRA_BRUKER.contains(henvendelse.type)) {
-                    henvendelse.markerSomLest();
-                } else {
-                    henvendelse.markerSomLest(info.getLestDato());
-                }
+            Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
+            henvendelse.opprettet = info.getOpprettetDato();
+            henvendelse.avsluttet = info.getAvsluttetDato();
+            henvendelse.traadId = info.getBehandlingskjedeId();
+            henvendelse.eksternAktor = info.getEksternAktor();
+            henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
+            henvendelse.kontorsperreEnhet = info.getKontorsperreEnhet();
+            henvendelse.erTilknyttetAnsatt = info.isErTilknyttetAnsatt();
+            henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
+            henvendelse.brukersEnhet = info.getBrukersEnhet();
+            henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
+            henvendelse.fraNav = !henvendelse.fraBruker;
+            if (FRA_BRUKER.contains(henvendelse.type)) {
+                henvendelse.markerSomLest();
+            } else {
+                henvendelse.markerSomLest(info.getLestDato());
+            }
 
-                if (innholdErKassert(info)) {
-                    henvendelse.kassert = true;
-                    henvendelse.fritekst = propertyResolver.getProperty("innhold.kassert");
-                    henvendelse.statusTekst = propertyResolver.getProperty("temagruppe.kassert");
-                    henvendelse.temagruppe = null;
-                    henvendelse.kanal = null;
-                    return henvendelse;
-                }
-
-                XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
-                henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
-                henvendelse.temagruppeNavn = propertyResolver.getProperty(henvendelse.temagruppe.name());
-                henvendelse.statusTekst = statusTekst(henvendelse, propertyResolver);
-                henvendelse.fritekst = cleanOutHtml(xmlMelding.getFritekst());
-
-                if (xmlMelding instanceof XMLMeldingTilBruker) {
-                    XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
-                    henvendelse.kanal = meldingTilBruker.getKanal();
-                }
+            if (innholdErKassert(info)) {
+                henvendelse.kassert = true;
+                henvendelse.fritekst = propertyResolver.getProperty("innhold.kassert");
+                henvendelse.statusTekst = propertyResolver.getProperty("temagruppe.kassert");
+                henvendelse.temagruppe = null;
+                henvendelse.kanal = null;
                 return henvendelse;
             }
+
+            XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
+            henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
+            henvendelse.temagruppeNavn = propertyResolver.getProperty(henvendelse.temagruppe.name());
+            henvendelse.statusTekst = statusTekst(henvendelse, propertyResolver);
+            henvendelse.fritekst = cleanOutHtml(xmlMelding.getFritekst());
+
+            if (xmlMelding instanceof XMLMeldingTilBruker) {
+                XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
+                henvendelse.kanal = meldingTilBruker.getKanal();
+            }
+            return henvendelse;
         };
     }
 

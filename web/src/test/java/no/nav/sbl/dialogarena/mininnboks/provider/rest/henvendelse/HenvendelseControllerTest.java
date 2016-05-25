@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -21,10 +20,9 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.nCopies;
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
-import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.join;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -57,16 +55,15 @@ public class HenvendelseControllerTest {
                 new Henvendelse("7").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(now())
         );
         when(service.hentAlleHenvendelser(anyString())).thenReturn(henvendelser);
-        when(service.hentTraad(anyString())).thenAnswer(new Answer<List<Henvendelse>>() {
-            @Override
-            public List<Henvendelse> answer(InvocationOnMock invocation) throws Throwable {
-                String traadId = (String) invocation.getArguments()[0];
 
-                return on(henvendelser)
-                        .filter(where(Henvendelse.TRAAD_ID, equalTo(traadId)))
-                        .collect();
-            }
+        when(service.hentTraad(anyString())).thenAnswer((Answer<List<Henvendelse>>) invocation -> {
+            String traadId = (String) invocation.getArguments()[0];
+
+            return henvendelser.stream()
+                    .filter(henvendelse -> traadId.equals(henvendelse.traadId))
+                    .collect(toList());
         });
+
         when(service.sendSvar(any(Henvendelse.class), anyString())).thenReturn(
                 new WSSendInnHenvendelseResponse().withBehandlingsId(UUID.randomUUID().toString())
         );
@@ -80,7 +77,7 @@ public class HenvendelseControllerTest {
 
     @Test
     public void serviceKanFeileUtenAtEndepunktFeiler() throws Exception {
-        when(service.hentAlleHenvendelser(anyString())).thenReturn(null);
+        when(service.hentAlleHenvendelser(anyString())).thenReturn(emptyList());
         List<Traad> traader = controller.hentTraader();
         assertThat(traader.size(), is(0));
     }
