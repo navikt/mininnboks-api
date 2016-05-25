@@ -74,7 +74,7 @@ public class ContentConfig {
         DecoratorFilter decoratorFilter = new DecoratorFilter();
         decoratorFilter.setContentRetriever(appresContentRetriever());
         decoratorFilter.setNoDecoratePatterns(NO_DECORATOR_PATTERNS);
-        decoratorFilter.setFragmentsUrl("common-html/v1-1/navno");
+        decoratorFilter.setFragmentsUrl("common-html/v3/navno");
         decoratorFilter.setApplicationName("Min Innboks");
         decoratorFilter.setFragmentNames(asList(
                 "header-withmenu",
