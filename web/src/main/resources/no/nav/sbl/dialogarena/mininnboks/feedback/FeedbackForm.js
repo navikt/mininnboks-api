@@ -65,7 +65,7 @@ class FeedbackForm extends React.Component {
                 }
                 var refId = child.props.feedbackref;
                 var childProps = $.extend({}, childrenProps, {ref: refId, id: refId, key: refId});
-                return cloneElement(child, childProps);
+                return React.cloneElement(child, childProps);
             }.bind(this));
         return (
             <form className={this.props.className}>
