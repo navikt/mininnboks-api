@@ -1,8 +1,8 @@
 import React from 'react/addons';
 import Utils from '../utils/Utils';
 
-var MeldingContainer = React.createClass({
-    render: function() {
+class MeldingContainer extends React.Component {
+    render () {
         var melding = this.props.melding;
         var className = 'melding-container ' + (melding.fraBruker ? 'fra-bruker' : 'fra-nav');
         var imgSrc = melding.fraBruker ? '/mininnboks/build/img/personikon.svg' : '/mininnboks/build/img/nav-logo.svg';
@@ -33,6 +33,6 @@ var MeldingContainer = React.createClass({
             </div>
         );
     }
-});
+};
 
 export default MeldingContainer;

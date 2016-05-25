@@ -9,14 +9,18 @@ import InfoBoks from '../infoboks/Infoboks';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Utils from '../utils/Utils';
 
-var Skriv = React.createClass({
-    getInitialState: function () {
-        return {sender: false, sendt: false, sendingfeilet: false};
-    },
-    componentWillMount: function () {
+class Skriv extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {sender: false, sendt: false, sendingfeilet: false};
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    componentWillMount () {
         this.godkjenteForSporsmal = this.props.resources.get('temagruppe.liste').split(' ');
-    },
-    onSubmit: function (evt) {
+    }
+
+    onSubmit (evt) {
         evt.preventDefault();
 
         var form = this.refs.form;
@@ -43,8 +47,9 @@ var Skriv = React.createClass({
                     this.setState({sendingfeilet: true, sender: false})
                 }.bind(this));
         }
-    },
-    render: function () {
+    }
+
+    render () {
         if (this.godkjenteForSporsmal.indexOf(this.props.params.temagruppe) < 0) {
             return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon={true}/>;
         }
@@ -106,10 +111,6 @@ var Skriv = React.createClass({
             );
         }
     }
-});
-
-
-
-
+};
 
 export default Skriv;

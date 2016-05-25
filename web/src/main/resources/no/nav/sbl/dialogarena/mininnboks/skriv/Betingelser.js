@@ -21,27 +21,33 @@ var modalConfig = {
     }
 };
 
-var Betingelser = React.createClass({
-    submit: function (e) {
+class Betingelser extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {hentet: false};
+        this.submit = this.submit.bind(this);
+        this.vis = this.vis.bind(this);
+        this.skjul = this.skjul.bind(this);
+    }
+    submit (e) {
         e.preventDefault();
-    },
-    vis: function () {
+    }
+
+    vis () {
         this.refs.modal.open();
-    },
-    skjul: function () {
+    }
+
+    skjul () {
         this.refs.modal.close();
-    },
-    getInitialState: function () {
-        return {
-            hentet: false
-        };
-    },
-    componentDidMount: function () {
+    }
+
+    componentDidMount () {
         $.when(Resources.promise).then(function () {
             this.setState({hentet: true})
         }.bind(this))
-    },
-    render: function () {
+    }
+
+    render () {
         if (!this.state.hentet) {
             return <Snurrepipp />;
         }
@@ -61,6 +67,6 @@ var Betingelser = React.createClass({
             </Modal>
         );
     }
-});
+};
 
 export default Betingelser;

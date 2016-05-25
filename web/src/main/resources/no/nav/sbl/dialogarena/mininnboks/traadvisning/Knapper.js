@@ -2,14 +2,21 @@ import React from 'react/addons';
 import { Link } from 'react-router';
 import format from 'string-format';
 
-var Knapper = React.createClass({
-    besvar: function (event) {
+class Knapper extends React.Component {
+    constructor(props) {
+        super(props);
+        this.besvar = this.besvar.bind(this);
+    }
+
+    besvar (event) {
         event.preventDefault();
         if (this.props.kanBesvares) {
             this.props.besvar();
         }
-    },
-    render: function () {
+    }
+
+    
+    render () {
         var skrivSvar = this.props.kanBesvares && !this.props.besvares ?
             <button onClick={this.besvar}
                     className="knapp-hoved-liten">{this.props.resources.get('traadvisning.skriv.svar.link')}</button> :
@@ -24,6 +31,6 @@ var Knapper = React.createClass({
             </div>
         )
     }
-});
+};
 
 export default Knapper;

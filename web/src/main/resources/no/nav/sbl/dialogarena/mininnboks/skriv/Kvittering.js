@@ -2,8 +2,8 @@ var React = require('react/addons');
 var Link = require('react-router').Link;
 
 
-var Kvittering = React.createClass({
-    render: function () {
+class Kvittering extends React.Component {
+    render () {
         return (
             <article className="send-sporsmal-container bekreftelse-panel">
                 <div className="sporsmal-header">
@@ -21,6 +21,6 @@ var Kvittering = React.createClass({
             </article>
         );
     }
-});
+};
 
 export default Kvittering;

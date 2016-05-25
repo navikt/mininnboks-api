@@ -1,34 +1,47 @@
 import React from 'react/addons';
 import FeedbackReporter from './FeedbackReporter';
 
-var FeedbackForm = React.createClass({
-    getInitialState: function () {
-        return {errors: []};
-    },
-    updateErrorMessages: function (errors) {
+class FeedbackForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {errors: []};
+        this.updateErrorMessages = this.updateErrorMessages.bind(this);
+        this.isValid = this.isValid.bind(this);
+        this.getFeedbackRef = this.getFeedbackRef.bind(this);
+        this.getFeedbackRefs = this.getFeedbackRefs.bind(this);
+        this.validate = this.validate.bind(this);
+    }
+    
+    updateErrorMessages (errors) {
         this.setState({errors: errors});
-    },
-    componentWillMount: function () {
+    }
+    
+    componentWillMount () {
         this.feedbackReporter = new FeedbackReporter(this.updateErrorMessages);
-    },
-    isValid: function () {
+    }
+    
+    isValid () {
         return this.feedbackReporter.numberOfErrors() === 0;
-    },
-    getFeedbackRef: function (ref) {
+    }
+    
+    getFeedbackRef (ref) {
         return this.refs[ref] || {};
-    },
-    getFeedbackRefs: function () {
+    }
+    
+    getFeedbackRefs () {
         return this.refs;
-    },
-    validate: function () {
+    }
+    
+    validate () {
         for (var i in this.refs) {
             var child = this.refs[i];
             if (child.hasOwnProperty("validate")) {
                 child.validate();
             }
         }
-    },
-    render: function () {
+    }
+    
+    render () {
         var feedback = null;
         var childrenProps = {reporter: this.feedbackReporter, showInline: true};
 
@@ -61,7 +74,7 @@ var FeedbackForm = React.createClass({
             </form>
         );
     }
-});
+};
 
 function generateRef() {
     return "ref-" + Math.random();
