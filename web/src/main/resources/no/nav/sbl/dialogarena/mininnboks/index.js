@@ -1,4 +1,4 @@
-require('./console-polyfill');
+import './console-polyfill';
 import React from 'react/addons';
 import resources from './resources/Resources';
 import ListeVisning from './listevisning/ListeVisning';

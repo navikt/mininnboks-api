@@ -1,6 +1,5 @@
-var React = require('react/addons');
-var Link = require('react-router').Link;
-
+import React from 'react/addons';
+import { Link } from 'react-router';
 
 class Kvittering extends React.Component {
     render () {

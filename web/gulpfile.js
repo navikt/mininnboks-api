@@ -17,6 +17,7 @@ var babelify = require('babelify');
 var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
 var BUILD_DIR = './src/main/webapp/build/';
 var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources/';
+const eslint = require('gulp-eslint');
 
 var babelifyReact = function (file) {
     return babelify(file,
@@ -104,4 +105,11 @@ gulp.task('test', function () {
     //    configFile: __dirname + '/karma.conf.js',
     //    isSingleRun: true
     //});
+});
+
+gulp.task('eslint', function () {
+    return gulp.src(['./src/main/resources/no/nav/sbl/dialogarena/mininnboks/**/*.jsx', './src/main/resources/no/nav/sbl/dialogarena/mininnboks/**/*.js'])
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
 });

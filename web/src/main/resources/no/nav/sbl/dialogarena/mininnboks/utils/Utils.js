@@ -2,9 +2,10 @@ import React from 'react/addons';
 import sanitize from 'sanitize-html';
 import format from 'string-format';
 import moment from 'moment';
-require('moment/locale/nb');
-moment.locale('nb');
+import 'moment/locale/nb';
 import Constants from './Constants';
+
+moment.locale('nb');
 
 var Utils = {
     sanitize: function (tekst) {
