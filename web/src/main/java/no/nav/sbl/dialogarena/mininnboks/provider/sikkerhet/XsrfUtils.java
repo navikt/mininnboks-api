@@ -12,7 +12,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
-import static no.nav.modig.lang.option.Optional.optional;
+import static java.util.Optional.ofNullable;
 
 /**
  * Klasse som håndterer XSRF tokens
@@ -24,7 +24,7 @@ public class XsrfUtils {
     private static final String SECRET = "871128f0-558f-4c88-acee-466a48bb5e95";
 
     public static String genererXsrfToken(HttpSession session) {
-        String sessionUUID = (String) optional(session.getAttribute(SESSION_UUID_ID)).getOrElse(UUID.randomUUID().toString());
+        String sessionUUID = (String) ofNullable(session.getAttribute(SESSION_UUID_ID)).orElse(UUID.randomUUID().toString());
         session.setAttribute(SESSION_UUID_ID, sessionUUID);
         return genererXsrfToken(sessionUUID);
     }

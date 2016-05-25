@@ -1,5 +1,5 @@
-var React = require('react');
-var assign = Object.assign || require('object-assign');
+import React from 'react';
+const assign = Object.assign || require('object-assign');
 
 var stubRouterContext = function (Component, props, stubs) {
     function RouterStub() {
@@ -54,4 +54,4 @@ var stubRouterContext = function (Component, props, stubs) {
     });
 };
 
-module.exports = stubRouterContext;
+export default stubRouterContext;

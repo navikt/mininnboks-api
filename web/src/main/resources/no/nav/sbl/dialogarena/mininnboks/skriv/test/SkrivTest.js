@@ -1,13 +1,13 @@
-require('../../testConfig');
-var chai = require('chai');
-var expect = chai.expect;
-var assert = chai.assert;
-var sinon = require('sinon');
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
-var stubRouterContext = require('../../utils/stubRouterContext');
+/* eslint-env mocha */
 
-var Skriv = require('../Skriv');
+import '../../testConfig';
+import React from 'react/addons';
+import sinon from 'sinon';
+import { expect, assert } from 'chai';
+import stubRouterContext from '../../utils/stubRouterContext';
+import Skriv from '../Skriv';
+
+const { TestUtils } = React.addons;
 
 var resourcesMock = {
     get: function () {

@@ -1,12 +1,14 @@
-var React = require('react/addons');
+import React from 'react';
 
-var Feilmelding = React.createClass({
-    componentWillMount: function () {
+class Feilmelding extends React.Component {
+    
+    componentWillMount () {
         if (!this.props.melding) {
             throw "Feilmelding komponenten må ha en en definert props kalt 'melding'";
         }
-    },
-    render: function () {
+    }
+
+    render () {
         var ikon = this.props.visIkon ? <div className="robust-ikon-feil-gra"></div> : null;
 
         return (
@@ -19,7 +21,6 @@ var Feilmelding = React.createClass({
             </section>
         );
     }
-});
+};
 
-
-module.exports = Feilmelding;
+export default Feilmelding;

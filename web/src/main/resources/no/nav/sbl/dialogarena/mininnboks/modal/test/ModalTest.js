@@ -1,8 +1,11 @@
-require('./../../testConfig.js');
-var expect = require('chai').expect;
-var React = require('react/addons');
-var Modal = require('../Modal.js');
-var TestUtils = React.addons.TestUtils;
+/* eslint-env mocha */
+
+import './../../testConfig.js';
+import { expect } from 'chai';
+import React from 'react/addons';
+import Modal from '../Modal.js';
+
+const TestUtils = React.addons.TestUtils;
 
 function createModal(props, children) {
     return TestUtils.renderIntoDocument(React.createElement(

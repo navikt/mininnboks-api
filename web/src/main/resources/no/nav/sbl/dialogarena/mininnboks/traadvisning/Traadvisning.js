@@ -1,17 +1,17 @@
-var React = require('react/addons');
-var BesvarBoks = require('./BesvarBoks');
-var MeldingContainer = require('./MeldingContainer');
-var Knapper = require('./Knapper');
-var Snurrepipp = require('../snurrepipp/Snurrepipp');
-var Feilmelding = require('../feilmelding/Feilmelding');
-var InfoBoks = require('../infoboks/Infoboks');
-var format = require('string-format');
-var Utils = require('../utils/Utils');
+import React from 'react/addons';
+import BesvarBoks from'./BesvarBoks';
+import MeldingContainer from './MeldingContainer';
+import Knapper from './Knapper';
+import Snurrepipp from '../snurrepipp/Snurrepipp';
+import Feilmelding from '../feilmelding/Feilmelding';
+import InfoBoks from '../infoboks/Infoboks';
+import format from 'string-format';
+import Utils from '../utils/Utils';
 
-
-var TraadVisning = React.createClass({
-    getInitialState: function () {
-        return {
+class TraadVisning extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             hentet: false,
             feilet: false,
             besvares: false,
@@ -19,8 +19,13 @@ var TraadVisning = React.createClass({
             sendingfeilet: false,
             traad: {}
         };
-    },
-    componentDidMount: function () {
+        this.visBesvarBoks = this.visBesvarBoks.bind(this);
+        this.skjulBesvarBoks = this.skjulBesvarBoks.bind(this);
+        this.sendMelding = this.sendMelding.bind(this);
+        this.getInfoMelding = this.getInfoMelding.bind(this);
+    }
+
+    componentDidMount () {
         if (this.props.valgtTraad) {
             okCallback.call(this, this.props.valgtTraad);
         } else if (typeof this.props.params.traadId === 'string' && this.props.params.traadId.length > 0) {
@@ -29,14 +34,17 @@ var TraadVisning = React.createClass({
         } else {
             feiletCallback.call(this, this.props.valgtTraad);
         }
-    },
-    visBesvarBoks: function () {
+    }
+
+    visBesvarBoks () {
         this.setState({besvares: true});
-    },
-    skjulBesvarBoks: function () {
+    }
+
+    skjulBesvarBoks () {
         this.setState({besvares: false});
-    },
-    sendMelding: function (fritekst) {
+    }
+
+    sendMelding (fritekst) {
         return $.ajax({
             type: 'POST',
             url: '/mininnboks/tjenester/traader/svar',
@@ -46,8 +54,9 @@ var TraadVisning = React.createClass({
         })
             .done(leggTilMelding.bind(this, fritekst))
             .fail(kunneIkkeLeggeTilMelding.bind(this));
-    },
-    getInfoMelding: function () {
+    }
+
+    getInfoMelding () {
         if (this.state.traad.avsluttet) {
             return (<InfoBoks.Info>
                 <p>
@@ -66,8 +75,9 @@ var TraadVisning = React.createClass({
             </InfoBoks.Feil>);
         }
         return null;
-    },
-    render: function () {
+    }
+
+    render () {
         if (!this.state.hentet) {
             return <Snurrepipp />
         }
@@ -95,7 +105,7 @@ var TraadVisning = React.createClass({
             </div>
         );
     }
-});
+};
 
 function okCallback(data) {
     this.setState({
@@ -141,4 +151,5 @@ function kunneIkkeLeggeTilMelding() {
         sendingfeilet: true
     });
 }
-module.exports = TraadVisning;
+
+export default TraadVisning;

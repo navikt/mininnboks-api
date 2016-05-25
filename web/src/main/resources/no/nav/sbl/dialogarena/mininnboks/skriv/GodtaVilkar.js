@@ -1,7 +1,7 @@
-var React = require('react/addons');
-var ValidatableMixin = require('../feedback/ValidatableMixin');
-var Resources = require('../resources/Resources');
-var Betingelser = require('./Betingelser');
+import React from 'react/addons';
+import ValidatableMixin from '../feedback/ValidatableMixin';
+import Resources from '../resources/Resources';
+import Betingelser from './Betingelser';
 
 var GodtaVilkar = React.createClass({
     mixins: [ValidatableMixin],
@@ -26,6 +26,7 @@ var GodtaVilkar = React.createClass({
             this.error(Resources.get('send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert'));
         }
     },
+    
     visbetingelser: function (e) {
         this.refs.betingelserPanel.vis();
         e.preventDefault();
@@ -59,4 +60,4 @@ var GodtaVilkar = React.createClass({
     }
 });
 
-module.exports = GodtaVilkar;
+export default GodtaVilkar;

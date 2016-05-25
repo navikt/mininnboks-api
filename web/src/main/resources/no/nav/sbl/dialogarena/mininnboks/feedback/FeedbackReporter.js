@@ -1,4 +1,4 @@
-var React = require('react/addons');
+import React from 'react/addons';
 
 function FeedbackReporter(update) {
     this.update = update;
@@ -80,4 +80,4 @@ function getAllErrorMessages(errors) {
     return msg;
 }
 
-module.exports = FeedbackReporter;
+export default FeedbackReporter;

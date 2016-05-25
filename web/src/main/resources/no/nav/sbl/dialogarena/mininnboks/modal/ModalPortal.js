@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 
 var ModalPortal = React.createClass({
     focusAfterClose: undefined,
@@ -146,4 +146,4 @@ function createId(prefix) {
     return prefix + new Date().getTime() + "-" + Math.random();
 }
 
-module.exports = ModalPortal;
+export default ModalPortal;

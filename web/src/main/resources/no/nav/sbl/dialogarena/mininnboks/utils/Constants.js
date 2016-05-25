@@ -1,4 +1,4 @@
-var keymirror = require('keymirror');
+import keymirror from 'keymirror';
 
 var Constants = keymirror({
     LEST: null,
@@ -7,4 +7,4 @@ var Constants = keymirror({
     LEST_UBESVART: null
 });
 
-module.exports = Constants;
+export default Constants;
