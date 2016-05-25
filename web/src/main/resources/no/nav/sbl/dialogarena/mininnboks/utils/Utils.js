@@ -1,10 +1,11 @@
-var React = require('react/addons');
-var sanitize = require('sanitize-html');
-var format = require('string-format');
-var moment = require('moment');
-require('moment/locale/nb');
+import React from 'react/addons';
+import sanitize from 'sanitize-html';
+import format from 'string-format';
+import moment from 'moment';
+import 'moment/locale/nb';
+import Constants from './Constants';
+
 moment.locale('nb');
-var Constants = require('./Constants');
 
 var Utils = {
     sanitize: function (tekst) {
@@ -55,4 +56,4 @@ var Utils = {
     }
 };
 
-module.exports = Utils;
+export default Utils;

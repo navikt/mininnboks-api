@@ -1,23 +1,26 @@
-var React = require('react/addons');
-var Link = require('react-router').Link;
-var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
-var FeedbackForm = require('../feedback/FeedbackForm');
-var GodtaVilkar = require('./GodtaVilkar');
-var Kvittering = require('./Kvittering');
-var Feilmelding = require('../feilmelding/Feilmelding');
-var InfoBoks = require('../infoboks/Infoboks');
-var Snurrepipp = require('../snurrepipp/Snurrepipp');
-var Utils = require('../utils/Utils');
+import React from 'react/addons';
+import { Link } from 'react-router';
+import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
+import FeedbackForm from '../feedback/FeedbackForm';
+import GodtaVilkar from './GodtaVilkar';
+import Kvittering from './Kvittering';
+import Feilmelding from '../feilmelding/Feilmelding';
+import InfoBoks from '../infoboks/Infoboks';
+import Snurrepipp from '../snurrepipp/Snurrepipp';
+import Utils from '../utils/Utils';
 
+class Skriv extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {sender: false, sendt: false, sendingfeilet: false};
+        this.onSubmit = this.onSubmit.bind(this);
+    }
 
-var Skriv = React.createClass({
-    getInitialState: function () {
-        return {sender: false, sendt: false, sendingfeilet: false};
-    },
-    componentWillMount: function () {
+    componentWillMount () {
         this.godkjenteForSporsmal = this.props.resources.get('temagruppe.liste').split(' ');
-    },
-    onSubmit: function (evt) {
+    }
+
+    onSubmit (evt) {
         evt.preventDefault();
 
         var form = this.refs.form;
@@ -44,8 +47,9 @@ var Skriv = React.createClass({
                     this.setState({sendingfeilet: true, sender: false})
                 }.bind(this));
         }
-    },
-    render: function () {
+    }
+
+    render () {
         if (this.godkjenteForSporsmal.indexOf(this.props.params.temagruppe) < 0) {
             return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon={true}/>;
         }
@@ -65,7 +69,7 @@ var Skriv = React.createClass({
                                onClick={this.onSubmit}/>
                     </div>
                     <div className="avbryt">
-                        <Link to="innboks">{this.props.resources.get("send-sporsmal.still-sporsmal.avbryt")}</Link>
+                        <Link to="/mininnboks/">{this.props.resources.get("send-sporsmal.still-sporsmal.avbryt")}</Link>
                     </div>
                 </div>);
             }
@@ -107,6 +111,6 @@ var Skriv = React.createClass({
             );
         }
     }
-});
+};
 
-module.exports = Skriv;
+export default Skriv;

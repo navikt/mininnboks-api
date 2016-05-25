@@ -1,9 +1,9 @@
-var React = require('react/addons');
-var Utils = require('../utils/Utils');
-var Constants = require('../utils/Constants');
+import React from 'react/addons';
+import Utils from '../utils/Utils';
+import Constants from '../utils/Constants';
 
-var MeldingStatus = React.createClass({
-    render: function () {
+class MeldingStatus extends React.Component {
+    render () {
         var status = Utils.status(this.props.melding);
         if (status === Constants.LEST) {
             return null;
@@ -12,6 +12,6 @@ var MeldingStatus = React.createClass({
             <div aria-hidden="true" className={'ikon melding-info ' + status}></div>
         );
     }
-});
+};
 
-module.exports = MeldingStatus;
+export default MeldingStatus;

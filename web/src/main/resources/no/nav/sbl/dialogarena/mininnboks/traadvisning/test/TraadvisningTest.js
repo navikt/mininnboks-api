@@ -1,14 +1,14 @@
-require('../../testConfig');
-var chai = require('chai');
-var expect = chai.expect;
-var assert = chai.assert;
-var sinon = require('sinon');
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
-var stubRouterContext = require('../../utils/stubRouterContext');
-var assign = Object.assign || require('object-assign');
+/* eslint-env mocha */
 
-var Traadvisning = require('../Traadvisning');
+import '../../testConfig';
+import { expect, assert } from 'chai';
+import sinon from 'sinon';
+import React from 'react/addons';
+import stubRouterContext from '../../utils/stubRouterContext';
+import Traadvisning from '../Traadvisning';
+
+const assign = Object.assign || require('object-assign');
+const { TestUtils } = React.addons;
 
 var resourcesMock = {
     get: function () {

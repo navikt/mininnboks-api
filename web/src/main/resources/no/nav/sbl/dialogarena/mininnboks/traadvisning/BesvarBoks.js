@@ -1,14 +1,17 @@
-var React = require('react/addons');
-var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
-var Snurrepipp = require('../snurrepipp/Snurrepipp');
-var FeedbackForm = require('../feedback/FeedbackForm');
+import React from 'react/addons';
+import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
+import Snurrepipp from '../snurrepipp/Snurrepipp';
+import FeedbackForm from '../feedback/FeedbackForm';
 
+class BesvarBoks extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {sender: false};
+        this.onSubmit = this.onSubmit.bind(this);
+        this.skjul = this.skjul.bind(this);
+    }
 
-var BesvarBoks = React.createClass({
-    getInitialState: function () {
-        return {sender: false}
-    },
-    onSubmit: function (evt) {
+    onSubmit (evt) {
         evt.preventDefault();
 
         var form = this.refs.form;
@@ -23,14 +26,15 @@ var BesvarBoks = React.createClass({
                     this.setState({sender: false})
                 }.bind(this));
             }
-
         }
-    },
-    skjul: function (event) {
+    }
+
+    skjul (event) {
         event.preventDefault();
         this.props.skjul();
-    },
-    render: function () {
+    }
+
+    render () {
         if (!this.props.vis) {
             return null;
         }
@@ -61,6 +65,6 @@ var BesvarBoks = React.createClass({
             </FeedbackForm>
         );
     }
-});
+};
 
-module.exports = BesvarBoks;
+export default BesvarBoks;

@@ -1,15 +1,22 @@
-var React = require('react/addons');
-var Link = require('react-router').Link;
-var format = require('string-format');
+import React from 'react/addons';
+import { Link } from 'react-router';
+import format from 'string-format';
 
-var Knapper = React.createClass({
-    besvar: function (event) {
+class Knapper extends React.Component {
+    constructor(props) {
+        super(props);
+        this.besvar = this.besvar.bind(this);
+    }
+
+    besvar (event) {
         event.preventDefault();
         if (this.props.kanBesvares) {
             this.props.besvar();
         }
-    },
-    render: function () {
+    }
+
+    
+    render () {
         var skrivSvar = this.props.kanBesvares && !this.props.besvares ?
             <button onClick={this.besvar}
                     className="knapp-hoved-liten">{this.props.resources.get('traadvisning.skriv.svar.link')}</button> :
@@ -19,11 +26,11 @@ var Knapper = React.createClass({
             <div className="knapper">
                 {skrivSvar}
                 <p>
-                    <Link to="innboks" title="Tilbake til innboksen">{this.props.resources.get('traadvisning.innboks.link')}</Link>
+                    <Link to="/mininnboks/" title="Tilbake til innboksen">{this.props.resources.get('traadvisning.innboks.link')}</Link>
                 </p>
             </div>
         )
     }
-});
+};
 
-module.exports = Knapper;
+export default Knapper;
