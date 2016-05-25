@@ -18,6 +18,7 @@ var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
 var BUILD_DIR = './src/main/webapp/build/';
 var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources/';
 const eslint = require('gulp-eslint');
+const KarmaServer = require('karma').Server;
 
 var babelifyReact = function (file) {
     return babelify(file,
@@ -27,6 +28,7 @@ var babelifyReact = function (file) {
 };
 
 function browserifyTask(isDev) {
+    process.env.NODE_ENV = 'development';
     console.log('Starting browserify in ' + (isDev ? 'development' : 'production') + ' mode. NODE_ENV: ' + process.env.NODE_ENV);
     // Our app bundler
     var props = watchify.args;
@@ -100,11 +102,14 @@ gulp.task('dev', function() {
     gulp.watch(SRC_DIR + '**/*.less', buildLess.bind(this, true));
 });
 
-gulp.task('test', function () {
-    //karma.start({
-    //    configFile: __dirname + '/karma.conf.js',
-    //    isSingleRun: true
-    //});
+gulp.task('test', function (done) {
+    new KarmaServer({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, function(code) {
+        done();
+        process.exit(code);
+    }).start();
 });
 
 gulp.task('eslint', function () {
