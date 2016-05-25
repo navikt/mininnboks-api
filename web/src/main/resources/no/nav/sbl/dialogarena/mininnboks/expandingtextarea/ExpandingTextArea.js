@@ -95,4 +95,4 @@ var ExpandingTextArea = React.createClass({
     }
 });
 
-module.exports = ExpandingTextArea;
+export default ExpandingTextArea;

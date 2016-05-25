@@ -26,6 +26,7 @@ var GodtaVilkar = React.createClass({
             this.error(Resources.get('send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert'));
         }
     },
+    
     visbetingelser: function (e) {
         this.refs.betingelserPanel.vis();
         e.preventDefault();
@@ -59,4 +60,4 @@ var GodtaVilkar = React.createClass({
     }
 });
 
-module.exports = GodtaVilkar;
+export default GodtaVilkar;

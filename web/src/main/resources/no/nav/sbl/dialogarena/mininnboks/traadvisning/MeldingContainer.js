@@ -35,4 +35,4 @@ var MeldingContainer = React.createClass({
     }
 });
 
-module.exports = MeldingContainer;
+export default MeldingContainer;

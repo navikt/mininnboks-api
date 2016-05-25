@@ -1,14 +1,13 @@
-var React = require('react/addons');
-var Link = require('react-router').Link;
-var ExpandingTextArea = require('../expandingtextarea/ExpandingTextArea');
-var FeedbackForm = require('../feedback/FeedbackForm');
-var GodtaVilkar = require('./GodtaVilkar');
-var Kvittering = require('./Kvittering');
-var Feilmelding = require('../feilmelding/Feilmelding');
-var InfoBoks = require('../infoboks/Infoboks');
-var Snurrepipp = require('../snurrepipp/Snurrepipp');
-var Utils = require('../utils/Utils');
-
+import React from 'react/addons';
+import { Link } from 'react-router';
+import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
+import FeedbackForm from '../feedback/FeedbackForm';
+import GodtaVilkar from './GodtaVilkar';
+import Kvittering from './Kvittering';
+import Feilmelding from '../feilmelding/Feilmelding';
+import InfoBoks from '../infoboks/Infoboks';
+import Snurrepipp from '../snurrepipp/Snurrepipp';
+import Utils from '../utils/Utils';
 
 var Skriv = React.createClass({
     getInitialState: function () {
@@ -113,4 +112,4 @@ var Skriv = React.createClass({
 
 
 
-module.exports = Skriv;
+export default Skriv;

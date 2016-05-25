@@ -1,32 +1,17 @@
 import React from 'react';
 import Portal from './ModalPortal.js';
 
-var Modal = React.createClass({
-    getInitialState: function () {
-        return {
-            isOpen: this.props.isOpen || false
-        };
-    },
-    getDefaultProps: function () {
-        return {
-            title: {
-                text: 'Modal Title',
-                show: false,
-                tag: 'h1'
-            },
-            description: {
-                text: '',
-                show: false,
-                tag: 'div'
-            },
-            closeButton: {
-                text: '',
-                show: true,
-                tag: 'span'
-            }
-        }
-    },
-    componentDidMount: function () {
+class Modal extends React.Component {
+    
+    constructor(props) {
+        super(props);
+        this.state = { isOpen: this.props.isOpen || false };
+        this.open = this.open.bind(this);
+        this.close = this.close.bind(this);
+        this.renderPortal = this.renderPortal.bind(this);
+    }
+    
+    componentDidMount () {
         if (typeof this.portalElement === 'undefined') {
             this.portalElement = document.createElement('div');
             this.portalElement.className = "react-modal-container";
@@ -34,33 +19,58 @@ var Modal = React.createClass({
         }
 
         this.renderPortal(this.props, this.state);
-    },
-    componentWillReceiveProps: function (props) {
+    }
+    
+    componentWillReceiveProps (props) {
         this.renderPortal(props, this.state)
-    },
-    componentWillUnmount: function () {
+    }
+    
+    componentWillUnmount () {
         document.body.removeChild(this.portalElement);
-    },
-    componentDidUpdate: function(){
+    }
+    
+    componentDidUpdate (){
         this.renderPortal(this.props, this.state)
-    },
-    open: function () {
+    }
+    
+    open () {
         this.setState({isOpen: true});
-    },
-    close: function () {
+    }
+    
+    close () {
         this.setState({isOpen: false});
-    },
-    renderPortal: function (props, state) {
+    }
+    
+    renderPortal (props, state) {
         var modal = {
             open: this.open,
             close: this.close
         };
 
         this.modal = React.render(<Portal {...props} {...state} modal={modal} />, this.portalElement);
-    },
-    render: function () {
+    }
+    
+    render () {
         return null;
     }
-});
+};
 
-module.exports = Modal;
+Modal.defaultProps = {
+    title: {
+        text: 'Modal Title',
+        show: false,
+        tag: 'h1'
+    },
+    description: {
+        text: '',
+        show: false,
+        tag: 'div'
+    },
+    closeButton: {
+        text: '',
+        show: true,
+        tag: 'span'
+    }
+};
+
+export default Modal;

@@ -140,4 +140,4 @@ function kunneIkkeLeggeTilMelding() {
         sendingfeilet: true
     });
 }
-module.exports = TraadVisning;
+export default TraadVisning;

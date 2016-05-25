@@ -63,4 +63,4 @@ var Betingelser = React.createClass({
     }
 });
 
-module.exports = Betingelser;
+export default Betingelser;

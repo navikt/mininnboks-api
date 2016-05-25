@@ -7,4 +7,4 @@ var Constants = keymirror({
     LEST_UBESVART: null
 });
 
-module.exports = Constants;
+export default Constants;

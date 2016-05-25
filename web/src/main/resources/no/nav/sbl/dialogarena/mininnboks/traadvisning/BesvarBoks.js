@@ -22,7 +22,6 @@ var BesvarBoks = React.createClass({
                     this.setState({sender: false})
                 }.bind(this));
             }
-
         }
     },
     skjul: function (event) {
@@ -62,4 +61,4 @@ var BesvarBoks = React.createClass({
     }
 });
 
-module.exports = BesvarBoks;
+export default BesvarBoks;

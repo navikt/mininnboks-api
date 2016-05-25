@@ -1,15 +1,21 @@
-var React = require('react/addons');
-var Link = require('react-router').Link;
-var AntallMeldinger = require('./AntallMeldinger');
-var MeldingStatus = require('./MeldingStatus');
-var Utils = require('../utils/Utils');
-var Constants = require('../utils/Constants');
+import React from 'react/addons';
+import { Link } from 'react-router';
+import AntallMeldinger from './AntallMeldinger';
+import MeldingStatus from './MeldingStatus';
+import Utils from '../utils/Utils';
+import Constants from '../utils/Constants';
 
-var TraadPreview = React.createClass({
-    onClick: function () {
+class TraadPreview extends React.Component {
+    constructor (props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick () {
         this.props.setValgtTraad(this.props.traad);
-    },
-    render: function () {
+    }
+
+    render () {
         var melding = this.props.traad.nyeste;
         var status = Utils.status(melding);
         var antallMeldinger = this.props.traad.meldinger.length;
@@ -41,9 +47,9 @@ var TraadPreview = React.createClass({
                     <div className="fritekst">{avsnitt}</div>
                 </div>
             </Link>
-        )
+        );
     }
-});
+};
 
 var skjermleserStatus = {};
 skjermleserStatus[Constants.BESVART] = 'Besvart';
@@ -55,4 +61,4 @@ function skjermleserAntall(antall) {
     return antall + (antall == 1 ? ' melding' : ' meldinger');
 }
 
-module.exports = TraadPreview;
+export default TraadPreview;

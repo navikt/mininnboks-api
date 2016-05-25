@@ -146,4 +146,4 @@ function createId(prefix) {
     return prefix + new Date().getTime() + "-" + Math.random();
 }
 
-module.exports = ModalPortal;
+export default ModalPortal;

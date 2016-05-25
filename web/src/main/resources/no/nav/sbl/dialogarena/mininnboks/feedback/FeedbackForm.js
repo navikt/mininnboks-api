@@ -67,4 +67,4 @@ function generateRef() {
     return "ref-" + Math.random();
 }
 
-module.exports = FeedbackForm;
+export default FeedbackForm;

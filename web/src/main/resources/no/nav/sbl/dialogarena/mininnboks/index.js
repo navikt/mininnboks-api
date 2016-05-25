@@ -12,11 +12,15 @@ import { render } from 'react-dom';
 //Include Logger for å få satt opp en global error handler
 import Logger from './Logger';
 
-var App = React.createClass({
-    getInitialState: function () {
-        return {valgtTraad: null, resources: resources}
-    },
-    componentDidMount: function () {
+class App extends React.Component {
+    
+    constructor(props) {
+        super(props);
+        this.setValgtTraad = this.setValgtTraad.bind(this);
+        this.state = {valgtTraad: null, resources: resources};
+    }
+    
+    componentDidMount () {
         var self = this;
         this.state.resources.fetch()
             .done(function () {
@@ -24,11 +28,13 @@ var App = React.createClass({
             }).fail(function () {
                 self.setState({resources: resources});
             });
-    },
-    setValgtTraad: function (traad) {
+    }
+
+    setValgtTraad (traad) {
         this.setState({valgtTraad: traad});
-    },
-    render: function () {
+    }
+
+    render () {
         var state = this.state;
         var resourcesState = this.state.resources.getPromise().state();
         var content;
@@ -46,7 +52,7 @@ var App = React.createClass({
             </div>
         );
     }
-});
+};
 
 const routes = (
     <Router history={browserHistory}>

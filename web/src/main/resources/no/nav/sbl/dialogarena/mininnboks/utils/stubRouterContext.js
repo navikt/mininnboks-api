@@ -54,4 +54,4 @@ var stubRouterContext = function (Component, props, stubs) {
     });
 };
 
-module.exports = stubRouterContext;
+export default stubRouterContext;

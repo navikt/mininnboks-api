@@ -4,14 +4,17 @@ import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Feilmelding from '../feilmelding/Feilmelding';
 import { Link } from 'react-router';
 
-var ListeVisning = React.createClass({
-    getInitialState: function () {
-        return {traader: [], hentet: false, feilet: {status: false}};
-    },
-    componentDidMount: function () {
+class ListeVisning extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {traader: [], hentet: false, feilet: {status: false}};
+    }
+
+    componentDidMount () {
         $.get('/mininnboks/tjenester/traader/').then(okCallback.bind(this), feiletCallback.bind(this));
-    },
-    render: function () {
+    }
+
+    render () {
         if (!this.state.hentet) {
             return <Snurrepipp />
         }
@@ -35,7 +38,7 @@ var ListeVisning = React.createClass({
             </div>
         );
     }
-});
+};
 
 function okCallback(data) {
     this.setState({
@@ -50,4 +53,4 @@ function feiletCallback() {
     });
 }
 
-module.exports = ListeVisning;
+export default ListeVisning;

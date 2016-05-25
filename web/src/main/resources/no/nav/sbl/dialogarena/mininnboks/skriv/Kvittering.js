@@ -23,4 +23,4 @@ var Kvittering = React.createClass({
     }
 });
 
-module.exports = Kvittering;
+export default Kvittering;

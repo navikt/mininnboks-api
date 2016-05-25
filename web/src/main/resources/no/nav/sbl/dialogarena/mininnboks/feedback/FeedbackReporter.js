@@ -80,4 +80,4 @@ function getAllErrorMessages(errors) {
     return msg;
 }
 
-module.exports = FeedbackReporter;
+export default FeedbackReporter;

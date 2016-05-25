@@ -26,4 +26,4 @@ var Knapper = React.createClass({
     }
 });
 
-module.exports = Knapper;
+export default Knapper;

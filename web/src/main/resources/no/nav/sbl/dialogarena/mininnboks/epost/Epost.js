@@ -1,14 +1,8 @@
 import React from 'react/addons';
 
-var Epost = React.createClass({
-    getDefaultProps: function(){
-        return {
-            erKvittering: false,
-            className: '',
-            linkClass: ''
-        };
-    },
-    render: function() {
+class Epost extends React.Component {
+
+    render () {
         var TPSFeil = !this.props.resources.hasKey('bruker.epost');
         var epost = this.props.resources.get('bruker.epost');
 
@@ -32,7 +26,13 @@ var Epost = React.createClass({
             <p className={this.props.className}>{epostTekst} {infoTekst}</p>
         );
     }
-});
+};
+
+Epost.defaultProps = {
+    erKvittering: false,
+    className: '',
+    linkClass: ''
+};
 
 function getCMSKey(erKvittering, key) {
     if (!erKvittering) {
@@ -42,4 +42,4 @@ function getCMSKey(erKvittering, key) {
     }
 }
 
-module.exports = Epost;
+export default Epost;
