@@ -16,12 +16,8 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenven
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
-import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ER_LEST;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ID;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
 import static org.joda.time.DateTime.now;
@@ -59,7 +55,7 @@ public interface HenvendelseService {
         @Override
         public WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer) {
             String xmlHenvendelseType = SPORSMAL_SKRIFTLIG.name();
-            String enhet = personService.hentEnhet().getOrElse(null);
+            String enhet = personService.hentEnhet().orElse(null);
             XMLHenvendelse info =
                     new XMLHenvendelse()
                             .withHenvendelseType(xmlHenvendelseType)
@@ -108,7 +104,10 @@ public interface HenvendelseService {
         @Override
         public void merkSomLest(String behandlingskjedeId) {
             List<Henvendelse> traad = hentTraad(behandlingskjedeId);
-            List<String> ids = on(traad).filter(where(ER_LEST, equalTo(false))).map(ID).collect();
+            List<String> ids = traad.stream()
+                    .filter(henvendelse -> !henvendelse.isLest())
+                    .map(henvendelse -> henvendelse.id)
+                    .collect(toList());
             innsynHenvendelsePortType.merkSomLest(ids);
         }
 
@@ -123,18 +122,23 @@ public interface HenvendelseService {
                     REFERAT_TELEFON.name(),
                     SPORSMAL_MODIA_UTGAAENDE.name(),
                     SVAR_SBL_INNGAAENDE.name());
-            return on(henvendelsePortType.hentHenvendelseListe(
+            List<Object> WShenvendelsesliste = henvendelsePortType.hentHenvendelseListe(
                     new WSHentHenvendelseListeRequest()
                             .withFodselsnummer(fodselsnummer)
                             .withTyper(typer))
-                    .getAny())
-                    .map(tilHenvendelse(resolver)).collect();
+                    .getAny();
+            return WShenvendelsesliste.stream()
+                    .map(tilHenvendelse(resolver))
+                    .collect(toList());
         }
 
         @Override
         public List<Henvendelse> hentTraad(String behandlingskjedeId) {
-            return on(henvendelsePortType.hentBehandlingskjede(new WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).getAny())
-                    .map(tilHenvendelse(resolver)).collect();
+            List<Object> WSbehandlingskjeder = henvendelsePortType.hentBehandlingskjede(new WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).getAny();
+
+            return WSbehandlingskjeder.stream()
+                    .map(tilHenvendelse(resolver))
+                    .collect(toList());
         }
     }
 }

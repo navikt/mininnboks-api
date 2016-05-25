@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import static no.nav.modig.lang.collections.IterUtils.on;
+import static java.util.stream.Collectors.toList;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
@@ -56,7 +56,9 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
-        List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
+        List<Henvendelse> henvendelserListe = infoList.stream()
+                .map(tilHenvendelse(propertyResolver))
+                .collect(toList());
         Henvendelse sporsmal = henvendelserListe.get(0);
 
         assertStandardFelter(sporsmal);
@@ -74,7 +76,9 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, ID_2, ID_2);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
-        List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
+        List<Henvendelse> henvendelserListe = infoList.stream()
+                .map(tilHenvendelse(propertyResolver))
+                .collect(toList());
         Henvendelse svar = henvendelserListe.get(0);
 
         assertStandardFelter(svar);
@@ -93,7 +97,9 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, ID_3, ID_3);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
-        List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
+        List<Henvendelse> henvendelserListe = infoList.stream()
+                .map(tilHenvendelse(propertyResolver))
+                .collect(toList());
         Henvendelse sporsmal = henvendelserListe.get(0);
 
         assertStandardFelter(sporsmal);
@@ -115,7 +121,7 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SVAR_SKRIFTLIG, ID_4, ID_1);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
-        List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
+        List<Henvendelse> henvendelserListe = infoList.stream().map(tilHenvendelse(propertyResolver)).collect(toList());
         Henvendelse svar = henvendelserListe.get(0);
 
         assertStandardFelter(svar);
@@ -133,7 +139,7 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
-        List<Henvendelse> henvendelserListe = on(infoList).map(tilHenvendelse(propertyResolver)).collect();
+        List<Henvendelse> henvendelserListe = infoList.stream().map(tilHenvendelse(propertyResolver)).collect(toList());
         Henvendelse referat = henvendelserListe.get(0);
 
         assertStandardFelter(referat);
@@ -153,7 +159,7 @@ public class HenvendelsesUtilsTest {
 
         when(propertyResolver.getProperty("innhold.kassert")).thenReturn("Innholdet er kassert");
         when(propertyResolver.getProperty("temagruppe.kassert")).thenReturn("Kassert");
-        Henvendelse referat = tilHenvendelse(propertyResolver).transform(info);
+        Henvendelse referat = tilHenvendelse(propertyResolver).apply(info);
 
         assertThat(referat.fritekst, is("Innholdet er kassert"));
         assertThat(referat.statusTekst, is("Kassert"));
