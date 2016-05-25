@@ -31,11 +31,6 @@ function browserifyTask(isDev) {
     // Our app bundler
     var props = watchify.args;
     props.entries = [
-        MODIG_FRONTEND + 'js/modig/AjaxLoader.js',
-        MODIG_FRONTEND + 'js/modig/dropdown.js',
-        MODIG_FRONTEND + 'js/modig/felles.js',
-        MODIG_FRONTEND + 'js/modig/tooltip.js',
-        MODIG_FRONTEND + 'js/modig/transitions.js',
         SRC_DIR + 'index.js'
     ];
     props.debug = isDev;
