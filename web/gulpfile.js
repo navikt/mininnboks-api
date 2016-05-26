@@ -4,7 +4,6 @@ var source = require('vinyl-source-stream'); // Used to stream bundle for furthe
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify');
-//var karma = require('karma').server;
 var notify = require('gulp-notify');
 var less = require('gulp-less');
 var concat = require('gulp-concat');
@@ -63,34 +62,6 @@ function browserifyTask(isDev) {
     return rebundle();
 }
 
-function bundleJs(bundle) {
-    return bundle.transform(babelifyReact)
-        .bundle()
-        .on('error', function (err) {
-            onError(err);
-            this.emit('end');
-            if (isProduction) {
-                process.exit(1);
-            }
-        })
-        .pipe(source('saksoversikt-bundle.js'))
-        .pipe(gulpif(isProduction, buffer()))
-        .pipe(gulpif(isProduction, uglify())).on('error', function (error) {
-            onError(error);
-            process.exit(1);
-        })
-        .pipe(gulp.dest(OUTPUT_DIRECTORY + 'js/'));
-}
-
-gulp.task('build-js', function () {
-    var bundler = browserify('./app/js/main.jsx', {
-        debug: isDevelopment,
-        fullPaths: isDevelopment,
-        extensions: '.jsx'
-    });
-    return bundleJs(bundler);
-});
-
 function copyImg() {
     console.log('Copying images');
     return gulp.src(MODIG_FRONTEND + 'META-INF/resources/img/**/*')
@@ -128,6 +99,15 @@ gulp.task('test', function (done) {
     new KarmaServer({
         configFile: __dirname + '/karma.conf.js',
         singleRun: true
+    }, function(code) {
+        done();
+        process.exit(code);
+    }).start();
+});
+
+gulp.task('tdd', function (done) {
+    new KarmaServer({
+        configFile: __dirname + '/karma.conf.js'
     }, function(code) {
         done();
         process.exit(code);

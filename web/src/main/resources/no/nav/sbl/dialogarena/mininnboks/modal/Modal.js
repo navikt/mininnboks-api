@@ -2,7 +2,6 @@ import React from 'react';
 import Portal from './ModalPortal.js';
 
 class Modal extends React.Component {
-    
     constructor(props) {
         super(props);
         this.state = { isOpen: this.props.isOpen || false };
@@ -10,8 +9,8 @@ class Modal extends React.Component {
         this.close = this.close.bind(this);
         this.renderPortal = this.renderPortal.bind(this);
     }
-    
-    componentDidMount () {
+
+    componentDidMount() {
         if (typeof this.portalElement === 'undefined') {
             this.portalElement = document.createElement('div');
             this.portalElement.className = "react-modal-container";
@@ -20,28 +19,28 @@ class Modal extends React.Component {
 
         this.renderPortal(this.props, this.state);
     }
-    
-    componentWillReceiveProps (props) {
-        this.renderPortal(props, this.state)
+
+    componentWillReceiveProps(props) {
+        this.renderPortal(props, this.state);
     }
-    
-    componentWillUnmount () {
+
+    componentWillUnmount() {
         document.body.removeChild(this.portalElement);
     }
-    
-    componentDidUpdate (){
-        this.renderPortal(this.props, this.state)
+
+    componentDidUpdate(){
+        this.renderPortal(this.props, this.state);
     }
-    
-    open () {
-        this.setState({isOpen: true});
+
+    open() {
+        this.setState({ isOpen: true });
     }
-    
-    close () {
-        this.setState({isOpen: false});
+
+    close() {
+        this.setState({ isOpen: false });
     }
-    
-    renderPortal (props, state) {
+
+    renderPortal(props, state) {
         var modal = {
             open: this.open,
             close: this.close
@@ -49,11 +48,11 @@ class Modal extends React.Component {
 
         this.modal = React.render(<Portal {...props} {...state} modal={modal} />, this.portalElement);
     }
-    
-    render () {
+
+    render() {
         return null;
     }
-};
+}
 
 Modal.defaultProps = {
     title: {
