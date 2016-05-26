@@ -16,7 +16,7 @@ class TraadPreview extends React.Component {
     }
 
     render () {
-        const {traad} = this.props;
+        const { traad } = this.props;
         var melding = traad.nyeste;
         var temagruppenavn = traad.nyeste.temagruppeNavn;
         var midlertidigAvsendernavn = "Bruker".toLowerCase();
@@ -29,7 +29,7 @@ class TraadPreview extends React.Component {
                   onClick={this.onClick}>
                     <div className="melding">
                         <p className="dato">{dato} / Fra {avsender} </p>
-                        <h2 className="typo-undertittel blokk-xxs">{melding.statusTekst}</h2>
+                        <h2 className="typo-element blokk-xxs">{melding.statusTekst}</h2>
                         <p className="temagruppenavn">{temagruppenavn}</p>
                     </div>
                 </Link>

@@ -47,9 +47,9 @@ class App extends React.Component {
         }
 
         return (
-            <section className="mininnboks">
+            <div className="mininnboks">
                 {content}
-            </section>
+            </div>
         );
     }
 };
