@@ -6,33 +6,44 @@ import Utils from '../utils/Utils';
 import Constants from '../utils/Constants';
 import createFragment from 'react-addons-create-fragment';
 
+const skjermleserStatus = {};
+skjermleserStatus[Constants.BESVART] = 'Besvart';
+skjermleserStatus[Constants.IKKE_LEST] = 'Ikke lest';
+skjermleserStatus[Constants.LEST_UBESVART] = 'Lest ubesvart';
+skjermleserStatus[Constants.LEST] = 'Lest';
+
+function skjermleserAntall(antall) {
+    return antall + (antall === 1 ? ' melding' : ' meldinger');
+}
+
 class TraadPreview extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);
     }
 
-    onClick () {
+    onClick() {
         this.props.setValgtTraad(this.props.traad);
     }
 
-    render () {
-        var melding = this.props.traad.nyeste;
-        var status = Utils.status(melding);
-        var antallMeldinger = this.props.traad.meldinger.length;
+    render() {
+        const { traad: { nyeste, meldinger }, resources } = this.props;
 
-        var dato = Utils.prettyDate(melding.opprettet);
-        var avsnitt = melding.fritekst.split(/[\r\n]+/)
+        const melding = nyeste;
+        const status = Utils.status(melding);
+        const antallMeldinger = meldinger.length;
+
+        const dato = Utils.prettyDate(melding.opprettet);
+        let avsnitt = melding.fritekst.split(/[\r\n]+/)
             .map(Utils.tilAvsnitt());
-        avsnitt = createFragment({
-            avsnitt: avsnitt
-        });
+        avsnitt = createFragment({ avsnitt });
 
-        var purring = melding.type === 'SPORSMAL_MODIA_UTGAAENDE' ?
-            <span className="purring">{this.props.resources.get('purre.svar')}</span> : null;
+        const purring = melding.type === 'SPORSMAL_MODIA_UTGAAENDE' ?
+            <span className="purring">{resources.get('purre.svar')}</span> : <noscript/>;
+
         return (
             <Link to={`/mininnboks/traad/${melding.traadId}`} className={'traadlistevisning ' + status}
-                  onClick={this.onClick}>
+              onClick={this.onClick}>
                 <AntallMeldinger antall={antallMeldinger}/>
                 <MeldingStatus melding={melding}/>
 
@@ -50,16 +61,6 @@ class TraadPreview extends React.Component {
             </Link>
         );
     }
-};
-
-var skjermleserStatus = {};
-skjermleserStatus[Constants.BESVART] = 'Besvart';
-skjermleserStatus[Constants.IKKE_LEST] = 'Ikke lest';
-skjermleserStatus[Constants.LEST_UBESVART] = 'Lest ubesvart';
-skjermleserStatus[Constants.LEST] = 'Lest';
-
-function skjermleserAntall(antall) {
-    return antall + (antall == 1 ? ' melding' : ' meldinger');
 }
 
 export default TraadPreview;
