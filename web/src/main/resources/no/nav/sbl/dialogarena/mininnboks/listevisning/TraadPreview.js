@@ -16,49 +16,26 @@ class TraadPreview extends React.Component {
     }
 
     render () {
-        var melding = this.props.traad.nyeste;
-        var status = Utils.status(melding);
-        var antallMeldinger = this.props.traad.meldinger.length;
+        const { traad } = this.props;
+        var melding = traad.nyeste;
+        var temagruppenavn = traad.nyeste.temagruppeNavn;
+        var midlertidigAvsendernavn = "Bruker".toLowerCase();
+        var avsender = traad.nyeste.fraNav ? <span className="avsender-fra-nav">NAV</span> : <span className="avsender-annen"> {midlertidigAvsendernavn}</span>;
+        var dato = Utils.shortDate(melding.opprettet);
 
-        var dato = Utils.prettyDate(melding.opprettet);
-        var avsnitt = melding.fritekst.split(/[\r\n]+/)
-            .map(Utils.tilAvsnitt());
-        avsnitt = React.addons.createFragment({
-            avsnitt: avsnitt
-        });
-
-        var purring = melding.type === 'SPORSMAL_MODIA_UTGAAENDE' ?
-            <span className="purring">{this.props.resources.get('purre.svar')}</span> : null;
         return (
-            <Link to={`/mininnboks/traad/${melding.traadId}`} className={'traadlistevisning ' + status}
+            <li className="traad">
+                <Link to={`/mininnboks/traad/${melding.traadId}`} className={'panel panel-ikon panel-klikkbart blokk-xxxs dialog'}
                   onClick={this.onClick}>
-                <AntallMeldinger antall={antallMeldinger}/>
-                <MeldingStatus melding={melding}/>
-
-                <div className="melding">
-                    <p className="vekk">{skjermleserStatus[status]}</p>
-
-                    <h2 className="status">{melding.statusTekst}</h2>
-
-                    <p className="vekk">{skjermleserAntall(antallMeldinger)}</p>
-
-                    <p className="dato">{dato}</p>
-                    {purring}
-                    <div className="fritekst">{avsnitt}</div>
-                </div>
-            </Link>
+                    <div className="melding">
+                        <p className="dato">{dato} / Fra {avsender} </p>
+                        <h2 className="typo-element blokk-xxs">{melding.statusTekst}</h2>
+                        <p className="temagruppenavn">{temagruppenavn}</p>
+                    </div>
+                </Link>
+            </li>
         );
     }
 };
-
-var skjermleserStatus = {};
-skjermleserStatus[Constants.BESVART] = 'Besvart';
-skjermleserStatus[Constants.IKKE_LEST] = 'Ikke lest';
-skjermleserStatus[Constants.LEST_UBESVART] = 'Lest ubesvart';
-skjermleserStatus[Constants.LEST] = 'Lest';
-
-function skjermleserAntall(antall) {
-    return antall + (antall == 1 ? ' melding' : ' meldinger');
-}
 
 export default TraadPreview;

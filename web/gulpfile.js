@@ -64,7 +64,7 @@ function browserifyTask(isDev) {
 
 function copyImg() {
     console.log('Copying images');
-    return gulp.src(MODIG_FRONTEND + 'META-INF/resources/img/**/*')
+    return gulp.src([MODIG_FRONTEND + 'META-INF/resources/img/**/*', './src/main/resources/no/nav/sbl/dialogarena/mininnboks/img/**/*'])
         .pipe(gulp.dest(BUILD_DIR + 'img'));
 }
 
