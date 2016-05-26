@@ -26,7 +26,7 @@ class Feilmelding extends React.Component {
 
 Feilmelding.propTypes = {
     visIkon: pt.bool,
-    melding: pt.string,
+    melding: pt.object,
     brodtekst: pt.string
 };
 

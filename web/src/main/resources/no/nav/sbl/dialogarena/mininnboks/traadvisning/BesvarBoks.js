@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes as pt } from 'react';
 import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import FeedbackForm from '../feedback/FeedbackForm';
@@ -69,5 +69,14 @@ class BesvarBoks extends React.Component {
         );
     }
 }
+
+BesvarBoks.propTypes = {
+    resources: pt.shape({
+        get: pt.func.isRequired
+    }),
+    vis: pt.bool,
+    skjul: pt.func,
+    besvar: pt.func
+};
 
 export default BesvarBoks;

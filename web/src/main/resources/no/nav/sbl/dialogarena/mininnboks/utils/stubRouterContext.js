@@ -1,39 +1,38 @@
 import React from 'react';
 const assign = Object.assign || require('object-assign');
 
-var stubRouterContext = function (Component, props, stubs) {
+const stubRouterContext = (Component, props, stubs) => {
     function RouterStub() {
     }
 
     assign(RouterStub, {
-        makePath: function () {
+        makePath() {
         },
-        makeHref: function () {
+        makeHref() {
         },
-        transitionTo: function () {
+        transitionTo() {
         },
-        replaceWith: function () {
+        replaceWith() {
         },
-        goBack: function () {
+        goBack() {
         },
-        getCurrentPath: function () {
+        getCurrentPath() {
         },
-        getCurrentRoutes: function () {
+        getCurrentRoutes() {
         },
-        getCurrentPathname: function () {
+        getCurrentPathname() {
         },
-        getCurrentParams: function () {
+        getCurrentParams() {
         },
-        getCurrentQuery: function () {
+        getCurrentQuery() {
         },
-        isActive: function () {
+        isActive() {
         },
-        getRouteAtDepth: function () {
+        getRouteAtDepth() {
         },
-        getRouteComponentAtDepth: function () {
+        getRouteComponentAtDepth() {
         },
-        createHref: function(localtion) {
-
+        createHref(localtion) {
         }
     }, stubs);
 
@@ -42,16 +41,16 @@ var stubRouterContext = function (Component, props, stubs) {
             router: React.PropTypes.func,
             routeDepth: React.PropTypes.number
         },
-        getChildContext: function () {
+        getChildContext() {
             return {
                 router: RouterStub,
                 routeDepth: 0
             };
         },
-        getComponent: function () {
+        getComponent() {
             return this.refs.component;
         },
-        render: function () {
+        render() {
             return <Component ref="component" {...props} />;
         }
     });

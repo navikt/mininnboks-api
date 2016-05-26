@@ -15,7 +15,7 @@ class MeldingStatus extends React.Component {
 }
 
 MeldingStatus.propTypes = {
-    melding: pt.string
+    melding: pt.object
 };
 
 export default MeldingStatus;

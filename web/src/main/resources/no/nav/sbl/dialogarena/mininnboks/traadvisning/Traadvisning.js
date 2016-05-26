@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes as pt } from 'react';
 import BesvarBoks from'./BesvarBoks';
 import MeldingContainer from './MeldingContainer';
 import Knapper from './Knapper';
@@ -164,5 +164,15 @@ class TraadVisning extends React.Component {
         );
     }
 }
+
+TraadVisning.propTypes = {
+    resources: pt.shape({
+        get: pt.func.isRequired
+    }),
+    params: pt.shape({
+        traadId: pt.string
+    }),
+    valgtTraad: pt.object
+};
 
 export default TraadVisning;

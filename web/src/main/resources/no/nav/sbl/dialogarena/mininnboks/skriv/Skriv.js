@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes as pt } from 'react';
 import { Link } from 'react-router';
 import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
 import FeedbackForm from '../feedback/FeedbackForm';
@@ -66,8 +66,8 @@ class Skriv extends React.Component {
                 <div>
                     <div>
                         <input type="submit" className="send-link knapp-hoved-stor" role="button"
-                           value={this.props.resources.get('send-sporsmal.still-sporsmal.send-inn')}
-                           onClick={this.onSubmit}
+                          value={this.props.resources.get('send-sporsmal.still-sporsmal.send-inn')}
+                          onClick={this.onSubmit}
                         />
                     </div>
                     <div className="avbryt">
@@ -118,5 +118,14 @@ class Skriv extends React.Component {
         );
     }
 }
+
+Skriv.propTypes = {
+    resources: pt.shape({
+        get: pt.func.isRequired
+    }),
+    params: pt.shape({
+        temagruppe: pt.string
+    })
+};
 
 export default Skriv;

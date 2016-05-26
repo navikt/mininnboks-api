@@ -10,7 +10,7 @@ import { findRenderedDOMComponentWithClass, renderIntoDocument } from 'react-add
 function createModal(props, children) {
     return renderIntoDocument(React.createElement(
             Modal, props || {},
-            children || React.createElement('span', {className: 'forReference'}, 'test'))
+            children || React.createElement('span', { className: 'forReference' }, 'test'))
     );
 }
 function getContent(modal) {
