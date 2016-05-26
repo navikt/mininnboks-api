@@ -16,8 +16,8 @@ var babelify = require('babelify');
 var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
 var BUILD_DIR = './src/main/webapp/build/';
 var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources/';
-const eslint = require('gulp-eslint');
-const KarmaServer = require('karma').Server;
+var eslint = require('gulp-eslint');
+var KarmaServer = require('karma').Server;
 
 var babelifyReact = function (file) {
     return babelify(file,
