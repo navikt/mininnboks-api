@@ -35,6 +35,9 @@ var Utils = {
     prettyDate: function (date) {
         return moment(date).format('Do MMMM YYYY, [kl.] HH:mm');
     },
+    shortDate: function (date) {
+        return moment(date).format('DD.MM.YY')
+    },
     getCookie: function (name) {
         var re = new RegExp(name + '=([^;]+)');
         var match = re.exec(document.cookie);

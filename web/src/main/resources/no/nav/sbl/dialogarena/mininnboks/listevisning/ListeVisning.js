@@ -30,7 +30,7 @@ class ListeVisning extends React.Component {
 
         return (
             <div>
-                <h1 className="diger">{this.props.resources.get('innboks.overskrift')}</h1>
+                <h1 className="typo-sidetittel text-center blokk-l">{this.props.resources.get('innboks.overskrift')}</h1>
                 <div className="innboks-navigasjon clearfix">
                      <Link to={this.props.resources.get('skriv.ny.link')} className="skriv-ny-link knapp-hoved-liten" >{this.props.resources.get('innboks.skriv.ny.link')}</Link>
                 </div>
