@@ -1,14 +1,14 @@
 (function () {
-    var Ap = Array.prototype;
-    var slice = Ap.slice;
-    var Fp = Function.prototype;
+    const Ap = Array.prototype;
+    const slice = Ap.slice;
+    const Fp = Function.prototype;
 
     Fp.bind = function (context) {
-        var func = this;
-        var args = slice.call(arguments, 1);
+        const func = this;
+        const args = slice.call(arguments, 1);
 
         function bound() {
-            var invokedAsContructor = func.prototype && (this instanceof func);
+            const invokedAsContructor = func.prototype && (this instanceof func);
             return func.apply(
                 !invokedAsContructor && context || this, args.concat(slice.call(arguments))
             );
@@ -20,17 +20,18 @@
     };
 })();
 
-//jQuery
+// jQuery
 window.$ = require('jquery');
 
-//shim for $(':focusable') since it is part of jQuery UI and we dont need that.
+// shim for $(':focusable') since it is part of jQuery UI and we dont need that.
 function visible(element) {
     return $.expr.filters.visible(element) && !$(element).parents().addBack().filter(function () {
             return $.css(this, 'visibility') === 'hidden';
         }).length;
 }
 function focusable(element, isTabIndexNotNaN) {
-    var map, mapName, img, nodeName = element.nodeName.toLowerCase();
+    let map, mapName, img;
+    const nodeName = element.nodeName.toLowerCase();
 
     if ('area' === nodeName) {
         map = element.parentNode;
@@ -45,19 +46,19 @@ function focusable(element, isTabIndexNotNaN) {
 
     return (/input|select|textarea|button|object/.test(nodeName) ?
             !element.disabled :
-            'a' === nodeName ?
+            nodeName === 'a' ?
             element.href || isTabIndexNotNaN :
                 isTabIndexNotNaN) &&
         visible(element);
 }
 
 function tabbable(element) {
-    var tabIndex = $.attr(element, 'tabindex');
+    let tabIndex = $.attr(element, 'tabindex');
     if (tabIndex === null) {
         tabIndex = undefined;
     }
 
-    var isTabIndexNaN = isNaN(tabIndex);
+    const isTabIndexNaN = isNaN(tabIndex);
     return (isTabIndexNaN || tabIndex >= 0) && focusable(element, !isTabIndexNaN);
 }
 

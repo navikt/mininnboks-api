@@ -3,25 +3,28 @@ import React from 'react';
 var ModalPortal = React.createClass({
     focusAfterClose: undefined,
 
-    getDefaultProps: function () {
+    getDefaultProps() {
         return {
             skipFocus: ['div'],
             isOpen: false
         };
     },
-    getInitialState: function () {
+
+    getInitialState() {
         return {
             title: createAriaOptional('title', this.props.title),
             description: createAriaOptional('description', this.props.description),
             closeButton: createAriaOptional('closeButton', this.props.closeButton)
         }
     },
-    componentDidMount: function () {
+
+    componentDidMount() {
         if (this.props.isOpen === true) {
             this.focusFirst();
         }
     },
-    componentDidUpdate: function () {
+
+    componentDidUpdate() {
         if (this.props.isOpen) {
             $(document.body).addClass('modal-open');
             $(document.body).children().not(this.getDOMNode().parentNode).attr('aria-hidden', true);
@@ -35,13 +38,14 @@ var ModalPortal = React.createClass({
             $(document.body).removeClass('modal-open');
         }
     },
-    keyHandler: function (event) {
-        var keyMap = {
-            27: function escHandler() { //ESC
+
+    keyHandler(event) {
+        const keyMap = {
+            27: function escHandler() { // ESC
                 this.props.modal.close();
                 event.preventDefault();
             },
-            9: function tabHandler() { //TAB
+            9: function tabHandler() { // TAB
                 if (this.handleTab(event.shiftKey)) {
                     event.preventDefault();
                 }
@@ -51,27 +55,29 @@ var ModalPortal = React.createClass({
         (keyMap[event.keyCode] || function () {
         }).bind(this)();
 
-        //No leaks
+        // No leaks
         event.stopPropagation();
     },
-    handleTab: function (isShiftkey) {
-        var $content = $(this.refs.content.getDOMNode());
-        var focusable = $content.find(':tabbable');
-        var lastValidIndex = isShiftkey ? 0 : focusable.length - 1;
+
+    handleTab(isShiftkey) {
+        const $content = $(this.refs.content.getDOMNode());
+        const focusable = $content.find(':tabbable');
+        const lastValidIndex = isShiftkey ? 0 : focusable.length - 1;
 
 
-        var currentFocusElement = $content.find(':focus');
+        const currentFocusElement = $content.find(':focus');
 
         if (focusable.eq(lastValidIndex).is(currentFocusElement)) {
-            var newFocusIndex = isShiftkey ? focusable.length - 1 : 0;
+            const newFocusIndex = isShiftkey ? focusable.length - 1 : 0;
             focusable.eq(newFocusIndex).focus();
             return true;
         }
         return false;
     },
-    focusFirst: function () {
+
+    focusFirst() {
         this.focusAfterClose = document.activeElement;
-        var tabbables = $(this.refs.content.getDOMNode()).find(':tabbable');
+        let tabbables = $(this.refs.content.getDOMNode()).find(':tabbable');
         this.props.skipFocus.forEach(function (skipFocusTag) {
             tabbables = tabbables.not(skipFocusTag);
         });
@@ -80,14 +86,16 @@ var ModalPortal = React.createClass({
             tabbables.eq(0).focus();
         }
     },
-    restoreFocus: function () {
+
+    restoreFocus() {
         if (this.focusAfterClose) {
             this.focusAfterClose.focus();
             this.focusAfterClose = undefined;
         }
     },
-    render: function () {
-        var children = this.props.children;
+
+    render() {
+        let children = this.props.children;
         if (!children.hasOwnProperty('length')) {
             children = [children];
         }
@@ -98,18 +106,21 @@ var ModalPortal = React.createClass({
             });
         }.bind(this));
 
-        var title = this.state.title;
-        var description = this.state.description;
-        var closeButton = null;
+        const title = this.state.title;
+        const description = this.state.description;
+        let closeButton = null;
         if (this.props.closeButton.show) {
-            closeButton = <button className="closeButton" onClick={this.props.modal.close}>
-                {this.state.closeButton.visible}
-            </button>;
+            closeButton = (
+                <button className="closeButton" onClick={this.props.modal.close}>
+                    {this.state.closeButton.visible}
+                </button>
+            );
         }
 
-        var cls = this.props.isOpen ? '' : 'hidden';
+        const cls = this.props.isOpen ? '' : 'hidden';
         return (
-            <div tabIndex="-1" className={cls} aria-hidden={!this.props.isOpen} onKeyDown={this.keyHandler} role="dialog" aria-labelledby={title.id} aria-describedby={description.id}>
+            <div tabIndex="-1" className={cls} aria-hidden={!this.props.isOpen} onKeyDown={this.keyHandler}
+              role="dialog" aria-labelledby={title.id} aria-describedby={description.id}>
                 <div className="backdrop" onClick={this.props.modal.close}></div>
                     {title.hidden}
                     {description.hidden}
@@ -126,24 +137,27 @@ var ModalPortal = React.createClass({
     }
 });
 
+function createId(prefix) {
+    return `${prefix}${new Date().getTime()}-${Math.random()}`;
+}
+
 function createAriaOptional(name, data) {
-    var id = createId('react-modalx-' + name + '-');
-    var tagComponent = data.tag.split(".");
-    var tagType = tagComponent[0];
-    var className = "";
+    const id = createId('react-modalx-' + name + '-');
+    const tagComponent = data.tag.split('.');
+    const tagType = tagComponent[0];
+    let className = '';
 
     if (tagComponent.length > 1) {
         className = tagComponent[1];
     }
-    var element = React.createElement(tagType, {id: id, className: className}, data.text);
+    const element = React.createElement(tagType, { id, className }, data.text);
+
     return {
-        id: id,
+        id,
         hidden: data.show ? null : element,
         visible: data.show ? element : null
     };
 }
-function createId(prefix) {
-    return prefix + new Date().getTime() + "-" + Math.random();
-}
+
 
 export default ModalPortal;

@@ -1,23 +1,38 @@
 import React from 'react';
 import ValidatableMixin from '../feedback/ValidatableMixin';
 
-var ExpandingTextArea = React.createClass({
+const ExpandingTextArea = React.createClass({
     mixins: [ValidatableMixin],
-    getDefaultProps: function () {
-        return {minChars: 1, maxChars: 1000, minHeightPx: 140, placeholder: '', charsLeftText: 'Chars left'}
+    getDefaultProps() {
+        return { minChars: 1, maxChars: 1000, minHeightPx: 140, placeholder: '', charsLeftText: 'Chars left' };
     },
-    getInitialState: function () {
-        return {input: ''}
+
+    getInitialState() {
+        return { input: '' };
     },
-    componentDidMount: function () {
+
+    componentDidMount() {
         this.setPlaceholder();
         $(this.refs.textarea.getDOMNode()).focus();
     },
-    getInput: function () {
+
+    onTextAreaChange(event) {
+        const text = event.target.value;
+        this.setState({ input: text });
+        this.adjustTextAreaHeight();
+        this.validate(text);
+    },
+
+    onTextAreaBlur(event) {
+        this.validate(event.target.value);
+    },
+
+    getInput() {
         return this.state.input;
     },
-    setPlaceholder: function () {
-        var placeholder = this.props.placeholder;
+
+    setPlaceholder() {
+        const placeholder = this.props.placeholder;
         if (placeholder.length === 0) {
             return;
         }
@@ -26,7 +41,7 @@ var ExpandingTextArea = React.createClass({
             .css('color', '#999')
             .focus(function () {
                 if ($(this).val() === placeholder) {
-                    $(this).val("");
+                    $(this).val('');
                     $(this).css('color', 'inherit');
                 }
             })
@@ -37,61 +52,58 @@ var ExpandingTextArea = React.createClass({
                 }
             });
     },
-    onTextAreaChange: function (event) {
-        var text = event.target.value;
-        this.setState({input: text});
-        this.adjustTextAreaHeight();
-        this.validate(text);
-    },
-    onTextAreaBlur: function (event) {
-        this.validate(event.target.value);
-    },
-    validate: function (text) {
+
+    validate(text) {
         text = text || this.state.input;
-        var charCount = this.charCount(text);
+        const charCount = this.charCount(text);
         if (charCount > this.props.maxChars) {
-            this.error('Teksten er for lang')
+            this.error('Teksten er for lang');
         } else if (charCount < this.props.minChars) {
             this.error('Tekstfeltet er tomt');
         } else {
-            this.valid()
+            this.valid();
         }
     },
-    charCount: function (input) {
+
+    charCount(input) {
         return input === this.props.placeholder ? 0 : input.length;
     },
-    charsLeft: function () {
+
+    charsLeft() {
         return this.props.maxChars - this.charCount(this.state.input);
     },
-    adjustTextAreaHeight: function () {
-        var $mirror = $(this.refs.textareamirror.getDOMNode());
-        var $textarea = $(this.refs.textarea.getDOMNode());
+
+    adjustTextAreaHeight() {
+        const $mirror = $(this.refs.textareamirror.getDOMNode());
+        const $textarea = $(this.refs.textarea.getDOMNode());
         $mirror
             .outerWidth($textarea.outerWidth())
-            .text($textarea.val() + '\n');
+            .text(` ${$textarea.val()} \n`);
         $textarea
-            .outerHeight(Math.max($mirror.outerHeight(), this.props.minHeightPx) + 'px');
+            .outerHeight(` ${Math.max($mirror.outerHeight(), this.props.minHeightPx)} px`);
     },
-    render: function () {
-        var noMoreCharsClass = this.charsLeft() >= 0 ? '' : ' invalid';
-        var textareaClass = this.isValid() ? '' : 'invalid';
 
-        var validationMessages = this.props.showInline ? this.getErrorElements(undefined, '-inline') : null;
+    render() {
+        const noMoreCharsClass = this.charsLeft() >= 0 ? '' : ' invalid';
+        const textareaClass = this.isValid() ? '' : 'invalid';
+
+        const validationMessages = this.props.showInline ? this.getErrorElements(undefined, '-inline') : null;
 
         return (
             <div className="expandingtextarea">
                 <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>
                 <textarea ref="textarea" className={textareaClass}
-                    title={this.props.placeholder}
-                    aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId('-inline')}
-                    onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur} />
-                <span className={'charsLeft' + noMoreCharsClass}>{this.charsLeft()}</span>
-                <span>{' ' + this.props.charsLeftText}</span>
+                  title={this.props.placeholder}
+                  aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId('-inline')}
+                  onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur}
+                />
+                <span className={`charsLeft ${noMoreCharsClass}`}>{this.charsLeft()}</span>
+                <span>{` ${this.props.charsLeftText}`}</span>
                 <div id="validation-messages">
                     {validationMessages}
                 </div>
             </div>
-        )
+        );
     }
 });
 

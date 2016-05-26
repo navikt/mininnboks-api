@@ -12,7 +12,7 @@ class Kvittering extends React.Component {
 
                     <div className="robust-strek"></div>
 
-                    <p dangerouslySetInnerHTML={{__html: this.props.resources.get('send-sporsmal.bekreftelse.varslingsinfo')}}></p>
+                    <p dangerouslySetInnerHTML={{ __html: this.props.resources.get('send-sporsmal.bekreftelse.varslingsinfo') }}></p>
 
                     <hr/>
                 </div>
@@ -20,6 +20,6 @@ class Kvittering extends React.Component {
             </article>
         );
     }
-};
+}
 
 export default Kvittering;

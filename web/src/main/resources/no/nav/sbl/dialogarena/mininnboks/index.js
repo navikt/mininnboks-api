@@ -9,41 +9,43 @@ import Skriv from './skriv/Skriv';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { render } from 'react-dom';
 
-//Include Logger for å få satt opp en global error handler
+// Include Logger for å få satt opp en global error handler
 import Logger from './Logger';
 
 class App extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.setValgtTraad = this.setValgtTraad.bind(this);
-        this.state = {valgtTraad: null, resources: resources};
+        this.state = { valgtTraad: null, resources: resources };
     }
     
-    componentDidMount () {
-        var self = this;
+    componentDidMount() {
+        const self = this;
         this.state.resources.fetch()
             .done(function () {
-                self.setState({resources: resources});
+                self.setState({ resources: resources });
             }).fail(function () {
-                self.setState({resources: resources});
+                self.setState({ resources: resources });
             });
     }
 
-    setValgtTraad (traad) {
-        this.setState({valgtTraad: traad});
+    setValgtTraad(traad) {
+        this.setState({ valgtTraad: traad });
     }
 
-    render () {
-        var state = this.state;
-        var resourcesState = this.state.resources.getPromise().state();
-        var content;
+    render() {
+        const state = this.state;
+        const resourcesState = this.state.resources.getPromise().state();
+        let content;
         if (resourcesState === 'pending') {
-            content = <Snurrepipp />
+            content = <Snurrepipp />;
         } else if (resourcesState === 'rejected') {
             content = <Feilmelding visIkon={true} melding="Kunne ikke hente ut standardtekster for denne applikasjonen." />;
         } else {
-            content = React.cloneElement(this.props.children, {valgtTraad : state.valgtTraad, resources: state.resources, setValgtTraad : this.setValgtTraad});
+            content = React.cloneElement(this.props.children,
+                { valgtTraad: state.valgtTraad, resources: state.resources, setValgtTraad: this.setValgtTraad }
+            );
         }
 
         return (
@@ -52,7 +54,7 @@ class App extends React.Component {
             </div>
         );
     }
-};
+}
 
 const routes = (
     <Router history={browserHistory}>
