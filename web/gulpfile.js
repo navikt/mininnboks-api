@@ -28,7 +28,6 @@ var babelifyReact = function (file) {
 };
 
 function browserifyTask(isDev) {
-    process.env.NODE_ENV = 'development';
     console.log('Starting browserify in ' + (isDev ? 'development' : 'production') + ' mode. NODE_ENV: ' + process.env.NODE_ENV);
     // Our app bundler
     var props = watchify.args;
@@ -63,6 +62,34 @@ function browserifyTask(isDev) {
 
     return rebundle();
 }
+
+function bundleJs(bundle) {
+    return bundle.transform(babelifyReact)
+        .bundle()
+        .on('error', function (err) {
+            onError(err);
+            this.emit('end');
+            if (isProduction) {
+                process.exit(1);
+            }
+        })
+        .pipe(source('saksoversikt-bundle.js'))
+        .pipe(gulpif(isProduction, buffer()))
+        .pipe(gulpif(isProduction, uglify())).on('error', function (error) {
+            onError(error);
+            process.exit(1);
+        })
+        .pipe(gulp.dest(OUTPUT_DIRECTORY + 'js/'));
+}
+
+gulp.task('build-js', function () {
+    var bundler = browserify('./app/js/main.jsx', {
+        debug: isDevelopment,
+        fullPaths: isDevelopment,
+        extensions: '.jsx'
+    });
+    return bundleJs(bundler);
+});
 
 function copyImg() {
     console.log('Copying images');
