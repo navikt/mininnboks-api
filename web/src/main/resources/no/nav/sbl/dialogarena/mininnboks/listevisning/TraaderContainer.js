@@ -30,13 +30,13 @@ class TraadContainer extends React.Component {
         return (
             <div>
                 <section className="ulest">
-                    <h1 className="panel overstyrt blokk-xxxs clearfix typo-undertittel">{this.props.resources.get('innboks.uleste.tittel')}</h1>
+                    <h1 className="panel blokk-xxxs clearfix typo-undertittel">{this.props.resources.get('innboks.uleste.tittel')}</h1>
                     <ul className="ustilet">
                         {ulesteTraader}
                     </ul>
                 </section>
                 <section className="lest">
-                    <h1 className="panel overstyrt blokk-xxxs clearfix typo-undertittel">{this.props.resources.get('innboks.leste.tittel')}</h1>
+                    <h1 className="panel blokk-xxxs clearfix typo-undertittel">{this.props.resources.get('innboks.leste.tittel')}</h1>
                     <ul className="ustilet">
                         {lesteTraader}
                     </ul>
