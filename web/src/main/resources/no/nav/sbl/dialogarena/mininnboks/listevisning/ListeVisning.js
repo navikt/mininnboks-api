@@ -3,6 +3,7 @@ import TraaderContainer from './TraaderContainer';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Feilmelding from '../feilmelding/Feilmelding';
 import { Link } from 'react-router';
+import { injectIntl, intlShape } from 'react-intl';
 
 function okCallback(data) {
     this.setState({
@@ -12,7 +13,7 @@ function okCallback(data) {
 }
 function feiletCallback() {
     this.setState({
-        feilet: { status: true, melding: this.props.resources.get('innboks.kunne-ikke-hente-meldinger') },
+        feilet: { status: true, melding: formatMessage({ id: 'innboks.kunne-ikke-hente-meldinger'} ) },
         hentet: true
     });
 }
@@ -32,23 +33,23 @@ class ListeVisning extends React.Component {
             return <Snurrepipp />;
         }
 
-        const { resources, setValgtTraad } = this.props;
+        const { setValgtTraad, intl: { formatMessage } } = this.props;
 
         let content;
         if (this.state.feilet.status) {
             content = <Feilmelding melding={this.state.feilet.melding} />;
         } else if (this.state.traader.length === 0) {
-            content = <Feilmelding melding={resources.get('innboks.tom-innboks-melding')}/>;
+            content = <Feilmelding melding={formatMessage({ id: 'innboks.tom-innboks-melding'} )}/>;
         } else {
-            content = <TraaderContainer traader={this.state.traader} setValgtTraad={setValgtTraad} resources={resources} />;
+            content = <TraaderContainer traader={this.state.traader} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>;
         }
 
         return (
             <div>
-                <h1 className="typo-sidetittel text-center blokk-l">{this.props.resources.get('innboks.overskrift')}</h1>
-                <h1 className="diger">{resources.get('innboks.overskrift')}</h1>
+                <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'innboks.overskrift' })}</h1>
+                <h1 className="diger">{formatMessage({ id: 'innboks.overskrift'} )}</h1>
                 <div className="innboks-navigasjon clearfix">
-                     <Link to={resources.get('skriv.ny.link')} className="skriv-ny-link knapp-hoved-liten" >{resources.get('innboks.skriv.ny.link')}</Link>
+                     <Link to={formatMessage({ id: 'skriv.ny.link'} )} className="skriv-ny-link knapp-hoved-liten" >{formatMessage({ id: 'innboks.skriv.ny.link'} )}</Link>
                 </div>
                 {content}
             </div>
@@ -56,4 +57,8 @@ class ListeVisning extends React.Component {
     }
 }
 
-export default ListeVisning;
+ListeVisning.propTypes = {
+    intl: intlShape
+};
+
+export default injectIntl(ListeVisning);

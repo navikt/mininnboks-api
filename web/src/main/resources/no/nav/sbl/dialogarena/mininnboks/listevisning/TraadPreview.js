@@ -13,11 +13,13 @@ class TraadPreview extends React.Component {
     }
 
     render() {
-        const { traad } = this.props;
+        const { traad, formatMessage } = this.props;
         const melding = traad.nyeste;
         const temagruppenavn = traad.nyeste.temagruppeNavn;
         const midlertidigAvsendernavn = 'Bruker'.toLowerCase();
-        const avsender = traad.nyeste.fraNav ? <span className="avsender-fra-nav">NAV</span> : <span className="avsender-annen">{midlertidigAvsendernavn}</span>;
+        const avsender = traad.nyeste.fraNav ? 
+            <span className="avsender-fra-nav">{formatMessage({ id: 'avsender.tekst.NAV' } )}</span> : 
+            <span className="avsender-annen">{midlertidigAvsendernavn}</span>;
         const dato = Utils.shortDate(melding.opprettet);
 
         return (

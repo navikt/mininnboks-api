@@ -8,6 +8,7 @@ import Feilmelding from '../feilmelding/Feilmelding';
 import InfoBoks from '../infoboks/Infoboks';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Utils from '../utils/Utils';
+import { injectIntl, intlShape } from 'react-intl';
 
 class Skriv extends React.Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class Skriv extends React.Component {
     }
 
     componentWillMount() {
-        this.godkjenteForSporsmal = this.props.resources.get('temagruppe.liste').split(' ');
+        this.godkjenteForSporsmal = this.props.intl.formatMessage({ id: 'temagruppe.liste' }).split(' ');
     }
 
     onSubmit(evt) {
@@ -50,12 +51,14 @@ class Skriv extends React.Component {
     }
 
     render() {
-        if (this.godkjenteForSporsmal.indexOf(this.props.params.temagruppe) < 0) {
+        const { params, intl : { formatMessage }} = this.props;
+
+        if (this.godkjenteForSporsmal.indexOf(params.temagruppe) < 0) {
             return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon={true}/>;
         }
 
         if (this.state.sendt) {
-            return <Kvittering resources={this.props.resources}/>;
+            return <Kvittering formatMessage={formatMessage}/>;
         }
 
         let knapper;
@@ -66,13 +69,13 @@ class Skriv extends React.Component {
                 <div>
                     <div>
                         <input type="submit" className="send-link knapp-hoved-stor" role="button"
-                          value={this.props.resources.get('send-sporsmal.still-sporsmal.send-inn')}
+                          value={formatMessage({ id: 'send-sporsmal.still-sporsmal.send-inn' })}
                           onClick={this.onSubmit}
                         />
                     </div>
                     <div className="avbryt">
                         <Link to="/mininnboks/">
-                            {this.props.resources.get('send-sporsmal.still-sporsmal.avbryt')}
+                            {formatMessage({ id: 'send-sporsmal.still-sporsmal.avbryt' })}
                         </Link>
                     </div>
                 </div>
@@ -81,36 +84,36 @@ class Skriv extends React.Component {
 
         const infoboks = this.state.sendingfeilet ?
             <InfoBoks.Feil>
-                <p>{this.props.resources.get('send-sporsmal.still-sporsmal.underliggende-feil')}</p>
+                <p>{formatMessage({ id: 'send-sporsmal.still-sporsmal.underliggende-feil' })}</p>
             </InfoBoks.Feil>
             : null;
 
         return (
             <div>
-                <h1 className="diger">{this.props.resources.get('send-sporsmal.still-sporsmal.ny-melding-overskrift')}</h1>
+                <h1 className="diger">{formatMessage({ id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift'} )}</h1>
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">
                         <img src="/mininnboks/build/img/melding_graa.svg"
-                          alt={this.props.resources.get('meldingikon.alternativ.tekst')}
+                          alt={formatMessage({ id: 'meldingikon.alternativ.tekst' })}
                         />
 
-                        <h2 className="stor deloverskrift">{this.props.resources.get('send-sporsmal.still-sporsmal.deloverskrift')}</h2>
+                        <h2 className="stor deloverskrift">{formatMessage({ id: 'send-sporsmal.still-sporsmal.deloverskrift' })}</h2>
 
                         <div className="robust-strek"></div>
                     </div>
 
-                    <strong>{this.props.resources.get(this.props.params.temagruppe)}</strong>
+                    <strong>{formatMessage({ id: params.temagruppe })}</strong>
 
-                    <p className="hjelpetekst">{this.props.resources.get('send-sporsmal.still-sporsmal.hjelpetekst')}</p>
+                    <p className="hjelpetekst">{formatMessage({ id: 'send-sporsmal.still-sporsmal.hjelpetekst' })}</p>
                     <FeedbackForm ref="form">
                         {infoboks}
                         <ExpandingTextArea
-                          placeholder={this.props.resources.get('skriv-sporsmal.fritekst.placeholder')}
-                          charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
+                          placeholder={formatMessage({ id: 'skriv-sporsmal.fritekst.placeholder' })}
+                          charsLeftText={formatMessage({ id: 'traadvisning.besvar.tekstfelt.tegnigjen' })}
                           feedbackref="textarea"
                         />
 
-                        <GodtaVilkar feedbackref="godtavilkar"/>
+                        <GodtaVilkar feedbackref="godtavilkar" formatMessage={formatMessage}/>
                         {knapper}
                     </FeedbackForm>
                 </article>
@@ -120,12 +123,10 @@ class Skriv extends React.Component {
 }
 
 Skriv.propTypes = {
-    resources: pt.shape({
-        get: pt.func.isRequired
-    }),
     params: pt.shape({
         temagruppe: pt.string
-    })
+    }),
+    intl: intlShape.isRequired
 };
 
-export default Skriv;
+export default injectIntl(Skriv);

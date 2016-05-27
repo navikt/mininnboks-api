@@ -13,10 +13,11 @@ function getTraadLister(traader) {
 
 class TraadContainer extends React.Component {
     render() {
+        const { formatMessage, setValgtTraad } = this.props;
         const traader = getTraadLister(this.props.traader);
-        
-        let ulesteTraader = traader.uleste.map(traad => <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={this.props.setValgtTraad} resources={this.props.resources}/>);
-        let lesteTraader = traader.leste.map(traad => <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={this.props.setValgtTraad} resources={this.props.resources}/>);
+
+        let ulesteTraader = traader.uleste.map(traad => <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>);
+        let lesteTraader = traader.leste.map(traad => <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>);
 
         if(lesteTraader.length === 0) {
             lesteTraader = <p className="panel"> Du har ingen leste meldinger</p>
@@ -29,13 +30,13 @@ class TraadContainer extends React.Component {
         return (
             <div>
                 <section className="ulest">
-                    <h1 className="panel blokk-xxxs clearfix typo-undertittel">{this.props.resources.get('innboks.uleste.tittel')}</h1>
+                    <h1 className="panel blokk-xxxs clearfix typo-undertittel">{formatMessage({ id: 'innboks.uleste.tittel'} )}</h1>
                     <ul className="ustilet">
                         {ulesteTraader}
                     </ul>
                 </section>
                 <section className="lest">
-                    <h1 className="panel blokk-xxxs clearfix typo-undertittel">{this.props.resources.get('innboks.leste.tittel')}</h1>
+                    <h1 className="panel blokk-xxxs clearfix typo-undertittel">{formatMessage({ id: 'innboks.leste.tittel'} )}</h1>
                     <ul className="ustilet">
                         {lesteTraader}
                     </ul>

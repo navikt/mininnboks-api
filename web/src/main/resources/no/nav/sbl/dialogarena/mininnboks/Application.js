@@ -24,13 +24,8 @@ class Application extends React.Component {
     render() {
         const headerlevel = !!this.props.location.query.headerlevel;
         const { harHentetInitData, children, tekster } = this.props;
-        if(harHentetInitData) {
-            console.log(tekster);
-            console.log(tekster['henvendelse.status.SVAR_SKRIFTLIG.lest']);
-            console.log(tekster);
-            return  renderApplication(children, tekster, headerlevel);
-        }
-        return <Snurrepipp />;
+
+        return harHentetInitData ? renderApplication(children, tekster, headerlevel) : <Snurrepipp />;
     }
 }
 

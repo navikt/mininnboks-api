@@ -1,6 +1,5 @@
 import React, { PropTypes as pt } from 'react';
 import { Link } from 'react-router';
-import format from 'string-format';
 
 class Knapper extends React.Component {
     constructor(props) {
@@ -16,9 +15,11 @@ class Knapper extends React.Component {
     }
 
     render() {
-        const skrivSvar = this.props.kanBesvares && !this.props.besvares ?
+        const { formatMessage, kanBesvares, besvares } = this.props;
+        
+        const skrivSvar = kanBesvares && !besvares ?
             <button onClick={this.besvar} className="knapp-hoved-liten">
-                {this.props.resources.get('traadvisning.skriv.svar.link')}
+                {formatMessage({ id: 'traadvisning.skriv.svar.link' })}
             </button> :
             <noscript/>;
 
@@ -26,7 +27,7 @@ class Knapper extends React.Component {
             <div className="knapper">
                 {skrivSvar}
                 <p>
-                    <Link to="/mininnboks/" title="Tilbake til innboksen">{this.props.resources.get('traadvisning.innboks.link')}</Link>
+                    <Link to="/mininnboks/" title="Tilbake til innboksen">{formatMessage({ id: 'traadvisning.innboks.link' })}</Link>
                 </p>
             </div>
         );
@@ -34,9 +35,7 @@ class Knapper extends React.Component {
 }
 
 Knapper.propTypes = {
-    resources: pt.shape({
-        get: pt.func.isRequired
-    }),
+    formatMessage: pt.func.isRequired,
     kanBesvares: pt.bool,
     besvares: pt.bool,
     besvar: pt.func

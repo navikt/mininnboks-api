@@ -2,6 +2,7 @@ import React from 'react';
 import ValidatableMixin from '../feedback/ValidatableMixin';
 import Resources from '../resources/Resources';
 import Betingelser from './Betingelser';
+import { injectIntl, intlShape } from 'react-intl';
 
 var GodtaVilkar = React.createClass({
     mixins: [ValidatableMixin],
@@ -26,7 +27,7 @@ var GodtaVilkar = React.createClass({
         if (checked) {
             this.valid();
         } else {
-            this.error(Resources.get('send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert'));
+            this.error(formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.feilmelding.ikke-akseptert' }));
         }
     },
     
@@ -41,6 +42,7 @@ var GodtaVilkar = React.createClass({
     },
 
     render() {
+        const { formatMessage } = this.props.intl;
         const errorMessages = this.getErrorMessages();
         const validationErrorClass = errorMessages.length === 0 ? '' : 'validation-error error';
         const validationMessages = this.props.showInline ? this.getErrorElements('span.checkbox-feilmelding', '-inline') : null;
@@ -55,10 +57,11 @@ var GodtaVilkar = React.createClass({
                     />
                     <label htmlFor="betingelser"
                         className={validationErrorClass}>
-                        <span>{Resources.get('send-sporsmal.still-sporsmal.betingelser.sjekkboks')}</span>
-                        <a href="#" className="vilkarlenke" onClick={this.visbetingelser}>{Resources.get('send-sporsmal.still-sporsmal.betingelser.vis')}</a>
+                        <span>{formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.sjekkboks' })}</span>
+                        <a href="#" className="vilkarlenke" onClick={this.visbetingelser}>{formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.vis' })}</a>
                     </label>
-                    <Betingelser ref="betingelserPanel" godta={this.betingelseCallback.bind(this, true)} avbryt={this.betingelseCallback.bind(this, false)}/>
+                    <Betingelser ref="betingelserPanel" godta={this.betingelseCallback.bind(this, true)}
+                                 avbryt={this.betingelseCallback.bind(this, false)} formatMessage={formatMessage}/>
                     {validationMessages}
                 </div>
             </div>
@@ -66,4 +69,8 @@ var GodtaVilkar = React.createClass({
     }
 });
 
-export default GodtaVilkar;
+GodtaVilkar.propTypes = {
+    intl: intlShape
+};
+
+export default injectIntl(GodtaVilkar);
