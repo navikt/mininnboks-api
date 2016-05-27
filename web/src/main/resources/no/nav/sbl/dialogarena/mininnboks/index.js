@@ -49,7 +49,7 @@ class App extends React.Component {
         }
 
         return (
-            <div className="innboks-container">
+            <div className="mininnboks">
                 {content}
             </div>
         );
