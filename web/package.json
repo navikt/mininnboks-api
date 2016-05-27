@@ -52,15 +52,19 @@
     "react-addons-create-fragment": "^0.14.8"
   },
   "dependencies": {
+    "babel-polyfill": "^6.3.14",
+    "gulp-util": "^3.0.7",
+    "intl": "^1.1.0",
+    "keymirror": "^0.1.1",
+    "lodash.mapvalues": "^4.1.0",
+    "nav-logger": "git+http://stash.devillo.no/scm/npmm/nav-logger.git#7fe517837bde9afc58eaedac94d49547ae921a13",
     "react": "^0.14.8",
     "react-dom": "^0.14.3",
-    "intl": "^1.1.0",
     "react-intl": "2.0.0-beta-2",
-    "babel-polyfill": "^6.3.14",
-    "string-format": "^0.5.0",
-    "nav-logger": "git+http://stash.devillo.no/scm/npmm/nav-logger.git#7fe517837bde9afc58eaedac94d49547ae921a13",
+    "react-redux": "4.4.5",
     "react-router": "^2.0.0",
-    "keymirror": "^0.1.1",
-    "gulp-util": "^3.0.7"
+    "redux-thunk": "^1.0.0",
+    "string-format": "^0.5.0",
+    "whatwg-fetch": "^0.10.1"
   }
 }
