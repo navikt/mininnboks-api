@@ -4,7 +4,6 @@ var source = require('vinyl-source-stream'); // Used to stream bundle for furthe
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify');
-//var karma = require('karma').server;
 var notify = require('gulp-notify');
 var less = require('gulp-less');
 var concat = require('gulp-concat');
@@ -17,7 +16,8 @@ var babelify = require('babelify');
 var SRC_DIR = './src/main/resources/no/nav/sbl/dialogarena/mininnboks/';
 var BUILD_DIR = './src/main/webapp/build/';
 var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources/';
-const eslint = require('gulp-eslint');
+var eslint = require('gulp-eslint');
+var KarmaServer = require('karma').Server;
 
 var babelifyReact = function (file) {
     return babelify(file,
@@ -95,11 +95,23 @@ gulp.task('dev', function() {
     gulp.watch(SRC_DIR + '**/*.less', buildLess.bind(this, true));
 });
 
-gulp.task('test', function () {
-    //karma.start({
-    //    configFile: __dirname + '/karma.conf.js',
-    //    isSingleRun: true
-    //});
+gulp.task('test', function (done) {
+    new KarmaServer({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, function(code) {
+        done();
+        process.exit(code);
+    }).start();
+});
+
+gulp.task('tdd', function (done) {
+    new KarmaServer({
+        configFile: __dirname + '/karma.conf.js'
+    }, function(code) {
+        done();
+        process.exit(code);
+    }).start();
 });
 
 gulp.task('eslint', function () {

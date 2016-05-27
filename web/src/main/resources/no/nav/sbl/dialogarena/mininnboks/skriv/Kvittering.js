@@ -1,8 +1,8 @@
-import React from 'react/addons';
+import React, { PropTypes as pt } from 'react';
 import { Link } from 'react-router';
 
 class Kvittering extends React.Component {
-    render () {
+    render() {
         return (
             <article className="send-sporsmal-container bekreftelse-panel">
                 <div className="sporsmal-header">
@@ -12,7 +12,7 @@ class Kvittering extends React.Component {
 
                     <div className="robust-strek"></div>
 
-                    <p dangerouslySetInnerHTML={{__html: this.props.resources.get('send-sporsmal.bekreftelse.varslingsinfo')}}></p>
+                    <p dangerouslySetInnerHTML={{ __html: this.props.resources.get('send-sporsmal.bekreftelse.varslingsinfo') }}></p>
 
                     <hr/>
                 </div>
@@ -20,6 +20,12 @@ class Kvittering extends React.Component {
             </article>
         );
     }
+}
+
+Kvittering.propTypes = {
+    resources: pt.shape({
+        get: pt.func.isRequired
+    })
 };
 
 export default Kvittering;

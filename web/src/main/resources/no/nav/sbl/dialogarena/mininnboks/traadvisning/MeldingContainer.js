@@ -1,23 +1,24 @@
-import React from 'react/addons';
+import React, { PropTypes as pt } from 'react';
 import Utils from '../utils/Utils';
+import createFragment from 'react-addons-create-fragment';
 
 class MeldingContainer extends React.Component {
     render () {
-        var melding = this.props.melding;
-        var className = 'melding-container ' + (melding.fraBruker ? 'fra-bruker' : 'fra-nav');
-        var imgSrc = melding.fraBruker ? '/mininnboks/build/img/personikon.svg' : '/mininnboks/build/img/nav-logo.svg';
-        var imgTekstKey = melding.fraBruker ? 'innboks.avsender.bruker' : 'innboks.avsender.nav';
+        const { melding } = this.props;
+        const className = 'melding-container ' + (melding.fraBruker ? 'fra-bruker' : 'fra-nav');
+        const imgSrc = melding.fraBruker ? '/mininnboks/build/img/personikon.svg' : '/mininnboks/build/img/nav-logo.svg';
+        const imgTekstKey = melding.fraBruker ? 'innboks.avsender.bruker' : 'innboks.avsender.nav';
 
-        var dato = Utils.prettyDate(melding.opprettet);
-        var medUrl = function (innhold) {
+        const dato = Utils.prettyDate(melding.opprettet);
+        const medUrl = function (innhold) {
             return Utils.leggTilLenkerTags(innhold);
         }.bind(this);
 
-        var avsnitt = melding.fritekst.split(/[\r\n]+/)
+        let avsnitt = melding.fritekst.split(/[\r\n]+/)
             .map(medUrl)
             .map(Utils.tilAvsnitt(true));
-        avsnitt = React.addons.createFragment({
-            avsnitt: avsnitt
+        avsnitt = createFragment({
+            avsnitt
         });
 
         return (
@@ -33,6 +34,17 @@ class MeldingContainer extends React.Component {
             </div>
         );
     }
+}
+
+MeldingContainer.propTypes = {
+    resources: pt.shape({
+        get: pt.func.isRequired
+    }),
+    melding: pt.shape({
+        fraBruker: pt.bool,
+        fritekst: pt.string,
+        statusTekst: pt.string
+    })
 };
 
 export default MeldingContainer;

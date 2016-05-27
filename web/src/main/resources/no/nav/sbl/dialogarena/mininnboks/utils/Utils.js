@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import sanitize from 'sanitize-html';
 import format from 'string-format';
 import moment from 'moment';

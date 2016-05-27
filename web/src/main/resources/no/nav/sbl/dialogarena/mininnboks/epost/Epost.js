@@ -1,32 +1,42 @@
-import React from 'react/addons';
+import React, { PropTypes as pt } from 'react';
+
+const getCMSKey = (erKvittering, key) => {
+    if (!erKvittering) {
+        return `traadvisning.send-svar.bekreftelse.${key}`;
+    }
+    return `send-sporsmal.bekreftelse.${key}`;
+};
 
 class Epost extends React.Component {
 
-    render () {
-        var TPSFeil = !this.props.resources.hasKey('bruker.epost');
-        var epost = this.props.resources.get('bruker.epost');
+    render() {
+        const { resources, erKvittering, linkClass, className } = this.props;
+        const TPSFeil = !resources.hasKey('bruker.epost');
+        const epost = resources.get('bruker.epost');
 
         if (TPSFeil) {
-            return <p>{this.props.resources.get('send-sporsmal.bekreftelse.kunne-ikke-hente-epost')}</p>;
+            return <p>{resources.get('send-sporsmal.bekreftelse.kunne-ikke-hente-epost')}</p>;
         }
 
-        var infoTekst = epost ?
-            this.props.resources.get(getCMSKey(this.props.erKvittering, 'du-mottar-epost')) :
-            this.props.resources.get(getCMSKey(this.props.erKvittering, 'du-kan-motta-epost'));
+        const infoTekst = epost ?
+            resources.get(getCMSKey(erKvittering, 'du-mottar-epost')) :
+            resources.get(getCMSKey(erKvittering, 'du-kan-motta-epost'));
 
-        var epostTekst = epost ?
-            <span>
-                    {epost}
-                    {' '}
-                <a href={this.props.resources.get('brukerprofil.link')} className={this.props.linkClass + ' lopendetekst'}>{this.props.resources.get(getCMSKey(this.props.erKvittering, 'endre-epostadresse'))}</a>
+        const epostTekst = epost ?
+            <span>{epost}{' '}
+                <a href={resources.get('brukerprofil.link')} className={`${linkClass} lopendetekst`}>
+                    {resources.get(getCMSKey(erKvittering, 'endre-epostadresse'))}
+                </a>
             </span> :
-            <a href={this.props.resources.get('brukerprofil.link')} className={this.props.linkClass + ' lopendetekst'}>{this.props.resources.get(getCMSKey(this.props.erKvittering, 'registrer-epostadresse'))}</a>;
+            <a href={resources.get('brukerprofil.link')} className={`${linkClass} lopendetekst`}>
+                {resources.get(getCMSKey(erKvittering, 'registrer-epostadresse'))}
+            </a>;
 
         return (
-            <p className={this.props.className}>{epostTekst} {infoTekst}</p>
+            <p className={className}>{epostTekst} {infoTekst}</p>
         );
     }
-};
+}
 
 Epost.defaultProps = {
     erKvittering: false,
@@ -34,12 +44,11 @@ Epost.defaultProps = {
     linkClass: ''
 };
 
-function getCMSKey(erKvittering, key) {
-    if (!erKvittering) {
-        return 'traadvisning.send-svar.bekreftelse.'+key;
-    } else {
-        return 'send-sporsmal.bekreftelse.'+key;
-    }
-}
+Epost.propTypes = {
+    erKvittering: pt.bool,
+    className: pt.string,
+    linkClass: pt.string,
+    resources: pt.object
+};
 
 export default Epost;

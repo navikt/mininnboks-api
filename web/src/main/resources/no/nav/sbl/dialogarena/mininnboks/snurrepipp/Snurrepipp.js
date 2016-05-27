@@ -1,9 +1,9 @@
-import React from 'react/addons';
+import React, { PropTypes as pt } from 'react';
 import format from 'string-format';
 
 class Snurrepipp extends React.Component {
 
-    render () {
+    render() {
         var src = format('/mininnboks/build/img/ajaxloader/{}/loader_{}_{}.gif', this.props.farge, this.props.farge, this.props.storrelse);
         return (
             <div className="snurrepipp">
@@ -11,11 +11,16 @@ class Snurrepipp extends React.Component {
             </div>
         );
     }
-};
+}
 
 Snurrepipp.defaultProps = {
     storrelse: 128,
     farge: 'graa'
+};
+
+Snurrepipp.propTypes = {
+    farge: pt.string,
+    storrelse: pt.string
 };
 
 export default Snurrepipp;

@@ -1,8 +1,7 @@
 import React from 'react';
 import TraadPreview from './TraadPreview';
-import Feilmelding from '../feilmelding/Feilmelding';
 
-function getTraadLister (traader) {
+function getTraadLister(traader) {
     const uleste = traader.filter(traad => !traad.nyeste.lest);
     const leste = traader.filter(traad => traad.nyeste.lest);
     
@@ -13,7 +12,7 @@ function getTraadLister (traader) {
 }
 
 class TraadContainer extends React.Component {
-    render () {
+    render() {
         const traader = getTraadLister(this.props.traader);
         
         let ulesteTraader = traader.uleste.map(traad => <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={this.props.setValgtTraad} resources={this.props.resources}/>);
@@ -41,8 +40,9 @@ class TraadContainer extends React.Component {
                         {lesteTraader}
                     </ul>
                 </section>
-            </div>);
+            </div>
+        );
     }
-};
+}
 
 export default TraadContainer;

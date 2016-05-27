@@ -23,7 +23,9 @@
     "react-tools": "^0.13.0",
     "chai": "^2.0.0",
     "sinon": "^1.14.1",
+    "browserify-istanbul": "2.0.0",
     "browserify-global-shim": "^1.0.0",
+    "istanbul": "0.4.2",
     "moment": "^2.9.0",
     "sanitize-html": "^1.6.1",
     "modig-frontend": "git+http://stash.devillo.no/scm/felles/modig-frontend.git#modig-frontend-3.0.18",
@@ -37,7 +39,17 @@
     "object-assign": "^2.0.0",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^5.0.0",
-    "eslint-plugin-react": "^3.16.1"
+    "eslint-plugin-react": "^3.16.1",
+    "karma": "0.13.19",
+    "karma-browserify": "5.0.1",
+    "karma-coverage": "0.5.3",
+    "karma-intl-shim": "^1.0.3",
+    "karma-junit-reporter": "0.3.8",
+    "karma-mocha": "^0.2.2",
+    "karma-phantomjs-launcher": "git+http://stash.devillo.no/scm/npmm/karma-phantomjs-launcher.git#fe9bd9c2d7ce16622e6bf373318ad0fa5894c63c",
+    "karma-phantomjs-shim": "^1.2.0",
+    "react-addons-test-utils": "^0.14.8",
+    "react-addons-create-fragment": "^0.14.8"
   },
   "dependencies": {
     "react": "^0.14.8",

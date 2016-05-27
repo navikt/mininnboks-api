@@ -1,6 +1,6 @@
 module.exports = function (config) {
     config.set({
-        frameworks: ['mocha', 'browserify'],
+        frameworks: ['mocha', 'browserify', 'phantomjs-shim', 'intl-shim'],
 
         files: [
             './src/main/resources/no/nav/sbl/dialogarena/mininnboks/**/*Test.js'
@@ -13,15 +13,13 @@ module.exports = function (config) {
         },
 
         reporters: ['progress', 'junit', 'coverage'],
-
+        port: 9876,
         colors: true,
-
         logLevel: config.LOG_INFO,
-
         browsers: ['PhantomJS'],
-
-        singleRun: true,
         captureTimeout: 60000,
+        singleRun: false,
+        autoWatch: true,
 
         //For å hinde disconnect melding når det bygges
         browserDisconnectTimeout: 10000, //Default 2000
@@ -29,16 +27,22 @@ module.exports = function (config) {
         browserNoActivityTimeout: 60000, //Default 10000
 
         plugins: [
-            'karma-bro',
             'karma-phantomjs-launcher',
+            'karma-phantomjs-shim',
+            'karma-browserify',
             'karma-junit-reporter',
             'karma-coverage',
-            'karma-mocha'
+            'browserify-istanbul',
+            'karma-mocha',
+            'karma-intl-shim'
         ],
 
         browserify: {
             debug: true,
-            transform: ['reactify']
+            transform: [
+                ['babelify', { presets: ['es2015', 'react'] }],
+                require('browserify-istanbul')({ ignore: ['**/*-spec.js'] })
+            ]
         },
 
         coverageReporter: {
