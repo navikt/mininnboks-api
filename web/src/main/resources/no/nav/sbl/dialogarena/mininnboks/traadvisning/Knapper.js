@@ -17,7 +17,7 @@ class Knapper extends React.Component {
 
     render() {
         const skrivSvar = this.props.kanBesvares && !this.props.besvares ?
-            <button onClick={this.besvar} className="knapp-hoved-liten">
+            <button onClick={this.besvar} className="knapp knapp-hoved knapp-liten">
                 {this.props.resources.get('traadvisning.skriv.svar.link')}
             </button> :
             <noscript/>;

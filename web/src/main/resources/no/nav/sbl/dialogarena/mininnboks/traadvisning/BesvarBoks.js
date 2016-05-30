@@ -45,7 +45,7 @@ class BesvarBoks extends React.Component {
         } else {
             knapper = (
                 <div>
-                    <input type="submit" className="knapp-hoved-liten"
+                    <input type="submit" className="knapp knapp-hoved knapp-liten"
                       value={this.props.resources.get('traadvisning.besvar.send')} onClick={this.onSubmit}
                     />
 

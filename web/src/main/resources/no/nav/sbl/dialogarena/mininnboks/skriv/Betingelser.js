@@ -59,7 +59,7 @@ class Betingelser extends React.Component {
                     <div className="robust-strek"></div>
                     <div dangerouslySetInnerHTML={{ __html: Resources.get('send-sporsmal.still-sporsmal.betingelser.tekst') }}></div>
                     <hr />
-                    <input type="submit" className="svar-godta knapp-hoved-stor"
+                    <input type="submit" className="svar-godta knapp knapp-hoved knapp-stor"
                       onClick={this.props.godta} aria-controls="betingelser"
                       value={Resources.get('send-sporsmal.still-sporsmal.betingelser.godta')}
                     />
