@@ -19,9 +19,7 @@
     .charcounter {
       margin-bottom: 1em;
     }
-    .send-link {
-      margin-top: 40px;
-    }
+
     strong {
       font-size: 17px;
       font-family: Modus, Arial, Helvetica, sans-serif;
@@ -80,17 +78,14 @@ hr {
   }
 }
 
-.checkbox {
-  position: relative;
 
-  .checkbox-feilmelding {
+.checkbox-feilmelding {
     position: relative;
     color: #c30000;
     top: -5px;
     left: -4px;
     display: block;
     margin-top: 1rem;
-  }
 }
 
 .kvittering.avbryt {
@@ -145,6 +140,10 @@ ul.feedbackPanel {
   .errorBase;
 }
 
+.venstrestill-tekst {
+  text-align: left;
+}
+
 .betingelsevalgpanel {
   margin-top: 1em;
   label {
@@ -153,22 +152,13 @@ ul.feedbackPanel {
     margin: 0 !important;
     height: 2rem;
     text-align: left;
-    &.validation-error {
-      background-image: url("../img/check_tab_feil.svg");
-    }
     span {
       display: inline;
       width: 100%;
     }
     .vilkarlenke {
-      font-size: 0.85rem;
-      text-decoration: underline;
       margin-left: 0.5em;
     }
-  }
-  input:focus + label {
-    border: 1px dashed @morkeBlaa;
-    display: inline-table;
   }
 }
 

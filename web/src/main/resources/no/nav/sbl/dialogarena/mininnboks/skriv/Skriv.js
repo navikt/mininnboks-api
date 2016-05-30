@@ -87,7 +87,7 @@ class Skriv extends React.Component {
 
         return (
             <div>
-                <h1 className="diger">{this.props.resources.get('send-sporsmal.still-sporsmal.ny-melding-overskrift')}</h1>
+                <h1 className="typo-sidetittel text-center blokk-l">{this.props.resources.get('send-sporsmal.still-sporsmal.ny-melding-overskrift')}</h1>
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">
                         <img src="/mininnboks/build/img/melding_graa.svg"

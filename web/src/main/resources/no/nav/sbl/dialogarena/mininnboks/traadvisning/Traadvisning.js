@@ -149,7 +149,7 @@ class TraadVisning extends React.Component {
 
         return (
             <div>
-                <h1 className="diger">{overskrift}</h1>
+                <h1 className="typo-sidetittel text-center blokk-l">{overskrift}</h1>
                 <div className="traad-container">
                     <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares}
                       besvar={this.visBesvarBoks} resources={this.props.resources}
