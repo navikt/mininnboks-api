@@ -121,7 +121,8 @@ public interface HenvendelseService {
                     REFERAT_OPPMOTE.name(),
                     REFERAT_TELEFON.name(),
                     SPORSMAL_MODIA_UTGAAENDE.name(),
-                    SVAR_SBL_INNGAAENDE.name());
+                    SVAR_SBL_INNGAAENDE.name(),
+                    DOKUMENT_VARSEL.name());
             List<Object> WShenvendelsesliste = henvendelsePortType.hentHenvendelseListe(
                     new WSHentHenvendelseListeRequest()
                             .withFodselsnummer(fodselsnummer)
