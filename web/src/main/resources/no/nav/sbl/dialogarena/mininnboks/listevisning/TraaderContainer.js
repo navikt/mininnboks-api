@@ -14,16 +14,15 @@ function getTraadLister(traader) {
 class TraadContainer extends React.Component {
     render() {
         const traader = getTraadLister(this.props.traader);
-        
         let ulesteTraader = traader.uleste.map(traad => <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={this.props.setValgtTraad} resources={this.props.resources}/>);
         let lesteTraader = traader.leste.map(traad => <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={this.props.setValgtTraad} resources={this.props.resources}/>);
 
         if(lesteTraader.length === 0) {
-            lesteTraader = <p className="panel"> Du har ingen leste meldinger</p>
+            lesteTraader = <p className="panel">{this.props.resources.get('innboks.leste.ingenmeldinger')}</p>
         }
 
         if(ulesteTraader.length === 0) {
-            ulesteTraader = <p className="panel"> Du har ingen uleste meldinger</p>
+            ulesteTraader = <p className="panel">{this.props.resources.get('innboks.uleste.ingenmeldinger')}</p>
         }
         
         return (
