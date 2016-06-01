@@ -94,10 +94,6 @@ class Skriv extends React.Component {
                 <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift' })}</h1>
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">
-                        <img src="/mininnboks/build/img/melding_graa.svg"
-                          alt={formatMessage({ id: 'meldingikon.alternativ.tekst' })}
-                        />
-
                         <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{formatMessage({ id: 'send-sporsmal.still-sporsmal.deloverskrift' })}</h2>
 
                         <div className="robust-strek"></div>
