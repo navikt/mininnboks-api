@@ -53,10 +53,9 @@ var GodtaVilkar = React.createClass({
                       onChange={this.onChange} onBlur={this.onBlur} checked={this.state.checked}
                       aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId('-inline')}
                     />
-                    <label htmlFor="betingelser"
-                        className={validationErrorClass}>
-                        <span>{Resources.get('send-sporsmal.still-sporsmal.betingelser.sjekkboks')}</span>
-                        <a href="#" className="vilkarlenke" onClick={this.visbetingelser}>{Resources.get('send-sporsmal.still-sporsmal.betingelser.vis')}</a>
+                    <label htmlFor="betingelser" className={`checkboxgruppe ${validationErrorClass}`}>
+                        <span className="typo-infotekst">{Resources.get('send-sporsmal.still-sporsmal.betingelser.sjekkboks')}</span>
+                        <a href="#" className="typo-infotekst" onClick={this.visbetingelser}>{Resources.get('send-sporsmal.still-sporsmal.betingelser.vis')}</a>
                     </label>
                     <Betingelser ref="betingelserPanel" godta={this.betingelseCallback.bind(this, true)} avbryt={this.betingelseCallback.bind(this, false)}/>
                     {validationMessages}

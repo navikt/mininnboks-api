@@ -6,10 +6,6 @@
 .send-panel {
   form {
     text-align: center;
-    .hjelpetekst {
-      margin: 20px 0 30px 0;
-      padding: 0 1em;
-    }
     .feilmelding {
       margin-bottom: 30px;
       > ul {
@@ -25,17 +21,6 @@
       font-family: Modus, Arial, Helvetica, sans-serif;
     }
   }
-}
-
-h1 {
-  text-align: center;
-  margin: 1em;
-}
-
-hr {
-  margin: 40px 0;
-  border: none;
-  border-top: 1px solid #d1d1d1;
 }
 
 .sporsmal-header {
@@ -75,6 +60,12 @@ hr {
     color: #c30000;
     bottom: 0;
     left: 0;
+  }
+}
+
+.meldingikon {
+  &:before {
+    background: url("../img/melding_graa.svg");
   }
 }
 
@@ -146,13 +137,14 @@ ul.feedbackPanel {
 
 .betingelsevalgpanel {
   margin-top: 1em;
-  label {
+  .checkboxgruppe {
     background-position: 1px 3px !important;
     border: 1px dashed transparent;
     margin: 0 !important;
     height: 2rem;
     text-align: left;
-    span {
+    display: inline-block;
+    .typo-infotekst {
       display: inline;
       width: 100%;
     }
@@ -164,19 +156,6 @@ ul.feedbackPanel {
 
 .betingelsepanel {
   padding: 0 10px 40px;
-  p, ul {
-    font-size: 14px;
-    strong {
-      font-family: Modus, Arial, Helvetica, sans-serif;
-      font-size: 17px;
-    }
-  }
-  h1 {
-    margin: 0 0 15px;
-  }
-  a {
-    text-decoration: underline;
-  }
 }
 
 .betingelser {
@@ -331,7 +310,7 @@ ul.feedbackPanel {
 
 @media only screen and (max-width: 480px) {
   .betingelsevalgpanel {
-    label span {
+    .typo-infotekst {
       width: auto;
     }
   }

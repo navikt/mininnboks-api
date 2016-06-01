@@ -90,18 +90,13 @@ class Skriv extends React.Component {
                 <h1 className="typo-sidetittel text-center blokk-l">{this.props.resources.get('send-sporsmal.still-sporsmal.ny-melding-overskrift')}</h1>
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">
-                        <img src="/mininnboks/build/img/melding_graa.svg"
-                          alt={this.props.resources.get('meldingikon.alternativ.tekst')}
-                        />
-
-                        <h2 className="stor deloverskrift">{this.props.resources.get('send-sporsmal.still-sporsmal.deloverskrift')}</h2>
-
+                        <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{this.props.resources.get('send-sporsmal.still-sporsmal.deloverskrift')}</h2>
                         <div className="robust-strek"></div>
                     </div>
 
                     <strong>{this.props.resources.get(this.props.params.temagruppe)}</strong>
 
-                    <p className="hjelpetekst">{this.props.resources.get('send-sporsmal.still-sporsmal.hjelpetekst')}</p>
+                    <p className="typo-normal">{this.props.resources.get('send-sporsmal.still-sporsmal.hjelpetekst')}</p>
                     <FeedbackForm ref="form">
                         {infoboks}
                         <ExpandingTextArea

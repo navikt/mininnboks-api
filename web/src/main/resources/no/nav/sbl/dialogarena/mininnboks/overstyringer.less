@@ -26,6 +26,9 @@
       color: @gray-text;
     }
   }
+  &:hover {
+    margin-bottom: 0px;
+  }
   &:focus {
     &:active {
       background-color: @blue-active;
@@ -65,8 +68,16 @@
   }
 }
 
+.typo-normal {
+  word-wrap: break-word;
+}
+
 @media (min-width: @screen-medium-plus-rem-as-one-px) {
   .topnavsection:after {
     border-bottom: none;
   }
+}
+
+#site-search-input {
+  padding: 0px;
 }

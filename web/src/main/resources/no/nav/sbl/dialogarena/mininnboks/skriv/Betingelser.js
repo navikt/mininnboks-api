@@ -54,9 +54,9 @@ class Betingelser extends React.Component {
         }
         return (
             <Modal ref="modal" title={modalConfig.title} description={modalConfig.description} closeButton={modalConfig.closeButton}>
-                <form onSubmit={this.submit} className="betingelserPanel">
-                    <h1 className="stor" tabIndex="0">{Resources.get('send-sporsmal.still-sporsmal.betingelser.overskrift')}</h1>
-                    <div className="robust-strek"></div>
+                <form onSubmit={this.submit} className="betingelserPanel side-innhold">
+                    <h1 className="typo-sidetittel text-center blokk-l" tabIndex="0">{Resources.get('send-sporsmal.still-sporsmal.betingelser.overskrift')}</h1>
+
                     <div dangerouslySetInnerHTML={{ __html: Resources.get('send-sporsmal.still-sporsmal.betingelser.tekst') }}></div>
                     <hr />
                     <input type="submit" className="svar-godta knapp knapp-hoved knapp-stor"
