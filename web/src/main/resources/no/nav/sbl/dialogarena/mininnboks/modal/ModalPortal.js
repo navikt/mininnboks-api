@@ -153,9 +153,9 @@ ModalPortal.defaultProps = {
 
 ModalPortal.propTypes = {
     modalConfig: pt.shape({
-        title: pt.string.isRequired,
-        description: pt.string.isRequired,
-        closeButton: pt.string.isRequired
+        title: pt.object.isRequired,
+        description: pt.object.isRequired,
+        closeButton: pt.object.isRequired
     }).isRequired,
     visModal: pt.bool.isRequired,
     lukkModal: pt.func.isRequired
