@@ -4,7 +4,7 @@ import createFragment from 'react-addons-create-fragment';
 
 class MeldingContainer extends React.Component {
     render () {
-        const { melding } = this.props;
+        const { melding, formatMessage } = this.props;
         const className = 'melding-container ' + (melding.fraBruker ? 'fra-bruker' : 'fra-nav');
         const imgSrc = melding.fraBruker ? '/mininnboks/build/img/person.svg' : '/mininnboks/build/img/nav-logo.svg';
         const imgTekstKey = melding.fraBruker ? 'innboks.avsender.bruker' : 'innboks.avsender.nav';
@@ -23,8 +23,8 @@ class MeldingContainer extends React.Component {
 
         return (
             <div className={className}>
-                <div className="logo" aria-label={this.props.resources.get(imgTekstKey)}>
-                    <img src={imgSrc} alt={this.props.resources.get(imgTekstKey)} />
+                <div className="logo" aria-label={formatMessage({ id: imgTekstKey })}>
+                    <img src={imgSrc} alt={formatMessage({ id: imgTekstKey })} />
                 </div>
                 <div className="melding">
                     <h3 className="typo-element">{melding.statusTekst}</h3>
@@ -37,14 +37,12 @@ class MeldingContainer extends React.Component {
 }
 
 MeldingContainer.propTypes = {
-    resources: pt.shape({
-        get: pt.func.isRequired
-    }),
     melding: pt.shape({
         fraBruker: pt.bool,
         fritekst: pt.string,
         statusTekst: pt.string
-    })
+    }),
+    formatMessage: pt.func.isRequired
 };
 
 export default MeldingContainer;

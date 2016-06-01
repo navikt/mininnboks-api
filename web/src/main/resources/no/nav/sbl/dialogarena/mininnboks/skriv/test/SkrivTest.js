@@ -9,13 +9,9 @@ import Skriv from '../Skriv';
 
 import { renderIntoDocument, createRenderer, findRenderedDOMComponentWithTag, findRenderedDOMComponentWithClass } from 'react-addons-test-utils';
 
-var resourcesMock = {
-    get: function () {
-        return '';
-    }
-};
+const formatMessage = () => {};
 
-var SkrivWrapper = stubRouterContext(Skriv, { resources: resourcesMock, params: { temagruppe: 'ARBD' } });
+var SkrivWrapper = stubRouterContext(Skriv, { formatMessage, params: { temagruppe: 'ARBD' } });
 
 describe('Skriv Page', function () {
     //

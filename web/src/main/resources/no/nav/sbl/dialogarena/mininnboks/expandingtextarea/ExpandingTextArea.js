@@ -13,7 +13,7 @@ const ExpandingTextArea = React.createClass({
 
     componentDidMount() {
         this.setPlaceholder();
-        $(this.refs.textarea.getDOMNode()).focus();
+        $(this.refs.textarea).focus();
     },
 
     onTextAreaChange(event) {
@@ -36,7 +36,7 @@ const ExpandingTextArea = React.createClass({
         if (placeholder.length === 0) {
             return;
         }
-        $(this.refs.textarea.getDOMNode())
+        $(this.refs.textarea)
             .val(placeholder)
             .css('color', '#999')
             .focus(function () {
@@ -74,8 +74,8 @@ const ExpandingTextArea = React.createClass({
     },
 
     adjustTextAreaHeight() {
-        const $mirror = $(this.refs.textareamirror.getDOMNode());
-        const $textarea = $(this.refs.textarea.getDOMNode());
+        const $mirror = $(this.refs.textareamirror);
+        const $textarea = $(this.refs.textarea);
         $mirror
             .outerWidth($textarea.outerWidth())
             .text(` ${$textarea.val()} \n`);
