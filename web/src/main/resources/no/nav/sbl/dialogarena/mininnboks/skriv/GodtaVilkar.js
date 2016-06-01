@@ -58,20 +58,20 @@ class GodtaVilkar extends React.Component {
 
         return (
             <div className="betingelsevalgpanel">
-                <div className="checkbox">
+                <div className="nav-input">
                     <span className="vekk" role="alert" aria-live="assertive" aria-atomic="true">{ariaCheckboxState}</span>
-                    <input type="checkbox" name="betingelseValg:betingelserCheckbox" className="betingelseCheckboks" id="betingelser"
+                    <input type="checkbox" name="betingelseValg:betingelserCheckbox" className="nav-checkbox" id="betingelser"
                       onChange={toggleGodkjentVilkaar(dispatch, godkjentVilkaar)} onBlur={this.validate} checked={godkjentVilkaar}
                     />
-                    <label htmlFor="betingelser">
+                    <label htmlFor="betingelser" className='checkboxgruppe'>
                         <span>{formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.sjekkboks' })}</span>
-                        <a href="#" className="vilkarlenke" onClick={toggleVilkaarModal(dispatch, isOpen)}>
+                        <a href="#" className="typo-infotekst" onClick={toggleVilkaarModal(dispatch, isOpen)}>
                             {formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.vis' })}
                         </a>
                     </label>
                     <Betingelser formatMessage={formatMessage} visModal={visModal}
                       godkjennVilkaar={godkjennVilkaar(dispatch)} avbryt={avbryt(dispatch)}
-                      lukkModal={lukkModal(dispatch)}
+                      lukkModal={lukkModal(dispatch)} name="betingelser-panel"
                     />
                     {validationMessages}
                 </div>

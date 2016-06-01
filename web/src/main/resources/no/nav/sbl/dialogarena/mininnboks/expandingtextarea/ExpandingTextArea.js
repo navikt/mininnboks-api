@@ -99,7 +99,7 @@ const ExpandingTextArea = React.createClass({
                   aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId('-inline')}
                   onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur}
                 />
-                <p class="textarea-metatekst" aria-hidden="true">
+                <p className="textarea-metatekst" aria-hidden="true">
                  <span class="max-length">{this.charsLeft()}</span> tegn igjen
                 </p>
                 <div id="validation-messages">
