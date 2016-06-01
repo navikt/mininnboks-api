@@ -4,7 +4,7 @@ var ariahelpermap = {
     info: 'Informasjonsmelding',
     feil: 'Feilmelding',
     ok: 'Bekreftelsemelding'
-}
+};
 
 var InfoBoks = React.createClass({
     getDefaultProps: function(){
@@ -14,7 +14,7 @@ var InfoBoks = React.createClass({
     },
     componentDidMount: function(){
         if (this.props.focusOnRender) {
-            var $infoboks = $(this.refs.infoboks.getDOMNode());
+            var $infoboks = $(this.refs.infoboks);
             $infoboks.find(':tabbable').first().focus();
         }
     },

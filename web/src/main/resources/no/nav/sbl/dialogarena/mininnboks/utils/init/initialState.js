@@ -1,4 +1,6 @@
 
 export default {
-    harHentetInitData: false
+    harHentetInitData: false,
+    godkjentVilkaar: false,
+    visModal: false
 };

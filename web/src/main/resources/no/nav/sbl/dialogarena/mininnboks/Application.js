@@ -14,6 +14,12 @@ const renderApplication = (children, defaultTekster, headerlevel) => (
 );
 
 class Application extends React.Component {
+    getChildContext() {
+        return {
+            tekster: this.props.tekster
+        };
+    }
+
     componentWillMount() {
         const { dispatch, location: { query: { cmskeys } } } = this.props;
         dispatch(hentInitData({
@@ -29,11 +35,20 @@ class Application extends React.Component {
     }
 }
 
+Application.childContextTypes = {
+    tekster: React.PropTypes.object
+};
+
 Application.propTypes = {
     dispatch: React.PropTypes.func.isRequired,
     harHentetInitData: React.PropTypes.bool.isRequired,
     children: React.PropTypes.object.isRequired,
-    tekster: React.PropTypes.object
+    tekster: React.PropTypes.object,
+    location: React.PropTypes.shape({
+        query: React.PropTypes.shape({
+            headerlevel: React.PropTypes.object
+        })
+    })
 };
 
 export default connect(({ harHentetInitData, tekster }) => ({ harHentetInitData, tekster }))(Application);

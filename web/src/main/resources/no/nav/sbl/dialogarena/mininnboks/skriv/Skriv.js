@@ -9,6 +9,7 @@ import InfoBoks from '../infoboks/Infoboks';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Utils from '../utils/Utils';
 import { injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
 
 class Skriv extends React.Component {
     constructor(props) {
@@ -34,7 +35,7 @@ class Skriv extends React.Component {
                 type: 'POST',
                 url: '/mininnboks/tjenester/traader/sporsmal',
                 contentType: 'application/json',
-                data: JSON.stringify({ temagruppe: temagruppe, fritekst: fritekst }),
+                data: JSON.stringify({ temagruppe, fritekst }),
                 beforeSend: Utils.addXsrfHeader
             })
                 .done(function (response, status, xhr) {
@@ -51,10 +52,10 @@ class Skriv extends React.Component {
     }
 
     render() {
-        const { params, intl : { formatMessage }} = this.props;
+        const { params, intl: { formatMessage }, visModal } = this.props;
 
         if (this.godkjenteForSporsmal.indexOf(params.temagruppe) < 0) {
-            return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon={true}/>;
+            return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon/>;
         }
 
         if (this.state.sendt) {
@@ -90,7 +91,7 @@ class Skriv extends React.Component {
 
         return (
             <div>
-                <h1 className="diger">{formatMessage({ id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift'} )}</h1>
+                <h1 className="diger">{formatMessage({ id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift' })}</h1>
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">
                         <img src="/mininnboks/build/img/melding_graa.svg"
@@ -113,7 +114,7 @@ class Skriv extends React.Component {
                           feedbackref="textarea"
                         />
 
-                        <GodtaVilkar feedbackref="godtavilkar" formatMessage={formatMessage}/>
+                        <GodtaVilkar feedbackref="godtavilkar" formatMessage={formatMessage} visModal={visModal}/>
                         {knapper}
                     </FeedbackForm>
                 </article>
@@ -126,7 +127,10 @@ Skriv.propTypes = {
     params: pt.shape({
         temagruppe: pt.string
     }),
-    intl: intlShape.isRequired
+    intl: intlShape.isRequired,
+    visModal: pt.bool.isRequired
 };
 
-export default injectIntl(Skriv);
+const mapStateToProps = ({ visModal }) => ({ visModal });
+
+export default injectIntl(connect(mapStateToProps)(Skriv));
