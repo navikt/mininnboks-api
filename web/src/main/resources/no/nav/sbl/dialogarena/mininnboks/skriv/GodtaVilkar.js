@@ -57,7 +57,7 @@ var GodtaVilkar = React.createClass({
                         <span className="typo-infotekst">{Resources.get('send-sporsmal.still-sporsmal.betingelser.sjekkboks')}</span>
                         <a href="#" className="typo-infotekst" onClick={this.visbetingelser}>{Resources.get('send-sporsmal.still-sporsmal.betingelser.vis')}</a>
                     </label>
-                    <Betingelser ref="betingelserPanel" godta={this.betingelseCallback.bind(this, true)} avbryt={this.betingelseCallback.bind(this, false)}/>
+                    <Betingelser ref="betingelser-panel" godta={this.betingelseCallback.bind(this, true)} avbryt={this.betingelseCallback.bind(this, false)}/>
                     {validationMessages}
                 </div>
             </div>

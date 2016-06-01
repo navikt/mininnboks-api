@@ -54,7 +54,7 @@ class Betingelser extends React.Component {
         }
         return (
             <Modal ref="modal" title={modalConfig.title} description={modalConfig.description} closeButton={modalConfig.closeButton}>
-                <form onSubmit={this.submit} className="betingelserPanel side-innhold">
+                <form onSubmit={this.submit} className="betingelser-panel side-innhold">
                     <h1 className="typo-sidetittel text-center blokk-l" tabIndex="0">{Resources.get('send-sporsmal.still-sporsmal.betingelser.overskrift')}</h1>
 
                     <div dangerouslySetInnerHTML={{ __html: Resources.get('send-sporsmal.still-sporsmal.betingelser.tekst') }}></div>
