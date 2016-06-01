@@ -16,15 +16,15 @@ class TraadContainer extends React.Component {
         const { formatMessage, setValgtTraad } = this.props;
         const traader = getTraadLister(this.props.traader);
 
-        let ulesteTraader = traader.uleste.map(traad => <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>);
+        let ulesteTraader = traader.uleste.map((traad, index) => <TraadPreview index={index} key={traad.traadId} traad={traad} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>);
         let lesteTraader = traader.leste.map(traad => <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>);
 
         if(lesteTraader.length === 0) {
-            lesteTraader = <p className="panel"> Du har ingen leste meldinger</p>
+            lesteTraader = <p className="panel">{formatMessage({ id: 'innboks.leste.ingenmeldinger' })}</p>
         }
 
         if(ulesteTraader.length === 0) {
-            ulesteTraader = <p className="panel"> Du har ingen uleste meldinger</p>
+            ulesteTraader = <p className="panel">{formatMessage({ id: 'innboks.uleste.ingenmeldinger' })}</p>
         }
         
         return (

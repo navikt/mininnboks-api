@@ -47,9 +47,8 @@ class ListeVisning extends React.Component {
         return (
             <div>
                 <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'innboks.overskrift' })}</h1>
-                <h1 className="diger">{formatMessage({ id: 'innboks.overskrift'} )}</h1>
                 <div className="innboks-navigasjon clearfix">
-                     <Link to={formatMessage({ id: 'skriv.ny.link'} )} className="skriv-ny-link knapp-hoved-liten" >{formatMessage({ id: 'innboks.skriv.ny.link'} )}</Link>
+                     <Link to={formatMessage({ id: 'skriv.ny.link'} )} className="knapp knapp-hoved knapp-liten" >{formatMessage({ id: 'innboks.skriv.ny.link'} )}</Link>
                 </div>
                 {content}
             </div>

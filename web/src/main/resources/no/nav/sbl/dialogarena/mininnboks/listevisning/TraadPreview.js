@@ -13,7 +13,8 @@ class TraadPreview extends React.Component {
     }
 
     render() {
-        const { traad, formatMessage } = this.props;
+        const { traad, index, formatMessage } = this.props;
+        const markertKlasse = index === 0 ? 'markert' : '';
         const melding = traad.nyeste;
         const temagruppenavn = traad.nyeste.temagruppeNavn;
         const midlertidigAvsendernavn = 'Bruker'.toLowerCase();
@@ -24,13 +25,11 @@ class TraadPreview extends React.Component {
 
         return (
             <li className="traad">
-                <Link to={`/mininnboks/traad/${melding.traadId}`} className={'panel panel-ikon panel-klikkbart blokk-xxxs dialog'}
+                <Link to={`/mininnboks/traad/${melding.traadId}`} className={`panel panel-ikon panel-klikkbart blokk-xxxs dialog ${markertKlasse}`}
                   onClick={this.onClick}>
-                    <div className="melding">
-                        <p className="dato">{dato} / Fra {avsender} </p>
-                        <h2 className="typo-element blokk-xxs">{melding.statusTekst}</h2>
-                        <p className="temagruppenavn">{temagruppenavn}</p>
-                    </div>
+                    <p>{dato} / Fra {avsender} </p>
+                    <h2 className="typo-element blokk-xxs">{melding.statusTekst}</h2>
+                    <p className="temagruppenavn">{temagruppenavn}</p>
                 </Link>
             </li>
         );

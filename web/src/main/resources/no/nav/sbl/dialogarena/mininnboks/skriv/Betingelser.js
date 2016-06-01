@@ -36,7 +36,7 @@ class Betingelser extends React.Component {
                         <div className="robust-strek"></div>
                         <div dangerouslySetInnerHTML={{ __html: formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.tekst' }) }}></div>
                         <hr />
-                        <input type="submit" className="svar-godta knapp-hoved-stor" aria-controls="betingelser" onClick={godkjennVilkaar}
+                        <input type="submit" className="svar-godta knapp knapp-hoved knapp-stor" aria-controls="betingelser" onClick={godkjennVilkaar}
                           value={formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.godta' })}
                         />
                         <div className="avbryt">

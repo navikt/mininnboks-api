@@ -18,7 +18,7 @@ class Knapper extends React.Component {
         const { formatMessage, kanBesvares, besvares } = this.props;
         
         const skrivSvar = kanBesvares && !besvares ?
-            <button onClick={this.besvar} className="knapp-hoved-liten">
+            <button onClick={this.besvar} className="knapp knapp-hoved knapp-liten">
                 {formatMessage({ id: 'traadvisning.skriv.svar.link' })}
             </button> :
             <noscript/>;

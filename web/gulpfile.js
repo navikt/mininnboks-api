@@ -70,7 +70,7 @@ function copyImg() {
 
 var buildLess = function(isDev) {
     console.log('Building less');
-    return gulp.src(SRC_DIR + '**/*.less')
+    return gulp.src(SRC_DIR + 'modig_frontend_imports.less')
         .pipe(less())
         .pipe(concat('bundle.css'))
         .pipe(gulpif(!isDev, uglifycss()))
