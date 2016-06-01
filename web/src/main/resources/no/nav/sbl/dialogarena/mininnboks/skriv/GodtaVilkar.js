@@ -47,18 +47,17 @@ var GodtaVilkar = React.createClass({
 
         return (
             <div className="betingelsevalgpanel">
-                <div className="checkbox">
+                <div className="nav-input">
                     <span className="vekk" role="alert" aria-live="assertive" aria-atomic="true">{this.state.ariastate}</span>
-                    <input type="checkbox" name="betingelseValg:betingelserCheckbox" className="betingelseCheckboks" id="betingelser"
+                    <input type="checkbox" name="betingelseValg:betingelserCheckbox" className="nav-checkbox" id="betingelser"
                       onChange={this.onChange} onBlur={this.onBlur} checked={this.state.checked}
                       aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId('-inline')}
                     />
-                    <label htmlFor="betingelser"
-                        className={validationErrorClass}>
-                        <span>{Resources.get('send-sporsmal.still-sporsmal.betingelser.sjekkboks')}</span>
-                        <a href="#" className="vilkarlenke" onClick={this.visbetingelser}>{Resources.get('send-sporsmal.still-sporsmal.betingelser.vis')}</a>
+                    <label htmlFor="betingelser" className={`checkboxgruppe ${validationErrorClass}`}>
+                        <span className="typo-infotekst">{Resources.get('send-sporsmal.still-sporsmal.betingelser.sjekkboks')}</span>
+                        <a href="#" className="typo-infotekst" onClick={this.visbetingelser}>{Resources.get('send-sporsmal.still-sporsmal.betingelser.vis')}</a>
                     </label>
-                    <Betingelser ref="betingelserPanel" godta={this.betingelseCallback.bind(this, true)} avbryt={this.betingelseCallback.bind(this, false)}/>
+                    <Betingelser ref="betingelser-panel" godta={this.betingelseCallback.bind(this, true)} avbryt={this.betingelseCallback.bind(this, false)}/>
                     {validationMessages}
                 </div>
             </div>

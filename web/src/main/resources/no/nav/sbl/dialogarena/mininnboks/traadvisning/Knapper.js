@@ -23,7 +23,7 @@ class Knapper extends React.Component {
             <noscript/>;
 
         return (
-            <div className="knapper">
+            <div className="innboks-navigasjon">
                 {skrivSvar}
                 <p>
                     <Link to="/mininnboks/" title="Tilbake til innboksen">{this.props.resources.get('traadvisning.innboks.link')}</Link>

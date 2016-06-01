@@ -26,9 +26,10 @@
       color: @gray-text;
     }
   }
+  &:hover {
+    margin-bottom: 0px;
+  }
   &:focus {
-    //Overstyringer siden dekoratøren lekker grå bakgrunn ved fokus
-    background-color: transparent;
     &:active {
       background-color: @blue-active;
     }
@@ -67,8 +68,16 @@
   }
 }
 
+.typo-normal {
+  word-wrap: break-word;
+}
+
 @media (min-width: @screen-medium-plus-rem-as-one-px) {
   .topnavsection:after {
     border-bottom: none;
   }
+}
+
+#site-search-input {
+  padding: 0px;
 }
