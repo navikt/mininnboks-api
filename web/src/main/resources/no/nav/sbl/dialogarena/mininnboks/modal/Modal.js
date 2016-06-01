@@ -50,20 +50,22 @@ Modal.contextTypes = {
 };
 
 Modal.defaultProps = {
-    title: {
-        text: 'Modal Title',
-        show: false,
-        tag: 'h1'
-    },
-    description: {
-        text: '',
-        show: false,
-        tag: 'div'
-    },
-    closeButton: {
-        text: '',
-        show: true,
-        tag: 'span'
+    modalConfig: {
+        title: {
+            text: 'Modal Title',
+            show: false,
+            tag: 'h1'
+        },
+        description: {
+            text: '',
+            show: false,
+            tag: 'div'
+        },
+        closeButton: {
+            text: '',
+            show: true,
+            tag: 'span'
+        }
     }
 };
 
