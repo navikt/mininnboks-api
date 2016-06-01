@@ -92,7 +92,7 @@ const ExpandingTextArea = React.createClass({
         return (
             <div className="expandingtextarea">
                 <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>
-                <textarea ref="textarea" className={textareaClass}
+                <textarea ref="textarea" className={`typo-normal ${textareaClass}`}
                   title={this.props.placeholder}
                   aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId('-inline')}
                   onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur}

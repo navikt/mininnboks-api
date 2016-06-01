@@ -24,7 +24,7 @@ class Knapper extends React.Component {
             <noscript/>;
 
         return (
-            <div className="knapper">
+            <div className="innboks-navigasjon">
                 {skrivSvar}
                 <p>
                     <Link to="/mininnboks/" title="Tilbake til innboksen">{formatMessage({ id: 'traadvisning.innboks.link' })}</Link>

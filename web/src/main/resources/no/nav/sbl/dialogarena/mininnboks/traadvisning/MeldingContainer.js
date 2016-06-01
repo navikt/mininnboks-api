@@ -6,7 +6,7 @@ class MeldingContainer extends React.Component {
     render () {
         const { melding, formatMessage } = this.props;
         const className = 'melding-container ' + (melding.fraBruker ? 'fra-bruker' : 'fra-nav');
-        const imgSrc = melding.fraBruker ? '/mininnboks/build/img/personikon.svg' : '/mininnboks/build/img/nav-logo.svg';
+        const imgSrc = melding.fraBruker ? '/mininnboks/build/img/person.svg' : '/mininnboks/build/img/nav-logo.svg';
         const imgTekstKey = melding.fraBruker ? 'innboks.avsender.bruker' : 'innboks.avsender.nav';
 
         const dato = Utils.prettyDate(melding.opprettet);
@@ -27,9 +27,9 @@ class MeldingContainer extends React.Component {
                     <img src={imgSrc} alt={formatMessage({ id: imgTekstKey })} />
                 </div>
                 <div className="melding">
-                    <h3 className="status">{melding.statusTekst}</h3>
-                    <p className="dato">{dato}</p>
-                    <div className="fritekst">{avsnitt}</div>
+                    <h3 className="typo-element">{melding.statusTekst}</h3>
+                    <p className="typo-infotekst tema-dokument">{dato}</p>
+                    <div className="typo-normal">{avsnitt}</div>
                 </div>
             </div>
         );

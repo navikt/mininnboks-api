@@ -61,6 +61,7 @@
     "lodash.mapvalues": "^4.1.0",
     "nav-logger": "git+http://stash.devillo.no/scm/npmm/nav-logger.git#7fe517837bde9afc58eaedac94d49547ae921a13",
     "react": "^0.14.8",
+    "chokidar": "git+https://github.com/paulmillr/chokidar.git#1.5.0",
     "react-dom": "^0.14.3",
     "react-intl": "2.0.0-beta-2",
     "react-redux": "4.4.5",

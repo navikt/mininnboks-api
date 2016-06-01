@@ -48,28 +48,35 @@ class GodtaVilkar extends React.Component {
 
     render() {
         const { formatMessage, godkjentVilkaar, dispatch, visModal } = this.props;
-        const validationFeilmelding = <span className="checkbox-feilmelding">{formatMessage({ id: 'godtavilkaar.validering.feilmelding' })}</span>;
-        const validationMessages = this.visFeilmelding && !godkjentVilkaar ? validationFeilmelding : <noscript/>;
+        // const validationFeilmelding = <span className="checkbox-feilmelding">{formatMessage({ id: 'godtavilkaar.validering.feilmelding' })}</span>;
+        // const validationMessages = this.visFeilmelding && !godkjentVilkaar ? validationFeilmelding : <noscript/>;
 
-        this.visFeilmelding = true;
+
+        const errorMessages = this.getErrorMessages();
+        const validationErrorClass = errorMessages.length === 0 ? '' : 'validation-error error';
+        const validationMessages = this.props.showInline ? this.getErrorElements('span.checkbox-feilmelding', '-inline') : null;
+
+
+        // this.visFeilmelding = true;
         const isOpen = visModal;
 
         const ariaCheckboxState = godkjentVilkaar ? 'Checkbox avkrysset' : 'Checkbox ikke avkrysset';
 
         return (
             <div className="betingelsevalgpanel">
-                <div className="checkbox">
+                <div className="nav-input">
                     <span className="vekk" role="alert" aria-live="assertive" aria-atomic="true">{ariaCheckboxState}</span>
-                    <input type="checkbox" name="betingelseValg:betingelserCheckbox" className="betingelseCheckboks" id="betingelser"
+                    <input type="checkbox" name="betingelseValg:betingelserCheckbox" className="nav-checkbox" id="betingelser"
                       onChange={toggleGodkjentVilkaar(dispatch, godkjentVilkaar)} onBlur={this.validate} checked={godkjentVilkaar}
+                           aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId('-inline')}
                     />
-                    <label htmlFor="betingelser">
-                        <span>{formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.sjekkboks' })}</span>
-                        <a href="#" className="vilkarlenke" onClick={toggleVilkaarModal(dispatch, isOpen)}>
+                    <label htmlFor="betingelser" className={`checkboxgruppe ${validationErrorClass}`}>
+                        <span className="typo-infotekst">{formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.sjekkboks' })}</span>
+                        <a href="#" className="typo-infotekst" onClick={toggleVilkaarModal(dispatch, isOpen)}>
                             {formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.vis' })}
                         </a>
                     </label>
-                    <Betingelser formatMessage={formatMessage} visModal={visModal}
+                    <Betingelser ref="betingelser-panel" formatMessage={formatMessage} visModal={visModal}
                       godkjennVilkaar={godkjennVilkaar(dispatch)} avbryt={avbryt(dispatch)}
                       lukkModal={lukkModal(dispatch)}
                     />

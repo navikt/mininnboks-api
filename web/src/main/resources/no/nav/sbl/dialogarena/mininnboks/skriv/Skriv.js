@@ -91,21 +91,21 @@ class Skriv extends React.Component {
 
         return (
             <div>
-                <h1 className="diger">{formatMessage({ id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift' })}</h1>
+                <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift' })}</h1>
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">
                         <img src="/mininnboks/build/img/melding_graa.svg"
                           alt={formatMessage({ id: 'meldingikon.alternativ.tekst' })}
                         />
 
-                        <h2 className="stor deloverskrift">{formatMessage({ id: 'send-sporsmal.still-sporsmal.deloverskrift' })}</h2>
+                        <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{formatMessage({ id: 'send-sporsmal.still-sporsmal.deloverskrift' })}</h2>
 
                         <div className="robust-strek"></div>
                     </div>
 
                     <strong>{formatMessage({ id: params.temagruppe })}</strong>
 
-                    <p className="hjelpetekst">{formatMessage({ id: 'send-sporsmal.still-sporsmal.hjelpetekst' })}</p>
+                    <p className="typo-normal">{formatMessage({ id: 'send-sporsmal.still-sporsmal.hjelpetekst' })}</p>
                     <FeedbackForm ref="form">
                         {infoboks}
                         <ExpandingTextArea

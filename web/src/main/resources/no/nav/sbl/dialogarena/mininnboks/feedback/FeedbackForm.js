@@ -48,8 +48,9 @@ class FeedbackForm extends React.Component {
         if (this.feedbackReporter.numberOfErrors() > 1) {
             const errors = this.feedbackReporter.getAllErrorElements('li.feedbackPanelERROR');
             feedback = (
-                <div role="alert" aria-live="assertive" aria-atomic="true" className="feilmelding">
-                    <ul className="feedbackPanel">
+                <div role="alert" aria-live="assertive" aria-atomic="true" className="panel panel-feilsammendrag venstrestill-tekst">
+                    <h3>Du må fylle ut følgende</h3>
+                    <ul>
                         {errors}
                     </ul>
                 </div>
