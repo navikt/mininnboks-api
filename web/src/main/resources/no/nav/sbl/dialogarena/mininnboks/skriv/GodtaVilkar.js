@@ -63,17 +63,17 @@ class GodtaVilkar extends React.Component {
                     <div className={`checkboxgruppe ${validationErrorClass}`}>
                         <span className="vekk" role="alert" aria-live="assertive" aria-atomic="true">{ariaCheckboxState}</span>
                         <input type="checkbox" name="betingelseValg:betingelserCheckbox" className="nav-checkbox " id="betingelser"
-                               onChange={toggleGodkjentVilkaar(dispatch, godkjentVilkaar)} onBlur={this.validate} checked={godkjentVilkaar}
+                           onChange={toggleGodkjentVilkaar(dispatch, godkjentVilkaar)} onBlur={this.validate} checked={godkjentVilkaar}
                         />
-                        <label htmlFor="betingelser" className='checkboxgruppe'>
+                        <label htmlFor="betingelser">
                             <span className="typo-infotekst">{formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.sjekkboks' })}</span>
                             <a href="#" className="typo-infotekst" onClick={toggleVilkaarModal(dispatch, isOpen)}>
                                 {formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.vis' })}
                             </a>
                         </label>
-                        <Betingelser formatMessage={formatMessage} visModal={visModal}
-                                     godkjennVilkaar={godkjennVilkaar(dispatch)} avbryt={avbryt(dispatch)}
-                                     lukkModal={lukkModal(dispatch)} name="betingelser-panel"
+                        <Betingelser ref="betingelser-panel" formatMessage={formatMessage} visModal={visModal}
+                          godkjennVilkaar={godkjennVilkaar(dispatch)} avbryt={avbryt(dispatch)}
+                          lukkModal={lukkModal(dispatch)} name="betingelser-panel"
                         />
                         {validationFeilmelding}
                     </div>
