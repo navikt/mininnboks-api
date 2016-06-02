@@ -7,6 +7,7 @@ import Feilmelding from '../feilmelding/Feilmelding';
 import InfoBoks from '../infoboks/Infoboks';
 import format from 'string-format';
 import Utils from '../utils/Utils';
+import { injectIntl, intlShape } from 'react-intl';
 
 function okCallback(data) {
     this.setState({
@@ -19,9 +20,9 @@ function okCallback(data) {
         beforeSend: Utils.addXsrfHeader
     });
 }
-function feiletCallback() {
+function feiletCallback(formatMessage) {
     this.setState({
-        feilet: { status: true, melding: this.props.resources.get('traadvisning.feilmelding.hentet-ikke-traad') },
+        feilet: { status: true, melding: formatMessage({ id:'traadvisning.feilmelding.hentet-ikke-traad' }) },
         hentet: true
     });
 }
@@ -32,7 +33,7 @@ function kunneIkkeLeggeTilMelding() {
     });
 }
 
-function leggTilMelding(fritekst, response, status, xhr) {
+function leggTilMelding(fritekst, response, status, xhr, formatMessage) {
     if (xhr.status !== 201) {
         kunneIkkeLeggeTilMelding.call(this, response, status, xhr);
         return;
@@ -44,7 +45,7 @@ function leggTilMelding(fritekst, response, status, xhr) {
         temagruppeNavn: this.state.traad.nyeste.temagruppeNavn,
         fraBruker: true,
         fraNav: false,
-        statusTekst: this.props.resources.get('status.SVAR_SBL_INNGAAENDE').replace('%s', meldinger[0].temagruppeNavn)
+        statusTekst: formatMessage({ id: 'status.SVAR_SBL_INNGAAENDE'} ).replace('%s', meldinger[0].temagruppeNavn)
     });
 
     this.setState({
@@ -78,7 +79,7 @@ class TraadVisning extends React.Component {
             $.get(`/mininnboks/tjenester/traader/${this.props.params.traadId}`)
                 .then(okCallback.bind(this), feiletCallback.bind(this));
         } else {
-            feiletCallback.call(this, this.props.valgtTraad);
+            feiletCallback.call(this, this.props.valgtTraad, this.props.formatMessage);
         }
     }
 
@@ -94,15 +95,15 @@ class TraadVisning extends React.Component {
             .fail(kunneIkkeLeggeTilMelding.bind(this));
     }
 
-    getInfoMelding() {
+    getInfoMelding(formatMessage) {
         if (this.state.traad.avsluttet) {
             return (
                 <InfoBoks.Info>
                     <p>
-                        {this.props.resources.get('traadvisning.kan-ikke-svare.info')}
+                        {formatMessage({ id:'traadvisning.kan-ikke-svare.info' })}
                         {' '}
-                        <a href={this.props.resources.get('skriv.ny.link')} className="lopendetekst">
-                            {this.props.resources.get('traadvisning.kan-ikke-svare.lenke')}
+                        <a href={formatMessage({ id:'skriv.ny.link' })} className="lopendetekst">
+                            {formatMessage({ id: 'traadvisning.kan-ikke-svare.lenke' })}
                         </a>
                     </p>
                 </InfoBoks.Info>
@@ -110,13 +111,13 @@ class TraadVisning extends React.Component {
         } else if (this.state.besvart) {
             return (
                 <InfoBoks.Ok focusOnRender={true}>
-                    <p dangerouslySetInnerHTML={{ __html: this.props.resources.get('send-svar.bekreftelse.varslingsinfo')} }></p>
+                    <p dangerouslySetInnerHTML={{ __html: formatMessage({ id:'send-svar.bekreftelse.varslingsinfo' })} }></p>
                 </InfoBoks.Ok>
             );
         } else if (this.state.sendingfeilet) {
             return (
                 <InfoBoks.Feil>
-                    <p>{this.props.resources.get('besvare.feilmelding.innsending')}</p>
+                    <p>{formatMessage({ id: 'besvare.feilmelding.innsending' })}</p>
                 </InfoBoks.Feil>
             );
         }
@@ -132,6 +133,7 @@ class TraadVisning extends React.Component {
     }
 
     render() {
+        const { formatMessage } = this.props.intl;
         if (!this.state.hentet) {
             return <Snurrepipp />;
         }
@@ -140,23 +142,23 @@ class TraadVisning extends React.Component {
         }
 
         const meldingItems = this.state.traad.meldinger.map(function (melding) {
-            return <MeldingContainer key={melding.id} melding={melding} resources={this.props.resources}/>;
+            return <MeldingContainer key={melding.id} melding={melding} formatMessage={formatMessage} />;
         }.bind(this));
 
         const overskrift = this.state.traad.nyeste.kassert ?
-            this.props.resources.get('traadvisning.overskrift.kassert') :
-            format(this.props.resources.get('traadvisning.overskrift'), this.state.traad.nyeste.temagruppeNavn);
+            formatMessage({ id: 'traadvisning.overskrift.kassert'} ) :
+            format(formatMessage({ id: 'traadvisning.overskrift' }), this.state.traad.nyeste.temagruppeNavn);
 
         return (
             <div>
                 <h1 className="typo-sidetittel text-center blokk-l">{overskrift}</h1>
                 <div className="traad-container">
                     <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares}
-                      besvar={this.visBesvarBoks} resources={this.props.resources}
+                      besvar={this.visBesvarBoks} formatMessage={formatMessage}
                     />
-                    {this.getInfoMelding()}
+                    {this.getInfoMelding(formatMessage)}
                     <BesvarBoks besvar={this.sendMelding} vis={this.state.besvares}
-                      skjul={this.skjulBesvarBoks} resources={this.props.resources}
+                      skjul={this.skjulBesvarBoks} formatMessage={formatMessage}
                     />
                     {meldingItems}
                 </div>
@@ -166,13 +168,11 @@ class TraadVisning extends React.Component {
 }
 
 TraadVisning.propTypes = {
-    resources: pt.shape({
-        get: pt.func.isRequired
-    }),
     params: pt.shape({
         traadId: pt.string
     }),
-    valgtTraad: pt.object
+    valgtTraad: pt.object,
+    intl: intlShape
 };
 
-export default TraadVisning;
+export default injectIntl(TraadVisning);

@@ -8,6 +8,8 @@ import Feilmelding from '../feilmelding/Feilmelding';
 import InfoBoks from '../infoboks/Infoboks';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Utils from '../utils/Utils';
+import { injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
 
 class Skriv extends React.Component {
     constructor(props) {
@@ -17,7 +19,7 @@ class Skriv extends React.Component {
     }
 
     componentWillMount() {
-        this.godkjenteForSporsmal = this.props.resources.get('temagruppe.liste').split(' ');
+        this.godkjenteForSporsmal = this.props.intl.formatMessage({ id: 'temagruppe.liste' }).split(' ');
     }
 
     onSubmit(evt) {
@@ -33,7 +35,7 @@ class Skriv extends React.Component {
                 type: 'POST',
                 url: '/mininnboks/tjenester/traader/sporsmal',
                 contentType: 'application/json',
-                data: JSON.stringify({ temagruppe: temagruppe, fritekst: fritekst }),
+                data: JSON.stringify({ temagruppe, fritekst }),
                 beforeSend: Utils.addXsrfHeader
             })
                 .done(function (response, status, xhr) {
@@ -50,12 +52,14 @@ class Skriv extends React.Component {
     }
 
     render() {
-        if (this.godkjenteForSporsmal.indexOf(this.props.params.temagruppe) < 0) {
-            return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon={true}/>;
+        const { params, intl: { formatMessage }, visModal } = this.props;
+
+        if (this.godkjenteForSporsmal.indexOf(params.temagruppe) < 0) {
+            return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon/>;
         }
 
         if (this.state.sendt) {
-            return <Kvittering resources={this.props.resources}/>;
+            return <Kvittering formatMessage={formatMessage}/>;
         }
 
         let knapper;
@@ -65,14 +69,14 @@ class Skriv extends React.Component {
             knapper = (
                 <div>
                     <div>
-                        <input type="submit" className="knapp knapp-hoved knapp-stor" role="button"
-                          value={this.props.resources.get('send-sporsmal.still-sporsmal.send-inn')}
+                        <input type="submit" className="knapp knapp-hoved knapp-storr" role="button"
+                          value={formatMessage({ id: 'send-sporsmal.still-sporsmal.send-inn' })}
                           onClick={this.onSubmit}
                         />
                     </div>
                     <div className="avbryt">
                         <Link to="/mininnboks/">
-                            {this.props.resources.get('send-sporsmal.still-sporsmal.avbryt')}
+                            {formatMessage({ id: 'send-sporsmal.still-sporsmal.avbryt' })}
                         </Link>
                     </div>
                 </div>
@@ -81,31 +85,32 @@ class Skriv extends React.Component {
 
         const infoboks = this.state.sendingfeilet ?
             <InfoBoks.Feil>
-                <p>{this.props.resources.get('send-sporsmal.still-sporsmal.underliggende-feil')}</p>
+                <p>{formatMessage({ id: 'send-sporsmal.still-sporsmal.underliggende-feil' })}</p>
             </InfoBoks.Feil>
             : null;
 
         return (
             <div>
-                <h1 className="typo-sidetittel text-center blokk-l">{this.props.resources.get('send-sporsmal.still-sporsmal.ny-melding-overskrift')}</h1>
+                <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift' })}</h1>
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">
-                        <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{this.props.resources.get('send-sporsmal.still-sporsmal.deloverskrift')}</h2>
+                        <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{formatMessage({ id: 'send-sporsmal.still-sporsmal.deloverskrift' })}</h2>
+
                         <div className="robust-strek"></div>
                     </div>
 
-                    <strong>{this.props.resources.get(this.props.params.temagruppe)}</strong>
+                    <strong>{formatMessage({ id: params.temagruppe })}</strong>
 
-                    <p className="typo-normal">{this.props.resources.get('send-sporsmal.still-sporsmal.hjelpetekst')}</p>
+                    <p className="typo-normal">{formatMessage({ id: 'send-sporsmal.still-sporsmal.hjelpetekst' })}</p>
                     <FeedbackForm ref="form">
                         {infoboks}
                         <ExpandingTextArea
-                          placeholder={this.props.resources.get('skriv-sporsmal.fritekst.placeholder')}
-                          charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
+                          placeholder={formatMessage({ id: 'skriv-sporsmal.fritekst.placeholder' })}
+                          charsLeftText={formatMessage({ id: 'traadvisning.besvar.tekstfelt.tegnigjen' })}
                           feedbackref="textarea"
                         />
 
-                        <GodtaVilkar feedbackref="godtavilkar"/>
+                        <GodtaVilkar feedbackref="godtavilkar" formatMessage={formatMessage} visModal={visModal}/>
                         {knapper}
                     </FeedbackForm>
                 </article>
@@ -115,12 +120,13 @@ class Skriv extends React.Component {
 }
 
 Skriv.propTypes = {
-    resources: pt.shape({
-        get: pt.func.isRequired
-    }),
     params: pt.shape({
         temagruppe: pt.string
-    })
+    }),
+    intl: intlShape.isRequired,
+    visModal: pt.bool.isRequired
 };
 
-export default Skriv;
+const mapStateToProps = ({ visModal }) => ({ visModal });
+
+export default injectIntl(connect(mapStateToProps)(Skriv));

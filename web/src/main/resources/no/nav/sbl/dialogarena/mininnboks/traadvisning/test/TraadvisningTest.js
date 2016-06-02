@@ -11,13 +11,9 @@ import { renderIntoDocument, scryRenderedDOMComponentsWithClass } from 'react-ad
 
 const assign = Object.assign || require('object-assign');
 
-const resourcesMock = {
-    get() {
-        return '';
-    }
-};
+const formatMessage = () => {};
 
-const props = { resources: resourcesMock };
+const props = { formatMessage };
 
 const meldinger = [{
     id: '1',

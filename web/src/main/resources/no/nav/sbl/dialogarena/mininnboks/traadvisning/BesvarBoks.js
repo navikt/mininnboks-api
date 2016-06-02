@@ -35,7 +35,9 @@ class BesvarBoks extends React.Component {
     }
 
     render() {
-        if (!this.props.vis) {
+        const { formatMessage, vis } = this.props;
+
+        if (!vis) {
             return <noscript/>;
         }
 
@@ -46,12 +48,12 @@ class BesvarBoks extends React.Component {
             knapper = (
                 <div>
                     <input type="submit" className="knapp knapp-hoved knapp-liten"
-                      value={this.props.resources.get('traadvisning.besvar.send')} onClick={this.onSubmit}
+                      value={formatMessage({ id: 'traadvisning.besvar.send' })} onClick={this.onSubmit}
                     />
 
                     <p>
                         <a href="#" onClick={this.skjul} role="button">
-                            {this.props.resources.get('traadvisning.besvar.avbryt')}
+                            {formatMessage({ id: 'traadvisning.besvar.avbryt' })}
                         </a>
                     </p>
                 </div>
@@ -60,8 +62,8 @@ class BesvarBoks extends React.Component {
 
         return (
             <FeedbackForm className="besvar-container" ref="form">
-                <ExpandingTextArea placeholder={this.props.resources.get('traadvisning.besvar.tekstfelt.placeholder')}
-                  charsLeftText={this.props.resources.get('traadvisning.besvar.tekstfelt.tegnigjen')}
+                <ExpandingTextArea placeholder={formatMessage({ id: 'traadvisning.besvar.tekstfelt.placeholder'} )}
+                  charsLeftText={formatMessage({ id: 'traadvisning.besvar.tekstfelt.tegnigjen' })}
                   feedbackref="textarea"
                 />
                 {knapper}
@@ -71,12 +73,10 @@ class BesvarBoks extends React.Component {
 }
 
 BesvarBoks.propTypes = {
-    resources: pt.shape({
-        get: pt.func.isRequired
-    }),
     vis: pt.bool,
     skjul: pt.func,
-    besvar: pt.func
+    besvar: pt.func,
+    formatMessage: pt.func.isRequired
 };
 
 export default BesvarBoks;

@@ -1,148 +1,9 @@
-import React from 'react';
+import React, { PropTypes as pt } from 'react';
 
-var ModalPortal = React.createClass({
-    focusAfterClose: undefined,
-
-    getDefaultProps() {
-        return {
-            skipFocus: ['div'],
-            isOpen: false
-        };
-    },
-
-    getInitialState() {
-        return {
-            title: createAriaOptional('title', this.props.title),
-            description: createAriaOptional('description', this.props.description),
-            closeButton: createAriaOptional('closeButton', this.props.closeButton)
-        }
-    },
-
-    componentDidMount() {
-        if (this.props.isOpen === true) {
-            this.focusFirst();
-        }
-    },
-
-    componentDidUpdate() {
-        if (this.props.isOpen) {
-            $(document.body).addClass('modal-open');
-            $(document.body).children().not(this.getDOMNode().parentNode).attr('aria-hidden', true);
-
-            if (!$.contains(this.refs.content.getDOMNode(), document.activeElement)) {
-                this.focusFirst();
-            }
-        } else {
-            $(document.body).children().not(this.getDOMNode().parentNode).removeAttr('aria-hidden');
-            this.restoreFocus();
-            $(document.body).removeClass('modal-open');
-        }
-    },
-
-    keyHandler(event) {
-        const keyMap = {
-            27: function escHandler() { // ESC
-                this.props.modal.close();
-                event.preventDefault();
-            },
-            9: function tabHandler() { // TAB
-                if (this.handleTab(event.shiftKey)) {
-                    event.preventDefault();
-                }
-            }
-        };
-
-        (keyMap[event.keyCode] || function () {
-        }).bind(this)();
-
-        // No leaks
-        event.stopPropagation();
-    },
-
-    handleTab(isShiftkey) {
-        const $content = $(this.refs.content.getDOMNode());
-        const focusable = $content.find(':tabbable');
-        const lastValidIndex = isShiftkey ? 0 : focusable.length - 1;
-
-
-        const currentFocusElement = $content.find(':focus');
-
-        if (focusable.eq(lastValidIndex).is(currentFocusElement)) {
-            const newFocusIndex = isShiftkey ? focusable.length - 1 : 0;
-            focusable.eq(newFocusIndex).focus();
-            return true;
-        }
-        return false;
-    },
-
-    focusFirst() {
-        this.focusAfterClose = document.activeElement;
-        let tabbables = $(this.refs.content.getDOMNode()).find(':tabbable');
-        this.props.skipFocus.forEach(function (skipFocusTag) {
-            tabbables = tabbables.not(skipFocusTag);
-        });
-
-        if (tabbables.length > 0) {
-            tabbables.eq(0).focus();
-        }
-    },
-
-    restoreFocus() {
-        if (this.focusAfterClose) {
-            this.focusAfterClose.focus();
-            this.focusAfterClose = undefined;
-        }
-    },
-
-    render() {
-        let children = this.props.children;
-        if (!children.hasOwnProperty('length')) {
-            children = [children];
-        }
-
-        children.map(function (child) {
-            return React.cloneElement(child, {
-                modal: this.props.modal
-            });
-        }.bind(this));
-
-        const title = this.state.title;
-        const description = this.state.description;
-        let closeButton = null;
-        if (this.props.closeButton.show) {
-            closeButton = (
-                <button className="closeButton" onClick={this.props.modal.close}>
-                    {this.state.closeButton.visible}
-                </button>
-            );
-        }
-
-        const cls = this.props.isOpen ? '' : 'hidden';
-        return (
-            <div tabIndex="-1" className={cls} aria-hidden={!this.props.isOpen} onKeyDown={this.keyHandler}
-              role="dialog" aria-labelledby={title.id} aria-describedby={description.id}>
-                <div className="backdrop" onClick={this.props.modal.close}></div>
-                    {title.hidden}
-                    {description.hidden}
-                <div className="centering">
-                    <div className="content" ref="content">
-                        {title.visible}
-                        {description.visible}
-                        {children}
-                        {closeButton}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-});
-
-function createId(prefix) {
-    return `${prefix}${new Date().getTime()}-${Math.random()}`;
-}
+const createId = (prefix) => `${prefix}${new Date().getTime()}-${Math.random()}`;
 
 function createAriaOptional(name, data) {
-    const id = createId('react-modalx-' + name + '-');
+    const id = createId(`react-modalx-${name}-`);
     const tagComponent = data.tag.split('.');
     const tagType = tagComponent[0];
     let className = '';
@@ -154,10 +15,150 @@ function createAriaOptional(name, data) {
 
     return {
         id,
-        hidden: data.show ? null : element,
-        visible: data.show ? element : null
+        hidden: data.show ? <noscript/> : element,
+        visible: data.show ? element : <noscript/>
     };
 }
 
+class ModalPortal extends React.Component {
+
+    componentDidMount() {
+        if (this.props.visModal) {
+            this.focusFirst();
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.visModal) {
+            document.body.classList.add('modal-open');
+
+            const documentChildren = [].slice.call(document.body.children);
+            documentChildren.forEach(child => {
+                if (!child.classList.contains('react-modal-container')) {
+                    child.setAttribute('aria-hidden', 'true');
+                }
+            });
+
+            this.focusFirst();
+        } else {
+            document.body.classList.remove('modal-open');
+
+            [].slice.call(document.body.children).forEach(child => child.removeAttribute('aria-hidden'));
+
+            this.restoreFocus();
+        }
+    }
+
+    handleTab(isShiftkey) {
+        const $content = $(this.refs.content);
+        const focusable = $content.find(':tabbable');
+        const lastValidIndex = isShiftkey ? 0 : focusable.length - 1;
+
+        const currentFocusElement = $content.find(':focus');
+
+        if (focusable.eq(lastValidIndex).is(currentFocusElement)) {
+            const newFocusIndex = isShiftkey ? focusable.length - 1 : 0;
+            focusable.eq(newFocusIndex).focus();
+            return true;
+        }
+        return false;
+    }
+
+    keyHandler(lukkModal) {
+        return (event) => {
+            const keyMap = {
+                27: () => { // ESC
+                    lukkModal();
+                    event.preventDefault();
+                },
+                9: () => { // TAB
+                    if (this.handleTab(event.shiftKey)) {
+                        event.preventDefault();
+                    }
+                }
+            };
+
+            (keyMap[event.keyCode] || function () {
+            }).bind(this)();
+
+            // No leaks
+            event.stopPropagation();
+        };
+    }
+
+
+    focusFirst() {
+        this.focusAfterClose = document.activeElement;
+        let tabbables = $(this.refs.content).find(':tabbable');
+        this.props.skipFocus.forEach(function (skipFocusTag) {
+            tabbables = tabbables.not(skipFocusTag);
+        });
+
+        if (tabbables.length > 0) {
+            tabbables.eq(0).focus();
+        }
+    }
+
+    restoreFocus() {
+        if (this.focusAfterClose) {
+            this.focusAfterClose.focus();
+            this.focusAfterClose = undefined;
+        }
+    }
+
+    render() {
+        const { modalConfig: { title, description, closeButton }, visModal, lukkModal } = this.props;
+
+        const ariaOptionalTitle = createAriaOptional('title', title);
+        const ariaOptionalDescription = createAriaOptional('description', description);
+        const ariaOptionalCloseButton = createAriaOptional('closeButton', closeButton);
+
+        let children = this.props.children;
+        if (!children.hasOwnProperty('length')) {
+            children = [children];
+        }
+
+        children.map(child => React.cloneElement(child));
+
+        const lukkButton = (
+            <button className="closeButton" onClick={lukkModal} >
+                {ariaOptionalCloseButton.hidden}
+            </button>
+        );
+
+        const visEllerSkjulModal = visModal ? '' : 'hidden';
+        return (
+            <div tabIndex="-1" className={visEllerSkjulModal} aria-hidden={!visModal} onKeyDown={this.keyHandler(lukkModal)}
+              role="dialog" aria-labelledby={title.id} aria-describedby={description.id}>
+                <div className="backdrop" onClick={lukkModal}></div>
+                    {ariaOptionalTitle.hidden}
+                    {ariaOptionalDescription.hidden}
+                <div className="centering">
+                    <div className="content" ref="content">
+                        {ariaOptionalTitle.visible}
+                        {ariaOptionalDescription.visible}
+                        {children}
+                        {lukkButton}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+ModalPortal.defaultProps = {
+    skipFocus: ['div'],
+    isOpen: false
+};
+
+ModalPortal.propTypes = {
+    modalConfig: pt.shape({
+        title: pt.object.isRequired,
+        description: pt.object.isRequired,
+        closeButton: pt.object.isRequired
+    }).isRequired,
+    visModal: pt.bool.isRequired,
+    lukkModal: pt.func.isRequired
+};
 
 export default ModalPortal;

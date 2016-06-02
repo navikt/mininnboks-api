@@ -1,4 +1,5 @@
 import React, { PropTypes as pt } from 'react';
+import { injectIntl, intlShape } from 'rect-intl';
 
 const getCMSKey = (erKvittering, key) => {
     if (!erKvittering) {
@@ -7,29 +8,34 @@ const getCMSKey = (erKvittering, key) => {
     return `send-sporsmal.bekreftelse.${key}`;
 };
 
+const finnesEnonicNokkel = (enonicKey, formatMessage) => {
+    const FINNES_IKKE = 'finnesikke';
+    return formatMessage({ id: enonicKey, defaultMessage: FINNES_IKKE }) !== FINNES_IKKE;
+};
+
 class Epost extends React.Component {
 
     render() {
-        const { resources, erKvittering, linkClass, className } = this.props;
-        const TPSFeil = !resources.hasKey('bruker.epost');
-        const epost = resources.get('bruker.epost');
+        const { erKvittering, linkClass, className, intl: { formatMessage } } = this.props;
+        const TPSFeil = !finnesEnonicNokkel('bruker.epost', formatMessage); 
+        const epost = formatMessage({ id: 'bruker.epost' });
 
         if (TPSFeil) {
-            return <p>{resources.get('send-sporsmal.bekreftelse.kunne-ikke-hente-epost')}</p>;
+            return <p>{formatMessage({ id: 'send-sporsmal.bekreftelse.kunne-ikke-hente-epost' })}</p>;
         }
 
         const infoTekst = epost ?
-            resources.get(getCMSKey(erKvittering, 'du-mottar-epost')) :
-            resources.get(getCMSKey(erKvittering, 'du-kan-motta-epost'));
+            formatMessage({ id: getCMSKey(erKvittering, 'du-mottar-epost') }) :
+            formatMessage({ id: getCMSKey(erKvittering, 'du-kan-motta-epost') });
 
         const epostTekst = epost ?
             <span>{epost}{' '}
-                <a href={resources.get('brukerprofil.link')} className={`${linkClass} lopendetekst`}>
-                    {resources.get(getCMSKey(erKvittering, 'endre-epostadresse'))}
+                <a href={formatMessage({ id: 'brukerprofil.link' })} className={`${linkClass} lopendetekst`}>
+                    {formatMessage({ id: getCMSKey(erKvittering, 'endre-epostadresse') })}
                 </a>
             </span> :
-            <a href={resources.get('brukerprofil.link')} className={`${linkClass} lopendetekst`}>
-                {resources.get(getCMSKey(erKvittering, 'registrer-epostadresse'))}
+            <a href={formatMessage({ id: 'brukerprofil.link' })} className={`${linkClass} lopendetekst`}>
+                {formatMessage({ id: getCMSKey(erKvittering, 'registrer-epostadresse') })}
             </a>;
 
         return (
@@ -48,7 +54,7 @@ Epost.propTypes = {
     erKvittering: pt.bool,
     className: pt.string,
     linkClass: pt.string,
-    resources: pt.object
+    intl: intlShape.isRequired
 };
 
-export default Epost;
+export default injectIntl(Epost);
