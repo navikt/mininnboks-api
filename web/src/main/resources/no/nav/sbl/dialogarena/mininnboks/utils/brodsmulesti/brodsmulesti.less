@@ -1,0 +1,43 @@
+.brodsmulesti {
+    margin-top: 1rem;
+    padding-left: 0;
+    & > li {
+        display: none;
+        &.tilbake {
+            display: inline-block;
+        }
+    }
+}
+
+@media (min-width: @screen-small) {
+    // 620px
+    .brodsmulesti {
+        margin-top: 1.5rem;
+        padding-left: 3.3rem;
+        & > li {
+            display: inline-block;
+            &:not(:last-child)::after {
+                content: "/";
+                margin: 0 0.5rem;
+            }
+        }
+        &:before {
+            content: "";
+            position: absolute;
+            left: 1rem;
+            top: -0.4rem;
+            width: 40px;
+            height: 40px;
+            background-image: url("@{imgDir}/account-circle.svg");
+            background-repeat: no-repeat;
+            background-size: 32px 32px;
+        }
+    }
+    .contrast {
+        .brodsmulesti {
+            &:before {
+                background-image: url("@{imgDir}/account-circle-negativ.svg");
+            }
+        }
+    }
+}

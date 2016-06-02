@@ -1,5 +1,4 @@
 import React, { PropTypes as pt } from 'react';
-import { Link } from 'react-router';
 
 class Knapper extends React.Component {
     constructor(props) {
@@ -26,9 +25,6 @@ class Knapper extends React.Component {
         return (
             <div className="innboks-navigasjon">
                 {skrivSvar}
-                <p>
-                    <Link to="/mininnboks/" title="Tilbake til innboksen">{formatMessage({ id: 'traadvisning.innboks.link' })}</Link>
-                </p>
             </div>
         );
     }

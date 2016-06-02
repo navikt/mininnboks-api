@@ -5,9 +5,9 @@ import Knapper from './Knapper';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Feilmelding from '../feilmelding/Feilmelding';
 import InfoBoks from '../infoboks/Infoboks';
-import format from 'string-format';
 import Utils from '../utils/Utils';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import Breadcrumbs from './../utils/brodsmulesti/customBreadcrumbs';
 
 function okCallback(data) {
     this.setState({
@@ -16,7 +16,7 @@ function okCallback(data) {
     });
     $.ajax({
         type: 'POST',
-        url: '/mininnboks/tjenester/traader/lest/' + data.traadId,
+        url: `/mininnboks/tjenester/traader/lest/${data.traadId}`,
         beforeSend: Utils.addXsrfHeader
     });
 }
@@ -45,7 +45,7 @@ function leggTilMelding(fritekst, response, status, xhr, formatMessage) {
         temagruppeNavn: this.state.traad.nyeste.temagruppeNavn,
         fraBruker: true,
         fraNav: false,
-        statusTekst: formatMessage({ id: 'status.SVAR_SBL_INNGAAENDE'} ).replace('%s', meldinger[0].temagruppeNavn)
+        statusTekst: formatMessage({ id: 'status.SVAR_SBL_INNGAAENDE' }).replace('%s', meldinger[0].temagruppeNavn)
     });
 
     this.setState({
@@ -111,7 +111,7 @@ class TraadVisning extends React.Component {
         } else if (this.state.besvart) {
             return (
                 <InfoBoks.Ok focusOnRender={true}>
-                    <p dangerouslySetInnerHTML={{ __html: formatMessage({ id:'send-svar.bekreftelse.varslingsinfo' })} }></p>
+                    <p dangerouslySetInnerHTML={{ __html: formatMessage({ id: 'send-svar.bekreftelse.varslingsinfo' })} }></p>
                 </InfoBoks.Ok>
             );
         } else if (this.state.sendingfeilet) {
@@ -133,7 +133,7 @@ class TraadVisning extends React.Component {
     }
 
     render() {
-        const { formatMessage } = this.props.intl;
+        const { intl: { formatMessage }, routes, params} = this.props;
         if (!this.state.hentet) {
             return <Snurrepipp />;
         }
@@ -145,12 +145,14 @@ class TraadVisning extends React.Component {
             return <MeldingContainer key={melding.id} melding={melding} formatMessage={formatMessage} />;
         }.bind(this));
 
+        const temagruppeNavn = this.state.traad.nyeste.temagruppeNavn;
         const overskrift = this.state.traad.nyeste.kassert ?
-            formatMessage({ id: 'traadvisning.overskrift.kassert'} ) :
-            format(formatMessage({ id: 'traadvisning.overskrift' }), this.state.traad.nyeste.temagruppeNavn);
+            formatMessage({ id: 'traadvisning.overskrift.kassert' } ) :
+            <FormattedMessage id="traadvisning.overskrift" values={{ temagruppeNavn }}/>;
 
         return (
             <div>
+                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
                 <h1 className="typo-sidetittel text-center blokk-l">{overskrift}</h1>
                 <div className="traad-container">
                     <Knapper kanBesvares={this.state.traad.kanBesvares} besvares={this.state.besvares}
