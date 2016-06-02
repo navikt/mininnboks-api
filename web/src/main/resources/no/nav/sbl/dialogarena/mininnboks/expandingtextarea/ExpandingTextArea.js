@@ -84,15 +84,14 @@ const ExpandingTextArea = React.createClass({
     },
 
     render() {
+        const { infotekst } = this.props;
         const textareaClass = this.isValid() ? '' : 'invalid';
         const validationMessages = this.props.showInline ? this.getErrorElements(undefined, '-inline') : null;
 
         return (
             <div className="textarea-meta-container js-container">
                 <label for="textarea-med-meta">
-                    <span class="vekk">
-                <span class="max-length">For å få raskt svar er det viktig å stille konkrete spørsmål. Få med alle relevante opplysninger. Du kan skrive maksimalt 1000 tegn. Det er cirka en halv A4-side.</span>
-                 </span>
+                    <span className="typo-normal max-length">{infotekst}</span>
                 </label>
                 <textarea id="textarea-med-meta" name="textarea-med-meta" className={`input-fullbredde typo-normal ${textareaClass}`}
                   title={this.props.placeholder}

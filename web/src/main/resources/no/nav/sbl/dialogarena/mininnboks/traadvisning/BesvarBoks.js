@@ -64,6 +64,7 @@ class BesvarBoks extends React.Component {
             <FeedbackForm className="besvar-container" ref="form">
                 <ExpandingTextArea placeholder={formatMessage({ id: 'traadvisning.besvar.tekstfelt.placeholder'} )}
                   charsLeftText={formatMessage({ id: 'traadvisning.besvar.tekstfelt.tegnigjen' })}
+                  infotekst=""
                   feedbackref="textarea"
                 />
                 {knapper}

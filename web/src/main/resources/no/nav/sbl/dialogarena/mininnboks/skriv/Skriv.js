@@ -96,15 +96,13 @@ class Skriv extends React.Component {
                     <div className="sporsmal-header">
                         <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{formatMessage({ id: 'send-sporsmal.still-sporsmal.deloverskrift' })}</h2>
                     </div>
-
                     <strong>{formatMessage({ id: params.temagruppe })}</strong>
-
-                    <p className="typo-normal">{formatMessage({ id: 'send-sporsmal.still-sporsmal.hjelpetekst' })}</p>
                     <FeedbackForm ref="form">
                         {infoboks}
                         <ExpandingTextArea
                           placeholder={formatMessage({ id: 'skriv-sporsmal.fritekst.placeholder' })}
                           charsLeftText={formatMessage({ id: 'traadvisning.besvar.tekstfelt.tegnigjen' })}
+                          infotekst={formatMessage({ id: 'textarea.infotekst' })}
                           feedbackref="textarea"
                         />
 
