@@ -114,9 +114,17 @@ gulp.task('tdd', function (done) {
     }).start();
 });
 
-gulp.task('eslint', function () {
-    return gulp.src(['./src/main/resources/no/nav/sbl/dialogarena/mininnboks/**/*.jsx', './src/main/resources/no/nav/sbl/dialogarena/mininnboks/**/*.js'])
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
-});
+function linter(options) {
+    return function () {
+        return gulp.src(['./src/main/resources/no/nav/sbl/dialogarena/mininnboks/**/*.jsx', './src/main/resources/no/nav/sbl/dialogarena/mininnboks/**/*.js'])
+            .pipe(eslint({ fix: options.fix }))
+            .pipe(eslint.format())
+            .pipe(gulpif(function (file){return file.eslint && file.eslint.fixed;}, gulp.dest('./src/main/resources/no/nav/sbl/dialogarena/mininnboks/')))
+            .pipe(eslint.failAfterError());
+    }
+}
+
+
+gulp.task('eslint', linter({ fix: false }));
+
+gulp.task('eslint-fix', linter({ fix: true }));

@@ -27,7 +27,7 @@ class GodtaVilkar extends React.Component {
         this.validate = this.validate.bind(this);
     }
 
-    onChange(event) {
+    onChange() {
         this.validate();
     }
 
@@ -73,7 +73,7 @@ class GodtaVilkar extends React.Component {
                         </label>
                         <Betingelser ref="betingelser-panel" formatMessage={formatMessage} visModal={visModal}
                           godkjennVilkaar={godkjennVilkaar(dispatch)} avbryt={avbryt(dispatch)}
-                          lukkModal={lukkModal(dispatch)}
+                          lukkModal={lukkModal(dispatch)} name="betingelser-panel"
                         />
                         {validationFeilmelding}
                     </div>
