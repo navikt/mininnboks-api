@@ -31,9 +31,8 @@ class Betingelser extends React.Component {
         return (
             <div className="react-modal-container">
                 <Modal modalConfig={modalConfig} visModal={visModal} lukkModal={lukkModal} >
-                    <form onSubmit={this.submit} className="betingelser-panel side-innhol">
+                    <form onSubmit={this.submit} className="betingelser-panel side-innhold">
                         <h1 className="typo-sidetittel text-center blokk-l" tabIndex="0">{formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.overskrift' })}</h1>
-                        <div className="robust-strek"></div>
                         <div dangerouslySetInnerHTML={{ __html: formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.tekst' }) }}></div>
                         <hr />
                         <input type="submit" className="svar-godta knapp knapp-hoved knapp-stor" aria-controls="betingelser" onClick={godkjennVilkaar}

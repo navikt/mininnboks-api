@@ -84,21 +84,23 @@ const ExpandingTextArea = React.createClass({
     },
 
     render() {
-        const noMoreCharsClass = this.charsLeft() >= 0 ? '' : ' invalid';
+        const { infotekst } = this.props;
         const textareaClass = this.isValid() ? '' : 'invalid';
-
         const validationMessages = this.props.showInline ? this.getErrorElements(undefined, '-inline') : null;
 
         return (
-            <div className="expandingtextarea">
-                <div ref="textareamirror" className="textareamirror" aria-hidden="true"></div>
-                <textarea ref="textarea" className={`typo-normal ${textareaClass}`}
+            <div className="textarea-meta-container js-container">
+                <label for="textarea-med-meta">
+                    <span className="typo-normal max-length">{infotekst}</span>
+                </label>
+                <textarea id="textarea-med-meta" name="textarea-med-meta" className={`input-fullbredde typo-normal ${textareaClass}`}
                   title={this.props.placeholder}
                   aria-label={this.props.placeholder} aria-invalid={!this.isValid()} aria-describedby={this.getErrorElementId('-inline')}
                   onChange={this.onTextAreaChange} onBlur={this.onTextAreaBlur}
                 />
-                <span className={`charsLeft ${noMoreCharsClass}`}>{this.charsLeft()}</span>
-                <span>{` ${this.props.charsLeftText}`}</span>
+                <p className="textarea-metatekst" aria-hidden="true">
+                 <span class="max-length">{this.charsLeft()}</span> tegn igjen
+                </p>
                 <div id="validation-messages">
                     {validationMessages}
                 </div>

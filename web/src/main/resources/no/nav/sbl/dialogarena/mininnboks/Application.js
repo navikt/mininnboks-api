@@ -9,7 +9,7 @@ addLocaleData(nb);
 
 const renderApplication = (children, defaultTekster, headerlevel) => (
     <IntlProvider defaultLocale="nb" locale="nb" messages={defaultTekster} >
-        <div className={headerlevel ? 'header-level' : null}>{ children }</div>
+        <div className={'side-innhold' + headerlevel ? 'header-level' : null}>{ children }</div>
     </IntlProvider>
 );
 

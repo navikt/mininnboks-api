@@ -69,7 +69,7 @@ class Skriv extends React.Component {
             knapper = (
                 <div>
                     <div>
-                        <input type="submit" className="knapp knapp-hoved knapp-storr" role="button"
+                        <input type="submit" className="knapp knapp-hoved knapp-stor" role="button"
                           value={formatMessage({ id: 'send-sporsmal.still-sporsmal.send-inn' })}
                           onClick={this.onSubmit}
                         />
@@ -95,18 +95,14 @@ class Skriv extends React.Component {
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">
                         <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{formatMessage({ id: 'send-sporsmal.still-sporsmal.deloverskrift' })}</h2>
-
-                        <div className="robust-strek"></div>
                     </div>
-
                     <strong>{formatMessage({ id: params.temagruppe })}</strong>
-
-                    <p className="typo-normal">{formatMessage({ id: 'send-sporsmal.still-sporsmal.hjelpetekst' })}</p>
                     <FeedbackForm ref="form">
                         {infoboks}
                         <ExpandingTextArea
                           placeholder={formatMessage({ id: 'skriv-sporsmal.fritekst.placeholder' })}
                           charsLeftText={formatMessage({ id: 'traadvisning.besvar.tekstfelt.tegnigjen' })}
+                          infotekst={formatMessage({ id: 'textarea.infotekst' })}
                           feedbackref="textarea"
                         />
 
