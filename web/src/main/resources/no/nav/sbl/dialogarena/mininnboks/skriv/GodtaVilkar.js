@@ -27,7 +27,7 @@ class GodtaVilkar extends React.Component {
         this.validate = this.validate.bind(this);
     }
 
-    onChange(event) {
+    onChange() {
         this.validate();
     }
 

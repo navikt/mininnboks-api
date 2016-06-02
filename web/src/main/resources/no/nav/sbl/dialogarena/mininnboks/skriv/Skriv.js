@@ -69,7 +69,7 @@ class Skriv extends React.Component {
             knapper = (
                 <div>
                     <div>
-                        <input type="submit" className="knapp knapp-hoved knapp-storr" role="button"
+                        <input type="submit" className="knapp knapp-hoved knapp-stor" role="button"
                           value={formatMessage({ id: 'send-sporsmal.still-sporsmal.send-inn' })}
                           onClick={this.onSubmit}
                         />
