@@ -10,6 +10,7 @@ import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Utils from '../utils/Utils';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
+import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 
 class Skriv extends React.Component {
     constructor(props) {
@@ -52,7 +53,7 @@ class Skriv extends React.Component {
     }
 
     render() {
-        const { params, intl: { formatMessage }, visModal } = this.props;
+        const { params, intl: { formatMessage }, visModal, routes } = this.props;
 
         if (this.godkjenteForSporsmal.indexOf(params.temagruppe) < 0) {
             return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon/>;
@@ -91,6 +92,7 @@ class Skriv extends React.Component {
 
         return (
             <div>
+                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
                 <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift' })}</h1>
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">
