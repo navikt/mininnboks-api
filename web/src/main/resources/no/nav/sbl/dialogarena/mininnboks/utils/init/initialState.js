@@ -2,5 +2,7 @@
 export default {
     harHentetInitData: false,
     godkjentVilkaar: false,
-    visModal: false
+    visModal: false,
+    sporsmal_inputtekst: '',
+    sporsmal_checkbox: ''
 };

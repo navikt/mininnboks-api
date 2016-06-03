@@ -1,7 +1,7 @@
 import ledetekster from '../ledetekster';
 import { INIT_DATA } from '../init/initActions';
 import initialState from '../init/initialState';
-import { GODTA_VILKAAR, VIS_MODAL } from './../actions/actionTypes';
+import { GODTA_VILKAAR, SKRIV_TEKST, VIS_MODAL } from './../actions/actionTypes';
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -12,6 +12,7 @@ export default (state = initialState, action) => {
                 harHentetInitData: true,
                 miljovariabler: action.miljovariabler,
                 godkjentVilkaar: false,
+                sporsmal_inputtekst: '',
                 tekster
             });
         }
@@ -19,6 +20,8 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {godkjentVilkaar: action.godkjentVilkaar});
         case VIS_MODAL:
             return Object.assign({}, state, {visModal: action.visModal});
+        case SKRIV_TEKST:
+            return Object.assign({}, state, {sporsmal_inputtekst: action.sporsmal_inputtekst});
         default:
             return state;
     }

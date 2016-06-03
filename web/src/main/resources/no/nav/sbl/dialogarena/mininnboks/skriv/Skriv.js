@@ -52,7 +52,7 @@ class Skriv extends React.Component {
     }
 
     render() {
-        const { params, intl: { formatMessage }, visModal } = this.props;
+        const { params, intl: { formatMessage }, visModal, sporsmal_inputtekst } = this.props;
 
         if (this.godkjenteForSporsmal.indexOf(params.temagruppe) < 0) {
             return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon/>;
@@ -97,18 +97,16 @@ class Skriv extends React.Component {
                         <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{formatMessage({ id: 'send-sporsmal.still-sporsmal.deloverskrift' })}</h2>
                     </div>
                     <strong>{formatMessage({ id: params.temagruppe })}</strong>
-                    <FeedbackForm ref="form">
-                        {infoboks}
+
                         <ExpandingTextArea
-                          placeholder={formatMessage({ id: 'skriv-sporsmal.fritekst.placeholder' })}
                           charsLeftText={formatMessage({ id: 'traadvisning.besvar.tekstfelt.tegnigjen' })}
                           infotekst={formatMessage({ id: 'textarea.infotekst' })}
-                          feedbackref="textarea"
+                          sporsmal_inputtekst={sporsmal_inputtekst}
                         />
 
                         <GodtaVilkar feedbackref="godtavilkar" formatMessage={formatMessage} visModal={visModal}/>
                         {knapper}
-                    </FeedbackForm>
+
                 </article>
             </div>
         );
