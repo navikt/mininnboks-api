@@ -1,7 +1,7 @@
 import ledetekster from '../ledetekster';
 import { INIT_DATA } from '../init/initActions';
 import initialState from '../init/initialState';
-import { GODTA_VILKAAR, SKRIV_TEKST, VIS_MODAL } from './../actions/actionTypes';
+import { GODTA_VILKAAR, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, VIS_KVITTERING } from './../actions/actionTypes';
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -12,7 +12,11 @@ export default (state = initialState, action) => {
                 harHentetInitData: true,
                 miljovariabler: action.miljovariabler,
                 godkjentVilkaar: false,
-                sporsmal_inputtekst: '',
+                sporsmalInputtekst: '',
+                harSubmittedSkjema: false,
+                sendingStatus: 'IKKE_SENDT',
+                visKvittering: false,
+                skrivSvar: false,
                 tekster
             });
         }
@@ -21,7 +25,13 @@ export default (state = initialState, action) => {
         case VIS_MODAL:
             return Object.assign({}, state, {visModal: action.visModal});
         case SKRIV_TEKST:
-            return Object.assign({}, state, {sporsmal_inputtekst: action.sporsmal_inputtekst});
+            return Object.assign({}, state, {sporsmalInputtekst: action.sporsmalInputtekst});
+        case SUBMIT_SKJEMA:
+            return Object.assign({}, state, {harSubmittedSkjema: true});
+        case SETT_SENDING_STATUS:
+            return Object.assign({}, state, {sendingStatus:  action.sendingStatus});
+        case SKRIV_SVAR:
+            return Object.assign({}, state, {skrivSvar:  action.skrivSvar});
         default:
             return state;
     }

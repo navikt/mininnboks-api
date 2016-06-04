@@ -1,51 +1,22 @@
 import React from 'react';
+import Sendingstatus from '../skriv/SendingStatus';
+import { injectIntl } from 'react-intl';
 
-var ariahelpermap = {
-    info: 'Informasjonsmelding',
-    feil: 'Feilmelding',
-    ok: 'Bekreftelsemelding'
-};
+class InfoBoks extends React.Component {
+    render() {
+        const { formatMessage, sendingStatus } = this.props;
 
-var InfoBoks = React.createClass({
-    getDefaultProps: function(){
-        return {
-            focusOnRender: false
+        if (sendingStatus === 'IKKE_SENDT') {
+            return <noscript/>;
         }
-    },
-    componentDidMount: function(){
-        if (this.props.focusOnRender) {
-            var $infoboks = $(this.refs.infoboks);
-            $infoboks.find(':tabbable').first().focus();
-        }
-    },
-    render: function () {
-        var innerHTML = !this.props.melding && this.props.children ?
-            <div>{this.props.children}</div> :
-            <div dangerouslySetInnerHTML={{__html: this.props.melding}}></div>;
 
         return (
-            <div className={"info-boks " + this.props.type} aria-live="assertive" aria-atomic="true" role="alert" ref="infoboks">
-                <p className="vekk">{ariahelpermap[this.props.type]}</p>
-                {innerHTML}
+            <div className={"info-boks " + sendingStatus} aria-live="assertive" aria-atomic="true" role="alert">
+                <p className="vekk">{Sendingstatus[sendingStatus]}</p>
+                <div dangerouslySetInnerHTML={{__html: formatMessage({id: "infoboks." + sendingStatus})}}></div>
             </div>
         );
     }
-});
+}
 
-module.exports = {
-    Info: React.createClass({
-        render: function () {
-            return <InfoBoks type="info" {...this.props} />;
-        }
-    }),
-    Feil: React.createClass({
-        render: function () {
-            return <InfoBoks type="feil" {...this.props} />;
-        }
-    }),
-    Ok: React.createClass({
-        render: function () {
-            return <InfoBoks type="ok" {...this.props} />;
-        }
-    })
-};
+export default injectIntl(InfoBoks);

@@ -2,24 +2,28 @@ import React, { PropTypes as pt } from 'react';
 import { connect } from 'react-redux';
 import { skrivTekst } from '../utils/actions/actions.js';
 import { injectIntl } from 'react-intl';
-
+import SamletFeilmeldingPanel from './SamletFeilmeldingPanel';
+import FeilmeldingEnum from '../skriv/FeilmeldingEnum';
 
 class ExpandingTextArea extends React.Component {
 
     render() {
-        const { infotekst, dispatch, sporsmal_inputtekst } = this.props;
-        const resterendeLengde = 1000 - sporsmal_inputtekst.length;
+        const { formatMessage, dispatch, sporsmalInputtekst, validationResult } = this.props;
+        const resterendeLengde = 1000 - sporsmalInputtekst.length;
+        const additionalClassName = validationResult.includes(FeilmeldingEnum.textarea) ? 'invalid' : '';
 
         return (
             <div className="textarea-meta-container js-container">
                 <label for="textarea-med-meta">
-                    <span className="typo-normal max-length">{infotekst}</span>
+                    <span className="typo-normal max-length">{formatMessage({ id: 'textarea.infotekst' })}</span>
                 </label>
-                <textarea id="textarea-med-meta" name="textarea-med-meta" className={`input-fullbredde typo-normal`}
+                <SamletFeilmeldingPanel formatMessage={formatMessage} validationResult={validationResult}/>
+
+                <textarea id="textarea-med-meta" name="textarea-med-meta" className={`input-fullbredde typo-normal ${additionalClassName}`}
                   title={this.props.placeholder}
                   aria-label={this.props.placeholder} aria-invalid="false" aria-describedby=''
-                  onChange={ _onWrite(dispatch, '')}
-                  value={sporsmal_inputtekst}
+                  onChange={ _onWrite(dispatch)}
+                  value={sporsmalInputtekst}
                 />
                 <p className="textarea-metatekst" aria-hidden="true">
                  <span class="max-length">{resterendeLengde}</span> tegn igjen
@@ -29,13 +33,13 @@ class ExpandingTextArea extends React.Component {
     }
 }
 
-const _onWrite = (dispatch, tekst) =>
-    (event) => dispatch(skrivTekst(event.target.value));
+const _onWrite = (dispatch) => (event) => dispatch(skrivTekst(event.target.value));
 
 ExpandingTextArea.propTypes = {
-    dispatch: pt.func.isRequired,
-    sporsmal_inputtekst: pt.string.isRequired
+    dispatch: pt.func,
+    sporsmalInputtekst: pt.string.isRequired,
+    validationResult: pt.array.isRequired
 };
 
-export default injectIntl(connect(({ sporsmal_inputtekst }) => ({ sporsmal_inputtekst }))(ExpandingTextArea));
+export default connect(() => ({ }))(ExpandingTextArea);
 
