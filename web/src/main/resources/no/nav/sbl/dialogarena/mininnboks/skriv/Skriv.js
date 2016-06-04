@@ -12,6 +12,7 @@ import Utils from '../utils/Utils';
 import { submitSkjema, settSendingStatus } from '../utils/actions/actions.js';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
+import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 
 
 const submit = (dispatch, temagruppe, sporsmalInputtekst, harSubmittedSkjema, godkjentVilkaar) => () => {
@@ -63,7 +64,7 @@ export const getValidationMessages = (harSubmittedSkjema, sporsmalInputtekst, go
 class Skriv extends React.Component {
 
     render() {
-        const { dispatch, intl: { formatMessage }, visModal, sporsmalInputtekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus } = this.props;
+        const { params, dispatch, intl: { formatMessage }, visModal, routes, sporsmalInputtekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus } = this.props;
         const temagruppe = this.props.params.temagruppe;
         if (formatMessage({ id: 'temagruppe.liste' }).split(' ').indexOf(temagruppe) < 0) {
             return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon/>;
@@ -74,6 +75,7 @@ class Skriv extends React.Component {
 
         return (
             <div>
+                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
                 <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift' })}</h1>
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">

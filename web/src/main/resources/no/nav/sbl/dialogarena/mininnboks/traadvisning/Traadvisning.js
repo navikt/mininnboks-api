@@ -10,6 +10,7 @@ import Utils from '../utils/Utils';
 import { lesTraad } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
+import Breadcrumbs from './../utils/brodsmulesti/customBreadcrumbs';
 
 class TraadVisning extends React.Component {
 
@@ -18,7 +19,7 @@ class TraadVisning extends React.Component {
     }
 
     render() {
-        const { intl: { formatMessage }, sendingStatus, traader, skrivSvar, harSubmittedSkjema, sporsmalInputtekst } = this.props;
+        const { routes, params, intl: { formatMessage }, sendingStatus, traader, skrivSvar, harSubmittedSkjema, sporsmalInputtekst } = this.props;
 
         if (!traader) {
             return <Spinner spin/>;
@@ -37,6 +38,7 @@ class TraadVisning extends React.Component {
 
         return (
             <div>
+                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
                 <h1 className="typo-sidetittel text-center blokk-l">{overskrift}</h1>
                 <div className="traad-container">
                     <Knapper kanBesvares={valgttraad.kanBesvares} formatMessage={formatMessage} />

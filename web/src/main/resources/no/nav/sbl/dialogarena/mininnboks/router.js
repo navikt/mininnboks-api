@@ -1,16 +1,25 @@
 import React from 'react';
-import { Router, Route, IndexRoute, useRouterHistory, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, useRouterHistory } from 'react-router';
 import ListeVisning from './listevisning/ListeVisning';
 import TraadVisning from './traadvisning/Traadvisning';
 import Skriv from './skriv/Skriv';
 import App from './Application';
+import { greedyRender } from './utils/brodsmulesti/customBreadcrumbs';
+import { createHistory } from 'history';
+
+const history = useRouterHistory(createHistory)({ basename: '/mininnboks' });
 
 export default() => (
-    <Router history={browserHistory}>
-        <Route path="mininnboks/" component={App}>
-            <IndexRoute component={ListeVisning} />
-            <Route path="traad/:traadId" component={TraadVisning}/>
-            <Route path="sporsmal/skriv/:temagruppe" component={Skriv}/>
+    <Router history={history}>
+        <Route path="/" component={App} breadcrumbIgnore>
+            <IndexRoute component={ListeVisning} breadcrumbName="Min innboks" />
+            <Route path="/" component={greedyRender(ListeVisning)} breadcrumbName="Min innboks" >
+                <Route path="/traad/:tema/:traadId" component={greedyRender(TraadVisning)} breadcrumbName="Dialog om :tema" />
+                </Route>
+            <Route path="/" component={greedyRender(ListeVisning)} breadcrumbName="Min innboks" >
+                <Route path="sporsmal/skriv/:temagruppe" component={greedyRender(Skriv)} breadcrumbName="Ny melding"/>
+            </Route>
+            <Route path="sporsmal/skriv/:temagruppe" component={greedyRender(Skriv)} breadcrumbName="Ny melding"/>
         </Route>
     </Router>
 );

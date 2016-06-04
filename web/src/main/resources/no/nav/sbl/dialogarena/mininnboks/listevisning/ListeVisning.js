@@ -5,11 +5,12 @@ import { Link } from 'react-router';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Spinner from '../Spinner';
+import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 
 class ListeVisning extends React.Component {
 
     render() {
-        const { intl: { formatMessage }, traader } = this.props;
+        const { intl: { formatMessage }, routes, params, traader } = this.props;
 
         if (!traader) {
             return <Spinner spin/>;
@@ -24,6 +25,7 @@ class ListeVisning extends React.Component {
 
         return (
             <div>
+                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
                 <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'innboks.overskrift' })}</h1>
                 <div className="innboks-navigasjon clearfix">
                      <Link to={formatMessage({ id: 'skriv.ny.link'} )} className="knapp knapp-hoved knapp-liten" >{formatMessage({ id: 'innboks.skriv.ny.link'} )}</Link>
