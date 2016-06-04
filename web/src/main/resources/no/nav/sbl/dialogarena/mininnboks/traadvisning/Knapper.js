@@ -1,24 +1,18 @@
 import React, { PropTypes as pt } from 'react';
 import { Link } from 'react-router';
+import { settSkrivSvar } from '../utils/actions/actions';
+import { injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
+
+const _onClick = (dispatch) => () => dispatch(settSkrivSvar(true));
 
 class Knapper extends React.Component {
-    constructor(props) {
-        super(props);
-        this.besvar = this.besvar.bind(this);
-    }
-
-    besvar(event) {
-        event.preventDefault();
-        if (this.props.kanBesvares) {
-            this.props.besvar();
-        }
-    }
 
     render() {
-        const { formatMessage, kanBesvares, besvares } = this.props;
+        const { dispatch, formatMessage, kanBesvares } = this.props;
         
-        const skrivSvar = kanBesvares && !besvares ?
-            <button onClick={this.besvar} className="knapp knapp-hoved knapp-liten">
+        const skrivSvar = kanBesvares ?
+            <button onClick={_onClick(dispatch)} className="knapp knapp-hoved knapp-liten">
                 {formatMessage({ id: 'traadvisning.skriv.svar.link' })}
             </button> :
             <noscript/>;
@@ -26,19 +20,14 @@ class Knapper extends React.Component {
         return (
             <div className="innboks-navigasjon">
                 {skrivSvar}
-                <p>
-                    <Link to="/mininnboks/" title="Tilbake til innboksen">{formatMessage({ id: 'traadvisning.innboks.link' })}</Link>
-                </p>
             </div>
         );
     }
 }
 
 Knapper.propTypes = {
-    formatMessage: pt.func.isRequired,
-    kanBesvares: pt.bool,
-    besvares: pt.bool,
-    besvar: pt.func
+    formatMessage: pt.func.isRequired
 };
 
-export default Knapper;
+
+export default injectIntl(connect()(Knapper));

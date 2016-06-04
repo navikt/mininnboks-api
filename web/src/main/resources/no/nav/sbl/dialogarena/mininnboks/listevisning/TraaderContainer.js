@@ -13,11 +13,11 @@ function getTraadLister(traader) {
 
 class TraadContainer extends React.Component {
     render() {
-        const { formatMessage, setValgtTraad } = this.props;
-        const traader = getTraadLister(this.props.traader);
+        const { formatMessage, traader } = this.props;
+        const traadene = getTraadLister(traader);
 
-        let ulesteTraader = traader.uleste.map((traad, index) => <TraadPreview index={index} key={traad.traadId} traad={traad} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>);
-        let lesteTraader = traader.leste.map(traad => <TraadPreview key={traad.traadId} traad={traad} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>);
+        let ulesteTraader = traadene.uleste.map((traad, index) => <TraadPreview index={index} key={traad.traadId} traad={traad} formatMessage={formatMessage}/>);
+        let lesteTraader = traadene.leste.map(traad => <TraadPreview key={traad.traadId} traad={traad} formatMessage={formatMessage}/>);
 
         if(lesteTraader.length === 0) {
             lesteTraader = <p className="panel">{formatMessage({ id: 'innboks.leste.ingenmeldinger' })}</p>

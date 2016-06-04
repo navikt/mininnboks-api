@@ -14,7 +14,6 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 
 
-
 const submit = (dispatch, temagruppe, sporsmalInputtekst, harSubmittedSkjema, godkjentVilkaar) => () => {
     dispatch(submitSkjema(true));
     if (validate(true, sporsmalInputtekst, godkjentVilkaar)) {

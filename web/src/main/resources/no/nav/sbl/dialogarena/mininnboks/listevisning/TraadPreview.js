@@ -3,14 +3,6 @@ import { Link } from 'react-router';
 import Utils from '../utils/Utils';
 
 class TraadPreview extends React.Component {
-    constructor(props) {
-        super(props);
-        this.onClick = this.onClick.bind(this);
-    }
-
-    onClick() {
-        this.props.setValgtTraad(this.props.traad);
-    }
 
     render() {
         const { traad, index, formatMessage } = this.props;
@@ -25,8 +17,7 @@ class TraadPreview extends React.Component {
 
         return (
             <li className="traad">
-                <Link to={`/mininnboks/traad/${melding.traadId}`} className={`panel panel-ikon panel-klikkbart blokk-xxxs dialog ${markertKlasse}`}
-                  onClick={this.onClick}>
+                <Link to={`/mininnboks/traad/${melding.traadId}`} className={`panel panel-ikon panel-klikkbart blokk-xxxs dialog ${markertKlasse}`} >
                     <div className="typo-normal blokk-xxxs">
                         <p>{dato} / Fra {avsender} </p>
                         <h2 className="typo-element blokk-xxs">{melding.statusTekst}</h2>
