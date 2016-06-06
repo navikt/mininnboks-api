@@ -10,7 +10,7 @@ import static java.util.Collections.reverseOrder;
 public class Henvendelse implements Serializable {
 
     public String id;
-    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet, temagruppeNavn, statusTekst, kontorsperreEnhet;
+    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet, temagruppeNavn, statusTekst, kontorsperreEnhet, temaNavn;
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
@@ -58,5 +58,10 @@ public class Henvendelse implements Serializable {
     }
 
     public static final Comparator<Henvendelse> NYESTE_OVERST = reverseOrder(Comparator.comparing(henvendelse -> henvendelse.opprettet));
+
+    public Henvendelse withTemaNavn(String temaNavn) {
+        this.temaNavn = temaNavn;
+        return this;
+    }
 
 }
