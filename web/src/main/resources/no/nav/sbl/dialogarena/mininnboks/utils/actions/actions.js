@@ -3,7 +3,7 @@ import { getCookie } from '../Utils';
 
 export const API_BASE_URL = '/mininnboks/tjenester';
 const MED_CREDENTIALS = { credentials: 'same-origin' };
-const MED_XSRF = { 'XSRF-TOKEN': getCookie('XSRF-TOKEN-MININNBOKS') };
+const SOM_POST = { credentials: 'same-origin', method: 'POST' };
 
 export const velgGodtaVilkaar = (vilkaar) => ({ type: GODTA_VILKAAR, godkjentVilkaar: vilkaar });
 export const velgVisModal = (skalVise) => ({ type: VIS_MODAL, visModal: skalVise });
@@ -20,11 +20,5 @@ export const hentTraader = () =>
                 type: HENT_TRAADER,
                 traader: json
             }));
-export const lesTraad = (traadId) =>
-    dispatch =>
-        fetch(`${API_BASE_URL}/traader/lest/` + traadId, MED_CREDENTIALS)
-            .then(res => res.json())
-            .then(json => dispatch({
-                type: LES_TRAAD,
-                traader: json
-            }));
+
+export const lesTraad = (traadId) => dispatch => fetch(`${API_BASE_URL}/traader/lest/${traadId}`, SOM_POST );
