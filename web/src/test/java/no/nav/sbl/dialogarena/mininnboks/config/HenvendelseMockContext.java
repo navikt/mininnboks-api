@@ -46,9 +46,10 @@ public class HenvendelseMockContext {
         traad.add(new XMLHenvendelse()
                 .withBehandlingsId(behandlingskjedeId.toString())
                 .withBehandlingskjedeId(behandlingskjedeId.toString())
-                .withOpprettetDato(DateTime.now().minusDays(1))
+                .withOpprettetDato(DateTime.now().minusDays(3))
                 .withTema(tema)
                 .withLestDato(null)
+                .withKorrelasjonsId("a1-b2")
                 .withHenvendelseType(DOKUMENT_VARSEL.value())
                 .withMetadataListe(new XMLMetadataListe().withMetadata(new XMLDokumentVarsel().withDokumenttittel(dokumentTittel).withJournalpostId("1").withDokumentIdListe("2").withTemanavn("Dagpenger"))));
 

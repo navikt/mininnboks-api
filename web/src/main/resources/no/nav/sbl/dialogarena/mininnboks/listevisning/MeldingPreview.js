@@ -3,10 +3,9 @@ import { Link } from 'react-router';
 import Utils from '../utils/Utils';
 
 class MeldingPreview extends React.Component {
-    
     render() {
-        const { traad, index, formatMessage } = this.props;
-        const markertKlasse = index === 0 ? 'markert' : '';
+        const { traad, aktiv, onClick, formatMessage } = this.props;
+        const markertKlasse = aktiv ? 'markert' : '';
         const melding = traad.nyeste;
         const temagruppenavn = traad.nyeste.temagruppeNavn;
         const midlertidigAvsendernavn = 'Bruker'.toLowerCase();
@@ -17,7 +16,7 @@ class MeldingPreview extends React.Component {
 
         return (
             <li className="traad">
-                <Link to={`/traad/${temagruppenavn}/${melding.traadId}`} onClick={this.onClick}
+                <Link to={`/traad/${temagruppenavn}/${melding.traadId}`} onClick={onClick}
                       className={`panel panel-ikon panel-klikkbart blokk-xxxs dialog ${markertKlasse}`}
                 >
                     <div className="typo-normal blokk-xxxs">
@@ -33,7 +32,9 @@ class MeldingPreview extends React.Component {
 
 MeldingPreview.propTypes = {
     traad: pt.object,
-    formatMessage: pt.func.isRequired
+    formatMessage: pt.func.isRequired,
+    aktiv: pt.bool.isRequired,
+    onClick: pt.func.isRequired
 };
 
 export default MeldingPreview;

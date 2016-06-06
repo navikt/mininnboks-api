@@ -10,7 +10,7 @@ import static java.util.Collections.reverseOrder;
 public class Henvendelse implements Serializable {
 
     public String id;
-    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet, temagruppeNavn, statusTekst, kontorsperreEnhet, temaNavn;
+    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet, temagruppeNavn, statusTekst, kontorsperreEnhet, temaNavn, korrelasjonsId;
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;

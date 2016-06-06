@@ -5,16 +5,16 @@ import Utils from '../utils/Utils';
 class DokumentPreview extends React.Component {
 
     render() {
-        const { traad, index, formatMessage } = this.props;
-        const markertKlasse = index === 0 ? 'markert' : '';
+        const { traad, aktiv, formatMessage, onClick } = this.props;
+        const markertKlasse = aktiv ? 'markert' : '';
         const dokument = traad.nyeste;
-        const avsender =  <span className="avsender-fra-nav">{formatMessage({ id: 'avsender.tekst.NAV' })}</span>;
+        const avsender = <span className="avsender-fra-nav">{formatMessage({ id: 'avsender.tekst.NAV' })}</span>;
         const dato = Utils.shortDate(dokument.opprettet);
         const temanavn = dokument.temaNavn;
 
         return (
             <li className="traad">
-                <Link to={`/dokument/${dokument.id}`} onClick={this.props.onClick}
+                <Link to={`/dokument/${dokument.id}`} onClick={onClick}
                   className={`panel panel-ikon panel-klikkbart blokk-xxxs dokument ${markertKlasse}`}
                 >
                     <div className="typo-normal blokk-xxxs">
@@ -30,7 +30,9 @@ class DokumentPreview extends React.Component {
 
 DokumentPreview.propTypes = {
     traad: pt.object,
-    formatMessage: pt.func.isRequired
+    formatMessage: pt.func.isRequired, 
+    aktiv: pt.bool.isRequired, 
+    onClick: pt.func.isRequired
 };
 
 export default DokumentPreview;

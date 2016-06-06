@@ -42,7 +42,7 @@ class ListeVisning extends React.Component {
         } else if (this.state.traader.length === 0) {
             content = <Feilmelding melding={formatMessage({ id: 'innboks.tom-innboks-melding' })}/>;
         } else {
-            content = <TraaderContainer traader={this.state.traader} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>;
+            content = <TraaderContainer traader={this.state.traader} setValgtTraad={setValgtTraad} formatMessage={formatMessage} location={this.props.location}/>;
         }
 
         return (

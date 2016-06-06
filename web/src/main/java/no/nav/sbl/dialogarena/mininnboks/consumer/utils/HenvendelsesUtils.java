@@ -57,6 +57,7 @@ public abstract class HenvendelsesUtils {
             henvendelse.brukersEnhet = info.getBrukersEnhet();
             henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
             henvendelse.fraNav = !henvendelse.fraBruker;
+            henvendelse.korrelasjonsId = info.getKorrelasjonsId();
             if (FRA_BRUKER.contains(henvendelse.type)) {
                 henvendelse.markerSomLest();
             } else {
