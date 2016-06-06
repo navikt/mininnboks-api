@@ -9,7 +9,7 @@ import InfoBoks from '../infoboks/Infoboks';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import FeilmeldingEnum from './FeilmeldingEnum';
 import { addXsrfHeader } from '../utils/Utils';
-import { submitSkjema, settSendingStatus } from '../utils/actions/actions.js';
+import { resetInputState, submitSkjema, settSendingStatus } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
@@ -39,6 +39,11 @@ const submit = (dispatch, temagruppe, sporsmalInputtekst, godkjentVilkaar) => ()
 };
 
 class Skriv extends React.Component {
+
+    componentWillMount() {
+        const { dispatch } = this.props;
+        dispatch(resetInputState());
+    }
 
     render() {
         const { params, dispatch, intl: { formatMessage }, visModal, routes, sporsmalInputtekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus } = this.props;
