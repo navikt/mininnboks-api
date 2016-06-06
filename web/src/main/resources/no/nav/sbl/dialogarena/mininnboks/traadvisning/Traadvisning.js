@@ -5,8 +5,6 @@ import Knapper from './Knapper';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Feilmelding from '../feilmelding/Feilmelding';
 import InfoBoks from '../infoboks/Infoboks';
-import format from 'string-format';
-import Utils from '../utils/Utils';
 import { lesTraad } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';

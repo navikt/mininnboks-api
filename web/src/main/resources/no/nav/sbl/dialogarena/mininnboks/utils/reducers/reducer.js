@@ -1,7 +1,7 @@
 import ledetekster from '../ledetekster';
 import { INIT_DATA } from '../init/initActions';
 import initialState from '../init/initialState';
-import { GODTA_VILKAAR, HENT_TRAADER, LES_TRAAD, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, VIS_KVITTERING } from './../actions/actionTypes';
+import { GODTA_VILKAAR, HENT_TRAADER, LES_TRAAD, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, VIS_KVITTERING } from './../actions/actionTypes';
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -26,6 +26,8 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {traader: action.traader});
         case VIS_MODAL:
             return Object.assign({}, state, {visModal: action.visModal});
+        case RESET_STATE:
+            return Object.assign({}, state, {godkjentVilkaar:  action.godkjentVilkaar, harSubmittedSkjema: action.harSubmittedSkjema, skrivSvar: action.skrivSvar, sendingStatus: action.sendingStatus, sporsmalInputtekst: action.sporsmalInputtekst});
         case SKRIV_TEKST:
             return Object.assign({}, state, {sporsmalInputtekst: action.sporsmalInputtekst});
         case SUBMIT_SKJEMA:

@@ -1,5 +1,5 @@
 import React, { PropTypes as pt } from 'react';
-import Utils from '../utils/Utils';
+import { tilAvsnitt, prettyDate, leggTilLenkerTags } from '../utils/Utils';
 import createFragment from 'react-addons-create-fragment';
 
 class MeldingContainer extends React.Component {
@@ -9,14 +9,14 @@ class MeldingContainer extends React.Component {
         const imgSrc = melding.fraBruker ? '/mininnboks/build/img/person.svg' : '/mininnboks/build/img/nav-logo.svg';
         const imgTekstKey = melding.fraBruker ? 'innboks.avsender.bruker' : 'innboks.avsender.nav';
 
-        const dato = Utils.prettyDate(melding.opprettet);
+        const dato = prettyDate(melding.opprettet);
         const medUrl = function (innhold) {
-            return Utils.leggTilLenkerTags(innhold);
+            return leggTilLenkerTags(innhold);
         }.bind(this);
 
         let avsnitt = melding.fritekst.split(/[\r\n]+/)
             .map(medUrl)
-            .map(Utils.tilAvsnitt(true));
+            .map(tilAvsnitt(true));
         avsnitt = createFragment({
             avsnitt
         });

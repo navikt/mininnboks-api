@@ -1,6 +1,6 @@
 import React, { PropTypes as pt } from 'react';
 import { Link } from 'react-router';
-import Utils from '../utils/Utils';
+import { shortDate } from '../utils/Utils';
 
 class TraadPreview extends React.Component {
 
@@ -13,7 +13,7 @@ class TraadPreview extends React.Component {
         const avsender = traad.nyeste.fraNav ?
             <span className="avsender-fra-nav">{formatMessage({ id: 'avsender.tekst.NAV' })}</span> :
             <span className="avsender-annen">{midlertidigAvsendernavn}</span>;
-        const dato = Utils.shortDate(melding.opprettet);
+        const dato = shortDate(melding.opprettet);
 
         return (
             <li className="traad">
