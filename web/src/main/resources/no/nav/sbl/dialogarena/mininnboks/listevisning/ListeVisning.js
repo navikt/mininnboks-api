@@ -14,7 +14,7 @@ function okCallback(data) {
 }
 function feiletCallback() {
     this.setState({
-        feilet: { status: true, melding: this.props.formatMessage({ id: 'innboks.kunne-ikke-hente-meldinger' }) },
+        feilet: { status: true, melding: this.props.intl.formatMessage({ id: 'innboks.kunne-ikke-hente-meldinger' }) },
         hentet: true
     });
 }
