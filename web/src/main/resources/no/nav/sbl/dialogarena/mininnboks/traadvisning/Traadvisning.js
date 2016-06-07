@@ -1,7 +1,7 @@
 import React, { PropTypes as pt } from 'react';
 import BesvarBoks from'./BesvarBoks';
 import MeldingContainer from './MeldingContainer';
-import Knapper from './Knapper';
+import SkrivKnapp from './SkrivKnapp';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Feilmelding from '../feilmelding/Feilmelding';
 import InfoBoks from '../infoboks/Infoboks';
@@ -43,7 +43,7 @@ class TraadVisning extends React.Component {
                 <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
                 <h1 className="typo-sidetittel text-center blokk-l">{overskrift}</h1>
                 <div className="traad-container">
-                    <Knapper kanBesvares={valgttraad.kanBesvares} formatMessage={formatMessage} />
+                    <SkrivKnapp kanBesvares={valgttraad.kanBesvares} formatMessage={formatMessage} skrivSvar={skrivSvar} />
                     <InfoBoks formatMessage={formatMessage} sendingStatus={sendingStatus} />
                     <BesvarBoks formatMessage={formatMessage} fritekst={fritekst} skrivSvar={skrivSvar} harSubmittedSkjema={harSubmittedSkjema} traadId={traadId}/>
                     {meldingItems}
