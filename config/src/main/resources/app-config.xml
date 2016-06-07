@@ -4,7 +4,10 @@
 
     <name>mininnboks</name>
 
-    <selftestPagePath>/mininnboks/internal/selftest</selftestPagePath>
+    <selftest>
+        <path>mininnboks/internal/selftest.json</path>
+        <humanReadablePath>mininnboks/internal/selftest</humanReadablePath>
+    </selftest>
 
     <artifacts>
         <ear groupId="no.nav.sbl.dialogarena" artifactId="mininnboks-jee"/>
@@ -41,10 +44,6 @@
         </logins>
     </security>
 
-    <loadBalancer>
-        <contextRoot>mininnboks</contextRoot>
-        <lbHealthMonitor type="HTTPS" isAliveUrl="internal/isAlive" interval="5" timeout="16"/>
-        <lbPool slowRampTime="30" loadBalancingMethod="LEAST_CONNECTIONS" connectionLimit="500"/>
-    </loadBalancer>
+    <loadBalancer isAlive="/mininnboks/internal/isAlive" />
 
 </application>
