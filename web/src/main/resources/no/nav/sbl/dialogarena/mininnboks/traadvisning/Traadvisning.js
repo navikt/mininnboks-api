@@ -32,9 +32,7 @@ class TraadVisning extends React.Component {
         const traadId = this.props.params.traadId;
         const valgttraad = traader.find(traad => traad.traadId === traadId);
 
-        const meldingItems = valgttraad.meldinger.map(function (melding) {
-            return <MeldingContainer key={melding.id} melding={melding} formatMessage={formatMessage} />;
-        }.bind(this));
+        const meldingItems = valgttraad.meldinger.map(melding => <MeldingContainer key={melding.id} melding={melding} formatMessage={formatMessage} />);
 
         const overskrift = valgttraad.nyeste.kassert ?
             formatMessage({ id: 'traadvisning.overskrift.kassert' } ) :
@@ -47,7 +45,7 @@ class TraadVisning extends React.Component {
                 <div className="traad-container">
                     <Knapper kanBesvares={valgttraad.kanBesvares} formatMessage={formatMessage} />
                     <InfoBoks formatMessage={formatMessage} sendingStatus={sendingStatus} />
-                    <BesvarBoks formatMessage={formatMessage} fritekst={fritekst} skrivSvar={skrivSvar} harSubmittedSkjema={harSubmittedSkjema}/>
+                    <BesvarBoks formatMessage={formatMessage} fritekst={fritekst} skrivSvar={skrivSvar} harSubmittedSkjema={harSubmittedSkjema} traadId={traadId}/>
                     {meldingItems}
                 </div>
             </div>

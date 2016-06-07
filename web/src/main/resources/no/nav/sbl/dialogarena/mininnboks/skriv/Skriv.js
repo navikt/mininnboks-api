@@ -9,7 +9,7 @@ import InfoBoks from '../infoboks/Infoboks';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import FeilmeldingEnum from './FeilmeldingEnum';
 import { addXsrfHeader } from '../utils/Utils';
-import { resetInputState, submitSkjema, settSendingStatus } from '../utils/actions/actions';
+import { resetInputState, sendSporsmal, submitSkjema, settSendingStatus } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
@@ -18,23 +18,7 @@ import { validate, getValidationMessages } from '../validation/validationutil';
 const submit = (dispatch, temagruppe, fritekst, godkjentVilkaar) => () => {
     dispatch(submitSkjema(true));
     if (validate(true, fritekst, godkjentVilkaar)) {
-        $.ajax({
-                type: 'POST',
-                url: '/mininnboks/tjenester/traader/sporsmal',
-                contentType: 'application/json',
-                data: JSON.stringify({temagruppe, fritekst}),
-                beforeSend: addXsrfHeader
-            })
-            .done(function (response, status, xhr) {
-                if (xhr.status !== 201) {
-                    dispatch(settSendingStatus(SendingStatus.feil));
-                } else {
-                    dispatch(settSendingStatus(SendingStatus.ok));
-                }
-            }.bind(this))
-            .fail(function () {
-                dispatch(settSendingStatus(SendingStatus.feil));
-            }.bind(this));
+        dispatch(sendSporsmal(temagruppe, fritekst));
     }
 };
 
