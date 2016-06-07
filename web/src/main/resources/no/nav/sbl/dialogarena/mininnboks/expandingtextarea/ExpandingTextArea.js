@@ -20,8 +20,8 @@ class ExpandingTextArea extends React.Component {
                 <SamletFeilmeldingPanel formatMessage={formatMessage} validationResult={validationResult}/>
 
                 <textarea id="textarea-med-meta" name="textarea-med-meta" className={`input-fullbredde typo-normal ${additionalClassName}`}
-                  title={this.props.placeholder}
-                  aria-label={this.props.placeholder} aria-invalid="false" aria-describedby=''
+                  title={ formatMessage({ id: 'traadvisning.besvar.tekstfelt' }) }
+                  aria-label={ formatMessage({ id: 'traadvisning.besvar.tekstfelt' }) } aria-invalid="false" aria-describedby=''
                   onChange={ _onWrite(dispatch)}
                   value={sporsmalInputtekst}
                 />
