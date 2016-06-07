@@ -18,7 +18,8 @@ class TraadVisning extends React.Component {
     }
 
     componentDidMount() {
-        lesTraad(this.props.params.traadId)
+        const { dispatch, params } = this.props;
+        dispatch(lesTraad(params.traadId));
     }
 
     render() {
