@@ -2,14 +2,11 @@ import React from 'react';
 import sanitize from 'sanitize-html';
 import format from 'string-format';
 import moment from 'moment';
+import { formatHTMLMessage } from 'react-intl';
 import 'moment/locale/nb';
 import Constants from './Constants';
 
 moment.locale('nb');
-
-export const sanitizeTekst = (tekst) =>  {
-    return sanitize(tekst);
-};
 
 export const leggTilLenkerTags = (innhold) => {
     var uriRegex = /(([\w-]+:\/\/?|www(?:-\w+)?\.)[^\s()<>]+\w)/g;
@@ -21,18 +18,10 @@ export const leggTilLenkerTags = (innhold) => {
     });
 };
 
-export const tilAvsnitt = (kanInneholdeHTML) => {
-    if (kanInneholdeHTML) {
-        return function (avsnitt) {
-            avsnitt = sanitize(avsnitt, {allowedTags: ['a']});
-            return <p dangerouslySetInnerHTML={{__html: avsnitt}}></p>;
-        }
-    } else {
-        return function (avsnitt) {
-            return <p>{avsnitt}</p>;
-        }
-    }
+export const tilAvsnitt = (avsnitt) => {
+    return <p dangerouslySetInnerHTML={{__html: sanitize(avsnitt, {allowedTags: ['a']})}}></p>;
 };
+
 export const prettyDate = (date) => {
     return moment(date).format('Do MMMM YYYY, [kl.] HH:mm');
 };

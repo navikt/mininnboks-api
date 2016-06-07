@@ -17,7 +17,7 @@ class TraadPreview extends React.Component {
 
         return (
             <li className="traad">
-                <Link to={`/traad/${temagruppenavn}/${melding.traadId}`} onClick={this.onClick}
+                <Link to={`/traad/${temagruppenavn}/${melding.traadId}`}
                   className={`panel panel-ikon panel-klikkbart blokk-xxxs dialog ${markertKlasse}`}
                 >
                     <div className="typo-normal blokk-xxxs">

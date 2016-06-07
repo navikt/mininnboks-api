@@ -1,10 +1,10 @@
 import React from 'react';
 import Sendingstatus from '../skriv/SendingStatus';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedHTMLMessage } from 'react-intl';
 
 class InfoBoks extends React.Component {
     render() {
-        const { formatMessage, sendingStatus } = this.props;
+        const { sendingStatus } = this.props;
 
         if (sendingStatus === 'IKKE_SENDT') {
             return <noscript/>;
@@ -13,7 +13,7 @@ class InfoBoks extends React.Component {
         return (
             <div className={"info-boks " + sendingStatus} aria-live="assertive" aria-atomic="true" role="alert">
                 <p className="vekk">{Sendingstatus[sendingStatus]}</p>
-                <div dangerouslySetInnerHTML={{__html: formatMessage({id: "infoboks." + sendingStatus})}}></div>
+                <FormattedHTMLMessage id={"infoboks." + sendingStatus}  />
             </div>
         );
     }

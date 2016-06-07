@@ -59,7 +59,7 @@ class Skriv extends React.Component {
                         <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{formatMessage({id: 'send-sporsmal.still-sporsmal.deloverskrift'})}</h2>
                     </div>
                     <strong>{formatMessage({id: temagruppe})}</strong>
-                    <InfoBoks formatMessage={formatMessage} sendingStatus={sendingStatus}/>
+                    <InfoBoks sendingStatus={sendingStatus}/>
                     <ExpandingTextArea formatMessage={formatMessage} sporsmalInputtekst={sporsmalInputtekst}
                                        validationResult={validationResult}/>
                     <GodtaVilkar formatMessage={formatMessage} visModal={visModal} validationResult={validationResult}

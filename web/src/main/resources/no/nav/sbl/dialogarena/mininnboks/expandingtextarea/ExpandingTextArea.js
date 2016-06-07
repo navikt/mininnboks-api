@@ -41,5 +41,5 @@ ExpandingTextArea.propTypes = {
     validationResult: pt.array.isRequired
 };
 
-export default connect(() => ({ }))(ExpandingTextArea);
+export default connect()(ExpandingTextArea);
 

@@ -24,7 +24,7 @@ class TraadVisning extends React.Component {
         }
 
         const traadId = this.props.params.traadId;
-        const valgttraad = traader.find(function(traad) { return traad.traadId === traadId });
+        const valgttraad = traader.find(traad => traad.traadId === traadId);
 
         const meldingItems = valgttraad.meldinger.map(function (melding) {
             return <MeldingContainer key={melding.id} melding={melding} formatMessage={formatMessage} />;

@@ -10,16 +10,10 @@ class MeldingContainer extends React.Component {
         const imgTekstKey = melding.fraBruker ? 'innboks.avsender.bruker' : 'innboks.avsender.nav';
 
         const dato = prettyDate(melding.opprettet);
-        const medUrl = function (innhold) {
-            return leggTilLenkerTags(innhold);
-        }.bind(this);
 
-        let avsnitt = melding.fritekst.split(/[\r\n]+/)
-            .map(medUrl)
-            .map(tilAvsnitt(true));
-        avsnitt = createFragment({
-            avsnitt
-        });
+        const avsnitt = melding.fritekst.split(/[\r\n]+/)
+            .map(innhold => leggTilLenkerTags(innhold))
+            .map(innhold => tilAvsnitt(innhold));
 
         return (
             <div className={className}>
