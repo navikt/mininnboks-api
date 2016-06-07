@@ -8,8 +8,8 @@ import FeilmeldingEnum from '../skriv/FeilmeldingEnum';
 class ExpandingTextArea extends React.Component {
 
     render() {
-        const { formatMessage, dispatch, sporsmalInputtekst, validationResult } = this.props;
-        const resterendeLengde = 1000 - sporsmalInputtekst.length;
+        const { formatMessage, dispatch, fritekst, validationResult } = this.props;
+        const resterendeLengde = 1000 - fritekst.length;
         const additionalClassName = validationResult.includes(FeilmeldingEnum.textarea) ? 'invalid' : '';
 
         return (
@@ -23,7 +23,7 @@ class ExpandingTextArea extends React.Component {
                   title={ formatMessage({ id: 'traadvisning.besvar.tekstfelt' }) }
                   aria-label={ formatMessage({ id: 'traadvisning.besvar.tekstfelt' }) } aria-invalid="false" aria-describedby=''
                   onChange={ _onWrite(dispatch)}
-                  value={sporsmalInputtekst}
+                  value={fritekst}
                 />
                 <p className="textarea-metatekst" aria-hidden="true">
                  <span class="max-length">{resterendeLengde}</span> tegn igjen
@@ -37,7 +37,7 @@ const _onWrite = (dispatch) => (event) => dispatch(skrivTekst(event.target.value
 
 ExpandingTextArea.propTypes = {
     dispatch: pt.func,
-    sporsmalInputtekst: pt.string.isRequired,
+    fritekst: pt.string.isRequired,
     validationResult: pt.array.isRequired
 };
 

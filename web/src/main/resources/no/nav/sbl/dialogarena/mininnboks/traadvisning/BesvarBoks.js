@@ -9,14 +9,14 @@ import { connect } from 'react-redux';
 
 const avbryt = (dispatch) => () => dispatch(resetInputState());
 
-const submit = (dispatch, temagruppe, sporsmalInputtekst) => () => {
+const submit = (dispatch, temagruppe, fritekst) => () => {
     dispatch(submitSkjema(true));
-    if (validate(true, sporsmalInputtekst, true)) {
+    if (validate(true, fritekst, true)) {
         $.ajax({
                 type: 'POST',
                 url: '/mininnboks/tjenester/traader/sporsmal',
                 contentType: 'application/json',
-                data: JSON.stringify({ temagruppe, sporsmalInputtekst }),
+                data: JSON.stringify({ temagruppe, fritekst }),
                 beforeSend: addXsrfHeader
             })
             .done(function (response, status, xhr) {
@@ -36,8 +36,8 @@ const submit = (dispatch, temagruppe, sporsmalInputtekst) => () => {
 class BesvarBoks extends React.Component {
 
     render() {
-        const { dispatch, formatMessage, sporsmalInputtekst, skrivSvar, harSubmittedSkjema } = this.props;
-        const validationResult = getValidationMessages(harSubmittedSkjema, sporsmalInputtekst, true);
+        const { dispatch, formatMessage, fritekst, skrivSvar, harSubmittedSkjema } = this.props;
+        const validationResult = getValidationMessages(harSubmittedSkjema, fritekst, true);
 
         if (!skrivSvar) {
             return <noscript/>;
@@ -45,9 +45,9 @@ class BesvarBoks extends React.Component {
 
         return (
             <div className="besvar-container">
-                <ExpandingTextArea formatMessage={formatMessage} sporsmalInputtekst={sporsmalInputtekst} validationResult={validationResult}/>
+                <ExpandingTextArea formatMessage={formatMessage} fritekst={fritekst} validationResult={validationResult}/>
                 <input type="submit" className="knapp knapp-hoved knapp-liten" value={formatMessage({ id: 'traadvisning.besvar.send' })}
-                       onClick={submit(dispatch, 'ARBD', sporsmalInputtekst)} />
+                       onClick={submit(dispatch, 'ARBD', fritekst)} />
                 <a href="#" onClick={avbryt(dispatch)} role="button">
                     {formatMessage({ id: 'traadvisning.besvar.avbryt' })}
                 </a>
@@ -58,7 +58,7 @@ class BesvarBoks extends React.Component {
 
 BesvarBoks.propTypes = {
     formatMessage: pt.func.isRequired,
-    sporsmalInputtekst: pt.string.isRequired
+    fritekst: pt.string.isRequired
 };
 
 export default injectIntl(connect()(BesvarBoks));

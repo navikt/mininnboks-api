@@ -7,11 +7,11 @@ const SOM_POST = { credentials: 'same-origin', method: 'POST' };
 
 export const velgGodtaVilkaar = (vilkaar) => ({ type: GODTA_VILKAAR, godkjentVilkaar: vilkaar });
 export const velgVisModal = (skalVise) => ({ type: VIS_MODAL, visModal: skalVise });
-export const skrivTekst = (sporsmalInputtekst) => ({ type: SKRIV_TEKST, sporsmalInputtekst: sporsmalInputtekst });
+export const skrivTekst = (fritekst) => ({ type: SKRIV_TEKST, fritekst: fritekst });
 export const submitSkjema = (harSubmittedSkjema) => ({ type: SUBMIT_SKJEMA, harSubmittedSkjema: harSubmittedSkjema });
 export const settSendingStatus = (sendingStatus) => ({ type: SETT_SENDING_STATUS, sendingStatus: sendingStatus });
 export const settSkrivSvar = (skrivSvar) => ({ type: SKRIV_SVAR, skrivSvar: skrivSvar });
-export const resetInputState = () => ({ type: RESET_STATE, sporsmalInputtekst: '', sendingStatus: 'IKKE_SENDT', harSubmittedSkjema: false, godkjentVilkaar: false, skrivSvar: false });
+export const resetInputState = () => ({ type: RESET_STATE, fritekst: '', sendingStatus: 'IKKE_SENDT', harSubmittedSkjema: false, godkjentVilkaar: false, skrivSvar: false });
 export const hentTraader = () =>
     dispatch =>
         fetch(`${API_BASE_URL}/traader`, MED_CREDENTIALS)
@@ -22,3 +22,6 @@ export const hentTraader = () =>
             }));
 
 export const lesTraad = (traadId) => dispatch => fetch(`${API_BASE_URL}/traader/lest/${traadId}`, SOM_POST );
+
+
+export const sendSvar = (skrivSvar) => ({ type: SKRIV_SVAR, skrivSvar: skrivSvar });

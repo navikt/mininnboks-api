@@ -7,5 +7,5 @@ export default {
     harSubmittedSkjema: false,
     sendingStatus: 'IKKE_SENDT',
     skrivSvar: false,
-    sporsmalInputtekst: ''
+    fritekst: ''
 };

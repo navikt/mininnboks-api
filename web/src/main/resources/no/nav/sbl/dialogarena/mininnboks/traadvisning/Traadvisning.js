@@ -23,7 +23,7 @@ class TraadVisning extends React.Component {
     }
 
     render() {
-        const { routes, params, intl: { formatMessage }, sendingStatus, traader, skrivSvar, harSubmittedSkjema, sporsmalInputtekst } = this.props;
+        const { routes, params, intl: { formatMessage }, sendingStatus, traader, skrivSvar, harSubmittedSkjema, fritekst } = this.props;
 
         if (!traader) {
             return <Spinner spin/>;
@@ -47,7 +47,7 @@ class TraadVisning extends React.Component {
                 <div className="traad-container">
                     <Knapper kanBesvares={valgttraad.kanBesvares} formatMessage={formatMessage} />
                     <InfoBoks formatMessage={formatMessage} sendingStatus={sendingStatus} />
-                    <BesvarBoks formatMessage={formatMessage} sporsmalInputtekst={sporsmalInputtekst} skrivSvar={skrivSvar} harSubmittedSkjema={harSubmittedSkjema}/>
+                    <BesvarBoks formatMessage={formatMessage} fritekst={fritekst} skrivSvar={skrivSvar} harSubmittedSkjema={harSubmittedSkjema}/>
                     {meldingItems}
                 </div>
             </div>
@@ -60,6 +60,6 @@ TraadVisning.propTypes = {
     traader: pt.array.isRequired
 };
 
-const mapStateToProps = ({ traader, harSubmittedSkjema, skrivSvar, sporsmalInputtekst, sendingStatus   }) => ({ traader, harSubmittedSkjema, skrivSvar, sporsmalInputtekst, sendingStatus  });
+const mapStateToProps = ({ traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus   }) => ({ traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus  });
 
 export default injectIntl(connect(mapStateToProps)(TraadVisning));

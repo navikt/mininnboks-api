@@ -15,14 +15,14 @@ import { connect } from 'react-redux';
 import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 import { validate, getValidationMessages } from '../validation/validationutil';
 
-const submit = (dispatch, temagruppe, sporsmalInputtekst, godkjentVilkaar) => () => {
+const submit = (dispatch, temagruppe, fritekst, godkjentVilkaar) => () => {
     dispatch(submitSkjema(true));
-    if (validate(true, sporsmalInputtekst, godkjentVilkaar)) {
+    if (validate(true, fritekst, godkjentVilkaar)) {
         $.ajax({
                 type: 'POST',
                 url: '/mininnboks/tjenester/traader/sporsmal',
                 contentType: 'application/json',
-                data: JSON.stringify({temagruppe, sporsmalInputtekst}),
+                data: JSON.stringify({temagruppe, fritekst}),
                 beforeSend: addXsrfHeader
             })
             .done(function (response, status, xhr) {
@@ -46,14 +46,14 @@ class Skriv extends React.Component {
     }
 
     render() {
-        const { params, dispatch, intl: { formatMessage }, visModal, routes, sporsmalInputtekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus } = this.props;
+        const { params, dispatch, intl: { formatMessage }, visModal, routes, fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus } = this.props;
         const temagruppe = this.props.params.temagruppe;
         if (formatMessage({id: 'temagruppe.liste'}).split(' ').indexOf(temagruppe) < 0) {
             return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon/>;
         } else if (sendingStatus == SendingStatus.ok) {
             return <Kvittering formatMessage={formatMessage}/>;
         }
-        const validationResult = getValidationMessages(harSubmittedSkjema, sporsmalInputtekst, godkjentVilkaar);
+        const validationResult = getValidationMessages(harSubmittedSkjema, fritekst, godkjentVilkaar);
 
         return (
             <div>
@@ -65,13 +65,13 @@ class Skriv extends React.Component {
                     </div>
                     <strong>{formatMessage({id: temagruppe})}</strong>
                     <InfoBoks sendingStatus={sendingStatus}/>
-                    <ExpandingTextArea formatMessage={formatMessage} sporsmalInputtekst={sporsmalInputtekst}
+                    <ExpandingTextArea formatMessage={formatMessage} fritekst={fritekst}
                                        validationResult={validationResult}/>
                     <GodtaVilkar formatMessage={formatMessage} visModal={visModal} validationResult={validationResult}
                                  godkjentVilkaar={godkjentVilkaar}/>
                     <input type="submit" className="knapp knapp-hoved knapp-stor" role="button"
                            value={formatMessage({ id: 'send-sporsmal.still-sporsmal.send-inn' })}
-                           onClick={submit(dispatch, temagruppe, sporsmalInputtekst, godkjentVilkaar)}
+                           onClick={submit(dispatch, temagruppe, fritekst, godkjentVilkaar)}
                     />
                 </article>
             </div>
@@ -89,9 +89,9 @@ Skriv.propTypes = {
     validationResult: pt.array.isRequired
 };
 
-const mapStateToProps = ({ visModal, sporsmalInputtekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus  }) => ({
+const mapStateToProps = ({ visModal, fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus  }) => ({
     visModal,
-    sporsmalInputtekst,
+    fritekst,
     harSubmittedSkjema,
     godkjentVilkaar,
     sendingStatus
