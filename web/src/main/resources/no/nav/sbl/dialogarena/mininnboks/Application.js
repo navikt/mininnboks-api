@@ -1,9 +1,10 @@
 import React from 'react';
-import { hentInitData } from './utils/init/initActions.js';
+import { hentInitData } from './utils/init/initActions';
+import { hentTraader } from './utils/actions/actions';
 import { connect } from 'react-redux';
 import { IntlProvider, addLocaleData } from 'react-intl';
-import Snurrepipp from './snurrepipp/Snurrepipp';
 import nb from 'react-intl/dist/locale-data/nb';
+import Spinner from './Spinner';
 
 addLocaleData(nb);
 
@@ -25,13 +26,14 @@ class Application extends React.Component {
         dispatch(hentInitData({
             cmskeys: !!cmskeys
         }));
+        dispatch(hentTraader());
     }
 
     render() {
         const headerlevel = !!this.props.location.query.headerlevel;
         const { harHentetInitData, children, tekster } = this.props;
 
-        return harHentetInitData ? renderApplication(children, tekster, headerlevel) : <Snurrepipp />;
+        return harHentetInitData ? renderApplication(children, tekster, headerlevel) : <Spinner />;
     }
 }
 

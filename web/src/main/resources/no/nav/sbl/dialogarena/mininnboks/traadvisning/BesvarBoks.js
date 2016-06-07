@@ -1,83 +1,64 @@
 import React, { PropTypes as pt } from 'react';
 import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
-import Snurrepipp from '../snurrepipp/Snurrepipp';
-import FeedbackForm from '../feedback/FeedbackForm';
+import { validate, getValidationMessages } from '../validation/validationutil';
+import { settSkrivSvar, resetInputState, settSendingStatus, submitSkjema } from './../utils/actions/actions';
+import SendingStatus from './../skriv/SendingStatus';
+import { injectIntl, intlShape } from 'react-intl';
+import { addXsrfHeader } from '../utils/Utils';
+import { connect } from 'react-redux';
+
+const avbryt = (dispatch) => () => dispatch(resetInputState());
+
+const submit = (dispatch, temagruppe, sporsmalInputtekst) => () => {
+    dispatch(submitSkjema(true));
+    if (validate(true, sporsmalInputtekst, true)) {
+        $.ajax({
+                type: 'POST',
+                url: '/mininnboks/tjenester/traader/sporsmal',
+                contentType: 'application/json',
+                data: JSON.stringify({ temagruppe, sporsmalInputtekst }),
+                beforeSend: addXsrfHeader
+            })
+            .done(function (response, status, xhr) {
+                if (xhr.status !== 201) {
+                    dispatch(settSendingStatus(SendingStatus.feil));
+                } else {
+                    dispatch(settSendingStatus(SendingStatus.ok));
+                }
+            }.bind(this))
+            .fail(function () {
+                dispatch(settSendingStatus(SendingStatus.feil));
+            }.bind(this));
+    }
+};
+
 
 class BesvarBoks extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { sender: false };
-        this.onSubmit = this.onSubmit.bind(this);
-        this.skjul = this.skjul.bind(this);
-    }
-
-    onSubmit(evt) {
-        evt.preventDefault();
-
-        var form = this.refs.form;
-        if (form.isValid()) {
-            const submitPromise = this.props.besvar(form.getFeedbackRef('textarea').getInput());
-            this.setState({ sender: true });
-
-            if (!submitPromise) {
-                this.setState({ sender: false });
-            } else {
-                submitPromise.always(function () {
-                    this.setState({ sender: false });
-                }.bind(this));
-            }
-        }
-    }
-
-    skjul(event) {
-        event.preventDefault();
-        this.props.skjul();
-    }
 
     render() {
-        const { formatMessage, vis } = this.props;
+        const { dispatch, formatMessage, sporsmalInputtekst, skrivSvar, harSubmittedSkjema } = this.props;
+        const validationResult = getValidationMessages(harSubmittedSkjema, sporsmalInputtekst, true);
 
-        if (!vis) {
+        if (!skrivSvar) {
             return <noscript/>;
         }
 
-        let knapper;
-        if (this.state.sender) {
-            knapper = <Snurrepipp storrelse="48" farge="graa"/>;
-        } else {
-            knapper = (
-                <div>
-                    <input type="submit" className="knapp knapp-hoved knapp-liten"
-                      value={formatMessage({ id: 'traadvisning.besvar.send' })} onClick={this.onSubmit}
-                    />
-
-                    <p>
-                        <a href="#" onClick={this.skjul} role="button">
-                            {formatMessage({ id: 'traadvisning.besvar.avbryt' })}
-                        </a>
-                    </p>
-                </div>
-            );
-        }
-
         return (
-            <FeedbackForm className="besvar-container" ref="form">
-                <ExpandingTextArea placeholder={formatMessage({ id: 'traadvisning.besvar.tekstfelt.placeholder'} )}
-                  charsLeftText={formatMessage({ id: 'traadvisning.besvar.tekstfelt.tegnigjen' })}
-                  infotekst=""
-                  feedbackref="textarea"
-                />
-                {knapper}
-            </FeedbackForm>
+            <div className="besvar-container">
+                <ExpandingTextArea formatMessage={formatMessage} sporsmalInputtekst={sporsmalInputtekst} validationResult={validationResult}/>
+                <input type="submit" className="knapp knapp-hoved knapp-liten" value={formatMessage({ id: 'traadvisning.besvar.send' })}
+                       onClick={submit(dispatch, 'ARBD', sporsmalInputtekst)} />
+                <a href="#" onClick={avbryt(dispatch)} role="button">
+                    {formatMessage({ id: 'traadvisning.besvar.avbryt' })}
+                </a>
+            </div>
         );
     }
 }
 
 BesvarBoks.propTypes = {
-    vis: pt.bool,
-    skjul: pt.func,
-    besvar: pt.func,
-    formatMessage: pt.func.isRequired
+    formatMessage: pt.func.isRequired,
+    sporsmalInputtekst: pt.string.isRequired
 };
 
-export default BesvarBoks;
+export default injectIntl(connect()(BesvarBoks));

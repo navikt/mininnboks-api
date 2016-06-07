@@ -1,10 +1,10 @@
 import React, { PropTypes as pt } from 'react';
-import Utils from '../utils/Utils';
+import { status } from '../utils/Utils';
 import Constants from '../utils/Constants';
 
 class MeldingStatus extends React.Component {
     render() {
-        const status = Utils.status(this.props.melding);
+        const status = status(this.props.melding);
         if (status === Constants.LEST) {
             return <noscript/>;
         }

@@ -1,51 +1,31 @@
-import React from 'react';
+import React, { PropTypes as pt } from 'react';
 import TraaderContainer from './TraaderContainer';
-import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Feilmelding from '../feilmelding/Feilmelding';
 import { Link } from 'react-router';
 import { injectIntl, intlShape } from 'react-intl';
-
-function okCallback(data) {
-    this.setState({
-        traader: data,
-        hentet: true
-    });
-}
-function feiletCallback() {
-    this.setState({
-        feilet: { status: true, melding: formatMessage({ id: 'innboks.kunne-ikke-hente-meldinger'} ) },
-        hentet: true
-    });
-}
+import { connect } from 'react-redux';
+import Spinner from '../Spinner';
+import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 
 class ListeVisning extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { traader: [], hentet: false, feilet: { status: false } };
-    }
-
-    componentDidMount() {
-        $.get('/mininnboks/tjenester/traader/').then(okCallback.bind(this), feiletCallback.bind(this));
-    }
 
     render() {
-        if (!this.state.hentet) {
-            return <Snurrepipp />;
+        const { intl: { formatMessage }, routes, params, traader } = this.props;
+
+        if (!traader) {
+            return <Spinner spin/>;
         }
 
-        const { setValgtTraad, intl: { formatMessage } } = this.props;
-
         let content;
-        if (this.state.feilet.status) {
-            content = <Feilmelding melding={this.state.feilet.melding} />;
-        } else if (this.state.traader.length === 0) {
+        if (traader.length === 0) {
             content = <Feilmelding melding={formatMessage({ id: 'innboks.tom-innboks-melding'} )}/>;
         } else {
-            content = <TraaderContainer traader={this.state.traader} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>;
+            content = <TraaderContainer traader={traader} formatMessage={formatMessage}/>;
         }
 
         return (
             <div>
+                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
                 <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'innboks.overskrift' })}</h1>
                 <div className="innboks-navigasjon clearfix">
                      <Link to={formatMessage({ id: 'skriv.ny.link'} )} className="knapp knapp-hoved knapp-liten" >{formatMessage({ id: 'innboks.skriv.ny.link'} )}</Link>
@@ -57,7 +37,10 @@ class ListeVisning extends React.Component {
 }
 
 ListeVisning.propTypes = {
-    intl: intlShape
+    intl: intlShape,
+    traader: pt.array.isRequired
 };
 
-export default injectIntl(ListeVisning);
+const mapStateToProps = ({ traader  }) => ({ traader });
+
+export default injectIntl(connect(mapStateToProps)(ListeVisning));
