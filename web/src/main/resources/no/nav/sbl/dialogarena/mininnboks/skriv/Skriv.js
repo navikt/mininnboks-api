@@ -9,7 +9,7 @@ import InfoBoks from '../infoboks/Infoboks';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import FeilmeldingEnum from './FeilmeldingEnum';
 import { addXsrfHeader } from '../utils/Utils';
-import { resetInputState, sendSporsmal, submitSkjema, settSendingStatus } from '../utils/actions/actions';
+import { resetInputState, sendSporsmal, submitSkjema } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
@@ -49,10 +49,8 @@ class Skriv extends React.Component {
                     </div>
                     <strong>{formatMessage({id: temagruppe})}</strong>
                     <InfoBoks sendingStatus={sendingStatus}/>
-                    <ExpandingTextArea formatMessage={formatMessage} fritekst={fritekst}
-                                       validationResult={validationResult}/>
-                    <GodtaVilkar formatMessage={formatMessage} visModal={visModal} validationResult={validationResult}
-                                 godkjentVilkaar={godkjentVilkaar}/>
+                    <ExpandingTextArea formatMessage={formatMessage} fritekst={fritekst} validationResult={validationResult}/>
+                    <GodtaVilkar formatMessage={formatMessage} visModal={visModal} validationResult={validationResult} godkjentVilkaar={godkjentVilkaar}/>
                     <input type="submit" className="knapp knapp-hoved knapp-stor" role="button"
                            value={formatMessage({ id: 'send-sporsmal.still-sporsmal.send-inn' })}
                            onClick={submit(dispatch, temagruppe, fritekst, godkjentVilkaar)}
