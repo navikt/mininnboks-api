@@ -1,7 +1,7 @@
 import React, { PropTypes as pt } from 'react';
 import BesvarBoks from'./BesvarBoks';
 import MeldingContainer from './MeldingContainer';
-import Knapper from './Knapper';
+import SkrivKnapp from './SkrivKnapp';
 import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Feilmelding from '../feilmelding/Feilmelding';
 import InfoBoks from '../infoboks/Infoboks';
@@ -23,7 +23,7 @@ class TraadVisning extends React.Component {
     }
 
     render() {
-        const { routes, params, intl: { formatMessage }, sendingStatus, traader, skrivSvar, harSubmittedSkjema, sporsmalInputtekst } = this.props;
+        const { routes, params, intl: { formatMessage }, sendingStatus, traader, skrivSvar, harSubmittedSkjema, fritekst } = this.props;
 
         if (!traader) {
             return <Spinner spin/>;
@@ -32,9 +32,7 @@ class TraadVisning extends React.Component {
         const traadId = this.props.params.traadId;
         const valgttraad = traader.find(traad => traad.traadId === traadId);
 
-        const meldingItems = valgttraad.meldinger.map(function (melding) {
-            return <MeldingContainer key={melding.id} melding={melding} formatMessage={formatMessage} />;
-        }.bind(this));
+        const meldingItems = valgttraad.meldinger.map(melding => <MeldingContainer key={melding.id} melding={melding} formatMessage={formatMessage} />);
 
         const overskrift = valgttraad.nyeste.kassert ?
             formatMessage({ id: 'traadvisning.overskrift.kassert' } ) :
@@ -45,9 +43,9 @@ class TraadVisning extends React.Component {
                 <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
                 <h1 className="typo-sidetittel text-center blokk-l">{overskrift}</h1>
                 <div className="traad-container">
-                    <Knapper kanBesvares={valgttraad.kanBesvares} formatMessage={formatMessage} />
+                    <SkrivKnapp kanBesvares={valgttraad.kanBesvares} formatMessage={formatMessage} skrivSvar={skrivSvar} />
                     <InfoBoks formatMessage={formatMessage} sendingStatus={sendingStatus} />
-                    <BesvarBoks formatMessage={formatMessage} sporsmalInputtekst={sporsmalInputtekst} skrivSvar={skrivSvar} harSubmittedSkjema={harSubmittedSkjema}/>
+                    <BesvarBoks formatMessage={formatMessage} fritekst={fritekst} skrivSvar={skrivSvar} harSubmittedSkjema={harSubmittedSkjema} traadId={traadId}/>
                     {meldingItems}
                 </div>
             </div>
@@ -60,6 +58,6 @@ TraadVisning.propTypes = {
     traader: pt.array.isRequired
 };
 
-const mapStateToProps = ({ traader, harSubmittedSkjema, skrivSvar, sporsmalInputtekst, sendingStatus   }) => ({ traader, harSubmittedSkjema, skrivSvar, sporsmalInputtekst, sendingStatus  });
+const mapStateToProps = ({ traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus   }) => ({ traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus  });
 
 export default injectIntl(connect(mapStateToProps)(TraadVisning));

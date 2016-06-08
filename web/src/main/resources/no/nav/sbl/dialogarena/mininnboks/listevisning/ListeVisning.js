@@ -28,7 +28,7 @@ class ListeVisning extends React.Component {
                 <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
                 <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'innboks.overskrift' })}</h1>
                 <div className="innboks-navigasjon clearfix">
-                     <Link to={formatMessage({ id: 'skriv.ny.link'} )} className="knapp knapp-hoved knapp-liten" >{formatMessage({ id: 'innboks.skriv.ny.link'} )}</Link>
+                    <a href={formatMessage({ id: 'skriv.ny.link'})} className="knapp knapp-hoved knapp-liten">{formatMessage({ id: 'innboks.skriv.ny.link'} )}</a>
                 </div>
                 {content}
             </div>

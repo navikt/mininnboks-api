@@ -18,7 +18,7 @@ class Kvittering extends React.Component {
 
                     <hr/>
                 </div>
-                <Link className="knapp-link-stor" to="innboks">{formatMessage({ id: 'send-sporsmal.bekreftelse.til-meldingsboksen' })}</Link>
+                <Link className="knapp-link-stor" to="/">{formatMessage({ id: 'send-sporsmal.bekreftelse.til-meldingsboksen' })}</Link>
             </article>
         );
     }

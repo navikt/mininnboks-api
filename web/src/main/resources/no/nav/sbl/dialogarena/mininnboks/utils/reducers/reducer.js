@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
                 harHentetInitData: true,
                 miljovariabler: action.miljovariabler,
                 godkjentVilkaar: false,
-                sporsmalInputtekst: '',
+                fritekst: '',
                 harSubmittedSkjema: false,
                 sendingStatus: 'IKKE_SENDT',
                 visKvittering: false,
@@ -27,9 +27,9 @@ export default (state = initialState, action) => {
         case VIS_MODAL:
             return Object.assign({}, state, {visModal: action.visModal});
         case RESET_STATE:
-            return Object.assign({}, state, {godkjentVilkaar:  action.godkjentVilkaar, harSubmittedSkjema: action.harSubmittedSkjema, skrivSvar: action.skrivSvar, sendingStatus: action.sendingStatus, sporsmalInputtekst: action.sporsmalInputtekst});
+            return Object.assign({}, state, {godkjentVilkaar:  action.godkjentVilkaar, harSubmittedSkjema: action.harSubmittedSkjema, skrivSvar: action.skrivSvar, sendingStatus: action.sendingStatus, fritekst: action.fritekst});
         case SKRIV_TEKST:
-            return Object.assign({}, state, {sporsmalInputtekst: action.sporsmalInputtekst});
+            return Object.assign({}, state, {fritekst: action.fritekst});
         case SUBMIT_SKJEMA:
             return Object.assign({}, state, {harSubmittedSkjema: true});
         case SETT_SENDING_STATUS:
