@@ -10,6 +10,7 @@ export default (state = initialState, action) => {
             window.tekster = ledetekster(tekster);
             return Object.assign({}, state, {
                 harHentetInitData: true,
+                traader: action.traader,
                 miljovariabler: action.miljovariabler,
                 godkjentVilkaar: false,
                 fritekst: '',

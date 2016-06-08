@@ -38,7 +38,6 @@ customBreadcrumb.propTypes = {
 export function greedyRender(Component) {
     return ({ children, ...props }) => {
         if (children) {
-            console.log('Shortcircuiting greedy render of ', Component.displayName);
             return children;
         }
         return <Component {...props} />

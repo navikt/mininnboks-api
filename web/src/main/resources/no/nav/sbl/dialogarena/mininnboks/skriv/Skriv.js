@@ -6,7 +6,6 @@ import Kvittering from './Kvittering';
 import Feilmelding from '../feilmelding/Feilmelding';
 import SendingStatus from './SendingStatus';
 import InfoBoks from '../infoboks/Infoboks';
-import Snurrepipp from '../snurrepipp/Snurrepipp';
 import FeilmeldingEnum from './FeilmeldingEnum';
 import { addXsrfHeader } from '../utils/Utils';
 import { resetInputState, sendSporsmal, submitSkjema } from '../utils/actions/actions';
