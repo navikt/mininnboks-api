@@ -4,17 +4,12 @@ import Feilmelding from '../feilmelding/Feilmelding';
 import { Link } from 'react-router';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import Spinner from '../Spinner';
 import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 
 class ListeVisning extends React.Component {
 
     render() {
         const { intl: { formatMessage }, routes, params, traader } = this.props;
-
-        if (!traader) {
-            return <Spinner spin/>;
-        }
 
         let content;
         if (traader.length === 0) {

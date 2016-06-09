@@ -1,3 +1,5 @@
+import { hentTraaderFetch } from '../actions/actions'
+
 
 const API_BASE_URL = '/mininnboks/tjenester';
 const MED_CREDENTIALS = { credentials: 'same-origin' };
@@ -8,6 +10,6 @@ const hentLedetekster = () =>
 
 export const hentInitData = (options) =>
     dispatch =>
-        Promise.all([hentLedetekster()])
-            .then(([ledetekster]) =>
-                dispatch({ type: INIT_DATA, ledetekster, options }));
+        Promise.all([hentLedetekster(), hentTraaderFetch()])
+            .then(([ledetekster, traader]) =>
+                dispatch({ type: INIT_DATA, ledetekster, options, traader }));
