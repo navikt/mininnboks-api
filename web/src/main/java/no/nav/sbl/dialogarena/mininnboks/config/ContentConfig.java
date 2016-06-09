@@ -40,9 +40,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 @Configuration
 @EnableScheduling
-@Import({
-        CacheConfig.class
-})
+@Import({ CacheConfig.class })
 public class ContentConfig {
 
     @Value("${mininnboks.datadir}")
