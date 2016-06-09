@@ -2,12 +2,17 @@ import ledetekster from '../Ledetekster';
 import { INIT_DATA } from '../init/InitActions';
 import initialState from '../init/InitialState';
 import { GODTA_VILKAAR, HENT_TRAADER, LES_TRAAD, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, VIS_KVITTERING } from './../actions/ActionTypes';
+import mapValues from 'lodash.mapvalues';
+const NORSK = 'nb_NO';
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case INIT_DATA: {
             const tekster = action.ledetekster;
-            window.tekster = ledetekster(tekster);
+            if (action.options.cmskeys) {
+                tekster[NORSK] = mapValues(action.ledetekster[NORSK], (value, key) => `[${key}] ${value}`);
+            }
+            window.tekster = ledetekster(tekster[NORSK]);
             return Object.assign({}, state, {
                 harHentetInitData: true,
                 miljovariabler: action.miljovariabler,
@@ -17,7 +22,7 @@ export default (state = initialState, action) => {
                 sendingStatus: 'IKKE_SENDT',
                 visKvittering: false,
                 skrivSvar: false,
-                tekster
+                tekster: tekster[NORSK]
             });
         }
         case GODTA_VILKAAR:
