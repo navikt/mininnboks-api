@@ -18,7 +18,7 @@ class ListeVisning extends React.Component {
 
         let content;
         if (traader.length === 0) {
-            content = <Feilmelding melding={formatMessage({ id: 'innboks.tom-innboks-melding'} )}/>;
+            content = <Feilmelding melding={formatMessage({ id: 'innboks.tom-innboks-melding' })}/>;
         } else {
             content = <TraaderContainer traader={traader} formatMessage={formatMessage}/>;
         }
@@ -28,7 +28,9 @@ class ListeVisning extends React.Component {
                 <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
                 <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'innboks.overskrift' })}</h1>
                 <div className="innboks-navigasjon clearfix">
-                    <a href={formatMessage({ id: 'skriv.ny.link'})} className="knapp knapp-hoved knapp-liten">{formatMessage({ id: 'innboks.skriv.ny.link'} )}</a>
+                    <a href={formatMessage({ id: 'skriv.ny.link' })} className="knapp knapp-hoved knapp-liten">
+                        {formatMessage({ id: 'innboks.skriv.ny.link' })}
+                    </a>
                 </div>
                 {content}
             </div>

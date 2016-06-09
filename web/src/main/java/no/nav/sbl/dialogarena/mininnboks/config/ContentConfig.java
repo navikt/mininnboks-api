@@ -51,9 +51,7 @@ public class ContentConfig {
     private final Logger logger = getLogger(getClass());
 
     private static final String DEFAULT_LOCALE = "nb_NO";
-    private static final String ENGELSK_LOCALE = "en_GB";
-    private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/app/mininnboks/nb_NO/tekster";
-    private static final String INNHOLDSTEKSTER_EN_GB_REMOTE = "/app/mininnboks/en_GB/tekster";
+    private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/app/mininnboks/nb/tekster";
     private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.mininnboks";
     private static final String FRAGMENTS_URL = "common-html/v3/navno";
     private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
@@ -62,7 +60,6 @@ public class ContentConfig {
     public ValueRetriever siteContentRetriever() throws URISyntaxException {
         Map<String, List<URI>> uris = new HashMap<>();
         uris.put(DEFAULT_LOCALE, asList(new URI(getProperty("appres.cms.url") + INNHOLDSTEKSTER_NB_NO_REMOTE)));
-        uris.put(ENGELSK_LOCALE, asList(new URI(getProperty("appres.cms.url") + INNHOLDSTEKSTER_EN_GB_REMOTE)));
         return new ValuesFromContentWithResourceBundleFallback(asList(INNHOLDSTEKSTER_NB_NO_LOCAL), contentRetriever(), uris, DEFAULT_LOCALE);
     }
 
