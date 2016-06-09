@@ -1,9 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMelding;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
 import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
@@ -19,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -39,7 +37,23 @@ public class HenvendelseMockContext {
         addAll(lagBehandlingskjede(HJLPM, DateTime.now().minusWeeks(2), REFERAT_OPPMOTE));
         addAll(lagBehandlingskjede(ARBD, DateTime.now().minusMonths(1), SPORSMAL_MODIA_UTGAAENDE, SVAR_SBL_INNGAAENDE));
         addAll(lagBehandlingskjede(BIL, DateTime.now().minusMonths(6), true, SPORSMAL_SKRIFTLIG, SVAR_SKRIFTLIG, SVAR_SKRIFTLIG));
+        addAll(lagDokumentVarsel("DAG", "Vedtaksbrev om Dagpenger"));
     }};
+
+    private Collection<? extends XMLHenvendelse> lagDokumentVarsel(String tema, String dokumentTittel) {
+        Integer behandlingskjedeId = nextId();
+        List<XMLHenvendelse> traad = new ArrayList<>();
+        traad.add(new XMLHenvendelse()
+                .withBehandlingsId(behandlingskjedeId.toString())
+                .withBehandlingskjedeId(behandlingskjedeId.toString())
+                .withOpprettetDato(DateTime.now().minusDays(3))
+                .withTema(tema)
+                .withLestDato(null)
+                .withKorrelasjonsId("a1-b2")
+                .withHenvendelseType(DOKUMENT_VARSEL.value())
+                .withMetadataListe(new XMLMetadataListe().withMetadata(new XMLDokumentVarsel().withDokumenttittel(dokumentTittel).withJournalpostId("1").withDokumentIdListe("2").withTemanavn("Dagpenger"))));
+
+        return traad;    }
 
     @Bean
     public HenvendelseService henvendelseService(PersonService personService) {
