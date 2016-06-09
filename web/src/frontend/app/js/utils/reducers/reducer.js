@@ -8,11 +8,11 @@ const NORSK = 'nb_NO';
 export default (state = initialState, action) => {
     switch (action.type) {
         case INIT_DATA: {
-            const tekster = action.ledetekster;
+            let tekster = action.ledetekster;
             if (action.options.cmskeys) {
-                tekster[NORSK] = mapValues(action.ledetekster[NORSK], (value, key) => `[${key}] ${value}`);
+                tekster = mapValues(action.ledetekster, (value, key) => `[${key}] ${value}`);
             }
-            window.tekster = ledetekster(tekster[NORSK]);
+            window.tekster = ledetekster(tekster);
             return Object.assign({}, state, {
                 harHentetInitData: true,
                 miljovariabler: action.miljovariabler,
@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
                 sendingStatus: 'IKKE_SENDT',
                 visKvittering: false,
                 skrivSvar: false,
-                tekster: tekster[NORSK]
+                tekster
             });
         }
         case GODTA_VILKAAR:

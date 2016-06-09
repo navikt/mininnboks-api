@@ -23,16 +23,13 @@ public class ResourcesController {
 
     @GET
     public Properties hentTekster(@QueryParam("type") String type) {
-        Properties properties = new Properties();
         Properties norske = messageSource.getBundleFor(type, new Locale("nb", "NO"));
 
         norske.put("skriv.ny.link", System.getProperty("temavelger.link.url"));
         norske.put("brukerprofil.link", System.getProperty("brukerprofil.link.url"));
         norske.put("temagruppe.liste", collectionToDelimitedString(GODKJENTE_FOR_INNGAAENDE_SPORSMAAL, " "));
 
-        properties.put("nb_NO", norske);
-
-        return properties;
+        return norske;
     }
 
 }

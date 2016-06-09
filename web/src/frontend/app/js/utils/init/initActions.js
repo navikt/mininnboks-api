@@ -1,4 +1,3 @@
-
 const API_BASE_URL = '/mininnboks/tjenester';
 const MED_CREDENTIALS = { credentials: 'same-origin' };
 export const INIT_DATA = 'INIT_DATA';
