@@ -28,7 +28,7 @@ public abstract class HenvendelsesUtils {
     private static final String LINE_BREAK = "\n";
 
     public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
-    public static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON);
+    public static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON, DOKUMENT_VARSEL);
 
     public static final Map<XMLHenvendelseType, Henvendelsetype> HENVENDELSETYPE_MAP = new HashMap<XMLHenvendelseType, Henvendelsetype>() {
         {
@@ -40,6 +40,7 @@ public abstract class HenvendelsesUtils {
             put(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, SVAR_SBL_INNGAAENDE);
             put(XMLHenvendelseType.REFERAT_OPPMOTE, SAMTALEREFERAT_OPPMOTE);
             put(XMLHenvendelseType.REFERAT_TELEFON, SAMTALEREFERAT_TELEFON);
+            put(XMLHenvendelseType.DOKUMENT_VARSEL, DOKUMENT_VARSEL);
         }
     };
 
