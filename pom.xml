@@ -28,7 +28,19 @@
             **/DateTimeObjectMapperProvider.java,
             **/RestConfig.java
         </sonar.exclusions>
+
+        <ehcache.version>2.6.11</ehcache.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>net.sf.ehcache</groupId>
+                <artifactId>ehcache-core</artifactId>
+                <version>${ehcache.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
 
@@ -62,7 +74,7 @@
                 <artifactId>modig-content-maven-plugin</artifactId>
                 <version>1.1.1</version>
                 <configuration>
-                    <propertiesFilesRoot>${project.basedir}/web/src/main/resources/no/nav/sbl/dialogarena/mininnboks/</propertiesFilesRoot>
+                    <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
                     <propertiesFiler>
                         <nb>innhold_nb.properties</nb>
                     </propertiesFiler>

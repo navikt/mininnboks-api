@@ -28,6 +28,9 @@
         <webservice alias="virksomhet:Brukerprofil_v3" mapToProperty="brukerprofil.v3"/>
         <webservice alias="domene.Brukerdialog:SendInnHenvendelse_v1" mapToProperty="send.inn.henvendelse.ws"/>
         <webservice alias="domene.Brukerdialog:InnsynHenvendelse_v1" mapToProperty="innsyn.henvendelse.ws"/>
+
+
+        <directory name="mininnboks" mapToProperty="mininnboks.datadir"/>
     </resources>
 
     <exposed-services>

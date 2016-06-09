@@ -36,7 +36,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>no.nav.sbl.dialogarena.mininnboks.config.MinInnboksApplicationContext</param-value>
+        <param-value>no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig</param-value>
     </context-param>
 
     <filter>

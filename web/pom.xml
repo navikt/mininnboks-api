@@ -269,6 +269,11 @@
             <version>${javax.ws.rs-api.version}</version>
         </dependency>
         <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>jsr250-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
             <version>${jersey.version}</version>
@@ -437,13 +442,22 @@
             <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 
     <build>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/frontend</directory>
+                <excludes>
+                    <exclude>**/node_modules/**</exclude>
+                </excludes>
+                <filtering>false</filtering>
             </resource>
             <resource>
                 <directory>src/main/java</directory>
@@ -488,6 +502,7 @@
                                     install
                                 </argument>
                             </arguments>
+                            <workingDirectory>src/frontend</workingDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -501,6 +516,7 @@
                             <arguments>
                                 <argument>./node_modules/gulp/bin/gulp</argument>
                             </arguments>
+                            <workingDirectory>src/frontend</workingDirectory>
                         </configuration>
                     </execution>
                 </executions>
