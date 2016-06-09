@@ -2,7 +2,6 @@ import React, { PropTypes as pt } from 'react';
 import BesvarBoks from'./BesvarBoks';
 import MeldingContainer from './MeldingContainer';
 import SkrivKnapp from './SkrivKnapp';
-import Snurrepipp from '../snurrepipp/Snurrepipp';
 import Feilmelding from '../feilmelding/Feilmelding';
 import InfoBoks from '../infoboks/Infoboks';
 import { lesTraad, resetInputState } from '../utils/actions/Actions';
@@ -24,11 +23,6 @@ class TraadVisning extends React.Component {
 
     render() {
         const { routes, params, intl: { formatMessage }, sendingStatus, traader, skrivSvar, harSubmittedSkjema, fritekst } = this.props;
-
-        if (!traader) {
-            return <Spinner spin/>;
-        }
-
         const traadId = this.props.params.traadId;
         const valgttraad = traader.find(traad => traad.traadId === traadId);
 

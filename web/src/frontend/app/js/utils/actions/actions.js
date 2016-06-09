@@ -15,12 +15,15 @@ export const settSkrivSvar = (skrivSvar) => ({ type: SKRIV_SVAR, skrivSvar: skri
 export const resetInputState = () => ({ type: RESET_STATE, fritekst: '', sendingStatus: 'IKKE_SENDT', harSubmittedSkjema: false, godkjentVilkaar: false, skrivSvar: false });
 export const hentTraader = () =>
     dispatch =>
-        fetch(`${API_BASE_URL}/traader`, MED_CREDENTIALS)
-            .then(res => res.json())
+        hentTraaderFetch()
             .then(json => dispatch({
                 type: HENT_TRAADER,
                 traader: json
             }));
+
+export const hentTraaderFetch = () =>
+    fetch(`${API_BASE_URL}/traader`, MED_CREDENTIALS)
+        .then(res => res.json());
 
 export const lesTraad = (traadId) => dispatch => fetch(`${API_BASE_URL}/traader/lest/${traadId}`, SOM_POST);
 
