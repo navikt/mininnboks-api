@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import static java.util.Arrays.asList;
+import static java.util.Optional.ofNullable;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.fromValue;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
 
@@ -55,7 +56,7 @@ public abstract class HenvendelsesUtils {
             Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
             henvendelse.opprettet = info.getOpprettetDato();
             henvendelse.avsluttet = info.getAvsluttetDato();
-            henvendelse.traadId = info.getBehandlingskjedeId();
+            henvendelse.traadId = ofNullable(info.getBehandlingskjedeId()).orElse(info.getBehandlingsId());
             henvendelse.eksternAktor = info.getEksternAktor();
             henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
             henvendelse.kontorsperreEnhet = info.getKontorsperreEnhet();

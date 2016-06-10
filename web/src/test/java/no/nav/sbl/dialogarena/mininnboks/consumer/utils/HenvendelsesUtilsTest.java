@@ -9,10 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
@@ -59,6 +56,26 @@ public class HenvendelsesUtilsTest {
         HenvendelsesUtils.setCmsContentRetriever(null);
     }
     @Test
+    public void transformererDokumentHenvendelse() {
+        XMLHenvendelse dokument = mockDokumentHenvendelse();
+
+        List<XMLHenvendelse> infoList = Collections.singletonList(dokument);
+
+        List<Henvendelse> henvendelserListe = infoList.stream()
+                .map(tilHenvendelse())
+                .collect(toList());
+        Henvendelse dokumentHenvendelse = henvendelserListe.get(0);
+
+        assertThat(dokumentHenvendelse.id, is(ID_1));
+        assertThat(dokumentHenvendelse.traadId, is(ID_1));
+        assertThat(dokumentHenvendelse.type, is(DOKUMENT_VARSEL));
+        assertThat(dokumentHenvendelse.getLestDato(), is(nullValue()));
+        assertThat(dokumentHenvendelse.isLest(), is(false));
+        assertThat(dokumentHenvendelse.kanal, is(nullValue()));
+        assertThat(dokumentHenvendelse.brukersEnhet, is(BRUKERS_ENHET));
+    }
+
+    @Test
     public void transformererXMLHenvendelseSomSporsmalFraBruker() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
@@ -77,6 +94,25 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.kanal, is(nullValue()));
         assertThat(sporsmal.brukersEnhet, is(BRUKERS_ENHET));
     }
+
+    private XMLHenvendelse mockDokumentHenvendelse() {
+        return new XMLHenvendelse()
+                .withHenvendelseType(XMLHenvendelseType.DOKUMENT_VARSEL.name())
+                .withBehandlingsId(ID_1)
+                .withBehandlingskjedeId(ID_1)
+                .withOpprettetDato(OPPRETTET_DATO)
+                .withAvsluttetDato(AVSLUTTET_DATO)
+                .withBrukersEnhet(BRUKERS_ENHET)
+                .withKontorsperreEnhet(KONTORSPERRE_ENHET)
+                .withMetadataListe(new XMLMetadataListe().withMetadata(
+                        new XMLDokumentVarsel()
+                            .withTemagruppe("OVRG")
+                            .withFritekst("")
+                            .withRepeterendeVarsel(true)
+                ));
+    }
+
+
 
     @Test
     public void transformererXMLHenvendelseSomSvarFraBruker() {
