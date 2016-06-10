@@ -121,6 +121,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>refreshEnonicServlet</servlet-name>
+        <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>refreshEnonicServlet</servlet-name>
+        <url-pattern>/internal/refreshenonic</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>restservlet</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
