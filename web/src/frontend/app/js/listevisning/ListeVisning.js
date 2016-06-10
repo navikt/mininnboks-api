@@ -9,13 +9,13 @@ import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 class ListeVisning extends React.Component {
 
     render() {
-        const { intl: { formatMessage }, routes, params, traader } = this.props;
+        const { intl: { formatMessage }, routes, params, traader, location } = this.props;
 
         let content;
         if (traader.length === 0) {
             content = <Feilmelding melding={formatMessage({ id: 'innboks.tom-innboks-melding' })}/>;
         } else {
-            content = <TraaderContainer traader={traader} formatMessage={formatMessage}/>;
+            content = <TraaderContainer traader={traader} formatMessage={formatMessage} location={location}/>;
         }
 
         return (

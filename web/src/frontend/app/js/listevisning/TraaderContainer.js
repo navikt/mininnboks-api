@@ -13,10 +13,10 @@ function getTraadLister(traader) {
 
 class TraadContainer extends React.Component {
     render() {
-        const { formatMessage, setValgtTraad, query } = this.props;
+        const { formatMessage, setValgtTraad, location } = this.props;
         const traader = getTraadLister(this.props.traader);
 
-        const varselId = "1"; //this.props.location.query.varselId;
+        const varselId = location.query.varselId;
         const matcherVarselId = this.props.traader.reduce((prev, curr) => prev || varselId && varselId === curr.nyeste.korrelasjonsId, false);
         const erAktiv = (melding, index) => !matcherVarselId && index === 0 || matcherVarselId && varselId === melding.korrelasjonsId ? true : false;
 
