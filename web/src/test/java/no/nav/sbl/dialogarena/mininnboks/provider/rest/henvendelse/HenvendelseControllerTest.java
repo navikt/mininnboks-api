@@ -1,10 +1,13 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
+import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.core.context.ThreadLocalSubjectHandler;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
+import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController.NyHenvendelseResultat;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +42,9 @@ public class HenvendelseControllerTest {
     @Mock
     HenvendelseService service;
 
+    @Mock
+    CmsContentRetriever cmsContentRetriever = mock(CmsContentRetriever.class);
+
     @InjectMocks
     HenvendelseController controller = new HenvendelseController();
 
@@ -54,6 +60,9 @@ public class HenvendelseControllerTest {
                 new Henvendelse("6").withTraadId("2").withType(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE).withOpprettetTid(now().plus(100)),
                 new Henvendelse("7").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(now())
         );
+
+        HenvendelsesUtils.setCmsContentRetriever(cmsContentRetriever);
+
         when(service.hentAlleHenvendelser(anyString())).thenReturn(henvendelser);
 
         when(service.hentTraad(anyString())).thenAnswer((Answer<List<Henvendelse>>) invocation -> {
@@ -67,6 +76,11 @@ public class HenvendelseControllerTest {
         when(service.sendSvar(any(Henvendelse.class), anyString())).thenReturn(
                 new WSSendInnHenvendelseResponse().withBehandlingsId(UUID.randomUUID().toString())
         );
+    }
+
+    @After
+    public void after() {
+        HenvendelsesUtils.setCmsContentRetriever(null);
     }
 
     @Test

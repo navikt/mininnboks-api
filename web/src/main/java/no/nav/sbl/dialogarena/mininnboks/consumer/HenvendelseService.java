@@ -3,7 +3,6 @@ package no.nav.sbl.dialogarena.mininnboks.consumer;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
-import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
@@ -38,17 +37,15 @@ public interface HenvendelseService {
 
     class Default implements HenvendelseService {
 
-        private final PropertyResolver resolver;
         private final HenvendelsePortType henvendelsePortType;
         private final SendInnHenvendelsePortType sendInnHenvendelsePortType;
         private final InnsynHenvendelsePortType innsynHenvendelsePortType;
         private final PersonService personService;
 
-        public Default(HenvendelsePortType henvendelsePortType, SendInnHenvendelsePortType sendInnHenvendelsePortType, InnsynHenvendelsePortType innsynHenvendelsePortType, PropertyResolver resolver, PersonService personService) {
+        public Default(HenvendelsePortType henvendelsePortType, SendInnHenvendelsePortType sendInnHenvendelsePortType, InnsynHenvendelsePortType innsynHenvendelsePortType, PersonService personService) {
             this.henvendelsePortType = henvendelsePortType;
             this.sendInnHenvendelsePortType = sendInnHenvendelsePortType;
             this.innsynHenvendelsePortType = innsynHenvendelsePortType;
-            this.resolver = resolver;
             this.personService = personService;
         }
 
@@ -129,7 +126,7 @@ public interface HenvendelseService {
                             .withTyper(typer))
                     .getAny();
             return WShenvendelsesliste.stream()
-                    .map(tilHenvendelse(resolver))
+                    .map(tilHenvendelse())
                     .collect(toList());
         }
 
@@ -138,7 +135,7 @@ public interface HenvendelseService {
             List<Object> WSbehandlingskjeder = henvendelsePortType.hentBehandlingskjede(new WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).getAny();
 
             return WSbehandlingskjeder.stream()
-                    .map(tilHenvendelse(resolver))
+                    .map(tilHenvendelse())
                     .collect(toList());
         }
     }

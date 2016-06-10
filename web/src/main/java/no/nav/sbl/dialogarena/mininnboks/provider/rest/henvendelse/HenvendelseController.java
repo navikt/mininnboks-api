@@ -22,6 +22,8 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.groupingBy;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.*;
+import static javax.ws.rs.core.Response.Status.*;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SBL_INNGAAENDE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad.NYESTE_FORST;
@@ -54,9 +56,9 @@ public class HenvendelseController {
     public Response hentEnkeltTraad(@PathParam("id") String id) {
         Optional<Traad> traad = hentTraad(id);
         if (traad.isPresent()) {
-            return Response.ok(traad.get()).build();
+            return ok(traad.get()).build();
         } else {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
+            return status(NOT_FOUND.getStatusCode()).build();
         }
     }
 
@@ -77,7 +79,7 @@ public class HenvendelseController {
         Henvendelse henvendelse = new Henvendelse(sporsmal.fritekst, temagruppe);
 
         WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
-        return Response.status(Response.Status.CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
+        return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
     @POST
@@ -87,13 +89,13 @@ public class HenvendelseController {
         assertFritekst(svar.fritekst);
         Optional<Traad> traadOptional = hentTraad(svar.traadId);
         if (!traadOptional.isPresent()) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
+            return status(NOT_FOUND.getStatusCode()).build();
         }
 
         Traad traad = traadOptional.get();
 
         if (!traad.kanBesvares) {
-            return Response.status(Response.Status.NOT_ACCEPTABLE.getStatusCode()).build();
+            return status(NOT_ACCEPTABLE.getStatusCode()).build();
         }
 
         Henvendelse henvendelse = new Henvendelse(svar.fritekst, traad.nyeste.temagruppe);
@@ -108,7 +110,7 @@ public class HenvendelseController {
         henvendelse.kontorsperreEnhet = traad.nyeste.kontorsperreEnhet;
 
         WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
-        return Response.status(Response.Status.CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
+        return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
     private Optional<Traad> hentTraad(String id) {

@@ -56,8 +56,8 @@ public class HenvendelseMockContext {
         return traad;    }
 
     @Bean
-    public HenvendelseService henvendelseService(PropertyResolver resolver, PersonService personService) {
-        return new HenvendelseService.Default(henvendelsePortType(), sendInnHenvendelsePortType(), innsynHenvendelsePortType(), resolver, personService);
+    public HenvendelseService henvendelseService(PersonService personService) {
+        return new HenvendelseService.Default(henvendelsePortType(), sendInnHenvendelsePortType(), innsynHenvendelsePortType(), personService);
     }
 
     private HenvendelsePortType henvendelsePortType() {

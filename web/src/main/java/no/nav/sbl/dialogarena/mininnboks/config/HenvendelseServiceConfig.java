@@ -15,8 +15,8 @@ import static no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils.creat
 public class HenvendelseServiceConfig {
 
     @Bean
-    public HenvendelseService henvendelseService(PropertyResolver resolver, PersonService personService) {
-        return new HenvendelseService.Default(henvendelseSSO(), sendInnHenvendelseSSO(), innsynHenvendelseSSO(), resolver, personService);
+    public HenvendelseService henvendelseService(PersonService personService) {
+        return new HenvendelseService.Default(henvendelseSSO(), sendInnHenvendelseSSO(), innsynHenvendelseSSO(), personService);
     }
 
     private SendInnHenvendelsePortType sendInnHenvendelseSSO() {

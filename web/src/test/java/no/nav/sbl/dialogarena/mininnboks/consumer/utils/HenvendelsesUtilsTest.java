@@ -1,10 +1,11 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
-import no.nav.modig.content.PropertyResolver;
+import no.nav.modig.content.CmsContentRetriever;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,20 +45,26 @@ public class HenvendelsesUtilsTest {
     private static final String BRUKERS_ENHET = "1234";
     private static final String KONTORSPERRE_ENHET = "kontorsperreEnhet";
 
-    private PropertyResolver propertyResolver = mock(PropertyResolver.class);
+
+    private CmsContentRetriever cmsContentRetriever = mock(CmsContentRetriever.class);
 
     @Before
     public void setup() {
-        when(propertyResolver.getProperty(anyString())).thenReturn("value");
+        HenvendelsesUtils.setCmsContentRetriever(cmsContentRetriever);
+        when(cmsContentRetriever.hentTekst(anyString())).thenReturn("value");
     }
 
+    @After
+    public void after() {
+        HenvendelsesUtils.setCmsContentRetriever(null);
+    }
     @Test
     public void transformererXMLHenvendelseSomSporsmalFraBruker() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(tilHenvendelse(propertyResolver))
+                .map(tilHenvendelse())
                 .collect(toList());
         Henvendelse sporsmal = henvendelserListe.get(0);
 
@@ -77,7 +84,7 @@ public class HenvendelsesUtilsTest {
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(tilHenvendelse(propertyResolver))
+                .map(tilHenvendelse())
                 .collect(toList());
         Henvendelse svar = henvendelserListe.get(0);
 
@@ -98,7 +105,7 @@ public class HenvendelsesUtilsTest {
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(tilHenvendelse(propertyResolver))
+                .map(tilHenvendelse())
                 .collect(toList());
         Henvendelse sporsmal = henvendelserListe.get(0);
 
@@ -121,7 +128,7 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SVAR_SKRIFTLIG, ID_4, ID_1);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
-        List<Henvendelse> henvendelserListe = infoList.stream().map(tilHenvendelse(propertyResolver)).collect(toList());
+        List<Henvendelse> henvendelserListe = infoList.stream().map(tilHenvendelse()).collect(toList());
         Henvendelse svar = henvendelserListe.get(0);
 
         assertStandardFelter(svar);
@@ -139,7 +146,7 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
-        List<Henvendelse> henvendelserListe = infoList.stream().map(tilHenvendelse(propertyResolver)).collect(toList());
+        List<Henvendelse> henvendelserListe = infoList.stream().map(tilHenvendelse()).collect(toList());
         Henvendelse referat = henvendelserListe.get(0);
 
         assertStandardFelter(referat);
@@ -157,9 +164,9 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
         info.setMetadataListe(null);
 
-        when(propertyResolver.getProperty("innhold.kassert")).thenReturn("Innholdet er kassert");
-        when(propertyResolver.getProperty("temagruppe.kassert")).thenReturn("Kassert");
-        Henvendelse referat = tilHenvendelse(propertyResolver).apply(info);
+        when(cmsContentRetriever.hentTekst("innhold.kassert")).thenReturn("Innholdet er kassert");
+        when(cmsContentRetriever.hentTekst("temagruppe.kassert")).thenReturn("Kassert");
+        Henvendelse referat = tilHenvendelse().apply(info);
 
         assertThat(referat.fritekst, is("Innholdet er kassert"));
         assertThat(referat.statusTekst, is("Kassert"));
