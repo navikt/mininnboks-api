@@ -45,9 +45,13 @@ export default (state = initialState, action) => {
         case LES_TRAAD:
             return Object.assign({}, state, {lesTraad:  action.lesTraad});
         case TRAAD_LEST: {
+            const markerSomLest = (melding) => Object.assign({}, melding, { lest: true });
             const traader = state.traader.map((traad) => {
                 if(traad.traadId === action.traadId) {
-                    return Object.assign({}, traad, { lest:  true })
+                    const nyeste = markerSomLest(traad.nyeste);
+                    const eldste = markerSomLest(traad.eldste);
+                    const meldinger = traad.meldinger.map(markerSomLest);
+                    return Object.assign({}, traad, { nyeste, eldste, meldinger });
                 }
                 return traad;
             });
