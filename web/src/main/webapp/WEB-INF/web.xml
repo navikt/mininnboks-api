@@ -49,21 +49,13 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>RedirectFilter</filter-name>
-        <filter-class>no.nav.sbl.dialogarena.mininnboks.provider.filter.RedirectFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>RedirectFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <filter>
         <filter-name>decoratorFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>decoratorFilter</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
@@ -121,15 +113,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>refreshEnonicServlet</servlet-name>
-        <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>refreshEnonicServlet</servlet-name>
-        <url-pattern>/internal/refreshenonic</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>restservlet</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
@@ -144,18 +127,23 @@
         <url-pattern>/tjenester/*</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>reactapp</servlet-name>
-        <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.ApplicationServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>reactapp</servlet-name>
-        <url-pattern>/app/*</url-pattern>
-    </servlet-mapping>
-
     <error-page>
         <error-code>404</error-code>
         <location>/app/index.html</location>
     </error-page>
+
+
+    <servlet>
+        <servlet-name>reactapp</servlet-name>
+        <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.ApplicationServlet</servlet-class>
+        <init-param>
+            <param-name>applicationFile</param-name>
+            <param-value>index.html</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>reactapp</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>

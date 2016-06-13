@@ -7,7 +7,7 @@ import App from './Application';
 import { greedyRender } from './utils/brodsmulesti/CustomBreadcrumbs';
 import { createHistory } from 'history';
 
-const history = useRouterHistory(createHistory)({ basename: '/mininnboks/app' });
+const history = useRouterHistory(createHistory)({ basename: '/mininnboks' });
 
 export default() => (
     <Router history={history}>
