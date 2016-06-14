@@ -83,7 +83,7 @@
 
     <logger name="org.apache.http.client.protocol.ResponseProcessCookies" level="ERROR"/>
 
-    <logger name="org.apache.cxf" level="OFF">
+    <logger name="org.apache.cxf" level="${cxf.log.level:-OFF}">
         <appender-ref ref="infolog"/>
     </logger>
 
