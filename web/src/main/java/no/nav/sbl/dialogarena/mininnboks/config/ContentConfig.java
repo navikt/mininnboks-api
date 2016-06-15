@@ -50,7 +50,7 @@ public class ContentConfig {
 
     private static final String DEFAULT_LOCALE = "nb_NO";
     private static final String INNHOLDSTEKSTER_NB_NO_REMOTE = "/app/mininnboks/nb/tekster";
-    private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.mininnboks";
+    private static final String INNHOLDSTEKSTER_NB_NO_LOCAL = "content.innholdstekster";
     private static final String FRAGMENTS_URL = "common-html/v3/navno";
     private static final List<String> NO_DECORATOR_PATTERNS = new ArrayList<>(asList(".*/img/.*", ".*selftest.*"));
 

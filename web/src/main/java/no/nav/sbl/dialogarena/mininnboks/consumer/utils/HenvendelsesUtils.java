@@ -8,11 +8,10 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 
 import static java.util.Arrays.asList;
@@ -24,6 +23,7 @@ public abstract class HenvendelsesUtils {
 
     private static CmsContentRetriever cmsContentRetriever;
 
+    final static Logger logger = LoggerFactory.getLogger(HenvendelsesUtils.class);
     private static final String LINE_REPLACEMENT_STRING = UUID.randomUUID().toString();
     private static final String LINE_BREAK = "\n";
 
@@ -89,7 +89,7 @@ public abstract class HenvendelsesUtils {
             } else{
                 XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
                 henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
-                henvendelse.temagruppeNavn = cmsContentRetriever.hentTekst(henvendelse.temagruppe.name());
+                henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe.name());
                 henvendelse.statusTekst = statusTekst(henvendelse);
                 henvendelse.fritekst = cleanOutHtml(xmlMelding.getFritekst());
 
@@ -102,6 +102,15 @@ public abstract class HenvendelsesUtils {
         };
     }
 
+    private static String hentTemagruppeNavn(String temagruppeNavn) {
+        try {
+            return cmsContentRetriever.hentTekst(temagruppeNavn);
+        } catch(MissingResourceException exception) {
+            logger.error("Finner ikke cms-oppslag for " + temagruppeNavn, exception);
+            return temagruppeNavn;
+        }
+    }
+
     private static boolean innholdErKassert(XMLHenvendelse info) {
         return info.getMetadataListe() == null;
     }
@@ -112,8 +121,8 @@ public abstract class HenvendelsesUtils {
     }
 
     private static String statusTekst(Henvendelse henvendelse) {
-        String type = cmsContentRetriever.hentTekst(String.format("status.%s", henvendelse.type.name()));
-        String temagruppe = cmsContentRetriever.hentTekst(henvendelse.temagruppe.name());
+        String type = hentTemagruppeNavn(String.format("status.%s", henvendelse.type.name()));
+        String temagruppe = hentTemagruppeNavn(henvendelse.temagruppe.name());
         return String.format(type, temagruppe);
 
     }
