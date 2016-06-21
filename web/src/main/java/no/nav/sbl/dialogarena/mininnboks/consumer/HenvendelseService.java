@@ -33,7 +33,9 @@ public interface HenvendelseService {
 
     List<Henvendelse> hentTraad(String behandlingskjedeId);
 
-    void merkSomLest(String behandlingskjedeId);
+    void merkAlleSomLest(String behandlingskjedeId);
+
+    void merkSomLest(String id);
 
     class Default implements HenvendelseService {
 
@@ -99,13 +101,18 @@ public interface HenvendelseService {
         }
 
         @Override
-        public void merkSomLest(String behandlingskjedeId) {
+        public void merkAlleSomLest(String behandlingskjedeId) {
             List<Henvendelse> traad = hentTraad(behandlingskjedeId);
             List<String> ids = traad.stream()
                     .filter(henvendelse -> !henvendelse.isLest())
                     .map(henvendelse -> henvendelse.id)
                     .collect(toList());
             innsynHenvendelsePortType.merkSomLest(ids);
+        }
+
+        @Override
+        public void merkSomLest(String behandlingsId) {
+            innsynHenvendelsePortType.merkSomLest(asList(behandlingsId));
         }
 
         @Override

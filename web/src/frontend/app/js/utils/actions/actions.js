@@ -6,6 +6,7 @@ const API_BASE_URL = '/mininnboks/tjenester';
 const MED_CREDENTIALS = { credentials: 'same-origin' };
 const SOM_POST = { credentials: 'same-origin', method: 'POST', headers: { 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN-MININNBOKS') }};
 
+export const dokumentVarselLest = (behandlingsId) => ({ type: 'DOKUMENT_VARSEL_LEST', behandlingsId });
 export const velgGodtaVilkaar = (vilkaar) => ({ type: GODTA_VILKAAR, godkjentVilkaar: vilkaar });
 export const velgVisModal = (skalVise) => ({ type: VIS_MODAL, visModal: skalVise });
 export const skrivTekst = (fritekst) => ({ type: SKRIV_TEKST, fritekst: fritekst });
@@ -27,8 +28,12 @@ export const hentTraaderFetch = () =>
         .then(res => res.json());
 
 export const lesTraad = (traadId) => dispatch =>
-    fetch(`${API_BASE_URL}/traader/lest/${traadId}`, SOM_POST)
+    fetch(`${API_BASE_URL}/traader/allelest/${traadId}`, SOM_POST)
         .then(() => dispatch(traadLest(traadId)));
+
+export const lesDokumentVarsel = (behandlingsId) => dispatch =>
+    fetch(`${API_BASE_URL}/traader/lest/${behandlingsId}`, SOM_POST)
+        .then(() => dispatch(dokumentVarselLest(behandlingsId)));
 
 export const sendSporsmal = (temagruppe, fritekst) => dispatch => fetch(`${API_BASE_URL}/traader/sporsmal`, SEND_SPORSMAL(temagruppe, fritekst))
     .then(() => dispatch(hentTraader()))

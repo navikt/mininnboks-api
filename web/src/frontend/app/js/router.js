@@ -6,6 +6,7 @@ import Skriv from './skriv/Skriv';
 import App from './Application';
 import { greedyRender } from './utils/brodsmulesti/CustomBreadcrumbs';
 import { createHistory } from 'history';
+import DokumentVarsel from './dokumentvarsel/DokumentVarsel';
 
 const history = useRouterHistory(createHistory)({ basename: '/mininnboks' });
 
@@ -18,6 +19,9 @@ export default() => (
                 </Route>
             <Route path="/" component={greedyRender(ListeVisning)} breadcrumbName="Min innboks" >
                 <Route path="sporsmal/skriv/:temagruppe" component={greedyRender(Skriv)} breadcrumbName="Ny melding"/>
+            </Route>
+            <Route path="/" component={greedyRender(ListeVisning)} breadcrumbName="Min innboks" >
+                <Route path="dokument/:id" component={greedyRender(DokumentVarsel)} breadcrumbName="Varsel om dokument"/>
             </Route>
             <Route path="sporsmal/skriv/:temagruppe" component={greedyRender(Skriv)} breadcrumbName="Ny melding"/>
         </Route>

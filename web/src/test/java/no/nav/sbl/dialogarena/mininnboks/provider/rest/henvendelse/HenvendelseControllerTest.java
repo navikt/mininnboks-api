@@ -116,9 +116,9 @@ public class HenvendelseControllerTest {
 
     @Test
     public void markeringSomLest() throws Exception {
-        controller.markerSomLest("1");
+        controller.markerAlleSomLest("1");
 
-        verify(service, times(1)).merkSomLest("1");
+        verify(service, times(1)).merkAlleSomLest("1");
     }
 
     @Test
