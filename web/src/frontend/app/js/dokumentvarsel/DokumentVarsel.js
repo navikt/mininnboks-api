@@ -5,8 +5,11 @@ import { lesDokumentVarsel } from '../utils/actions/Actions';
 
 class DokumentVarsel extends React.Component {
     componentDidMount() {
-        const { dispatch, params } = this.props;
-        dispatch(lesDokumentVarsel(params.id));
+        const { dispatch, params, traader } = this.props;
+        const traad = traader.filter( (traad) => traad.traadId === params.id)[0];
+        if(traad && !traad.meldinger[0].lest) {
+            dispatch(lesDokumentVarsel(params.id));
+        }
     }
 
     render() {
@@ -16,4 +19,6 @@ class DokumentVarsel extends React.Component {
     }
 }
 
-export default connect()(DokumentVarsel);
+const mapStateToProps = ({ traader  }) => ({ traader });
+
+export default connect(mapStateToProps)(DokumentVarsel);
