@@ -63,9 +63,15 @@ public class HenvendelseController {
     }
 
     @POST
-    @Path("/lest/{id}")
-    public void markerSomLest(@PathParam("id") String id) {
-        henvendelseService.merkSomLest(id);
+    @Path("/lest/{behandlingsId}")
+    public void markerSomLest(@PathParam("behandlingsId") String behandlingsId) {
+        henvendelseService.merkSomLest(behandlingsId);
+    }
+
+    @POST
+    @Path("/allelest/{behandlingskjedeId}")
+    public void markerAlleSomLest(@PathParam("behandlingskjedeId") String behandlingskjedeId) {
+        henvendelseService.merkAlleSomLest(behandlingskjedeId);
     }
 
     @POST
