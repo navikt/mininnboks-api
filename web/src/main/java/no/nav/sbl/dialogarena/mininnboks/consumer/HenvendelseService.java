@@ -23,8 +23,6 @@ import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
 
-    String KONTAKT_NAV_SAKSTEMA = "KNA";
-
     WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer);
 
     WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String uid);
@@ -39,6 +37,7 @@ public interface HenvendelseService {
 
     class Default implements HenvendelseService {
 
+        public static final String KONTAKT_NAV_SAKSTEMA = "KNA";
         private final HenvendelsePortType henvendelsePortType;
         private final SendInnHenvendelsePortType sendInnHenvendelsePortType;
         private final InnsynHenvendelsePortType innsynHenvendelsePortType;

@@ -30,7 +30,7 @@ import static java.util.Arrays.asList;
 import static java.util.Optional.of;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SPORSMAL_SKRIFTLIG;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SVAR_SBL_INNGAAENDE;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService.KONTAKT_NAV_SAKSTEMA;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService.Default.KONTAKT_NAV_SAKSTEMA;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
