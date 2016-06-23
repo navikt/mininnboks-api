@@ -28,13 +28,20 @@ public class XsrfFilter implements Filter {
                 chain.doFilter(request, response);
                 break;
             case "POST":
-                try {
-                    sjekkXsrfToken(httpRequest.getHeader("X-XSRF-TOKEN"), httpRequest.getSession());
-                    chain.doFilter(request, response);
-                } catch (AuthorizationException e) {
-                    httpResponse.sendError(SC_UNAUTHORIZED, e.getMessage());
-                }
+                sjekkToken(request, response, chain, httpRequest, httpResponse);
                 break;
+        }
+    }
+
+    private void sjekkToken(ServletRequest request, ServletResponse response, FilterChain chain,
+                            HttpServletRequest httpRequest, HttpServletResponse httpResponse)
+            throws IOException, ServletException {
+
+        try {
+            sjekkXsrfToken(httpRequest.getHeader("X-XSRF-TOKEN"), httpRequest.getSession());
+            chain.doFilter(request, response);
+        } catch (AuthorizationException e) {
+            httpResponse.sendError(SC_UNAUTHORIZED, e.getMessage());
         }
     }
 
