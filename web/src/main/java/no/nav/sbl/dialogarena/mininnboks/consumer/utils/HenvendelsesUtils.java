@@ -28,8 +28,6 @@ public abstract class HenvendelsesUtils {
     private static final String LINE_BREAK = "\n";
 
     public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
-    public static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON, DOKUMENT_VARSEL);
-
 
     public static void setCmsContentRetriever(CmsContentRetriever contentRetriever) {
         cmsContentRetriever = contentRetriever;
