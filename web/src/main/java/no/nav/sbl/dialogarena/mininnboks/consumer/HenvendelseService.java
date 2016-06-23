@@ -44,7 +44,11 @@ public interface HenvendelseService {
         private final InnsynHenvendelsePortType innsynHenvendelsePortType;
         private final PersonService personService;
 
-        public Default(HenvendelsePortType henvendelsePortType, SendInnHenvendelsePortType sendInnHenvendelsePortType, InnsynHenvendelsePortType innsynHenvendelsePortType, PersonService personService) {
+        public Default(HenvendelsePortType henvendelsePortType,
+                       SendInnHenvendelsePortType sendInnHenvendelsePortType,
+                       InnsynHenvendelsePortType innsynHenvendelsePortType,
+                       PersonService personService) {
+            
             this.henvendelsePortType = henvendelsePortType;
             this.sendInnHenvendelsePortType = sendInnHenvendelsePortType;
             this.innsynHenvendelsePortType = innsynHenvendelsePortType;
