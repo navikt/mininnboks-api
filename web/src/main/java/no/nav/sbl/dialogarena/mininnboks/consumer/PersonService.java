@@ -14,14 +14,13 @@ import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 
 public interface PersonService {
 
-    WSPersonidenter identtype = new WSPersonidenter()
-            .withKodeRef("http://nav.no/kodeverk/Term/Personidenter/FNR/nb/F_c3_b8dselnummer?v=1")
-            .withValue("FNR");
-
     Optional<String> hentEnhet();
 
     class Default implements PersonService {
 
+        static final WSPersonidenter identtype = new WSPersonidenter()
+                .withKodeRef("http://nav.no/kodeverk/Term/Personidenter/FNR/nb/F_c3_b8dselnummer?v=1")
+                .withValue("FNR");
         private final BrukerprofilV3 brukerprofilV3;
 
         public Default(BrukerprofilV3 brukerprofilV3) {
