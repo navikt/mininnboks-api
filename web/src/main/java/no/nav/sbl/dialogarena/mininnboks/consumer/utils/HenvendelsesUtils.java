@@ -28,7 +28,7 @@ public abstract class HenvendelsesUtils {
     private static final String LINE_BREAK = "\n";
 
     public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
-    public static final Function<XMLHenvendelse, Henvendelse> TIL_HENVENDELSE = HenvendelsesUtils::tilHenvendelse;
+    public static final Function<XMLHenvendelse, Henvendelse> TIL_HENVENDELSE = xmlHenvendelse -> tilHenvendelse(xmlHenvendelse);
 
     public static void setCmsContentRetriever(CmsContentRetriever contentRetriever) {
         cmsContentRetriever = contentRetriever;
