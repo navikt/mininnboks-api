@@ -130,21 +130,21 @@ public interface HenvendelseService {
                     SPORSMAL_MODIA_UTGAAENDE.name(),
                     SVAR_SBL_INNGAAENDE.name(),
                     DOKUMENT_VARSEL.name());
-            List<Object> WShenvendelsesliste = henvendelsePortType.hentHenvendelseListe(
+            List<Object> wsHenvendelsesliste = henvendelsePortType.hentHenvendelseListe(
                     new WSHentHenvendelseListeRequest()
                             .withFodselsnummer(fodselsnummer)
                             .withTyper(typer))
                     .getAny();
-            return WShenvendelsesliste.stream()
+            return wsHenvendelsesliste.stream()
                     .map(tilHenvendelse())
                     .collect(toList());
         }
 
         @Override
         public List<Henvendelse> hentTraad(String behandlingskjedeId) {
-            List<Object> WSbehandlingskjeder = henvendelsePortType.hentBehandlingskjede(new WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).getAny();
+            List<Object> wsBehandlingskjeder = henvendelsePortType.hentBehandlingskjede(new WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).getAny();
 
-            return WSbehandlingskjeder.stream()
+            return wsBehandlingskjeder.stream()
                     .map(tilHenvendelse())
                     .collect(toList());
         }
