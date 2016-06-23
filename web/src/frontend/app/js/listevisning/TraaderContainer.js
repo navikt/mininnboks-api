@@ -22,32 +22,55 @@ class TraadContainer extends React.Component {
 
         let ulesteTraader = traader.uleste.map((traad, index) => <TraadPreview aktiv={erAktiv(traad.nyeste, index)} key={traad.traadId} traad={traad} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>);
         let lesteTraader = traader.leste.map((traad, index) => <TraadPreview aktiv={erAktiv(traad.nyeste, index + ulesteTraader.length)} key={traad.traadId} traad={traad} setValgtTraad={setValgtTraad} formatMessage={formatMessage}/>);
-
-        if (lesteTraader.length === 0) {
-            lesteTraader = <p className="panel">{formatMessage({ id: 'innboks.leste.ingenmeldinger' })}</p>;
-        }
-
-        if (ulesteTraader.length === 0) {
-            ulesteTraader = <p className="panel">{formatMessage({ id: 'innboks.uleste.ingenmeldinger' })}</p>;
-        }
         
         return (
             <div>
-                <section className="ulest">
-                    <h1 className="panel blokk-xxxs clearfix typo-undertittel">{formatMessage({ id: 'innboks.uleste.tittel' })}</h1>
-                    <ul className="ustilet">
-                        {ulesteTraader}
-                    </ul>
-                </section>
-                <section className="lest">
-                    <h1 className="panel blokk-xxxs clearfix typo-undertittel">{formatMessage({ id: 'innboks.leste.tittel' })}</h1>
-                    <ul className="ustilet">
-                        {lesteTraader}
-                    </ul>
-                </section>
+                { renderUleste(ulesteTraader, formatMessage) }
+                { renderLeste(lesteTraader, formatMessage) }
             </div>
         );
     }
 }
+
+const renderUleste = (uleste, formatMessage) => {
+    if (uleste.length === 0) {
+        return (
+            <section className="ulest">
+                <h1 className="panel blokk-xxxs clearfix typo-undertittel">
+                    {formatMessage({ id: 'innboks.uleste.ingenmeldinger' })}
+                </h1>
+            </section>
+        );
+    }
+    return (
+        <section className="ulest">
+            <h1 className="panel blokk-xxxs clearfix typo-undertittel">{formatMessage({ id: 'innboks.uleste.tittel' })}</h1>
+            <ul className="ustilet">
+                {uleste}
+            </ul>
+        </section>
+    );
+};
+
+const renderLeste = (leste, formatMessage) => {
+    if (leste.length === 0) {
+        return (
+            <section className="lest">
+                <h1 className="panel blokk-xxxs clearfix typo-undertittel">
+                    {formatMessage({ id: 'innboks.leste.ingenmeldinger' })}
+                </h1>
+            </section>
+        );
+    }
+    return (
+        <section className="lest">
+            <h1 className="panel blokk-xxxs clearfix typo-undertittel">{formatMessage({ id: 'innboks.leste.tittel' })}</h1>
+            <ul className="ustilet">
+                {leste}
+            </ul>
+        </section>
+    );
+};
+
 
 export default TraadContainer;
