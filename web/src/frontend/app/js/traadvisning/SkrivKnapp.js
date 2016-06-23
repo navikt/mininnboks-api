@@ -1,6 +1,6 @@
 import React, { PropTypes as pt } from 'react';
 import { Link } from 'react-router';
-import { settSkrivSvar } from '../utils/actions/Actions';
+import { settSkrivSvar } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 

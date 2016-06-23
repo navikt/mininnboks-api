@@ -3,7 +3,7 @@ import Betingelser from './Betingelser';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import FeilmeldingEnum from './FeilmeldingEnum';
-import { velgGodtaVilkaar, velgVisModal } from '../utils/actions/Actions';
+import { velgGodtaVilkaar, velgVisModal } from '../utils/actions/actions';
 
 const lukkModal = (dispatch) => () => dispatch(velgVisModal(false));
 

@@ -4,10 +4,10 @@ import MeldingContainer from './MeldingContainer';
 import SkrivKnapp from './SkrivKnapp';
 import Feilmelding from '../feilmelding/Feilmelding';
 import InfoBoks from '../infoboks/Infoboks';
-import { lesTraad, resetInputState } from '../utils/actions/Actions';
+import { lesTraad, resetInputState } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import Breadcrumbs from '../utils/brodsmulesti/CustomBreadcrumbs';
+import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 
 class TraadVisning extends React.Component {
 

@@ -1,7 +1,7 @@
 import React, { PropTypes as pt } from 'react';
 import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
-import { validate, getValidationMessages } from '../validation/Validationutil';
-import { resetInputState, sendSvar, submitSkjema } from '../utils/actions/Actions';
+import { validate, getValidationMessages } from '../validation/validationutil';
+import { resetInputState, sendSvar, submitSkjema } from '../utils/actions/actions';
 import SendingStatus from '../skriv/SendingStatus';
 import { injectIntl, intlShape } from 'react-intl';
 import { addXsrfHeader } from '../utils/Utils';

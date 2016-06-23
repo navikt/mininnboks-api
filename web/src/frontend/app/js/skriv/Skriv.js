@@ -8,11 +8,11 @@ import SendingStatus from './SendingStatus';
 import InfoBoks from '../infoboks/Infoboks';
 import FeilmeldingEnum from './FeilmeldingEnum';
 import { addXsrfHeader } from '../utils/Utils';
-import { resetInputState, sendSporsmal, submitSkjema } from '../utils/actions/Actions';
+import { resetInputState, sendSporsmal, submitSkjema } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import Breadcrumbs from '../utils/brodsmulesti/CustomBreadcrumbs';
-import { validate, getValidationMessages } from '../validation/Validationutil';
+import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
+import { validate, getValidationMessages } from '../validation/validationutil';
 
 const submit = (dispatch, temagruppe, fritekst, godkjentVilkaar) => () => {
     dispatch(submitSkjema(true));

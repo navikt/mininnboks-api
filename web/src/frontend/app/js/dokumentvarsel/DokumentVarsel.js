@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { lesDokumentVarsel } from '../utils/actions/Actions';
+import { lesDokumentVarsel } from '../utils/actions/actions';
 
 
 class DokumentVarsel extends React.Component {

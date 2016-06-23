@@ -4,7 +4,7 @@ import ListeVisning from './listevisning/ListeVisning';
 import TraadVisning from './traadvisning/Traadvisning';
 import Skriv from './skriv/Skriv';
 import App from './Application';
-import { greedyRender } from './utils/brodsmulesti/CustomBreadcrumbs';
+import { greedyRender } from './utils/brodsmulesti/customBreadcrumbs';
 import { createHistory } from 'history';
 import DokumentVarsel from './dokumentvarsel/DokumentVarsel';
 

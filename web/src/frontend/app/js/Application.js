@@ -1,6 +1,6 @@
 import React from 'react';
-import { hentInitData } from './utils/init/InitActions';
-import { hentTraader } from './utils/actions/Actions';
+import { hentInitData } from './utils/init/initActions';
+import { hentTraader } from './utils/actions/actions';
 import { connect } from 'react-redux';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import nb from 'react-intl/dist/locale-data/nb';

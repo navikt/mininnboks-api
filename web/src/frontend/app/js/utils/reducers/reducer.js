@@ -1,7 +1,7 @@
-import ledetekster from '../Ledetekster';
-import { INIT_DATA } from '../init/InitActions';
-import initialState from '../init/InitialState';
-import { GODTA_VILKAAR, HENT_TRAADER, LES_TRAAD, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, TRAAD_LEST } from './../actions/ActionTypes';
+import ledetekster from '../ledetekster';
+import { INIT_DATA } from '../init/initActions';
+import initialState from '../init/initialState';
+import { GODTA_VILKAAR, HENT_TRAADER, LES_TRAAD, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, TRAAD_LEST } from './../actions/actionTypes';
 import mapValues from 'lodash.mapvalues';
 const NORSK = 'nb_NO';
 

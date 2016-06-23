@@ -1,6 +1,6 @@
 import React, { PropTypes as pt } from 'react';
 import { connect } from 'react-redux';
-import { skrivTekst } from '../utils/actions/Actions.js';
+import { skrivTekst } from '../utils/actions/actions.js';
 import { injectIntl } from 'react-intl';
 import SamletFeilmeldingPanel from './SamletFeilmeldingPanel';
 import FeilmeldingEnum from '../skriv/FeilmeldingEnum';
