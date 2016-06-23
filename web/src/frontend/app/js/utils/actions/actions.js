@@ -1,4 +1,4 @@
-import { GODTA_VILKAAR, HENT_TRAADER, TRAAD_LEST, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL } from './ActionTypes';
+import { GODTA_VILKAAR, HENT_TRAADER, TRAAD_LEST, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL } from './actionTypes';
 import { getCookie } from '../Utils';
 import SendingStatus from '../../skriv/SendingStatus';
 
