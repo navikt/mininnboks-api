@@ -1,7 +1,4 @@
 @containerWidth: 600px;
-@morkeBlaa: #0067c5;
-@navRodt: #c30000;
-@borderGraa: #cccccc;
 
 .send-panel {
   form {
@@ -57,7 +54,7 @@
 
   .tekst-feilmelding {
     position: absolute;
-    color: #c30000;
+    color: @red-nav;
     bottom: 0;
     left: 0;
   }
@@ -72,7 +69,7 @@
 
 .checkbox-feilmelding {
     position: relative;
-    color: #c30000;
+    color: @red-nav;
     top: -5px;
     left: -4px;
     display: block;
@@ -120,8 +117,8 @@ ul.feedbackPanel {
   padding: 1rem 1rem 1rem 2rem;
   margin: 0;
   list-style-type: none;
-  color: #fff;
-  background-color: @navRodt;
+  color: @white;
+  background-color: @red-nav;
   li:before {
     content: "* ";
   }
@@ -178,7 +175,7 @@ ul.feedbackPanel {
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid @morkeBlaa;
+  border-top: 8px solid @blue-link;
 }
 
 .temagruppevelger-wrapper {
@@ -205,8 +202,8 @@ ul.feedbackPanel {
       min-height: 0;
     }
     .ui-state-focus, .ui-state-active {
-      background-color: #0067c5;
-      color: #fff;
+      background-color: @blue-link;
+      color: @white;
     }
   }
   .ui-selectmenu-menu {
@@ -216,12 +213,12 @@ ul.feedbackPanel {
     top: 0;
     left: 0;
     display: none;
-    background-color: #fff;
-    box-shadow: 0 5px 8px 0 #ccc;
+    background-color: @white;
+    box-shadow: 0 5px 8px 0 @color-gray-light-additional;
 
     ul {
       box-sizing: border-box;
-      border: 1px solid #ccc;
+      border: 1px solid @color-gray-light-additional;
     }
   }
   .ui-selectmenu-open {
@@ -233,15 +230,15 @@ ul.feedbackPanel {
     position: relative;
     cursor: pointer;
     font-weight: bold;
-    background-color: #fff;
-    border: 1px solid #cccccc;
+    background-color: @white;
+    border: 1px solid @color-gray-light-additional;
     span {
       &.ui-icon {
         position: absolute;
         height: 0;
         width: 0;
         border: 8px solid transparent;
-        border-top-color: #0067c5;
+        border-top-color: @blue-link;
         right: 1em;
         top: 22px;
       }
