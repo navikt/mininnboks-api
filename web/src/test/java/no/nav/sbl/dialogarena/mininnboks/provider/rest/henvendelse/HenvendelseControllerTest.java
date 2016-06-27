@@ -16,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -196,7 +195,7 @@ public class HenvendelseControllerTest {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = "";
         sporsmal.temagruppe = Temagruppe.ARBD.name();
-        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
+        controller.sendSporsmal(sporsmal);
     }
 
     @Test(expected = AssertionError.class)
@@ -204,7 +203,7 @@ public class HenvendelseControllerTest {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = join(nCopies(1001, 'a'), "");
         sporsmal.temagruppe = Temagruppe.ARBD.name();
-        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
+        controller.sendSporsmal(sporsmal);
     }
 
     @Test(expected = AssertionError.class)
@@ -212,6 +211,6 @@ public class HenvendelseControllerTest {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = "DUMMY";
         sporsmal.temagruppe = Temagruppe.ANSOS.name();
-        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
+        controller.sendSporsmal(sporsmal);
     }
 }

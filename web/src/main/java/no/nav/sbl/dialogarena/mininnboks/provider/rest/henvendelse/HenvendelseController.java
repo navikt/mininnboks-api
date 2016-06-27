@@ -8,9 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.xml.ws.soap.SOAPFaultException;
 import java.util.List;
@@ -22,8 +20,9 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.groupingBy;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.*;
 import static javax.ws.rs.core.Response.Status.*;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.status;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SBL_INNGAAENDE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad.NYESTE_FORST;
@@ -77,7 +76,7 @@ public class HenvendelseController {
     @POST
     @Path("/sporsmal")
     @Consumes(APPLICATION_JSON)
-    public Response sendSporsmal(Sporsmal sporsmal, @Context HttpServletResponse httpResponse) {
+    public Response sendSporsmal(Sporsmal sporsmal) {
         assertFritekst(sporsmal.fritekst);
         assertTemagruppe(sporsmal.temagruppe);
 

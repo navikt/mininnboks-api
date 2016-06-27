@@ -28,8 +28,7 @@ public abstract class HenvendelsesUtils {
     private static final String LINE_BREAK = "\n";
 
     public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
-    public static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON, DOKUMENT_VARSEL);
-
+    public static final Function<XMLHenvendelse, Henvendelse> TIL_HENVENDELSE = xmlHenvendelse -> tilHenvendelse(xmlHenvendelse);
 
     public static void setCmsContentRetriever(CmsContentRetriever contentRetriever) {
         cmsContentRetriever = contentRetriever;
@@ -49,58 +48,56 @@ public abstract class HenvendelsesUtils {
         }
     };
 
-    public static Function<Object, Henvendelse> tilHenvendelse() {
-        return wsMelding -> {
-            XMLHenvendelse info = (XMLHenvendelse) wsMelding;
+    private static Henvendelse tilHenvendelse(XMLHenvendelse wsMelding) {
+        XMLHenvendelse info = wsMelding;
 
-            Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
-            henvendelse.opprettet = info.getOpprettetDato();
-            henvendelse.avsluttet = info.getAvsluttetDato();
-            henvendelse.traadId = ofNullable(info.getBehandlingskjedeId()).orElse(info.getBehandlingsId());
-            henvendelse.eksternAktor = info.getEksternAktor();
-            henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
-            henvendelse.kontorsperreEnhet = info.getKontorsperreEnhet();
-            henvendelse.erTilknyttetAnsatt = info.isErTilknyttetAnsatt();
-            henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
-            henvendelse.brukersEnhet = info.getBrukersEnhet();
-            henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
-            henvendelse.fraNav = !henvendelse.fraBruker;
-            henvendelse.korrelasjonsId = info.getKorrelasjonsId();
-            if (FRA_BRUKER.contains(henvendelse.type)) {
-                henvendelse.markerSomLest();
-            } else {
-                henvendelse.markerSomLest(info.getLestDato());
-            }
+        Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
+        henvendelse.opprettet = info.getOpprettetDato();
+        henvendelse.avsluttet = info.getAvsluttetDato();
+        henvendelse.traadId = ofNullable(info.getBehandlingskjedeId()).orElse(info.getBehandlingsId());
+        henvendelse.eksternAktor = info.getEksternAktor();
+        henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
+        henvendelse.kontorsperreEnhet = info.getKontorsperreEnhet();
+        henvendelse.erTilknyttetAnsatt = info.isErTilknyttetAnsatt();
+        henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
+        henvendelse.brukersEnhet = info.getBrukersEnhet();
+        henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
+        henvendelse.fraNav = !henvendelse.fraBruker;
+        henvendelse.korrelasjonsId = info.getKorrelasjonsId();
+        if (FRA_BRUKER.contains(henvendelse.type)) {
+            henvendelse.markerSomLest();
+        } else {
+            henvendelse.markerSomLest(info.getLestDato());
+        }
 
-            if (innholdErKassert(info)) {
-                henvendelse.kassert = true;
-                henvendelse.fritekst = cmsContentRetriever.hentTekst("innhold.kassert");
-                henvendelse.statusTekst = cmsContentRetriever.hentTekst("temagruppe.kassert");
-                henvendelse.temagruppe = null;
-                henvendelse.kanal = null;
-                return henvendelse;
-            }
-
-            if( DOKUMENT_VARSEL.name().equals(info.getHenvendelseType())){
-                XMLDokumentVarsel varsel = (XMLDokumentVarsel) info.getMetadataListe().getMetadata().get(0);
-                henvendelse.statusTekst = varsel.getDokumenttittel();
-                henvendelse.withTemaNavn(varsel.getTemanavn());
-                henvendelse.temagruppe = null;
-                henvendelse.fritekst = ofNullable(varsel.getFritekst()).orElse("");
-            } else{
-                XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
-                henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
-                henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe.name());
-                henvendelse.statusTekst = statusTekst(henvendelse);
-                henvendelse.fritekst = cleanOutHtml(xmlMelding.getFritekst());
-
-                if (xmlMelding instanceof XMLMeldingTilBruker) {
-                    XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
-                    henvendelse.kanal = meldingTilBruker.getKanal();
-                }
-            }
+        if (innholdErKassert(info)) {
+            henvendelse.kassert = true;
+            henvendelse.fritekst = cmsContentRetriever.hentTekst("innhold.kassert");
+            henvendelse.statusTekst = cmsContentRetriever.hentTekst("temagruppe.kassert");
+            henvendelse.temagruppe = null;
+            henvendelse.kanal = null;
             return henvendelse;
-        };
+        }
+
+        if( DOKUMENT_VARSEL.name().equals(info.getHenvendelseType())){
+            XMLDokumentVarsel varsel = (XMLDokumentVarsel) info.getMetadataListe().getMetadata().get(0);
+            henvendelse.statusTekst = varsel.getDokumenttittel();
+            henvendelse.withTemaNavn(varsel.getTemanavn());
+            henvendelse.temagruppe = null;
+            henvendelse.fritekst = ofNullable(varsel.getFritekst()).orElse("");
+        } else{
+            XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
+            henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
+            henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe.name());
+            henvendelse.statusTekst = statusTekst(henvendelse);
+            henvendelse.fritekst = cleanOutHtml(xmlMelding.getFritekst());
+
+            if (xmlMelding instanceof XMLMeldingTilBruker) {
+                XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
+                henvendelse.kanal = meldingTilBruker.getKanal();
+            }
+        }
+        return henvendelse;
     }
 
     private static String hentTemagruppeNavn(String temagruppeNavn) {
