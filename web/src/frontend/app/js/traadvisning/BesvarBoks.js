@@ -30,7 +30,7 @@ class BesvarBoks extends React.Component {
                 <ExpandingTextArea formatMessage={formatMessage} fritekst={fritekst} validationResult={validationResult}/>
                 <input type="submit" className="knapp knapp-hoved knapp-liten" value={formatMessage({ id: 'traadvisning.besvar.send' })}
                        onClick={submit(dispatch, traadId, fritekst)} />
-                <a href="#" onClick={avbryt(dispatch)} role="button">
+                <a href="#" onClick={avbryt(dispatch)} role="button" className="svar-avbryt" >
                     {formatMessage({ id: 'traadvisning.besvar.avbryt' })}
                 </a>
             </div>

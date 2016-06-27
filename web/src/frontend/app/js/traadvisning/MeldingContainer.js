@@ -21,7 +21,7 @@ class MeldingContainer extends React.Component {
                     <img src={imgSrc} alt={formatMessage({ id: imgTekstKey })} />
                 </div>
                 <div className="melding">
-                    <h3 className="typo-element">{melding.statusTekst}</h3>
+                    <h2 className="typo-element">{melding.statusTekst}</h2>
                     <p className="typo-infotekst tema-dokument">{dato}</p>
                     <div className="typo-normal">{avsnitt}</div>
                 </div>

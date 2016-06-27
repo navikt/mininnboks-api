@@ -39,7 +39,7 @@ class Betingelser extends React.Component {
                           value={formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.godta' })}
                         />
                         <div className="avbryt">
-                            <a href="javascript:void(0)" className="svar-avbryt" onClick={avbryt}
+                            <a href="javascript:void(0)" onClick={avbryt}
                               aria-controls="betingelser" role="button"
                             >
                                 {formatMessage({ id: 'send-sporsmal.still-sporsmal.betingelser.ikke-godta' })}
