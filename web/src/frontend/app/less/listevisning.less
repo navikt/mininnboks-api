@@ -1,6 +1,12 @@
 
 .tema-dokument {
-  color: #7f756c;
+  color: @color-inactive;
+}
+
+.tema-avsnitt {
+  color: @color-inactive;
+  height: 40px;
+  overflow: hidden;
 }
 
 .ustilet {
@@ -31,9 +37,9 @@
   text-align: left;
 }
 
-.avsender-fra-nav {
-  color: #c30000;
-  font-weight: bold;
+.purring {
+  text-transform: uppercase;
+  color: @red-nav;
 }
 
 .avsender-annen {
@@ -41,8 +47,8 @@
 }
 
 .panel.markert {
-  box-shadow: -6px 0 0 -1px #ffbd66;
+  box-shadow: -6px 0 0 -1px @orange-focus;
   &:focus {
-    box-shadow: -6px 0 0 1px #ffbd66, 0px 0px 0px 2px #ffbd66
+    box-shadow: -6px 0 0 1px @orange-focus, 0 0 0 2px @orange-focus
   }
 }

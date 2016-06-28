@@ -1,6 +1,6 @@
 import React, { PropTypes as pt } from 'react';
 import { Link } from 'react-router';
-import { shortDate } from './../utils/Utils';
+import { shortDate, tilAvsnitt } from './../utils/Utils';
 
 class MeldingPreview extends React.Component {
     render() {
@@ -14,15 +14,20 @@ class MeldingPreview extends React.Component {
             <span className="avsender-annen">{midlertidigAvsendernavn}</span>;
         const dato = shortDate(melding.opprettet);
 
+        const avsnitt = melding.fritekst.split(/[\r\n]+/).map(tilAvsnitt);
+
+        const purring = melding.type === 'SPORSMAL_MODIA_UTGAAENDE' ?
+            <span className="purring">/ <strong>{formatMessage({ id: 'purre.svar' })}</strong></span> : <noscript/>;
+
         return (
             <li className="traad">
                 <Link to={`/traad/${temagruppenavn}/${melding.traadId}`} onClick={onClick}
                       className={`panel panel-ikon panel-klikkbart blokk-xxxs dialog ${markertKlasse}`}
                 >
                     <div className="typo-normal blokk-xxxs">
-                        <p>{dato} / Fra {avsender} </p>
+                        <p>{dato} / Fra {avsender} {purring}</p>
                         <h2 className="typo-element blokk-xxs">{melding.statusTekst}</h2>
-                        <p className="typo-infotekst tema-dokument">{temagruppenavn}</p>
+                        <p className="typo-infotekst tema-avsnitt">{avsnitt}</p>
                     </div>
                 </Link>
             </li>
