@@ -5,7 +5,7 @@
 
 .tema-avsnitt {
   color: @color-inactive;
-  height: 40px;
+  height: 20px;
   overflow: hidden;
 }
 
@@ -16,19 +16,25 @@
 }
 
 .traad .panel.dokument {
-  background-image: url("/mininnboks/build/img/file-new.svg"), url("/mininnboks/build/img/pil-klikkbart-panel.svg");
+  background-image: url("@{imgDir}/file-new.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
 }
 
 .traad .panel.dokument:hover {
-  background-image: url("/mininnboks/build/img/file-new_hover.svg"), url("/mininnboks/build/img/pil-klikkbart-panel_hover.svg");
+  background-image: url("@{imgDir}/file-new_hover.svg"), url("@{imgDir}/pil-klikkbart-panel_hover.svg");
 }
 
 .traad .panel.dialog {
-  background-image: url("/mininnboks/build/img/bubble-chat-text-2.svg"), url("/mininnboks/build/img/pil-klikkbart-panel.svg");
+  background-image: url("@{imgDir}/bubble-chat-text-2.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
+}
+.traad .panel.dialog.flere-meldinger {
+  background-image: url("@{imgDir}/melding_svart.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
+  &:hover {
+    background-image: url("@{imgDir}/melding_svart_hover.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
+  }
 }
 
 .traad .panel.dialog:hover {
-  background-image: url("/mininnboks/build/img/bubble-chat-text-2_hover.svg"), url("/mininnboks/build/img/pil-klikkbart-panel_hover.svg");
+  background-image: url("@{imgDir}/bubble-chat-text-2_hover.svg"), url("@{imgDir}/pil-klikkbart-panel_hover.svg");
 }
 
 .traad-liste {

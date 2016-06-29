@@ -3,13 +3,13 @@ module.exports = function (config) {
         frameworks: ['mocha', 'browserify', 'phantomjs-shim', 'intl-shim'],
 
         files: [
-            './src/main/resources/no/nav/sbl/dialogarena/mininnboks/**/*Test.js'
+            './**/*Test.js'
         ],
 
         exclude: [],
 
         preprocessors: {
-            './src/main/resources/no/nav/sbl/dialogarena/mininnboks/**/*Test.js': ['browserify', 'coverage']
+            './**/*Test.js': ['browserify', 'coverage']
         },
 
         reporters: ['progress', 'junit', 'coverage'],
