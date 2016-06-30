@@ -17,6 +17,7 @@ class DokumentPreview extends React.Component {
                 <Link to={`/dokument/${dokument.id}`} onClick={onClick}
                   className={`panel panel-ikon panel-klikkbart blokk-xxxs dokument ${markertKlasse} ${ulestMeldingKlasse}`}
                 >
+                    <p className="vekk">{formatMessage({ id: 'dokumentmelding.ikon' })}</p>
                     <div className="typo-normal blokk-xxxs">
                         <p>{dato} / Fra {avsender} </p>
                         <h2 className="typo-element blokk-xxs">{dokument.statusTekst}</h2>

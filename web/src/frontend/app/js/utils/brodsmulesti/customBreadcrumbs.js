@@ -9,22 +9,26 @@ const createLink = (link, key, text, index, routes) => {
     }
     return <li key={key}><Link to={link}>{text}</Link></li>
 };
-const customBreadcrumb = ({routes, params, resolver, formatMessage}) => {
+const customBreadcrumb = ({ routes, params, resolver, formatMessage }) => {
     const prefixElement = (
         <li>
             <a href={formatMessage({ id: 'dittnav.url' })}>{formatMessage({ id: 'brodsmulesti.dittnav.lenketekst' })}</a>
         </li>
     );
-    return (<Breadcrumbs
-        routes={routes}
-        params={params}
-        wrappingComponent="ul"
-        className="brodsmulesti"
-        resolver={resolver}
-        createLink={createLink}
-        createSeparator=""
-        prefixElements={prefixElement}
-    />);
+    return (
+        <div className="vekk-mobil">
+            <h2 className="vekk vekk-mobil">{formatMessage({ id: 'brodsmulesti.info.for.skjemlesere' })}</h2>
+            <Breadcrumbs
+                routes={routes}
+                params={params}
+                wrappingComponent="ul"
+                className="brodsmulesti"
+                resolver={resolver}
+                createLink={createLink}
+                createSeparator=""
+                prefixElements={prefixElement}
+            />
+        </div>);
 };
 customBreadcrumb.defaultProps = {
     resolver: (_, t) => t
