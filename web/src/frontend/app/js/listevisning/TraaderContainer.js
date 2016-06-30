@@ -2,9 +2,20 @@ import React, { PropTypes as pt } from 'react';
 import TraadPreview from './TraadPreview';
 import MeldingListe from './MeldingListe';
 
+function nyesteTraadForst(t1, t2) {
+    const d1 = new Date(t1.nyeste.opprettet);
+    const d2 = new Date(t2.nyeste.opprettet);
+
+    if (d1 < d2) return 1;
+    else if (d1 > d2) return -1;
+    else return 0;
+}
+
+
 function getTraadLister(traader) {
-    const uleste = traader.filter(traad => !traad.nyeste.lest);
-    const leste = traader.filter(traad => traad.nyeste.lest);
+    const sortert = traader.sort(nyesteTraadForst);
+    const uleste = sortert.filter(traad => !traad.nyeste.lest);
+    const leste = sortert.filter(traad => traad.nyeste.lest);
 
     return {
         uleste,

@@ -85,6 +85,7 @@ public abstract class HenvendelsesUtils {
             henvendelse.withTemaNavn(varsel.getTemanavn());
             henvendelse.temagruppe = null;
             henvendelse.fritekst = ofNullable(varsel.getFritekst()).orElse("");
+            henvendelse.opprettet = varsel.getFerdigstiltDato();
         } else{
             XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
             henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());

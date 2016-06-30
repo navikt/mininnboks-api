@@ -51,7 +51,13 @@ public class HenvendelseMockContext {
                 .withLestDato(null)
                 .withKorrelasjonsId("a1-b2")
                 .withHenvendelseType(DOKUMENT_VARSEL.value())
-                .withMetadataListe(new XMLMetadataListe().withMetadata(new XMLDokumentVarsel().withDokumenttittel(dokumentTittel).withJournalpostId("1").withDokumentIdListe("2").withTemanavn("Dagpenger"))));
+                .withMetadataListe(new XMLMetadataListe().withMetadata(new XMLDokumentVarsel()
+                        .withDokumenttittel(dokumentTittel)
+                        .withJournalpostId("1")
+                        .withDokumentIdListe("2")
+                        .withTemanavn("Dagpenger")
+                        .withFerdigstiltDato(DateTime.now().minusDays(3))
+                )));
 
         return traad;    }
 
