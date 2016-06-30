@@ -29,8 +29,6 @@
         <webservice alias="domene.Brukerdialog:SendInnHenvendelse_v1" mapToProperty="send.inn.henvendelse.ws"/>
         <webservice alias="domene.Brukerdialog:InnsynHenvendelse_v1" mapToProperty="innsyn.henvendelse.ws"/>
 
-        <applicationProperties alias="mininnboks.properties"/>
-
         <directory name="mininnboks" mapToProperty="mininnboks.datadir"/>
     </resources>
 
