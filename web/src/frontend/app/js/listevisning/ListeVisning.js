@@ -1,7 +1,6 @@
 import React, { PropTypes as pt } from 'react';
 import TraaderContainer from './TraaderContainer';
 import Feilmelding from '../feilmelding/Feilmelding';
-import { Link } from 'react-router';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
@@ -20,7 +19,7 @@ class ListeVisning extends React.Component {
 
         return (
             <div>
-                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
+                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage}/>
                 <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({ id: 'innboks.overskrift' })}</h1>
                 <div className="innboks-navigasjon clearfix">
                     <a href={formatMessage({ id: 'skriv.ny.link' })} className="knapp knapp-hoved knapp-liten">
@@ -38,6 +37,6 @@ ListeVisning.propTypes = {
     traader: pt.array.isRequired
 };
 
-const mapStateToProps = ({ traader  }) => ({ traader });
+const mapStateToProps = ({ traader }) => ({ traader });
 
 export default injectIntl(connect(mapStateToProps)(ListeVisning));

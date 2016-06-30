@@ -1,16 +1,32 @@
 import React, { PropTypes as pt } from 'react';
 
-const AntallMeldinger = ({ antall }) => {
-        const antallCls = antall === 1 ? 'antall-ikon antall-en' : 'antall-ikon antall-flere';
-        const antallTekst = antall === 1 ? null : antall;
+const AntallMeldinger = ({ antall, formatMessage }) => {
+    const antallCls = antall === 1 ? 'antall-ikon antall-en' : 'antall-ikon antall-flere';
+    let antallTekst = antall === 1 ? '' : antall;
+    let flereMeldingerAriaLabel = '';
 
-        return (
-            <div className={antallCls} aria-hidden="true">{antallTekst}</div>
-        );
-    };
+    if (antall > 1) {
+        if (antall < 10) {
+            antallTekst = antall;
+        } else {
+            antallTekst = '9+';
+        }
+
+        flereMeldingerAriaLabel =
+            <span className="vekk">{`${antallTekst} ${formatMessage({ id: 'meldinger.flere.aria.label' })}`}</span>;
+    }
+
+    return (
+        <div className={antallCls}>
+            <span aria-hidden="true">{antallTekst}</span>
+            {flereMeldingerAriaLabel}
+        </div>
+    );
+};
 
 AntallMeldinger.propTypes = {
-   antall: pt.number
+    antall: pt.number,
+    formatMessage: pt.func.isRequired
 };
 
 export default AntallMeldinger;
