@@ -39,7 +39,8 @@ MeldingPreview.propTypes = {
     traad: pt.object,
     formatMessage: pt.func.isRequired,
     aktiv: pt.bool.isRequired,
-    onClick: pt.func.isRequired
+    onClick: pt.func.isRequired,
+    ulestMeldingKlasse: pt.string
 };
 
 export default MeldingPreview;
