@@ -5,7 +5,7 @@ import { shortDate } from './../utils/Utils';
 class DokumentPreview extends React.Component {
 
     render() {
-        const { traad, aktiv, formatMessage, onClick } = this.props;
+        const { traad, aktiv, formatMessage, onClick, ulestMeldingKlasse } = this.props;
         const markertKlasse = aktiv ? 'markert' : '';
         const dokument = traad.nyeste;
         const avsender = <span className="avsender-fra-nav">{formatMessage({ id: 'avsender.tekst.NAV' })}</span>;
@@ -15,7 +15,7 @@ class DokumentPreview extends React.Component {
         return (
             <li className="traad">
                 <Link to={`/dokument/${dokument.id}`} onClick={onClick}
-                  className={`panel panel-ikon panel-klikkbart blokk-xxxs dokument ${markertKlasse}`}
+                  className={`panel panel-ikon panel-klikkbart blokk-xxxs dokument ${markertKlasse} ${ulestMeldingKlasse}`}
                 >
                     <div className="typo-normal blokk-xxxs">
                         <p>{dato} / Fra {avsender} </p>

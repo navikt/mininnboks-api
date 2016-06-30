@@ -9,6 +9,12 @@
   overflow: hidden;
 }
 
+.uleste-meldinger {
+  .tema-avsnitt {
+    color: @blue-active;
+  }
+}
+
 .ustilet {
   margin: 0;
   padding: 0;
@@ -17,6 +23,9 @@
 
 .traad .panel.dokument {
   background-image: url("@{imgDir}/file-new.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
+  &.uleste-meldinger {
+    background-image: url("@{imgDir}/file-new-ulestmelding.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
+  }
 }
 
 .traad .panel.dokument:hover {
@@ -25,11 +34,25 @@
 
 .traad .panel.dialog {
   background-image: url("@{imgDir}/bubble-chat-text-2.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
+  &.uleste-meldinger {
+    background-image: url("@{imgDir}/bubble-chat-text-2-ulestmelding.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
+  }
 }
 .traad .panel.dialog.flere-meldinger {
   background-image: url("@{imgDir}/melding_svart.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
+  &.uleste-meldinger {
+    background-image: url("@{imgDir}/melding_svart-ulestmelding.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
+  }
   &:hover {
     background-image: url("@{imgDir}/melding_svart_hover.svg"), url("@{imgDir}/pil-klikkbart-panel.svg");
+
+    .antall-flere {
+      position: absolute;
+      left: 112px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: @color-link;
+    }
   }
 }
 
@@ -37,14 +60,23 @@
   background-image: url("@{imgDir}/bubble-chat-text-2_hover.svg"), url("@{imgDir}/pil-klikkbart-panel_hover.svg");
 }
 
+.antall-flere {
+  position: absolute;
+  left: 112px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
 .traad-liste {
   padding: 1rem 2rem 1rem 2rem;
   margin: 0 0 4px 0;
   text-align: left;
 }
+.uleste-meldinger {
+  color: @blue-active;
+}
 
 .purring {
-  text-transform: uppercase;
   color: @red-nav;
 }
 
@@ -56,5 +88,11 @@
   box-shadow: -6px 0 0 -1px @orange-focus;
   &:focus {
     box-shadow: -6px 0 0 1px @orange-focus, 0 0 0 2px @orange-focus
+  }
+}
+
+@media (max-width: @screen-small) {
+  .antall-flere {
+    display: none;
   }
 }
