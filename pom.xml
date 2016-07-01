@@ -12,7 +12,7 @@
     <name>Dialogarena - mininnboks</name>
     <groupId>no.nav.sbl.dialogarena</groupId>
     <artifactId>mininnboks</artifactId>
-    <version>5.6-SNAPSHOT</version>
+    <version>5.6</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -90,7 +90,7 @@
     <scm>
         <developerConnection>scm:git:http://stash.devillo.no/scm/sbl/mininnboks.git</developerConnection>
         <url>http://stash.devillo.no:7990/projects/SBL/repos/mininnboks/browse</url>
-		<tag>HEAD</tag>
+		<tag>mininnboks-5.6</tag>
 	</scm>
 
     <reporting>
