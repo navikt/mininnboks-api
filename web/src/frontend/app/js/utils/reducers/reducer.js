@@ -3,7 +3,7 @@ import { INIT_DATA } from '../init/initActions';
 import initialState from '../init/initialState';
 import { GODTA_VILKAAR, HENT_TRAADER, LES_TRAAD, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, TRAAD_LEST } from './../actions/actionTypes';
 import mapValues from 'lodash.mapvalues';
-const NORSK = 'nb_NO';
+import { DOKUMENTVISNING_DATA } from '../../dokumentvarsel/varsel-actions';
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -44,6 +44,8 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {skrivSvar:  action.skrivSvar});
         case LES_TRAAD:
             return Object.assign({}, state, {lesTraad:  action.lesTraad});
+        case DOKUMENTVISNING_DATA:
+            return Object.assign({}, state, {dokumentvisning:  action.dokumentvisning});
         case TRAAD_LEST: {
             const markerSomLest = (melding) => Object.assign({}, melding, { lest: true });
             const traader = state.traader.map((traad) => {
