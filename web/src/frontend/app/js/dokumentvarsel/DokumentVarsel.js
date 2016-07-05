@@ -12,7 +12,8 @@ class DokumentVarsel extends React.Component {
             dispatch(lesDokumentVarsel(params.id));
         }
         if(traad && traad.meldinger[0]) {
-            dispatch(hentDokumentVisningData(368274526, '398128630-358128632', 'DAG'));
+            const varsel = traad.meldinger[0];
+            dispatch(hentDokumentVisningData(varsel.journalpostId, varsel.dokumentIdListe.join('-')));
         }
     }
 

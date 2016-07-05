@@ -3,14 +3,18 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.domain;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import static java.util.Collections.reverseOrder;
 
 public class Henvendelse implements Serializable {
 
     public String id;
-    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet, temagruppeNavn, statusTekst, kontorsperreEnhet, temaNavn, korrelasjonsId;
+    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet,
+            temagruppeNavn, statusTekst, kontorsperreEnhet, temaNavn, korrelasjonsId, journalpostId;
+    public List<String> dokumentIdListe = new ArrayList<>();
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
