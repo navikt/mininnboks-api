@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { lesDokumentVarsel } from '../utils/actions/actions';
 import { hentDokumentVisningData } from './varsel-actions';
-import { Dokumenter, Hurtignavigering } from 'react-dokumentvisning';
 import { injectIntl, intlShape } from 'react-intl';
+import Dokumentvinsing from './dokumentvinsing';
 import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 
 class DokumentVarsel extends React.Component {
@@ -23,20 +23,12 @@ class DokumentVarsel extends React.Component {
         if(!this.props.dokumentvisning) {
             return <noscript/>;
         }
-
-        const { dokumentmetadata, journalpostmetadata } = this.props.dokumentvisning;
         const { params, routes, intl } = this.props;
 
         return (
             <div className="dokinnsyn">
                 <Breadcrumbs routes={routes} params={params} formatMessage={intl.formatMessage}/>
-                <section className="dokumenter">
-                    <Hurtignavigering dokumentmetadata={dokumentmetadata}/>
-                    <Dokumenter
-                      journalpostId={journalpostmetadata.journalpostId}
-                      dokumentmetadata={dokumentmetadata}
-                    />
-                </section>
+                <Dokumentvinsing { ...this.props.dokumentvisning } />
             </div>
         );
     }
