@@ -19,6 +19,7 @@
         <baseUrl alias="dittnav.link" mapToProperty="dittnav.link"/>
         <baseUrl alias="temavelger.link" mapToProperty="temavelger.link"/>
         <baseUrl alias="brukerprofil.link" mapToProperty="brukerprofil.link"/>
+        <baseUrl alias="saksoversikt.link" mapToProperty="saksoversikt.link"/>
 
         <credential alias="srvmininnboks" mapToProperty="systembruker"/>
         <applicationCertificate alias="srvmininnboks"/>
