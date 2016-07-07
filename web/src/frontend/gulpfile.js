@@ -13,6 +13,7 @@ var uglify = require('gulp-uglify');
 var streamify = require('gulp-streamify');
 var gutil = require('gulp-util');
 var babelify = require('babelify');
+var replace = require('gulp-replace');
 var SRC_DIR = './app/';
 var BUILD_DIR = './../main/webapp/build/';
 var MODIG_FRONTEND = './node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources/';
@@ -48,6 +49,7 @@ function browserifyTask(isDev) {
             message: '<%= error.message %>'
         }))
             .pipe(source('mininnboks.js'))
+            .pipe(gulpif(isDev, streamify(replace('/saksoversikt', 'https://127.0.0.1:8587/saksoversikt').on('error', gutil.log))))
             .pipe(gulpif(!isDev, streamify(uglify().on('error', gutil.log))))
             .pipe(gulp.dest(BUILD_DIR + 'js'));
     }
