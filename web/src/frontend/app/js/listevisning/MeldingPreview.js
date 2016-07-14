@@ -14,18 +14,17 @@ class MeldingPreview extends React.Component {
         const dato = shortDate(melding.opprettet);
         const avsnitt = melding.fritekst.split(/[\r\n]+/).map(tilAvsnitt);
         const antallMeldinger = traad.meldinger.length;
-
         const flereMeldingerKlasse = antallMeldinger > 1 ? 'flere-meldinger' : '';
 
         return (
-            <li className="traad">
+            <li className="traad" key={melding.traadId}>
                 <Link to={`/traad/${temagruppenavn}/${melding.traadId}`} onClick={onClick}
                   className={`panel panel-ikon panel-klikkbart blokk-xxxs dialog ${markertKlasse} ${flereMeldingerKlasse} ${ulestMeldingKlasse}`}
                 >
                     <p className="vekk">{formatMessage({ id: 'meldinger.ikon' })}</p>
                     <AntallMeldinger antall={antallMeldinger} formatMessage={formatMessage} />
                     <div className="typo-normal blokk-xxxs">
-                        <p><span>{dato}</span>{avsender}</p>
+                        <p><span key="dato">{dato}</span>{avsender}</p>
                         <h2 className="typo-element blokk-xxs">{melding.statusTekst}</h2>
                         <p className="typo-infotekst tema-avsnitt">{avsnitt}</p>
                     </div>

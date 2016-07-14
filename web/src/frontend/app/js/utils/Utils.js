@@ -18,8 +18,8 @@ export const leggTilLenkerTags = (innhold) => {
     });
 };
 
-export const tilAvsnitt = (avsnitt) => {
-    return <span dangerouslySetInnerHTML={{__html: sanitize(avsnitt, {allowedTags: ['a']})}}></span>;
+export const tilAvsnitt = (avsnitt, index) => {
+    return <span dangerouslySetInnerHTML={{__html: sanitize(avsnitt, {allowedTags: ['a']})}} key={index}/>;
 };
 
 export const prettyDate = (date) => {
