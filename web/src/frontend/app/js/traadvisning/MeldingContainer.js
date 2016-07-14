@@ -1,6 +1,5 @@
 import React, { PropTypes as pt } from 'react';
 import { tilAvsnitt, prettyDate, leggTilLenkerTags } from '../utils/Utils';
-import createFragment from 'react-addons-create-fragment';
 
 class MeldingContainer extends React.Component {
     render () {

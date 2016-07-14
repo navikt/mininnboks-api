@@ -3,7 +3,7 @@ import { hentInitData } from './utils/init/initActions';
 import { hentTraader } from './utils/actions/actions';
 import { connect } from 'react-redux';
 import { IntlProvider, addLocaleData } from 'react-intl';
-import nb from 'react-intl/dist/locale-data/nb';
+import nb from 'react-intl/locale-data/nb';
 import Spinner from './Spinner';
 
 addLocaleData(nb);
