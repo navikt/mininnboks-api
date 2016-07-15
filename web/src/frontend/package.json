@@ -63,7 +63,7 @@
     "nav-logger": "1.0.4",
     "chokidar": "git+https://github.com/paulmillr/chokidar.git#1.5.0",
     "react": "15.2.1",
-    "react-dokumentvisning": "1.0.20",
+    "react-dokumentvisning": "1.0.23",
     "react-dom": "15.2.1",
     "react-intl": "2.1.3",
     "react-redux": "4.4.5",

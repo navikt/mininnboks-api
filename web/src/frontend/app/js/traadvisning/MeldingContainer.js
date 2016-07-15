@@ -11,8 +11,8 @@ class MeldingContainer extends React.Component {
         const dato = prettyDate(melding.opprettet);
 
         const avsnitt = melding.fritekst.split(/[\r\n]+/)
-            .map(innhold => leggTilLenkerTags(innhold))
-            .map(innhold => tilAvsnitt(innhold));
+            .map(leggTilLenkerTags)
+            .map(tilAvsnitt);
 
         return (
             <div className={className}>

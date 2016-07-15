@@ -1,6 +1,8 @@
 import React, { PropTypes as pt } from 'react'
 import { Dokumenter, Hurtignavigering } from 'react-dokumentvisning';
 
+const offset = [-300, -80];
+
 class Dokumentvinsing extends React.Component {
     componentDidMount() {
         setTimeout(() => document.querySelector('.kulemeny li input') && document.querySelector('.kulemeny li input').classList.add('active'), 0);
@@ -11,7 +13,7 @@ class Dokumentvinsing extends React.Component {
 
         return (
             <section className="dokumenter">
-                <Hurtignavigering dokumentmetadata={dokumentmetadata}/>
+                <Hurtignavigering dokumentmetadata={dokumentmetadata} navigeringsknappOffset={offset} />
                 <Dokumenter
                   journalpostId={journalpostmetadata.journalpostId}
                   dokumentmetadata={dokumentmetadata}
