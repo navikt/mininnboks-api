@@ -1,6 +1,6 @@
 import React, { PropTypes as PT } from 'react';
 import SamletFeilmeldingPanel from './SamletFeilmeldingPanel';
-import FeilmeldingEnum from '../skriv/FeilmeldingEnum';
+import FeilmeldingEnum from '../skriv-nytt-sporsmal/FeilmeldingEnum';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 

@@ -1,51 +1,52 @@
-import ledetekster from '../ledetekster';
 import { INIT_DATA } from '../init/initActions';
 import initialState from '../init/initialState';
 import { GODTA_VILKAAR, HENT_TRAADER, LES_TRAAD, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, TRAAD_LEST } from './../actions/actionTypes';
-import mapValues from 'lodash.mapvalues';
 import { DOKUMENTVISNING_DATA } from '../../dokumentvarsel/varsel-actions';
+import mapValues from 'lodash.mapvalues';
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case INIT_DATA: {
-            let tekster = action.ledetekster;
-            if (action.options.cmskeys) {
-                tekster = mapValues(action.ledetekster, (value, key) => `[${key}] ${value}`);
+            const { ledetekster, traader, miljovariabler, options } = action;
+            let tekster = ledetekster;
+            if (options.cmskeys) {
+                tekster = mapValues(tekster, (value, key) => `[${key}] ${value}`);
             }
-            window.tekster = ledetekster(tekster);
-            return Object.assign({}, state, {
+            
+            return {...state,
                 harHentetInitData: true,
-                traader: action.traader,
-                miljovariabler: action.miljovariabler,
-                godkjentVilkaar: false,
-                fritekst: '',
-                harSubmittedSkjema: false,
-                sendingStatus: 'IKKE_SENDT',
-                visKvittering: false,
-                skrivSvar: false,
+                traader,
+                miljovariabler,
                 tekster
-            });
+            };
         }
         case GODTA_VILKAAR:
-            return Object.assign({}, state, {godkjentVilkaar: action.godkjentVilkaar});
+            return { ...state, godkjentVilkaar: action.godkjentVilkaar };
         case HENT_TRAADER:
-            return Object.assign({}, state, {traader: action.traader});
+            return { ...state, traader: action.traader };
         case VIS_MODAL:
-            return Object.assign({}, state, {visModal: action.visModal});
+            return { ...state, visModal: action.visModal };
         case RESET_STATE:
-            return Object.assign({}, state, {godkjentVilkaar:  action.godkjentVilkaar, harSubmittedSkjema: action.harSubmittedSkjema, skrivSvar: action.skrivSvar, sendingStatus: action.sendingStatus, fritekst: action.fritekst});
+            return {
+                ...state,
+                fritekst: '',
+                sendingStatus: 'IKKE_SENDT',
+                harSubmittedSkjema: false,
+                godkjentVilkaar: false,
+                skrivSvar: false
+            };
         case SKRIV_TEKST:
-            return Object.assign({}, state, {fritekst: action.fritekst});
+            return { ...state, fritekst: action.fritekst };
         case SUBMIT_SKJEMA:
-            return Object.assign({}, state, {harSubmittedSkjema: true});
+            return { ...state, harSubmittedSkjema: true };
         case SETT_SENDING_STATUS:
-            return Object.assign({}, state, {sendingStatus:  action.sendingStatus});
+            return { ...state, sendingStatus:  action.sendingStatus };
         case SKRIV_SVAR:
-            return Object.assign({}, state, {skrivSvar:  action.skrivSvar});
+            return { ...state, skrivSvar:  action.skrivSvar };
         case LES_TRAAD:
-            return Object.assign({}, state, {lesTraad:  action.lesTraad});
+            return { ...state, lesTraad:  action.lesTraad };
         case DOKUMENTVISNING_DATA:
-            return Object.assign({}, state, {dokumentvisning:  action.dokumentvisning});
+            return { ...state, dokumentvisning:  action.dokumentvisning };
         case TRAAD_LEST: {
             const markerSomLest = (melding) => Object.assign({}, melding, { lest: true });
             const traader = state.traader.map((traad) => {

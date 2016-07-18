@@ -30,12 +30,6 @@ export const shortDate = (date) => {
     return moment(date).format('DD.MM.YY')
 };
 
-export const getCookie = (name) => {
-    var re = new RegExp(name + '=([^;]+)');
-    var match = re.exec(document.cookie);
-    return match !== null ? match[1] : '';
-};
-
 export const addXsrfHeader = (xhr) => {
     xhr.setRequestHeader('X-XSRF-TOKEN', getCookie('XSRF-TOKEN-MININNBOKS'));
 };

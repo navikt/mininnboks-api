@@ -81,7 +81,7 @@ const mapStateToProps = ({ traader, harSubmittedSkjema, skrivSvar, fritekst, sen
     { traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus  }
 );
 const mapDispatchToProps = (dispatch) => ({
-    skrivTekst: (tekst) => { console.log('tv skriv', tekst); dispatch(skrivTekst(tekst)); },
+    skrivTekst: (tekst) => { console.log('tv skriv-nytt-sporsmal', tekst); dispatch(skrivTekst(tekst)); },
     resetInputState: () => dispatch(resetInputState()),
     lesTraad: () => dispatch(lesTraad()),
     settSkrivSvar: () => dispatch(settSkrivSvar(true)),

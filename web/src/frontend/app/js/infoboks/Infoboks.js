@@ -1,5 +1,5 @@
 import React from 'react';
-import Sendingstatus from '../skriv/SendingStatus';
+import Sendingstatus from '../skriv-nytt-sporsmal/SendingStatus';
 import { injectIntl, FormattedHTMLMessage } from 'react-intl';
 
 class InfoBoks extends React.Component {

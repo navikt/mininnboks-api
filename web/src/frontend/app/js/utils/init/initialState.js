@@ -7,5 +7,6 @@ export default {
     harSubmittedSkjema: false,
     sendingStatus: 'IKKE_SENDT',
     skrivSvar: false,
+    visKvittering: false,
     fritekst: ''
 };
