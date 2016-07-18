@@ -18,7 +18,7 @@ class MeldingPreview extends React.Component {
 
         return (
             <li className="traad" key={melding.traadId}>
-                <Link to={`/traad/${temagruppenavn}/${melding.traadId}`} onClick={onClick}
+                <Link to={`/traad/${melding.traadId}`} onClick={onClick}
                   className={`panel panel-ikon panel-klikkbart blokk-xxxs dialog ${markertKlasse} ${flereMeldingerKlasse} ${ulestMeldingKlasse}`}
                 >
                     <p className="vekk">{formatMessage({ id: 'meldinger.ikon' })}</p>

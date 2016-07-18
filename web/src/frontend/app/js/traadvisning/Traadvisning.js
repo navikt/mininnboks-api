@@ -9,6 +9,13 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 
+const breadcrumbsresolver = (temagruppe) => (key, tekst) => {
+    if (key === ':tema') {
+        return `Dialog om ${temagruppe}`;
+    }
+    return tekst;
+};
+
 class TraadVisning extends React.Component {
 
     componentWillMount() {
@@ -36,7 +43,7 @@ class TraadVisning extends React.Component {
 
         return (
             <div>
-                <Breadcrumbs routes={routes} params={params} />
+                <Breadcrumbs routes={routes} params={params} resolver={breadcrumbsresolver(valgttraad.nyeste.temagruppeNavn)} />
                 <h1 className="typo-sidetittel text-center blokk-l">{overskrift}</h1>
                 <div className="traad-container">
                     <SkrivKnapp kanBesvares={valgttraad.kanBesvares} skrivSvar={skrivSvar} onClick={settSkrivSvar} />
