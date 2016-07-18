@@ -15,8 +15,8 @@ var SkrivWrapper = stubRouterContext(Skriv, { formatMessage, params: { temagrupp
 
 describe('Skriv Page', function () {
     //
-    // var skriv = renderIntoDocument(<SkrivWrapper />);
-    // var sendKnapp = findRenderedDOMComponentWithClass(skriv, 'send-link');
+    // var skriv-nytt-sporsmal = renderIntoDocument(<SkrivWrapper />);
+    // var sendKnapp = findRenderedDOMComponentWithClass(skriv-nytt-sporsmal, 'send-link');
     // console.log(sendKnapp);
     //
     // before(function () {
@@ -28,33 +28,33 @@ describe('Skriv Page', function () {
     // });
     //
     // it('kan ikke sende uten å ha fylt ut tekst i tekstfeltet og godtatt vilkår', function () {
-    //     sinon.spy(skriv.getComponent().refs.form, 'validate');
+    //     sinon.spy(skriv-nytt-sporsmal.getComponent().refs.form, 'validate');
     //
     //     TestUtils.Simulate.click(sendKnapp);
     //
-    //     assert.isTrue(skriv.getComponent().refs.form.validate.called);
+    //     assert.isTrue(skriv-nytt-sporsmal.getComponent().refs.form.validate.called);
     //     assert.isFalse($.ajax.called);
-    //     assert.isFalse(skriv.getComponent().state.sendt);
+    //     assert.isFalse(skriv-nytt-sporsmal.getComponent().state.sendt);
     //
-    //     skriv.getComponent().refs.form.validate.restore();
+    //     skriv-nytt-sporsmal.getComponent().refs.form.validate.restore();
     // });
     //
     // it('kan sende når det er tekst i tekstfeltet og vilkår er godatt', function () {
-    //     sinon.spy(skriv.getComponent().refs.form, 'validate');
+    //     sinon.spy(skriv-nytt-sporsmal.getComponent().refs.form, 'validate');
     //     var server = sinon.fakeServer.create();
     //     server.respondWith([200, {}, 'From fake server']);
     //
-    //     var textarea = findRenderedDOMComponentWithTag(skriv, 'textarea');
-    //     var checkbox = findRenderedDOMComponentWithClass(skriv, 'betingelseCheckboks');
+    //     var textarea = findRenderedDOMComponentWithTag(skriv-nytt-sporsmal, 'textarea');
+    //     var checkbox = findRenderedDOMComponentWithClass(skriv-nytt-sporsmal, 'betingelseCheckboks');
     //
     //     TestUtils.Simulate.change(textarea, {target: {value: 'Text'}});
     //     TestUtils.Simulate.change(checkbox, {target: {checked: true}});
     //     TestUtils.Simulate.click(sendKnapp);
     //
-    //     assert.isTrue(skriv.getComponent().refs.form.validate.called);
+    //     assert.isTrue(skriv-nytt-sporsmal.getComponent().refs.form.validate.called);
     //     assert.isTrue($.ajax.calledOnce);
     //     server.respond();
-    //     expect(skriv.getComponent().state.sendt).to.equal(true);
+    //     expect(skriv-nytt-sporsmal.getComponent().state.sendt).to.equal(true);
     //
     //     server.restore();
     // });
