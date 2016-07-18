@@ -1,9 +1,10 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes as PT } from 'react';
+import { injectIntl } from 'react-intl';
 import { tilAvsnitt, prettyDate, leggTilLenkerTags } from '../utils/Utils';
 
 class MeldingContainer extends React.Component {
     render () {
-        const { melding, formatMessage } = this.props;
+        const { melding, intl: { formatMessage } } = this.props;
         const className = 'melding-container ' + (melding.fraBruker ? 'fra-bruker' : 'fra-nav');
         const imgSrc = melding.fraBruker ? '/mininnboks/build/img/person.svg' : '/mininnboks/build/img/nav-logo.svg';
         const imgTekstKey = melding.fraBruker ? 'innboks.avsender.bruker' : 'innboks.avsender.nav';
@@ -30,12 +31,11 @@ class MeldingContainer extends React.Component {
 }
 
 MeldingContainer.propTypes = {
-    melding: pt.shape({
-        fraBruker: pt.bool,
-        fritekst: pt.string,
-        statusTekst: pt.string
-    }),
-    formatMessage: pt.func.isRequired
+    melding: PT.shape({
+        fraBruker: PT.bool,
+        fritekst: PT.string,
+        statusTekst: PT.string
+    })
 };
 
-export default MeldingContainer;
+export default injectIntl(MeldingContainer);

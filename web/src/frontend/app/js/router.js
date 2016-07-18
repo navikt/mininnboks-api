@@ -4,12 +4,20 @@ import ListeVisning from './listevisning/ListeVisning';
 import TraadVisning from './traadvisning/Traadvisning';
 import Skriv from './skriv/Skriv';
 import App from './Application';
-import { greedyRender } from './utils/brodsmulesti/customBreadcrumbs';
 import { createHistory } from 'history';
 import DokumentVarsel from './dokumentvarsel/DokumentVarsel';
 import PrintPage from './print/print-page';
 
 const history = useRouterHistory(createHistory)({ basename: '/mininnboks' });
+
+function greedyRender(Component) {
+    return ({ children, ...props }) => {
+        if (children) {
+            return children;
+        }
+        return <Component {...props} />
+    }
+}
 
 export default() => (
     <Router history={history}>

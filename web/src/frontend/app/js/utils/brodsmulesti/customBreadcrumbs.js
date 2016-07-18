@@ -1,6 +1,8 @@
 import React, { PropTypes as PT } from 'react';
 import { Link } from 'react-router';
+import { FormattedMessage } from 'react-intl';
 import Breadcrumbs from 'react-router-breadcrumbs';
+import IntlLenke from './../intl-lenke';
 
 const createLink = (link, key, text, index, routes) => {
     if (index === routes.length - 1) {
@@ -8,15 +10,21 @@ const createLink = (link, key, text, index, routes) => {
     }
     return <li key={key}><Link to={link}>{text}</Link></li>
 };
-const customBreadcrumb = ({ routes, params, resolver, formatMessage }) => {
-    const prefixElement = (
-        <li key="dittnav">
-            <a href={formatMessage({ id: 'dittnav.url' })}>{formatMessage({ id: 'brodsmulesti.dittnav.lenketekst' })}</a>
-        </li>
-    );
+
+const prefixElement = (
+    <li key="dittnav">
+        <IntlLenke href="dittnav.url">
+            <FormattedMessage id="brodsmulesti.dittnav.lenketekst"/>
+        </IntlLenke>
+    </li>
+);
+
+const CustomBreadcrumb = ({ routes, params, resolver }) => {
     return (
         <div className="vekk-mobil">
-            <h2 className="vekk vekk-mobil">{formatMessage({ id: 'brodsmulesti.info.for.skjemlesere' })}</h2>
+            <h2 className="vekk vekk-mobil">
+                <FormattedMessage id="brodsmulesti.info.for.skjemlesere"/>
+            </h2>
             <Breadcrumbs
                 routes={routes}
                 params={params}
@@ -29,24 +37,17 @@ const customBreadcrumb = ({ routes, params, resolver, formatMessage }) => {
             />
         </div>);
 };
-customBreadcrumb.defaultProps = {
+
+CustomBreadcrumb.defaultProps = {
     resolver: (_, t) => t
 };
-customBreadcrumb.propTypes = {
+
+CustomBreadcrumb.propTypes = {
     routes: PT.arrayOf(PT.object).isRequired,
     params: PT.object,
     resolver: PT.func
 };
 
-export function greedyRender(Component) {
-    return ({ children, ...props }) => {
-        if (children) {
-            return children;
-        }
-        return <Component {...props} />
-    }
-}
-
-
 export * from 'react-router-breadcrumbs';
-export default customBreadcrumb;
+
+export default CustomBreadcrumb;

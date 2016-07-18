@@ -1,46 +1,43 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes as PT } from 'react';
 import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
-import { validate, getValidationMessages } from '../validation/validationutil';
-import { resetInputState, sendSvar, submitSkjema } from '../utils/actions/actions';
-import SendingStatus from '../skriv/SendingStatus';
-import { injectIntl, intlShape } from 'react-intl';
-import { addXsrfHeader } from '../utils/Utils';
-import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+import { getValidationMessages } from '../validation/validationutil';
 
-const avbryt = (dispatch) => () => dispatch(resetInputState());
-
-const submit = (dispatch, traadId, fritekst) => () => {
-    dispatch(submitSkjema(true));
-    if (validate(true, fritekst, true)) {
-       dispatch(sendSvar(traadId, fritekst));
+function BesvarBoks({ traadId, fritekst, skrivSvar, harSubmittedSkjema, skrivTekst, avbryt, submit }) {
+    if (!skrivSvar) {
+        return null;
     }
-};
+    const validationResult = getValidationMessages(harSubmittedSkjema, fritekst, true);
+    const onSubmit = (event) => {
+        event.preventDefault();
+        submit(traadId, fritekst);
+    };
 
-class BesvarBoks extends React.Component {
-
-    render() {
-        const { traadId, dispatch, formatMessage, fritekst, skrivSvar, harSubmittedSkjema } = this.props;
-        const validationResult = getValidationMessages(harSubmittedSkjema, fritekst, true);
-        if (!skrivSvar) {
-            return <noscript/>;
-        }
-
-        return (
-            <div className="besvar-container">
-                <ExpandingTextArea formatMessage={formatMessage} fritekst={fritekst} validationResult={validationResult}/>
-                <input type="submit" className="knapp knapp-hoved knapp-liten" value={formatMessage({ id: 'traadvisning.besvar.send' })}
-                       onClick={submit(dispatch, traadId, fritekst)} />
-                <a href="#" onClick={avbryt(dispatch)} role="button" className="svar-avbryt" >
-                    {formatMessage({ id: 'traadvisning.besvar.avbryt' })}
-                </a>
-            </div>
-        );
-    }
+    return (
+        <form className="besvar-container" onSubmit={onSubmit}>
+            <ExpandingTextArea
+                fritekst={fritekst}
+                validationResult={validationResult}
+                onChange={(event) => skrivTekst(event.target.value)}
+            />
+            <button type="submit" className="knapp knapp-hoved knapp-liten">
+                <FormattedMessage id="traadvisning.besvar.send" />
+            </button>
+            <a href="javascript:void(0)" onClick={avbryt} role="button" className="svar-avbryt" >
+                <FormattedMessage id="traadvisning.besvar.avbryt" />
+            </a>
+        </form>
+    );
 }
 
 BesvarBoks.propTypes = {
-    formatMessage: pt.func.isRequired,
-    fritekst: pt.string.isRequired
+    traadId: PT.string.isRequired,
+    fritekst: PT.string.isRequired,
+    skrivSvar: PT.bool.isRequired,
+    harSubmittedSkjema: PT.bool.isRequired,
+    skrivTekst: PT.func.isRequired,
+    submit: PT.func.isRequired,
+    avbryt: PT.func.isRequired
 };
 
-export default injectIntl(connect()(BesvarBoks));
+export default BesvarBoks;

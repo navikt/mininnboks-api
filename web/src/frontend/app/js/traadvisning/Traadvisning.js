@@ -1,10 +1,10 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes as PT } from 'react';
 import BesvarBoks from'./BesvarBoks';
 import MeldingContainer from './MeldingContainer';
 import SkrivKnapp from './SkrivKnapp';
-import Feilmelding from '../feilmelding/Feilmelding';
+import { FormattedMessage } from 'react-intl';
 import InfoBoks from '../infoboks/Infoboks';
-import { lesTraad, resetInputState } from '../utils/actions/actions';
+import { lesTraad, resetInputState, skrivTekst, settSkrivSvar, sendSvar } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
@@ -12,46 +12,73 @@ import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
 class TraadVisning extends React.Component {
 
     componentWillMount() {
-        const { dispatch } = this.props;
-        dispatch(resetInputState());
+        this.props.resetInputState();
     }
 
     componentDidMount() {
-        const { dispatch, params } = this.props;
-        dispatch(lesTraad(params.traadId));
+        this.props.lesTraad(this.props.params.traadId);
     }
 
     render() {
-        const { routes, params, intl: { formatMessage }, sendingStatus, traader, skrivSvar, harSubmittedSkjema, fritekst } = this.props;
+        const {
+            routes, params, sendingStatus, traader, skrivSvar, skrivTekst,
+            harSubmittedSkjema, fritekst, settSkrivSvar, resetInputState, sendSvar
+        } = this.props;
         const traadId = this.props.params.traadId;
         const valgttraad = traader.find(traad => traad.traadId === traadId);
 
-        const meldingItems = valgttraad.meldinger.map(melding => <MeldingContainer key={melding.id} melding={melding} formatMessage={formatMessage} />);
+        const meldingItems = valgttraad.meldinger.map((melding) => (
+            <MeldingContainer key={melding.id} melding={melding} />
+        ));
 
-        const overskrift = valgttraad.nyeste.kassert ?
-            formatMessage({ id: 'traadvisning.overskrift.kassert' } ) :
-            formatMessage({ id: 'traadvisning.overskrift' }, { temagruppeNavn: valgttraad.nyeste.temagruppeNavn });
+        const overskriftKey = valgttraad.nyeste.kassert ? 'traadvisning.overskrift.kassert' : 'traadvisning.overskrift';
+        const overskrift = <FormattedMessage id={overskriftKey} values={{ temagruppeNavn: valgttraad.nyeste.temagruppeNavn }} />
 
         return (
             <div>
-                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage} />
+                <Breadcrumbs routes={routes} params={params} />
                 <h1 className="typo-sidetittel text-center blokk-l">{overskrift}</h1>
                 <div className="traad-container">
-                    <SkrivKnapp kanBesvares={valgttraad.kanBesvares} formatMessage={formatMessage} skrivSvar={skrivSvar} />
-                    <InfoBoks formatMessage={formatMessage} sendingStatus={sendingStatus} />
-                    <BesvarBoks formatMessage={formatMessage} fritekst={fritekst} skrivSvar={skrivSvar} harSubmittedSkjema={harSubmittedSkjema} traadId={traadId}/>
+                    <SkrivKnapp kanBesvares={valgttraad.kanBesvares} skrivSvar={skrivSvar} onClick={settSkrivSvar} />
+                    <InfoBoks sendingStatus={sendingStatus} />
+                    <BesvarBoks 
+                        fritekst={fritekst} 
+                        skrivSvar={skrivSvar} 
+                        harSubmittedSkjema={harSubmittedSkjema} 
+                        traadId={traadId}
+                        skrivTekst={skrivTekst}
+                        avbryt={resetInputState}
+                        submit={sendSvar}
+                    />
                     {meldingItems}
                 </div>
             </div>
         );
+        
     }
 }
 
 TraadVisning.propTypes = {
-    intl: intlShape,
-    traader: pt.array.isRequired
+    traader: PT.array.isRequired,
+    harSubmittedSkjema: PT.bool.isRequired,
+    skrivSvar: PT.bool.isRequired,
+    fritekst: PT.string.isRequired,
+    sendingStatus: PT.string.isRequired,
+    resetInputState: PT.func.isRequired,
+    sendSvar: PT.func.isRequired,
+    skrivTekst: PT.func.isRequired,
+    lesTraad: PT.func.isRequired
 };
 
-const mapStateToProps = ({ traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus   }) => ({ traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus  });
+const mapStateToProps = ({ traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus   }) => (
+    { traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus  }
+);
+const mapDispatchToProps = (dispatch) => ({
+    skrivTekst: (tekst) => { console.log('tv skriv', tekst); dispatch(skrivTekst(tekst)); },
+    resetInputState: () => dispatch(resetInputState()),
+    lesTraad: () => dispatch(lesTraad()),
+    settSkrivSvar: () => dispatch(settSkrivSvar(true)),
+    sendSvar: (traadId, fritekst) => dispatch(sendSvar(traadId, fritekst))
+});
 
-export default injectIntl(connect(mapStateToProps)(TraadVisning));
+export default connect(mapStateToProps, mapDispatchToProps)(TraadVisning);

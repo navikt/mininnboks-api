@@ -1,33 +1,24 @@
-import React, { PropTypes as pt } from 'react';
-import { Link } from 'react-router';
-import { settSkrivSvar } from '../utils/actions/actions';
-import { injectIntl, intlShape } from 'react-intl';
-import { connect } from 'react-redux';
+import React, { PropTypes as PT } from 'react';
+import { FormattedMessage } from 'react-intl';
 
-const _onClick = (dispatch) => () => dispatch(settSkrivSvar(true));
-
-class SkrivKnapp extends React.Component {
-
-    render() {
-        const { dispatch, formatMessage, kanBesvares, skrivSvar } = this.props;
-
-        if (!kanBesvares || (kanBesvares && skrivSvar)) {
-            return <noscript/>;
-        }
-
-        return (
-            <div className="innboks-navigasjon">
-                <button onClick={_onClick(dispatch)} className="knapp knapp-hoved knapp-liten">
-                    {formatMessage({ id: 'traadvisning.skriv.svar.link' })}
-                </button>
-            </div>
-        );
+function SkrivKnapp({ onClick, kanBesvares, skrivSvar }) {
+    if (!kanBesvares || (kanBesvares && skrivSvar)) {
+        return null;
     }
+
+    return (
+        <div className="innboks-navigasjon">
+            <button onClick={onClick} className="knapp knapp-hoved knapp-liten">
+                <FormattedMessage id="traadvisning.skriv.svar.link"/>
+            </button>
+        </div>
+    );
 }
 
 SkrivKnapp.propTypes = {
-    formatMessage: pt.func.isRequired
+    onClick: PT.func.isRequired,
+    kanBesvares: PT.bool.isRequired,
+    skrivSvar: PT.bool.isRequired
 };
 
-
-export default injectIntl(connect()(SkrivKnapp));
+export default SkrivKnapp;

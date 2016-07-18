@@ -1,6 +1,7 @@
 import { GODTA_VILKAAR, HENT_TRAADER, TRAAD_LEST, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL } from './actionTypes';
 import { getCookie } from '../Utils';
 import SendingStatus from '../../skriv/SendingStatus';
+import { validate } from './../../validation/validationutil';
 
 const API_BASE_URL = '/mininnboks/tjenester';
 const MED_CREDENTIALS = { credentials: 'same-origin' };
@@ -35,16 +36,26 @@ export const lesDokumentVarsel = (behandlingsId) => dispatch =>
     fetch(`${API_BASE_URL}/traader/lest/${behandlingsId}`, SOM_POST)
         .then(() => dispatch(dokumentVarselLest(behandlingsId)));
 
-export const sendSporsmal = (temagruppe, fritekst) => dispatch => fetch(`${API_BASE_URL}/traader/sporsmal`, SEND_SPORSMAL(temagruppe, fritekst))
-    .then(() => dispatch(hentTraader()))
-    .then(() => dispatch(settSendingStatus(SendingStatus.ok)))
-    .catch((error) => dispatch(settSendingStatus(SendingStatus.feil)));
+export const sendSporsmal = (temagruppe, fritekst) => (dispatch, getState) => {
+    dispatch(submitSkjema(true));
+    if (validate(true, fritekst, getState().godkjentVilkaar)) {
+        return fetch(`${API_BASE_URL}/traader/sporsmal`, SEND_SPORSMAL(temagruppe, fritekst))
+            .then(() => dispatch(hentTraader()))
+            .then(() => dispatch(settSendingStatus(SendingStatus.ok)))
+            .catch((error) => dispatch(settSendingStatus(SendingStatus.feil)));
+    }
+};
 
-export const sendSvar = (traadId, fritekst) => dispatch => fetch(`${API_BASE_URL}/traader/svar`, SEND_SVAR(traadId, fritekst))
-    .then(() => dispatch(hentTraader()))
-    .then(() => dispatch(settSendingStatus(SendingStatus.ok)))
-    .then(() => dispatch(resetInputState()))
-    .catch((error) => dispatch(settSendingStatus(SendingStatus.feil)));
+export const sendSvar = (traadId, fritekst) => (dispatch, getState) => {
+    dispatch(submitSkjema(true));
+    if (validate(true, fritekst, true)) {
+        return fetch(`${API_BASE_URL}/traader/svar`, SEND_SVAR(traadId, fritekst))
+            .then(() => dispatch(hentTraader()))
+            .then(() => dispatch(settSendingStatus(SendingStatus.ok)))
+            .then(() => dispatch(resetInputState()))
+            .catch((error) => dispatch(settSendingStatus(SendingStatus.feil)));
+    }
+};
 
 const SEND_SPORSMAL = (temagruppe, fritekst) => ({
     credentials: 'same-origin',

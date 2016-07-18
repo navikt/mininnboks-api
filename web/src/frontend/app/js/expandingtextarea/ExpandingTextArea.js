@@ -1,53 +1,55 @@
-import React, { PropTypes as pt } from 'react';
-import { connect } from 'react-redux';
-import { skrivTekst } from '../utils/actions/actions.js';
-import { injectIntl } from 'react-intl';
+import React, { PropTypes as PT } from 'react';
 import SamletFeilmeldingPanel from './SamletFeilmeldingPanel';
 import FeilmeldingEnum from '../skriv/FeilmeldingEnum';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import classNames from 'classnames';
 
-class ExpandingTextArea extends React.Component {
+function ExpandingTextArea({ intl, fritekst, makslengde, validationResult, onChange }) {
+    const resterendeLengde = makslengde - fritekst.length;
+    const hasValidationError = validationResult.includes(FeilmeldingEnum.textarea);
+    const textareaClassname = classNames('input-fullbredde typo-normal', {
+        'invalid': hasValidationError
+    });
+    const ariadescribedby = hasValidationError ?  intl.messages['textarea.feilmelding'] : '';
+    const title = intl.messages['traadvisning.besvar.tekstfelt'];
+    const ariaLabel = intl.messages['traadvisning.besvar.tekstfelt'];
+    const feilmelding = hasValidationError ? (
+        <span className="skjema-feilmelding" id="textarea.feilmelding" role="alert" aria-live="assertive" aria-atomic="true">
+            <FormattedMessage id="feilmeldingliste.textarea" />
+        </span>
+    ) : null;
 
-    render() {
-        const { formatMessage, dispatch, fritekst, validationResult } = this.props;
-        const resterendeLengde = 1000 - fritekst.length;
-        const hasValidationError = validationResult.includes(FeilmeldingEnum.textarea);
-        const additionalClassName = hasValidationError ? 'invalid' : '';
-        const feilmelding = hasValidationError
-            ? <span className="skjema-feilmelding" id="textarea.feilmelding" role="alert" aria-live="assertive" aria-atomic="true">{formatMessage({ id: 'feilmeldingliste.textarea'}) }</span>
-            : <noscript/>;
-        const ariadescribedby = hasValidationError ?  'textarea.feilmelding' : '';
-
-        return (
-            <div className="textarea-meta-container js-container">
-                <label for="textarea-med-meta">
-                    <span className="typo-normal max-length">{formatMessage({ id: 'textarea.infotekst' })}</span>
-                </label>
-                <SamletFeilmeldingPanel formatMessage={formatMessage} validationResult={validationResult}/>
-
-                <textarea id="textarea-med-meta" name="textarea-med-meta" className={`input-fullbredde typo-normal ${additionalClassName}`}
-                          autoFocus
-                          title = { formatMessage({ id: 'traadvisning.besvar.tekstfelt' }) }
-                          aria-label = { formatMessage({ id: 'traadvisning.besvar.tekstfelt' }) }
-                          aria-invalid = { hasValidationError }
-                          aria-describedby = { ariadescribedby }
-                          onChange = { _onWrite(dispatch)}
-                          value = { fritekst }
-                />
-                <p className="textarea-metatekst" aria-hidden="true">
-                 <span class="max-length">{resterendeLengde}</span> tegn igjen
-                </p>
-                {feilmelding}
-            </div>
-        );
-    }
+    return (
+        <div className="textarea-meta-container js-container">
+            <label htmlFor="textarea-med-meta">
+                <span className="typo-normal max-length"><FormattedMessage id="textarea.infotekst" /></span>
+            </label>
+            <SamletFeilmeldingPanel validationResult={validationResult} />
+            <textarea id="textarea-med-meta" name="textarea-med-meta" className={textareaClassname}
+                      autoFocus
+                      title={title}
+                      aria-label={ariaLabel}
+                      aria-invalid={hasValidationError}
+                      aria-describedby={ariadescribedby}
+                      onChange={onChange}
+                      value={fritekst}
+            />
+            <p className="textarea-metatekst" aria-hidden="true">
+                <span className="max-length">{resterendeLengde}</span> tegn igjen
+            </p>
+            {feilmelding}
+        </div>
+    );
 }
 
-const _onWrite = (dispatch) => (event) => dispatch(skrivTekst(event.target.value));
-
+ExpandingTextArea.defaultProps = {
+    makslengde: 1000
+};
 ExpandingTextArea.propTypes = {
-    dispatch: pt.func,
-    fritekst: pt.string.isRequired,
-    validationResult: pt.array.isRequired
+    makslengde: PT.number,
+    onChange: PT.func.isRequired,
+    fritekst: PT.string.isRequired,
+    validationResult: PT.array.isRequired
 };
 
-export default connect()(ExpandingTextArea);
+export default injectIntl(ExpandingTextArea);
