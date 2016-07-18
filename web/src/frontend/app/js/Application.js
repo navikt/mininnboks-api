@@ -1,45 +1,38 @@
 import React from 'react';
 import { hentInitData } from './utils/init/initActions';
-import { hentTraader } from './utils/actions/actions';
 import { connect } from 'react-redux';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import nb from 'react-intl/locale-data/nb';
+import classnames from 'classnames';
 import Spinner from './Spinner';
 
 addLocaleData(nb);
 
-const renderApplication = (children, defaultTekster, headerlevel) => (
-    <IntlProvider defaultLocale="nb" locale="nb" messages={defaultTekster} >
-        <div className={'side-innhold' + headerlevel ? 'header-level' : null}>{ children }</div>
-    </IntlProvider>
-);
+const cls = (visHeaderLevel) => classnames('side-innhold', {
+    'header-level': visHeaderLevel
+});
 
 class Application extends React.Component {
-    getChildContext() {
-        return {
-            tekster: this.props.tekster
-        };
-    }
-
     componentWillMount() {
         const { dispatch, location: { query: { cmskeys } } } = this.props;
-        dispatch(hentInitData({
-            cmskeys: !!cmskeys
-        }));
-        dispatch(hentTraader());
+        dispatch(hentInitData({ cmskeys: !!cmskeys }));
     }
 
     render() {
-        const headerlevel = !!this.props.location.query.headerlevel;
+        const visHeaderLevel = !!this.props.location.query.headerlevel;
         const { harHentetInitData, children, tekster } = this.props;
 
-        return harHentetInitData ? renderApplication(children, tekster, headerlevel) : <Spinner />;
+        if (!harHentetInitData) {
+            return <Spinner />;
+        }
+
+        return (
+            <IntlProvider defaultLocale="nb" locale="nb" messages={tekster} >
+                <div className={cls(visHeaderLevel)}>{ children }</div>
+            </IntlProvider>
+        );
     }
 }
-
-Application.childContextTypes = {
-    tekster: React.PropTypes.object
-};
 
 Application.propTypes = {
     dispatch: React.PropTypes.func.isRequired,
