@@ -8,6 +8,7 @@ import classNames from 'classnames';
 const cls = (props) => classNames('panel panel-ikon panel-klikkbart blokk-xxxs dokument', props.ulestMeldingKlasse, {
     markert: props.aktiv
 });
+
 function DokumentPreview(props) {
     const { traad } = props;
     const dokument = traad.nyeste;
@@ -17,8 +18,9 @@ function DokumentPreview(props) {
 
     return (
         <li className="traad">
-            <Link to={`/dokument/${dokument.id}`}
-                  className={cls(props)}
+            <Link
+                to={`/dokument/${dokument.id}`}
+                className={cls(props)}
             >
                 <p className="vekk"><FormattedMessage id="dokumentmelding.ikon" /></p>
                 <div className="typo-normal blokk-xxxs">
