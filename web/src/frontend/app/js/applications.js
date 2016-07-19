@@ -14,8 +14,9 @@ const cls = (visHeaderLevel) => classnames('side-innhold', {
 
 class Application extends React.Component {
     componentWillMount() {
-        const { dispatch, location: { query: { cmskeys } } } = this.props;
-        dispatch(hentInitData({ cmskeys: !!cmskeys }));
+        const { location: { query: { cmskeys } } } = this.props;
+        debugger;
+        hentInitData({ cmskeys: !!cmskeys });
     }
 
     render() {
@@ -35,7 +36,6 @@ class Application extends React.Component {
 }
 
 Application.propTypes = {
-    dispatch: React.PropTypes.func.isRequired,
     harHentetInitData: React.PropTypes.bool.isRequired,
     children: React.PropTypes.object.isRequired,
     tekster: React.PropTypes.object,
@@ -46,4 +46,9 @@ Application.propTypes = {
     })
 };
 
-export default connect(({ harHentetInitData, tekster }) => ({ harHentetInitData, tekster }))(Application);
+const mapStateToProps = ({ harHentetInitData, tekster }) => ({ harHentetInitData, tekster });
+const mapDispatchToProps = (dispatch) => ({
+    hentInitData: (options) => dispatch(hentInitData(options))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Application);
