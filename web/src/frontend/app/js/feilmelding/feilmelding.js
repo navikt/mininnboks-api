@@ -1,15 +1,12 @@
 import React, { PropTypes as PT } from 'react';
 
-function Feilmelding({ visIkon, melding, brodtekst }) {
+function Feilmelding({ visIkon, children }) {
     const ikon = visIkon ? <div className="robust-ikon-feil-gra"></div> : null;
 
     return (
         <section className="feilmelding">
             {ikon}
-            <h1>
-                {melding}
-            </h1>
-            <span>{brodtekst}</span>
+            {children}
         </section>
     );
 }
@@ -18,8 +15,7 @@ Feilmelding.defaultProps = {
 };
 Feilmelding.propTypes = {
     visIkon: PT.bool,
-    melding: PT.node.isRequired,
-    brodtekst: PT.string.isRequired
+    children: PT.node.isRequired
 };
 
 export default Feilmelding;

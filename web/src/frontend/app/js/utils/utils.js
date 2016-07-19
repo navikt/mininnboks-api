@@ -46,4 +46,11 @@ export const status = (melding) => {
     }
 };
 
+export function nyesteTraadForst(traad1, traad2) {
+    const d1 = new Date(traad1.nyeste.opprettet);
+    const d2 = new Date(traad2.nyeste.opprettet);
 
+    if (d1 < d2) return 1;
+    else if (d1 > d2) return -1;
+    else return 0;
+}

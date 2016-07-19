@@ -15,8 +15,7 @@ const cls = (visHeaderLevel) => classnames('side-innhold', {
 class Application extends React.Component {
     componentWillMount() {
         const { location: { query: { cmskeys } } } = this.props;
-        debugger;
-        hentInitData({ cmskeys: !!cmskeys });
+        this.props.hentInitData({ cmskeys: !!cmskeys });
     }
 
     render() {

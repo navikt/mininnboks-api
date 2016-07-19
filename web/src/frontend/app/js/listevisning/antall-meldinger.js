@@ -1,9 +1,10 @@
 import React, { PropTypes as pt } from 'react';
+import { FormattedMessage } from 'react-intl';
 
-const AntallMeldinger = ({ antall, formatMessage }) => {
+const AntallMeldinger = ({ antall }) => {
     const antallCls = antall === 1 ? 'antall-ikon antall-en' : 'antall-ikon antall-flere';
-    let antallTekst = antall === 1 ? '' : antall;
-    let flereMeldingerAriaLabel = '';
+    let antallTekst = antall === 1 ? '' : null;
+    let flereMeldingerAriaLabel = null;
 
     if (antall > 1) {
         if (antall < 10) {
@@ -12,21 +13,21 @@ const AntallMeldinger = ({ antall, formatMessage }) => {
             antallTekst = '9+';
         }
 
-        flereMeldingerAriaLabel =
-            <span className="vekk">{`${antallTekst} ${formatMessage({ id: 'meldinger.flere.aria.label' })}`}</span>;
+        flereMeldingerAriaLabel = (
+            <FormattedMessage id="meldinger.flere.aria.label" values={{ antall }} />
+        );
     }
 
     return (
         <div className={antallCls}>
             <span aria-hidden="true">{antallTekst}</span>
-            {flereMeldingerAriaLabel}
+            <span className="vekk">{flereMeldingerAriaLabel}</span>
         </div>
     );
 };
 
 AntallMeldinger.propTypes = {
-    antall: pt.number,
-    formatMessage: pt.func.isRequired
+    antall: pt.number
 };
 
 export default AntallMeldinger;

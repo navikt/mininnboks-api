@@ -1,16 +1,16 @@
 import React, { PropTypes as pt } from 'react';
+import { FormattedMessage } from 'react-intl';
 
-const AvsenderHeader = ({ formatMessage, meldingType }) => {
-    const avsender = <span className="avsender-fra-nav">{formatMessage({ id: 'avsender.tekst.NAV' })}</span>;
+const AvsenderHeader = ({ meldingType }) => {
+    const avsender = <span className="avsender-fra-nav"><FormattedMessage id="avsender.tekst.NAV" /></span>;
 
     const maaBehandlesStatus = meldingType === 'SPORSMAL_MODIA_UTGAAENDE' ?
-        <span>/ <strong className="purring">{formatMessage({ id: 'purre.svar' })}</strong></span> : <noscript/>;
+        <span>/ <strong className="purring"><FormattedMessage id="purre.svar" /></strong></span> : null;
 
     return <span>/ Fra {avsender} {maaBehandlesStatus}</span>;
 };
 
 AvsenderHeader.propTypes = {
-    formatMessage: pt.func.isRequired,
     meldingType: pt.string.isRequired
 };
 
