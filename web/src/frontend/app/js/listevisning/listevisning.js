@@ -25,8 +25,9 @@ const erAktivRegel = (fantVarselId, varselId) => {
 
 
 function ListeVisning({ routes, params, traader, location }) {
-    const traaderGruppert = getTraadLister(traader);
     const varselId = location.query.varselId;
+    const traaderGruppert = getTraadLister(traader);
+
     const fantVarselId = traader.find((traad) => traad.nyeste.korrelasjonsId === varselId);
     const erAktiv = erAktivRegel(fantVarselId, varselId);
 
@@ -36,6 +37,7 @@ function ListeVisning({ routes, params, traader, location }) {
     const lesteTraader = traaderGruppert.leste.map((traad, index) => ({
         traad, aktiv: erAktiv(traad.nyeste, index + ulesteTraader.length)
     }));
+    
     const ulesteMeldingerOverskrift = ulesteTraader.length === 0 ? 'innboks.uleste.ingenmeldinger' : 'innboks.uleste.tittel';
     const lesteMeldingerOverskrift = lesteTraader.length === 0 ? 'innboks.leste.ingenmeldinger' : 'innboks.leste.tittel';
 
