@@ -1,5 +1,5 @@
 import React from 'react';
-import Sendingstatus from '../skriv-nytt-sporsmal/SendingStatus';
+import Sendingstatus from '../skriv-nytt-sporsmal/sending-status';
 import { injectIntl, FormattedHTMLMessage } from 'react-intl';
 
 class InfoBoks extends React.Component {
@@ -7,7 +7,7 @@ class InfoBoks extends React.Component {
         const { sendingStatus } = this.props;
 
         if (sendingStatus === 'IKKE_SENDT') {
-            return <noscript/>;
+            return null;
         }
 
         return (
