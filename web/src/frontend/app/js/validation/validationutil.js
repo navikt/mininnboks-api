@@ -1,4 +1,4 @@
-import FeilmeldingEnum from '../skriv-nytt-sporsmal/FeilmeldingEnum';
+import FeilmeldingEnum from '../skriv-nytt-sporsmal/feilmelding-enum';
 
 export const validateTextarea = (fritekst, harSubmittedSkjema) => {
     return !(fritekst.length === 0 && harSubmittedSkjema);

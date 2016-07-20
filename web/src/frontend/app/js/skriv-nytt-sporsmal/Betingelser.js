@@ -1,5 +1,5 @@
 import React, { PropTypes as pt } from 'react';
-import Modal from '../modal/Modal';
+import Modal from '../modal/modal';
 
 const modalConfig = {
     title: {

@@ -1,7 +1,7 @@
-import { INIT_DATA } from '../init/initActions';
-import initialState from '../init/initialState';
-import { GODTA_VILKAAR, HENT_TRAADER, LES_TRAAD, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, TRAAD_LEST } from './../actions/actionTypes';
-import { DOKUMENTVISNING_DATA } from '../../dokumentvarsel/varsel-actions';
+import { INIT_DATA } from '../init/init-actions';
+import initialState from '../init/initial-state';
+import { GODTA_VILKAAR, HENT_TRAADER, LES_TRAAD, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, TRAAD_LEST } from './../actions/action-types';
+import { DOKUMENTVISNING_DATA } from '../../dokument-visning/dokument-actions';
 import mapValues from 'lodash.mapvalues';
 
 export default (state = initialState, action) => {

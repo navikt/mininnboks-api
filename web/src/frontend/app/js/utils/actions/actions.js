@@ -8,9 +8,9 @@ import {
     SKRIV_SVAR,
     SUBMIT_SKJEMA,
     VIS_MODAL
-} from './actionTypes';
+} from './action-types';
 import * as Api from './../../api';
-import SendingStatus from '../../skriv-nytt-sporsmal/SendingStatus';
+import SendingStatus from '../../skriv-nytt-sporsmal/sending-status';
 import {validate} from './../../validation/validationutil';
 
 export const dokumentVarselLest = (behandlingsId) => ({ type: 'DOKUMENT_VARSEL_LEST', behandlingsId });

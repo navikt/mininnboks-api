@@ -1,17 +1,15 @@
 import React, { PropTypes as pt } from 'react';
 import { Link } from 'react-router';
-import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
-import GodtaVilkar from './GodtaVilkar';
+import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
+import GodtaVilkar from './godta-vilkar';
 import Kvittering from './Kvittering';
 import Feilmelding from '../feilmelding/Feilmelding';
-import SendingStatus from './SendingStatus';
-import InfoBoks from '../infoboks/Infoboks';
-import FeilmeldingEnum from './FeilmeldingEnum';
-import { addXsrfHeader } from '../utils/Utils';
+import SendingStatus from './sending-status';
+import InfoBoks from '../infoboks/infoboks';
 import { resetInputState, sendSporsmal, submitSkjema } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
+import Breadcrumbs from '../utils/brodsmulesti/custom-breadcrumbs';
 import { validate, getValidationMessages } from '../validation/validationutil';
 
 const submit = (dispatch, temagruppe, fritekst, godkjentVilkaar) => () => {

@@ -3,9 +3,10 @@ import { Dokumenter, Hurtignavigering } from 'react-dokumentvisning';
 
 const offset = [-300, -80];
 
-class Dokumentvinsing extends React.Component {
+class DokumentVisning extends React.Component {
     componentDidMount() {
-        setTimeout(() => document.querySelector('.kulemeny li input') && document.querySelector('.kulemeny li input').classList.add('active'), 0);
+        document.body.scrollTop = 1;
+        document.documentElement.scrollTop = 1;
     }
 
     render() {
@@ -23,9 +24,9 @@ class Dokumentvinsing extends React.Component {
     }
 }
 
-Dokumentvinsing.propTypes = {
+DokumentVisning.propTypes = {
     dokumentmetadata: pt.array.isRequired,
     journalpostmetadata: pt.object.isRequired
 };
 
-export default Dokumentvinsing;
+export default DokumentVisning;

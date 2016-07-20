@@ -4,7 +4,7 @@ import IntlLenke from './../utils/intl-lenke';
 import { nyesteTraadForst } from './../utils/utils';
 import MeldingListe from './melding-liste';
 import { connect } from 'react-redux';
-import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
+import Breadcrumbs from '../utils/brodsmulesti/custom-breadcrumbs';
 
 const getTraadLister = (traader) => {
     const sortert = traader.sort(nyesteTraadForst);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { hentInitData } from './utils/init/initActions';
+import { hentInitData } from './utils/init/init-actions';
 import { connect } from 'react-redux';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import nb from 'react-intl/locale-data/nb';

@@ -1,13 +1,13 @@
 import React, { PropTypes as PT } from 'react';
-import BesvarBoks from'./BesvarBoks';
-import MeldingContainer from './MeldingContainer';
-import SkrivKnapp from './SkrivKnapp';
+import BesvarBoks from'./besvar-boks';
+import MeldingContainer from './melding-container';
+import SkrivKnapp from './skriv-knapp';
 import { FormattedMessage } from 'react-intl';
-import InfoBoks from '../infoboks/Infoboks';
+import InfoBoks from '../infoboks/infoboks';
 import { lesTraad, resetInputState, skrivTekst, settSkrivSvar, sendSvar } from '../utils/actions/actions';
 import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
+import Breadcrumbs from '../utils/brodsmulesti/custom-breadcrumbs';
 
 const breadcrumbsresolver = (temagruppe) => (key, tekst) => {
     if (key === ':tema') {

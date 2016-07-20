@@ -1,5 +1,5 @@
 import React, { PropTypes as pt } from 'react';
-import Portal from './ModalPortal.js';
+import Portal from './modal-portal';
 import { render } from 'react-dom';
 import { IntlProvider } from 'react-intl';
 

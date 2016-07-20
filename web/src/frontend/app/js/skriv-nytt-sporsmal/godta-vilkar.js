@@ -2,7 +2,7 @@ import React, { PropTypes as pt } from 'react';
 import Betingelser from './Betingelser';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import FeilmeldingEnum from './FeilmeldingEnum';
+import FeilmeldingEnum from './feilmelding-enum';
 import { velgGodtaVilkaar, velgVisModal } from '../utils/actions/actions';
 
 const lukkModal = (dispatch) => () => dispatch(velgVisModal(false));

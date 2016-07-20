@@ -1,5 +1,5 @@
 import React, { PropTypes as PT } from 'react';
-import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
+import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
 import { FormattedMessage } from 'react-intl';
 import { getValidationMessages } from '../validation/validationutil';
 
