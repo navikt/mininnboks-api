@@ -32,12 +32,11 @@ class Modal extends React.Component {
     }
 
     renderPortal(props, tekster) {
-        this.modal = render(
-            (
-                <IntlProvider defaultLocale="nb" locale="nb" messages={tekster}>
-                    <Portal {...props} />
-                </IntlProvider>
-            ), this.portalElement);
+        this.modal = render((
+            <IntlProvider defaultLocale="nb" locale="nb" messages={tekster}>
+                <Portal {...props} />
+            </IntlProvider>
+        ), this.portalElement);
     }
 
     render() {
