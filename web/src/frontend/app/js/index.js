@@ -10,5 +10,5 @@ import mainReducer from './utils/reducers/reducer';
 
 const store = applyMiddleware(thunkMiddleware)(createStore)(mainReducer);
 document.addEventListener('DOMContentLoaded', () => {
-    render(<Provider store={store}><Router/></Provider>, document.getElementById('mainapp'));
+    render(<Provider store={store}><Router /></Provider>, document.getElementById('mainapp'));
 });

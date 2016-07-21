@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { PropTypes as PT } from 'react';
 import { hentInitData } from './utils/init/init-actions';
 import { connect } from 'react-redux';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import nb from 'react-intl/locale-data/nb';
 import classnames from 'classnames';
-import Spinner from './Spinner';
+import Spinner from './spinner';
 
 addLocaleData(nb);
 
@@ -28,19 +28,20 @@ class Application extends React.Component {
 
         return (
             <IntlProvider defaultLocale="nb" locale="nb" messages={tekster} >
-                <div className={cls(visHeaderLevel)}>{ children }</div>
+                <div className={cls(visHeaderLevel)}>{children}</div>
             </IntlProvider>
         );
     }
 }
 
 Application.propTypes = {
-    harHentetInitData: React.PropTypes.bool.isRequired,
-    children: React.PropTypes.object.isRequired,
-    tekster: React.PropTypes.object,
-    location: React.PropTypes.shape({
-        query: React.PropTypes.shape({
-            headerlevel: React.PropTypes.object
+    harHentetInitData: PT.bool.isRequired,
+    hentInitData: PT.func.isRequired,
+    children: PT.object.isRequired,
+    tekster: PT.object,
+    location: PT.shape({
+        query: PT.shape({
+            headerlevel: PT.object
         })
     })
 };

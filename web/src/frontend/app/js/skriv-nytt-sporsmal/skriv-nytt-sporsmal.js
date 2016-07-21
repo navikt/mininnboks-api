@@ -1,13 +1,12 @@
-import React, { PropTypes as pt } from 'react';
-import { Link } from 'react-router';
+import React, { PropTypes as PT } from 'react';
 import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
 import GodtaVilkar from './godta-vilkar';
-import Kvittering from './Kvittering';
-import Feilmelding from '../feilmelding/Feilmelding';
+import Kvittering from './kvittering';
+import Feilmelding from '../feilmelding/feilmelding';
 import SendingStatus from './sending-status';
 import InfoBoks from '../infoboks/infoboks';
 import { resetInputState, sendSporsmal, submitSkjema } from '../utils/actions/actions';
-import { injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../utils/brodsmulesti/custom-breadcrumbs';
 import { validate, getValidationMessages } from '../validation/validationutil';
@@ -27,48 +26,63 @@ class Skriv extends React.Component {
     }
 
     render() {
-        const { params, dispatch, intl: { formatMessage }, visModal, routes, fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus } = this.props;
+        const {
+            params, dispatch, intl: { formatMessage }, visModal, routes,
+            fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus
+        } = this.props;
+
         const temagruppe = this.props.params.temagruppe;
-        if (formatMessage({id: 'temagruppe.liste'}).split(' ').indexOf(temagruppe) < 0) {
-            return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon/>;
-        } else if (sendingStatus == SendingStatus.ok) {
-            return <Kvittering formatMessage={formatMessage}/>;
+        if (formatMessage({ id: 'temagruppe.liste' }).split(' ').indexOf(temagruppe) < 0) {
+            return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon />;
+        } else if (sendingStatus === SendingStatus.ok) {
+            return <Kvittering />;
         }
         const validationResult = getValidationMessages(harSubmittedSkjema, fritekst, godkjentVilkaar);
 
         return (
-            <div>
-                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage}/>
-                <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift'})}</h1>
+            <form onSubmit={submit(dispatch, temagruppe, fritekst, godkjentVilkaar)}>
+                <Breadcrumbs routes={routes} params={params} />
+                <h1 className="typo-sidetittel text-center blokk-l">
+                    <FormattedMessage id="send-sporsmal.still-sporsmal.ny-melding-overskrift" />
+                </h1>
                 <article className="send-sporsmal-container send-panel">
                     <div className="sporsmal-header">
-                        <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{formatMessage({id: 'send-sporsmal.still-sporsmal.deloverskrift'})}</h2>
+                        <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">
+                            <FormattedMessage id="send-sporsmal.still-sporsmal.deloverskrift" />
+                        </h2>
                     </div>
-                    <strong>{formatMessage({id: temagruppe})}</strong>
-                    <InfoBoks sendingStatus={sendingStatus}/>
-                    <ExpandingTextArea formatMessage={formatMessage} fritekst={fritekst} validationResult={validationResult}/>
-                    <GodtaVilkar formatMessage={formatMessage} visModal={visModal} validationResult={validationResult} godkjentVilkaar={godkjentVilkaar}/>
-                    <input type="submit" className="knapp knapp-hoved knapp-stor" role="button"
-                           value={formatMessage({ id: 'send-sporsmal.still-sporsmal.send-inn' })}
-                           onClick={submit(dispatch, temagruppe, fritekst, godkjentVilkaar)}
+                    <strong><FormattedMessage id={temagruppe} /></strong>
+                    <InfoBoks sendingStatus={sendingStatus} />
+                    <ExpandingTextArea fritekst={fritekst} validationResult={validationResult} />
+                    <GodtaVilkar
+                        visModal={visModal}
+                        validationResult={validationResult}
+                        godkjentVilkaar={godkjentVilkaar}
                     />
+                    <button type="submit" className="knapp knapp-hoved knapp-stor">
+                        <FormattedMessage id="send-sporsmal.still-sporsmal.send-inn" />
+                    </button>
                 </article>
-            </div>
+            </form>
         );
     }
 }
 
 Skriv.propTypes = {
-    temagruppe: pt.string,
+    dispatch: PT.func,
+    params: PT.object.isRequired,
+    routes: PT.array.isRequired,
+    fritekst: PT.string.isRequired,
+    temagruppe: PT.string,
     intl: intlShape.isRequired,
-    visModal: pt.bool.isRequired,
-    harSubmittedSkjema: pt.bool.isRequired,
-    sendingStatus: pt.string.isRequired,
-    godkjentVilkaar: pt.bool.isRequired,
-    validationResult: pt.array.isRequired
+    visModal: PT.bool.isRequired,
+    harSubmittedSkjema: PT.bool.isRequired,
+    sendingStatus: PT.string.isRequired,
+    godkjentVilkaar: PT.bool.isRequired,
+    validationResult: PT.array.isRequired
 };
 
-const mapStateToProps = ({ visModal, fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus  }) => ({
+const mapStateToProps = ({ visModal, fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus }) => ({
     visModal,
     fritekst,
     harSubmittedSkjema,

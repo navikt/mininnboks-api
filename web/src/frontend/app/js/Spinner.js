@@ -1,7 +1,8 @@
 import React from 'react';
 
-const Spinner =
-    props => props.spin ? <div className="spinner"></div> : <div/>;
+function Spinner({ spin }) {
+    return <div className={spin ? 'spinner' : ''} />;
+}
 
 Spinner.propTypes = { spin: React.PropTypes.bool };
 

@@ -4,5 +4,4 @@ const Sendingstatus = {
     ok: 'bekreftelsemelding'
 };
 
-
 export default Sendingstatus;

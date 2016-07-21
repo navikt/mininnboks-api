@@ -1,19 +1,11 @@
 import FeilmeldingEnum from '../skriv-nytt-sporsmal/feilmelding-enum';
 
-export const validateTextarea = (fritekst, harSubmittedSkjema) => {
-    return !(fritekst.length === 0 && harSubmittedSkjema);
-};
+export const validateTextarea = (fritekst, harSubmittedSkjema) => !(fritekst.length === 0 && harSubmittedSkjema);
 
-export const validateCheckbox = (godkjentVilkaar, harSubmittedSkjema) => {
-    return !(!godkjentVilkaar && harSubmittedSkjema);
-};
-
-export const validate = (harSubmittedSkjema, fritekst, godkjentVilkaar) => {
-    return getValidationMessages(harSubmittedSkjema, fritekst, godkjentVilkaar).length === 0;
-};
+export const validateCheckbox = (godkjentVilkaar, harSubmittedSkjema) => !(!godkjentVilkaar && harSubmittedSkjema);
 
 export const getValidationMessages = (harSubmittedSkjema, fritekst, godkjentVilkaar) => {
-    let validationMessages = [];
+    const validationMessages = [];
     if (!validateTextarea(fritekst, harSubmittedSkjema)) {
         validationMessages.push(FeilmeldingEnum.textarea);
     }
@@ -22,3 +14,7 @@ export const getValidationMessages = (harSubmittedSkjema, fritekst, godkjentVilk
     }
     return validationMessages;
 };
+
+export const validate = (harSubmittedSkjema, fritekst, godkjentVilkaar) => (
+    getValidationMessages(harSubmittedSkjema, fritekst, godkjentVilkaar).length === 0
+);

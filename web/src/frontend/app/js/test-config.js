@@ -1,3 +1,4 @@
+/* eslint-disable */
 (function () {
     const Ap = Array.prototype;
     const slice = Ap.slice;

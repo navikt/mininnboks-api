@@ -1,4 +1,4 @@
-import React, { PropTypes as pt } from 'react'
+import React, { PropTypes as pt } from 'react';
 import { Dokumenter, Hurtignavigering } from 'react-dokumentvisning';
 
 const offset = [-300, -80];
@@ -16,8 +16,8 @@ class DokumentVisning extends React.Component {
             <section className="dokumenter">
                 <Hurtignavigering dokumentmetadata={dokumentmetadata} navigeringsknappOffset={offset} />
                 <Dokumenter
-                  journalpostId={journalpostmetadata.journalpostId}
-                  dokumentmetadata={dokumentmetadata}
+                    journalpostId={journalpostmetadata.journalpostId}
+                    dokumentmetadata={dokumentmetadata}
                 />
             </section>
         );

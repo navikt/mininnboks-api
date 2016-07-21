@@ -18,7 +18,7 @@ const getTraadLister = (traader) => {
 };
 const erAktivRegel = (fantVarselId, varselId) => {
     if (!fantVarselId) {
-        return (_, index) => index === 0
+        return (_, index) => index === 0;
     }
     return (melding) => melding.korrelasjonsId === varselId;
 };
@@ -37,29 +37,29 @@ function ListeVisning({ routes, params, traader, location }) {
     const lesteTraader = traaderGruppert.leste.map((traad, index) => ({
         traad, aktiv: erAktiv(traad.nyeste, index + ulesteTraader.length)
     }));
-    
-    const ulesteMeldingerOverskrift = ulesteTraader.length === 0 ? 'innboks.uleste.ingenmeldinger' : 'innboks.uleste.tittel';
-    const lesteMeldingerOverskrift = lesteTraader.length === 0 ? 'innboks.leste.ingenmeldinger' : 'innboks.leste.tittel';
 
     return (
         <div>
             <Breadcrumbs routes={routes} params={params} />
             <h1 className="typo-sidetittel text-center blokk-l">
-                <FormattedMessage id="innboks.overskrift"/>
+                <FormattedMessage id="innboks.overskrift" />
             </h1>
             <div className="innboks-navigasjon clearfix">
                 <IntlLenke href="skriv.ny.link" className="knapp knapp-hoved knapp-liten">
-                    <FormattedMessage id="innboks.skriv.ny.link"/>
+                    <FormattedMessage id="innboks.skriv.ny.link" />
                 </IntlLenke>
             </div>
-            <MeldingListe meldinger={ulesteTraader} overskrift={ulesteMeldingerOverskrift} />
-            <MeldingListe meldinger={lesteTraader} overskrift={lesteMeldingerOverskrift} />
+            <MeldingListe meldinger={ulesteTraader} overskrift="innboks.uleste" />
+            <MeldingListe meldinger={lesteTraader} overskrift="innboks.leste" />
         </div>
     );
 }
 
 ListeVisning.propTypes = {
-    traader: PT.array.isRequired
+    traader: PT.array.isRequired,
+    routes: PT.array.isRequired,
+    params: PT.object.isRequired,
+    location: PT.object.isRequired
 };
 
 const mapStateToProps = ({ traader }) => ({ traader });

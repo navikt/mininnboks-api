@@ -1,11 +1,10 @@
-import React from 'react';
-const assign = Object.assign || require('object-assign');
+import React, { Component } from 'react';
 
-const stubRouterContext = (Component, props, stubs) => {
+const stubRouterContext = (comp, props, stubs) => {
     function RouterStub() {
     }
 
-    assign(RouterStub, {
+    Object.assign(RouterStub, {
         makePath() {
         },
         makeHref() {
@@ -32,28 +31,32 @@ const stubRouterContext = (Component, props, stubs) => {
         },
         getRouteComponentAtDepth() {
         },
-        createHref(localtion) {
+        createHref() {
         }
     }, stubs);
 
-    return React.createClass({
-        childContextTypes: {
-            router: React.PropTypes.func,
-            routeDepth: React.PropTypes.number
-        },
+    class StubClass extends Component {
         getChildContext() {
             return {
                 router: RouterStub,
                 routeDepth: 0
             };
-        },
+        }
+
         getComponent() {
             return this.refs.component;
-        },
-        render() {
-            return <Component ref="component" {...props} />;
         }
-    });
+
+        render() {
+            return <comp ref="component" {...props} />;
+        }
+    }
+    StubClass.childContextTypes = {
+        router: React.PropTypes.func,
+        routeDepth: React.PropTypes.number
+    };
+
+    return StubClass;
 };
 
 export default stubRouterContext;

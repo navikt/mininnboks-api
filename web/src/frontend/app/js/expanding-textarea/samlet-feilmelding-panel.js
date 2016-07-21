@@ -7,11 +7,16 @@ function SamletFeilmeldingPanel({ validationResult }) {
     }
 
     const feilmeldinger = validationResult.map((feilmelding) => (
-        <li key={feilmelding}><FormattedMessage id={`feilmeldingliste.${feilmelding}`}/></li>
+        <li key={feilmelding}><FormattedMessage id={`feilmeldingliste.${feilmelding}`} /></li>
     ));
 
     return (
-        <div role="alert" aria-live="assertive" aria-atomic="true" className="panel panel-feilsammendrag venstrestill-tekst">
+        <div
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            className="panel panel-feilsammendrag venstrestill-tekst"
+        >
             <h3>Du må fylle ut følgende</h3>
             <ul>
                 {feilmeldinger}

@@ -1,6 +1,17 @@
 import { INIT_DATA } from '../init/init-actions';
 import initialState from '../init/initial-state';
-import { GODTA_VILKAAR, HENT_TRAADER, LES_TRAAD, RESET_STATE, SETT_SENDING_STATUS, SKRIV_TEKST, SKRIV_SVAR, SUBMIT_SKJEMA, VIS_MODAL, TRAAD_LEST } from './../actions/action-types';
+import {
+    GODTA_VILKAAR,
+    HENT_TRAADER,
+    LES_TRAAD,
+    RESET_STATE,
+    SETT_SENDING_STATUS,
+    SKRIV_TEKST,
+    SKRIV_SVAR,
+    SUBMIT_SKJEMA,
+    VIS_MODAL,
+    TRAAD_LEST
+} from './../actions/action-types';
 import { DOKUMENTVISNING_DATA } from '../../dokument-visning/dokument-actions';
 import mapValues from 'lodash.mapvalues';
 
@@ -12,8 +23,8 @@ export default (state = initialState, action) => {
             if (options.cmskeys) {
                 tekster = mapValues(tekster, (value, key) => `[${key}] ${value}`);
             }
-            
-            return {...state,
+
+            return { ...state,
                 harHentetInitData: true,
                 traader,
                 miljovariabler,
@@ -40,17 +51,17 @@ export default (state = initialState, action) => {
         case SUBMIT_SKJEMA:
             return { ...state, harSubmittedSkjema: true };
         case SETT_SENDING_STATUS:
-            return { ...state, sendingStatus:  action.sendingStatus };
+            return { ...state, sendingStatus: action.sendingStatus };
         case SKRIV_SVAR:
-            return { ...state, skrivSvar:  action.skrivSvar };
+            return { ...state, skrivSvar: action.skrivSvar };
         case LES_TRAAD:
-            return { ...state, lesTraad:  action.lesTraad };
+            return { ...state, lesTraad: action.lesTraad };
         case DOKUMENTVISNING_DATA:
-            return { ...state, dokumentvisning:  action.dokumentvisning };
+            return { ...state, dokumentvisning: action.dokumentvisning };
         case TRAAD_LEST: {
             const markerSomLest = (melding) => Object.assign({}, melding, { lest: true });
             const traader = state.traader.map((traad) => {
-                if(traad.traadId === action.traadId) {
+                if (traad.traadId === action.traadId) {
                     const nyeste = markerSomLest(traad.nyeste);
                     const eldste = markerSomLest(traad.eldste);
                     const meldinger = traad.meldinger.map(markerSomLest);

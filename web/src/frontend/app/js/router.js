@@ -16,10 +16,10 @@ export default() => (
             <IndexRoute component={Listevisning} breadcrumbName="Min innboks" />
             <Route breadcrumbName="Min innboks" >
                 <Route path="/traad/:traadId" component={Traadvisning} breadcrumbName=":tema" />
-                <Route path="/sporsmal/skriv/:temagruppe" component={SkrivNyttSporsmal} breadcrumbName="Ny melding"/>
-                <Route path="/dokument/:id" component={DokumentVisningSide} breadcrumbName="Dokumentvisning"/>
+                <Route path="/sporsmal/skriv/:temagruppe" component={SkrivNyttSporsmal} breadcrumbName="Ny melding" />
+                <Route path="/dokument/:id" component={DokumentVisningSide} breadcrumbName="Dokumentvisning" />
             </Route>
-            <Route path="print/:journalpostid/:dokumentreferanse" component={PrintPage}/>
+            <Route path="print/:journalpostid/:dokumentreferanse" component={PrintPage} />
         </Route>
     </Router>
 );

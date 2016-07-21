@@ -13,6 +13,7 @@ function BesvarBoks({ traadId, fritekst, skrivSvar, harSubmittedSkjema, skrivTek
         submit(traadId, fritekst);
     };
 
+    /* eslint-disable jsx-a11y/no-onchange, no-script-url */
     return (
         <form className="besvar-container" onSubmit={onSubmit}>
             <ExpandingTextArea

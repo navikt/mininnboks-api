@@ -1,15 +1,18 @@
-import React, { PropTypes as pt } from 'react'
+import React, { PropTypes as PT } from 'react';
 import { Print, createDokumentUrl } from 'react-dokumentvisning';
 import { injectIntl, intlShape } from 'react-intl';
 
 const PrintPage = ({ params: { journalpostid, dokumentreferanse }, intl: { formatMessage } }) => {
     const url = createDokumentUrl(formatMessage({ id: 'saksoversikt.link' }), journalpostid, dokumentreferanse);
-    return <Print documentUrl={url}/>;
+    return <Print documentUrl={url} />;
 };
 
-PrintPage.PropTypes = {
+PrintPage.propTypes = {
     intl: intlShape,
-    params: pt.object
+    params: PT.shape({
+        journalpostId: PT.string,
+        dokumentreferanse: PT.string
+    }).isRequired
 };
 
 export default injectIntl(PrintPage);
