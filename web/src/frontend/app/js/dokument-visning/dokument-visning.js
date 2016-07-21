@@ -1,4 +1,4 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes as PT } from 'react';
 import { Dokumenter, Hurtignavigering } from 'react-dokumentvisning';
 
 const offset = [-300, -80];
@@ -25,8 +25,8 @@ class DokumentVisning extends React.Component {
 }
 
 DokumentVisning.propTypes = {
-    dokumentmetadata: pt.array.isRequired,
-    journalpostmetadata: pt.object.isRequired
+    dokumentmetadata: PT.array.isRequired,
+    journalpostmetadata: PT.object.isRequired
 };
 
 export default DokumentVisning;

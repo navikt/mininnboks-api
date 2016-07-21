@@ -1,4 +1,4 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Modal from '../modal/modal';
 
@@ -67,11 +67,11 @@ class Betingelser extends React.Component {
 }
 
 Betingelser.propTypes = {
-    formatMessage: pt.func.isRequired,
-    godkjennVilkaar: pt.func.isRequired,
-    avbryt: pt.func.isRequired,
-    visModal: pt.bool.isRequired,
-    lukkModal: pt.func.isRequired
+    formatMessage: PT.func.isRequired,
+    godkjennVilkaar: PT.func.isRequired,
+    avbryt: PT.func.isRequired,
+    visModal: PT.bool.isRequired,
+    lukkModal: PT.func.isRequired
 };
 
 export default Betingelser;

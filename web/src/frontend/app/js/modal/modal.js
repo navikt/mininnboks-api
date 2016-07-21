@@ -1,4 +1,4 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes as PT } from 'react';
 import Portal from './modal-portal';
 import { render } from 'react-dom';
 import { IntlProvider } from 'react-intl';
@@ -45,7 +45,7 @@ class Modal extends React.Component {
 }
 
 Modal.contextTypes = {
-    tekster: pt.object
+    tekster: PT.object
 };
 
 Modal.defaultProps = {

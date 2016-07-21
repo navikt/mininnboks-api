@@ -17,7 +17,7 @@ function SamletFeilmeldingPanel({ validationResult }) {
             aria-atomic="true"
             className="panel panel-feilsammendrag venstrestill-tekst"
         >
-            <h3>Du må fylle ut følgende</h3>
+            <h3><FormattedMessage id="skriv-sporsmal.feilmelding.header" /></h3>
             <ul>
                 {feilmeldinger}
             </ul>

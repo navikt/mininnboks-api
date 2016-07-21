@@ -30,7 +30,7 @@ class TraadVisning extends React.Component {
             routes, params, sendingStatus, traader, skrivSvar, harSubmittedSkjema, fritekst, actions
         } = this.props;
 
-        const traadId = this.props.params.traadId;
+        const traadId = params.traadId;
         const valgttraad = traader.find(traad => traad.traadId === traadId);
 
         const meldingItems = valgttraad.meldinger.map((melding) => (
