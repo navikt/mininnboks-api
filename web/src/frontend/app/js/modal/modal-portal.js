@@ -164,7 +164,7 @@ ModalPortal.propTypes = {
         description: PT.object.isRequired,
         closeButton: PT.object.isRequired
     }).isRequired,
-    skipFocus: PT.arrayOfType(PT.string),
+    skipFocus: PT.arrayOf(PT.string),
     visModal: PT.bool.isRequired,
     lukkModal: PT.func.isRequired
 };

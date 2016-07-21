@@ -56,7 +56,7 @@ ExpandingTextArea.defaultProps = {
     makslengde: 1000
 };
 ExpandingTextArea.propTypes = {
-    intl: PT.object.isRequire,
+    intl: PT.object.isRequired,
     makslengde: PT.number,
     onChange: PT.func.isRequired,
     fritekst: PT.string.isRequired,

@@ -73,6 +73,7 @@
     "react-router": "2.5.2",
     "react-router-breadcrumbs": "1.0.13",
     "redux": "3.5.2",
+    "redux-form": "^5.3.1",
     "redux-thunk": "2.1.0",
     "string-format": "0.5.0",
     "whatwg-fetch": "1.0.0"

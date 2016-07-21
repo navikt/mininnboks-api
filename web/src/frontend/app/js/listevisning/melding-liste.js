@@ -33,7 +33,7 @@ const MeldingListe = ({ meldinger, overskrift }) => {
 
 MeldingListe.propTypes = {
     meldinger: PT.array.isRequired,
-    overskrift: PT.string.siRequired
+    overskrift: PT.string.isRequired
 };
 
 export default MeldingListe;

@@ -1,4 +1,4 @@
-import React, { PropTypes as PT } from 'react';
+import React, {P} from 'react';
 import { hentInitData } from './utils/init/init-actions';
 import { connect } from 'react-redux';
 import { IntlProvider, addLocaleData } from 'react-intl';
@@ -28,25 +28,25 @@ class Application extends React.Component {
 
         return (
             <IntlProvider defaultLocale="nb" locale="nb" messages={tekster} >
-                <div className={cls(visHeaderLevel)}>{children}</div>
+                <div className={cls(visHeaderLevel)}>{ children }</div>
             </IntlProvider>
         );
     }
 }
 
 Application.propTypes = {
-    harHentetInitData: PT.bool.isRequired,
-    hentInitData: PT.func.isRequired,
-    children: PT.object.isRequired,
-    tekster: PT.object,
-    location: PT.shape({
-        query: PT.shape({
-            headerlevel: PT.object
+    harHentetInitData: React.PropTypes.bool.isRequired,
+    hentInitData: React.PropTypes.func.isRequired,
+    children: React.PropTypes.object.isRequired,
+    tekster: React.PropTypes.object,
+    location: React.PropTypes.shape({
+        query: React.PropTypes.shape({
+            headerlevel: React.PropTypes.object
         })
     })
 };
 
-const mapStateToProps = ({ harHentetInitData, tekster }) => ({ harHentetInitData, tekster });
+const mapStateToProps = ({ data: { harHentetInitData, tekster } }) => ({ harHentetInitData, tekster });
 const mapDispatchToProps = (dispatch) => ({
     hentInitData: (options) => dispatch(hentInitData(options))
 });

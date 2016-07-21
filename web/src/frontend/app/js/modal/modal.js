@@ -1,4 +1,5 @@
 import React, { PropTypes as PT } from 'react';
+import { unstable_renderSubtreeIntoContainer as renderSubtreeIntoContainer, unmountComponentAtNode } from 'react-dom';
 import Portal from './modal-portal';
 import { render } from 'react-dom';
 import { IntlProvider } from 'react-intl';
@@ -16,7 +17,7 @@ class Modal extends React.Component {
             document.body.appendChild(this.portalElement);
         }
 
-        this.renderPortal(this.props, this.context.tekster);
+        this.renderPortal(this.props);
     }
 
     componentWillReceiveProps(props) {
@@ -28,25 +29,17 @@ class Modal extends React.Component {
     }
 
     componentWillUnmount() {
-        document.body.removeChild(this.portalElement);
+        unmountComponentAtNode(this.portalElement);
     }
 
-    renderPortal(props, tekster) {
-        this.modal = render((
-            <IntlProvider defaultLocale="nb" locale="nb" messages={tekster}>
-                <Portal {...props} />
-            </IntlProvider>
-        ), this.portalElement);
+    renderPortal(props) {
+        renderSubtreeIntoContainer(this, <Portal {...props} />, this.portalElement);
     }
 
     render() {
         return null;
     }
 }
-
-Modal.contextTypes = {
-    tekster: PT.object
-};
 
 Modal.defaultProps = {
     modalConfig: {

@@ -4,8 +4,7 @@ import Betingelser from './betingelser';
 import FeilmeldingEnum from './feilmelding-enum';
 import classNames from 'classnames';
 
-function GodtaVilkar() {
-    const { godkjentVilkaar, visModal, validationResult, actions } = this.props;
+function GodtaVilkar({ godkjentVilkaar, visModal, validationResult, actions }) {
     const ariaCheckboxState = godkjentVilkaar ? 'Checkbox avkrysset' : 'Checkbox ikke avkrysset';
 
     const apneModal = () => actions.velgVisModal(true);
@@ -55,7 +54,6 @@ function GodtaVilkar() {
                         </a>
                     </label>
                     <Betingelser
-                        ref="betingelser-panel"
                         visModal={visModal}
                         godkjennVilkaar={godkjennVilkaar}
                         avbryt={avbryt}

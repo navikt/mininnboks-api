@@ -10,7 +10,7 @@ const cls = (melding) => classNames('melding-container', {
 
 function MeldingContainer({ melding, intl: { formatMessage } }) {
     const imgSrc = melding.fraBruker ? '/mininnboks/build/img/person.svg' : '/mininnboks/build/img/nav-logo.svg';
-    const imgAltTekst = formatMessage({ id: 'innboks.avsender', values: { fraBruker: melding.fraBruker } });
+    const imgAltTekst = formatMessage({ id: 'innboks.avsender' }, { fraBruker: melding.fraBruker });
 
     const dato = prettyDate(melding.opprettet);
 

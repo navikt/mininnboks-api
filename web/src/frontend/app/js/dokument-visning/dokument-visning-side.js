@@ -34,7 +34,7 @@ class DokumentVisningSide extends React.Component {
 }
 
 DokumentVisningSide.propTypes = {
-    dokumentvisning: PT.object.isRequired,
+    dokumentvisning: PT.object,
     params: PT.object.isRequired,
     routes: PT.array.isRequired,
     traader: PT.array.isRequired,
@@ -44,7 +44,7 @@ DokumentVisningSide.propTypes = {
     })
 };
 
-const mapStateToProps = ({ traader, dokumentvisning }) => ({ traader, dokumentvisning });
+const mapStateToProps = ({ data: { traader, dokumentvisning } }) => ({ traader, dokumentvisning });
 const mapDispatchToProps = (dispatch) => ({
     actions: {
         lesDokumentVarsel: (id) => dispatch(lesDokumentVarsel(id)),

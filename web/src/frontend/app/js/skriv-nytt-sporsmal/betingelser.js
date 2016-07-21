@@ -1,5 +1,5 @@
 import React, { PropTypes as PT } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import Modal from '../modal/modal';
 
 const modalConfig = {
@@ -27,9 +27,9 @@ class Betingelser extends React.Component {
     }
 
     render() {
-        const { godkjennVilkaar, avbryt, visModal, lukkModal } = this.props;
+        const { godkjennVilkaar, avbryt, visModal, lukkModal, intl } = this.props;
 
-        const htmlContent = <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.tekst" />;
+        const htmlContent = intl.formatMessage({id: 'send-sporsmal.still-sporsmal.betingelser.tekst'});
 
         /* eslint-disable no-script-url */
         return (
@@ -67,11 +67,11 @@ class Betingelser extends React.Component {
 }
 
 Betingelser.propTypes = {
-    formatMessage: PT.func.isRequired,
+    intl: PT.object.isRequired,
     godkjennVilkaar: PT.func.isRequired,
     avbryt: PT.func.isRequired,
     visModal: PT.bool.isRequired,
     lukkModal: PT.func.isRequired
 };
 
-export default Betingelser;
+export default injectIntl(Betingelser);

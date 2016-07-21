@@ -1,33 +1,35 @@
 import React, { PropTypes as PT } from 'react';
+import { bindActionCreators } from 'redux';
 import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
 import GodtaVilkar from './godta-vilkar';
 import Kvittering from './kvittering';
 import Feilmelding from '../feilmelding/feilmelding';
 import SendingStatus from './sending-status';
 import InfoBoks from '../infoboks/infoboks';
-import { resetInputState, sendSporsmal, submitSkjema } from '../utils/actions/actions';
+import { resetInputState, sendSporsmal, skrivTekst, submitSkjema, velgVisModal, velgGodtaVilkaar } from '../utils/actions/actions';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../utils/brodsmulesti/custom-breadcrumbs';
 import { validate, getValidationMessages } from '../validation/validationutil';
 
-const submit = (dispatch, temagruppe, fritekst, godkjentVilkaar) => () => {
-    dispatch(submitSkjema(true));
+const submit = (actions, temagruppe, fritekst, godkjentVilkaar) => (event) => {
+    event.preventDefault();
+
+    actions.submitSkjema(true);
     if (validate(true, fritekst, godkjentVilkaar)) {
-        dispatch(sendSporsmal(temagruppe, fritekst));
+        actions.sendSporsmal(temagruppe, fritekst);
     }
 };
 
-class Skriv extends React.Component {
+class SkrivNyttSporsmal extends React.Component {
 
     componentWillMount() {
-        const { dispatch } = this.props;
-        dispatch(resetInputState());
+        this.props.actions.resetInputState();
     }
 
     render() {
         const {
-            params, dispatch, intl: { formatMessage }, visModal, routes,
+            params, intl: { formatMessage }, visModal, routes, actions,
             fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus
         } = this.props;
 
@@ -40,7 +42,7 @@ class Skriv extends React.Component {
         const validationResult = getValidationMessages(harSubmittedSkjema, fritekst, godkjentVilkaar);
 
         return (
-            <form onSubmit={submit(dispatch, temagruppe, fritekst, godkjentVilkaar)}>
+            <form onSubmit={submit(actions, temagruppe, fritekst, godkjentVilkaar)}>
                 <Breadcrumbs routes={routes} params={params} />
                 <h1 className="typo-sidetittel text-center blokk-l">
                     <FormattedMessage id="send-sporsmal.still-sporsmal.ny-melding-overskrift" />
@@ -53,11 +55,16 @@ class Skriv extends React.Component {
                     </div>
                     <strong><FormattedMessage id={temagruppe} /></strong>
                     <InfoBoks sendingStatus={sendingStatus} />
-                    <ExpandingTextArea fritekst={fritekst} validationResult={validationResult} />
+                    <ExpandingTextArea
+                        fritekst={fritekst}
+                        validationResult={validationResult}
+                        onChange={(e) => actions.skrivTekst(e.target.value)}
+                    />
                     <GodtaVilkar
                         visModal={visModal}
                         validationResult={validationResult}
                         godkjentVilkaar={godkjentVilkaar}
+                        actions={actions}
                     />
                     <button type="submit" className="knapp knapp-hoved knapp-stor">
                         <FormattedMessage id="send-sporsmal.still-sporsmal.send-inn" />
@@ -68,7 +75,7 @@ class Skriv extends React.Component {
     }
 }
 
-Skriv.propTypes = {
+SkrivNyttSporsmal.propTypes = {
     dispatch: PT.func,
     params: PT.object.isRequired,
     routes: PT.array.isRequired,
@@ -78,16 +85,21 @@ Skriv.propTypes = {
     visModal: PT.bool.isRequired,
     harSubmittedSkjema: PT.bool.isRequired,
     sendingStatus: PT.string.isRequired,
-    godkjentVilkaar: PT.bool.isRequired,
-    validationResult: PT.array.isRequired
+    godkjentVilkaar: PT.bool.isRequired
 };
 
-const mapStateToProps = ({ visModal, fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus }) => ({
+const mapStateToProps = ({ data: { visModal, fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus } }) => ({
     visModal,
     fritekst,
     harSubmittedSkjema,
     godkjentVilkaar,
     sendingStatus
 });
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(
+        { resetInputState, sendSporsmal, submitSkjema, velgVisModal, velgGodtaVilkaar, skrivTekst },
+        dispatch
+    )
+});
 
-export default injectIntl(connect(mapStateToProps)(Skriv));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(SkrivNyttSporsmal));

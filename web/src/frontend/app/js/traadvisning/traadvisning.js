@@ -89,7 +89,7 @@ TraadVisning.propTypes = {
     routes: PT.array.isRequired
 };
 
-const mapStateToProps = ({ traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus }) => (
+const mapStateToProps = ({ data: { traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus } }) => (
     { traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus }
 );
 const mapDispatchToProps = (dispatch) => ({

@@ -1,3 +1,5 @@
+import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 import { INIT_DATA } from '../init/init-actions';
 import initialState from '../init/initial-state';
 import {
@@ -15,7 +17,7 @@ import {
 import { DOKUMENTVISNING_DATA } from '../../dokument-visning/dokument-actions';
 import mapValues from 'lodash.mapvalues';
 
-export default (state = initialState, action) => {
+const dataReducer = (state = initialState, action) => {
     switch (action.type) {
         case INIT_DATA: {
             const { ledetekster, traader, miljovariabler, options } = action;
@@ -75,3 +77,8 @@ export default (state = initialState, action) => {
             return state;
     }
 };
+
+export default combineReducers({
+    data: dataReducer,
+    form: formReducer
+})

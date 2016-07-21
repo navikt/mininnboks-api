@@ -62,6 +62,6 @@ ListeVisning.propTypes = {
     location: PT.object.isRequired
 };
 
-const mapStateToProps = ({ traader }) => ({ traader });
+const mapStateToProps = ({ data: { traader } }) => ({ traader });
 
 export default connect(mapStateToProps)(ListeVisning);
