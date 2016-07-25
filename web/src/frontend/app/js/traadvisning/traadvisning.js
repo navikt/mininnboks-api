@@ -4,7 +4,7 @@ import MeldingContainer from './melding-container';
 import SkrivKnapp from './skriv-knapp';
 import { FormattedMessage } from 'react-intl';
 import InfoBoks from '../infoboks/infoboks';
-import { lesTraad, resetInputState, skrivTekst, settSkrivSvar, sendSvar } from '../utils/actions/actions';
+import { lesTraad, resetInputState, settSkrivSvar, sendSvar } from '../utils/actions/actions';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../utils/brodsmulesti/custom-breadcrumbs';
 
@@ -57,11 +57,9 @@ class TraadVisning extends React.Component {
                     />
                     <InfoBoks sendingStatus={sendingStatus} />
                     <BesvarBoks
-                        fritekst={fritekst}
                         skrivSvar={skrivSvar}
                         harSubmittedSkjema={harSubmittedSkjema}
                         traadId={traadId}
-                        skrivTekst={actions.skrivTekst}
                         avbryt={actions.resetInputState}
                         submit={actions.sendSvar}
                     />
@@ -81,7 +79,6 @@ TraadVisning.propTypes = {
     actions: PT.shape({
         resetInputState: PT.func.isRequired,
         sendSvar: PT.func.isRequired,
-        skrivTekst: PT.func.isRequired,
         lesTraad: PT.func.isRequired,
         settSkrivSvar: PT.func.isRequired
     }).isRequired,
@@ -94,7 +91,6 @@ const mapStateToProps = ({ data: { traader, harSubmittedSkjema, skrivSvar, frite
 );
 const mapDispatchToProps = (dispatch) => ({
     actions: {
-        skrivTekst: (tekst) => dispatch(skrivTekst(tekst)),
         resetInputState: () => dispatch(resetInputState()),
         lesTraad: (traadId) => dispatch(lesTraad(traadId)),
         settSkrivSvar: () => dispatch(settSkrivSvar(true)),

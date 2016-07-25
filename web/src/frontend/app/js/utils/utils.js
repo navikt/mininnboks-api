@@ -53,3 +53,7 @@ export function nyesteTraadForst(traad1, traad2) {
     else if (d1 > d2) return -1;
     return 0;
 }
+
+export const reduxFormProps = ({
+    checked, name, onBlur, onChange, onDragStart, onDrop, onFocus, value
+}) => ({ checked, name, onBlur, onChange, onDragStart, onDrop, onFocus, value });

@@ -1,29 +1,27 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Betingelser from './betingelser';
-import FeilmeldingEnum from './feilmelding-enum';
 import classNames from 'classnames';
+import { reduxFormProps } from './../utils/utils';
 
-function GodtaVilkar({ godkjentVilkaar, visModal, validationResult, actions }) {
-    const ariaCheckboxState = godkjentVilkaar ? 'Checkbox avkrysset' : 'Checkbox ikke avkrysset';
+function GodtaVilkar({ visModal, actions, config }) {
+    const ariaCheckboxState = config.checked ? 'Checkbox avkrysset' : 'Checkbox ikke avkrysset';
 
     const apneModal = () => actions.velgVisModal(true);
     const lukkModal = () => actions.velgVisModal(false);
 
     const godkjennVilkaar = () => {
-        actions.velgGodtaVilkaar(true);
+        config.onChange(true);
         actions.velgVisModal(false);
     };
 
     const avbryt = () => {
-        actions.velgGodtaVilkaar(false);
+        config.onChange(false);
         actions.velgVisModal(false);
     };
 
-    const toggleGodkjentVilkaar = (alleredeValgt) => () => actions.velgGodtaVilkaar(!alleredeValgt);
-
     const feilmeldingKlasse = classNames('skjema-feilmelding', {
-        vekk: validationResult.includes(FeilmeldingEnum.checkbox)
+        vekk: !(config.touched && config.error)
     });
 
     /* eslint-disable jsx-a11y/no-onchange, no-script-url */
@@ -37,11 +35,10 @@ function GodtaVilkar({ godkjentVilkaar, visModal, validationResult, actions }) {
                     <input
                         type="checkbox"
                         name="betingelseValg:betingelserCheckbox"
-                        className="nav-checkbox " id="betingelser"
-                        onChange={toggleGodkjentVilkaar(godkjentVilkaar)}
-                        checked={godkjentVilkaar}
+                        className="nav-checkbox " id="godkjennVilkaar"
+                        {...reduxFormProps(config)}
                     />
-                    <label htmlFor="betingelser">
+                    <label htmlFor="godkjennVilkaar">
                         <span className="typo-infotekst">
                             <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.sjekkboks" />
                         </span>
@@ -61,7 +58,7 @@ function GodtaVilkar({ godkjentVilkaar, visModal, validationResult, actions }) {
                         name="betingelser-panel"
                     />
                     <span className={feilmeldingKlasse}>
-                        <FormattedMessage id="godtavilkaar.validering.feilmelding" />
+                        <FormattedMessage id="feilmelding.godkjennVilkaar.required" />
                     </span>
                 </div>
             </div>
@@ -71,11 +68,9 @@ function GodtaVilkar({ godkjentVilkaar, visModal, validationResult, actions }) {
 
 GodtaVilkar.propTypes = {
     visModal: PT.bool.isRequired,
-    godkjentVilkaar: PT.bool.isRequired,
-    validationResult: PT.array.isRequired,
+    config: PT.object.isRequired,
     actions: PT.shape({
-        velgVisModal: PT.func.isRequired,
-        velgGodtaVilkaar: PT.func.isRequired
+        velgVisModal: PT.func.isRequired
     }).isRequired
 };
 

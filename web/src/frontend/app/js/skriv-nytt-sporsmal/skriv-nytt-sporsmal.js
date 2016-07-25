@@ -1,4 +1,5 @@
 import React, { PropTypes as PT } from 'react';
+import { reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
 import GodtaVilkar from './godta-vilkar';
@@ -6,43 +7,54 @@ import Kvittering from './kvittering';
 import Feilmelding from '../feilmelding/feilmelding';
 import SendingStatus from './sending-status';
 import InfoBoks from '../infoboks/infoboks';
-import { resetInputState, sendSporsmal, skrivTekst, submitSkjema, velgVisModal, velgGodtaVilkaar } from '../utils/actions/actions';
+import { sendSporsmal, velgVisModal, revokeSubmittoken } from '../utils/actions/actions';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import Breadcrumbs from '../utils/brodsmulesti/custom-breadcrumbs';
-import { validate, getValidationMessages } from '../validation/validationutil';
+import Breadcrumbs from './../utils/brodsmulesti/custom-breadcrumbs';
+import SamletFeilmeldingPanel from './samlet-feilmelding-panel';
+import { validate } from './../validation/validationutil';
 
-const submit = (actions, temagruppe, fritekst, godkjentVilkaar) => (event) => {
-    event.preventDefault();
-
-    actions.submitSkjema(true);
-    if (validate(true, fritekst, godkjentVilkaar)) {
-        actions.sendSporsmal(temagruppe, fritekst);
-    }
-};
 
 class SkrivNyttSporsmal extends React.Component {
-
     componentWillMount() {
-        this.props.actions.resetInputState();
+        this.props.initializeForm({
+            fritekst: '',
+            godkjennVilkaar: false
+        });
+    }
+
+    componentWillUpdate(nextProps) {
+        if (nextProps.valid && !this.props.valid) {
+            this.props.actions.revokeSubmittoken();
+        }
     }
 
     render() {
         const {
-            params, intl: { formatMessage }, visModal, routes, actions,
-            fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus
+            params, routes, actions, fields, errors, handleSubmit, submitFailed, submitToken,
+            sendingStatus, visModal, godkjenteTemagrupper
         } = this.props;
 
-        const temagruppe = this.props.params.temagruppe;
-        if (formatMessage({ id: 'temagruppe.liste' }).split(' ').indexOf(temagruppe) < 0) {
+        const temagruppe = params.temagruppe;
+
+        const submit = (event) => {
+            handleSubmit(({ fritekst }) => actions.sendSporsmal(temagruppe, fritekst))(event)
+                .catch(() => {
+                    document.querySelector('.panel-feilsammendrag').focus();
+                });
+        };
+
+
+        if (!godkjenteTemagrupper.includes(temagruppe)) {
             return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon />;
         } else if (sendingStatus === SendingStatus.ok) {
             return <Kvittering />;
         }
-        const validationResult = getValidationMessages(harSubmittedSkjema, fritekst, godkjentVilkaar);
+
+        const feilmeldingpanel = <SamletFeilmeldingPanel errors={errors} submitFailed={submitFailed} submitToken={submitToken} />;
 
         return (
-            <form onSubmit={submit(actions, temagruppe, fritekst, godkjentVilkaar)}>
+            <form onSubmit={submit}>
                 <Breadcrumbs routes={routes} params={params} />
                 <h1 className="typo-sidetittel text-center blokk-l">
                     <FormattedMessage id="send-sporsmal.still-sporsmal.ny-melding-overskrift" />
@@ -55,15 +67,10 @@ class SkrivNyttSporsmal extends React.Component {
                     </div>
                     <strong><FormattedMessage id={temagruppe} /></strong>
                     <InfoBoks sendingStatus={sendingStatus} />
-                    <ExpandingTextArea
-                        fritekst={fritekst}
-                        validationResult={validationResult}
-                        onChange={(e) => actions.skrivTekst(e.target.value)}
-                    />
+                    <ExpandingTextArea config={fields.fritekst} feilmeldingpanel={feilmeldingpanel}/>
                     <GodtaVilkar
                         visModal={visModal}
-                        validationResult={validationResult}
-                        godkjentVilkaar={godkjentVilkaar}
+                        config={fields.godkjennVilkaar}
                         actions={actions}
                     />
                     <button type="submit" className="knapp knapp-hoved knapp-stor">
@@ -76,30 +83,38 @@ class SkrivNyttSporsmal extends React.Component {
 }
 
 SkrivNyttSporsmal.propTypes = {
-    dispatch: PT.func,
-    params: PT.object.isRequired,
+    params: PT.shape({
+        temagruppe: PT.string
+    }).isRequired,
     routes: PT.array.isRequired,
-    fritekst: PT.string.isRequired,
-    temagruppe: PT.string,
-    intl: intlShape.isRequired,
+    actions: PT.shape({
+        sendSporsmal: PT.func,
+        velgVisModal: PT.func
+    }).isRequired,
+    fields: PT.object.isRequired,
+    handleSubmit: PT.func.isRequired,
+    sendingStatus: PT.string,
     visModal: PT.bool.isRequired,
-    harSubmittedSkjema: PT.bool.isRequired,
-    sendingStatus: PT.string.isRequired,
-    godkjentVilkaar: PT.bool.isRequired
+    godkjenteTemagrupper: PT.arrayOf(PT.string).isRequired
 };
 
-const mapStateToProps = ({ data: { visModal, fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus } }) => ({
-    visModal,
-    fritekst,
-    harSubmittedSkjema,
-    godkjentVilkaar,
-    sendingStatus
+const mapStateToProps = ({ data, form }) => ({
+    submitToken: form['nytt-sporsmal'].submitToken,
+    visModal: data.visModal,
+    godkjenteTemagrupper: data.godkjenteTemagrupper
 });
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(
-        { resetInputState, sendSporsmal, submitSkjema, velgVisModal, velgGodtaVilkaar, skrivTekst },
+        { sendSporsmal, velgVisModal, revokeSubmittoken },
         dispatch
     )
 });
+const formConfig = {
+    form: 'nytt-sporsmal',
+    fields: ['fritekst', 'godkjennVilkaar'],
+    returnRejectedSubmitPromise: true,
+    validate
+};
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(SkrivNyttSporsmal));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm(formConfig)(SkrivNyttSporsmal));
+

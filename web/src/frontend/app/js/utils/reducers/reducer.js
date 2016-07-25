@@ -3,12 +3,10 @@ import { reducer as formReducer } from 'redux-form';
 import { INIT_DATA } from '../init/init-actions';
 import initialState from '../init/initial-state';
 import {
-    GODTA_VILKAAR,
     HENT_TRAADER,
     LES_TRAAD,
     RESET_STATE,
     SETT_SENDING_STATUS,
-    SKRIV_TEKST,
     SKRIV_SVAR,
     SUBMIT_SKJEMA,
     VIS_MODAL,
@@ -20,21 +18,20 @@ import mapValues from 'lodash.mapvalues';
 const dataReducer = (state = initialState, action) => {
     switch (action.type) {
         case INIT_DATA: {
-            const { ledetekster, traader, miljovariabler, options } = action;
+            const { ledetekster, traader, options } = action;
             let tekster = ledetekster;
             if (options.cmskeys) {
                 tekster = mapValues(tekster, (value, key) => `[${key}] ${value}`);
             }
+            let godkjenteTemagrupper = ledetekster['temagruppe.liste'].split(' ');
 
             return { ...state,
                 harHentetInitData: true,
+                godkjenteTemagrupper,
                 traader,
-                miljovariabler,
                 tekster
             };
         }
-        case GODTA_VILKAAR:
-            return { ...state, godkjentVilkaar: action.godkjentVilkaar };
         case HENT_TRAADER:
             return { ...state, traader: action.traader };
         case VIS_MODAL:
@@ -48,8 +45,6 @@ const dataReducer = (state = initialState, action) => {
                 godkjentVilkaar: false,
                 skrivSvar: false
             };
-        case SKRIV_TEKST:
-            return { ...state, fritekst: action.fritekst };
         case SUBMIT_SKJEMA:
             return { ...state, harSubmittedSkjema: true };
         case SETT_SENDING_STATUS:
@@ -78,7 +73,22 @@ const dataReducer = (state = initialState, action) => {
     }
 };
 
+const resubmitAfterValid = (state, action) => {
+    switch (action.type) {
+        case 'redux-form/INITIALIZE':
+            return { ...state, submitToken: null };
+        case 'redux-form/SUBMIT_FAILED':
+            return { ...state, submitToken: 'token' };
+        case 'redux-form-plugin/FORM_VALID':
+            return { ...state, submitToken: null };
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
     data: dataReducer,
-    form: formReducer
+    form: formReducer.plugin({
+        'nytt-sporsmal': resubmitAfterValid
+    })
 })

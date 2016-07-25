@@ -39,8 +39,8 @@ class Betingelser extends React.Component {
                         <h1 className="typo-sidetittel text-center blokk-l" tabIndex="0">
                             <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.overskrift" />
                         </h1>
-                        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-                        <hr />
+                        <div className="blokk-xl" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+                        <hr className="blokk-xl" />
                         <button
                             type="submit"
                             className="svar-godta knapp knapp-hoved knapp-stor"

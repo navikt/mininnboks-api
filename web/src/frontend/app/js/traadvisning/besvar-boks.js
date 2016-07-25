@@ -1,26 +1,21 @@
 import React, { PropTypes as PT } from 'react';
+import { validate } from './../validation/validationutil';
 import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
 import { FormattedMessage } from 'react-intl';
-import { getValidationMessages } from '../validation/validationutil';
+import { reduxForm } from 'redux-form';
 
-function BesvarBoks({ traadId, fritekst, skrivSvar, harSubmittedSkjema, skrivTekst, avbryt, submit }) {
+function BesvarBoks({ traadId, skrivSvar, avbryt, submit, fields, handleSubmit }) {
     if (!skrivSvar) {
         return null;
     }
-    const validationResult = getValidationMessages(harSubmittedSkjema, fritekst, true);
-    const onSubmit = (event) => {
-        event.preventDefault();
+    const onSubmit = ({ fritekst }) => {
         submit(traadId, fritekst);
     };
 
     /* eslint-disable jsx-a11y/no-onchange, no-script-url */
     return (
-        <form className="besvar-container" onSubmit={onSubmit}>
-            <ExpandingTextArea
-                fritekst={fritekst}
-                validationResult={validationResult}
-                onChange={(event) => skrivTekst(event.target.value)}
-            />
+        <form className="besvar-container" onSubmit={handleSubmit(onSubmit)}>
+            <ExpandingTextArea config={fields.fritekst} />
             <button type="submit" className="knapp knapp-hoved knapp-liten">
                 <FormattedMessage id="traadvisning.besvar.send" />
             </button>
@@ -33,12 +28,15 @@ function BesvarBoks({ traadId, fritekst, skrivSvar, harSubmittedSkjema, skrivTek
 
 BesvarBoks.propTypes = {
     traadId: PT.string.isRequired,
-    fritekst: PT.string.isRequired,
     skrivSvar: PT.bool.isRequired,
-    harSubmittedSkjema: PT.bool.isRequired,
-    skrivTekst: PT.func.isRequired,
     submit: PT.func.isRequired,
-    avbryt: PT.func.isRequired
+    avbryt: PT.func.isRequired,
+    fields: PT.object.isRequired,
+    handleSubmit: PT.func.isRequired
 };
 
-export default BesvarBoks;
+export default reduxForm({
+    form: 'besvar',
+    fields: ['fritekst'],
+    validate
+})(BesvarBoks);

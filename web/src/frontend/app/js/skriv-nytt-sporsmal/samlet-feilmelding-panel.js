@@ -1,13 +1,15 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-function SamletFeilmeldingPanel({ validationResult }) {
-    if (validationResult.length < 2) {
+function SamletFeilmeldingPanel({ errors, submitFailed, submitToken }) {
+    if (!submitFailed || Object.keys(errors).length === 0 || submitToken === null) {
         return null;
     }
 
-    const feilmeldinger = validationResult.map((feilmelding) => (
-        <li key={feilmelding}><FormattedMessage id={`feilmeldingliste.${feilmelding}`} /></li>
+    const feilmeldinger = Object.entries(errors).map(([element, feilkode]) => (
+        <li key={element}>
+            <a href={`#${element}`}><FormattedMessage id={`feilmelding.${element}.${feilkode}`}/></a>
+        </li>
     ));
 
     return (
@@ -16,6 +18,7 @@ function SamletFeilmeldingPanel({ validationResult }) {
             aria-live="assertive"
             aria-atomic="true"
             className="panel panel-feilsammendrag venstrestill-tekst"
+            tabIndex="-1"
         >
             <h3><FormattedMessage id="skriv-sporsmal.feilmelding.header" /></h3>
             <ul>
@@ -26,7 +29,8 @@ function SamletFeilmeldingPanel({ validationResult }) {
 }
 
 SamletFeilmeldingPanel.propTypes = {
-    validationResult: PT.array.isRequired
+    errors: PT.object.isRequired,
+    submitFailed: PT.bool.isRequired
 };
 
 export default SamletFeilmeldingPanel;

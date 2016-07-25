@@ -1,20 +1,30 @@
-import FeilmeldingEnum from '../skriv-nytt-sporsmal/feilmelding-enum';
-
-export const validateTextarea = (fritekst, harSubmittedSkjema) => !(fritekst.length === 0 && harSubmittedSkjema);
-
-export const validateCheckbox = (godkjentVilkaar, harSubmittedSkjema) => !(!godkjentVilkaar && harSubmittedSkjema);
-
-export const getValidationMessages = (harSubmittedSkjema, fritekst, godkjentVilkaar) => {
-    const validationMessages = [];
-    if (!validateTextarea(fritekst, harSubmittedSkjema)) {
-        validationMessages.push(FeilmeldingEnum.textarea);
+const validationRules = {
+    fritekst: (verdi) => {
+        if (!verdi || verdi.length === 0) {
+            return 'required';
+        }
+        if (verdi && verdi.length > 1000) {
+            return 'max-len';
+        }
+    },
+    godkjennVilkaar: (verdi) => {
+        if (verdi !== true) {
+            return 'required';
+        }
     }
-    if (!validateCheckbox(godkjentVilkaar, harSubmittedSkjema)) {
-        validationMessages.push(FeilmeldingEnum.checkbox);
-    }
-    return validationMessages;
 };
 
-export const validate = (harSubmittedSkjema, fritekst, godkjentVilkaar) => (
-    getValidationMessages(harSubmittedSkjema, fritekst, godkjentVilkaar).length === 0
-);
+export const validate = (verdier) => {
+    return Object.entries(verdier).reduce((errors, [felt, verdi]) => {
+        if (!validationRules.hasOwnProperty(felt)) {
+            return errors;
+        }
+
+        const feltError = validationRules[felt](verdi);
+        if (feltError) {
+            errors[felt] = feltError;
+        }
+
+        return errors;
+    }, {});
+};

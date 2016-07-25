@@ -1,10 +1,8 @@
 import {
-    GODTA_VILKAAR,
     HENT_TRAADER,
     TRAAD_LEST,
     RESET_STATE,
     SETT_SENDING_STATUS,
-    SKRIV_TEKST,
     SKRIV_SVAR,
     SUBMIT_SKJEMA,
     VIS_MODAL
@@ -14,13 +12,12 @@ import SendingStatus from '../../skriv-nytt-sporsmal/sending-status';
 import { validate } from './../../validation/validationutil';
 
 export const dokumentVarselLest = (behandlingsId) => ({ type: 'DOKUMENT_VARSEL_LEST', behandlingsId });
-export const velgGodtaVilkaar = (vilkaar) => ({ type: GODTA_VILKAAR, godkjentVilkaar: vilkaar });
 export const velgVisModal = (skalVise) => ({ type: VIS_MODAL, visModal: skalVise });
-export const skrivTekst = (fritekst) => ({ type: SKRIV_TEKST, fritekst });
 export const submitSkjema = (harSubmittedSkjema) => ({ type: SUBMIT_SKJEMA, harSubmittedSkjema });
 export const settSendingStatus = (sendingStatus) => ({ type: SETT_SENDING_STATUS, sendingStatus });
 export const settSkrivSvar = (skrivSvar) => ({ type: SKRIV_SVAR, skrivSvar });
 export const traadLest = (traadId) => ({ type: TRAAD_LEST, traadId });
+export const revokeSubmittoken = ()=> ({ type: 'redux-form-plugin/FORM_VALID' });
 export const resetInputState = () => ({ type: RESET_STATE });
 export const hentTraader = () => (dispatch) => Api.hentTraader()
     .then(json => dispatch({

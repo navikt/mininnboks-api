@@ -1,19 +1,20 @@
 import React, { PropTypes as PT } from 'react';
-import SamletFeilmeldingPanel from './samlet-feilmelding-panel';
-import FeilmeldingEnum from '../skriv-nytt-sporsmal/feilmelding-enum';
+import SamletFeilmeldingPanel from '../skriv-nytt-sporsmal/samlet-feilmelding-panel';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
+import { reduxFormProps } from './../utils/utils';
 
-function ExpandingTextArea({ intl, fritekst, makslengde, validationResult, onChange }) {
-    const resterendeLengde = makslengde - fritekst.length;
-    const hasValidationError = validationResult.includes(FeilmeldingEnum.textarea);
+function ExpandingTextArea({ intl, makslengde, config, feilmeldingpanel }) {
+    const resterendeLengde = makslengde - config.value.length;
+    const showError = config.error && config.touched;
+
     const textareaClassname = classNames('input-fullbredde typo-normal', {
-        invalid: hasValidationError
+        invalid: showError
     });
-    const ariadescribedby = hasValidationError ? intl.messages['textarea.feilmelding'] : '';
+    const ariadescribedby = showError ? intl.messages['textarea.feilmelding'] : '';
     const title = intl.messages['traadvisning.besvar.tekstfelt'];
     const ariaLabel = intl.messages['traadvisning.besvar.tekstfelt'];
-    const feilmelding = hasValidationError ? (
+    const feilmelding = showError ? (
         <span
             className="skjema-feilmelding"
             id="textarea.feilmelding"
@@ -21,28 +22,27 @@ function ExpandingTextArea({ intl, fritekst, makslengde, validationResult, onCha
             aria-live="assertive"
             aria-atomic="true"
         >
-            <FormattedMessage id="feilmeldingliste.textarea" />
+            <FormattedMessage id={`feilmelding.fritekst.${config.error}`} />
         </span>
     ) : null;
 
     /* eslint-disable jsx-a11y/no-onchange */
     return (
         <div className="textarea-meta-container js-container">
-            <label htmlFor="textarea-med-meta">
+            <label htmlFor="fritekst">
                 <span className="typo-normal max-length"><FormattedMessage id="textarea.infotekst" /></span>
             </label>
-            <SamletFeilmeldingPanel validationResult={validationResult} />
+            {feilmeldingpanel}
             <textarea
-                id="textarea-med-meta"
-                name="textarea-med-meta"
+                id="fritekst"
+                name="fritekst"
                 className={textareaClassname}
                 autoFocus
                 title={title}
                 aria-label={ariaLabel}
-                aria-invalid={hasValidationError}
+                aria-invalid={showError}
                 aria-describedby={ariadescribedby}
-                onChange={onChange}
-                value={fritekst}
+                {...reduxFormProps(config)}
             />
             <p className="textarea-metatekst" aria-hidden="true">
                 <span className="max-length">{resterendeLengde}</span> tegn igjen
@@ -53,14 +53,13 @@ function ExpandingTextArea({ intl, fritekst, makslengde, validationResult, onCha
 }
 
 ExpandingTextArea.defaultProps = {
-    makslengde: 1000
+    makslengde: 1000,
+    feilmeldingpanel: null
 };
 ExpandingTextArea.propTypes = {
     intl: PT.object.isRequired,
     makslengde: PT.number,
-    onChange: PT.func.isRequired,
-    fritekst: PT.string.isRequired,
-    validationResult: PT.array.isRequired
+    feilmeldingpanel: PT.node
 };
 
 export default injectIntl(ExpandingTextArea);

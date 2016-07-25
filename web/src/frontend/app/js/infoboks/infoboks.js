@@ -3,7 +3,7 @@ import Sendingstatus from '../skriv-nytt-sporsmal/sending-status';
 import { injectIntl, FormattedHTMLMessage } from 'react-intl';
 
 function InfoBoks({ sendingStatus }) {
-    if (sendingStatus === 'IKKE_SENDT') {
+    if (sendingStatus === 'IKKE_SENDT' || sendingStatus === undefined) {
         return null;
     }
 
@@ -16,7 +16,7 @@ function InfoBoks({ sendingStatus }) {
 }
 
 InfoBoks.propTypes = {
-    sendingStatus: PT.string.isRequired
+    sendingStatus: PT.string
 };
 
 export default injectIntl(InfoBoks);
