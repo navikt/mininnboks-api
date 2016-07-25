@@ -27,7 +27,7 @@ class TraadVisning extends React.Component {
 
     render() {
         const {
-            routes, params, sendingStatus, traader, skrivSvar, harSubmittedSkjema, fritekst, actions
+            routes, params, sendingStatus, traader, skrivSvar, actions
         } = this.props;
 
         const traadId = params.traadId;
@@ -58,7 +58,6 @@ class TraadVisning extends React.Component {
                     <InfoBoks sendingStatus={sendingStatus} />
                     <BesvarBoks
                         skrivSvar={skrivSvar}
-                        harSubmittedSkjema={harSubmittedSkjema}
                         traadId={traadId}
                         avbryt={actions.resetInputState}
                         submit={actions.sendSvar}
@@ -72,7 +71,6 @@ class TraadVisning extends React.Component {
 
 TraadVisning.propTypes = {
     traader: PT.array.isRequired,
-    harSubmittedSkjema: PT.bool.isRequired,
     skrivSvar: PT.bool.isRequired,
     fritekst: PT.string.isRequired,
     sendingStatus: PT.string.isRequired,
@@ -86,8 +84,8 @@ TraadVisning.propTypes = {
     routes: PT.array.isRequired
 };
 
-const mapStateToProps = ({ data: { traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus } }) => (
-    { traader, harSubmittedSkjema, skrivSvar, fritekst, sendingStatus }
+const mapStateToProps = ({ data: { traader, skrivSvar, fritekst, sendingStatus } }) => (
+    { traader, skrivSvar, fritekst, sendingStatus }
 );
 const mapDispatchToProps = (dispatch) => ({
     actions: {

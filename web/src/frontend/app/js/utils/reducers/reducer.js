@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
+import { reducer as formReducer } from './../nav-form/nav-form-reducer';
 import { INIT_DATA } from '../init/init-actions';
 import initialState from '../init/initial-state';
 import {
@@ -8,7 +8,6 @@ import {
     RESET_STATE,
     SETT_SENDING_STATUS,
     SKRIV_SVAR,
-    SUBMIT_SKJEMA,
     VIS_MODAL,
     TRAAD_LEST
 } from './../actions/action-types';
@@ -45,8 +44,6 @@ const dataReducer = (state = initialState, action) => {
                 godkjentVilkaar: false,
                 skrivSvar: false
             };
-        case SUBMIT_SKJEMA:
-            return { ...state, harSubmittedSkjema: true };
         case SETT_SENDING_STATUS:
             return { ...state, sendingStatus: action.sendingStatus };
         case SKRIV_SVAR:
@@ -73,22 +70,7 @@ const dataReducer = (state = initialState, action) => {
     }
 };
 
-const resubmitAfterValid = (state, action) => {
-    switch (action.type) {
-        case 'redux-form/INITIALIZE':
-            return { ...state, submitToken: null };
-        case 'redux-form/SUBMIT_FAILED':
-            return { ...state, submitToken: 'token' };
-        case 'redux-form-plugin/FORM_VALID':
-            return { ...state, submitToken: null };
-        default:
-            return state;
-    }
-};
-
 export default combineReducers({
     data: dataReducer,
-    form: formReducer.plugin({
-        'nytt-sporsmal': resubmitAfterValid
-    })
+    form: formReducer('nytt-sporsmal')
 })
