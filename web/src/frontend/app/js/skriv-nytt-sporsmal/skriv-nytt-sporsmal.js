@@ -84,7 +84,8 @@ SkrivNyttSporsmal.propTypes = {
 const mapStateToProps = ({ data, form }) => ({
     submitToken: form['nytt-sporsmal'].submitToken,
     visModal: data.visModal,
-    godkjenteTemagrupper: data.godkjenteTemagrupper
+    godkjenteTemagrupper: data.godkjenteTemagrupper,
+    sendingStatus: data.sendingStatus
 });
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(

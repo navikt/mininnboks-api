@@ -1,9 +1,8 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { Link } from 'react-router';
 
 function Kvittering() {
-    const htmlInnhold = <FormattedMessage id="send-sporsmal.bekreftelse.varslingsinfo" />;
     return (
         <article className="send-sporsmal-container bekreftelse-panel">
             <div className="sporsmal-header">
@@ -15,7 +14,9 @@ function Kvittering() {
 
                 <div className="robust-strek" />
 
-                <p dangerouslySetInnerHTML={{ __html: htmlInnhold }} />
+                <p>
+                    <FormattedHTMLMessage id="send-sporsmal.bekreftelse.varslingsinfo" />
+                </p>
 
                 <hr />
             </div>
@@ -25,8 +26,5 @@ function Kvittering() {
         </article>
     );
 }
-
-Kvittering.propTypes = {
-};
 
 export default Kvittering;

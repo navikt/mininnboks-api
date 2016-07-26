@@ -29,14 +29,14 @@ export const lesDokumentVarsel = (behandlingsId) => (dispatch) => Api.markerSomL
     .then(() => dispatch(dokumentVarselLest(behandlingsId)));
 
 export const sendSporsmal = (temagruppe, fritekst) => (dispatch) => {
-    Api.sendSporsmal(temagruppe, fritekst)
+    return Api.sendSporsmal(temagruppe, fritekst)
         .then(() => dispatch(hentTraader()))
         .then(() => dispatch(settSendingStatus(SendingStatus.ok)))
         .catch(() => dispatch(settSendingStatus(SendingStatus.feil)));
 };
 
 export const sendSvar = (traadId, fritekst) => (dispatch) => {
-    Api.sendSvar(traadId, fritekst)
+    return Api.sendSvar(traadId, fritekst)
         .then(() => dispatch(hentTraader()))
         .then(() => dispatch(settSendingStatus(SendingStatus.ok)))
         .then(() => dispatch(resetInputState()))

@@ -28,15 +28,22 @@ const sendSvarConfig = (traadId, fritekst) => ({
     body: JSON.stringify({ traadId, fritekst })
 });
 
-export const hentLedetekster = () => fetch(`${API_BASE_URL}/resources`, MED_CREDENTIALS).then(res => res.json());
-export const hentTraader = () => fetch(`${API_BASE_URL}/traader`, MED_CREDENTIALS).then(res => res.json());
+export const safefetch = (...args) => fetch(...args).then((response) => {
+    if (!response.ok) {
+        throw new Error(response.statusText)
+    }
+    return response;
+});
 
-export const markerTraadSomLest = (traadId) => fetch(`${API_BASE_URL}/traader/allelest/${traadId}`, SOM_POST);
-export const markerSomLest = (behandlingsId) => fetch(`${API_BASE_URL}/traader/lest/${behandlingsId}`, SOM_POST);
+export const hentLedetekster = () => safefetch(`${API_BASE_URL}/resources`, MED_CREDENTIALS).then(res => res.json());
+export const hentTraader = () => safefetch(`${API_BASE_URL}/traader`, MED_CREDENTIALS).then(res => res.json());
 
-export const sendSporsmal = (temagruppe, fritekst) => fetch(
+export const markerTraadSomLest = (traadId) => safefetch(`${API_BASE_URL}/traader/allelest/${traadId}`, SOM_POST);
+export const markerSomLest = (behandlingsId) => safefetch(`${API_BASE_URL}/traader/lest/${behandlingsId}`, SOM_POST);
+
+export const sendSporsmal = (temagruppe, fritekst) => safefetch(
     `${API_BASE_URL}/traader/sporsmal`, sendSporsmalConfig(temagruppe, fritekst)
 );
-export const sendSvar = (traadId, fritekst) => fetch(
+export const sendSvar = (traadId, fritekst) => safefetch(
     `${API_BASE_URL}/traader/svar`, sendSvarConfig(traadId, fritekst)
 );
