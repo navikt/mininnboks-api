@@ -10,9 +10,9 @@ function ExpandingTextArea({ intl, makslengde, config, feilmeldingpanel }) {
     const textareaClassname = classNames('input-fullbredde typo-normal', {
         invalid: showError
     });
-    const ariadescribedby = showError ? intl.messages['textarea.feilmelding'] : '';
-    const title = intl.messages['traadvisning.besvar.tekstfelt'];
-    const ariaLabel = intl.messages['traadvisning.besvar.tekstfelt'];
+    const ariadescribedby = showError ? intl.formatMessage({ id: 'textarea.feilmelding' }) : '';
+    const title = intl.formatMessage({ id: 'traadvisning.besvar.tekstfelt' });
+    const ariaLabel = intl.formatMessage({ id: 'traadvisning.besvar.tekstfelt' });
     const feilmelding = showError ? (
         <span
             className="skjema-feilmelding"

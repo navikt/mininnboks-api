@@ -1,8 +1,12 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
+import classNames from 'classnames';
 
 const AntallMeldinger = ({ antall }) => {
-    const antallCls = antall === 1 ? 'antall-ikon antall-en' : 'antall-ikon antall-flere';
+    const antallCls = classNames('antall-ikon', {
+        'antall-en': antall === 1,
+        'antall-flere': antall > 1
+    });
     let antallTekst = antall === 1 ? '' : null;
     let flereMeldingerAriaLabel = null;
 

@@ -2,7 +2,6 @@ import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import { shortDate, tilAvsnitt } from './../utils/utils';
-import AvsenderHeader from './avsender-header';
 import AntallMeldinger from './antall-meldinger';
 import classNames from 'classnames';
 
@@ -14,10 +13,17 @@ const cls = (props) => classNames('panel panel-ikon panel-klikkbart blokk-xxxs d
 function MeldingPreview(props) {
     const { traad } = props;
     const melding = traad.nyeste;
-    const avsender = traad.nyeste.fraNav ? <AvsenderHeader meldingType={melding.type} /> : null;
     const dato = shortDate(melding.opprettet);
     const avsnitt = melding.fritekst.split(/[\r\n]+/).map(tilAvsnitt);
     const antallMeldinger = traad.meldinger.length;
+
+    const maBesvares = melding.type === 'SPORSMAL_MODIA_UTGAAENDE' ?
+        <span>/ <strong className="purring"><FormattedMessage id="purre.svar" /></strong></span> : null;
+
+    const avsender = traad.nyeste.fraNav ? (
+        <span>/ Fra <span className="avsender-fra-nav"><FormattedMessage id="avsender.tekst.NAV" /></span></span>
+    ) : null;
+    const flereMeldinger = antallMeldinger > 1 ? `(${antallMeldinger})` : null;
 
     return (
         <li className="traad" key={melding.traadId}>
@@ -30,8 +36,18 @@ function MeldingPreview(props) {
                 </p>
                 <AntallMeldinger antall={antallMeldinger} />
                 <div className="typo-normal blokk-xxxs">
-                    <p><span key="dato">{dato}</span>{avsender}</p>
-                    <h2 className="typo-element blokk-xxs">{melding.statusTekst}</h2>
+                    <p>
+                        <span>{dato}</span>
+                        {avsender}
+                        {maBesvares}
+                    </p>
+                    <h2 className="typo-element blokk-xxs">
+                        {melding.statusTekst}
+                        <span className="vekk">
+                            {flereMeldinger}
+                            {maBesvares}
+                        </span>
+                    </h2>
                     <p className="typo-infotekst tema-avsnitt">{avsnitt}</p>
                 </div>
             </Link>
