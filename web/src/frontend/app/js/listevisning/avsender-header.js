@@ -1,4 +1,4 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 function AvsenderHeader({ meldingType }) {
@@ -11,7 +11,7 @@ function AvsenderHeader({ meldingType }) {
 }
 
 AvsenderHeader.propTypes = {
-    meldingType: pt.string.isRequired
+    meldingType: PT.string.isRequired
 };
 
 export default AvsenderHeader;

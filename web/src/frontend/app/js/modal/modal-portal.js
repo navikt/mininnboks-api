@@ -1,4 +1,4 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes as PT } from 'react';
 
 const createId = (prefix) => `${prefix}${new Date().getTime()}-${Math.random()}`;
 
@@ -15,8 +15,8 @@ function createAriaOptional(name, data) {
 
     return {
         id,
-        hidden: data.show ? <noscript/> : element,
-        visible: data.show ? element : <noscript/>
+        hidden: data.show ? null : element,
+        visible: data.show ? element : null
     };
 }
 
@@ -78,8 +78,7 @@ class ModalPortal extends React.Component {
                 }
             };
 
-            (keyMap[event.keyCode] || function () {
-            }).bind(this)();
+            (keyMap[event.keyCode] || (() => {}))();
 
             // No leaks
             event.stopPropagation();
@@ -90,7 +89,7 @@ class ModalPortal extends React.Component {
     focusFirst() {
         this.focusAfterClose = document.activeElement;
         let tabbables = $(this.refs.content).find(':tabbable');
-        this.props.skipFocus.forEach(function (skipFocusTag) {
+        this.props.skipFocus.forEach((skipFocusTag) => {
             tabbables = tabbables.not(skipFocusTag);
         });
 
@@ -128,11 +127,18 @@ class ModalPortal extends React.Component {
 
         const visEllerSkjulModal = visModal ? '' : 'hidden';
         return (
-            <div tabIndex="-1" className={visEllerSkjulModal} aria-hidden={!visModal} onKeyDown={this.keyHandler(lukkModal)}
-              role="dialog" aria-labelledby={title.id} aria-describedby={description.id}>
-                <div className="backdrop" onClick={lukkModal}></div>
-                    {ariaOptionalTitle.hidden}
-                    {ariaOptionalDescription.hidden}
+            <div
+                tabIndex="-1"
+                className={visEllerSkjulModal}
+                aria-hidden={!visModal}
+                onKeyDown={this.keyHandler(lukkModal)}
+                role="dialog"
+                aria-labelledby={title.id}
+                aria-describedby={description.id}
+            >
+                <div className="backdrop" onClick={lukkModal} tabIndex="-1" role="presentation"></div>
+                {ariaOptionalTitle.hidden}
+                {ariaOptionalDescription.hidden}
                 <div className="centering">
                     <div className="content" ref="content">
                         {ariaOptionalTitle.visible}
@@ -152,13 +158,15 @@ ModalPortal.defaultProps = {
 };
 
 ModalPortal.propTypes = {
-    modalConfig: pt.shape({
-        title: pt.object.isRequired,
-        description: pt.object.isRequired,
-        closeButton: pt.object.isRequired
+    children: PT.node.isRequired,
+    modalConfig: PT.shape({
+        title: PT.object.isRequired,
+        description: PT.object.isRequired,
+        closeButton: PT.object.isRequired
     }).isRequired,
-    visModal: pt.bool.isRequired,
-    lukkModal: pt.func.isRequired
+    skipFocus: PT.arrayOf(PT.string),
+    visModal: PT.bool.isRequired,
+    lukkModal: PT.func.isRequired
 };
 
 export default ModalPortal;

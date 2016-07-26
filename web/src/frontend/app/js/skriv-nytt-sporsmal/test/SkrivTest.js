@@ -1,19 +1,21 @@
 /* eslint-env mocha */
 
-import '../../testConfig';
-import React from 'react';
-import sinon from 'sinon';
-import { expect, assert } from 'chai';
-import stubRouterContext from '../../utils/StubRouterContext';
-import Skriv from '../Skriv';
+// import '../../testConfig';
+// import React from 'react';
+// import sinon from 'sinon';
+// import { expect, assert } from 'chai';
+// import stubRouterContext from '../../utils/stub-router-context';
+// import Skriv from '../skriv-nytt-sporsmal';
 
-import { renderIntoDocument, createRenderer, findRenderedDOMComponentWithTag, findRenderedDOMComponentWithClass } from 'react-addons-test-utils';
+// import {
+//     renderIntoDocument, createRenderer, findRenderedDOMComponentWithTag, findRenderedDOMComponentWithClass
+// } from 'react-addons-test-utils';
 
-const formatMessage = () => {};
+// const formatMessage = () => {};
 
-var SkrivWrapper = stubRouterContext(Skriv, { formatMessage, params: { temagruppe: 'ARBD' } });
+// const SkrivWrapper = stubRouterContext(Skriv, { formatMessage, params: { temagruppe: 'ARBD' } });
 
-describe('Skriv Page', function () {
+describe('Skriv Page', () => {
     //
     // var skriv-nytt-sporsmal = renderIntoDocument(<SkrivWrapper />);
     // var sendKnapp = findRenderedDOMComponentWithClass(skriv-nytt-sporsmal, 'send-link');

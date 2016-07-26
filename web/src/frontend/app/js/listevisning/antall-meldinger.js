@@ -1,4 +1,4 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 const AntallMeldinger = ({ antall }) => {
@@ -27,7 +27,7 @@ const AntallMeldinger = ({ antall }) => {
 };
 
 AntallMeldinger.propTypes = {
-    antall: pt.number
+    antall: PT.number
 };
 
 export default AntallMeldinger;

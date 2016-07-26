@@ -1,6 +1,6 @@
 import keymirror from 'keymirror';
 
-var Constants = keymirror({
+const Constants = keymirror({
     LEST: null,
     IKKE_LEST: null,
     BESVART: null,

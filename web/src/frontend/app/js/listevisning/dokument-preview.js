@@ -1,7 +1,7 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import { shortDate } from './../utils/Utils';
+import { shortDate } from './../utils/utils';
 
 import classNames from 'classnames';
 
@@ -34,9 +34,9 @@ function DokumentPreview(props) {
 }
 
 DokumentPreview.propTypes = {
-    traad: pt.object,
-    aktiv: pt.bool.isRequired,
-    ulestMeldingKlasse: pt.string
+    traad: PT.object,
+    aktiv: PT.bool.isRequired,
+    ulestMeldingKlasse: PT.string
 };
 
 export default DokumentPreview;

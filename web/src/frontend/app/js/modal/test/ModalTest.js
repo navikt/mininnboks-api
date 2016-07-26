@@ -1,23 +1,22 @@
 /* eslint-env mocha */
+// import './../../testConfig';
+// import { expect } from 'chai';
+// import React from 'react';
+// import Modal from '../Modal.js';
+//
+// import { findRenderedDOMComponentWithClass, renderIntoDocument } from 'react-addons-test-utils';
+//
+// function createModal(props, children) {
+//     return renderIntoDocument(React.createElement(
+//             Modal, props || {},
+//             children || React.createElement('span', { className: 'forReference' }, 'test'))
+//     );
+// }
+// function getContent(modal) {
+//     return modal.modal.refs.content;
+// }
 
-import './../../testConfig';
-import { expect } from 'chai';
-import React from 'react';
-import Modal from '../Modal.js';
-
-import { findRenderedDOMComponentWithClass, renderIntoDocument } from 'react-addons-test-utils';
-
-function createModal(props, children) {
-    return renderIntoDocument(React.createElement(
-            Modal, props || {},
-            children || React.createElement('span', { className: 'forReference' }, 'test'))
-    );
-}
-function getContent(modal) {
-    return modal.modal.refs.content;
-}
-
-describe('Modal', function () {
+describe('Modal', () => {
     //
     // afterEach(function (done) {
     //     React.unmountComponentAtNode(document.body);

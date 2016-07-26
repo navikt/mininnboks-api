@@ -1,81 +1,110 @@
-import React, { PropTypes as pt } from 'react';
-import { Link } from 'react-router';
-import ExpandingTextArea from '../expandingtextarea/ExpandingTextArea';
-import GodtaVilkar from './GodtaVilkar';
-import Kvittering from './Kvittering';
-import Feilmelding from '../feilmelding/Feilmelding';
-import SendingStatus from './SendingStatus';
-import InfoBoks from '../infoboks/Infoboks';
-import FeilmeldingEnum from './FeilmeldingEnum';
-import { addXsrfHeader } from '../utils/Utils';
-import { resetInputState, sendSporsmal, submitSkjema } from '../utils/actions/actions';
-import { injectIntl, intlShape } from 'react-intl';
+import React, { PropTypes as PT } from 'react';
+import { createForm } from './../utils/nav-form/nav-form';
+import { bindActionCreators } from 'redux';
+import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
+import GodtaVilkar from './godta-vilkar';
+import Kvittering from './kvittering';
+import Feilmelding from '../feilmelding/feilmelding';
+import SendingStatus from './sending-status';
+import InfoBoks from '../infoboks/infoboks';
+import { sendSporsmal, velgVisModal } from '../utils/actions/actions';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import Breadcrumbs from '../utils/brodsmulesti/customBreadcrumbs';
-import { validate, getValidationMessages } from '../validation/validationutil';
+import Breadcrumbs from './../utils/brodsmulesti/custom-breadcrumbs';
+import SamletFeilmeldingPanel from './samlet-feilmelding-panel';
+import { validate } from './../validation/validationutil';
 
-const submit = (dispatch, temagruppe, fritekst, godkjentVilkaar) => () => {
-    dispatch(submitSkjema(true));
-    if (validate(true, fritekst, godkjentVilkaar)) {
-        dispatch(sendSporsmal(temagruppe, fritekst));
+function SkrivNyttSporsmal({
+    params, routes, actions, fields, errors, handleSubmit, submitFailed, submitToken,
+    sendingStatus, visModal, godkjenteTemagrupper
+}) {
+    const temagruppe = params.temagruppe;
+
+    const submit = (event) => {
+        handleSubmit(({ fritekst }) => actions.sendSporsmal(temagruppe, fritekst))(event)
+            .catch(() => {
+                document.querySelector('.panel-feilsammendrag').focus();
+            });
+    };
+
+
+    if (!godkjenteTemagrupper.includes(temagruppe)) {
+        return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon />;
+    } else if (sendingStatus === SendingStatus.ok) {
+        return <Kvittering />;
     }
-};
 
-class Skriv extends React.Component {
+    const feilmeldingpanel = (
+        <SamletFeilmeldingPanel errors={errors} submitFailed={submitFailed} submitToken={submitToken} />
+    );
 
-    componentWillMount() {
-        const { dispatch } = this.props;
-        dispatch(resetInputState());
-    }
-
-    render() {
-        const { params, dispatch, intl: { formatMessage }, visModal, routes, fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus } = this.props;
-        const temagruppe = this.props.params.temagruppe;
-        if (formatMessage({id: 'temagruppe.liste'}).split(' ').indexOf(temagruppe) < 0) {
-            return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon/>;
-        } else if (sendingStatus == SendingStatus.ok) {
-            return <Kvittering formatMessage={formatMessage}/>;
-        }
-        const validationResult = getValidationMessages(harSubmittedSkjema, fritekst, godkjentVilkaar);
-
-        return (
-            <div>
-                <Breadcrumbs routes={routes} params={params} formatMessage={formatMessage}/>
-                <h1 className="typo-sidetittel text-center blokk-l">{formatMessage({id: 'send-sporsmal.still-sporsmal.ny-melding-overskrift'})}</h1>
-                <article className="send-sporsmal-container send-panel">
-                    <div className="sporsmal-header">
-                        <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">{formatMessage({id: 'send-sporsmal.still-sporsmal.deloverskrift'})}</h2>
-                    </div>
-                    <strong>{formatMessage({id: temagruppe})}</strong>
-                    <InfoBoks sendingStatus={sendingStatus}/>
-                    <ExpandingTextArea formatMessage={formatMessage} fritekst={fritekst} validationResult={validationResult}/>
-                    <GodtaVilkar formatMessage={formatMessage} visModal={visModal} validationResult={validationResult} godkjentVilkaar={godkjentVilkaar}/>
-                    <input type="submit" className="knapp knapp-hoved knapp-stor" role="button"
-                           value={formatMessage({ id: 'send-sporsmal.still-sporsmal.send-inn' })}
-                           onClick={submit(dispatch, temagruppe, fritekst, godkjentVilkaar)}
-                    />
-                </article>
-            </div>
-        );
-    }
+    return (
+        <form onSubmit={submit}>
+            <Breadcrumbs routes={routes} params={params} />
+            <h1 className="typo-sidetittel text-center blokk-l">
+                <FormattedMessage id="send-sporsmal.still-sporsmal.ny-melding-overskrift" />
+            </h1>
+            <article className="send-sporsmal-container send-panel">
+                <div className="sporsmal-header">
+                    <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">
+                        <FormattedMessage id="send-sporsmal.still-sporsmal.deloverskrift" />
+                    </h2>
+                </div>
+                <strong><FormattedMessage id={temagruppe} /></strong>
+                <InfoBoks sendingStatus={sendingStatus} />
+                <ExpandingTextArea config={fields.fritekst} feilmeldingpanel={feilmeldingpanel} />
+                <GodtaVilkar
+                    visModal={visModal}
+                    config={fields.godkjennVilkaar}
+                    actions={actions}
+                />
+                <button type="submit" className="knapp knapp-hoved knapp-stor">
+                    <FormattedMessage id="send-sporsmal.still-sporsmal.send-inn" />
+                </button>
+            </article>
+        </form>
+    );
 }
 
-Skriv.propTypes = {
-    temagruppe: pt.string,
-    intl: intlShape.isRequired,
-    visModal: pt.bool.isRequired,
-    harSubmittedSkjema: pt.bool.isRequired,
-    sendingStatus: pt.string.isRequired,
-    godkjentVilkaar: pt.bool.isRequired,
-    validationResult: pt.array.isRequired
+SkrivNyttSporsmal.propTypes = {
+    params: PT.shape({
+        temagruppe: PT.string
+    }).isRequired,
+    routes: PT.array.isRequired,
+    actions: PT.shape({
+        sendSporsmal: PT.func,
+        velgVisModal: PT.func
+    }).isRequired,
+    errors: PT.object.isRequired,
+    fields: PT.object.isRequired,
+    handleSubmit: PT.func.isRequired,
+    submitFailed: PT.bool.isRequired,
+    submitToken: PT.string,
+    sendingStatus: PT.string,
+    visModal: PT.bool.isRequired,
+    godkjenteTemagrupper: PT.arrayOf(PT.string).isRequired
 };
 
-const mapStateToProps = ({ visModal, fritekst, harSubmittedSkjema, godkjentVilkaar, sendingStatus  }) => ({
-    visModal,
-    fritekst,
-    harSubmittedSkjema,
-    godkjentVilkaar,
-    sendingStatus
+const mapStateToProps = ({ data, form }) => ({
+    submitToken: form['nytt-sporsmal'].submitToken,
+    visModal: data.visModal,
+    godkjenteTemagrupper: data.godkjenteTemagrupper,
+    sendingStatus: data.sendingStatus
 });
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(
+        { sendSporsmal, velgVisModal },
+        dispatch
+    )
+});
+const formConfig = {
+    form: 'nytt-sporsmal',
+    fields: ['fritekst', 'godkjennVilkaar'],
+    returnRejectedSubmitPromise: true,
+    validate
+};
 
-export default injectIntl(connect(mapStateToProps)(Skriv));
+export default connect(mapStateToProps, mapDispatchToProps)(
+    createForm(SkrivNyttSporsmal, formConfig, { fritekst: '', godkjennVilkaar: false })
+);
+

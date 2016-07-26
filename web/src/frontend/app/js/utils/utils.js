@@ -1,33 +1,33 @@
 import React from 'react';
 import sanitize from 'sanitize-html';
-import format from 'string-format';
 import moment from 'moment';
-import { formatHTMLMessage } from 'react-intl';
 import 'moment/locale/nb';
-import Constants from './Constants';
+import Constants from './constants';
 
 moment.locale('nb');
 
 export const leggTilLenkerTags = (innhold) => {
-    var uriRegex = /(([\w-]+:\/\/?|www(?:-\w+)?\.)[^\s()<>]+\w)/g;
-    var httpRegex = /^(https?):\/\/.*$/;
+    const uriRegex = /(([\w-]+:\/\/?|www(?:-\w+)?\.)[^\s()<>]+\w)/g;
+    const httpRegex = /^(https?):\/\/.*$/;
 
-    return innhold.replace(uriRegex, function (match) {
-        match = match.match(httpRegex) ? match : 'http://' + match;
-        return '<a target="_blank" href="' + match + '">' + match + '</a>'
+    return innhold.replace(uriRegex, (match) => {
+        const matched = match.match(httpRegex) ? match : `http://${match}`;
+        return `<a target="_blank" href="${matched}">${matched}</a>`;
     });
 };
 
-export const tilAvsnitt = (avsnitt, index) => {
-    return <span dangerouslySetInnerHTML={{__html: sanitize(avsnitt, {allowedTags: ['a']})}} key={index}/>;
-};
+export const tilAvsnitt = (avsnitt, index) => (
+    <span dangerouslySetInnerHTML={{ __html: sanitize(avsnitt, { allowedTags: ['a'] }) }} key={index} />
+);
 
-export const prettyDate = (date) => {
-    return moment(date).format('Do MMMM YYYY, [kl.] HH:mm');
-};
+export const prettyDate = (date) => moment(date).format('Do MMMM YYYY, [kl.] HH:mm');
 
-export const shortDate = (date) => {
-    return moment(date).format('DD.MM.YY')
+export const shortDate = (date) => moment(date).format('DD.MM.YY');
+
+export const getCookie = (name) => {
+    const re = new RegExp(`${name}=([^;]+)`);
+    const match = re.exec(document.cookie);
+    return match !== null ? match[1] : '';
 };
 
 export const addXsrfHeader = (xhr) => {
@@ -41,9 +41,8 @@ export const status = (melding) => {
         return Constants.IKKE_LEST;
     } else if (melding.type === 'SPORSMAL_MODIA_UTGAAENDE') {
         return Constants.LEST_UBESVART;
-    } else {
-        return Constants.LEST;
     }
+    return Constants.LEST;
 };
 
 export function nyesteTraadForst(traad1, traad2) {
@@ -52,5 +51,9 @@ export function nyesteTraadForst(traad1, traad2) {
 
     if (d1 < d2) return 1;
     else if (d1 > d2) return -1;
-    else return 0;
+    return 0;
 }
+
+export const reduxFormProps = ({
+    checked, name, onBlur, onChange, onDragStart, onDrop, onFocus, value
+}) => ({ checked, name, onBlur, onChange, onDragStart, onDrop, onFocus, value });

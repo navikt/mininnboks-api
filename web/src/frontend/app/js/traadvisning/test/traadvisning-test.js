@@ -1,15 +1,12 @@
 /* eslint-env mocha */
-
-import '../../testConfig';
+import '../../test-config';
 import { expect, assert } from 'chai';
 import sinon from 'sinon';
 import React from 'react';
-import stubRouterContext from '../../utils/StubRouterContext';
-import Traadvisning from '../Traadvisning';
+import stubRouterContext from '../../utils/stub-router-context';
+import Traadvisning from '../traadvisning';
 
 import { renderIntoDocument, scryRenderedDOMComponentsWithClass } from 'react-addons-test-utils';
-
-const assign = Object.assign || require('object-assign');
 
 const formatMessage = () => {};
 
@@ -71,7 +68,7 @@ describe('Trådvisning initialisering', () => {
     });
 
     it('kan initialiseres med trådobjekt', () => {
-        const TraadvisningWrapper = stubRouterContext(Traadvisning, assign({}, props, { valgtTraad: traad }));
+        const TraadvisningWrapper = stubRouterContext(Traadvisning, { ...props, valgtTraad: traad });
         const traadvisning = renderIntoDocument(<TraadvisningWrapper />);
 
         assert.isTrue(traadvisning.getComponent().state.hentet);
@@ -85,7 +82,7 @@ describe('Trådvisning initialisering', () => {
             xhr.respond(200, {}, traad);
         });
 
-        const TraadvisningWrapper = stubRouterContext(Traadvisning, assign({}, props, { params: { traadId: '1' } }));
+        const TraadvisningWrapper = stubRouterContext(Traadvisning, { ...props, params: { traadId: '1' } });
         renderIntoDocument(<TraadvisningWrapper />);
 
         server.restore();
@@ -94,7 +91,7 @@ describe('Trådvisning initialisering', () => {
 
 describe('Trådvisning', () => {
     it('viser tråd', () => {
-        const TraadvisningWrapper = stubRouterContext(Traadvisning, assign({}, props, { valgtTraad: assign({}, traad) }));
+        const TraadvisningWrapper = stubRouterContext(Traadvisning, { ...props, valgtTraad: { ...traad } });
         const traadvisning = renderIntoDocument(<TraadvisningWrapper />);
 
         const meldingerContainer = scryRenderedDOMComponentsWithClass(traadvisning, 'melding-container');

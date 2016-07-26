@@ -1,7 +1,7 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import { shortDate, tilAvsnitt } from './../utils/Utils';
+import { shortDate, tilAvsnitt } from './../utils/utils';
 import AvsenderHeader from './avsender-header';
 import AntallMeldinger from './antall-meldinger';
 import classNames from 'classnames';
@@ -14,15 +14,16 @@ const cls = (props) => classNames('panel panel-ikon panel-klikkbart blokk-xxxs d
 function MeldingPreview(props) {
     const { traad } = props;
     const melding = traad.nyeste;
-    const avsender = traad.nyeste.fraNav ? <AvsenderHeader meldingType={melding.type} />: null;
+    const avsender = traad.nyeste.fraNav ? <AvsenderHeader meldingType={melding.type} /> : null;
     const dato = shortDate(melding.opprettet);
     const avsnitt = melding.fritekst.split(/[\r\n]+/).map(tilAvsnitt);
     const antallMeldinger = traad.meldinger.length;
 
     return (
         <li className="traad" key={melding.traadId}>
-            <Link to={`/traad/${melding.traadId}`}
-                  className={cls(props)}
+            <Link
+                to={`/traad/${melding.traadId}`}
+                className={cls(props)}
             >
                 <p className="vekk">
                     <FormattedMessage id="meldinger.ikon" />

@@ -9,7 +9,7 @@ function SkrivKnapp({ onClick, kanBesvares, skrivSvar }) {
     return (
         <div className="innboks-navigasjon">
             <button onClick={onClick} className="knapp knapp-hoved knapp-liten">
-                <FormattedMessage id="traadvisning.skriv.svar.link"/>
+                <FormattedMessage id="traadvisning.skriv.svar.link" />
             </button>
         </div>
     );
