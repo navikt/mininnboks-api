@@ -72,7 +72,6 @@ class TraadVisning extends React.Component {
 TraadVisning.propTypes = {
     traader: PT.array.isRequired,
     skrivSvar: PT.bool.isRequired,
-    fritekst: PT.string.isRequired,
     sendingStatus: PT.string.isRequired,
     actions: PT.shape({
         resetInputState: PT.func.isRequired,
