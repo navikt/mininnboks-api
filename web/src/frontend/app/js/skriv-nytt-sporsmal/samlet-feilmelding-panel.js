@@ -8,7 +8,7 @@ function SamletFeilmeldingPanel({ errors, submitFailed, submitToken }) {
 
     const feilmeldinger = Object.entries(errors).map(([element, feilkode]) => (
         <li key={element}>
-            <a href={`#${element}`}><FormattedMessage id={`feilmelding.${element}.${feilkode}`}/></a>
+            <a href={`#${element}`}><FormattedMessage id={`feilmelding.${element}.${feilkode}`} /></a>
         </li>
     ));
 
@@ -30,7 +30,8 @@ function SamletFeilmeldingPanel({ errors, submitFailed, submitToken }) {
 
 SamletFeilmeldingPanel.propTypes = {
     errors: PT.object.isRequired,
-    submitFailed: PT.bool.isRequired
+    submitFailed: PT.bool.isRequired,
+    submitToken: PT.string
 };
 
 export default SamletFeilmeldingPanel;

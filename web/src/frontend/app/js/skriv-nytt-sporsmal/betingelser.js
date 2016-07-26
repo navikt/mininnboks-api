@@ -1,5 +1,5 @@
 import React, { PropTypes as PT } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Modal from '../modal/modal';
 
 const modalConfig = {
@@ -27,9 +27,7 @@ class Betingelser extends React.Component {
     }
 
     render() {
-        const { godkjennVilkaar, avbryt, visModal, lukkModal, intl } = this.props;
-
-        const htmlContent = intl.formatMessage({id: 'send-sporsmal.still-sporsmal.betingelser.tekst'});
+        const { godkjennVilkaar, avbryt, visModal, lukkModal } = this.props;
 
         /* eslint-disable no-script-url */
         return (
@@ -39,7 +37,9 @@ class Betingelser extends React.Component {
                         <h1 className="typo-sidetittel text-center blokk-l" tabIndex="0">
                             <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.overskrift" />
                         </h1>
-                        <div className="blokk-xl" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+                        <div className="blokk-xl">
+                            <FormattedHTMLMessage id="send-sporsmal.still-sporsmal.betingelser.tekst" />
+                        </div>
                         <hr className="blokk-xl" />
                         <button
                             type="submit"
@@ -67,11 +67,10 @@ class Betingelser extends React.Component {
 }
 
 Betingelser.propTypes = {
-    intl: PT.object.isRequired,
     godkjennVilkaar: PT.func.isRequired,
     avbryt: PT.func.isRequired,
     visModal: PT.bool.isRequired,
     lukkModal: PT.func.isRequired
 };
 
-export default injectIntl(Betingelser);
+export default Betingelser;

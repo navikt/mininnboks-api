@@ -1,1 +1,1 @@
-export const revokeSubmittoken = ()=> ({ type: 'redux-form-plugin/FORM_VALID' });
+export const revokeSubmittoken = () => ({ type: 'redux-form-plugin/FORM_VALID' });

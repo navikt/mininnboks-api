@@ -4,7 +4,7 @@ import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
 import { FormattedMessage } from 'react-intl';
 import { reduxForm } from 'redux-form';
 
-function BesvarBoks({ traadId, skrivSvar, avbryt, submit, fields, handleSubmit, resetForm, }) {
+function BesvarBoks({ traadId, skrivSvar, avbryt, submit, fields, handleSubmit, resetForm }) {
     if (!skrivSvar) {
         return null;
     }

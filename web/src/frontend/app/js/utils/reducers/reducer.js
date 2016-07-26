@@ -22,7 +22,7 @@ const dataReducer = (state = initialState, action) => {
             if (options.cmskeys) {
                 tekster = mapValues(tekster, (value, key) => `[${key}] ${value}`);
             }
-            let godkjenteTemagrupper = ledetekster['temagruppe.liste'].split(' ');
+            const godkjenteTemagrupper = ledetekster['temagruppe.liste'].split(' ');
 
             return { ...state,
                 harHentetInitData: true,
@@ -73,4 +73,4 @@ const dataReducer = (state = initialState, action) => {
 export default combineReducers({
     data: dataReducer,
     form: formReducer('nytt-sporsmal')
-})
+});

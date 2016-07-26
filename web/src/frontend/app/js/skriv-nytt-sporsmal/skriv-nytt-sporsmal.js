@@ -1,6 +1,5 @@
 import React, { PropTypes as PT } from 'react';
 import { createForm } from './../utils/nav-form/nav-form';
-import { reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
 import GodtaVilkar from './godta-vilkar';
@@ -9,7 +8,7 @@ import Feilmelding from '../feilmelding/feilmelding';
 import SendingStatus from './sending-status';
 import InfoBoks from '../infoboks/infoboks';
 import { sendSporsmal, velgVisModal } from '../utils/actions/actions';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from './../utils/brodsmulesti/custom-breadcrumbs';
 import SamletFeilmeldingPanel from './samlet-feilmelding-panel';
@@ -35,7 +34,9 @@ function SkrivNyttSporsmal({
         return <Kvittering />;
     }
 
-    const feilmeldingpanel = <SamletFeilmeldingPanel errors={errors} submitFailed={submitFailed} submitToken={submitToken} />;
+    const feilmeldingpanel = (
+        <SamletFeilmeldingPanel errors={errors} submitFailed={submitFailed} submitToken={submitToken} />
+    );
 
     return (
         <form onSubmit={submit}>
@@ -51,7 +52,7 @@ function SkrivNyttSporsmal({
                 </div>
                 <strong><FormattedMessage id={temagruppe} /></strong>
                 <InfoBoks sendingStatus={sendingStatus} />
-                <ExpandingTextArea config={fields.fritekst} feilmeldingpanel={feilmeldingpanel}/>
+                <ExpandingTextArea config={fields.fritekst} feilmeldingpanel={feilmeldingpanel} />
                 <GodtaVilkar
                     visModal={visModal}
                     config={fields.godkjennVilkaar}
@@ -74,8 +75,11 @@ SkrivNyttSporsmal.propTypes = {
         sendSporsmal: PT.func,
         velgVisModal: PT.func
     }).isRequired,
+    errors: PT.object.isRequired,
     fields: PT.object.isRequired,
     handleSubmit: PT.func.isRequired,
+    submitFailed: PT.bool.isRequired,
+    submitToken: PT.string,
     sendingStatus: PT.string,
     visModal: PT.bool.isRequired,
     godkjenteTemagrupper: PT.arrayOf(PT.string).isRequired
@@ -100,5 +104,7 @@ const formConfig = {
     validate
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(createForm(SkrivNyttSporsmal, formConfig, { fritekst: '', godkjennVilkaar: false }));
+export default connect(mapStateToProps, mapDispatchToProps)(
+    createForm(SkrivNyttSporsmal, formConfig, { fritekst: '', godkjennVilkaar: false })
+);
 

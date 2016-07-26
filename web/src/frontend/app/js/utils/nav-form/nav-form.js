@@ -1,4 +1,4 @@
-import React, { Component, Children, PropTypes as PT } from 'react';
+import React, { Component, PropTypes as PT } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm } from 'redux-form';

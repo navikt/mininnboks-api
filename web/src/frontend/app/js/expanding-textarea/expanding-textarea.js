@@ -1,5 +1,4 @@
 import React, { PropTypes as PT } from 'react';
-import SamletFeilmeldingPanel from '../skriv-nytt-sporsmal/samlet-feilmelding-panel';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import { reduxFormProps } from './../utils/utils';
@@ -58,6 +57,7 @@ ExpandingTextArea.defaultProps = {
 };
 ExpandingTextArea.propTypes = {
     intl: PT.object.isRequired,
+    config: PT.object.isRequired,
     makslengde: PT.number,
     feilmeldingpanel: PT.node
 };

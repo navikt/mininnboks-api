@@ -1,8 +1,7 @@
-import React, { PropTypes as PT } from 'react';
+import React from 'react';
+// eslint-disable-next-line camelcase
 import { unstable_renderSubtreeIntoContainer as renderSubtreeIntoContainer, unmountComponentAtNode } from 'react-dom';
 import Portal from './modal-portal';
-import { render } from 'react-dom';
-import { IntlProvider } from 'react-intl';
 
 class Modal extends React.Component {
     constructor(props) {

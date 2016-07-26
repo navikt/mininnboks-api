@@ -28,17 +28,13 @@ export const lesTraad = (traadId) => (dispatch) => Api.markerTraadSomLest(traadI
 export const lesDokumentVarsel = (behandlingsId) => (dispatch) => Api.markerSomLest(behandlingsId)
     .then(() => dispatch(dokumentVarselLest(behandlingsId)));
 
-export const sendSporsmal = (temagruppe, fritekst) => (dispatch) => {
-    return Api.sendSporsmal(temagruppe, fritekst)
+export const sendSporsmal = (temagruppe, fritekst) => (dispatch) => Api.sendSporsmal(temagruppe, fritekst)
         .then(() => dispatch(hentTraader()))
         .then(() => dispatch(settSendingStatus(SendingStatus.ok)))
         .catch(() => dispatch(settSendingStatus(SendingStatus.feil)));
-};
 
-export const sendSvar = (traadId, fritekst) => (dispatch) => {
-    return Api.sendSvar(traadId, fritekst)
+export const sendSvar = (traadId, fritekst) => (dispatch) => Api.sendSvar(traadId, fritekst)
         .then(() => dispatch(hentTraader()))
         .then(() => dispatch(settSendingStatus(SendingStatus.ok)))
         .then(() => dispatch(resetInputState()))
         .catch(() => dispatch(settSendingStatus(SendingStatus.feil)));
-};
