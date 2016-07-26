@@ -17,7 +17,7 @@ function MeldingPreview(props) {
     const avsnitt = melding.fritekst.split(/[\r\n]+/).map(tilAvsnitt);
     const antallMeldinger = traad.meldinger.length;
 
-    const maBesvares = meldingType === 'SPORSMAL_MODIA_UTGAAENDE' ?
+    const maBesvares = melding.type === 'SPORSMAL_MODIA_UTGAAENDE' ?
         <span>/ <strong className="purring"><FormattedMessage id="purre.svar" /></strong></span> : null;
 
     const avsender = traad.nyeste.fraNav ? (
