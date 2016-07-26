@@ -19,15 +19,16 @@ class DokumentVisningSide extends React.Component {
     }
 
     render() {
-        if (!this.props.dokumentvisning) {
+        const { params, routes, dokumentvisning } = this.props;
+
+        if (!dokumentvisning) {
             return null;
         }
-        const { params, routes } = this.props;
 
         return (
             <div className="dokinnsyn">
                 <Breadcrumbs routes={routes} params={params} />
-                <Dokumentvisning {...this.props.dokumentvisning} />
+                <Dokumentvisning {...dokumentvisning} />
             </div>
         );
     }
