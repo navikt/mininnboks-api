@@ -43,7 +43,7 @@ function MeldingPreview(props) {
                     </p>
                     <h2 className="typo-element blokk-xxs">
                         {melding.statusTekst}
-                        <span className="visuallyhidden">
+                        <span className="vekk">
                             {flereMeldinger}
                             {maBesvares}
                         </span>

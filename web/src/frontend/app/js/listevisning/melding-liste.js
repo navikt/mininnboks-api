@@ -23,7 +23,7 @@ const MeldingListe = ({ meldinger, overskrift }) => {
         <section className="traad-liste">
             <h1 className="panel blokk-xxxs clearfix typo-undertittel">
                 <FormattedMessage id={overskrift} values={{ antallMeldinger: meldinger.length }} />
-                <span className="visuallyhidden">({meldinger.length})</span>
+                <span className="vekk">({meldinger.length})</span>
             </h1>
             <ul className="ustilet">
                 {innhold}
