@@ -1,0 +1,36 @@
+@appPrefixUrl: "mininnboks";
+@imgDir: "./../img/midlertidig";
+@modig-frontend-root-url: "./node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources";
+
+@import "@{modig-frontend-root-url}/less/includes/variables";
+@import "@{modig-frontend-root-url}/less/includes/mixins";
+
+.mininnboks {
+  @import "@{modig-frontend-root-url}/less/nav_extra/typografi";
+  @import "@{modig-frontend-root-url}/less/nav_extra/paneler";
+  @import "@{modig-frontend-root-url}/less/nav_extra/validering";
+  @import "@{modig-frontend-root-url}/less/nav_extra/lister";
+  @import "@{modig-frontend-root-url}/less/nav_extra/skjema";
+  @import "@{modig-frontend-root-url}/less/nav_extra/modaler";
+  @import "@{modig-frontend-root-url}/less/nav_extra/hoder";
+  @import "@{modig-frontend-root-url}/less/decorator/knapper";
+  @import "@{modig-frontend-root-url}/less/nav_extra/utilities";
+  @import "@{modig-frontend-root-url}/less/nav_extra/knapperader";
+
+  @import "designmanual";
+  @import "mf-override";
+}
+
+
+
+
+@import "expanding-textarea/expandingtextarea";
+@import "infoboks/infoboks";
+@import "listevisning/listevisning";
+@import "modal/modal";
+@import "skriv-nytt-sporsmal/skriv";
+@import "skriv-nytt-sporsmal/betingelser";
+@import "traadvisning/traadvisning";
+@import "innboks";
+@import "brodsmulesti/brodsmulesti";
+@import "dokument-visning/dokument-visning";
