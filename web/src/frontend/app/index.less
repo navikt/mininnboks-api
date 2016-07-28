@@ -1,5 +1,5 @@
 @appPrefixUrl: "mininnboks";
-@imgDir: "./../img/midlertidig";
+@imgDir: "./../img";
 @modig-frontend-root-url: "./node_modules/modig-frontend/modig-frontend-ressurser/src/main/resources";
 
 @import "@{modig-frontend-root-url}/less/includes/variables";
@@ -21,8 +21,24 @@
   @import "mf-override";
 }
 
+// Overstyringen utenfor app
+.maincontent {
+  padding-top: 0 !important;
+}
 
+@media (min-width: @screen-medium-plus-rem-as-one-px) {
+  .topnavsection:after {
+    border-bottom: none;
+  }
+}
 
+#site-search-input {
+  padding: 0;
+}
+
+.mininnboks {
+  padding-top: 1.5rem;
+}
 
 @import "expanding-textarea/expandingtextarea";
 @import "infoboks/infoboks";
