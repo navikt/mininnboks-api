@@ -31,6 +31,9 @@ function bundle(gulp, bundle, bundleFileName) {
     const buffer = require('vinyl-buffer');
     const uglify = require('gulp-uglify');
     const source = require('vinyl-source-stream');
+    const streamify = require('gulp-streamify');
+    const replace = require('gulp-replace');
+    const gutil = require('gulp-util');
 
     return bundle
         .bundle()
@@ -39,6 +42,7 @@ function bundle(gulp, bundle, bundleFileName) {
             this.emit('end');
         })
         .pipe(source(bundleFileName))
+        .pipe(gulpif(!isProduction(), streamify(replace('/saksoversikt', 'https://127.0.0.1:8587/saksoversikt').on('error', gutil.log))))
         .pipe(gulpif(isProduction(), buffer()))
         .pipe(gulpif(isProduction(), uglify())).on('error', function (error) {
             onError(error);
