@@ -6,13 +6,13 @@ import IntlLenke from './../utils/intl-lenke';
 
 const createLink = (link, key, text, index, routes) => {
     if (index === routes.length - 1) {
-        return <li key={key}><p>{text}</p></li>;
+        return <li key={key} className="brodsmulesti-fragment"><p>{text}</p></li>;
     }
-    return <li key={key}><Link to={link}>{text}</Link></li>;
+    return <li key={key} className="brodsmulesti-fragment"><Link to={link}>{text}</Link></li>;
 };
 
 const prefixElement = (
-    <li key="dittnav">
+    <li key="dittnav" className="brodsmulesti-fragment">
         <IntlLenke href="dittnav.url">
             <FormattedMessage id="brodsmulesti.dittnav.lenketekst" />
         </IntlLenke>
