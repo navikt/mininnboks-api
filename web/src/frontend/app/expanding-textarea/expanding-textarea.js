@@ -26,7 +26,6 @@ class ExpandingTextArea extends Component {
             'har-valideringsfeil': skalViseFeilmelding
         });
 
-        const ariadescribedby = skalViseFeilmelding ? 'textarea.feilmelding' : '';
         const title = intl.formatMessage({ id: 'traadvisning.besvar.tekstfelt' });
         const ariaLabel = intl.formatMessage({ id: 'traadvisning.besvar.tekstfelt' });
 
@@ -49,7 +48,7 @@ class ExpandingTextArea extends Component {
                         title={title}
                         aria-label={ariaLabel}
                         aria-invalid={skalViseFeilmelding}
-                        aria-describedby={ariadescribedby}
+                        aria-describedby="textarea.feilmelding"
                         {...reduxFormProps({ ...config, onChange: this.onChangeProxy })}
                     />
                     <p className="textarea-metatekst" aria-hidden="true">

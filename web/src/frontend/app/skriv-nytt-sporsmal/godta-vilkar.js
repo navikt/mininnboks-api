@@ -1,8 +1,8 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Betingelser from './betingelser';
-import classNames from 'classnames';
 import { reduxFormProps } from './../utils/utils';
+import InlineFeilmelding from './../utils/nav-form/inline-feilmelding';
 
 function GodtaVilkar({ visModal, actions, config }) {
     const ariaCheckboxState = config.checked ? 'Checkbox avkrysset' : 'Checkbox ikke avkrysset';
@@ -20,9 +20,7 @@ function GodtaVilkar({ visModal, actions, config }) {
         actions.velgVisModal(false);
     };
 
-    const feilmeldingKlasse = classNames('skjema-feilmelding', {
-        vekk: !(config.touched && config.error)
-    });
+    const skalViseFeilmelding = !!(config.error && config.touched);
 
     /* eslint-disable jsx-a11y/no-onchange, no-script-url */
     return (
@@ -36,6 +34,7 @@ function GodtaVilkar({ visModal, actions, config }) {
                         type="checkbox"
                         name="betingelseValg:betingelserCheckbox"
                         className="nav-checkbox " id="godkjennVilkaar"
+                        aria-describedby="checkbox-feilmelding"
                         {...reduxFormProps(config)}
                     />
                     <label htmlFor="godkjennVilkaar">
@@ -57,9 +56,9 @@ function GodtaVilkar({ visModal, actions, config }) {
                         lukkModal={lukkModal}
                         name="betingelser-panel"
                     />
-                    <span className={feilmeldingKlasse}>
+                    <InlineFeilmelding id="checkbox-feilmelding" visibleIf={skalViseFeilmelding}>
                         <FormattedMessage id="feilmelding.godkjennVilkaar.required" />
-                    </span>
+                    </InlineFeilmelding>
                 </div>
             </div>
         </div>
