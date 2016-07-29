@@ -1,290 +1,74 @@
-.toppmeny-lenkeliste {
-    display: inline;
-    color: @gray-icon;
-    a {
-        color: @color-link-negative;
-        font-size: @rem-as-14px;
-        text-decoration: none;
-        &:visited {
-            color: @color-link-visited-negative;
-            border-bottom-color: @color-link-visited-negative;
-        }
-        &:hover {
-            color: @color-link-active-negative;
-            border-bottom-color: @color-link-active-negative;
-        }
-        &:focus {
-            background-color: @orange-focus;
-            color: @gray-text;
-            outline: none;
-            border: none;
-        }
-        &:active {
-            color: @color-link-active-negative;
-            border-bottom: 1px solid @color-link-active-negative;
-            background-color: transparent;
-        }
-    }
-}
-
-.toppmeny-spacing {
-    margin-top: 140px;
-}
-
 .dokinnsyn {
-    min-height: 400px;
-    header {
-        position: fixed;
-        left: 0;
-        top: 0;
-        right: 0;
-        background-color: @color-text;
-        color: @white;
-        padding: 20px;
-        text-align: center;
-        z-index: 5000;
-        box-shadow: 0 2px 4px 0 @gray-icon;
-        .lukkekryss {
-            position: absolute;
-            top: -4px;
-            right: 0;
-            border: 1px solid @white;
-            background: url("@{modig-frontend-images-root-url}/ikoner-svg/ikon-kryss-hvit.svg") no-repeat center;
-            background-size: 16px 16px;
-            width: 32px;
-            height: 32px;
-            &:hover {
-                background-color: @color-link;
-            }
-            &:focus {
-                outline: none;
-                .mixin-focus-outline(3px);
-            }
-        }
-        .container {
-            position: relative;
-            color: @color-text;
-        }
-    }
-    .personalia {
-        .hode:before {
-            background-color: transparent;
-            background-image: url("@{imgDir}/midlertidig/account-circle.svg");
-            background-repeat: no-repeat;
-            background-size: 36px 36px;
-            width: 40px;
-            height: 40px;
-            &:hover {
-                background-image: url("@{imgDir}/midlertidig/account-circle_hover.svg");
-                transition: opacity 0.1s ease-in-out;
-            }
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-            text-align: center;
-            li {
-                display: block;
-            }
-        }
-    }
-    .kulemeny {
-        position: fixed;
-        top: 25%;
-        right: 1.5%;
-        list-style: none;
-        padding: 0;
-        input {
-            display: inline-block;
-            border: none;
-            border-radius: 50%;
-            background-color: @color-border;
-            width: 14px;
-            height: 14px;
-            padding: 0;
-            &:hover {
-                background-color: @color-link;
-            }
-            &.active {
-                background-color: @gray-darker;
-                border-bottom: @gray-darker;
-            }
-            &:focus {
-                box-shadow: 0 0 0 2px @color-focus;
-                outline: none;
-            }
-        }
-    }
-    .dokumenter {
-        text-align: center;
-    }
-    .dokumentliste {
-        display: inline-block;
-        list-style: none;
-        padding: 0;
-        .dokument {
-            box-shadow: 0 0 10px @color-border;
-            margin-bottom: 24px;
-            .dokumentheader {
-                background-color: @white;
-                padding: 20px;
-                text-align: center;
-                h1 {
-                    margin: 0;
-                    display: block;
-                }
-                .lokal-linker {
-                    text-align: center;
-                    a:last-child {
-                        margin-left: 2rem;
-                    }
-                }
-                &:focus {
-                    box-shadow: 0 0 0 2px @color-focus;
-                    outline: none;
-                }
-            }
-            img {
-                width: 100%;
-                margin-bottom: 2px;
-                &:focus {
-                    box-shadow: 0 0 0 2px @color-focus;
-                    outline: none;
-                }
-            }
-        }
-    }
-}
+  .dokumenter {
+    width: 100%;
+    padding-right: 2rem;
+    text-align: center;
+    position: relative;
+  }
+  .fixed-position {
+    position: absolute; // Jupp, thats right
+    right: 1.5rem;
+    top: 6rem;
+  }
 
-.contrast {
-    .dokinnsyn {
-        .personalia {
-            .hode:before {
-                background-image: url("@{imgDir}/midlertidig/account-circle-negativ.svg");
-                background-size: 36px 36px;
-            }
-        }
-    }
-}
+  .dokumentliste {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+  }
+  .dokument {
+    box-shadow: 0 0 10px @color-border;
+    margin-bottom: 1.5rem;
 
-@media (min-width: @screen-medium) {
-    // 768px
-    .dokinnsyn {
-        .kulemeny {
-            right: 10px;
-        }
-        .personalia {
-            ul {
-                li {
-                    display: inline-block;
-                    &:not(:first-child) {
-                        margin-left: 2rem;
-                    }
-                }
-            }
-        }
-        .dokumentliste {
-            .dokument {
-                .dokumentheader {
-                    background-color: @white;
-                    padding: 20px;
-                    padding-bottom: 40px;
-                    text-align: left;
-                    h1 {
-                        margin: 0;
-                        margin-bottom: 5px;
-                        display: block;
-                    }
-                    .lokal-linker {
-                        text-align: center;
-                        float: right;
-                        a:last-child {
-                            margin-top: -3px;
-                        }
-                    }
-                }
-            }
-        }
+    img {
+      width: 100%;
+      margin-bottom: 2px;
+      &:focus {
+        .mixin-focus-outline();
+        outline: none;
+      }
     }
+  }
+  .dokumentheader {
+    background-color: @white;
+    padding: 20px;
+    text-align: center;
+    h1 {
+      margin: 0;
+    }
+    &:focus {
+      .mixin-focus-outline();
+      outline: none;
+    }
+  }
+  .lokal-linker {
+    a:not(:last-child) {
+      margin-right: 2rem;
+    }
+  }
+  .kulemeny {
+    .ustilet();
+    position: absolute;
 
-    .dokinnsyn {
-        header {
-            margin: 0 auto;
-            .knapp-negativ {
-                position: absolute;
-                right: 1rem;
-                top: -24px;
-            }
-        }
+    input {
+      display: inline-block;
+      border: none;
+      border-radius: 50%;
+      background-color: @color-border;
+      width: 14px;
+      height: 14px;
+      padding: 0;
+      &:hover {
+        background-color: @color-link;
+      }
+      &.active {
+        background-color: @gray-darker;
+        border-bottom: @gray-darker;
+      }
+      &:focus {
+        .mixin-focus-outline();
+        outline: none;
+      }
     }
-
-    .toppmeny-spacing {
-        margin-top: 100px;
-    }
-}
-
-@media (min-width: 1020px) {
-    .dokinnsyn .kulemeny {
-        right: 100px;
-    }
-}
-
-@media (min-width: 1120px) {
-    .dokinnsyn .kulemeny {
-        right: 150px;
-    }
-}
-
-@media (min-width: 1220px) {
-    .dokinnsyn .kulemeny {
-        right: 200px;
-    }
-}
-
-@media (min-width: 1320px) {
-    .dokinnsyn .kulemeny {
-        right: 250px;
-    }
-}
-
-@media (min-width: 1420px) {
-    .dokinnsyn .kulemeny {
-        right: 300px;
-    }
-}
-
-@media (min-width: 1520px) {
-    .dokinnsyn .kulemeny {
-        right: 350px;
-    }
-}
-
-@media (min-width: 1620px) {
-    .dokinnsyn .kulemeny {
-        right: 400px;
-    }
-}
-
-@media (min-width: 1720px) {
-    .dokinnsyn .kulemeny {
-        right: 450px;
-    }
-}
-
-@media (min-width: 1820px) {
-    .dokinnsyn .kulemeny {
-        right: 500px;
-    }
-}
-
-@media (min-width: 1920px) {
-    .dokinnsyn .kulemeny {
-        right: 550px;
-    }
-}
-
-@media (max-width: @screen-medium-plus-rem-as-one-px) {
-    .innsynside .col-md-9 {
-        width: 97%;
-    }
+  }
 }
