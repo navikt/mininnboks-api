@@ -69,9 +69,8 @@ export function autobind(ctx) {
 
 export function debounce(func, wait, immediate) {
     let timeout;
-    return function() {
+    return function debounced(...args) {
         const context = this;
-        const args = arguments;
         const later = () => {
             timeout = null;
             if (!immediate) {
@@ -84,30 +83,29 @@ export function debounce(func, wait, immediate) {
         if (callNow) {
             func.apply(context, args);
         }
-    }
+    };
 }
 
 export const fn = (value) => (typeof value === 'function' ? value : () => value);
 export const getDisplayName = (component) => component.displayName || component.name || 'Component';
 
-export function throttle(fn, threshold = 250) {
+export function throttle(func, threshold = 250) {
     let last;
     let deferTimer;
 
-    return function closure() {
+    return function throttled(...args) {
         const context = this;
 
         const now = +new Date();
-        const args = arguments;
         if (last && now < last + threshold) {
             clearTimeout(deferTimer);
-            deferTimer = setTimeout(function(){
+            deferTimer = setTimeout(() => {
                 last = now;
-                fn.apply(context, args);
+                func.apply(context, args);
             }, threshold);
         } else {
             last = now;
-            fn.apply(context, args);
+            func.apply(context, args);
         }
     };
 }

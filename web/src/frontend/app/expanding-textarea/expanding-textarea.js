@@ -36,9 +36,9 @@ class ExpandingTextArea extends Component {
                 <div className="textareamirror" ref="mirror" aria-hidden="true"></div>
                 <div className={containerClassname}>
                     <label htmlFor="fritekst">
-                    <span className="typo-normal max-length vekk">
-                        <FormattedMessage id="skriv.fritekst.label" values={{ antallTegn: makslengde }}/>
-                    </span>
+                        <span className="typo-normal max-length vekk">
+                            <FormattedMessage id="skriv.fritekst.label" values={{ antallTegn: makslengde }} />
+                        </span>
                     </label>
                     <textarea
                         id="fritekst"

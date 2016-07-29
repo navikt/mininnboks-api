@@ -1,5 +1,5 @@
 import React, { PropTypes as PT } from 'react';
-import { visibleIf } from './../hocs/visible-if';
+import { visibleIfHOC } from './../hocs/visible-if';
 
 function InlineFeilmelding({ id, children }) {
     return (
@@ -20,4 +20,4 @@ InlineFeilmelding.propTypes = {
     children: PT.node.isRequired
 };
 
-export default visibleIf(InlineFeilmelding);
+export default visibleIfHOC(InlineFeilmelding);

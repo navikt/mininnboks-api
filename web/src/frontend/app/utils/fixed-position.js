@@ -22,12 +22,12 @@ class FixedPosition extends Component {
     setStyle(position, top, left) {
         this.refs.fixed.style.position = position;
         if (top) {
-            this.refs.fixed.style.top = top
+            this.refs.fixed.style.top = top;
         } else {
             this.refs.fixed.style.removeProperty('top');
         }
         if (left) {
-            this.refs.fixed.style.left = left
+            this.refs.fixed.style.left = left;
         } else {
             this.refs.fixed.style.removeProperty('left');
         }

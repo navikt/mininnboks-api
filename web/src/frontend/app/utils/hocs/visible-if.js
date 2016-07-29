@@ -1,7 +1,7 @@
 import React, { PropTypes as PT } from 'react';
 import { fn, getDisplayName } from './../utils';
 
-export function visibleIf(komponent) {
+export function visibleIfHOC(komponent) {
     function visibleIfWrapper({ visibleIf, ...props }) {
         if (fn(visibleIf)()) {
             return React.createElement(komponent, props);
