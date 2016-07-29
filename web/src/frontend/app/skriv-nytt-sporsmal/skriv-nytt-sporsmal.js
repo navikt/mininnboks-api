@@ -34,10 +34,6 @@ function SkrivNyttSporsmal({
         return <Kvittering />;
     }
 
-    const feilmeldingpanel = (
-        <SamletFeilmeldingPanel errors={errors} submitFailed={submitFailed} submitToken={submitToken} />
-    );
-
     return (
         <form onSubmit={submit}>
             <Breadcrumbs routes={routes} params={params} />
@@ -50,9 +46,11 @@ function SkrivNyttSporsmal({
                         <FormattedMessage id="send-sporsmal.still-sporsmal.deloverskrift" />
                     </h2>
                 </div>
-                <strong><FormattedMessage id={temagruppe} /></strong>
+                <p className="text-bold"><FormattedMessage id={temagruppe} /></p>
                 <InfoBoks sendingStatus={sendingStatus} />
-                <ExpandingTextArea config={fields.fritekst} feilmeldingpanel={feilmeldingpanel} />
+                <p className="typo-normal"><FormattedMessage id="textarea.infotekst" /></p>
+                <SamletFeilmeldingPanel errors={errors} submitFailed={submitFailed} submitToken={submitToken} />
+                <ExpandingTextArea config={fields.fritekst} />
                 <GodtaVilkar
                     visModal={visModal}
                     config={fields.godkjennVilkaar}
