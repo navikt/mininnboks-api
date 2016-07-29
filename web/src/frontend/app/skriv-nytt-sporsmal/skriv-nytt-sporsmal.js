@@ -11,7 +11,7 @@ import { sendSporsmal, velgVisModal } from '../utils/actions/actions';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
-import SamletFeilmeldingPanel from './samlet-feilmelding-panel';
+import SamletFeilmeldingPanel from '../utils/nav-form/samlet-feilmelding-panel';
 import { validate } from '../utils/validationutil';
 
 function SkrivNyttSporsmal({
