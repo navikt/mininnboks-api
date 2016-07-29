@@ -57,3 +57,57 @@ export function nyesteTraadForst(traad1, traad2) {
 export const reduxFormProps = ({
     checked, name, onBlur, onChange, onDragStart, onDrop, onFocus, value
 }) => ({ checked, name, onBlur, onChange, onDragStart, onDrop, onFocus, value });
+
+export function autobind(ctx) {
+    Object.getOwnPropertyNames(ctx.constructor.prototype)
+        .filter((prop) => typeof ctx[prop] === 'function')
+        .forEach((method) => {
+            // eslint-disable-next-line
+            ctx[method] = ctx[method].bind(ctx);
+        });
+}
+
+export function debounce(func, wait, immediate) {
+    let timeout;
+    return function() {
+        const context = this;
+        const args = arguments;
+        const later = () => {
+            timeout = null;
+            if (!immediate) {
+                func.apply(context, args);
+            }
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) {
+            func.apply(context, args);
+        }
+    }
+}
+
+export const fn = (value) => (typeof value === 'function' ? value : () => value);
+export const getDisplayName = (component) => component.displayName || component.name || 'Component';
+
+export function throttle(fn, threshold = 250) {
+    let last;
+    let deferTimer;
+
+    return function closure() {
+        const context = this;
+
+        const now = +new Date();
+        const args = arguments;
+        if (last && now < last + threshold) {
+            clearTimeout(deferTimer);
+            deferTimer = setTimeout(function(){
+                last = now;
+                fn.apply(context, args);
+            }, threshold);
+        } else {
+            last = now;
+            fn.apply(context, args);
+        }
+    };
+}
