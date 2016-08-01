@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
 import Breadcrumbs from 'react-router-breadcrumbs';
 import IntlLenke from './../utils/intl-lenke';
+import classNames from 'classnames';
 
 const createLink = (link, key, text, index, routes) => {
     if (index === routes.length - 1) {
@@ -19,9 +20,9 @@ const prefixElement = (
     </li>
 );
 
-function CustomBreadcrumb({ routes, params, resolver }) {
+function CustomBreadcrumb({ routes, params, resolver, className }) {
     return (
-        <div className="vekk-mobil">
+        <div className={classNames('vekk-mobil', className)}>
             <h2 className="vekk">
                 <FormattedMessage id="brodsmulesti.info.for.skjemlesere" />
             </h2>
@@ -45,7 +46,8 @@ CustomBreadcrumb.defaultProps = {
 CustomBreadcrumb.propTypes = {
     routes: PT.arrayOf(PT.object).isRequired,
     params: PT.object,
-    resolver: PT.func
+    resolver: PT.func,
+    className: PT.string
 };
 
 export * from 'react-router-breadcrumbs';

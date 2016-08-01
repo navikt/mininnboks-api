@@ -18,12 +18,14 @@ function BesvarBoks({ traadId, skrivSvar, avbryt, submit, fields, handleSubmit, 
 
     /* eslint-disable jsx-a11y/no-onchange, no-script-url */
     return (
-        <form className="besvar-container" onSubmit={handleSubmit(onSubmit)}>
-            <ExpandingTextArea config={fields.fritekst} />
-            <button type="submit" className="knapp knapp-hoved knapp-liten">
-                <FormattedMessage id="traadvisning.besvar.send" />
-            </button>
-            <a href="javascript:void(0)" onClick={onAbort} role="button" className="svar-avbryt" >
+        <form className="besvar-container text-center blokk-center blokk-l" onSubmit={handleSubmit(onSubmit)}>
+            <ExpandingTextArea config={fields.fritekst} className="blokk-m" />
+            <div className="blokk-xs">
+                <button type="submit" className="knapp knapp-hoved knapp-liten">
+                    <FormattedMessage id="traadvisning.besvar.send" />
+                </button>
+            </div>
+            <a href="javascript:void(0)" onClick={onAbort} role="button" >
                 <FormattedMessage id="traadvisning.besvar.avbryt" />
             </a>
         </form>

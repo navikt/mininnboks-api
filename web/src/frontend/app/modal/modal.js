@@ -12,7 +12,7 @@ class Modal extends React.Component {
     componentDidMount() {
         if (typeof this.portalElement === 'undefined') {
             this.portalElement = document.createElement('div');
-            this.portalElement.className = 'react-modal-container';
+            this.portalElement.className = this.props.className || 'react-modal-container';
             document.body.appendChild(this.portalElement);
         }
 

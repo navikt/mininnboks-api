@@ -6,13 +6,15 @@ import GodtaVilkar from './godta-vilkar';
 import Kvittering from './kvittering';
 import Feilmelding from '../feilmelding/feilmelding';
 import SendingStatus from './sending-status';
-import InfoBoks from '../infoboks/infoboks';
+import Infopanel from '../infopanel/infopanel';
 import { sendSporsmal, velgVisModal } from '../utils/actions/actions';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 import SamletFeilmeldingPanel from '../utils/nav-form/samlet-feilmelding-panel';
 import { validate } from '../utils/validationutil';
+
+const ukjentTemagruppeTittel = <FormattedMessage id="skriv-sporsmal.ukjent-temagruppe"/>;
 
 function SkrivNyttSporsmal({
     params, routes, actions, fields, errors, handleSubmit, submitFailed, submitToken,
@@ -29,28 +31,30 @@ function SkrivNyttSporsmal({
 
 
     if (!godkjenteTemagrupper.includes(temagruppe)) {
-        return <Feilmelding melding="Ikke gjenkjent temagruppe." visIkon />;
+        return (
+            <Feilmelding tittel={ukjentTemagruppeTittel} />
+        );
     } else if (sendingStatus === SendingStatus.ok) {
         return <Kvittering />;
     }
 
     return (
-        <form onSubmit={submit}>
-            <Breadcrumbs routes={routes} params={params} />
-            <h1 className="typo-sidetittel text-center blokk-l">
+        <article className="blokk-center send-sporsmal-side">
+            <Breadcrumbs routes={routes} params={params} className="blokk-s" />
+            <h1 className="typo-sidetittel text-center blokk-m">
                 <FormattedMessage id="send-sporsmal.still-sporsmal.ny-melding-overskrift" />
             </h1>
-            <article className="send-sporsmal-container send-panel">
-                <div className="sporsmal-header">
-                    <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">
-                        <FormattedMessage id="send-sporsmal.still-sporsmal.deloverskrift" />
-                    </h2>
-                </div>
-                <p className="text-bold"><FormattedMessage id={temagruppe} /></p>
-                <InfoBoks sendingStatus={sendingStatus} />
-                <p className="typo-normal"><FormattedMessage id="textarea.infotekst" /></p>
+            <form className="panel text-center" onSubmit={submit}>
+                <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">
+                    <FormattedMessage id="send-sporsmal.still-sporsmal.deloverskrift" />
+                </h2>
+                <p className="text-bold blokk-null"><FormattedMessage id={temagruppe} /></p>
+                <Infopanel type={sendingStatus} visibleIf={sendingStatus && sendingStatus !== 'IKKE_SENDT'} horisontal>
+                    <FormattedMessage id={`infoboks.${sendingStatus}`} />
+                </Infopanel>
+                <p className="typo-normal blokk-xs"><FormattedMessage id="textarea.infotekst" /></p>
                 <SamletFeilmeldingPanel errors={errors} submitFailed={submitFailed} submitToken={submitToken} />
-                <ExpandingTextArea config={fields.fritekst} />
+                <ExpandingTextArea config={fields.fritekst} className="blokk-m" />
                 <GodtaVilkar
                     visModal={visModal}
                     config={fields.godkjennVilkaar}
@@ -59,8 +63,8 @@ function SkrivNyttSporsmal({
                 <button type="submit" className="knapp knapp-hoved knapp-stor">
                     <FormattedMessage id="send-sporsmal.still-sporsmal.send-inn" />
                 </button>
-            </article>
-        </form>
+            </form>
+        </article>
     );
 }
 

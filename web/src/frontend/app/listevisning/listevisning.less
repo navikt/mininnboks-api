@@ -1,98 +1,81 @@
-
-.tema-dokument {
-  color: @color-inactive;
-}
-
-.tema-avsnitt {
-  color: @color-inactive;
-  height: 22px;
-  overflow: hidden;
-}
-
-.uleste-meldinger {
-  .tema-avsnitt {
-    color: @blue-active;
-  }
-}
-
-.ustilet {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.traad .panel.dokument {
-  background-image: url("@{imgDir}/midlertidig/file-new.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-  &.uleste-meldinger {
-    background-image: url("@{imgDir}/midlertidig/file-new-ulestmelding.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-  }
-}
-
-.traad .panel.dokument:hover {
-  background-image: url("@{imgDir}/midlertidig/file-new_hover.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel_hover.svg");
-}
-
-.traad .panel.dialog {
-  background-image: url("@{imgDir}/midlertidig/bubble-chat-text-2.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-  &.uleste-meldinger {
-    background-image: url("@{imgDir}/midlertidig/bubble-chat-text-2-ulestmelding.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-  }
-}
-.traad .panel.dialog.flere-meldinger {
-  background-image: url("@{imgDir}/midlertidig/melding_svart.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-  &.uleste-meldinger {
-    background-image: url("@{imgDir}/midlertidig/melding_svart-ulestmelding.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-  }
-  &:hover {
-    background-image: url("@{imgDir}/midlertidig/melding_svart_hover.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-
-    .antall-flere {
-      position: absolute;
-      left: 112px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: @color-link;
-    }
-  }
-}
-
-.traad .panel.dialog:hover {
-  background-image: url("@{imgDir}/midlertidig/bubble-chat-text-2_hover.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel_hover.svg");
-}
-
-.antall-flere {
-  position: absolute;
-  left: 112px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
 .traad-liste {
   padding: 1rem 2rem 1rem 2rem;
   margin: 0 0 4px 0;
   text-align: left;
-}
-.uleste-meldinger {
-  color: @blue-active;
-}
 
-.purring {
-  color: @red-nav;
-}
-
-.avsender-annen {
-  text-transform: capitalize;
-}
-
-.panel.markert {
-  box-shadow: -6px 0 0 -1px @orange-focus;
-  &:focus {
-    box-shadow: -6px 0 0 1px @orange-focus, 0 0 0 2px @orange-focus
+  .tema-dokument, .tema-avsnitt {
+    color: @color-inactive;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-}
+  .uleste-meldinger {
+    color: @blue-active;
+    .tema-dokument, .tema-avsnitt {
+      color: @blue-active;
+    }
+  }
 
-@media (max-width: @screen-small) {
-  .antall-flere {
-    display: none;
+  .panel {
+    &.dokument {
+      background-image: url("@{imgDir}/midlertidig/file-new.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
+      &.uleste-meldinger {
+        background-image: url("@{imgDir}/midlertidig/file-new-ulestmelding.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
+      }
+      &:hover {
+        background-image: url("@{imgDir}/midlertidig/file-new_hover.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel_hover.svg");
+      }
+    }
+
+    &.dialog {
+      background-image: url("@{imgDir}/midlertidig/bubble-chat-text-2.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
+      &.uleste-meldinger {
+        background-image: url("@{imgDir}/midlertidig/bubble-chat-text-2-ulestmelding.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
+      }
+      &.flere-meldinger {
+        background-image: url("@{imgDir}/midlertidig/melding_svart.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
+        &.uleste-meldinger {
+          background-image: url("@{imgDir}/midlertidig/melding_svart-ulestmelding.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
+        }
+
+        .antall-flere {
+          position: absolute;
+          left: 112px;
+          font-size: 0.8rem;
+          font-weight: 600;
+        }
+        &:hover {
+          background-image: url("@{imgDir}/midlertidig/melding_svart_hover.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
+
+          .antall-flere {
+            position: absolute;
+            left: 112px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: @color-link;
+          }
+        }
+      }
+      &:hover {
+        background-image: url("@{imgDir}/midlertidig/bubble-chat-text-2_hover.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel_hover.svg");
+      }
+    }
+  }
+
+  .purring {
+    color: @red-nav;
+  }
+
+  .panel.markert {
+    box-shadow: -6px 0 0 -1px @orange-focus;
+    &:focus {
+      box-shadow: -6px 0 0 1px @orange-focus, 0 0 0 2px @orange-focus
+    }
+  }
+
+  @media (max-width: @screen-small) {
+    .antall-flere {
+      display: none;
+    }
   }
 }

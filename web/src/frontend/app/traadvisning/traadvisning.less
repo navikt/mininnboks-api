@@ -1,132 +1,59 @@
-.innboks-container .traad-container {
-  max-width: 775px;
-  margin: 0 auto;
-}
-
 .traad-container {
-  padding: 0 16px;
-
   .besvar-container {
     width: 80%;
-    text-align: center;
-    margin: 0 auto 30px;
-    .knapp {
-      margin: 1rem 0 !important;
-    }
-    .sender-spinner {
-      margin-top: 30px;
-    }
-    .svar-avbryt {
-      margin-left: 1rem;
-    }
-  }
-  .melding-container {
-    overflow: hidden;
-    &:not(:last-of-type) {
-      margin-bottom: 30px;
-    }
-    .logo {
-      float: left;
-      margin-top: 34px;
-      width: 10%;
-      height: 35px;
-      position: relative;
-      .responsiveImg {
-        display: none;
-      }
-      img {
-        position: absolute;
-        top: 0;
-        height: 35px;
-      }
-    }
-    .melding {
-      width: 80%;
-      padding: 1em;
-      position: relative;
-      border: 1px solid #e5e5dc;
-      &:before, &:after {
-        position: absolute;
-        top: 53px;
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-      }
-      &:after {
-        border-width: 13px;
-        margin-top: -13px;
-      }
-      &:before {
-        border-width: 14px;
-        margin-top: -14px;
-      }
-    }
-    &.fra-bruker {
-      .logo {
-        float: right;
-        img {
-          right: 8px;
-        }
-      }
-      .melding {
-        float: right;
-        background-color: #e5e5dc;
-        &:before, &:after {
-          left: 100%;
-          border-left-color: #e5e5dc;
-        }
-      }
-    }
-    &.fra-nav {
-      .logo {
-        float: left;
-        img {
-          left: 0;
-        }
-      }
-      .melding {
-        float: left;
-        background-color: @white;
-        &:before, &:after {
-          right: 100%;
-        }
-        &:after {
-          border-right-color: @white;
-        }
-        &:before {
-          border-right-color: #e5e5dc;
-        }
-      }
-    }
   }
 }
 
-@media (max-width: 700px) {
-  .traad-container .melding-container {
-    .logo {
-      width: 11%;
-      z-index: 1;
-      height: initial;
-      padding-top: 6%;
-      top: 60px;
-      margin-top: -4%;
+.melding-container {
+  display: flex;
 
-      img {
-        height: 75%;
-      }
+  .logo {
+    padding-top: 1.7rem;
+  }
+  .logo img {
+    width: 100%;
+  }
+  .melding {
+    border: none;
+    word-break: break-all;
+    &:before {
+      border: none;
+    }
+  }
+
+  &.fra-nav {
+    padding-right: 71px;
+    .logo {
+      flex: 0 0 55px
+    }
+  }
+  &.fra-bruker {
+    padding-left: 71px;
+    .logo {
+      order: 2;
+      flex: 0 0 55px;
+      padding-left: 10px;
+      padding-right: 10px;
     }
     .melding {
-      width: 89%;
+      background-color: #e5e5dc;
     }
-    &.fra-bruker .logo {
-      text-align: right;
-      img {
-        right: 0;
+  }
+  @media (max-width: 44rem) {
+    &.fra-bruker, &.fra-nav {
+      padding: 0;
+    }
+  }
+
+  @media (max-width: 25rem) {
+    .logo {
+      display: none;
+    }
+    .melding {
+      margin: 0;
+      &:before {
+        content: none;
       }
-    }
-    &.fra-nav .logo {
-      text-align: left;
     }
   }
 }

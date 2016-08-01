@@ -3,7 +3,7 @@ import BesvarBoks from './besvar-boks';
 import MeldingContainer from './melding-container';
 import SkrivKnapp from './skriv-knapp';
 import { FormattedMessage } from 'react-intl';
-import InfoBoks from '../infoboks/infoboks';
+import Infopanel from './../infopanel/infopanel';
 import { lesTraad, resetInputState, settSkrivSvar, sendSvar } from '../utils/actions/actions';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
@@ -55,7 +55,9 @@ class TraadVisning extends React.Component {
                         skrivSvar={skrivSvar}
                         onClick={actions.settSkrivSvar}
                     />
-                    <InfoBoks sendingStatus={sendingStatus} />
+                    <Infopanel type={sendingStatus} visibleIf={sendingStatus && sendingStatus !== 'IKKE_SENDT'} horisontal>
+                        <FormattedMessage id={`infoboks.${sendingStatus}`}/>
+                    </Infopanel>
                     <BesvarBoks
                         skrivSvar={skrivSvar}
                         traadId={traadId}

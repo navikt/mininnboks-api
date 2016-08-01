@@ -7,11 +7,13 @@ import classNames from 'classnames';
 
 const cls = (props) => classNames('panel panel-ikon panel-klikkbart dialog', props.ulestMeldingKlasse, {
     markert: props.aktiv,
-    'flere-meldinger': props.traad.length > 1
+    'flere-meldinger': props.traad.meldinger.length > 1
 });
 
 function MeldingPreview(props) {
     const { traad } = props;
+    console.log('traad', traad);
+
     const melding = traad.nyeste;
     const dato = shortDate(melding.opprettet);
     const avsnitt = melding.fritekst.split(/[\r\n]+/).map(tilAvsnitt);

@@ -31,7 +31,7 @@ class ExpandingTextArea extends Component {
 
         /* eslint-disable jsx-a11y/no-onchange */
         return (
-            <div className="expanding-textarea">
+            <div className={classNames('expanding-textarea', this.props.className)}>
                 <div className="textareamirror" ref="mirror" aria-hidden="true"></div>
                 <div className={containerClassname}>
                     <label htmlFor="fritekst">
@@ -69,7 +69,8 @@ ExpandingTextArea.defaultProps = {
 ExpandingTextArea.propTypes = {
     intl: PT.object.isRequired,
     config: PT.object.isRequired,
-    makslengde: PT.number
+    makslengde: PT.number,
+    className: PT.string
 };
 
 export default injectIntl(ExpandingTextArea);

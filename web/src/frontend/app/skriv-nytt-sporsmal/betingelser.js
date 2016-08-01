@@ -31,37 +31,42 @@ class Betingelser extends React.Component {
 
         /* eslint-disable no-script-url */
         return (
-            <div className="react-modal-container">
-                <Modal modalConfig={modalConfig} visModal={visModal} lukkModal={lukkModal} >
-                    <form onSubmit={this.submit} className="betingelser-panel side-innhold">
-                        <h1 className="typo-sidetittel text-center blokk-l" tabIndex="0">
-                            <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.overskrift" />
-                        </h1>
-                        <div className="blokk-xl">
-                            <FormattedHTMLMessage id="send-sporsmal.still-sporsmal.betingelser.tekst" />
-                        </div>
-                        <hr className="blokk-xl" />
+            <Modal
+                modalConfig={modalConfig}
+                visModal={visModal}
+                lukkModal={lukkModal}
+                className="react-modal-container mininnboks-modal"
+            >
+                <form onSubmit={this.submit} className="betingelser-panel panel side-innhold">
+                    <h1 className="typo-sidetittel text-center blokk-l" tabIndex="0">
+                        <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.overskrift" />
+                    </h1>
+                    <div className="blokk-m">
+                        <FormattedHTMLMessage id="send-sporsmal.still-sporsmal.betingelser.tekst" />
+                    </div>
+                    <hr className="blokk-m" />
+                    <div className="svar-godta blokk-center blokk-m">
                         <button
                             type="submit"
-                            className="svar-godta knapp knapp-hoved knapp-stor"
+                            className="knapp knapp-hoved knapp-stor"
                             aria-controls="betingelser"
                             onClick={godkjennVilkaar}
                         >
                             <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.godta" />
                         </button>
-                        <div className="avbryt">
-                            <a
-                                href="javascript:void(0)"
-                                onClick={avbryt}
-                                aria-controls="betingelser"
-                                role="button"
-                            >
-                                <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.ikke-godta" />
-                            </a>
-                        </div>
-                    </form>
-                </Modal>
-            </div>
+                    </div>
+                    <div className="text-center">
+                        <a
+                            href="javascript:void(0)"
+                            onClick={avbryt}
+                            aria-controls="betingelser"
+                            role="button"
+                        >
+                            <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.ikke-godta" />
+                        </a>
+                    </div>
+                </form>
+            </Modal>
         );
     }
 }

@@ -3,10 +3,15 @@ import { injectIntl } from 'react-intl';
 import { tilAvsnitt, prettyDate, leggTilLenkerTags } from '../utils/utils';
 import classNames from 'classnames';
 
-const cls = (melding) => classNames('melding-container', {
+const meldingklasse = (melding) => classNames('melding-container blokk-l', {
     'fra-bruker': melding.fraBruker,
     'fra-nav': !melding.fraBruker
 });
+const panelklasse = (melding) => classNames('melding panel panel-relatert', {
+    'panel-relatert-venstre': !melding.fraBruker,
+    'panel-relatert-hoyre': melding.fraBruker
+});
+
 
 function MeldingContainer({ melding, intl: { formatMessage } }) {
     const imgSrc = melding.fraBruker ? '/mininnboks/img/person.svg' : '/mininnboks/img/nav-logo.svg';
@@ -19,11 +24,11 @@ function MeldingContainer({ melding, intl: { formatMessage } }) {
         .map(tilAvsnitt);
 
     return (
-        <div className={cls(melding)}>
+        <div className={meldingklasse(melding)}>
             <div className="logo">
                 <img src={imgSrc} alt={imgAltTekst} />
             </div>
-            <div className="melding">
+            <div className={panelklasse(melding)}>
                 <h2 className="typo-element">{melding.statusTekst}</h2>
                 <p className="typo-infotekst tema-dokument">{dato}</p>
                 <div className="typo-normal">{avsnitt}</div>

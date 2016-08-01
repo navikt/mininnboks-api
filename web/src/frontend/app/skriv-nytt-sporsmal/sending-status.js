@@ -1,7 +1,7 @@
 const Sendingstatus = {
-    info: 'informasjonsmelding',
-    feil: 'feilmelding',
-    ok: 'bekreftelsemelding'
+    info: 'standard',
+    feil: 'advarsel',
+    ok: 'suksess'
 };
 
 export default Sendingstatus;

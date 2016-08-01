@@ -24,42 +24,40 @@ function GodtaVilkar({ visModal, actions, config }) {
 
     /* eslint-disable jsx-a11y/no-onchange, no-script-url */
     return (
-        <div className="betingelsevalgpanel">
+        <div className="godtavilkaar-panel blokk-m">
             <div className="nav-input">
-                <div className="checkboxgruppe">
-                    <span className="vekk" role="alert" aria-live="assertive" aria-atomic="true">
-                        {ariaCheckboxState}
+                <span className="vekk" role="alert" aria-live="assertive" aria-atomic="true">
+                    {ariaCheckboxState}
+                </span>
+                <input
+                    type="checkbox"
+                    name="betingelseValg:betingelserCheckbox"
+                    className="nav-checkbox " id="godkjennVilkaar"
+                    aria-describedby="checkbox-feilmelding"
+                    {...reduxFormProps(config)}
+                />
+                <label htmlFor="godkjennVilkaar" className="betingelsevalg-checkbox">
+                    <span className="typo-infotekst">
+                        <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.sjekkboks" />
                     </span>
-                    <input
-                        type="checkbox"
-                        name="betingelseValg:betingelserCheckbox"
-                        className="nav-checkbox " id="godkjennVilkaar"
-                        aria-describedby="checkbox-feilmelding"
-                        {...reduxFormProps(config)}
-                    />
-                    <label htmlFor="godkjennVilkaar">
-                        <span className="typo-infotekst">
-                            <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.sjekkboks" />
-                        </span>
-                        <a
-                            href="javascript:void(0)"
-                            className="typo-infotekst"
-                            onClick={apneModal}
-                        >
-                            <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.vis" />
-                        </a>
-                    </label>
-                    <Betingelser
-                        visModal={visModal}
-                        godkjennVilkaar={godkjennVilkaar}
-                        avbryt={avbryt}
-                        lukkModal={lukkModal}
-                        name="betingelser-panel"
-                    />
-                    <InlineFeilmelding id="checkbox-feilmelding" visibleIf={skalViseFeilmelding}>
-                        <FormattedMessage id="feilmelding.godkjennVilkaar.required" />
-                    </InlineFeilmelding>
-                </div>
+                    <a
+                        href="javascript:void(0)"
+                        className="typo-infotekst"
+                        onClick={apneModal}
+                    >
+                        <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.vis" />
+                    </a>
+                </label>
+                <Betingelser
+                    visModal={visModal}
+                    godkjennVilkaar={godkjennVilkaar}
+                    avbryt={avbryt}
+                    lukkModal={lukkModal}
+                    name="betingelser-panel"
+                />
+                <InlineFeilmelding id="checkbox-feilmelding" visibleIf={skalViseFeilmelding}>
+                    <FormattedMessage id="feilmelding.godkjennVilkaar.required" />
+                </InlineFeilmelding>
             </div>
         </div>
     );

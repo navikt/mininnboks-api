@@ -17,10 +17,12 @@ function SamletFeilmeldingPanel({ errors, submitFailed, submitToken }) {
             role="alert"
             aria-live="assertive"
             aria-atomic="true"
-            className="panel panel-feilsammendrag venstrestill-tekst"
+            className="panel panel-feilsammendrag text-left"
             tabIndex="-1"
         >
-            <h3><FormattedMessage id="skriv-sporsmal.feilmelding.header" /></h3>
+            <h3 className="typo-undertittel">
+                <FormattedMessage id="skriv-sporsmal.feilmelding.header" values={{antallFeil: feilmeldinger.length}} />
+            </h3>
             <ul>
                 {feilmeldinger}
             </ul>

@@ -20,13 +20,12 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.groupingBy;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.Status.*;
+import static javax.ws.rs.core.Response.Status.CREATED;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.status;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SBL_INNGAAENDE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad.NYESTE_FORST;
-import static org.joda.time.DateTime.now;
 
 @Path("/traader")
 @Produces(APPLICATION_JSON)
@@ -91,31 +90,32 @@ public class HenvendelseController {
     @Path("/svar")
     @Consumes(APPLICATION_JSON)
     public Response sendSvar(Svar svar) {
-        assertFritekst(svar.fritekst);
-        Optional<Traad> traadOptional = hentTraad(svar.traadId);
-        if (!traadOptional.isPresent()) {
-            return status(NOT_FOUND.getStatusCode()).build();
-        }
-
-        Traad traad = traadOptional.get();
-
-        if (!traad.kanBesvares) {
-            return status(NOT_ACCEPTABLE.getStatusCode()).build();
-        }
-
-        Henvendelse henvendelse = new Henvendelse(svar.fritekst, traad.nyeste.temagruppe);
-        henvendelse.traadId = svar.traadId;
-        henvendelse.eksternAktor = traad.nyeste.eksternAktor;
-        henvendelse.brukersEnhet = traad.eldste.brukersEnhet;
-        henvendelse.tilknyttetEnhet = traad.nyeste.tilknyttetEnhet;
-        henvendelse.type = SVAR_SBL_INNGAAENDE;
-        henvendelse.opprettet = now();
-        henvendelse.markerSomLest();
-        henvendelse.erTilknyttetAnsatt = traad.nyeste.erTilknyttetAnsatt;
-        henvendelse.kontorsperreEnhet = traad.nyeste.kontorsperreEnhet;
-
-        WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
-        return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
+        return Response.status(500).build();
+//        assertFritekst(svar.fritekst);
+//        Optional<Traad> traadOptional = hentTraad(svar.traadId);
+//        if (!traadOptional.isPresent()) {
+//            return status(NOT_FOUND.getStatusCode()).build();
+//        }
+//
+//        Traad traad = traadOptional.get();
+//
+//        if (!traad.kanBesvares) {
+//            return status(NOT_ACCEPTABLE.getStatusCode()).build();
+//        }
+//
+//        Henvendelse henvendelse = new Henvendelse(svar.fritekst, traad.nyeste.temagruppe);
+//        henvendelse.traadId = svar.traadId;
+//        henvendelse.eksternAktor = traad.nyeste.eksternAktor;
+//        henvendelse.brukersEnhet = traad.eldste.brukersEnhet;
+//        henvendelse.tilknyttetEnhet = traad.nyeste.tilknyttetEnhet;
+//        henvendelse.type = SVAR_SBL_INNGAAENDE;
+//        henvendelse.opprettet = now();
+//        henvendelse.markerSomLest();
+//        henvendelse.erTilknyttetAnsatt = traad.nyeste.erTilknyttetAnsatt;
+//        henvendelse.kontorsperreEnhet = traad.nyeste.kontorsperreEnhet;
+//
+//        WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
+//        return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
     private Optional<Traad> hentTraad(String id) {

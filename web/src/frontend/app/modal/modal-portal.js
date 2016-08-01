@@ -1,4 +1,5 @@
 import React, { PropTypes as PT } from 'react';
+import classNames from 'classnames';
 
 const createId = (prefix) => `${prefix}${new Date().getTime()}-${Math.random()}`;
 
@@ -125,7 +126,9 @@ class ModalPortal extends React.Component {
             </button>
         );
 
-        const visEllerSkjulModal = visModal ? '' : 'hidden';
+        const visEllerSkjulModal = classNames(this.props.className, {
+            'hidden': !visModal
+        });
         return (
             <div
                 tabIndex="-1"

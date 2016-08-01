@@ -1,21 +1,19 @@
 import React, { PropTypes as PT } from 'react';
 
-function Feilmelding({ visIkon, children }) {
-    const ikon = visIkon ? <div className="robust-ikon-feil-gra"></div> : null;
-
+function Feilmelding({ tittel, children }) {
     return (
-        <section className="feilmelding">
-            {ikon}
+        <div className="panel panel-ramme">
+            <h1 className="hode hode sidetittel hode-dekorert hode-feil">
+                {tittel}
+            </h1>
             {children}
-        </section>
+        </div>
     );
 }
-Feilmelding.defaultProps = {
-    visIkon: false
-};
+
 Feilmelding.propTypes = {
-    visIkon: PT.bool,
-    children: PT.node.isRequired
+    tittel: PT.oneOfType([PT.string, PT.node]).isRequired,
+    children: PT.node
 };
 
 export default Feilmelding;

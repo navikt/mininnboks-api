@@ -44,7 +44,7 @@ function ListeVisning({ routes, params, traader, location }) {
             <h1 className="typo-sidetittel text-center blokk-l">
                 <FormattedMessage id="innboks.overskrift" />
             </h1>
-            <div className="innboks-navigasjon clearfix">
+            <div className="text-center blokk-l">
                 <IntlLenke href="skriv.ny.link" className="knapp knapp-hoved knapp-liten">
                     <FormattedMessage id="innboks.skriv.ny.link" />
                 </IntlLenke>
