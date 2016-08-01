@@ -1,0 +1,29 @@
+@containerWidth: 600px;
+
+.send-sporsmal-side {
+  max-width: @containerWidth;
+  .meldingikon {
+    &:before {
+      background: url("@{imgDir}/melding_graa.svg");
+    }
+  }
+
+  .godtavilkaar-panel {
+    label {
+      display: inline-block;
+    }
+    .betingelsevalg-checkbox {
+      span:not(:last-child) {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+.betingelser-panel {
+  padding: 3rem;
+
+  .svar-godta {
+    width: 100%;
+    max-width: 19rem;
+  }
+}

@@ -79,13 +79,15 @@ public abstract class HenvendelsesUtils {
             return henvendelse;
         }
 
-        if( DOKUMENT_VARSEL.name().equals(info.getHenvendelseType())){
+        if (DOKUMENT_VARSEL.name().equals(info.getHenvendelseType())){
             XMLDokumentVarsel varsel = (XMLDokumentVarsel) info.getMetadataListe().getMetadata().get(0);
             henvendelse.statusTekst = varsel.getDokumenttittel();
             henvendelse.withTemaNavn(varsel.getTemanavn());
             henvendelse.temagruppe = null;
             henvendelse.fritekst = ofNullable(varsel.getFritekst()).orElse("");
             henvendelse.opprettet = varsel.getFerdigstiltDato();
+            henvendelse.dokumentIdListe.addAll(varsel.getDokumentIdListe());
+            henvendelse.journalpostId = varsel.getJournalpostId();
         } else{
             XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
             henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
