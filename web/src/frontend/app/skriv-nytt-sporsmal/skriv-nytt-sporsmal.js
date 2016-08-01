@@ -14,7 +14,7 @@ import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 import SamletFeilmeldingPanel from '../utils/nav-form/samlet-feilmelding-panel';
 import { validate } from '../utils/validationutil';
 
-const ukjentTemagruppeTittel = <FormattedMessage id="skriv-sporsmal.ukjent-temagruppe"/>;
+const ukjentTemagruppeTittel = <FormattedMessage id="skriv-sporsmal.ukjent-temagruppe" />;
 
 function SkrivNyttSporsmal({
     params, routes, actions, fields, errors, handleSubmit, submitFailed, submitToken,

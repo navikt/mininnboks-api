@@ -55,8 +55,12 @@ class TraadVisning extends React.Component {
                         skrivSvar={skrivSvar}
                         onClick={actions.settSkrivSvar}
                     />
-                    <Infopanel type={sendingStatus} visibleIf={sendingStatus && sendingStatus !== 'IKKE_SENDT'} horisontal>
-                        <FormattedMessage id={`infoboks.${sendingStatus}`}/>
+                    <Infopanel
+                        type={sendingStatus}
+                        visibleIf={sendingStatus && sendingStatus !== 'IKKE_SENDT'}
+                        horisontal
+                    >
+                        <FormattedMessage id={`infoboks.${sendingStatus}`} />
                     </Infopanel>
                     <BesvarBoks
                         skrivSvar={skrivSvar}

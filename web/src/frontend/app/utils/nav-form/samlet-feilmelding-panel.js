@@ -21,7 +21,10 @@ function SamletFeilmeldingPanel({ errors, submitFailed, submitToken }) {
             tabIndex="-1"
         >
             <h3 className="typo-undertittel">
-                <FormattedMessage id="skriv-sporsmal.feilmelding.header" values={{antallFeil: feilmeldinger.length}} />
+                <FormattedMessage
+                    id="skriv-sporsmal.feilmelding.header"
+                    values={{ antallFeil: feilmeldinger.length }}
+                />
             </h3>
             <ul>
                 {feilmeldinger}

@@ -127,7 +127,7 @@ class ModalPortal extends React.Component {
         );
 
         const visEllerSkjulModal = classNames(this.props.className, {
-            'hidden': !visModal
+            hidden: !visModal
         });
         return (
             <div
@@ -162,6 +162,7 @@ ModalPortal.defaultProps = {
 
 ModalPortal.propTypes = {
     children: PT.node.isRequired,
+    className: PT.string,
     modalConfig: PT.shape({
         title: PT.object.isRequired,
         description: PT.object.isRequired,

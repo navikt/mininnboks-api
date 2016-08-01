@@ -12,7 +12,6 @@ const cls = (props) => classNames('panel panel-ikon panel-klikkbart dialog', pro
 
 function MeldingPreview(props) {
     const { traad } = props;
-    console.log('traad', traad);
 
     const melding = traad.nyeste;
     const dato = shortDate(melding.opprettet);

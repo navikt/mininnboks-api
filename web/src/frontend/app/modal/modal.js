@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes as PT } from 'react';
 // eslint-disable-next-line camelcase
 import { unstable_renderSubtreeIntoContainer as renderSubtreeIntoContainer, unmountComponentAtNode } from 'react-dom';
 import Portal from './modal-portal';
@@ -58,6 +58,10 @@ Modal.defaultProps = {
             tag: 'span'
         }
     }
+};
+
+Modal.propTypes = {
+    className: PT.string
 };
 
 export default Modal;

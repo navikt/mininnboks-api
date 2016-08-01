@@ -6,7 +6,7 @@ const panelklasse = (className, horisontal) => classNames('panel panel-ramme inf
     'panel-komprimert': horisontal
 });
 const hodeklasse = (type, horisontal) => classNames('hode', `hode-${type}`, {
-    horisontal: horisontal
+    horisontal
 });
 
 function infopanelBase({ type, horisontal, className, children }) {
