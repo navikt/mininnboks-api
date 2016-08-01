@@ -1,11 +1,8 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { visibleIf } from './../utils/hocs/visible-if';
 
-function SkrivKnapp({ onClick, kanBesvares, skrivSvar }) {
-    if (!kanBesvares || (kanBesvares && skrivSvar)) {
-        return null;
-    }
-
+function SkrivKnapp({ onClick }) {
     return (
         <div className="text-center blokk-l">
             <button onClick={onClick} className="knapp knapp-hoved knapp-liten">
@@ -16,9 +13,7 @@ function SkrivKnapp({ onClick, kanBesvares, skrivSvar }) {
 }
 
 SkrivKnapp.propTypes = {
-    onClick: PT.func.isRequired,
-    kanBesvares: PT.bool.isRequired,
-    skrivSvar: PT.bool.isRequired
+    onClick: PT.func.isRequired
 };
 
-export default SkrivKnapp;
+export default visibleIf(SkrivKnapp);

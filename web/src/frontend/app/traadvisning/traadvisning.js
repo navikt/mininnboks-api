@@ -51,8 +51,7 @@ class TraadVisning extends React.Component {
                 </h1>
                 <div className="traad-container">
                     <SkrivKnapp
-                        kanBesvares={valgttraad.kanBesvares}
-                        skrivSvar={skrivSvar}
+                        visibleIf={valgttraad.kanBesvares && skrivSvar}
                         onClick={actions.settSkrivSvar}
                     />
                     <Infopanel
