@@ -2,8 +2,9 @@ import React, { PropTypes as PT } from 'react';
 import BesvarBoks from './besvar-boks';
 import MeldingContainer from './melding-container';
 import SkrivKnapp from './skriv-knapp';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Infopanel from './../infopanel/infopanel';
+import IntlLenke from './../utils/intl-lenke';
 import { lesTraad, resetInputState, settSkrivSvar, sendSvar } from '../utils/actions/actions';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
@@ -51,9 +52,15 @@ class TraadVisning extends React.Component {
                 </h1>
                 <div className="traad-container">
                     <SkrivKnapp
-                        visibleIf={valgttraad.kanBesvares && skrivSvar}
+                        visibleIf={valgttraad.kanBesvares && !skrivSvar}
                         onClick={actions.settSkrivSvar}
                     />
+                    <Infopanel type="standard" visibleIf={!valgttraad.kanBesvares} horisontal>
+                        <FormattedHTMLMessage id="traadvisning.kan-ikke-svare" />
+                        <IntlLenke href="skriv.ny.link">
+                            <FormattedMessage id="traadvisning.kan-ikke-svare.lenke" />
+                        </IntlLenke>
+                    </Infopanel>
                     <Infopanel
                         type={sendingStatus}
                         visibleIf={sendingStatus && sendingStatus !== 'IKKE_SENDT'}

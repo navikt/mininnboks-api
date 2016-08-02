@@ -1,6 +1,6 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { visibleIf } from './../utils/hocs/visible-if';
+import { visibleIfHOC } from './../utils/hocs/visible-if';
 
 function SkrivKnapp({ onClick }) {
     return (
@@ -16,4 +16,4 @@ SkrivKnapp.propTypes = {
     onClick: PT.func.isRequired
 };
 
-export default visibleIf(SkrivKnapp);
+export default visibleIfHOC(SkrivKnapp);
