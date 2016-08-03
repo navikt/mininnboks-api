@@ -29,15 +29,26 @@ const sendSvarConfig = (traadId, fritekst) => ({
     body: JSON.stringify({ traadId, fritekst })
 });
 
-export const hentLedetekster = () => fetchToJson(`${API_BASE_URL}/resources`, MED_CREDENTIALS);
-export const hentTraader = () => fetchToJson(`${API_BASE_URL}/traader`, MED_CREDENTIALS);
+export function hentLedetekster() {
+    return fetchToJson(`${API_BASE_URL}/resources`, MED_CREDENTIALS);
+}
 
-export const markerTraadSomLest = (traadId) => fetchToJson(`${API_BASE_URL}/traader/allelest/${traadId}`, somPostConfig());
-export const markerSomLest = (behandlingsId) => fetchToJson(`${API_BASE_URL}/traader/lest/${behandlingsId}`, somPostConfig());
+export function hentTraader() {
+    return fetchToJson(`${API_BASE_URL}/traader`, MED_CREDENTIALS);
+}
 
-export const sendSporsmal = (temagruppe, fritekst) => fetchToJson(
-    `${API_BASE_URL}/traader/sporsmal`, sendSporsmalConfig(temagruppe, fritekst)
-);
-export const sendSvar = (traadId, fritekst) => fetchToJson(
-    `${API_BASE_URL}/traader/svar`, sendSvarConfig(traadId, fritekst)
-);
+export function markerTraadSomLest(traadId) {
+    return fetchToJson(`${API_BASE_URL}/traader/allelest/${traadId}`, somPostConfig());
+}
+
+export function markerSomLest(behandlingsId) {
+    return fetchToJson(`${API_BASE_URL}/traader/lest/${behandlingsId}`, somPostConfig());
+}
+
+export function sendSporsmal(temagruppe, fritekst) {
+    return fetchToJson(`${API_BASE_URL}/traader/sporsmal`, sendSporsmalConfig(temagruppe, fritekst));
+}
+
+export function sendSvar(traadId, fritekst) {
+    return fetchToJson(`${API_BASE_URL}/traader/svar`, sendSvarConfig(traadId, fritekst));
+}

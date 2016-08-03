@@ -1,6 +1,6 @@
 export const API_BASE_URL = '/saksoversikt/tjenester';
 const MED_CREDENTIALS = { credentials: 'same-origin' };
-import {STATUS, doThenDispatch} from './utils';
+import { STATUS, doThenDispatch } from './utils';
 
 // Actions
 export const DOKUMENTVISNING_DATA_OK = 'DOKUMENTVISNING_DATA_OK';
@@ -19,9 +19,10 @@ export default function reducer(state = initalState, action) {
             return { ...state, status: STATUS.PENDING };
         case DOKUMENTVISNING_DATA_FEILET:
             return { ...state, status: STATUS.ERROR };
-        case DOKUMENTVISNING_DATA_OK:
-            const [ dokumentmetadata, journalpostmetadata ] = action.data;
-            return { ...state, status: STATUS.OK, data: { dokumentmetadata, journalpostmetadata }};
+        case DOKUMENTVISNING_DATA_OK: {
+            const [dokumentmetadata, journalpostmetadata] = action.data;
+            return { ...state, status: STATUS.OK, data: { dokumentmetadata, journalpostmetadata } };
+        }
         default:
             return state;
     }

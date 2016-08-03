@@ -19,4 +19,4 @@ export const traadShape = PT.shape({
     eldste: meldingShape.isRequired,
     kanBesvares: PT.bool.isRequired,
     avsluttet: PT.bool.isRequired
-}) ;
+});

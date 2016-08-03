@@ -27,7 +27,7 @@ class TraadVisning extends React.Component {
 
     render() {
         const {
-            routes, params, innsendingStatus, traader, visBesvarBoks, actions
+            routes, params, innsendingStatus, traader, skalViseBesvarBoks, actions
         } = this.props;
 
         const traadId = params.traadId;
@@ -60,7 +60,7 @@ class TraadVisning extends React.Component {
                 </h1>
                 <div className="traad-container">
                     <SkrivKnapp
-                        visibleIf={valgttraad.kanBesvares && !visBesvarBoks}
+                        visibleIf={valgttraad.kanBesvares && !skalViseBesvarBoks}
                         onClick={actions.visBesvarBoks}
                     />
                     <Infopanel type="standard" visibleIf={!valgttraad.kanBesvares} horisontal>
@@ -77,7 +77,7 @@ class TraadVisning extends React.Component {
                         <FormattedMessage id={`infoboks.${innsendingStatus}`} />
                     </Infopanel>
                     <BesvarBoks
-                        visibleIf={visBesvarBoks}
+                        visibleIf={skalViseBesvarBoks}
                         traadId={traadId}
                         avbryt={actions.skjulBesvarBoks}
                         submit={actions.sendSvar}
@@ -91,7 +91,7 @@ class TraadVisning extends React.Component {
 
 TraadVisning.propTypes = {
     traader: storeShape(traadShape).isRequired,
-    visBesvarBoks: PT.bool.isRequired,
+    skalViseBesvarBoks: PT.bool.isRequired,
     innsendingStatus: PT.string.isRequired,
     actions: PT.shape({
         sendSvar: PT.func.isRequired,
@@ -104,7 +104,7 @@ TraadVisning.propTypes = {
 };
 
 const mapStateToProps = ({ traader, ui }) => (
-    { traader, innsendingStatus: traader.innsendingStatus, visBesvarBoks: ui.visBesvarBoks }
+    { traader, innsendingStatus: traader.innsendingStatus, skalViseBesvarBoks: ui.visBesvarBoks }
 );
 const mapDispatchToProps = (dispatch) => ({
     actions: {

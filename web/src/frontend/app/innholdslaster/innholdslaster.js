@@ -17,7 +17,7 @@ const Innholdslaster = ({ avhengigheter, className, children }) => {
 
     if (noenHarFeil(avhengigheter)) {
         const feilendeReducer = medFeil(avhengigheter);
-        console.log(feilendeReducer);
+        console.log(feilendeReducer); // eslint-disable-line no-console
         return (
             <Feilmelding tittel="Oops" className={className}>
                 <p>Kunne ikke laste alle data som trengs for å vise applikasjonen</p>

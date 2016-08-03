@@ -10,7 +10,7 @@ export function sjekkStatuskode(response) {
     if (response.status >= 200 && response.status < 300 && response.ok) {
         return response;
     }
-    var error = new Error(response.statusText);
+    const error = new Error(response.statusText);
     error.response = response;
     throw error;
 }
@@ -25,22 +25,22 @@ export function toJson(response) {
 export function sendResultatTilDispatch(dispatch, action) {
     return (...data) => {
         if (data.length === 1) {
-            return dispatch({type: action, data: data[0] });
+            return dispatch({ type: action, data: data[0] });
         }
-        return dispatch({ type: action, data })
+        return dispatch({ type: action, data });
     };
 }
 
 export function handterFeil(dispatch, action) {
     return (error) => {
-        if (error.response){
+        if (error.response) {
             error.response.text().then((data) => {
                 console.error(error, error.stack, data); // eslint-disable-line no-console
-                dispatch({type: action, data: {response: error.response, data: data}});
+                dispatch({ type: action, data: { response: error.response, data } });
             });
         } else {
             console.error(error, error.stack); // eslint-disable-line no-console
-            dispatch({type: action, data: error.toString()});
+            dispatch({ type: action, data: error.toString() });
         }
     };
 }
@@ -65,6 +65,5 @@ export function doThenDispatch(fn, { OK, FEILET, PENDING }) {
         return fn()
             .then(sendResultatTilDispatch(dispatch, OK))
             .catch(handterFeil(dispatch, FEILET));
-
-    }
+    };
 }

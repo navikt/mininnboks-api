@@ -7,8 +7,6 @@ import InlineFeilmelding from './../utils/nav-form/inline-feilmelding';
 function GodtaVilkar({ visModal, actions, config }) {
     const ariaCheckboxState = config.checked ? 'Checkbox avkrysset' : 'Checkbox ikke avkrysset';
 
-    const lukkModal = () => actions.velgVisModal(false);
-
     const godkjennVilkaar = () => {
         config.onChange(true);
         actions.skjulVilkarModal();

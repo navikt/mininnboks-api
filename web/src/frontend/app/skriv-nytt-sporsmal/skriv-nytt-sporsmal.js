@@ -19,13 +19,13 @@ const ukjentTemagruppeTittel = <FormattedMessage id="skriv-sporsmal.ukjent-temag
 
 function SkrivNyttSporsmal({
     params, routes, actions, fields, errors, handleSubmit, submitFailed, submitToken,
-    sendingStatus, visVilkarModal, godkjenteTemagrupper
+    sendingStatus, skalViseVilkarModal, godkjenteTemagrupper
 }) {
     const temagruppe = params.temagruppe;
 
     const submit = (event) => {
         handleSubmit(({ fritekst }) => actions.sendSporsmal(temagruppe, fritekst))(event)
-            .catch((err) => {
+            .catch(() => {
                 document.querySelector('.panel-feilsammendrag').focus();
             });
     };
@@ -50,14 +50,18 @@ function SkrivNyttSporsmal({
                     <FormattedMessage id="send-sporsmal.still-sporsmal.deloverskrift" />
                 </h2>
                 <p className="text-bold blokk-null"><FormattedMessage id={temagruppe} /></p>
-                <Infopanel type={sendingStatus} visibleIf={sendingStatus && sendingStatus !== STATUS.NOT_STARTED} horisontal>
+                <Infopanel
+                    type={sendingStatus}
+                    visibleIf={sendingStatus && sendingStatus !== STATUS.NOT_STARTED}
+                    horisontal
+                >
                     <FormattedMessage id={`infoboks.${sendingStatus}`} />
                 </Infopanel>
                 <p className="typo-normal blokk-xs"><FormattedMessage id="textarea.infotekst" /></p>
                 <SamletFeilmeldingPanel errors={errors} submitFailed={submitFailed} submitToken={submitToken} />
                 <ExpandingTextArea config={fields.fritekst} className="blokk-m" />
                 <GodtaVilkar
-                    visModal={visVilkarModal}
+                    visModal={skalViseVilkarModal}
                     config={fields.godkjennVilkaar}
                     actions={actions}
                 />
@@ -86,13 +90,13 @@ SkrivNyttSporsmal.propTypes = {
     submitFailed: PT.bool.isRequired,
     submitToken: PT.string,
     sendingStatus: PT.string,
-    visVilkarModal: PT.bool.isRequired,
+    skalViseVilkarModal: PT.bool.isRequired,
     godkjenteTemagrupper: PT.arrayOf(PT.string).isRequired
 };
 
 const mapStateToProps = ({ ledetekster, traader, ui, form }) => ({
     submitToken: form['nytt-sporsmal'].submitToken,
-    visVilkarModal: ui.visVilkarModal,
+    skalViseVilkarModal: ui.visVilkarModal,
     godkjenteTemagrupper: ledetekster.godkjenteTemagrupper,
     sendingStatus: traader.innsendingStatus
 });

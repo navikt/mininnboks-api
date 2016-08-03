@@ -1,5 +1,5 @@
 import * as Api from './../utils/api';
-import {STATUS, doThenDispatch} from './utils';
+import { STATUS, doThenDispatch } from './utils';
 
 // Actions
 export const HENT_ALLE_OK = 'mininnboks/traader/HENT_ALLE_OK';
@@ -34,7 +34,7 @@ export default function reducer(state = initalState, action) {
             return { ...state, status: STATUS.RELOADING };
         case MARKERT_SOM_LEST_FEILET:
             return { ...state, status: STATUS.ERROR, data: action.data };
-        case MARKERT_SOM_LEST_OK:
+        case MARKERT_SOM_LEST_OK: {
             const traader = state.data.map((traad) => {
                 if (traad.traadId === action.data.traadId) {
                     const nyeste = markerMeldingSomLest(traad.nyeste);
@@ -45,6 +45,7 @@ export default function reducer(state = initalState, action) {
                 return traad;
             });
             return { ...state, data: traader, status: STATUS.OK };
+        }
         case INNSENDING_OK:
             return { ...state, innsendingStatus: STATUS.OK };
         case INNSENDING_FEILET:
@@ -63,6 +64,14 @@ const innsendingActions = {
 };
 
 // Action Creators
+export function hentTraader(pendingType = HENT_ALLE_PENDING) {
+    return doThenDispatch(() => Api.hentTraader(), {
+        OK: HENT_ALLE_OK,
+        FEILET: HENT_ALLE_FEILET,
+        PENDING: pendingType
+    });
+}
+
 export const sendSporsmal = (temagruppe, fritekst) => (dispatch) =>
     doThenDispatch(
         () => Api.sendSporsmal(temagruppe, fritekst).then(() => dispatch(hentTraader(HENT_ALLE_RELOAD))),
@@ -86,12 +95,5 @@ export function markerBehandlingsIdSomLest(behandlingsId) {
     return doThenDispatch(() => Api.markerSomLest(behandlingsId), {
         OK: MARKERT_SOM_LEST_OK,
         FEILET: MARKERT_SOM_LEST_FEILET
-    });
-}
-export function hentTraader(pendingType = HENT_ALLE_PENDING) {
-    return doThenDispatch(() => Api.hentTraader(), {
-        OK: HENT_ALLE_OK,
-        FEILET: HENT_ALLE_FEILET,
-        PENDING: pendingType
     });
 }

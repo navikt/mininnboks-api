@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { PropTypes as PT, Component } from 'react';
 import { hentTraader } from './../ducks/traader';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { storeShape, traadShape } from './../proptype-shapes';
 import Innholdslaster from './../innholdslaster/innholdslaster';
 
 class Traader extends Component {
@@ -17,7 +18,13 @@ class Traader extends Component {
     }
 }
 
-Traader.propTypes = {};
+Traader.propTypes = {
+    traader: storeShape(traadShape).isRequired,
+    actions: PT.shape({
+        hentTraader: PT.func
+    }).isRequired,
+    children: PT.node.isRequired
+};
 
 const mapStateToProps = ({ traader }) => ({ traader });
 const mapDispatchToProps = (dispatch) => ({ actions: bindActionCreators({ hentTraader }, dispatch) });

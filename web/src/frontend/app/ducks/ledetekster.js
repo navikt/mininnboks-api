@@ -20,9 +20,10 @@ export default function reducer(state = initalState, action) {
             return { ...state, status: STATUS.PENDING };
         case FEILET:
             return { ...state, status: STATUS.ERROR, data: action.data };
-        case OK:
+        case OK: {
             const godkjenteTemagrupper = action.data['temagruppe.liste'].split(' ');
             return { ...state, status: STATUS.OK, data: action.data, godkjenteTemagrupper };
+        }
         default:
             return state;
     }
@@ -31,8 +32,8 @@ export default function reducer(state = initalState, action) {
 // Action Creators
 export function hentLedetekster() {
     return doThenDispatch(() => Api.hentLedetekster(), {
-        OK: OK,
-        FEILET: FEILET,
-        PENDING: PENDING
+        OK,
+        FEILET,
+        PENDING
     });
 }

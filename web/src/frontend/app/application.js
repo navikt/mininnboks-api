@@ -43,7 +43,7 @@ Application.propTypes = {
         hentLedetekster: PT.func
     }).isRequired,
     children: PT.object.isRequired,
-    ledetekst: PT.object,
+    ledetekster: PT.object,
     location: PT.shape({
         query: PT.shape({
             headerlevel: PT.object

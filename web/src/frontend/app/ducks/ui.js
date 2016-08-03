@@ -1,5 +1,4 @@
 import { INNSENDING_OK } from './traader';
-import { STATUS } from './utils';
 
 // Actions
 export const VIS_VILKAR_MODAL = 'mininnboks/ui/VIS_VILKAR_MODAL';
