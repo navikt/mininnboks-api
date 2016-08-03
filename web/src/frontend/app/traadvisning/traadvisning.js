@@ -1,12 +1,16 @@
 import React, { PropTypes as PT } from 'react';
 import BesvarBoks from './besvar-boks';
+import Feilmelding from './../feilmelding/feilmelding';
 import MeldingContainer from './melding-container';
 import SkrivKnapp from './skriv-knapp';
+import { STATUS } from './../ducks/utils';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Infopanel from './../infopanel/infopanel';
 import IntlLenke from './../utils/intl-lenke';
-import { lesTraad, resetInputState, settSkrivSvar, sendSvar } from '../utils/actions/actions';
+import { markerTraadSomLest, sendSvar } from './../ducks/traader';
+import { visBesvarBoks, skjulBesvarBoks } from './../ducks/ui';
 import { connect } from 'react-redux';
+import { storeShape, traadShape } from './../proptype-shapes';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 
 const resolver = (temagruppe) => (key, tekst) => {
@@ -17,22 +21,26 @@ const resolver = (temagruppe) => (key, tekst) => {
 };
 
 class TraadVisning extends React.Component {
-
-    componentWillMount() {
-        this.props.actions.resetInputState();
-    }
-
     componentDidMount() {
-        this.props.actions.lesTraad(this.props.params.traadId);
+        this.props.actions.markerSomLest(this.props.params.traadId);
     }
 
     render() {
         const {
-            routes, params, sendingStatus, traader, skrivSvar, actions
+            routes, params, innsendingStatus, traader, visBesvarBoks, actions
         } = this.props;
 
         const traadId = params.traadId;
-        const valgttraad = traader.find(traad => traad.traadId === traadId);
+        const valgttraad = traader.data.find(traad => traad.traadId === traadId);
+
+        if (!valgttraad) {
+            return (
+                <Feilmelding tittel="Fant ikke tråden">
+                    <p>Fant ikke tråden du var ute etter</p>
+                </Feilmelding>
+            );
+        }
+
 
         const meldingItems = valgttraad.meldinger.map((melding) => (
             <MeldingContainer key={melding.id} melding={melding} />
@@ -52,8 +60,8 @@ class TraadVisning extends React.Component {
                 </h1>
                 <div className="traad-container">
                     <SkrivKnapp
-                        visibleIf={valgttraad.kanBesvares && !skrivSvar}
-                        onClick={actions.settSkrivSvar}
+                        visibleIf={valgttraad.kanBesvares && !visBesvarBoks}
+                        onClick={actions.visBesvarBoks}
                     />
                     <Infopanel type="standard" visibleIf={!valgttraad.kanBesvares} horisontal>
                         <FormattedHTMLMessage id="traadvisning.kan-ikke-svare" />
@@ -62,16 +70,16 @@ class TraadVisning extends React.Component {
                         </IntlLenke>
                     </Infopanel>
                     <Infopanel
-                        type={sendingStatus}
-                        visibleIf={sendingStatus && sendingStatus !== 'IKKE_SENDT'}
+                        type={innsendingStatus}
+                        visibleIf={innsendingStatus && innsendingStatus === STATUS.ERROR}
                         horisontal
                     >
-                        <FormattedMessage id={`infoboks.${sendingStatus}`} />
+                        <FormattedMessage id={`infoboks.${innsendingStatus}`} />
                     </Infopanel>
                     <BesvarBoks
-                        skrivSvar={skrivSvar}
+                        visibleIf={visBesvarBoks}
                         traadId={traadId}
-                        avbryt={actions.resetInputState}
+                        avbryt={actions.skjulBesvarBoks}
                         submit={actions.sendSvar}
                     />
                     {meldingItems}
@@ -82,27 +90,27 @@ class TraadVisning extends React.Component {
 }
 
 TraadVisning.propTypes = {
-    traader: PT.array.isRequired,
-    skrivSvar: PT.bool.isRequired,
-    sendingStatus: PT.string.isRequired,
+    traader: storeShape(traadShape).isRequired,
+    visBesvarBoks: PT.bool.isRequired,
+    innsendingStatus: PT.string.isRequired,
     actions: PT.shape({
-        resetInputState: PT.func.isRequired,
         sendSvar: PT.func.isRequired,
-        lesTraad: PT.func.isRequired,
-        settSkrivSvar: PT.func.isRequired
+        markerSomLest: PT.func.isRequired,
+        visBesvarBoks: PT.func.isRequired,
+        skjulBesvarBoks: PT.func.isRequired
     }).isRequired,
     params: PT.object.isRequired,
     routes: PT.array.isRequired
 };
 
-const mapStateToProps = ({ data: { traader, skrivSvar, fritekst, sendingStatus } }) => (
-    { traader, skrivSvar, fritekst, sendingStatus }
+const mapStateToProps = ({ traader, ui }) => (
+    { traader, innsendingStatus: traader.innsendingStatus, visBesvarBoks: ui.visBesvarBoks }
 );
 const mapDispatchToProps = (dispatch) => ({
     actions: {
-        resetInputState: () => dispatch(resetInputState()),
-        lesTraad: (traadId) => dispatch(lesTraad(traadId)),
-        settSkrivSvar: () => dispatch(settSkrivSvar(true)),
+        markerSomLest: (traadId) => dispatch(markerTraadSomLest(traadId)),
+        visBesvarBoks: () => dispatch(visBesvarBoks()),
+        skjulBesvarBoks: () => dispatch(skjulBesvarBoks()),
         sendSvar: (traadId, fritekst) => dispatch(sendSvar(traadId, fritekst))
     }
 });

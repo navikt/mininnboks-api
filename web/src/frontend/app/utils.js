@@ -2,7 +2,7 @@ import React from 'react';
 import sanitize from 'sanitize-html';
 import moment from 'moment';
 import 'moment/locale/nb';
-import Constants from './constants';
+import Constants from './utils/constants';
 
 moment.locale('nb');
 
@@ -23,16 +23,6 @@ export const tilAvsnitt = (avsnitt, index) => (
 export const prettyDate = (date) => moment(date).format('Do MMMM YYYY, [kl.] HH:mm');
 
 export const shortDate = (date) => moment(date).format('DD.MM.YY');
-
-export const getCookie = (name) => {
-    const re = new RegExp(`${name}=([^;]+)`);
-    const match = re.exec(document.cookie);
-    return match !== null ? match[1] : '';
-};
-
-export const addXsrfHeader = (xhr) => {
-    xhr.setRequestHeader('X-XSRF-TOKEN', getCookie('XSRF-TOKEN-MININNBOKS'));
-};
 
 export const status = (melding) => {
     if (melding.type === 'SVAR_SBL_INNGAAENDE') {
@@ -108,4 +98,9 @@ export function throttle(func, threshold = 250) {
             func.apply(context, args);
         }
     };
+}
+
+export function erDev() {
+    const url = window.location.href;
+    return url.includes('debug=true') || url.includes('devillo.no:8586') || url.includes('localhost:8586');
 }

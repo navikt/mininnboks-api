@@ -1,13 +1,14 @@
 import React, { PropTypes as PT } from 'react';
 import { createForm } from './../utils/nav-form/nav-form';
 import { bindActionCreators } from 'redux';
+import { visVilkarModal, skjulVilkarModal } from './../ducks/ui';
+import { sendSporsmal } from './../ducks/traader';
+import { STATUS } from './../ducks/utils';
 import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
 import GodtaVilkar from './godta-vilkar';
 import Kvittering from './kvittering';
 import Feilmelding from '../feilmelding/feilmelding';
-import SendingStatus from './sending-status';
 import Infopanel from '../infopanel/infopanel';
-import { sendSporsmal, velgVisModal } from '../utils/actions/actions';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
@@ -18,13 +19,13 @@ const ukjentTemagruppeTittel = <FormattedMessage id="skriv-sporsmal.ukjent-temag
 
 function SkrivNyttSporsmal({
     params, routes, actions, fields, errors, handleSubmit, submitFailed, submitToken,
-    sendingStatus, visModal, godkjenteTemagrupper
+    sendingStatus, visVilkarModal, godkjenteTemagrupper
 }) {
     const temagruppe = params.temagruppe;
 
     const submit = (event) => {
         handleSubmit(({ fritekst }) => actions.sendSporsmal(temagruppe, fritekst))(event)
-            .catch(() => {
+            .catch((err) => {
                 document.querySelector('.panel-feilsammendrag').focus();
             });
     };
@@ -34,7 +35,7 @@ function SkrivNyttSporsmal({
         return (
             <Feilmelding tittel={ukjentTemagruppeTittel} />
         );
-    } else if (sendingStatus === SendingStatus.ok) {
+    } else if (sendingStatus === STATUS.OK) {
         return <Kvittering />;
     }
 
@@ -49,14 +50,14 @@ function SkrivNyttSporsmal({
                     <FormattedMessage id="send-sporsmal.still-sporsmal.deloverskrift" />
                 </h2>
                 <p className="text-bold blokk-null"><FormattedMessage id={temagruppe} /></p>
-                <Infopanel type={sendingStatus} visibleIf={sendingStatus && sendingStatus !== 'IKKE_SENDT'} horisontal>
+                <Infopanel type={sendingStatus} visibleIf={sendingStatus && sendingStatus !== STATUS.NOT_STARTED} horisontal>
                     <FormattedMessage id={`infoboks.${sendingStatus}`} />
                 </Infopanel>
                 <p className="typo-normal blokk-xs"><FormattedMessage id="textarea.infotekst" /></p>
                 <SamletFeilmeldingPanel errors={errors} submitFailed={submitFailed} submitToken={submitToken} />
                 <ExpandingTextArea config={fields.fritekst} className="blokk-m" />
                 <GodtaVilkar
-                    visModal={visModal}
+                    visModal={visVilkarModal}
                     config={fields.godkjennVilkaar}
                     actions={actions}
                 />
@@ -67,7 +68,9 @@ function SkrivNyttSporsmal({
         </article>
     );
 }
-
+SkrivNyttSporsmal.defaultProps = {
+    godkjenteTemagrupper: ['ARBD']
+};
 SkrivNyttSporsmal.propTypes = {
     params: PT.shape({
         temagruppe: PT.string
@@ -75,7 +78,7 @@ SkrivNyttSporsmal.propTypes = {
     routes: PT.array.isRequired,
     actions: PT.shape({
         sendSporsmal: PT.func,
-        velgVisModal: PT.func
+        visVilkarModal: PT.func
     }).isRequired,
     errors: PT.object.isRequired,
     fields: PT.object.isRequired,
@@ -83,19 +86,19 @@ SkrivNyttSporsmal.propTypes = {
     submitFailed: PT.bool.isRequired,
     submitToken: PT.string,
     sendingStatus: PT.string,
-    visModal: PT.bool.isRequired,
+    visVilkarModal: PT.bool.isRequired,
     godkjenteTemagrupper: PT.arrayOf(PT.string).isRequired
 };
 
-const mapStateToProps = ({ data, form }) => ({
+const mapStateToProps = ({ ledetekster, traader, ui, form }) => ({
     submitToken: form['nytt-sporsmal'].submitToken,
-    visModal: data.visModal,
-    godkjenteTemagrupper: data.godkjenteTemagrupper,
-    sendingStatus: data.sendingStatus
+    visVilkarModal: ui.visVilkarModal,
+    godkjenteTemagrupper: ledetekster.godkjenteTemagrupper,
+    sendingStatus: traader.innsendingStatus
 });
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(
-        { sendSporsmal, velgVisModal },
+        { sendSporsmal, visVilkarModal, skjulVilkarModal },
         dispatch
     )
 });

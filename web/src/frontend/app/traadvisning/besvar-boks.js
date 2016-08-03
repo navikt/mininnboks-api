@@ -3,11 +3,9 @@ import { validate } from '../utils/validationutil';
 import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
 import { FormattedMessage } from 'react-intl';
 import { reduxForm } from 'redux-form';
+import { visibleIfHOC } from './../utils/hocs/visible-if';
 
-function BesvarBoks({ traadId, skrivSvar, avbryt, submit, fields, handleSubmit, resetForm }) {
-    if (!skrivSvar) {
-        return null;
-    }
+function BesvarBoks({ traadId, avbryt, submit, fields, handleSubmit, resetForm }) {
     const onSubmit = ({ fritekst }) => {
         submit(traadId, fritekst);
     };
@@ -34,7 +32,6 @@ function BesvarBoks({ traadId, skrivSvar, avbryt, submit, fields, handleSubmit, 
 
 BesvarBoks.propTypes = {
     traadId: PT.string.isRequired,
-    skrivSvar: PT.bool.isRequired,
     submit: PT.func.isRequired,
     resetForm: PT.func.isRequired,
     avbryt: PT.func.isRequired,
@@ -46,4 +43,4 @@ export default reduxForm({
     form: 'besvar',
     fields: ['fritekst'],
     validate
-})(BesvarBoks);
+})(visibleIfHOC(BesvarBoks));

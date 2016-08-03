@@ -1,23 +1,22 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Betingelser from './betingelser';
-import { reduxFormProps } from './../utils/utils';
+import { reduxFormProps } from '../utils';
 import InlineFeilmelding from './../utils/nav-form/inline-feilmelding';
 
 function GodtaVilkar({ visModal, actions, config }) {
     const ariaCheckboxState = config.checked ? 'Checkbox avkrysset' : 'Checkbox ikke avkrysset';
 
-    const apneModal = () => actions.velgVisModal(true);
     const lukkModal = () => actions.velgVisModal(false);
 
     const godkjennVilkaar = () => {
         config.onChange(true);
-        actions.velgVisModal(false);
+        actions.skjulVilkarModal();
     };
 
     const avbryt = () => {
         config.onChange(false);
-        actions.velgVisModal(false);
+        actions.skjulVilkarModal();
     };
 
     const skalViseFeilmelding = !!(config.error && config.touched);
@@ -43,7 +42,7 @@ function GodtaVilkar({ visModal, actions, config }) {
                     <a
                         href="javascript:void(0)"
                         className="typo-infotekst"
-                        onClick={apneModal}
+                        onClick={actions.visVilkarModal}
                     >
                         <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.vis" />
                     </a>
@@ -52,7 +51,7 @@ function GodtaVilkar({ visModal, actions, config }) {
                     visModal={visModal}
                     godkjennVilkaar={godkjennVilkaar}
                     avbryt={avbryt}
-                    lukkModal={lukkModal}
+                    lukkModal={actions.skjulVilkarModal}
                     name="betingelser-panel"
                 />
                 <InlineFeilmelding id="checkbox-feilmelding" visibleIf={skalViseFeilmelding}>
@@ -67,7 +66,8 @@ GodtaVilkar.propTypes = {
     visModal: PT.bool.isRequired,
     config: PT.object.isRequired,
     actions: PT.shape({
-        velgVisModal: PT.func.isRequired
+        visVilkarModal: PT.func.isRequired,
+        skjulVilkarModal: PT.func.isRequired
     }).isRequired
 };
 

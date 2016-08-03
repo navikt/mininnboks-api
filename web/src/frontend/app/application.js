@@ -1,10 +1,12 @@
 import React, { PropTypes as PT } from 'react';
-import { hentInitData } from './utils/init/init-actions';
+import { hentLedetekster } from './ducks/ledetekster';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import nb from 'react-intl/locale-data/nb';
 import classnames from 'classnames';
-import Spinner from './utils/Spinner';
+import Innholdslaster from './innholdslaster/innholdslaster';
+import DevTools from './devtools';
 
 addLocaleData(nb);
 
@@ -14,31 +16,34 @@ const cls = (visHeaderLevel) => classnames({
 
 class Application extends React.Component {
     componentWillMount() {
-        const { location: { query: { cmskeys } } } = this.props;
-        this.props.hentInitData({ cmskeys: !!cmskeys });
+        this.props.actions.hentLedetekster();
     }
 
     render() {
         const visHeaderLevel = !!this.props.location.query.headerlevel;
-        const { harHentetInitData, children, tekster } = this.props;
-
-        if (!harHentetInitData) {
-            return <Spinner />;
-        }
+        const { ledetekster = {}, children } = this.props;
 
         return (
-            <IntlProvider defaultLocale="nb" locale="nb" messages={tekster} >
-                <div className={cls(visHeaderLevel)}>{children}</div>
-            </IntlProvider>
+            <div>
+                <Innholdslaster avhengigheter={[ledetekster]}>
+                    <IntlProvider defaultLocale="nb" locale="nb" messages={ledetekster.data} >
+                        <div className={cls(visHeaderLevel)}>{children}</div>
+                    </IntlProvider>
+                </Innholdslaster>
+                <div aria-hidden="true">
+                    <DevTools />
+                </div>
+            </div>
         );
     }
 }
 
 Application.propTypes = {
-    harHentetInitData: PT.bool.isRequired,
-    hentInitData: PT.func.isRequired,
+    actions: PT.shape({
+        hentLedetekster: PT.func
+    }).isRequired,
     children: PT.object.isRequired,
-    tekster: PT.object,
+    ledetekst: PT.object,
     location: PT.shape({
         query: PT.shape({
             headerlevel: PT.object
@@ -46,9 +51,7 @@ Application.propTypes = {
     })
 };
 
-const mapStateToProps = ({ data: { harHentetInitData, tekster } }) => ({ harHentetInitData, tekster });
-const mapDispatchToProps = (dispatch) => ({
-    hentInitData: (options) => dispatch(hentInitData(options))
-});
+const mapStateToProps = ({ ledetekster }) => ({ ledetekster });
+const mapDispatchToProps = (dispatch) => ({ actions: bindActionCreators({ hentLedetekster }, dispatch) });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Application);

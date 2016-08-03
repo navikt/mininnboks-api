@@ -1,16 +1,17 @@
 import React, { PropTypes as PT } from 'react';
 import { connect } from 'react-redux';
-import { lesDokumentVarsel } from '../utils/actions/actions';
-import { hentDokumentVisningData } from './dokument-actions';
+import { markerBehandlingsIdSomLest } from './../ducks/traader';
+import { hentDokumentVisningData } from './../ducks/dokumenter';
+import Innholdslaster from './../innholdslaster/innholdslaster';
 import Dokumentvisning from './dokument-visning';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 
 class DokumentVisningSide extends React.Component {
     componentDidMount() {
         const { params, traader, actions } = this.props;
-        const traad = traader.find((trad) => trad.traadId === params.id);
+        const traad = traader.data.find((trad) => trad.traadId === params.id);
         if (traad && !traad.meldinger[0].lest) {
-            actions.lesDokumentVarsel(params.id);
+            actions.markerBehandlingsIdSomLest(params.id);
         }
         if (traad && traad.meldinger[0]) {
             const varsel = traad.meldinger[0];
@@ -19,36 +20,31 @@ class DokumentVisningSide extends React.Component {
     }
 
     render() {
-        const { params, routes, dokumentvisning } = this.props;
-
-        if (!dokumentvisning) {
-            return null;
-        }
-
+        const { params, routes, traader, dokumenter } = this.props;
         return (
-            <div className="dokinnsyn">
+            <Innholdslaster avhengigheter={[traader, dokumenter]} className="dokinnsyn">
                 <Breadcrumbs routes={routes} params={params} />
-                <Dokumentvisning {...dokumentvisning} />
-            </div>
+                <Dokumentvisning {...dokumenter.data} />
+            </Innholdslaster>
         );
     }
 }
 
 DokumentVisningSide.propTypes = {
-    dokumentvisning: PT.object,
+    dokumenter: PT.object,
     params: PT.object.isRequired,
     routes: PT.array.isRequired,
-    traader: PT.array.isRequired,
+    traader: PT.object.isRequired,
     actions: PT.shape({
-        lesDokumentVarsel: PT.func.isRequired,
+        markerBehandlingsIdSomLest: PT.func.isRequired,
         hentDokumentVisningData: PT.func.isRequired
     })
 };
 
-const mapStateToProps = ({ data: { traader, dokumentvisning } }) => ({ traader, dokumentvisning });
+const mapStateToProps = ({ traader, dokumenter }) => ({ traader, dokumenter });
 const mapDispatchToProps = (dispatch) => ({
     actions: {
-        lesDokumentVarsel: (id) => dispatch(lesDokumentVarsel(id)),
+        markerBehandlingsIdSomLest: (behandlindsId) => dispatch(markerBehandlingsIdSomLest(behandlindsId)),
         hentDokumentVisningData: (journalpostId, idListe) => dispatch(hentDokumentVisningData(journalpostId, idListe))
     }
 });

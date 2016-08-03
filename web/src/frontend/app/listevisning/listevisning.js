@@ -1,10 +1,12 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import IntlLenke from './../utils/intl-lenke';
-import { nyesteTraadForst } from './../utils/utils';
+import { nyesteTraadForst } from '../utils';
 import MeldingListe from './melding-liste';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
+import { storeShape, traadShape } from './../proptype-shapes';
+
 
 const getTraadLister = (traader) => {
     const sortert = traader.sort(nyesteTraadForst);
@@ -26,9 +28,9 @@ const erAktivRegel = (fantVarselId, varselId) => {
 
 function ListeVisning({ routes, params, traader, location }) {
     const varselId = location.query.varselId;
-    const traaderGruppert = getTraadLister(traader);
+    const traaderGruppert = getTraadLister(traader.data);
 
-    const fantVarselId = traader.find((traad) => traad.nyeste.korrelasjonsId === varselId);
+    const fantVarselId = traader.data.find((traad) => traad.nyeste.korrelasjonsId === varselId);
     const erAktiv = erAktivRegel(fantVarselId, varselId);
 
     const ulesteTraader = traaderGruppert.uleste.map((traad, index) => ({
@@ -56,12 +58,12 @@ function ListeVisning({ routes, params, traader, location }) {
 }
 
 ListeVisning.propTypes = {
-    traader: PT.array.isRequired,
+    traader: storeShape(traadShape).isRequired,
     routes: PT.array.isRequired,
     params: PT.object.isRequired,
     location: PT.object.isRequired
 };
 
-const mapStateToProps = ({ data: { traader } }) => ({ traader });
+const mapStateToProps = ({ traader }) => ({ traader });
 
 export default connect(mapStateToProps)(ListeVisning);

@@ -1,7 +1,7 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import { shortDate, tilAvsnitt } from './../utils/utils';
+import { shortDate, tilAvsnitt } from '../utils';
 import AntallMeldinger from './antall-meldinger';
 import classNames from 'classnames';
 

@@ -1,6 +1,6 @@
 import React, { PropTypes as PT } from 'react';
 import { injectIntl } from 'react-intl';
-import { tilAvsnitt, prettyDate, leggTilLenkerTags } from '../utils/utils';
+import { tilAvsnitt, prettyDate, leggTilLenkerTags } from '../utils';
 import classNames from 'classnames';
 
 const meldingklasse = (melding) => classNames('melding-container blokk-l', {

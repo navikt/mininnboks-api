@@ -1,5 +1,5 @@
 import React, { PropTypes as PT } from 'react';
-import { fn, getDisplayName } from './../utils';
+import { fn, getDisplayName } from '../../utils';
 
 export function visibleIfHOC(komponent) {
     function visibleIfWrapper({ visibleIf, ...props }) {
