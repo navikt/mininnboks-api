@@ -6,14 +6,17 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static java.lang.System.getProperty;
-import static no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalVarselUtils.erUbesvart;
-import static no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalVarselUtils.erUlest;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE;
 
 public class SporsmalVarsel {
 
-    public static enum Status {ULEST, UBESVART}
+    public enum Status {ULEST, UBESVART}
+
+    public static Predicate<Henvendelse> erUbesvart = (henvendelse) -> henvendelse.type == SPORSMAL_MODIA_UTGAAENDE;
+    public static Predicate<Henvendelse> erUlest = (henvendelse) -> !henvendelse.isLest();
 
     public String behandlingskjedeId;
     public Date opprettetDato;
@@ -27,10 +30,10 @@ public class SporsmalVarsel {
         this.type = henvendelse.type;
         this.uri = lagDirektelenkeTilTraad(henvendelse.traadId);
 
-        if (erUbesvart(henvendelse)) {
+        if (erUbesvart.test(henvendelse)) {
             this.statuser.add(Status.UBESVART);
         }
-        if (erUlest(henvendelse)) {
+        if (erUlest.test(henvendelse)) {
             this.statuser.add(Status.ULEST);
         }
     }
