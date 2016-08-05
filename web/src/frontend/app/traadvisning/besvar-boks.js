@@ -1,11 +1,13 @@
 import React, { PropTypes as PT } from 'react';
 import { validate } from '../utils/validationutil';
 import ExpandingTextArea from '../expanding-textarea/expanding-textarea';
+import { STATUS } from './../ducks/utils';
 import { FormattedMessage } from 'react-intl';
 import { reduxForm } from 'redux-form';
 import { visibleIfHOC } from './../utils/hocs/visible-if';
+import { Hovedknapp } from 'nav-react-design/dist/knapp';
 
-function BesvarBoks({ traadId, avbryt, submit, fields, handleSubmit, resetForm }) {
+function BesvarBoks({ traadId, avbryt, innsendingStatus, submit, fields, handleSubmit, resetForm }) {
     const onSubmit = ({ fritekst }) => {
         submit(traadId, fritekst);
     };
@@ -19,9 +21,9 @@ function BesvarBoks({ traadId, avbryt, submit, fields, handleSubmit, resetForm }
         <form className="besvar-container text-center blokk-center blokk-l" onSubmit={handleSubmit(onSubmit)}>
             <ExpandingTextArea config={fields.fritekst} className="blokk-m" />
             <div className="blokk-xs">
-                <button type="submit" className="knapp knapp-hoved knapp-liten">
+                <Hovedknapp type="submit" spinner={innsendingStatus === STATUS.PENDING}>
                     <FormattedMessage id="traadvisning.besvar.send" />
-                </button>
+                </Hovedknapp>
             </div>
             <a href="javascript:void(0)" onClick={onAbort} role="button" >
                 <FormattedMessage id="traadvisning.besvar.avbryt" />
@@ -31,6 +33,7 @@ function BesvarBoks({ traadId, avbryt, submit, fields, handleSubmit, resetForm }
 }
 
 BesvarBoks.propTypes = {
+    innsendingStatus: PT.string.isRequired,
     traadId: PT.string.isRequired,
     submit: PT.func.isRequired,
     resetForm: PT.func.isRequired,

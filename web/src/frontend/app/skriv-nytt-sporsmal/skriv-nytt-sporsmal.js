@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 import SamletFeilmeldingPanel from '../utils/nav-form/samlet-feilmelding-panel';
 import { validate } from '../utils/validationutil';
+import { Hovedknapp } from 'nav-react-design/dist/knapp';
 
 const ukjentTemagruppeTittel = <FormattedMessage id="skriv-sporsmal.ukjent-temagruppe" />;
 
@@ -51,11 +52,11 @@ function SkrivNyttSporsmal({
                 </h2>
                 <p className="text-bold blokk-null"><FormattedMessage id={temagruppe} /></p>
                 <Infopanel
-                    type={sendingStatus}
-                    visibleIf={sendingStatus && sendingStatus !== STATUS.NOT_STARTED}
+                    type="advarsel"
+                    visibleIf={sendingStatus && sendingStatus === STATUS.ERROR}
                     horisontal
                 >
-                    <FormattedMessage id={`infoboks.${sendingStatus}`} />
+                    <FormattedMessage id="infoboks.advarsel" />
                 </Infopanel>
                 <p className="typo-normal blokk-xs"><FormattedMessage id="textarea.infotekst" /></p>
                 <SamletFeilmeldingPanel errors={errors} submitFailed={submitFailed} submitToken={submitToken} />
@@ -65,9 +66,9 @@ function SkrivNyttSporsmal({
                     config={fields.godkjennVilkaar}
                     actions={actions}
                 />
-                <button type="submit" className="knapp knapp-hoved knapp-stor">
+                <Hovedknapp type="submit" spinner={sendingStatus === STATUS.PENDING}>
                     <FormattedMessage id="send-sporsmal.still-sporsmal.send-inn" />
-                </button>
+                </Hovedknapp>
             </form>
         </article>
     );

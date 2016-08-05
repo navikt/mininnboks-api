@@ -70,13 +70,14 @@ class TraadVisning extends React.Component {
                         </IntlLenke>
                     </Infopanel>
                     <Infopanel
-                        type={innsendingStatus}
+                        type="advarsel"
                         visibleIf={innsendingStatus && innsendingStatus === STATUS.ERROR}
                         horisontal
                     >
-                        <FormattedMessage id={`infoboks.${innsendingStatus}`} />
+                        <FormattedMessage id={`infoboks.advarsel`} />
                     </Infopanel>
                     <BesvarBoks
+                        innsendingStatus={innsendingStatus}
                         visibleIf={skalViseBesvarBoks}
                         traadId={traadId}
                         avbryt={actions.skjulBesvarBoks}
