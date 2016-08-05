@@ -12,6 +12,7 @@ import { visBesvarBoks, skjulBesvarBoks } from './../ducks/ui';
 import { connect } from 'react-redux';
 import { storeShape, traadShape } from './../proptype-shapes';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
+import { Sidetittel } from 'nav-react-design/dist/tittel';
 
 const resolver = (temagruppe) => (key, tekst) => {
     if (key === ':tema') {
@@ -49,7 +50,7 @@ class TraadVisning extends React.Component {
         return (
             <div>
                 <Breadcrumbs routes={routes} params={params} resolver={resolver(valgttraad.nyeste.temagruppeNavn)} />
-                <h1 className="typo-sidetittel text-center blokk-l">
+                <Sidetittel className="text-center blokk-l">
                     <FormattedMessage
                         id="traadvisning.overskrift"
                         values={{
@@ -57,7 +58,8 @@ class TraadVisning extends React.Component {
                             temagruppeNavn: valgttraad.nyeste.temagruppeNavn
                         }}
                     />
-                </h1>
+                </Sidetittel>
+
                 <div className="traad-container">
                     <SkrivKnapp
                         visibleIf={valgttraad.kanBesvares && !skalViseBesvarBoks}

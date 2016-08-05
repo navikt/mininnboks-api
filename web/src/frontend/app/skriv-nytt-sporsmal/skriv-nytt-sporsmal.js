@@ -15,6 +15,7 @@ import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 import SamletFeilmeldingPanel from '../utils/nav-form/samlet-feilmelding-panel';
 import { validate } from '../utils/validationutil';
 import { Hovedknapp } from 'nav-react-design/dist/knapp';
+import { Sidetittel } from 'nav-react-design/dist/tittel';
 
 const ukjentTemagruppeTittel = <FormattedMessage id="skriv-sporsmal.ukjent-temagruppe" />;
 
@@ -43,9 +44,9 @@ function SkrivNyttSporsmal({
     return (
         <article className="blokk-center send-sporsmal-side">
             <Breadcrumbs routes={routes} params={params} className="blokk-s" />
-            <h1 className="typo-sidetittel text-center blokk-m">
+            <Sidetittel className="text-center blokk-m">
                 <FormattedMessage id="send-sporsmal.still-sporsmal.ny-melding-overskrift" />
-            </h1>
+            </Sidetittel>
             <form className="panel text-center" onSubmit={submit}>
                 <h2 className="hode hode-innholdstittel hode-dekorert meldingikon">
                     <FormattedMessage id="send-sporsmal.still-sporsmal.deloverskrift" />

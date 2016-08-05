@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 import VisibleIf from './../utils/hocs/visible-if';
 import { storeShape, traadShape } from './../proptype-shapes';
+import { Sidetittel } from 'nav-react-design/dist/tittel';
 
 
 const getTraadLister = (traader) => {
@@ -44,9 +45,9 @@ function ListeVisning({ routes, params, traader, location }) {
     return (
         <div>
             <Breadcrumbs routes={routes} params={params} />
-            <h1 className="typo-sidetittel text-center blokk-l">
+            <Sidetittel className="text-center blokk-l">
                 <FormattedMessage id="innboks.overskrift" />
-            </h1>
+            </Sidetittel>
             <div className="text-center blokk-l">
                 <IntlLenke href="skriv.ny.link" className="knapp knapp-hoved knapp-liten">
                     <FormattedMessage id="innboks.skriv.ny.link" />

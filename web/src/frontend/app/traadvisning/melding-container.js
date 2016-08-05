@@ -1,13 +1,14 @@
 import React, { PropTypes as PT } from 'react';
 import { injectIntl } from 'react-intl';
 import { tilAvsnitt, prettyDate, leggTilLenkerTags } from '../utils';
+import { Relatertpanel } from 'nav-react-design/dist/panel';
 import classNames from 'classnames';
 
 const meldingklasse = (melding) => classNames('melding-container blokk-l', {
     'fra-bruker': melding.fraBruker,
     'fra-nav': !melding.fraBruker
 });
-const panelklasse = (melding) => classNames('melding panel panel-relatert', {
+const panelklasse = (melding) => classNames('melding', {
     'panel-relatert-venstre': !melding.fraBruker,
     'panel-relatert-hoyre': melding.fraBruker
 });
@@ -28,11 +29,11 @@ function MeldingContainer({ melding, intl: { formatMessage } }) {
             <div className="logo">
                 <img src={imgSrc} alt={imgAltTekst} />
             </div>
-            <div className={panelklasse(melding)}>
+            <Relatertpanel className={panelklasse(melding)}>
                 <h2 className="typo-element">{melding.statusTekst}</h2>
                 <p className="typo-infotekst tema-dokument">{dato}</p>
                 <div className="typo-normal">{avsnitt}</div>
-            </div>
+            </Relatertpanel>
         </div>
     );
 }

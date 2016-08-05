@@ -1,22 +1,21 @@
 import React, { PropTypes as PT } from 'react';
 import classNames from 'classnames';
+import { Rammepanel } from 'nav-react-design/dist/panel';
 import { visibleIfHOC } from './../utils/hocs/visible-if';
 
-const panelklasse = (className, horisontal) => classNames('panel panel-ramme info-panel', className, {
-    'panel-komprimert': horisontal
-});
+const panelklasse = (className) => classNames('info-panel', className);
 const hodeklasse = (type, horisontal) => classNames('hode', `hode-${type}`, {
     horisontal
 });
 
 function infopanelBase({ type, horisontal, className, children }) {
     return (
-        <div className={panelklasse(className, horisontal)}>
+        <Rammepanel className={panelklasse(className)} komprimert={horisontal}>
             <p className="vekk">{`${type}-infopanel: `}</p>
             <p className={hodeklasse(type, horisontal)}>
                 {children}
             </p>
-        </div>
+        </Rammepanel>
     );
 }
 
