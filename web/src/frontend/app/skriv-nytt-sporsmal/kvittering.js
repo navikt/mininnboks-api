@@ -4,22 +4,17 @@ import { Link } from 'react-router';
 
 function Kvittering() {
     return (
-        <article className="send-sporsmal-container bekreftelse-panel">
-            <div className="sporsmal-header">
-                <img src="/mininnboks/img/hake_stor02.svg" alt="Kvitteringsikon" />
+        <article className="panel text-center">
+            <h1 className="hode hode-undertittel hode-dekorert hode-suksess">
+                <FormattedMessage id="send-sporsmal.bekreftelse.antall-dager" />
+            </h1>
 
-                <h2 className="stor deloverskrift">
-                    <FormattedMessage id="send-sporsmal.bekreftelse.antall-dager" />
-                </h2>
+            <p className="blokk-m">
+                <FormattedHTMLMessage id="send-sporsmal.bekreftelse.varslingsinfo" />
+            </p>
 
-                <div className="robust-strek" />
+            <hr className="blokk-m"/>
 
-                <p>
-                    <FormattedHTMLMessage id="send-sporsmal.bekreftelse.varslingsinfo" />
-                </p>
-
-                <hr />
-            </div>
             <Link className="knapp-link-stor" to="/">
                 <FormattedMessage id="send-sporsmal.bekreftelse.til-meldingsboksen" />
             </Link>
