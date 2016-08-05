@@ -35,7 +35,7 @@ class TraadVisning extends React.Component {
 
         if (!valgttraad) {
             return (
-                <Feilmelding tittel="Fant ikke tråden">
+                <Feilmelding tittel="Oops">
                     <p>Fant ikke tråden du var ute etter</p>
                 </Feilmelding>
             );
