@@ -1,4 +1,5 @@
-import React, { PropTypes as PT } from 'react';
+import React, { Component, PropTypes as PT } from 'react';
+import { findDOMNode } from 'react-dom';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import { shortDate } from '../utils';
@@ -9,28 +10,37 @@ const cls = (props) => classNames('panel panel-ikon panel-klikkbart blokk-xxxs d
     markert: props.aktiv
 });
 
-function DokumentPreview(props) {
-    const { traad } = props;
-    const dokument = traad.nyeste;
-    const avsender = <span className="avsender-fra-nav"><FormattedMessage id="avsender.tekst.NAV" /></span>;
-    const dato = shortDate(dokument.opprettet);
-    const temanavn = dokument.temaNavn;
+class DokumentPreview extends Component {
+    componentDidMount() {
+        if (this.props.aktiv) {
+            findDOMNode(this.refs.lenke).focus();
+        }
+    }
 
-    return (
-        <li className="traad">
-            <Link
-                to={`/dokument/${dokument.id}`}
-                className={cls(props)}
-            >
-                <p className="vekk"><FormattedMessage id="dokumentmelding.ikon" /></p>
-                <div className="typo-normal blokk-xxxs">
-                    <p>{dato} / Fra {avsender} </p>
-                    <h2 className="typo-element blokk-xxs">{dokument.statusTekst}</h2>
-                    <p className="typo-infotekst tema-dokument">{temanavn}</p>
-                </div>
-            </Link>
-        </li>
-    );
+    render() {
+        const { traad } = this.props;
+        const dokument = traad.nyeste;
+        const avsender = <span className="avsender-fra-nav"><FormattedMessage id="avsender.tekst.NAV" /></span>;
+        const dato = shortDate(dokument.opprettet);
+        const temanavn = dokument.temaNavn;
+
+        return (
+            <li className="traad">
+                <Link
+                    ref="lenke"
+                    to={`/dokument/${dokument.id}`}
+                    className={cls(this.props)}
+                >
+                    <p className="vekk"><FormattedMessage id="dokumentmelding.ikon" /></p>
+                    <div className="typo-normal blokk-xxxs">
+                        <p>{dato} / Fra {avsender} </p>
+                        <h2 className="typo-element blokk-xxs">{dokument.statusTekst}</h2>
+                        <p className="typo-infotekst tema-dokument">{temanavn}</p>
+                    </div>
+                </Link>
+            </li>
+        );
+    }
 }
 
 DokumentPreview.propTypes = {
