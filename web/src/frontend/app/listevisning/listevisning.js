@@ -5,6 +5,7 @@ import { nyesteTraadForst } from '../utils';
 import MeldingListe from './melding-liste';
 import { connect } from 'react-redux';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
+import VisibleIf from './../utils/hocs/visible-if';
 import { storeShape, traadShape } from './../proptype-shapes';
 
 
@@ -51,8 +52,15 @@ function ListeVisning({ routes, params, traader, location }) {
                     <FormattedMessage id="innboks.skriv.ny.link" />
                 </IntlLenke>
             </div>
-            <MeldingListe meldinger={ulesteTraader} overskrift="innboks.uleste" />
-            <MeldingListe meldinger={lesteTraader} overskrift="innboks.leste" />
+            <VisibleIf visibleIf={traader.data.length === 0}>
+                <h2 className="typo-undertittel text-center">
+                    <FormattedMessage id="innboks.tom-innboks-melding" />
+                </h2>
+            </VisibleIf>
+            <VisibleIf visibleIf={traader.data.length > 0}>
+                <MeldingListe meldinger={ulesteTraader} overskrift="innboks.uleste" />
+                <MeldingListe meldinger={lesteTraader} overskrift="innboks.leste" />
+            </VisibleIf>
         </div>
     );
 }
