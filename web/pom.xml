@@ -523,6 +523,7 @@
                             <executable>node</executable>
                             <arguments>
                                 <argument>./node_modules/gulp/bin/gulp</argument>
+                                <argument>--prod</argument>
                             </arguments>
                             <workingDirectory>src/frontend</workingDirectory>
                         </configuration>
