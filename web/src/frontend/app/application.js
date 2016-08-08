@@ -27,7 +27,7 @@ class Application extends React.Component {
             <div>
                 <IntlProvider defaultLocale="nb" locale="nb" messages={ledetekster.data} >
                     <Innholdslaster avhengigheter={[ledetekster]}>
-                            <div className={cls(visHeaderLevel)}>{children}</div>
+                        <div className={cls(visHeaderLevel)}>{children}</div>
                     </Innholdslaster>
                 </IntlProvider>
                 <div aria-hidden="true">

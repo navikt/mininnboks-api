@@ -76,7 +76,7 @@ class TraadVisning extends React.Component {
                         visibleIf={innsendingStatus && innsendingStatus === STATUS.ERROR}
                         horisontal
                     >
-                        <FormattedMessage id={`infoboks.advarsel`} />
+                        <FormattedMessage id={'infoboks.advarsel'} />
                     </Infopanel>
                     <BesvarBoks
                         innsendingStatus={innsendingStatus}

@@ -23,7 +23,7 @@ class DokumentVisningSide extends React.Component {
     render() {
         const { params, routes, traader, dokumenter } = this.props;
 
-        const traad = traader.data.find((traad) => traad.traadId === params.id);
+        const traad = traader.data.find((t) => t.traadId === params.id);
         if (!traad) {
             return (
                 <Feilmelding tittel="Oops">
@@ -33,7 +33,11 @@ class DokumentVisningSide extends React.Component {
         }
 
         return (
-            <Innholdslaster avhengigheter={[dokumenter]} className="dokinnsyn" feilmeldingKey="innlastning.dokument.feil">
+            <Innholdslaster
+                avhengigheter={[dokumenter]}
+                className="dokinnsyn"
+                feilmeldingKey="innlastning.dokument.feil"
+            >
                 <Breadcrumbs routes={routes} params={params} />
                 <Dokumentvisning {...dokumenter.data} />
             </Innholdslaster>

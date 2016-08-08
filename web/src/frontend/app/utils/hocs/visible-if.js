@@ -9,7 +9,8 @@ function VisibleIf({ visibleIf, children }) {
 }
 
 VisibleIf.propTypes = {
-    visibleIf: PT.oneOfType([PT.func, PT.bool]).isRequired
+    visibleIf: PT.oneOfType([PT.func, PT.bool]).isRequired,
+    children: PT.node.isRequired
 };
 
 export default VisibleIf;

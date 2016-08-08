@@ -13,7 +13,7 @@ function Kvittering() {
                 <FormattedHTMLMessage id="send-sporsmal.bekreftelse.varslingsinfo" />
             </p>
 
-            <hr className="blokk-m"/>
+            <hr className="blokk-m" />
 
             <Link className="knapp-link-stor" to="/">
                 <FormattedMessage id="send-sporsmal.bekreftelse.til-meldingsboksen" />

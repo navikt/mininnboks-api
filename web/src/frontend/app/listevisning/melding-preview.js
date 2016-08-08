@@ -54,9 +54,9 @@ class MeldingPreview extends Component {
                         <h2 className="typo-element blokk-xxs">
                             {melding.statusTekst}
                             <span className="vekk">
-                            {flereMeldinger}
+                                {flereMeldinger}
                                 {maBesvares}
-                        </span>
+                            </span>
                         </h2>
                         <p className="typo-infotekst tema-avsnitt">{avsnitt}</p>
                     </div>
