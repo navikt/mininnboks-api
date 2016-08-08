@@ -6,7 +6,7 @@ import { Hovedknapp } from 'nav-react-design/dist/knapp';
 function SkrivKnapp({ onClick }) {
     return (
         <div className="text-center blokk-l">
-            <Hovedknapp onClick={onClick} liten>
+            <Hovedknapp onClick={onClick} storrelse="liten">
                 <FormattedMessage id="traadvisning.skriv.svar.link" />
             </Hovedknapp>
         </div>
