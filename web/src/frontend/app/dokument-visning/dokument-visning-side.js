@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { markerBehandlingsIdSomLest } from './../ducks/traader';
 import { hentDokumentVisningData } from './../ducks/dokumenter';
 import Innholdslaster from './../innholdslaster/innholdslaster';
+import Feilmelding from './../feilmelding/feilmelding';
 import Dokumentvisning from './dokument-visning';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 
@@ -21,8 +22,22 @@ class DokumentVisningSide extends React.Component {
 
     render() {
         const { params, routes, traader, dokumenter } = this.props;
+
+        const traad = traader.data.find((t) => t.traadId === params.id);
+        if (!traad) {
+            return (
+                <Feilmelding tittel="Oops">
+                    <p>Fant ikke dokumentet</p>
+                </Feilmelding>
+            );
+        }
+
         return (
-            <Innholdslaster avhengigheter={[traader, dokumenter]} className="dokinnsyn">
+            <Innholdslaster
+                avhengigheter={[dokumenter]}
+                className="dokinnsyn"
+                feilmeldingKey="innlastning.dokument.feil"
+            >
                 <Breadcrumbs routes={routes} params={params} />
                 <Dokumentvisning {...dokumenter.data} />
             </Innholdslaster>

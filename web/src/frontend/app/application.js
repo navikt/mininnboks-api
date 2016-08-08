@@ -25,11 +25,11 @@ class Application extends React.Component {
 
         return (
             <div>
-                <Innholdslaster avhengigheter={[ledetekster]}>
-                    <IntlProvider defaultLocale="nb" locale="nb" messages={ledetekster.data} >
+                <IntlProvider defaultLocale="nb" locale="nb" messages={ledetekster.data} >
+                    <Innholdslaster avhengigheter={[ledetekster]}>
                         <div className={cls(visHeaderLevel)}>{children}</div>
-                    </IntlProvider>
-                </Innholdslaster>
+                    </Innholdslaster>
+                </IntlProvider>
                 <div aria-hidden="true">
                     <DevTools />
                 </div>

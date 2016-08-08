@@ -12,6 +12,7 @@ import { visBesvarBoks, skjulBesvarBoks } from './../ducks/ui';
 import { connect } from 'react-redux';
 import { storeShape, traadShape } from './../proptype-shapes';
 import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
+import { Sidetittel } from 'nav-react-design/dist/tittel';
 
 const resolver = (temagruppe) => (key, tekst) => {
     if (key === ':tema') {
@@ -35,7 +36,7 @@ class TraadVisning extends React.Component {
 
         if (!valgttraad) {
             return (
-                <Feilmelding tittel="Fant ikke tråden">
+                <Feilmelding tittel="Oops">
                     <p>Fant ikke tråden du var ute etter</p>
                 </Feilmelding>
             );
@@ -49,7 +50,7 @@ class TraadVisning extends React.Component {
         return (
             <div>
                 <Breadcrumbs routes={routes} params={params} resolver={resolver(valgttraad.nyeste.temagruppeNavn)} />
-                <h1 className="typo-sidetittel text-center blokk-l">
+                <Sidetittel className="text-center blokk-l">
                     <FormattedMessage
                         id="traadvisning.overskrift"
                         values={{
@@ -57,7 +58,8 @@ class TraadVisning extends React.Component {
                             temagruppeNavn: valgttraad.nyeste.temagruppeNavn
                         }}
                     />
-                </h1>
+                </Sidetittel>
+
                 <div className="traad-container">
                     <SkrivKnapp
                         visibleIf={valgttraad.kanBesvares && !skalViseBesvarBoks}
@@ -70,13 +72,14 @@ class TraadVisning extends React.Component {
                         </IntlLenke>
                     </Infopanel>
                     <Infopanel
-                        type={innsendingStatus}
+                        type="advarsel"
                         visibleIf={innsendingStatus && innsendingStatus === STATUS.ERROR}
                         horisontal
                     >
-                        <FormattedMessage id={`infoboks.${innsendingStatus}`} />
+                        <FormattedMessage id={'infoboks.advarsel'} />
                     </Infopanel>
                     <BesvarBoks
+                        innsendingStatus={innsendingStatus}
                         visibleIf={skalViseBesvarBoks}
                         traadId={traadId}
                         avbryt={actions.skjulBesvarBoks}

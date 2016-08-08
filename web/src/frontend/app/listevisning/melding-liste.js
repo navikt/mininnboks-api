@@ -2,6 +2,8 @@ import React, { PropTypes as PT } from 'react';
 import MeldingPreview from './melding-preview';
 import DokumentPreview from './dokument-preview';
 import { FormattedMessage } from 'react-intl';
+import { Panel } from 'nav-react-design/dist/panel';
+import { Undertittel } from 'nav-react-design/dist/tittel';
 
 const MeldingListe = ({ meldinger, overskrift }) => {
     const innhold = meldinger.map((config) => {
@@ -21,10 +23,12 @@ const MeldingListe = ({ meldinger, overskrift }) => {
 
     return (
         <section className="traad-liste">
-            <h1 className="panel blokk-xxxs clearfix typo-undertittel">
-                <FormattedMessage id={overskrift} values={{ antallMeldinger: meldinger.length }} />
-                <span className="vekk">({meldinger.length})</span>
-            </h1>
+            <Panel className="panel blokk-xxxs">
+                <Undertittel>
+                    <FormattedMessage id={overskrift} values={{ antallMeldinger: meldinger.length }} />
+                    <span className="vekk">({meldinger.length})</span>
+                </Undertittel>
+            </Panel>
             <ul className="ustilet">
                 {innhold}
             </ul>

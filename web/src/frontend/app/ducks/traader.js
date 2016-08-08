@@ -49,7 +49,7 @@ export default function reducer(state = initalState, action) {
         case INNSENDING_OK:
             return { ...state, innsendingStatus: STATUS.OK };
         case INNSENDING_FEILET:
-            return { ...state, innsendingStatus: STATUS.FEILET };
+            return { ...state, innsendingStatus: STATUS.ERROR };
         case INNSENDING_PENDING:
             return { ...state, innsendingStatus: STATUS.PENDING };
         default:

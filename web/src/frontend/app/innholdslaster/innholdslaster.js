@@ -1,4 +1,5 @@
 import React, { PropTypes as PT } from 'react';
+import { injectIntl } from 'react-intl';
 import Feilmelding from './../feilmelding/feilmelding';
 import Laster from './innholdslaster-laster';
 import { storeShape } from '../proptype-shapes';
@@ -10,7 +11,7 @@ const noenHarFeil = (avhengigheter) => avhengigheter && avhengigheter.some(harSt
 const alleLastet = (avhengigheter) => avhengigheter && avhengigheter.every(harStatus(STATUS.OK, STATUS.RELOADING));
 const medFeil = (avhengigheter) => avhengigheter.find(harStatus(STATUS.ERROR));
 
-const Innholdslaster = ({ avhengigheter, className, children }) => {
+const Innholdslaster = ({ avhengigheter, className, feilmeldingKey, intl, children }) => {
     if (alleLastet(avhengigheter)) {
         return <div className={className}>{children}</div>;
     }
@@ -18,9 +19,14 @@ const Innholdslaster = ({ avhengigheter, className, children }) => {
     if (noenHarFeil(avhengigheter)) {
         const feilendeReducer = medFeil(avhengigheter);
         console.log(feilendeReducer); // eslint-disable-line no-console
+
+        const feilmelding = (feilmeldingKey && intl.messages[feilmeldingKey]) || (
+            'Det skjedde en feil ved innlastningen av data'
+            );
+
         return (
             <Feilmelding tittel="Oops" className={className}>
-                <p>Kunne ikke laste alle data som trengs for å vise applikasjonen</p>
+                <p>{feilmelding}</p>
             </Feilmelding>
         );
     }
@@ -30,7 +36,9 @@ const Innholdslaster = ({ avhengigheter, className, children }) => {
 Innholdslaster.propTypes = {
     avhengigheter: PT.arrayOf(storeShape(PT.object)),
     className: PT.string,
-    children: PT.node.isRequired
+    children: PT.node.isRequired,
+    intl: PT.object.isRequired,
+    feilmeldingKey: PT.string
 };
 
-export default Innholdslaster;
+export default injectIntl(Innholdslaster);
