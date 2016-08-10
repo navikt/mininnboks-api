@@ -26,11 +26,7 @@ public class SporsmalVarsel {
         this.behandlingskjedeId = henvendelse.traadId;
         this.opprettetDato = henvendelse.opprettet.toDate();
         this.type = henvendelse.type;
-        if (DOKUMENT_VARSEL == this.type) {
-            this.uri = lagDirektelnekTilDokumentMelding(henvendelse.korrelasjonsId);
-        } else {
-            this.uri = lagDirektelenkeTilMelding(henvendelse.traadId);
-        }
+        this.uri = lagDirektelenkeTilMelding(henvendelse);
 
         if (erUbesvart(henvendelse)) {
             this.statuser.add(Status.UBESVART);
@@ -40,11 +36,10 @@ public class SporsmalVarsel {
         }
     }
 
-    private String lagDirektelnekTilDokumentMelding(String korrelasjonsId) {
-        return String.format("%s/?varselId=%s", getProperty("mininnboks.link.url"), korrelasjonsId);
-    }
-
-    private String lagDirektelenkeTilMelding(String traadId) {
-        return String.format("%s/traad/%s", getProperty("mininnboks.link.url"), traadId);
+    private String lagDirektelenkeTilMelding(Henvendelse henvendelse) {
+        if (DOKUMENT_VARSEL == this.type) {
+            return String.format("%s/?varselId=%s", getProperty("mininnboks.link.url"), henvendelse.korrelasjonsId);
+        }
+        return String.format("%s/traad/%s", getProperty("mininnboks.link.url"), henvendelse.traadId);
     }
 }
