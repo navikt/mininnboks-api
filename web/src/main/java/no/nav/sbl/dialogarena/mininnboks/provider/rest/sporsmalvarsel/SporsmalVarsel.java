@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import static java.lang.System.getProperty;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.DOKUMENT_VARSEL;
 import static no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalVarselUtils.erUbesvart;
 import static no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalVarselUtils.erUlest;
 
@@ -25,7 +26,11 @@ public class SporsmalVarsel {
         this.behandlingskjedeId = henvendelse.traadId;
         this.opprettetDato = henvendelse.opprettet.toDate();
         this.type = henvendelse.type;
-        this.uri = lagDirektelenkeTilTraad(henvendelse.traadId);
+        if (DOKUMENT_VARSEL == this.type) {
+            this.uri = lagDirektelnekTilDokumentMelding(henvendelse.korrelasjonsId);
+        } else {
+            this.uri = lagDirektelenkeTilMelding(henvendelse.traadId);
+        }
 
         if (erUbesvart(henvendelse)) {
             this.statuser.add(Status.UBESVART);
@@ -35,7 +40,11 @@ public class SporsmalVarsel {
         }
     }
 
-    private String lagDirektelenkeTilTraad(String traadId) {
+    private String lagDirektelnekTilDokumentMelding(String korrelasjonsId) {
+        return String.format("%s/?varselId=%s", getProperty("mininnboks.link.url"), korrelasjonsId);
+    }
+
+    private String lagDirektelenkeTilMelding(String traadId) {
         return String.format("%s/traad/%s", getProperty("mininnboks.link.url"), traadId);
     }
 }
