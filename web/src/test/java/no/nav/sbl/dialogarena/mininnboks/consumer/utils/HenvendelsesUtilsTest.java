@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
-import no.nav.modig.content.CmsContentRetriever;
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import org.joda.time.DateTime;
@@ -43,17 +43,17 @@ public class HenvendelsesUtilsTest {
     private static final String KONTORSPERRE_ENHET = "kontorsperreEnhet";
 
 
-    private CmsContentRetriever cmsContentRetriever = mock(CmsContentRetriever.class);
+    private TekstService tekstService = mock(TekstService.class);
 
     @Before
     public void setup() {
-        HenvendelsesUtils.setCmsContentRetriever(cmsContentRetriever);
-        when(cmsContentRetriever.hentTekst(anyString())).thenReturn("value");
+        HenvendelsesUtils.setTekstService(tekstService);
+        when(tekstService.hentTekst(anyString())).thenReturn("value");
     }
 
     @After
     public void after() {
-        HenvendelsesUtils.setCmsContentRetriever(null);
+        HenvendelsesUtils.setTekstService(null);
     }
     @Test
     public void transformererDokumentHenvendelse() {
@@ -200,8 +200,8 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
         info.setMetadataListe(null);
 
-        when(cmsContentRetriever.hentTekst("innhold.kassert")).thenReturn("Innholdet er kassert");
-        when(cmsContentRetriever.hentTekst("temagruppe.kassert")).thenReturn("Kassert");
+        when(tekstService.hentTekst("innhold.kassert")).thenReturn("Innholdet er kassert");
+        when(tekstService.hentTekst("temagruppe.kassert")).thenReturn("Kassert");
         Henvendelse referat = TIL_HENVENDELSE.apply(info);
 
         assertThat(referat.fritekst, is("Innholdet er kassert"));

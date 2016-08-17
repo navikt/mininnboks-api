@@ -19,6 +19,7 @@
         <module>config</module>
         <module>web</module>
         <module>jee</module>
+        <module>tekster</module> <!-- Denne skal fjernes i det mininnboks-tekster deployes som egen applikasjon -->
     </modules>
 
     <properties>

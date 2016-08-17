@@ -1,0 +1,1 @@
+{ fraBruker, select, true { Melding fra deg } false { Melding fra NAV } other { Ukjent hvem som sendte meldingen }}

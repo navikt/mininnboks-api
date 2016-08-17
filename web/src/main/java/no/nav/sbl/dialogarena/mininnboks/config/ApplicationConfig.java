@@ -3,7 +3,6 @@ package no.nav.sbl.dialogarena.mininnboks.config;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.PersonServiceConfig;
 import no.nav.sbl.dialogarena.mininnboks.internal.HealthCheckService;
 import no.nav.sbl.dialogarena.mininnboks.internal.IsAliveServlet;
-import no.nav.sbl.dialogarena.mininnboks.internal.RefreshEnonicServlet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -26,11 +25,6 @@ public class ApplicationConfig {
     @Bean
     public IsAliveServlet isAliveServlet() {
         return new IsAliveServlet();
-    }
-
-    @Bean
-    public RefreshEnonicServlet refreshEnonicServlet() {
-        return new RefreshEnonicServlet();
     }
 
     @Bean

@@ -1,0 +1,1 @@
+Fritekstfelt, max {antallTegn} tegn

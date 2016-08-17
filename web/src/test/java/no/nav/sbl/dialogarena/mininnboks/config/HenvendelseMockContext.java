@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
-import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
@@ -59,7 +58,8 @@ public class HenvendelseMockContext {
                         .withFerdigstiltDato(DateTime.now().minusDays(3))
                 )));
 
-        return traad;    }
+        return traad;
+    }
 
     @Bean
     public HenvendelseService henvendelseService(PersonService personService) {

@@ -1,8 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
-import no.nav.modig.content.CmsContentRetriever;
 import no.nav.modig.core.context.ThreadLocalSubjectHandler;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController.NyHenvendelseResultat;
@@ -42,7 +42,7 @@ public class HenvendelseControllerTest {
     HenvendelseService service;
 
     @Mock
-    CmsContentRetriever cmsContentRetriever = mock(CmsContentRetriever.class);
+    TekstService tekstService = mock(TekstService.class);
 
     @InjectMocks
     HenvendelseController controller = new HenvendelseController();
@@ -60,7 +60,7 @@ public class HenvendelseControllerTest {
                 new Henvendelse("7").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(now())
         );
 
-        HenvendelsesUtils.setCmsContentRetriever(cmsContentRetriever);
+        HenvendelsesUtils.setTekstService(tekstService);
 
         when(service.hentAlleHenvendelser(anyString())).thenReturn(henvendelser);
 
@@ -79,7 +79,7 @@ public class HenvendelseControllerTest {
 
     @After
     public void after() {
-        HenvendelsesUtils.setCmsContentRetriever(null);
+        HenvendelsesUtils.setTekstService(null);
     }
 
     @Test

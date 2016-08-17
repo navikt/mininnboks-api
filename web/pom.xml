@@ -37,11 +37,9 @@
         <jackson.version>2.7.4</jackson.version>
         <logback.version>1.1.7</logback.version>
         <commons-codec.version>1.9</commons-codec.version>
-        <commons-io.version>2.4</commons-io.version>
         <commons-lang3.version>3.1</commons-lang3.version>
         <jsoup.version>1.7.2</jsoup.version>
         <joda.version>2.3</joda.version>
-        <ehcache.version>2.6.6</ehcache.version>
 
         <!-- Tjenester -->
         <dialogarena-behandlingsinformasjon.version>0.0.52</dialogarena-behandlingsinformasjon.version>
@@ -119,6 +117,11 @@
         </dependency>
 
         <!--Modig-->
+        <dependency>
+            <groupId>no.nav.sbl</groupId>
+            <artifactId>utave</artifactId>
+            <version>1.0.9</version>
+        </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>common-cxf</artifactId>
@@ -274,11 +277,6 @@
             <version>${javax.ws.rs-api.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>jsr250-api</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
             <version>${jersey.version}</version>
@@ -375,7 +373,7 @@
         <dependency>
             <groupId>no.nav.sbl</groupId>
             <artifactId>innholdshenter</artifactId>
-            <version>2.6</version>
+            <version>4.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -397,13 +395,6 @@
         </dependency>
 
         <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-            <version>${ehcache.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>${joda.version}</version>
@@ -414,12 +405,6 @@
             <artifactId>javax.inject</artifactId>
             <version>1</version>
             <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
         </dependency>
 
         <!--Testing-->
@@ -446,11 +431,6 @@
             <artifactId>hamcrest-core</artifactId>
             <version>${hamcrest.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-            <scope>compile</scope>
         </dependency>
 
     </dependencies>

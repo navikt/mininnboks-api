@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
-import no.nav.modig.content.CmsContentRetriever;
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
@@ -21,7 +21,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.
 
 public abstract class HenvendelsesUtils {
 
-    private static CmsContentRetriever cmsContentRetriever;
+    private static TekstService tekstService;
 
     final static Logger logger = LoggerFactory.getLogger(HenvendelsesUtils.class);
     private static final String LINE_REPLACEMENT_STRING = UUID.randomUUID().toString();
@@ -30,8 +30,8 @@ public abstract class HenvendelsesUtils {
     public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
     public static final Function<XMLHenvendelse, Henvendelse> TIL_HENVENDELSE = xmlHenvendelse -> tilHenvendelse(xmlHenvendelse);
 
-    public static void setCmsContentRetriever(CmsContentRetriever contentRetriever) {
-        cmsContentRetriever = contentRetriever;
+    public static void setTekstService(TekstService tekstService) {
+        HenvendelsesUtils.tekstService = tekstService;
     }
 
     private static final Map<XMLHenvendelseType, Henvendelsetype> HENVENDELSETYPE_MAP = new HashMap<XMLHenvendelseType, Henvendelsetype>() {
@@ -72,14 +72,14 @@ public abstract class HenvendelsesUtils {
 
         if (innholdErKassert(info)) {
             henvendelse.kassert = true;
-            henvendelse.fritekst = cmsContentRetriever.hentTekst("innhold.kassert");
-            henvendelse.statusTekst = cmsContentRetriever.hentTekst("temagruppe.kassert");
+            henvendelse.fritekst = tekstService.hentTekst("innhold.kassert");
+            henvendelse.statusTekst = tekstService.hentTekst("temagruppe.kassert");
             henvendelse.temagruppe = null;
             henvendelse.kanal = null;
             return henvendelse;
         }
 
-        if (DOKUMENT_VARSEL.name().equals(info.getHenvendelseType())){
+        if (DOKUMENT_VARSEL.name().equals(info.getHenvendelseType())) {
             XMLDokumentVarsel varsel = (XMLDokumentVarsel) info.getMetadataListe().getMetadata().get(0);
             henvendelse.statusTekst = varsel.getDokumenttittel();
             henvendelse.withTemaNavn(varsel.getTemanavn());
@@ -88,7 +88,7 @@ public abstract class HenvendelsesUtils {
             henvendelse.opprettet = varsel.getFerdigstiltDato();
             henvendelse.dokumentIdListe.addAll(varsel.getDokumentIdListe());
             henvendelse.journalpostId = varsel.getJournalpostId();
-        } else{
+        } else {
             XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
             henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
             henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe.name());
@@ -105,8 +105,8 @@ public abstract class HenvendelsesUtils {
 
     private static String hentTemagruppeNavn(String temagruppeNavn) {
         try {
-            return cmsContentRetriever.hentTekst(temagruppeNavn);
-        } catch(MissingResourceException exception) {
+            return tekstService.hentTekst(temagruppeNavn);
+        } catch (MissingResourceException exception) {
             logger.error("Finner ikke cms-oppslag for " + temagruppeNavn, exception);
             return temagruppeNavn;
         }
