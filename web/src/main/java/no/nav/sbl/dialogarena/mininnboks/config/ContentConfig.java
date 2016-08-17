@@ -34,8 +34,7 @@ public class ContentConfig {
     private static final List<String> FRAGMENT_NAMES = asList("header-withmenu", "footer-withmenu", "styles", "scripts", "webstats-ga", "skiplinks");
     private static final String APPLICATION_NAME = "Min innboks";
 
-    @Value("${folder.ledetekster.path}")
-    private String ledeteksterPath;
+    private String ledeteksterPath = getClass().getClassLoader().getResource("tekster/").getPath();
 
     @Value("${appres.cms.url}")
     private String appresBaseUrl;
@@ -47,7 +46,7 @@ public class ContentConfig {
 
     @Bean
     public TekstService tekstService() {
-        TeksterAPI teksterAPI = new TeksterAPI(ledeteksterPath + "/tekster", "mininnboks");
+        TeksterAPI teksterAPI = new TeksterAPI(ledeteksterPath, "mininnboks");
         TekstService teksterService = new TekstService.Default(teksterAPI);
         HenvendelsesUtils.setTekstService(teksterService);
         return teksterService;
