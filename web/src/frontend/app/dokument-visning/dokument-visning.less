@@ -1,74 +1,74 @@
 .dokinnsyn {
-  .dokumenter {
-    width: 100%;
-    padding-right: 2rem;
-    text-align: center;
-    position: relative;
-  }
-  .fixed-position {
-    position: absolute; // Jupp, thats right
-    right: 1.5rem;
-    top: 6rem;
-  }
+    .dokumenter {
+        width: 100%;
+        padding-right: 2rem;
+        text-align: center;
+        position: relative;
+    }
+    .fixed-position {
+        position: absolute; // Jupp, thats right
+        right: 1.5rem;
+        top: 6rem;
+    }
 
-  .dokumentliste {
-    width: 100%;
-    list-style: none;
-    padding: 0;
-  }
-  .dokument {
-    box-shadow: 0 0 10px @color-border;
-    margin-bottom: 1.5rem;
+    .dokumentliste {
+        width: 100%;
+        list-style: none;
+        padding: 0;
+    }
+    .dokument {
+        box-shadow: 0 0 10px @color-border;
+        margin-bottom: 1.5rem;
 
-    img {
-      width: 100%;
-      margin-bottom: 2px;
-      &:focus {
-        .mixin-focus-outline();
-        outline: none;
-      }
+        img {
+            width: 100%;
+            margin-bottom: 2px;
+            &:focus {
+                .mixin-focus-outline();
+                outline: none;
+            }
+        }
     }
-  }
-  .dokumentheader {
-    background-color: @white;
-    padding: 20px;
-    text-align: center;
-    h1 {
-      margin: 0;
+    .dokumentheader {
+        background-color: @white;
+        padding: 20px;
+        text-align: center;
+        h1 {
+            margin: 0;
+        }
+        &:focus {
+            .mixin-focus-outline();
+            outline: none;
+        }
     }
-    &:focus {
-      .mixin-focus-outline();
-      outline: none;
+    .lokal-linker {
+        a:not(:last-child) {
+            margin-right: 2rem;
+        }
     }
-  }
-  .lokal-linker {
-    a:not(:last-child) {
-      margin-right: 2rem;
-    }
-  }
-  .kulemeny {
-    .ustilet();
-    position: absolute;
+    .kulemeny {
+        .ustilet();
+        position: absolute;
 
-    input {
-      display: inline-block;
-      border: none;
-      border-radius: 50%;
-      background-color: @color-border;
-      width: 14px;
-      height: 14px;
-      padding: 0;
-      &:hover {
-        background-color: @color-link;
-      }
-      &.active {
-        background-color: @gray-darker;
-        border-bottom: @gray-darker;
-      }
-      &:focus {
-        .mixin-focus-outline();
-        outline: none;
-      }
+        input {
+            display: inline-block;
+            border: none;
+            border-radius: 50%;
+            background-color: @color-border;
+            width: 14px;
+            height: 14px;
+            padding: 0;
+            &:hover {
+                background-color: @color-link;
+            }
+            &.active {
+                background-color: @gray-darker;
+                border-bottom: @gray-darker;
+            }
+            &:focus {
+                .mixin-focus-outline();
+                outline: none;
+            }
+        }
     }
-  }
 }
