@@ -31,7 +31,7 @@ function MeldingContainer({ melding, intl: { formatMessage } }) {
             </div>
             <Relatertpanel className={panelklasse(melding)}>
                 <h2 className="typo-element">{melding.statusTekst}</h2>
-                <p className="typo-infotekst tema-dokument">{dato}</p>
+                <p className="typo-infotekst tema-avsnitt">{dato}</p>
                 <div className="typo-normal">{avsnitt}</div>
             </Relatertpanel>
         </div>
