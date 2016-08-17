@@ -5,13 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>no.nav.sbl</groupId>
-        <artifactId>mor-pom</artifactId>
-        <version>3.2</version>
+        <groupId>no.nav.sbl.dialogarena</groupId>
+        <artifactId>mininnboks</artifactId>
+        <version>5.7-SNAPSHOT</version>
     </parent>
 
     <artifactId>mininnboks-tekster</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <build>
         <resources>
