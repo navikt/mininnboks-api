@@ -3,41 +3,23 @@
     margin: 0 0 4px 0;
     text-align: left;
 
-    .tema-dokument, .tema-avsnitt {
-        color: @color-inactive;
+    .tema-avsnitt {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .uleste-meldinger {
-        color: @blue-active;
-        .tema-dokument, .tema-avsnitt {
-            color: @blue-active;
-        }
-    }
 
     .panel {
         &.dokument {
-            background-image: url("@{imgDir}/midlertidig/file-new.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-            &.uleste-meldinger {
-                background-image: url("@{imgDir}/midlertidig/file-new-ulestmelding.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-            }
+            background-image: url("@{imgDir}/midlertidig/file-new.svg"), url("@{imgDir}/midlertidig/arrow-next.svg");
             &:hover {
-                background-image: url("@{imgDir}/midlertidig/file-new_hover.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel_hover.svg");
+                background-image: url("@{imgDir}/midlertidig/file-new_hover.svg"), url("@{imgDir}/midlertidig/arrow-next_hover.svg");
             }
         }
-
         &.dialog {
-            background-image: url("@{imgDir}/midlertidig/bubble-chat-text-2.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-            &.uleste-meldinger {
-                background-image: url("@{imgDir}/midlertidig/bubble-chat-text-2-ulestmelding.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-            }
+            background-image: url("@{imgDir}/midlertidig/bubble-chat.svg"), url("@{imgDir}/midlertidig/arrow-next.svg");
             &.flere-meldinger {
-                background-image: url("@{imgDir}/midlertidig/melding_svart.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-                &.uleste-meldinger {
-                    background-image: url("@{imgDir}/midlertidig/melding_svart-ulestmelding.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-                }
-
+                background-image: url("@{imgDir}/midlertidig/chat-double-bubble.svg"), url("@{imgDir}/midlertidig/arrow-next.svg");
                 .antall-flere {
                     position: absolute;
                     left: 112px;
@@ -45,8 +27,7 @@
                     font-weight: 600;
                 }
                 &:hover {
-                    background-image: url("@{imgDir}/midlertidig/melding_svart_hover.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel.svg");
-
+                    background-image: url("@{imgDir}/midlertidig/chat-double-bubble_hover.svg"), url("@{imgDir}/midlertidig/arrow-next.svg");
                     .antall-flere {
                         position: absolute;
                         left: 112px;
@@ -57,7 +38,7 @@
                 }
             }
             &:hover {
-                background-image: url("@{imgDir}/midlertidig/bubble-chat-text-2_hover.svg"), url("@{imgDir}/midlertidig/pil-klikkbart-panel_hover.svg");
+                background-image: url("@{imgDir}/midlertidig/bubble-chat_hover.svg"), url("@{imgDir}/midlertidig/arrow-next_hover.svg");
             }
         }
     }
@@ -67,9 +48,15 @@
     }
 
     .panel.markert {
-        box-shadow: -6px 0 0 -1px @orange-focus;
         &:focus {
-            box-shadow: -6px 0 0 1px @orange-focus, 0 0 0 2px @orange-focus
+            box-shadow: 0 0 0 2px @orange-focus;
+        }
+    }
+
+    .panel.uleste-meldinger {
+        box-shadow: -6px 0 0 0 @color-link;
+        &:focus {
+            box-shadow: -6px 0 0 0 @color-link, 0 0 0 2px @orange-focus;
         }
     }
 
