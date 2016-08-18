@@ -35,7 +35,7 @@ class DokumentPreview extends Component {
                     <div className="typo-normal blokk-xxxs">
                         <p>{dato} / Fra {avsender} </p>
                         <h2 className="typo-element blokk-xxs">{dokument.statusTekst}</h2>
-                        <p className="typo-infotekst tema-dokument">{temanavn}</p>
+                        <p className="typo-infotekst tema-avsnitt">{temanavn}</p>
                     </div>
                 </Link>
             </li>

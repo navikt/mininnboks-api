@@ -46,7 +46,7 @@ class MeldingPreview extends Component {
                     </p>
                     <AntallMeldinger antall={antallMeldinger} />
                     <div className="typo-normal blokk-xxxs">
-                        <p>
+                        <p className="blokk-xxs">
                             <span>{dato}</span>
                             {avsender}
                             {maBesvares}
@@ -58,7 +58,7 @@ class MeldingPreview extends Component {
                                 {maBesvares}
                             </span>
                         </h2>
-                        <p className="typo-infotekst tema-avsnitt">{avsnitt}</p>
+                        <p className="typo-infotekst tema-avsnitt nettobunn">{avsnitt}</p>
                     </div>
                 </Link>
             </li>
