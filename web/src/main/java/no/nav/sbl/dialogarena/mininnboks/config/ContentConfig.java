@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ResourceLoader;
 
+import javax.inject.Inject;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,7 +37,8 @@ public class ContentConfig {
     private static final List<String> FRAGMENT_NAMES = asList("header-withmenu", "footer-withmenu", "styles", "scripts", "webstats-ga", "skiplinks");
     private static final String APPLICATION_NAME = "Min innboks";
 
-    private String ledeteksterPath = getClass().getClassLoader().getResource("tekster/").getPath();
+    @Inject
+    ResourceLoader loader;
 
     @Value("${appres.cms.url}")
     private String appresBaseUrl;
@@ -45,7 +49,8 @@ public class ContentConfig {
     }
 
     @Bean
-    public TekstService tekstService() {
+    public TekstService tekstService() throws IOException {
+        String ledeteksterPath = loader.getResource("classpath:tekster").getFile().getPath();
         TeksterAPI teksterAPI = new TeksterAPI(ledeteksterPath, "mininnboks");
         TekstService teksterService = new TekstService.Default(teksterAPI);
         HenvendelsesUtils.setTekstService(teksterService);

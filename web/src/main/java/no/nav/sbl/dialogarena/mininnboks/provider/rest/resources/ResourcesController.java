@@ -24,7 +24,7 @@ public class ResourcesController {
     TekstService tekstService;
 
     @GET
-    public Map<String, Object> hentTekster(@QueryParam("type") String type) {
+    public Map<String, Object> hentTekster() {
         Map<String, Object> tekster = new HashMap<>();
         tekster.putAll(tekstService.hentTekster(NORSK));
         tekster.put("skriv.ny.link", System.getProperty("temavelger.link.url"));
