@@ -13,6 +13,9 @@ const medFeil = (avhengigheter) => avhengigheter.find(harStatus(STATUS.ERROR));
 
 const Innholdslaster = ({ avhengigheter, className, feilmeldingKey, intl, children }) => {
     if (alleLastet(avhengigheter)) {
+        if (typeof children === 'function') {
+            return <div className={className}>{children(avhengigheter)}</div>;
+        }
         return <div className={className}>{children}</div>;
     }
 
@@ -36,7 +39,7 @@ const Innholdslaster = ({ avhengigheter, className, feilmeldingKey, intl, childr
 Innholdslaster.propTypes = {
     avhengigheter: PT.arrayOf(storeShape(PT.object)),
     className: PT.string,
-    children: PT.node.isRequired,
+    children: PT.oneOfType([PT.node, PT.func]).isRequired,
     intl: PT.object.isRequired,
     feilmeldingKey: PT.string
 };

@@ -5,7 +5,6 @@ import { hentDokumentVisningData } from './../ducks/dokumenter';
 import Innholdslaster from './../innholdslaster/innholdslaster';
 import Feilmelding from './../feilmelding/feilmelding';
 import Dokumentvisning from './dokument-visning';
-import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 
 class DokumentVisningSide extends React.Component {
     componentDidMount() {
@@ -38,8 +37,7 @@ class DokumentVisningSide extends React.Component {
                 className="dokinnsyn"
                 feilmeldingKey="innlastning.dokument.feil"
             >
-                <Breadcrumbs routes={routes} params={params} />
-                <Dokumentvisning {...dokumenter.data} />
+                {() => <Dokumentvisning routes={routes} params={params} {...dokumenter.data} />}
             </Innholdslaster>
         );
     }

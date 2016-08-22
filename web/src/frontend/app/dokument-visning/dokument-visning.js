@@ -1,6 +1,7 @@
 import React, { PropTypes as PT } from 'react';
 import { Dokumenter, Hurtignavigering } from 'react-dokumentvisning';
 import FixedPosition from './../utils/fixed-position';
+import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 
 const offset = [-300, -80];
 
@@ -11,25 +12,30 @@ class DokumentVisning extends React.Component {
     }
 
     render() {
-        const { dokumentmetadata, journalpostmetadata } = this.props;
+        const { dokumentmetadata, journalpostmetadata, routes, params } = this.props;
 
         return (
-            <section className="dokumenter">
-                <FixedPosition>
-                    <Hurtignavigering dokumentmetadata={dokumentmetadata} navigeringsknappOffset={offset} />
-                </FixedPosition>
-                <Dokumenter
-                    journalpostId={journalpostmetadata.journalpostId}
-                    dokumentmetadata={dokumentmetadata}
-                />
-            </section>
+            <div>
+                <Breadcrumbs routes={routes} params={params} />
+                <section className="dokumenter">
+                    <FixedPosition>
+                        <Hurtignavigering dokumentmetadata={dokumentmetadata} navigeringsknappOffset={offset} />
+                    </FixedPosition>
+                    <Dokumenter
+                        journalpostId={journalpostmetadata.resultat.journalpostId}
+                        dokumentmetadata={dokumentmetadata}
+                    />
+                </section>
+            </div>
         );
     }
 }
 
 DokumentVisning.propTypes = {
     dokumentmetadata: PT.array.isRequired,
-    journalpostmetadata: PT.object.isRequired
+    journalpostmetadata: PT.object.isRequired,
+    params: PT.object.isRequired,
+    routes: PT.array.isRequired
 };
 
 export default DokumentVisning;
