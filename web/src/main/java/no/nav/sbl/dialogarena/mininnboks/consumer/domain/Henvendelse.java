@@ -13,7 +13,7 @@ public class Henvendelse implements Serializable {
 
     public String id;
     public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet,
-            temagruppeNavn, statusTekst, kontorsperreEnhet, temaNavn, korrelasjonsId, journalpostId;
+            temagruppeNavn, statusTekst, kontorsperreEnhet, temaNavn, temaKode, korrelasjonsId, journalpostId;
     public List<String> dokumentIdListe = new ArrayList<>();
     public Henvendelsetype type;
     public Temagruppe temagruppe;
