@@ -4,19 +4,13 @@ import no.nav.innholdshenter.common.SimpleEnonicClient;
 import no.nav.innholdshenter.filter.DecoratorFilter;
 import no.nav.modig.cache.CacheConfig;
 import no.nav.modig.core.exception.ApplicationException;
-import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
 import no.nav.sbl.dialogarena.types.Pingable;
-import no.nav.sbl.tekster.TeksterAPI;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.io.ResourceLoader;
 
-import javax.inject.Inject;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,8 +31,6 @@ public class ContentConfig {
     private static final List<String> FRAGMENT_NAMES = asList("header-withmenu", "footer-withmenu", "styles", "scripts", "webstats-ga", "skiplinks");
     private static final String APPLICATION_NAME = "Min innboks";
 
-    @Inject
-    ResourceLoader loader;
 
     @Value("${appres.cms.url}")
     private String appresBaseUrl;
@@ -46,15 +38,6 @@ public class ContentConfig {
     @Bean
     public SimpleEnonicClient dekoratorClient() {
         return new SimpleEnonicClient(appresBaseUrl);
-    }
-
-    @Bean
-    public TekstService tekstService() throws IOException {
-        String ledeteksterPath = loader.getResource("classpath:tekster").getFile().getPath();
-        TeksterAPI teksterAPI = new TeksterAPI(ledeteksterPath, "mininnboks");
-        TekstService teksterService = new TekstService.Default(teksterAPI);
-        HenvendelsesUtils.setTekstService(teksterService);
-        return teksterService;
     }
 
     @Bean

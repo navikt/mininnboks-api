@@ -10,6 +10,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 @Import({
+        TeksterServiceConfig.class,
         ContentConfig.class,
         HenvendelseServiceConfig.class,
         PersonServiceConfig.class,

@@ -7,7 +7,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-@Import({ContentConfig.class, PersonServiceMockContext.class, HenvendelseMockContext.class, CacheConfig.class})
+@Import({
+        TeksterServiceLokalConfig.class,
+        ContentConfig.class,
+        PersonServiceMockContext.class,
+        HenvendelseMockContext.class,
+        CacheConfig.class
+})
 public class MockApplicationContext {
     @Bean
     public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
