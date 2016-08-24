@@ -47,17 +47,8 @@
         color: @red-nav;
     }
 
-    .panel.markert {
-        &:focus {
-            box-shadow: 0 0 0 2px @orange-focus;
-        }
-    }
-
     .panel.uleste-meldinger {
-        box-shadow: -6px 0 0 0 @color-link;
-        &:focus {
-            box-shadow: -6px 0 0 0 @color-link, 0 0 0 2px @orange-focus;
-        }
+        border-left: 6px solid @color-link;
     }
 
     @media (max-width: @screen-small) {
