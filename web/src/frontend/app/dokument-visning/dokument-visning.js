@@ -25,11 +25,11 @@ class DokumentVisning extends React.Component {
                     <ul className="ustilet">
                         <li>
                             <a href={`/saksoversikt/app/tema/${temakode}`}>
-                                <FormattedMessage id="dokumentvisning.gatil.saksoversikt"/>
+                                <FormattedMessage id="dokumentvisning.gatil.saksoversikt" />
                             </a>
                         </li>
                         <li>
-                            <a href={kontaktNavUrl}><FormattedMessage id="dokumentvisning.kontakt.nav"/></a>
+                            <a href={kontaktNavUrl}><FormattedMessage id="dokumentvisning.kontakt.nav" /></a>
                         </li>
                     </ul>
                 </section>
