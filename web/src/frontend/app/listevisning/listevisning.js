@@ -29,10 +29,10 @@ function ListeVisning({ routes, params, traader, location }) {
 
     const erAktiv = erAktivRegel(varselId);
 
-    const ulesteTraader = traaderGruppert.uleste.map((traad, index) => ({
+    const ulesteTraader = traaderGruppert.uleste.map((traad) => ({
         traad, aktiv: erAktiv(traad.nyeste), ulestMeldingKlasse: 'uleste-meldinger'
     }));
-    const lesteTraader = traaderGruppert.leste.map((traad, index) => ({
+    const lesteTraader = traaderGruppert.leste.map((traad) => ({
         traad, aktiv: erAktiv(traad.nyeste)
     }));
 
