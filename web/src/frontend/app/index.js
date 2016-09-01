@@ -7,7 +7,7 @@ import { Router, Route, IndexRoute, useRouterHistory, applyRouterMiddleware } fr
 import createStore from './store';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import useScroll from 'react-router-scroll';
+import { useScroll } from 'react-router-scroll';
 import Listevisning from './listevisning/listevisning';
 import Traadvisning from './traadvisning/traadvisning';
 import SkrivNyttSporsmal from './skriv-nytt-sporsmal/skriv-nytt-sporsmal';
