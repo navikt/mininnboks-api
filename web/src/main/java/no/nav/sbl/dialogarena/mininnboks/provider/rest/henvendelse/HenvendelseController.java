@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import javax.xml.ws.soap.SOAPFaultException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,14 +66,16 @@ public class HenvendelseController {
 
     @POST
     @Path("/lest/{behandlingsId}")
-    public void markerSomLest(@PathParam("behandlingsId") String behandlingsId) {
+    public Response markerSomLest(@PathParam("behandlingsId") String behandlingsId) {
         henvendelseService.merkSomLest(behandlingsId);
+        return ok(TupleResultat.of("traadId", behandlingsId)).build();
     }
 
     @POST
     @Path("/allelest/{behandlingskjedeId}")
-    public void markerAlleSomLest(@PathParam("behandlingskjedeId") String behandlingskjedeId) {
+    public Response markerAlleSomLest(@PathParam("behandlingskjedeId") String behandlingskjedeId) {
         henvendelseService.merkAlleSomLest(behandlingskjedeId);
+        return ok(TupleResultat.of("traadId", behandlingskjedeId)).build();
     }
 
     @POST
@@ -150,5 +153,12 @@ public class HenvendelseController {
         }
     }
 
+    static final class TupleResultat extends HashMap<String, String> {
+        public static TupleResultat of(String key, String value) {
+            TupleResultat tr = new TupleResultat();
+            tr.put(key, value);
+            return tr;
+        }
+    }
 
 }
