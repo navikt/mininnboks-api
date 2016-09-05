@@ -42,7 +42,7 @@
         <joda.version>2.3</joda.version>
 
         <!-- Tjenester -->
-        <dialogarena-behandlingsinformasjon.version>0.0.52</dialogarena-behandlingsinformasjon.version>
+        <dialogarena-behandlingsinformasjon.version>0.0.53</dialogarena-behandlingsinformasjon.version>
         <henvendelse-informasjon-v2.version>0.7</henvendelse-informasjon-v2.version>
         <send-inn-henvendelse.version>0.3</send-inn-henvendelse.version>
         <brukerprofil-v3-tjenestespesifikasjon.version>3.0.3</brukerprofil-v3-tjenestespesifikasjon.version>

@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
 import Listevisning from './listevisning/listevisning';
 import Traadvisning from './traadvisning/traadvisning';
+import Oppgavevisning from './oppgave-visning/oppgave-visning';
 import SkrivNyttSporsmal from './skriv-nytt-sporsmal/skriv-nytt-sporsmal';
 import Application from './application';
 import DokumentVisningSide from './dokument-visning/dokument-visning-side';
@@ -31,6 +32,7 @@ render((
                         <IndexRoute component={Listevisning} breadcrumbIgnore />
                         <Route path="/traad/:traadId" component={Traadvisning} breadcrumbName=":tema" />
                         <Route path="/dokument/:id" component={DokumentVisningSide} breadcrumbName="Dokumentvisning" />
+                        <Route path="/oppgave/:id" component={Oppgavevisning} breadcrumbName="Oppgavevisning" />
                     </Route>
                     <Route
                         path="/sporsmal/skriv/:temagruppe"
