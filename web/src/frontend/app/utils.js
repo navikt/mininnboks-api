@@ -17,8 +17,10 @@ export const leggTilLenkerTags = (innhold) => {
 };
 
 export const tilAvsnitt = (avsnitt, index) => (
-    <span dangerouslySetInnerHTML={{ __html: sanitize(avsnitt, { allowedTags: ['a'] }) }} key={index} />
+    <p className="sanitized-content" dangerouslySetInnerHTML={{ __html: safeHtml(avsnitt) }} key={index} />
 );
+
+export const safeHtml = (content) => sanitize(content, { allowedTags: ['a'] });
 
 export const prettyDate = (date) => moment(date).format('Do MMMM YYYY, [kl.] HH:mm');
 

@@ -2,7 +2,7 @@ import React, { Component, PropTypes as PT } from 'react';
 import { findDOMNode } from 'react-dom';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import { shortDate, tilAvsnitt } from '../utils';
+import { shortDate, safeHtml } from '../utils';
 import AntallMeldinger from './antall-meldinger';
 import classNames from 'classnames';
 
@@ -23,7 +23,8 @@ class MeldingPreview extends Component {
 
         const melding = traad.nyeste;
         const dato = shortDate(melding.opprettet);
-        const avsnitt = melding.fritekst.split(/[\r\n]+/).map(tilAvsnitt);
+        const fritekst = safeHtml(melding.fritekst);
+
         const antallMeldinger = traad.meldinger.length;
 
         const maBesvares = melding.type === 'SPORSMAL_MODIA_UTGAAENDE' ?
@@ -58,7 +59,7 @@ class MeldingPreview extends Component {
                                 {maBesvares}
                             </span>
                         </h2>
-                        <p className="typo-infotekst tema-avsnitt nettobunn">{avsnitt}</p>
+                        <p className="typo-infotekst tema-avsnitt nettobunn">{fritekst}</p>
                     </div>
                 </Link>
             </li>
