@@ -3,7 +3,7 @@ import moment from 'moment';
 moment.locale('nb');
 
 import React from 'react';
-import { Router, Route, IndexRoute, useRouterHistory, applyRouterMiddleware } from 'react-router';
+import { Router, Route, IndexRoute, applyRouterMiddleware } from 'react-router';
 import createStore from './store';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -16,10 +16,7 @@ import Application from './application';
 import DokumentVisningSide from './dokument-visning/dokument-visning-side';
 import PrintPage from './print/print-page';
 import Traader from './traader/traader';
-
-import { createHistory } from 'history';
-
-const history = useRouterHistory(createHistory)({ basename: '/mininnboks' });
+import history from './history';
 
 const store = createStore(history);
 
