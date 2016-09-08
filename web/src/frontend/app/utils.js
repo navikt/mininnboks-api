@@ -16,11 +16,12 @@ export const leggTilLenkerTags = (innhold) => {
     });
 };
 
+export const safeHtml = (content) => sanitize(content, { allowedTags: ['a'] });
+
 export const tilAvsnitt = (avsnitt, index) => (
     <p className="sanitized-content" dangerouslySetInnerHTML={{ __html: safeHtml(avsnitt) }} key={index} />
 );
 
-export const safeHtml = (content) => sanitize(content, { allowedTags: ['a'] });
 
 export const prettyDate = (date) => moment(date).format('Do MMMM YYYY, [kl.] HH:mm');
 
