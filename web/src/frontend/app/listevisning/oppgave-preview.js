@@ -1,8 +1,9 @@
 import React, { Component, PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import { shortDate, tilAvsnitt } from '../utils';
 import classNames from 'classnames';
+import { shortDate, tilAvsnitt } from '../utils';
+import history from './../history';
 
 const cls = (props) => classNames('panel panel-ikon panel-klikkbart oppgave', props.ulestMeldingKlasse, {
     markert: props.aktiv
@@ -11,7 +12,7 @@ const cls = (props) => classNames('panel panel-ikon panel-klikkbart oppgave', pr
 class OppgavePreview extends Component {
     componentDidMount() {
         if (this.props.aktiv) {
-            window.location.replace(this.props.traad.nyeste.oppgaveUrl);
+            history.push(`oppgave/${this.props.traad.nyeste.id}`);
         }
     }
 
