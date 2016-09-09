@@ -1,1 +1,0 @@
-Dokumentet ligger på tema {temanavn}. Gå til dokumentet på temaet <a href\="https\://tjenester.nav.no/saksoversikt/app/dokument/{journalpostid}/{dokumentreferanse}">{temanavn}</a>.
