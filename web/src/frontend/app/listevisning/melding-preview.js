@@ -1,5 +1,4 @@
 import React, { Component, PropTypes as PT } from 'react';
-import { findDOMNode } from 'react-dom';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import { shortDate, safeHtml } from '../utils';
