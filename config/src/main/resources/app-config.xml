@@ -31,6 +31,7 @@
         <webservice alias="domene.Brukerdialog:InnsynHenvendelse_v1" mapToProperty="innsyn.henvendelse.ws"/>
 
         <directory name="mininnboks" mapToProperty="mininnboks.datadir"/>
+        <!--<fileLibrary alias="mininnboks.ledetekster.v1" mapToProperty="folder.ledetekster" />-->
     </resources>
 
     <exposed-services>

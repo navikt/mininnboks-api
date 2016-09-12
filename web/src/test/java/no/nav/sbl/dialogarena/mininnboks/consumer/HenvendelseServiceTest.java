@@ -3,7 +3,6 @@ package no.nav.sbl.dialogarena.mininnboks.consumer;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
-import no.nav.modig.content.CmsContentRetriever;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
@@ -64,7 +63,7 @@ public class HenvendelseServiceTest {
     private PersonService personService;
 
     @Mock
-    private CmsContentRetriever cmsContentRetriever = mock(CmsContentRetriever.class);
+    private TekstService tekstService = mock(TekstService.class);
 
     private HenvendelseService.Default henvendelseService;
 
@@ -72,7 +71,7 @@ public class HenvendelseServiceTest {
     public void setUp() {
         henvendelseService = new HenvendelseService.Default(henvendelsePortType, sendInnHenvendelsePortType, innsynHenvendelsePortType, personService);
 
-        HenvendelsesUtils.setCmsContentRetriever(cmsContentRetriever);
+        HenvendelsesUtils.setTekstService(tekstService);
         List<Object> henvendelseListe = new ArrayList<>();
         henvendelseListe.add(new XMLHenvendelse().withHenvendelseType(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name()).withBehandlingsId("id"));
         when(henvendelsePortType.hentHenvendelseListe(any(WSHentHenvendelseListeRequest.class))).thenReturn(
@@ -84,7 +83,7 @@ public class HenvendelseServiceTest {
 
     @After
     public void after() {
-        HenvendelsesUtils.setCmsContentRetriever(null);
+        HenvendelsesUtils.setTekstService(null);
     }
 
     @Test

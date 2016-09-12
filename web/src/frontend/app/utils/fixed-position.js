@@ -1,5 +1,5 @@
 import React, { Component, PropTypes as PT } from 'react';
-import { autobind, throttle, debounce } from './../utils/utils';
+import { autobind, throttle, debounce } from '../utils';
 
 class FixedPosition extends Component {
     constructor(props) {

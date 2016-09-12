@@ -32,7 +32,7 @@ public class Traad {
         this.traadId = this.nyeste.traadId;
     }
 
-    public static final Function<Traad, DateTime> NYESTE_HENVENDELSE = traad -> traad.nyeste.opprettet;
+    public static final Function<Traad, DateTime> NYESTE_OPPRETTET = traad -> traad.nyeste.opprettet;
 
-    public static final Comparator<Traad> NYESTE_FORST = reverseOrder(comparing(Traad.NYESTE_HENVENDELSE));
+    public static final Comparator<Traad> NYESTE_FORST = reverseOrder(comparing(Traad.NYESTE_OPPRETTET));
 }

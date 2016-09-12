@@ -1,7 +1,7 @@
 import React, { Component, PropTypes as PT } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
-import { reduxFormProps, autobind } from './../utils/utils';
+import { reduxFormProps, autobind } from '../utils';
 import InlineFeilmelding from './../utils/nav-form/inline-feilmelding';
 
 class ExpandingTextArea extends Component {

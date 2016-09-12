@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
-import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
@@ -38,7 +37,22 @@ public class HenvendelseMockContext {
         addAll(lagBehandlingskjede(ARBD, DateTime.now().minusMonths(1), SPORSMAL_MODIA_UTGAAENDE, SVAR_SBL_INNGAAENDE));
         addAll(lagBehandlingskjede(BIL, DateTime.now().minusMonths(6), true, SPORSMAL_SKRIFTLIG, SVAR_SKRIFTLIG, SVAR_SKRIFTLIG));
         addAll(lagDokumentVarsel("DAG", "Vedtaksbrev om Dagpenger"));
+        add(lagOppgaveVarsel());
     }};
+
+    private XMLHenvendelse lagOppgaveVarsel() {
+        Integer behandlingskjedeId = nextId();
+        return new XMLHenvendelse()
+                .withBehandlingsId(behandlingskjedeId.toString())
+                .withBehandlingskjedeId(behandlingskjedeId.toString())
+                .withOpprettetDato(DateTime.now().minusDays(3))
+                .withKorrelasjonsId("syk1")
+                .withHenvendelseType(OPPGAVE_VARSEL.value())
+                .withMetadataListe(new XMLMetadataListe().withMetadata(new XMLOppgaveVarsel()
+                        .withOppgaveType("SYKMEL")
+                        .withOppgaveURL("http://vg.no")
+                ));
+    }
 
     private Collection<? extends XMLHenvendelse> lagDokumentVarsel(String tema, String dokumentTittel) {
         Integer behandlingskjedeId = nextId();
@@ -59,7 +73,8 @@ public class HenvendelseMockContext {
                         .withFerdigstiltDato(DateTime.now().minusDays(3))
                 )));
 
-        return traad;    }
+        return traad;
+    }
 
     @Bean
     public HenvendelseService henvendelseService(PersonService personService) {

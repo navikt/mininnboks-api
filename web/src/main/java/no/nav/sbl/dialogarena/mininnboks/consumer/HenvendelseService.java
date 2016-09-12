@@ -130,7 +130,8 @@ public interface HenvendelseService {
                     REFERAT_TELEFON.name(),
                     SPORSMAL_MODIA_UTGAAENDE.name(),
                     SVAR_SBL_INNGAAENDE.name(),
-                    DOKUMENT_VARSEL.name());
+                    DOKUMENT_VARSEL.name(),
+                    OPPGAVE_VARSEL.name());
 
             Stream<XMLHenvendelse> wsHenvendelser = henvendelsePortType.hentHenvendelseListe(
                     new WSHentHenvendelseListeRequest()

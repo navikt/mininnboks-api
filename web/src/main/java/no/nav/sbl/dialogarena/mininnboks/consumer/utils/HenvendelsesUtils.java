@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
-import no.nav.modig.content.CmsContentRetriever;
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.function.Function;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Optional.ofNullable;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.fromValue;
@@ -21,7 +22,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.
 
 public abstract class HenvendelsesUtils {
 
-    private static CmsContentRetriever cmsContentRetriever;
+    private static TekstService tekstService;
 
     final static Logger logger = LoggerFactory.getLogger(HenvendelsesUtils.class);
     private static final String LINE_REPLACEMENT_STRING = UUID.randomUUID().toString();
@@ -30,8 +31,8 @@ public abstract class HenvendelsesUtils {
     public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
     public static final Function<XMLHenvendelse, Henvendelse> TIL_HENVENDELSE = xmlHenvendelse -> tilHenvendelse(xmlHenvendelse);
 
-    public static void setCmsContentRetriever(CmsContentRetriever contentRetriever) {
-        cmsContentRetriever = contentRetriever;
+    public static void setTekstService(TekstService tekstService) {
+        HenvendelsesUtils.tekstService = tekstService;
     }
 
     private static final Map<XMLHenvendelseType, Henvendelsetype> HENVENDELSETYPE_MAP = new HashMap<XMLHenvendelseType, Henvendelsetype>() {
@@ -45,6 +46,7 @@ public abstract class HenvendelsesUtils {
             put(XMLHenvendelseType.REFERAT_OPPMOTE, SAMTALEREFERAT_OPPMOTE);
             put(XMLHenvendelseType.REFERAT_TELEFON, SAMTALEREFERAT_TELEFON);
             put(XMLHenvendelseType.DOKUMENT_VARSEL, DOKUMENT_VARSEL);
+            put(XMLHenvendelseType.OPPGAVE_VARSEL, OPPGAVE_VARSEL);
         }
     };
 
@@ -63,6 +65,7 @@ public abstract class HenvendelsesUtils {
         henvendelse.brukersEnhet = info.getBrukersEnhet();
         henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
         henvendelse.fraNav = !henvendelse.fraBruker;
+        henvendelse.temaKode = wsMelding.getTema();
         henvendelse.korrelasjonsId = info.getKorrelasjonsId();
         if (FRA_BRUKER.contains(henvendelse.type)) {
             henvendelse.markerSomLest();
@@ -72,14 +75,14 @@ public abstract class HenvendelsesUtils {
 
         if (innholdErKassert(info)) {
             henvendelse.kassert = true;
-            henvendelse.fritekst = cmsContentRetriever.hentTekst("innhold.kassert");
-            henvendelse.statusTekst = cmsContentRetriever.hentTekst("temagruppe.kassert");
+            henvendelse.fritekst = tekstService.hentTekst("innhold.kassert");
+            henvendelse.statusTekst = tekstService.hentTekst("temagruppe.kassert");
             henvendelse.temagruppe = null;
             henvendelse.kanal = null;
             return henvendelse;
         }
 
-        if (DOKUMENT_VARSEL.name().equals(info.getHenvendelseType())){
+        if (DOKUMENT_VARSEL.name().equals(info.getHenvendelseType())) {
             XMLDokumentVarsel varsel = (XMLDokumentVarsel) info.getMetadataListe().getMetadata().get(0);
             henvendelse.statusTekst = varsel.getDokumenttittel();
             henvendelse.withTemaNavn(varsel.getTemanavn());
@@ -88,7 +91,13 @@ public abstract class HenvendelsesUtils {
             henvendelse.opprettet = varsel.getFerdigstiltDato();
             henvendelse.dokumentIdListe.addAll(varsel.getDokumentIdListe());
             henvendelse.journalpostId = varsel.getJournalpostId();
-        } else{
+        } else if (OPPGAVE_VARSEL.name().equals(info.getHenvendelseType())) {
+            XMLOppgaveVarsel varsel = (XMLOppgaveVarsel) info.getMetadataListe().getMetadata().get(0);
+            henvendelse.oppgaveType = varsel.getOppgaveType();
+            henvendelse.oppgaveUrl = varsel.getOppgaveURL();
+            henvendelse.statusTekst = hentTekst(tekstService, format("oppgave.%s", varsel.getOppgaveType()), "oppgave.GEN");
+            henvendelse.fritekst = hentTekst(tekstService, format("oppgave.%s.fritekst", varsel.getOppgaveType()), "oppgave.GEN.fritekst");
+        } else {
             XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
             henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
             henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe.name());
@@ -103,10 +112,18 @@ public abstract class HenvendelsesUtils {
         return henvendelse;
     }
 
+    public static String hentTekst(TekstService tekster, String key, String defaultKey) {
+        try {
+            return tekster.hentTekst(key);
+        } catch (Exception e) {
+            return tekster.hentTekst(defaultKey);
+        }
+    }
+
     private static String hentTemagruppeNavn(String temagruppeNavn) {
         try {
-            return cmsContentRetriever.hentTekst(temagruppeNavn);
-        } catch(MissingResourceException exception) {
+            return tekstService.hentTekst(temagruppeNavn);
+        } catch (MissingResourceException exception) {
             logger.error("Finner ikke cms-oppslag for " + temagruppeNavn, exception);
             return temagruppeNavn;
         }
@@ -122,9 +139,9 @@ public abstract class HenvendelsesUtils {
     }
 
     private static String statusTekst(Henvendelse henvendelse) {
-        String type = hentTemagruppeNavn(String.format("status.%s", henvendelse.type.name()));
+        String type = hentTemagruppeNavn(format("status.%s", henvendelse.type.name()));
         String temagruppe = hentTemagruppeNavn(henvendelse.temagruppe.name());
-        return String.format(type, temagruppe);
+        return format(type, temagruppe);
 
     }
 

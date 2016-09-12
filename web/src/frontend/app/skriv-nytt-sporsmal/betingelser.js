@@ -1,6 +1,8 @@
 import React, { PropTypes as PT } from 'react';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Modal from '../modal/modal';
+import { Sidetittel } from 'nav-react-design/dist/tittel';
+import { Hovedknapp } from 'nav-react-design/dist/knapp';
 
 const modalConfig = {
     title: {
@@ -38,22 +40,17 @@ class Betingelser extends React.Component {
                 className="react-modal-container mininnboks-modal"
             >
                 <form onSubmit={this.submit} className="betingelser-panel panel side-innhold">
-                    <h1 className="typo-sidetittel text-center blokk-l" tabIndex="0">
+                    <Sidetittel className="text-center blokk-l" tabIndex="0">
                         <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.overskrift" />
-                    </h1>
+                    </Sidetittel>
                     <div className="blokk-m">
                         <FormattedHTMLMessage id="send-sporsmal.still-sporsmal.betingelser.tekst" />
                     </div>
                     <hr className="blokk-m" />
-                    <div className="svar-godta blokk-center blokk-m">
-                        <button
-                            type="submit"
-                            className="knapp knapp-hoved knapp-stor"
-                            aria-controls="betingelser"
-                            onClick={godkjennVilkaar}
-                        >
+                    <div className="svar-godta text-center blokk-m">
+                        <Hovedknapp type="submit" aria-controls="betingelser" onClick={godkjennVilkaar}>
                             <FormattedMessage id="send-sporsmal.still-sporsmal.betingelser.godta" />
-                        </button>
+                        </Hovedknapp>
                     </div>
                     <div className="text-center">
                         <a

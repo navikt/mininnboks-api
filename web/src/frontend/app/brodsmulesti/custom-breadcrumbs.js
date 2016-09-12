@@ -22,7 +22,7 @@ const prefixElement = (
 
 function CustomBreadcrumb({ routes, params, resolver, className }) {
     return (
-        <div className={classNames('vekk-mobil', className)}>
+        <div className={classNames('vekk-mobil blokk-s', className)}>
             <h2 className="vekk">
                 <FormattedMessage id="brodsmulesti.info.for.skjemlesere" />
             </h2>

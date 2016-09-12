@@ -1,0 +1,1 @@
+Tekstfeltet kan ikke være tomt.

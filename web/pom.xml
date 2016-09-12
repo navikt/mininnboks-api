@@ -37,14 +37,12 @@
         <jackson.version>2.7.4</jackson.version>
         <logback.version>1.1.7</logback.version>
         <commons-codec.version>1.9</commons-codec.version>
-        <commons-io.version>2.4</commons-io.version>
         <commons-lang3.version>3.1</commons-lang3.version>
         <jsoup.version>1.7.2</jsoup.version>
         <joda.version>2.3</joda.version>
-        <ehcache.version>2.6.6</ehcache.version>
 
         <!-- Tjenester -->
-        <dialogarena-behandlingsinformasjon.version>0.0.52</dialogarena-behandlingsinformasjon.version>
+        <dialogarena-behandlingsinformasjon.version>0.0.54</dialogarena-behandlingsinformasjon.version>
         <henvendelse-informasjon-v2.version>0.7</henvendelse-informasjon-v2.version>
         <send-inn-henvendelse.version>0.3</send-inn-henvendelse.version>
         <brukerprofil-v3-tjenestespesifikasjon.version>3.0.3</brukerprofil-v3-tjenestespesifikasjon.version>
@@ -60,6 +58,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>mininnboks-tekster</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
 
         <!--Dialogarena tjenestespesifikasjon-->
         <dependency>
@@ -119,6 +123,11 @@
         </dependency>
 
         <!--Modig-->
+        <dependency>
+            <groupId>no.nav.sbl</groupId>
+            <artifactId>utave</artifactId>
+            <version>1.0.9</version>
+        </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>common-cxf</artifactId>
@@ -274,11 +283,6 @@
             <version>${javax.ws.rs-api.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>jsr250-api</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
             <version>${jersey.version}</version>
@@ -375,7 +379,7 @@
         <dependency>
             <groupId>no.nav.sbl</groupId>
             <artifactId>innholdshenter</artifactId>
-            <version>2.6</version>
+            <version>4.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -397,13 +401,6 @@
         </dependency>
 
         <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-            <version>${ehcache.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>${joda.version}</version>
@@ -414,12 +411,6 @@
             <artifactId>javax.inject</artifactId>
             <version>1</version>
             <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
         </dependency>
 
         <!--Testing-->
@@ -447,16 +438,14 @@
             <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-            <scope>compile</scope>
-        </dependency>
 
     </dependencies>
 
     <build>
         <resources>
+            <resource>
+                <directory>../tekster/target/classes</directory>
+            </resource>
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
@@ -523,6 +512,7 @@
                             <executable>node</executable>
                             <arguments>
                                 <argument>./node_modules/gulp/bin/gulp</argument>
+                                <argument>--prod</argument>
                             </arguments>
                             <workingDirectory>src/frontend</workingDirectory>
                         </configuration>

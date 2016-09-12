@@ -3,12 +3,15 @@
 *.ipr
 *.iws
 
+**/node_modules/
+
 *.log
 
 target
-web/node_modules
+
 **/webapp/css/**/*
 **/webapp/img/**/*
+**/webapp/build/**/*
 **/webapp/js/**/*
 **/webapp/*.html
 **/npm-debug.log
@@ -18,5 +21,3 @@ npm-debug.log
 .classpath
 .project
 .settings
-
-**/**/node_modules
