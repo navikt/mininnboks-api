@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { shortDate, safeHtml } from '../utils';
 import AntallMeldinger from './antall-meldinger';
 import classNames from 'classnames';
+import history from './../history';
 
 const cls = (props) => classNames('panel panel-ikon panel-klikkbart dialog', props.ulestMeldingKlasse, {
     markert: props.aktiv,
@@ -14,7 +15,7 @@ const cls = (props) => classNames('panel panel-ikon panel-klikkbart dialog', pro
 class MeldingPreview extends Component {
     componentDidMount() {
         if (this.props.aktiv) {
-            findDOMNode(this.refs.lenke).focus();
+            history.push(`traad/${this.props.traad.nyeste.id}`);
         }
     }
 
