@@ -3,22 +3,20 @@ import moment from 'moment';
 moment.locale('nb');
 
 import React from 'react';
-import { Router, Route, IndexRoute, useRouterHistory, applyRouterMiddleware } from 'react-router';
+import { Router, Route, IndexRoute, applyRouterMiddleware } from 'react-router';
 import createStore from './store';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
 import Listevisning from './listevisning/listevisning';
 import Traadvisning from './traadvisning/traadvisning';
+import Oppgavevisning from './oppgave-visning/oppgave-visning';
 import SkrivNyttSporsmal from './skriv-nytt-sporsmal/skriv-nytt-sporsmal';
 import Application from './application';
 import DokumentVisningSide from './dokument-visning/dokument-visning-side';
 import PrintPage from './print/print-page';
 import Traader from './traader/traader';
-
-import { createHistory } from 'history';
-
-const history = useRouterHistory(createHistory)({ basename: '/mininnboks' });
+import history from './history';
 
 const store = createStore(history);
 
@@ -31,6 +29,7 @@ render((
                         <IndexRoute component={Listevisning} breadcrumbIgnore />
                         <Route path="/traad/:traadId" component={Traadvisning} breadcrumbName=":tema" />
                         <Route path="/dokument/:id" component={DokumentVisningSide} breadcrumbName="Dokumentvisning" />
+                        <Route path="/oppgave/:id" component={Oppgavevisning} breadcrumbName="Oppgavevisning" />
                     </Route>
                     <Route
                         path="/sporsmal/skriv/:temagruppe"

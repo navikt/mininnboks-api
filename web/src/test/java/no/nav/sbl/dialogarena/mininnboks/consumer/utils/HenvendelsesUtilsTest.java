@@ -108,7 +108,7 @@ public class HenvendelsesUtilsTest {
                         new XMLDokumentVarsel()
                             .withTemagruppe("OVRG")
                             .withFritekst("")
-                            .withRepeterendeVarsel(true)
+                            .withStoppRepeterendeVarsel(true)
                 ));
     }
 

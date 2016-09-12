@@ -1,20 +1,18 @@
 import React, { Component, PropTypes as PT } from 'react';
-import { findDOMNode } from 'react-dom';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import { shortDate, safeHtml } from '../utils';
-import AntallMeldinger from './antall-meldinger';
 import classNames from 'classnames';
+import { shortDate, tilAvsnitt } from '../utils';
+import history from './../history';
 
-const cls = (props) => classNames('panel panel-ikon panel-klikkbart dialog', props.ulestMeldingKlasse, {
-    markert: props.aktiv,
-    'flere-meldinger': props.traad.meldinger.length > 1
+const cls = (props) => classNames('panel panel-ikon panel-klikkbart oppgave', props.ulestMeldingKlasse, {
+    markert: props.aktiv
 });
 
-class MeldingPreview extends Component {
+class OppgavePreview extends Component {
     componentDidMount() {
         if (this.props.aktiv) {
-            findDOMNode(this.refs.lenke).focus();
+            history.push(`oppgave/${this.props.traad.nyeste.id}`);
         }
     }
 
@@ -23,43 +21,31 @@ class MeldingPreview extends Component {
 
         const melding = traad.nyeste;
         const dato = shortDate(melding.opprettet);
-        const fritekst = safeHtml(melding.fritekst);
-
-        const antallMeldinger = traad.meldinger.length;
-
-        const maBesvares = melding.type === 'SPORSMAL_MODIA_UTGAAENDE' ?
-            <span>/ <strong className="purring"><FormattedMessage id="purre.svar" /></strong></span> : null;
+        const avsnitt = melding.fritekst.split(/[\r\n]+/).map(tilAvsnitt);
 
         const avsender = traad.nyeste.fraNav ? (
             <span>/ Fra <span className="avsender-fra-nav"><FormattedMessage id="avsender.tekst.NAV" /></span></span>
         ) : null;
-        const flereMeldinger = antallMeldinger > 1 ? `(${antallMeldinger})` : null;
 
         return (
             <li className="traad blokk-xxxs" key={melding.traadId}>
                 <Link
                     ref="lenke"
-                    to={`/traad/${melding.traadId}`}
+                    to={`/oppgave/${melding.traadId}`}
                     className={cls(this.props)}
                 >
                     <p className="vekk">
                         <FormattedMessage id="meldinger.ikon" />
                     </p>
-                    <AntallMeldinger antall={antallMeldinger} />
                     <div className="typo-normal blokk-xxxs">
                         <p className="blokk-xxs">
                             <span>{dato}</span>
                             {avsender}
-                            {maBesvares}
                         </p>
                         <h2 className="typo-element blokk-xxs">
                             {melding.statusTekst}
-                            <span className="vekk">
-                                {flereMeldinger}
-                                {maBesvares}
-                            </span>
                         </h2>
-                        <p className="typo-infotekst tema-avsnitt nettobunn">{fritekst}</p>
+                        <p className="typo-infotekst tema-avsnitt nettobunn">{avsnitt}</p>
                     </div>
                 </Link>
             </li>
@@ -67,10 +53,11 @@ class MeldingPreview extends Component {
     }
 }
 
-MeldingPreview.propTypes = {
+OppgavePreview.propTypes = {
+    router: PT.object.isRequired,
     traad: PT.object,
     aktiv: PT.bool.isRequired,
     ulestMeldingKlasse: PT.string
 };
 
-export default MeldingPreview;
+export default OppgavePreview;

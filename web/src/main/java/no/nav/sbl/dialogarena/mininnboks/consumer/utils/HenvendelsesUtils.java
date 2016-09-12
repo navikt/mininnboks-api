@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.function.Function;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Optional.ofNullable;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.fromValue;
@@ -45,6 +46,7 @@ public abstract class HenvendelsesUtils {
             put(XMLHenvendelseType.REFERAT_OPPMOTE, SAMTALEREFERAT_OPPMOTE);
             put(XMLHenvendelseType.REFERAT_TELEFON, SAMTALEREFERAT_TELEFON);
             put(XMLHenvendelseType.DOKUMENT_VARSEL, DOKUMENT_VARSEL);
+            put(XMLHenvendelseType.OPPGAVE_VARSEL, OPPGAVE_VARSEL);
         }
     };
 
@@ -89,6 +91,12 @@ public abstract class HenvendelsesUtils {
             henvendelse.opprettet = varsel.getFerdigstiltDato();
             henvendelse.dokumentIdListe.addAll(varsel.getDokumentIdListe());
             henvendelse.journalpostId = varsel.getJournalpostId();
+        } else if (OPPGAVE_VARSEL.name().equals(info.getHenvendelseType())) {
+            XMLOppgaveVarsel varsel = (XMLOppgaveVarsel) info.getMetadataListe().getMetadata().get(0);
+            henvendelse.oppgaveType = varsel.getOppgaveType();
+            henvendelse.oppgaveUrl = varsel.getOppgaveURL();
+            henvendelse.statusTekst = hentTekst(tekstService, format("oppgave.%s", varsel.getOppgaveType()), "oppgave.GEN");
+            henvendelse.fritekst = hentTekst(tekstService, format("oppgave.%s.fritekst", varsel.getOppgaveType()), "oppgave.GEN.fritekst");
         } else {
             XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
             henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
@@ -102,6 +110,14 @@ public abstract class HenvendelsesUtils {
             }
         }
         return henvendelse;
+    }
+
+    public static String hentTekst(TekstService tekster, String key, String defaultKey) {
+        try {
+            return tekster.hentTekst(key);
+        } catch (Exception e) {
+            return tekster.hentTekst(defaultKey);
+        }
     }
 
     private static String hentTemagruppeNavn(String temagruppeNavn) {
@@ -123,9 +139,9 @@ public abstract class HenvendelsesUtils {
     }
 
     private static String statusTekst(Henvendelse henvendelse) {
-        String type = hentTemagruppeNavn(String.format("status.%s", henvendelse.type.name()));
+        String type = hentTemagruppeNavn(format("status.%s", henvendelse.type.name()));
         String temagruppe = hentTemagruppeNavn(henvendelse.temagruppe.name());
-        return String.format(type, temagruppe);
+        return format(type, temagruppe);
 
     }
 
