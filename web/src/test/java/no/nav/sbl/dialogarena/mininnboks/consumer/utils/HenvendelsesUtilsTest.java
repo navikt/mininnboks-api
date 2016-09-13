@@ -9,11 +9,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -55,6 +57,7 @@ public class HenvendelsesUtilsTest {
     public void after() {
         HenvendelsesUtils.setTekstService(null);
     }
+
     @Test
     public void transformererDokumentHenvendelse() {
         XMLHenvendelse dokument = mockDokumentHenvendelse();
@@ -62,7 +65,7 @@ public class HenvendelsesUtilsTest {
         List<XMLHenvendelse> infoList = Collections.singletonList(dokument);
 
         List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(TIL_HENVENDELSE)
+                .map(HenvendelsesUtils::tilHenvendelse)
                 .collect(toList());
         Henvendelse dokumentHenvendelse = henvendelserListe.get(0);
 
@@ -81,7 +84,7 @@ public class HenvendelsesUtilsTest {
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(TIL_HENVENDELSE)
+                .map(HenvendelsesUtils::tilHenvendelse)
                 .collect(toList());
         Henvendelse sporsmal = henvendelserListe.get(0);
 
@@ -106,12 +109,11 @@ public class HenvendelsesUtilsTest {
                 .withKontorsperreEnhet(KONTORSPERRE_ENHET)
                 .withMetadataListe(new XMLMetadataListe().withMetadata(
                         new XMLDokumentVarsel()
-                            .withTemagruppe("OVRG")
-                            .withFritekst("")
-                            .withStoppRepeterendeVarsel(true)
+                                .withTemagruppe("OVRG")
+                                .withFritekst("")
+                                .withStoppRepeterendeVarsel(true)
                 ));
     }
-
 
 
     @Test
@@ -120,7 +122,7 @@ public class HenvendelsesUtilsTest {
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(TIL_HENVENDELSE)
+                .map(HenvendelsesUtils::tilHenvendelse)
                 .collect(toList());
         Henvendelse svar = henvendelserListe.get(0);
 
@@ -141,7 +143,7 @@ public class HenvendelsesUtilsTest {
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
         List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(TIL_HENVENDELSE)
+                .map(HenvendelsesUtils::tilHenvendelse)
                 .collect(toList());
         Henvendelse sporsmal = henvendelserListe.get(0);
 
@@ -164,7 +166,7 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SVAR_SKRIFTLIG, ID_4, ID_1);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
-        List<Henvendelse> henvendelserListe = infoList.stream().map(TIL_HENVENDELSE).collect(toList());
+        List<Henvendelse> henvendelserListe = infoList.stream().map(HenvendelsesUtils::tilHenvendelse).collect(toList());
         Henvendelse svar = henvendelserListe.get(0);
 
         assertStandardFelter(svar);
@@ -182,7 +184,7 @@ public class HenvendelsesUtilsTest {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
         List<XMLHenvendelse> infoList = Collections.singletonList(info);
 
-        List<Henvendelse> henvendelserListe = infoList.stream().map(TIL_HENVENDELSE).collect(toList());
+        List<Henvendelse> henvendelserListe = infoList.stream().map(HenvendelsesUtils::tilHenvendelse).collect(toList());
         Henvendelse referat = henvendelserListe.get(0);
 
         assertStandardFelter(referat);
@@ -202,7 +204,7 @@ public class HenvendelsesUtilsTest {
 
         when(tekstService.hentTekst("innhold.kassert")).thenReturn("Innholdet er kassert");
         when(tekstService.hentTekst("temagruppe.kassert")).thenReturn("Kassert");
-        Henvendelse referat = TIL_HENVENDELSE.apply(info);
+        Henvendelse referat = HenvendelsesUtils.tilHenvendelse(info);
 
         assertThat(referat.fritekst, is("Innholdet er kassert"));
         assertThat(referat.statusTekst, is("Kassert"));

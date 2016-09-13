@@ -4,6 +4,7 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendel
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseRequest;
@@ -18,7 +19,6 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.TIL_HENVENDELSE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
 import static org.joda.time.DateTime.now;
 
@@ -48,7 +48,7 @@ public interface HenvendelseService {
                        SendInnHenvendelsePortType sendInnHenvendelsePortType,
                        InnsynHenvendelsePortType innsynHenvendelsePortType,
                        PersonService personService) {
-            
+
             this.henvendelsePortType = henvendelsePortType;
             this.sendInnHenvendelsePortType = sendInnHenvendelsePortType;
             this.innsynHenvendelsePortType = innsynHenvendelsePortType;
@@ -142,7 +142,7 @@ public interface HenvendelseService {
                     .map(XMLHenvendelse.class::cast);
 
             return wsHenvendelser
-                    .map(TIL_HENVENDELSE)
+                    .map(HenvendelsesUtils::tilHenvendelse)
                     .collect(toList());
         }
 
@@ -152,7 +152,7 @@ public interface HenvendelseService {
 
             return wsBehandlingskjeder.stream()
                     .map(XMLHenvendelse.class::cast)
-                    .map(TIL_HENVENDELSE)
+                    .map(HenvendelsesUtils::tilHenvendelse)
                     .collect(toList());
         }
     }
