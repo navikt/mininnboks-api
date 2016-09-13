@@ -34,7 +34,7 @@ class DokumentPreview extends Component {
                     <p className="vekk"><FormattedMessage id="dokumentmelding.ikon" /></p>
                     <div className="typo-normal blokk-xxxs">
                         <p>{dato} / Fra {avsender} </p>
-                        <h2 className="typo-element blokk-xxs">{dokument.statusTekst}</h2>
+                        <h3 className="typo-element blokk-xxs">{dokument.statusTekst}</h3>
                         <p className="typo-infotekst tema-avsnitt">{temanavn}</p>
                     </div>
                 </Link>

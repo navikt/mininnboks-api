@@ -2,7 +2,7 @@ import React, { Component, PropTypes as PT } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import classNames from 'classnames';
-import { shortDate, tilAvsnitt } from '../utils';
+import { shortDate, safeHtml } from '../utils';
 import history from './../history';
 
 const cls = (props) => classNames('panel panel-ikon panel-klikkbart oppgave', props.ulestMeldingKlasse, {
@@ -21,7 +21,7 @@ class OppgavePreview extends Component {
 
         const melding = traad.nyeste;
         const dato = shortDate(melding.opprettet);
-        const avsnitt = melding.fritekst.split(/[\r\n]+/).map(tilAvsnitt);
+        const avsnitt = safeHtml(melding.fritekst);
 
         const avsender = traad.nyeste.fraNav ? (
             <span>/ Fra <span className="avsender-fra-nav"><FormattedMessage id="avsender.tekst.NAV" /></span></span>
@@ -42,9 +42,9 @@ class OppgavePreview extends Component {
                             <span>{dato}</span>
                             {avsender}
                         </p>
-                        <h2 className="typo-element blokk-xxs">
+                        <h3 className="typo-element blokk-xxs">
                             {melding.statusTekst}
-                        </h2>
+                        </h3>
                         <p className="typo-infotekst tema-avsnitt nettobunn">{avsnitt}</p>
                     </div>
                 </Link>
@@ -54,7 +54,6 @@ class OppgavePreview extends Component {
 }
 
 OppgavePreview.propTypes = {
-    router: PT.object.isRequired,
     traad: PT.object,
     aktiv: PT.bool.isRequired,
     ulestMeldingKlasse: PT.string
