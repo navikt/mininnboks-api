@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.function.Function;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
@@ -49,66 +48,109 @@ public abstract class HenvendelsesUtils {
         }
     };
 
-    public static Henvendelse tilHenvendelse(XMLHenvendelse wsMelding) {
-        XMLHenvendelse info = wsMelding;
+    private static DomainMapper<XMLHenvendelse, Henvendelse> domainMapper = new DomainMapper<>();
 
-        Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
-        henvendelse.opprettet = info.getOpprettetDato();
-        henvendelse.avsluttet = info.getAvsluttetDato();
-        henvendelse.traadId = ofNullable(info.getBehandlingskjedeId()).orElse(info.getBehandlingsId());
-        henvendelse.eksternAktor = info.getEksternAktor();
-        henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
-        henvendelse.kontorsperreEnhet = info.getKontorsperreEnhet();
-        henvendelse.erTilknyttetAnsatt = info.isErTilknyttetAnsatt();
-        henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
-        henvendelse.brukersEnhet = info.getBrukersEnhet();
-        henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
-        henvendelse.fraNav = !henvendelse.fraBruker;
-        henvendelse.temaKode = wsMelding.getTema();
-        henvendelse.korrelasjonsId = info.getKorrelasjonsId();
-        if (FRA_BRUKER.contains(henvendelse.type)) {
-            henvendelse.markerSomLest();
-        } else {
-            henvendelse.markerSomLest(info.getLestDato());
-        }
+    private static DomainMapper.Mapper<XMLHenvendelse, Henvendelse> DEFAULT_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse) -> true,
+            (xmlHenvendelse, henvendelse) -> {
+                henvendelse = new Henvendelse(xmlHenvendelse.getBehandlingsId());
+                henvendelse.opprettet = xmlHenvendelse.getOpprettetDato();
+                henvendelse.avsluttet = xmlHenvendelse.getAvsluttetDato();
+                henvendelse.traadId = ofNullable(xmlHenvendelse.getBehandlingskjedeId()).orElse(xmlHenvendelse.getBehandlingsId());
+                henvendelse.eksternAktor = xmlHenvendelse.getEksternAktor();
+                henvendelse.tilknyttetEnhet = xmlHenvendelse.getTilknyttetEnhet();
+                henvendelse.kontorsperreEnhet = xmlHenvendelse.getKontorsperreEnhet();
+                henvendelse.erTilknyttetAnsatt = xmlHenvendelse.isErTilknyttetAnsatt();
+                henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(xmlHenvendelse.getHenvendelseType()));
+                henvendelse.brukersEnhet = xmlHenvendelse.getBrukersEnhet();
+                henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
+                henvendelse.fraNav = !henvendelse.fraBruker;
+                henvendelse.temaKode = xmlHenvendelse.getTema();
+                henvendelse.korrelasjonsId = xmlHenvendelse.getKorrelasjonsId();
 
-        if (innholdErKassert(info)) {
-            henvendelse.kassert = true;
-            henvendelse.fritekst = tekstService.hentTekst("innhold.kassert");
-            henvendelse.statusTekst = tekstService.hentTekst("temagruppe.kassert");
-            henvendelse.temagruppe = null;
-            henvendelse.kanal = null;
-            return henvendelse;
-        }
+                if (FRA_BRUKER.contains(henvendelse.type)) {
+                    henvendelse.markerSomLest();
+                } else {
+                    henvendelse.markerSomLest(xmlHenvendelse.getLestDato());
+                }
 
-        if (DOKUMENT_VARSEL.name().equals(info.getHenvendelseType())) {
-            XMLDokumentVarsel varsel = (XMLDokumentVarsel) info.getMetadataListe().getMetadata().get(0);
-            henvendelse.statusTekst = varsel.getDokumenttittel();
-            henvendelse.withTemaNavn(varsel.getTemanavn());
-            henvendelse.temagruppe = null;
-            henvendelse.fritekst = ofNullable(varsel.getFritekst()).orElse("");
-            henvendelse.opprettet = varsel.getFerdigstiltDato();
-            henvendelse.dokumentIdListe.addAll(varsel.getDokumentIdListe());
-            henvendelse.journalpostId = varsel.getJournalpostId();
-        } else if (OPPGAVE_VARSEL.name().equals(info.getHenvendelseType())) {
-            XMLOppgaveVarsel varsel = (XMLOppgaveVarsel) info.getMetadataListe().getMetadata().get(0);
-            henvendelse.oppgaveType = varsel.getOppgaveType();
-            henvendelse.oppgaveUrl = varsel.getOppgaveURL();
-            henvendelse.statusTekst = hentTekst(tekstService, format("oppgave.%s", varsel.getOppgaveType()), "oppgave.GEN");
-            henvendelse.fritekst = hentTekst(tekstService, format("oppgave.%s.fritekst", varsel.getOppgaveType()), "oppgave.GEN.fritekst");
-        } else {
-            XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
-            henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
-            henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe.name());
-            henvendelse.statusTekst = statusTekst(henvendelse);
-            henvendelse.fritekst = cleanOutHtml(xmlMelding.getFritekst());
-
-            if (xmlMelding instanceof XMLMeldingTilBruker) {
-                XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
-                henvendelse.kanal = meldingTilBruker.getKanal();
+                return henvendelse;
             }
-        }
-        return henvendelse;
+    );
+
+    private static DomainMapper.Mapper<XMLHenvendelse, Henvendelse> KASSERT_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse) -> xmlHenvendelse.getMetadataListe() == null,
+            (xmlHenvendelse, henvendelse) -> {
+                henvendelse.kassert = true;
+                henvendelse.fritekst = tekstService.hentTekst("innhold.kassert");
+                henvendelse.statusTekst = tekstService.hentTekst("temagruppe.kassert");
+                henvendelse.temagruppe = null;
+                henvendelse.kanal = null;
+
+                return henvendelse;
+            },
+            true
+    );
+
+    private static DomainMapper.Mapper<XMLHenvendelse, Henvendelse> DOKUMENTVARSEL_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse -> DOKUMENT_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType())),
+            (xmlHenvendelse, henvendelse) -> {
+                XMLDokumentVarsel varsel = (XMLDokumentVarsel) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
+                henvendelse.statusTekst = varsel.getDokumenttittel();
+                henvendelse.withTemaNavn(varsel.getTemanavn());
+                henvendelse.temagruppe = null;
+                henvendelse.fritekst = ofNullable(varsel.getFritekst()).orElse("");
+                henvendelse.opprettet = varsel.getFerdigstiltDato();
+                henvendelse.dokumentIdListe.addAll(varsel.getDokumentIdListe());
+                henvendelse.journalpostId = varsel.getJournalpostId();
+
+                return henvendelse;
+            }
+    );
+
+    private static DomainMapper.Mapper<XMLHenvendelse, Henvendelse> OPPGAVEVARSEL_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse -> OPPGAVE_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType())),
+            (xmlHenvendelse, henvendelse) -> {
+                XMLOppgaveVarsel varsel = (XMLOppgaveVarsel) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
+                henvendelse.oppgaveType = varsel.getOppgaveType();
+                henvendelse.oppgaveUrl = varsel.getOppgaveURL();
+                henvendelse.statusTekst = hentTekst(tekstService, format("oppgave.%s", varsel.getOppgaveType()), "oppgave.GEN");
+                henvendelse.fritekst = hentTekst(tekstService, format("oppgave.%s.fritekst", varsel.getOppgaveType()), "oppgave.GEN.fritekst");
+                return henvendelse;
+            }
+    );
+
+    private static DomainMapper.Mapper<XMLHenvendelse, Henvendelse> IKKEVARSEL_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse -> (
+                    !OPPGAVE_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType()) &&
+                            !DOKUMENT_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType())
+            )),
+            (xmlHenvendelse, henvendelse) -> {
+                XMLMelding xmlMelding = (XMLMelding) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
+                henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
+                henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe.name());
+                henvendelse.statusTekst = statusTekst(henvendelse);
+                henvendelse.fritekst = cleanOutHtml(xmlMelding.getFritekst());
+
+                if (xmlMelding instanceof XMLMeldingTilBruker) {
+                    XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
+                    henvendelse.kanal = meldingTilBruker.getKanal();
+                }
+
+                return henvendelse;
+            }
+    );
+
+    static {
+        domainMapper.registerMapper(DEFAULT_MAPPER);
+        domainMapper.registerMapper(KASSERT_MAPPER);
+        domainMapper.registerMapper(DOKUMENTVARSEL_MAPPER);
+        domainMapper.registerMapper(OPPGAVEVARSEL_MAPPER);
+        domainMapper.registerMapper(IKKEVARSEL_MAPPER);
+    }
+
+    public static Henvendelse tilHenvendelse(XMLHenvendelse wsMelding) {
+        return domainMapper.apply(wsMelding);
     }
 
     public static String hentTekst(TekstService tekster, String key, String defaultKey) {
@@ -126,10 +168,6 @@ public abstract class HenvendelsesUtils {
             logger.error("Finner ikke cms-oppslag for " + temagruppeNavn, exception);
             return temagruppeNavn;
         }
-    }
-
-    private static boolean innholdErKassert(XMLHenvendelse info) {
-        return info.getMetadataListe() == null;
     }
 
     public static String cleanOutHtml(String text) {
