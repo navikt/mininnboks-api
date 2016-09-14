@@ -79,7 +79,6 @@
     word-wrap: break-word;
 }
 
-//state i CSS....:(
 .skjema-feilmelding {
     display: block;
 }
@@ -87,6 +86,12 @@
 .panel-klikkbart {
     &:hover {
         border-bottom: none !important;
+    }
+    &:focus {
+        box-shadow: 0 0 0 3px #ffbd66;
+    }
+    &:focus:hover {
+        box-shadow: 0 0 0 3px #ffbd66, #ccc 0 0 4px 2px
     }
 }
 
