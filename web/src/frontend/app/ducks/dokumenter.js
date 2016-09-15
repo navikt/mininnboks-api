@@ -6,10 +6,15 @@ import { STATUS, doThenDispatch } from './utils';
 export const DOKUMENTVISNING_DATA_OK = 'DOKUMENTVISNING_DATA_OK';
 export const DOKUMENTVISNING_DATA_FEILET = 'DOKUMENTVISNING_DATA_FEILET';
 export const DOKUMENTVISNING_DATA_PENDING = 'DOKUMENTVISNING_DATA_PENDING';
+export const STATUS_PDF_MODAL = 'STATUS_PDF_MODAL';
 
 const initalState = {
     status: STATUS.NOT_STARTED,
-    data: {}
+    data: {},
+    pdfModal: {
+        skalVises: false,
+        dokumentUrl: null
+    }
 };
 
 // Reducer
@@ -22,7 +27,8 @@ export default function reducer(state = initalState, action) {
         case DOKUMENTVISNING_DATA_OK: {
             const [dokumentmetadata, journalpostmetadata] = action.data;
             return { ...state, status: STATUS.OK, data: { dokumentmetadata, journalpostmetadata } };
-        }
+        } case STATUS_PDF_MODAL:
+            return { ...state, pdfModal: action.pdfModal };
         default:
             return state;
     }
@@ -53,3 +59,12 @@ export function hentDokumentVisningData(journalpostId, dokumentreferanser) {
         PENDING: DOKUMENTVISNING_DATA_PENDING
     });
 }
+
+export function visLastNedPdfModal(dokumentUrl) {
+    return { type: STATUS_PDF_MODAL, pdfModal: { skalVises: true, dokumentUrl } };
+}
+
+export function skjulLastNedPdfModal() {
+    return { type: STATUS_PDF_MODAL, pdfModal: { skalVises: false, dokumentUrl: null } };
+}
+
