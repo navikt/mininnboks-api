@@ -19,8 +19,6 @@ class Modal extends React.Component {
 
     render() {
         const { pdfModal, intl: { formatMessage } } = this.props;
-
-        console.log('url', pdfModal.dokumentUrl);
         return (
             <AriaModal
                 mounted={pdfModal.skalVises}

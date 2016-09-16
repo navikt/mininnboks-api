@@ -61,7 +61,7 @@ class DokumentVisningSide extends React.Component {
                     params={params}
                     {...dokumenter.data}
                     lastNedPdfOnClick={this.onLastNedPdfClick}
-                    printPdfOnClick={this.onLastNedPdfClick}
+                    printPdfOnClick={this.onPrintPdfClick}
                 />
             </Innholdslaster>
         );
@@ -76,8 +76,7 @@ DokumentVisningSide.propTypes = {
     actions: PT.shape({
         markerBehandlingsIdSomLest: PT.func.isRequired,
         hentDokumentVisningData: PT.func.isRequired,
-        visLastNedPdfModal: PT.func.isRequired,
-        onPrintPdfClick: PT.func.isRequired
+        visLastNedPdfModal: PT.func.isRequired
     })
 };
 
@@ -86,8 +85,7 @@ const mapDispatchToProps = (dispatch) => ({
     actions: {
         markerBehandlingsIdSomLest: (behandlindsId) => dispatch(markerBehandlingsIdSomLest(behandlindsId)),
         hentDokumentVisningData: (journalpostId, idListe) => dispatch(hentDokumentVisningData(journalpostId, idListe)),
-        visLastNedPdfModal: (url) => dispatch(visLastNedPdfModal(url)),
-        onPrintPdfClick: (url) => dispatch(onPrintPdfClick(url))
+        visLastNedPdfModal: (url) => dispatch(visLastNedPdfModal(url))
     }
 });
 
