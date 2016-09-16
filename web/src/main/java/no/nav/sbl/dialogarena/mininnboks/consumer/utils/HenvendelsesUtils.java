@@ -129,7 +129,7 @@ public abstract class HenvendelsesUtils {
                 XMLMelding xmlMelding = (XMLMelding) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
                 henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
                 henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe.name());
-                henvendelse.statusTekst = statusTekst(henvendelse);
+                henvendelse.statusTekst = HenvendelsesUtils.statusTekst(henvendelse);
                 henvendelse.fritekst = cleanOutHtml(xmlMelding.getFritekst());
 
                 if (xmlMelding instanceof XMLMeldingTilBruker) {
