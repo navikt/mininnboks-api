@@ -67,7 +67,13 @@ public abstract class HenvendelsesUtils {
                 henvendelse.fraNav = !henvendelse.fraBruker;
                 henvendelse.temaKode = xmlHenvendelse.getTema();
                 henvendelse.korrelasjonsId = xmlHenvendelse.getKorrelasjonsId();
+                return henvendelse;
+            }
+    );
 
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> LEST_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse) -> true,
+            (xmlHenvendelse, henvendelse) -> {
                 if (FRA_BRUKER.contains(henvendelse.type)) {
                     henvendelse.markerSomLest();
                 } else {
@@ -143,6 +149,7 @@ public abstract class HenvendelsesUtils {
 
     static {
         domainMapper.registerMapper(DEFAULT_MAPPER);
+        domainMapper.registerMapper(LEST_MAPPER);
         domainMapper.registerMapper(KASSERT_MAPPER);
         domainMapper.registerMapper(DOKUMENTVARSEL_MAPPER);
         domainMapper.registerMapper(OPPGAVEVARSEL_MAPPER);
