@@ -13,7 +13,7 @@ class DokumentVisning extends React.Component {
     }
 
     render() {
-        const { dokumentmetadata, journalpostmetadata, intl, routes, params, lastNedPdfOnClick } = this.props;
+        const { dokumentmetadata, journalpostmetadata, intl, routes, params, lastNedPdfOnClick, printPdfOnClick } = this.props;
         const { temakode } = journalpostmetadata.resultat;
         const kontaktNavUrl = intl.messages['dokumentvisning.kontakt.nav.link'];
 
@@ -42,7 +42,7 @@ class DokumentVisning extends React.Component {
                         journalpostId={journalpostmetadata.resultat.journalpostId}
                         dokumentmetadata={dokumentmetadata}
                         lastNedPdfOnClick={lastNedPdfOnClick}
-                        printPdfOnClick={lastNedPdfOnClick}
+                        printPdfOnClick={printPdfOnClick}
                     />
                 </section>
             </div>
@@ -53,6 +53,7 @@ class DokumentVisning extends React.Component {
 DokumentVisning.propTypes = {
     dokumentmetadata: PT.array.isRequired,
     lastNedPdfOnClick: React.PropTypes.func.isRequired,
+    printPdfOnClick: React.PropTypes.func.isRequired,
     journalpostmetadata: PT.object.isRequired,
     params: PT.object.isRequired,
     routes: PT.array.isRequired,
