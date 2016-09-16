@@ -48,9 +48,9 @@ public abstract class HenvendelsesUtils {
         }
     };
 
-    private static DomainMapper<XMLHenvendelse, Henvendelse> domainMapper = new DomainMapper<>();
+    private static final DomainMapper<XMLHenvendelse, Henvendelse> domainMapper = new DomainMapper<>();
 
-    private static DomainMapper.Mapper<XMLHenvendelse, Henvendelse> DEFAULT_MAPPER = new DomainMapper.Mapper<>(
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> DEFAULT_MAPPER = new DomainMapper.Mapper<>(
             (xmlHenvendelse) -> true,
             (xmlHenvendelse, henvendelse) -> {
                 henvendelse = new Henvendelse(xmlHenvendelse.getBehandlingsId());
@@ -78,7 +78,7 @@ public abstract class HenvendelsesUtils {
             }
     );
 
-    private static DomainMapper.Mapper<XMLHenvendelse, Henvendelse> KASSERT_MAPPER = new DomainMapper.Mapper<>(
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> KASSERT_MAPPER = new DomainMapper.Mapper<>(
             (xmlHenvendelse) -> xmlHenvendelse.getMetadataListe() == null,
             (xmlHenvendelse, henvendelse) -> {
                 henvendelse.kassert = true;
@@ -92,7 +92,7 @@ public abstract class HenvendelsesUtils {
             true
     );
 
-    private static DomainMapper.Mapper<XMLHenvendelse, Henvendelse> DOKUMENTVARSEL_MAPPER = new DomainMapper.Mapper<>(
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> DOKUMENTVARSEL_MAPPER = new DomainMapper.Mapper<>(
             (xmlHenvendelse -> DOKUMENT_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType())),
             (xmlHenvendelse, henvendelse) -> {
                 XMLDokumentVarsel varsel = (XMLDokumentVarsel) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
@@ -108,7 +108,7 @@ public abstract class HenvendelsesUtils {
             }
     );
 
-    private static DomainMapper.Mapper<XMLHenvendelse, Henvendelse> OPPGAVEVARSEL_MAPPER = new DomainMapper.Mapper<>(
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> OPPGAVEVARSEL_MAPPER = new DomainMapper.Mapper<>(
             (xmlHenvendelse -> OPPGAVE_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType())),
             (xmlHenvendelse, henvendelse) -> {
                 XMLOppgaveVarsel varsel = (XMLOppgaveVarsel) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
@@ -120,7 +120,7 @@ public abstract class HenvendelsesUtils {
             }
     );
 
-    private static DomainMapper.Mapper<XMLHenvendelse, Henvendelse> IKKEVARSEL_MAPPER = new DomainMapper.Mapper<>(
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> IKKEVARSEL_MAPPER = new DomainMapper.Mapper<>(
             (xmlHenvendelse -> (
                     !OPPGAVE_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType()) &&
                             !DOKUMENT_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType())
