@@ -175,7 +175,7 @@ public abstract class HenvendelsesUtils {
         return StringEscapeUtils.unescapeHtml4(clean).replaceAll(LINE_REPLACEMENT_STRING, LINE_BREAK);
     }
 
-    private static String statusTekst(Henvendelse henvendelse) {
+    private static String statusTekst(Henvendelse henvendelse) { //NOSONAR
         String type = hentTemagruppeNavn(format("status.%s", henvendelse.type.name()));
         String temagruppe = hentTemagruppeNavn(henvendelse.temagruppe.name());
         return format(type, temagruppe);
