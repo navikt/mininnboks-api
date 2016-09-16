@@ -13,7 +13,8 @@ class DokumentVisning extends React.Component {
     }
 
     render() {
-        const { dokumentmetadata, journalpostmetadata, intl, routes, params, lastNedPdfOnClick, printPdfOnClick } = this.props;
+        const { dokumentmetadata, journalpostmetadata, intl,
+                routes, params, lastNedPdfOnClick, printPdfOnClick } = this.props;
         const { temakode } = journalpostmetadata.resultat;
         const kontaktNavUrl = intl.messages['dokumentvisning.kontakt.nav.link'];
 
