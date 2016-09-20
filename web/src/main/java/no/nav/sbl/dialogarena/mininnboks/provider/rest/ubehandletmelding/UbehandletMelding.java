@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel;
+package no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
@@ -13,7 +13,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.OPPGAVE_VARSEL;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE;
 
-public class SporsmalVarsel {
+public class UbehandletMelding {
 
     public enum Status {ULEST, UBESVART}
 
@@ -26,13 +26,15 @@ public class SporsmalVarsel {
     public String oppgaveType;
     public String uri;
     public List<Status> statuser = new ArrayList<>();
+    public String varselId;
 
-    public SporsmalVarsel(Henvendelse henvendelse) {
+    public UbehandletMelding(Henvendelse henvendelse) {
         this.behandlingskjedeId = henvendelse.traadId;
         this.opprettetDato = henvendelse.opprettet.toDate();
         this.type = henvendelse.type;
         this.oppgaveType = henvendelse.oppgaveType;
         this.uri = lagDirektelenkeTilMelding(henvendelse);
+        this.varselId = henvendelse.korrelasjonsId;
 
         if (erUbesvart.test(henvendelse)) {
             this.statuser.add(Status.UBESVART);

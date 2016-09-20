@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel;
+package no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 
@@ -20,7 +20,7 @@ public class SporsmalController {
 
     @GET
     @Path("/ubehandlet")
-    public List<SporsmalVarsel> ulesteSporsmal() {
-        return SporsmalVarselUtils.hentUbehandledeSporsmal(henvendelseService.hentAlleHenvendelser(getSubjectHandler().getUid()));
+    public List<UbehandletMelding> ubehandledeMeldinger() {
+        return UbehandletMeldingUtils.hentUbehandledeMeldinger(henvendelseService.hentAlleHenvendelser(getSubjectHandler().getUid()));
     }
 }

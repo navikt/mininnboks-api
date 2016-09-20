@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel;
+package no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding;
 
 import no.nav.modig.core.context.ThreadLocalSubjectHandler;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
@@ -28,7 +28,7 @@ public class SporsmalControllerTest {
         System.setProperty("no.nav.modig.core.context.subjectHandlerImplementationClass", ThreadLocalSubjectHandler.class.getName());
         when(henvendelseService.hentAlleHenvendelser(anyString())).thenReturn(new ArrayList<Henvendelse>());
 
-        controller.ulesteSporsmal();
+        controller.ubehandledeMeldinger();
 
         verify(henvendelseService, times(1)).hentAlleHenvendelser(anyString());
     }

@@ -3,7 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks.provider.rest;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.logger.JSLoggerController;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.ResourcesController;
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalController;
+import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.SporsmalController;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
 
