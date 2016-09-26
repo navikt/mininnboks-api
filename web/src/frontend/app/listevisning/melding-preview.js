@@ -46,8 +46,8 @@ class MeldingPreview extends Component {
                         <FormattedMessage id="meldinger.ikon" />
                     </p>
                     <AntallMeldinger antall={antallMeldinger} />
-                    <div className="typo-normal blokk-xxxs">
-                        <p className="blokk-xxs">
+                    <div className="typo-normal">
+                        <p className="blokk-xxxs">
                             <span>{dato}</span>
                             {avsender}
                             {maBesvares}
