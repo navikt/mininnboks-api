@@ -37,8 +37,8 @@ class OppgavePreview extends Component {
                     <p className="vekk">
                         <FormattedMessage id="meldinger.ikon" />
                     </p>
-                    <div className="typo-normal blokk-xxxs">
-                        <p className="blokk-xxs">
+                    <div className="typo-normal">
+                        <p className="blokk-xxxs">
                             <span>{dato}</span>
                             {avsender}
                         </p>
