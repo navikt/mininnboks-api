@@ -18,6 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import javax.ws.rs.core.Response;
+import javax.xml.ws.soap.SOAPFaultException;
 import java.util.List;
 import java.util.UUID;
 
@@ -114,7 +115,23 @@ public class HenvendelseControllerTest {
     }
 
     @Test
+    public void girStatuskodeIkkeFunnetHvisHenvendelseServiceGirSoapFault() {
+        when(service.hentTraad(anyString())).thenThrow(SOAPFaultException.class);
+
+        Response response = controller.hentEnkeltTraad("1");
+
+        assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
+    }
+
+    @Test
     public void markeringSomLest() throws Exception {
+        controller.markerSomLest("1");
+
+        verify(service, times(1)).merkSomLest("1");
+    }
+
+    @Test
+    public void markeringAlleSomLest() throws Exception {
         controller.markerAlleSomLest("1");
 
         verify(service, times(1)).merkAlleSomLest("1");
@@ -188,6 +205,19 @@ public class HenvendelseControllerTest {
         verify(service).sendSvar(henvendelseArgumentCaptor.capture(), anyString());
 
         assertThat(henvendelseArgumentCaptor.getValue().brukersEnhet, is(brukersEnhet));
+    }
+
+    @Test
+    public void senderIkkeFunnetNaarTraadOptionalIkkeErPresent() {
+        when(service.hentTraad(anyString())).thenReturn(null);
+
+        Svar svar = new Svar();
+        svar.fritekst = "fritekst";
+        svar.traadId = "0";
+        Response response = controller.sendSvar(svar);
+
+        assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
+
     }
 
     @Test(expected = AssertionError.class)
