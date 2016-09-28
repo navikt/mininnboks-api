@@ -14,7 +14,6 @@ import Oppgavevisning from './oppgave-visning/oppgave-visning';
 import SkrivNyttSporsmal from './skriv-nytt-sporsmal/skriv-nytt-sporsmal';
 import Application from './application';
 import DokumentVisningSide from './dokument-visning/dokument-visning-side';
-import PrintPage from './print/print-page';
 import Traader from './traader/traader';
 import history from './history';
 
@@ -37,7 +36,6 @@ render((
                         breadcrumbName="Ny melding"
                     />
                 </Route>
-                <Route path="print/:journalpostid/:dokumentreferanse" component={PrintPage} />
             </Route>
         </Router>
     </Provider>)
