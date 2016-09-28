@@ -17,6 +17,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.notNullValue;
@@ -41,8 +42,12 @@ public class HenvendelsesUtilsTest {
     private static final String NAVIDENT = "navident";
     private static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
     private static final Boolean ER_TILKNYTTET_ANSATT = false;
+    private static final Boolean REPETERENDE_VARSEL = false;
     private static final String BRUKERS_ENHET = "1234";
     private static final String KONTORSPERRE_ENHET = "kontorsperreEnhet";
+    private static final String OPPGAVE_URL = "oppgave/url";
+    private static final String OPPGAVE_TYPE = "sykepenger";
+
 
 
     private TekstService tekstService = mock(TekstService.class);
@@ -97,24 +102,6 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.kanal, is(nullValue()));
         assertThat(sporsmal.brukersEnhet, is(BRUKERS_ENHET));
     }
-
-    private XMLHenvendelse mockDokumentHenvendelse() {
-        return new XMLHenvendelse()
-                .withHenvendelseType(XMLHenvendelseType.DOKUMENT_VARSEL.name())
-                .withBehandlingsId(ID_1)
-                .withBehandlingskjedeId(ID_1)
-                .withOpprettetDato(OPPRETTET_DATO)
-                .withAvsluttetDato(AVSLUTTET_DATO)
-                .withBrukersEnhet(BRUKERS_ENHET)
-                .withKontorsperreEnhet(KONTORSPERRE_ENHET)
-                .withMetadataListe(new XMLMetadataListe().withMetadata(
-                        new XMLDokumentVarsel()
-                                .withTemagruppe("OVRG")
-                                .withFritekst("")
-                                .withStoppRepeterendeVarsel(true)
-                ));
-    }
-
 
     @Test
     public void transformererXMLHenvendelseSomSvarFraBruker() {
@@ -211,6 +198,35 @@ public class HenvendelsesUtilsTest {
         assertThat(referat.temagruppe, nullValue());
     }
 
+
+    @Test
+    public void mapperRiktigTilOppgaveVarsel() {
+        XMLHenvendelse info = mockXMLHenvendelseMedXMLOppgaveVarsel(XMLHenvendelseType.OPPGAVE_VARSEL, ID_5, ID_5);
+
+        when(tekstService.hentTekst("oppgave." + OPPGAVE_TYPE)).thenReturn("Oppgave varsel");
+        when(tekstService.hentTekst("oppgave." + OPPGAVE_TYPE + ".fritekst")).thenReturn("Oppgave");
+
+        Henvendelse henvendelse = tilHenvendelse(info);
+
+        assertThat(henvendelse.oppgaveType, is(OPPGAVE_TYPE));
+        assertThat(henvendelse.oppgaveUrl, is(OPPGAVE_URL));
+        assertThat(henvendelse.statusTekst, is("Oppgave varsel"));
+        assertThat(henvendelse.fritekst, is("Oppgave"));
+    }
+
+    @Test
+    public void returnererDefaultKeyHvisHentTekstKasterException() {
+        String key = "nokkel";
+        String defaultKey = "defaultKey";
+
+        when(tekstService.hentTekst(key)).thenThrow(NullPointerException.class);
+        when(tekstService.hentTekst(defaultKey)).thenReturn(defaultKey);
+
+        String tekst = HenvendelsesUtils.hentTekst(tekstService, key, defaultKey);
+
+        assertThat(tekst, is(defaultKey));
+    }
+
     private void assertStandardFelter(Henvendelse sporsmal) {
         assertThat(sporsmal.fritekst, is(FRITEKST));
         assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
@@ -259,6 +275,42 @@ public class HenvendelsesUtilsTest {
                                 .withTemagruppe(TEMAGRUPPE.name())
                                 .withKanal(KANAL)
                                 .withNavident(NAVIDENT)
+                ));
+    }
+
+    private XMLHenvendelse mockDokumentHenvendelse() {
+        return new XMLHenvendelse()
+                .withHenvendelseType(XMLHenvendelseType.DOKUMENT_VARSEL.name())
+                .withBehandlingsId(ID_1)
+                .withBehandlingskjedeId(ID_1)
+                .withOpprettetDato(OPPRETTET_DATO)
+                .withAvsluttetDato(AVSLUTTET_DATO)
+                .withBrukersEnhet(BRUKERS_ENHET)
+                .withKontorsperreEnhet(KONTORSPERRE_ENHET)
+                .withMetadataListe(new XMLMetadataListe().withMetadata(
+                        new XMLDokumentVarsel()
+                                .withTemagruppe("OVRG")
+                                .withFritekst("")
+                                .withStoppRepeterendeVarsel(true)
+                ));
+    }
+
+    private XMLHenvendelse mockXMLHenvendelseMedXMLOppgaveVarsel(XMLHenvendelseType type, String id, String kjedeId) {
+        return new XMLHenvendelse()
+                .withHenvendelseType(type.name())
+                .withBehandlingsId(id)
+                .withBehandlingskjedeId(kjedeId)
+                .withOpprettetDato(OPPRETTET_DATO)
+                .withAvsluttetDato(AVSLUTTET_DATO)
+                .withBrukersEnhet(BRUKERS_ENHET)
+                .withKontorsperreEnhet(KONTORSPERRE_ENHET)
+                .withMetadataListe(new XMLMetadataListe().withMetadata(
+                        new XMLOppgaveVarsel()
+                                .withOppgaveType(OPPGAVE_TYPE)
+                                .withFritekst("oppgave." + OPPGAVE_TYPE + ".fritekst")
+                                .withTemagruppe(TEMAGRUPPE.name())
+                                .withStoppRepeterendeVarsel(REPETERENDE_VARSEL)
+                                .withOppgaveURL(OPPGAVE_URL)
                 ));
     }
 

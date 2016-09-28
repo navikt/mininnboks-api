@@ -43,4 +43,13 @@ public class DefaultPersonServiceTest {
         assertThat(personService.hentEnhet().get(), is(enhet));
     }
 
+    @Test(expected = RuntimeException.class)
+    public void kasterRuntimeExceptionOmEnhetIkkeKanhentes() throws HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning, HentKontaktinformasjonOgPreferanserPersonIdentErUtgaatt, HentKontaktinformasjonOgPreferanserPersonIkkeFunnet {
+
+        when(brukerprofilV3.hentKontaktinformasjonOgPreferanser(any(WSHentKontaktinformasjonOgPreferanserRequest.class))).thenThrow(new HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning());
+
+        personService.hentEnhet();
+
+    }
+
 }
