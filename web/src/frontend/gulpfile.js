@@ -18,6 +18,9 @@ gulp.task('build-vendors', ['build-moment'], require('./gulp/build-js').buildVen
 gulp.task('build-moment', require('./gulp/build-js').buildMoment(gulp));
 gulp.task('eslint', require('./gulp/eslint')(gulp));
 gulp.task('copy-img', require('./gulp/copy-img').copyImg(gulp));
+gulp.task('test', require('./gulp/tests').test(gulp, false));
+gulp.task('test-tdd', require('./gulp/tests').test(gulp, true));
+gulp.task('tdd', ['test-tdd'], require('./gulp/tests').watch(gulp));
 
 gulp.task('build', ['eslint', 'build-js', 'build-vendors', 'build-html', 'build-less', 'copy-img'], () => {
     gulp.start(['cachebuster']);

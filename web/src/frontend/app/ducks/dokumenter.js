@@ -1,6 +1,6 @@
 export const API_BASE_URL = '/saksoversikt/tjenester';
 const MED_CREDENTIALS = { credentials: 'same-origin' };
-import { STATUS, doThenDispatch } from './utils';
+import { STATUS, fetchToJson, doThenDispatch } from './utils';
 
 // Actions
 export const DOKUMENTVISNING_DATA_OK = 'DOKUMENTVISNING_DATA_OK';
@@ -35,16 +35,14 @@ export default function reducer(state = initalState, action) {
 }
 
 // ActionCreators
-export const hentDokumentMetadata = (journalpostId, dokumentmetadata) =>
-    fetch(`${API_BASE_URL}/dokumenter/dokumentmetadata/${journalpostId}/${dokumentmetadata}`,
-        MED_CREDENTIALS)
-        .then(res => res.json());
+const hentDokumentMetadata = (journalpostId, dokumentmetadata) =>
+    fetchToJson(`${API_BASE_URL}/dokumenter/dokumentmetadata/${journalpostId}/${dokumentmetadata}`,
+        MED_CREDENTIALS);
 
 const hentJournalpostMetadata = (journalpostId) =>
-    fetch(`${API_BASE_URL}/dokumenter/journalpostmetadata/${journalpostId}`, MED_CREDENTIALS)
-        .then(res => res.json());
+    fetchToJson(`${API_BASE_URL}/dokumenter/journalpostmetadata/${journalpostId}`, MED_CREDENTIALS);
 
-export const hentAlleDokumentMetadata = (journalpostId, dokumentreferanser) =>
+const hentAlleDokumentMetadata = (journalpostId, dokumentreferanser) =>
     Promise.all(dokumentreferanser.split('-').map(dokumentId =>
         hentDokumentMetadata(journalpostId, dokumentId)));
 
