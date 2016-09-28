@@ -9,10 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
@@ -184,6 +181,13 @@ public class HenvendelsesUtilsTest {
         assertThat(referat.brukersEnhet, is(BRUKERS_ENHET));
     }
 
+    private void assertStandardFelter(Henvendelse sporsmal) {
+        assertThat(sporsmal.fritekst, is(FRITEKST));
+        assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
+        assertThat(sporsmal.opprettet, is(OPPRETTET_DATO));
+        assertThat(sporsmal.avsluttet, is(AVSLUTTET_DATO));
+    }
+
     @Test
     public void hvisInnholdetErBorteBlirHenvendelsenMerketSomKassert() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
@@ -200,7 +204,7 @@ public class HenvendelsesUtilsTest {
 
 
     @Test
-    public void mapperRiktigTilOppgaveVarsel() {
+    public void transformererXMLHenvendelseSomOppgaveVarsel() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLOppgaveVarsel(XMLHenvendelseType.OPPGAVE_VARSEL, ID_5, ID_5);
 
         when(tekstService.hentTekst("oppgave." + OPPGAVE_TYPE)).thenReturn("Oppgave varsel");
@@ -225,13 +229,6 @@ public class HenvendelsesUtilsTest {
         String tekst = HenvendelsesUtils.hentTekst(tekstService, key, defaultKey);
 
         assertThat(tekst, is(defaultKey));
-    }
-
-    private void assertStandardFelter(Henvendelse sporsmal) {
-        assertThat(sporsmal.fritekst, is(FRITEKST));
-        assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
-        assertThat(sporsmal.opprettet, is(OPPRETTET_DATO));
-        assertThat(sporsmal.avsluttet, is(AVSLUTTET_DATO));
     }
 
     @Test
