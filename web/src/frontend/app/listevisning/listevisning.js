@@ -21,13 +21,13 @@ const getTraadLister = (traader) => {
     };
 };
 
-const erAktivRegel = (varselId) => (melding) => melding.korrelasjonsId === varselId;
+const erAktivRegel = (varselid) => (melding) => melding.korrelasjonsId === varselid;
 
 function ListeVisning({ routes, params, traader, location }) {
-    const varselId = location.query.varselId;
+    const varselid = location.query.varselid;
     const traaderGruppert = getTraadLister(traader.data);
 
-    const erAktiv = erAktivRegel(varselId);
+    const erAktiv = erAktivRegel(varselid);
 
     const ulesteTraader = traaderGruppert.uleste.map((traad) => ({
         traad, aktiv: erAktiv(traad.nyeste), ulestMeldingKlasse: 'uleste-meldinger'

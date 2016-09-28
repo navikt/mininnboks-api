@@ -26,7 +26,7 @@ public class UbehandletMelding {
     public String oppgaveType;
     public String uri;
     public List<Status> statuser = new ArrayList<>();
-    public String varselId;
+    public String varselid;
 
     public UbehandletMelding(Henvendelse henvendelse) {
         this.behandlingskjedeId = henvendelse.traadId;
@@ -34,7 +34,7 @@ public class UbehandletMelding {
         this.type = henvendelse.type;
         this.oppgaveType = henvendelse.oppgaveType;
         this.uri = lagDirektelenkeTilMelding(henvendelse);
-        this.varselId = henvendelse.korrelasjonsId;
+        this.varselid = henvendelse.korrelasjonsId;
 
         if (erUbesvart.test(henvendelse)) {
             this.statuser.add(Status.UBESVART);
@@ -46,7 +46,7 @@ public class UbehandletMelding {
 
     private String lagDirektelenkeTilMelding(Henvendelse henvendelse) {
         if (DOKUMENT_VARSEL == this.type || OPPGAVE_VARSEL == this.type) {
-            return String.format("%s/?varselId=%s", getProperty("mininnboks.link.url"), henvendelse.korrelasjonsId);
+            return String.format("%s/?varselid=%s", getProperty("mininnboks.link.url"), henvendelse.korrelasjonsId);
         }
         return String.format("%s/traad/%s", getProperty("mininnboks.link.url"), henvendelse.traadId);
     }
