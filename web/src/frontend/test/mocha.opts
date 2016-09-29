@@ -1,3 +1,4 @@
 --require ./setup.js
 --full-trace
+--compilers js:babel-core/register
 --recursive app/**/*-test.*
