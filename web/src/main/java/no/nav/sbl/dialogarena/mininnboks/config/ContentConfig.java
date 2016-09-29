@@ -79,7 +79,7 @@ public class ContentConfig {
         decoratorFilter.setFragmentNames(asList(
                 "header-withmenu",
                 "footer-withmenu",
-                "scripts",
+                "scripts-notrack",
                 "styles",
                 "webstats-ga",
                 "skiplinks"
