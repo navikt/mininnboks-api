@@ -23,7 +23,7 @@ public class UbehandletMelding {
     public String behandlingskjedeId;
     public Date opprettetDato;
     public Henvendelsetype type;
-    public String oppgaveType;
+    public String undertype;
     public String uri;
     public List<Status> statuser = new ArrayList<>();
     public String varselid;
@@ -32,7 +32,7 @@ public class UbehandletMelding {
         this.behandlingskjedeId = henvendelse.traadId;
         this.opprettetDato = henvendelse.opprettet.toDate();
         this.type = henvendelse.type;
-        this.oppgaveType = henvendelse.oppgaveType;
+        this.undertype = henvendelse.oppgaveType;
         this.uri = lagDirektelenkeTilMelding(henvendelse);
         this.varselid = henvendelse.korrelasjonsId;
 
