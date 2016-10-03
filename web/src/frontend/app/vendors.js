@@ -7,8 +7,7 @@ import 'core-js/shim';
 
 if (!global.Intl) {
     require('intl');
-    require('intl/locale-data/jsonp/en.js');
-    require('intl/locale-data/jsonp/nb-NO.js');
+    require('intl/locale-data/jsonp/nb.js');
 }
 
 // Vår egen polyfill for console
