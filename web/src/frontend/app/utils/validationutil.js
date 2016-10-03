@@ -1,4 +1,4 @@
-const validationRules = {
+export const validationRules = {
     fritekst: (verdi) => {
         if (!verdi || verdi.length === 0) {
             return 'required';
