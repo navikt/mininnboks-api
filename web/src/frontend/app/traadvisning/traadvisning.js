@@ -6,7 +6,6 @@ import SkrivKnapp from './skriv-knapp';
 import { STATUS } from './../ducks/utils';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Infopanel from './../infopanel/infopanel';
-import IntlLenke from './../utils/intl-lenke';
 import { markerTraadSomLest, sendSvar } from './../ducks/traader';
 import { visBesvarBoks, skjulBesvarBoks } from './../ducks/ui';
 import { connect } from 'react-redux';
