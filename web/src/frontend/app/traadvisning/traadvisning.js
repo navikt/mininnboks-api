@@ -6,7 +6,6 @@ import SkrivKnapp from './skriv-knapp';
 import { STATUS } from './../ducks/utils';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Infopanel from './../infopanel/infopanel';
-import IntlLenke from './../utils/intl-lenke';
 import { markerTraadSomLest, sendSvar } from './../ducks/traader';
 import { visBesvarBoks, skjulBesvarBoks } from './../ducks/ui';
 import { connect } from 'react-redux';
@@ -66,10 +65,9 @@ class TraadVisning extends React.Component {
                         onClick={actions.visBesvarBoks}
                     />
                     <Infopanel type="standard" visibleIf={!valgttraad.kanBesvares} horisontal>
-                        <FormattedHTMLMessage id="traadvisning.kan-ikke-svare" />
-                        <IntlLenke href="skriv.ny.link">
-                            <FormattedMessage id="traadvisning.kan-ikke-svare.lenke" />
-                        </IntlLenke>
+                        <FormattedMessage id="skriv.ny.link">{(lenke) => (
+                            <FormattedHTMLMessage id="traadvisning.kan-ikke-svare" values={{ lenke }} />
+                        )}</FormattedMessage>
                     </Infopanel>
                     <Infopanel
                         type="advarsel"
