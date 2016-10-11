@@ -7,6 +7,7 @@ var document = jsdom.jsdom('<!doctype html><html><body></body></html>');
 var window = document.defaultView;
 
 global.document = document;
+global.document.cookie = "";
 global.window = window;
 
 propagateToGlobal(window);
