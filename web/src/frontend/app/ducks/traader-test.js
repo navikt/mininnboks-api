@@ -2,44 +2,28 @@
 import reducer, * as E from './traader';
 import { expect } from 'chai';
 
+function lagTraad(traadId, antallMeldinger) {
+        const meldinger = new Array(antallMeldinger)
+            .fill(0)
+            .map((_, index) => ({
+                id: `id${index + 1}`,
+                traadId,
+                lest: false
+            }));
+
+    return ({
+        traadId,
+        meldinger,
+        nyeste: meldinger[0],
+        eldste: meldinger[meldinger.length - 1]
+    });
+}
+
 describe('traader-ducks', () => {
     describe('reducer', () => {
         it('skal oppdatere alle meldinger med med rett traadId med status lest', () => {
-            const messagesTraad1 = [
-                {
-                    id: 'id1',
-                    traadId: 'traad1',
-                    lest: false
-                },
-                {
-                    id: 'id2',
-                    traadId: 'traad1',
-                    lest: false
-                }];
-            const messagesTraad2 = [
-                {
-                    id: 'id1',
-                    traadId: 'traad2',
-                    lest: false
-                },
-                {
-                    id: 'id2',
-                    traadId: 'traad2',
-                    lest: false
-                }];
+            const initialState = { data: [lagTraad('traad1', 2), lagTraad('traad2', 2)] };
 
-            const initialState = {
-                data: [{ traadId: 'traad1',
-                        meldinger: messagesTraad1,
-                        nyeste: messagesTraad1[0],
-                        eldste: messagesTraad1[1]
-                        },
-                    { traadId: 'traad2',
-                        meldinger: messagesTraad2,
-                        nyeste: messagesTraad2[0],
-                        eldste: messagesTraad2[1]
-                    }]
-            };
             const markertSomLest = reducer(initialState, {
                 type: E.MARKERT_SOM_LEST_OK,
                 data: {
