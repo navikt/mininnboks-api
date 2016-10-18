@@ -35,7 +35,7 @@ class OppgavePreview extends Component {
                     className={cls(this.props)}
                 >
                     <p className="vekk">
-                        <FormattedMessage id="meldinger.ikon" />
+                        <FormattedMessage id="oppgavemelding.ikon" />
                     </p>
                     <div className="typo-normal">
                         <p className="blokk-xxxs">
