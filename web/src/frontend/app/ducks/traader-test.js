@@ -3,13 +3,13 @@ import reducer, * as E from './traader';
 import { expect } from 'chai';
 
 function lagTraad(traadId, antallMeldinger) {
-        const meldinger = new Array(antallMeldinger)
-            .fill(0)
-            .map((_, index) => ({
-                id: `id${index + 1}`,
-                traadId,
-                lest: false
-            }));
+    const meldinger = new Array(antallMeldinger)
+        .fill(0)
+        .map((_, index) => ({
+            id: `id${index + 1}`,
+            traadId,
+            lest: false
+        }));
 
     return ({
         traadId,
