@@ -19,9 +19,19 @@ import history from './history';
 
 const store = createStore(history);
 
+const scrollHelper = (prevRouterProps, newRouterProps) => {
+    if (!prevRouterProps || !newRouterProps) {
+        return true;
+    }
+    if (newRouterProps.location.hash !== prevRouterProps.location.hash) {
+        return false; // Ignore endringer til hash i url og la browseren håndtere denne scrollingen selv.
+    }
+    return true;
+};
+
 render((
     <Provider store={store}>
-        <Router history={history} render={applyRouterMiddleware(useScroll())}>
+        <Router history={history} render={applyRouterMiddleware(useScroll(scrollHelper))}>
             <Route path="/" component={Application} breadcrumbIgnore>
                 <Route breadcrumbName="Min innboks" >
                     <Route breadcrumbIgnore component={Traader}>
