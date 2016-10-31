@@ -512,7 +512,8 @@
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
-                                <argument>test</argument>
+                                <argument>run</argument>
+                                <argument>sonar</argument>
                             </arguments>
                             <skip>${skip.js-tests}</skip>
                             <workingDirectory>src/frontend</workingDirectory>
@@ -537,5 +538,25 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
 
+            <properties>
+                <sonar.language>js</sonar.language>
+                <sonar.coverage.exclusions>
+                    src/main/webapp/js/bundle.js,
+                    src/main/webapp/js/vendors.js,
+                    src/main/webapp/js/moment.build.js
+                </sonar.coverage.exclusions>
+                <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+                <sonar.sources>src/frontend/app</sonar.sources>
+                <sonar.javascript.jstest.reportsPath>target/surefire-reports</sonar.javascript.jstest.reportsPath>
+                <sonar.javascript.lcov.reportPath>target/js_coverage.lcov</sonar.javascript.lcov.reportPath>
+            </properties>
+        </profile>
+    </profiles>
 </project>

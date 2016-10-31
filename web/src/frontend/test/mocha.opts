@@ -2,3 +2,5 @@
 --full-trace
 --compilers js:babel-core/register
 --recursive app/**/*-test.*
+--reporter mocha-junit-reporter
+--reporter-options mochaFile=./../../target/surefire-reports/TEST-mocha.xml
