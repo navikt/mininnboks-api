@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel;
+package no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
@@ -13,7 +13,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.OPPGAVE_VARSEL;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE;
 
-public class SporsmalVarsel {
+public class UbehandletMelding {
 
     public enum Status {ULEST, UBESVART}
 
@@ -23,16 +23,18 @@ public class SporsmalVarsel {
     public String behandlingskjedeId;
     public Date opprettetDato;
     public Henvendelsetype type;
-    public String oppgaveType;
+    public String undertype;
     public String uri;
     public List<Status> statuser = new ArrayList<>();
+    public String varselid;
 
-    public SporsmalVarsel(Henvendelse henvendelse) {
+    public UbehandletMelding(Henvendelse henvendelse) {
         this.behandlingskjedeId = henvendelse.traadId;
         this.opprettetDato = henvendelse.opprettet.toDate();
         this.type = henvendelse.type;
-        this.oppgaveType = henvendelse.oppgaveType;
+        this.undertype = henvendelse.oppgaveType;
         this.uri = lagDirektelenkeTilMelding(henvendelse);
+        this.varselid = henvendelse.korrelasjonsId;
 
         if (erUbesvart.test(henvendelse)) {
             this.statuser.add(Status.UBESVART);
@@ -44,7 +46,7 @@ public class SporsmalVarsel {
 
     private String lagDirektelenkeTilMelding(Henvendelse henvendelse) {
         if (DOKUMENT_VARSEL == this.type || OPPGAVE_VARSEL == this.type) {
-            return String.format("%s/?varselId=%s", getProperty("mininnboks.link.url"), henvendelse.korrelasjonsId);
+            return String.format("%s/?varselid=%s", getProperty("mininnboks.link.url"), henvendelse.korrelasjonsId);
         }
         return String.format("%s/traad/%s", getProperty("mininnboks.link.url"), henvendelse.traadId);
     }

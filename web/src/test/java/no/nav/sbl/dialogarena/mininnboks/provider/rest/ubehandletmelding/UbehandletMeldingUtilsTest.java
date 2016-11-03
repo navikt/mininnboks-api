@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel;
+package no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding;
 
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
@@ -11,13 +11,13 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static no.nav.sbl.dialogarena.mininnboks.TestUtils.lagForsteHenvendelseITraad;
 import static no.nav.sbl.dialogarena.mininnboks.TestUtils.lagHenvendelse;
-import static no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalVarsel.Status.UBESVART;
-import static no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalVarsel.Status.ULEST;
-import static no.nav.sbl.dialogarena.mininnboks.provider.rest.sporsmalvarsel.SporsmalVarselUtils.hentUbehandledeSporsmal;
+import static no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.UbehandletMelding.Status.UBESVART;
+import static no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.UbehandletMelding.Status.ULEST;
+import static no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.UbehandletMeldingUtils.hentUbehandledeMeldinger;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-public class SporsmalVarselUtilsTest {
+public class UbehandletMeldingUtilsTest {
 
     @Test
     public void delerOppHenvendelserSporsmalsVarselPerTraad() {
@@ -26,7 +26,7 @@ public class SporsmalVarselUtilsTest {
         Henvendelse traad2henvendelse1 = lagHenvendelse("3", "3");
         List<Henvendelse> henvendelser = new ArrayList<>(asList(traad1henvendelse1, traad1henvendelse2, traad2henvendelse1));
 
-        List<SporsmalVarsel> sporsmalVarsler = hentUbehandledeSporsmal(henvendelser);
+        List<UbehandletMelding> sporsmalVarsler = hentUbehandledeMeldinger(henvendelser);
 
         assertThat(sporsmalVarsler.size(), is(2));
     }
@@ -38,7 +38,7 @@ public class SporsmalVarselUtilsTest {
         Henvendelse traad1henvendelse2 = lagHenvendelse("2", "1", DateTime.now().minus(100));
         List<Henvendelse> henvendelser = new ArrayList<>(asList(traad1henvendelse1, traad1henvendelse2));
 
-        List<SporsmalVarsel> sporsmalVarsler = hentUbehandledeSporsmal(henvendelser);
+        List<UbehandletMelding> sporsmalVarsler = hentUbehandledeMeldinger(henvendelser);
 
         assertThat(sporsmalVarsler.size(), is(1));
         assertThat(sporsmalVarsler.get(0).opprettetDato, is(nyesteDato.toDate()));
@@ -49,7 +49,7 @@ public class SporsmalVarselUtilsTest {
         Henvendelse ulestIkkeUbesvartHenvendelse = lagHenvendelse(false);
         Henvendelse lestIkkeUbesvartHenvendelse = lagHenvendelse(true);
 
-        List<SporsmalVarsel> sporsmalVarsler = hentUbehandledeSporsmal(asList(ulestIkkeUbesvartHenvendelse, lestIkkeUbesvartHenvendelse));
+        List<UbehandletMelding> sporsmalVarsler = hentUbehandledeMeldinger(asList(ulestIkkeUbesvartHenvendelse, lestIkkeUbesvartHenvendelse));
 
         assertThat(sporsmalVarsler.size(), is(1));
         assertThat(sporsmalVarsler.get(0).behandlingskjedeId, is(ulestIkkeUbesvartHenvendelse.traadId));
@@ -61,7 +61,7 @@ public class SporsmalVarselUtilsTest {
         Henvendelse ubesvartLestHenvendelse = lagForsteHenvendelseITraad(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE, true);
         Henvendelse besvartLestHenvendelse = lagForsteHenvendelseITraad(Henvendelsetype.SVAR_SKRIFTLIG, true);
 
-        List<SporsmalVarsel> sporsmalVarsler = hentUbehandledeSporsmal(asList(ubesvartLestHenvendelse, besvartLestHenvendelse));
+        List<UbehandletMelding> sporsmalVarsler = hentUbehandledeMeldinger(asList(ubesvartLestHenvendelse, besvartLestHenvendelse));
 
         assertThat(sporsmalVarsler.size(), is(1));
         assertThat(sporsmalVarsler.get(0).behandlingskjedeId, is(ubesvartLestHenvendelse.traadId));
@@ -72,7 +72,7 @@ public class SporsmalVarselUtilsTest {
     public void lagerKunEttVarselForEtUlestUbesvartSporsmaal() {
         Henvendelse ubesvartUlestHenvendelse = lagForsteHenvendelseITraad(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE, false);
 
-        List<SporsmalVarsel> sporsmalVarsler = hentUbehandledeSporsmal(asList(ubesvartUlestHenvendelse));
+        List<UbehandletMelding> sporsmalVarsler = hentUbehandledeMeldinger(asList(ubesvartUlestHenvendelse));
 
         assertThat(sporsmalVarsler.size(), is(1));
         assertThat(sporsmalVarsler.get(0).statuser.size(), is(2));

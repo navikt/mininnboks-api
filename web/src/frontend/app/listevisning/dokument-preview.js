@@ -32,10 +32,10 @@ class DokumentPreview extends Component {
                     className={cls(this.props)}
                 >
                     <p className="vekk"><FormattedMessage id="dokumentmelding.ikon" /></p>
-                    <div className="typo-normal blokk-xxxs">
-                        <p>{dato} / Fra {avsender} </p>
+                    <div className="typo-normal">
+                        <p className="blokk-xxxs">{dato} / Fra {avsender} </p>
                         <h3 className="typo-element blokk-xxs">{dokument.statusTekst}</h3>
-                        <p className="typo-infotekst tema-avsnitt">{temanavn}</p>
+                        <p className="typo-infotekst tema-avsnitt nettobunn">{temanavn}</p>
                     </div>
                 </Link>
             </li>

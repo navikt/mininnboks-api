@@ -28,7 +28,7 @@ const MeldingListe = ({ meldinger, overskrift }) => {
 
     return (
         <section className="traad-liste">
-            <Panel className="panel blokk-xxxs">
+            <Panel className="blokk-xxxs" komprimert >
                 <Undertittel tag="h2">
                     <FormattedMessage id={overskrift} values={{ antallMeldinger: meldinger.length }} />
                     <span className="vekk">({meldinger.length})</span>

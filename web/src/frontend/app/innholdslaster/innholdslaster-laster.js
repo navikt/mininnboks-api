@@ -6,7 +6,7 @@ function Laster() {
     return (
         <div className="innholdslaster">
             <FormattedMessage id="spinner">
-                {(label) => <Spinner storrelse="xxl" aria-label={label}/>}
+                {(label) => <Spinner storrelse="xxl" aria-label={label} />}
             </FormattedMessage>
         </div>
     );

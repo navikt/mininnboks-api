@@ -12,7 +12,7 @@ const cls = (props) => classNames('panel panel-ikon panel-klikkbart oppgave', pr
 class OppgavePreview extends Component {
     componentDidMount() {
         if (this.props.aktiv) {
-            history.push(`oppgave/${this.props.traad.nyeste.id}`);
+            history.replace(`oppgave/${this.props.traad.nyeste.id}`);
         }
     }
 
@@ -35,10 +35,10 @@ class OppgavePreview extends Component {
                     className={cls(this.props)}
                 >
                     <p className="vekk">
-                        <FormattedMessage id="meldinger.ikon" />
+                        <FormattedMessage id="oppgavemelding.ikon" />
                     </p>
-                    <div className="typo-normal blokk-xxxs">
-                        <p className="blokk-xxs">
+                    <div className="typo-normal">
+                        <p className="blokk-xxxs">
                             <span>{dato}</span>
                             {avsender}
                         </p>

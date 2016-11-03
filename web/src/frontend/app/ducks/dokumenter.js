@@ -1,15 +1,20 @@
 export const API_BASE_URL = '/saksoversikt/tjenester';
 const MED_CREDENTIALS = { credentials: 'same-origin' };
-import { STATUS, doThenDispatch } from './utils';
+import { STATUS, fetchToJson, doThenDispatch } from './utils';
 
 // Actions
 export const DOKUMENTVISNING_DATA_OK = 'DOKUMENTVISNING_DATA_OK';
 export const DOKUMENTVISNING_DATA_FEILET = 'DOKUMENTVISNING_DATA_FEILET';
 export const DOKUMENTVISNING_DATA_PENDING = 'DOKUMENTVISNING_DATA_PENDING';
+export const STATUS_PDF_MODAL = 'STATUS_PDF_MODAL';
 
 const initalState = {
     status: STATUS.NOT_STARTED,
-    data: {}
+    data: {},
+    pdfModal: {
+        skalVises: false,
+        dokumentUrl: null
+    }
 };
 
 // Reducer
@@ -22,23 +27,22 @@ export default function reducer(state = initalState, action) {
         case DOKUMENTVISNING_DATA_OK: {
             const [dokumentmetadata, journalpostmetadata] = action.data;
             return { ...state, status: STATUS.OK, data: { dokumentmetadata, journalpostmetadata } };
-        }
+        } case STATUS_PDF_MODAL:
+            return { ...state, pdfModal: action.pdfModal };
         default:
             return state;
     }
 }
 
 // ActionCreators
-export const hentDokumentMetadata = (journalpostId, dokumentmetadata) =>
-    fetch(`${API_BASE_URL}/dokumenter/dokumentmetadata/${journalpostId}/${dokumentmetadata}`,
-        MED_CREDENTIALS)
-        .then(res => res.json());
+const hentDokumentMetadata = (journalpostId, dokumentmetadata) =>
+    fetchToJson(`${API_BASE_URL}/dokumenter/dokumentmetadata/${journalpostId}/${dokumentmetadata}`,
+        MED_CREDENTIALS);
 
 const hentJournalpostMetadata = (journalpostId) =>
-    fetch(`${API_BASE_URL}/dokumenter/journalpostmetadata/${journalpostId}`, MED_CREDENTIALS)
-        .then(res => res.json());
+    fetchToJson(`${API_BASE_URL}/dokumenter/journalpostmetadata/${journalpostId}`, MED_CREDENTIALS);
 
-export const hentAlleDokumentMetadata = (journalpostId, dokumentreferanser) =>
+const hentAlleDokumentMetadata = (journalpostId, dokumentreferanser) =>
     Promise.all(dokumentreferanser.split('-').map(dokumentId =>
         hentDokumentMetadata(journalpostId, dokumentId)));
 
@@ -53,3 +57,12 @@ export function hentDokumentVisningData(journalpostId, dokumentreferanser) {
         PENDING: DOKUMENTVISNING_DATA_PENDING
     });
 }
+
+export function visLastNedPdfModal(dokumentUrl) {
+    return { type: STATUS_PDF_MODAL, pdfModal: { skalVises: true, dokumentUrl } };
+}
+
+export function skjulLastNedPdfModal() {
+    return { type: STATUS_PDF_MODAL, pdfModal: { skalVises: false, dokumentUrl: null } };
+}
+
