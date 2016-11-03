@@ -7,7 +7,7 @@
     <parent>
         <groupId>no.nav.sbl.dialogarena</groupId>
         <artifactId>mininnboks</artifactId>
-        <version>5.7-SNAPSHOT</version>
+        <version>6.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>mininnboks-tekster</artifactId>
