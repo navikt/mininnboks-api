@@ -86,11 +86,11 @@
 
     <logger name="org.apache.cxf" level="OFF"/>
 
-    <logger name="no.nav.sbl" level="info">
+    <logger name="no.nav.sbl" level="ERROR">
         <appender-ref ref="infolog"/>
     </logger>
 
-    <root level="${ROOT_LOG_LEVEL:-INFO}">
+    <root level="${ROOT_LOG_LEVEL:-ERROR}">
         <appender-ref ref="errorlog"/>
         <appender-ref ref="infolog"/>
         <appender-ref ref="debuglog"/>
