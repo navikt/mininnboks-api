@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
-import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
@@ -11,16 +10,18 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.mel
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.*;
-import org.apache.commons.collections15.Predicate;
 import org.joda.time.DateTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
-import static no.nav.modig.lang.collections.IterUtils.on;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.*;
 
 @Configuration
@@ -35,11 +36,49 @@ public class HenvendelseMockContext {
         addAll(lagBehandlingskjede(HJLPM, DateTime.now().minusWeeks(2), REFERAT_OPPMOTE));
         addAll(lagBehandlingskjede(ARBD, DateTime.now().minusMonths(1), SPORSMAL_MODIA_UTGAAENDE, SVAR_SBL_INNGAAENDE));
         addAll(lagBehandlingskjede(BIL, DateTime.now().minusMonths(6), true, SPORSMAL_SKRIFTLIG, SVAR_SKRIFTLIG, SVAR_SKRIFTLIG));
+        addAll(lagDokumentVarsel("DAG", "Vedtaksbrev om Dagpenger"));
+        add(lagOppgaveVarsel());
     }};
 
+    private XMLHenvendelse lagOppgaveVarsel() {
+        Integer behandlingskjedeId = nextId();
+        return new XMLHenvendelse()
+                .withBehandlingsId(behandlingskjedeId.toString())
+                .withBehandlingskjedeId(behandlingskjedeId.toString())
+                .withOpprettetDato(DateTime.now().minusDays(3))
+                .withKorrelasjonsId("syk1")
+                .withHenvendelseType(OPPGAVE_VARSEL.value())
+                .withMetadataListe(new XMLMetadataListe().withMetadata(new XMLOppgaveVarsel()
+                        .withOppgaveType("SYKMEL")
+                        .withOppgaveURL("http://vg.no")
+                ));
+    }
+
+    private Collection<? extends XMLHenvendelse> lagDokumentVarsel(String tema, String dokumentTittel) {
+        Integer behandlingskjedeId = nextId();
+        List<XMLHenvendelse> traad = new ArrayList<>();
+        traad.add(new XMLHenvendelse()
+                .withBehandlingsId(behandlingskjedeId.toString())
+                .withBehandlingskjedeId(behandlingskjedeId.toString())
+                .withOpprettetDato(DateTime.now().minusDays(3))
+                .withTema(tema)
+                .withLestDato(null)
+                .withKorrelasjonsId("a1-b2")
+                .withHenvendelseType(DOKUMENT_VARSEL.value())
+                .withMetadataListe(new XMLMetadataListe().withMetadata(new XMLDokumentVarsel()
+                        .withDokumenttittel(dokumentTittel)
+                        .withJournalpostId("368274526")
+                        .withDokumentIdListe("398128630", "358128632")
+                        .withTemanavn("Dagpenger")
+                        .withFerdigstiltDato(DateTime.now().minusDays(3))
+                )));
+
+        return traad;
+    }
+
     @Bean
-    public HenvendelseService henvendelseService(PropertyResolver resolver, PersonService personService) {
-        return new HenvendelseService.Default(henvendelsePortType(), sendInnHenvendelsePortType(), innsynHenvendelsePortType(), resolver, personService);
+    public HenvendelseService henvendelseService(PersonService personService) {
+        return new HenvendelseService.Default(henvendelsePortType(), sendInnHenvendelsePortType(), innsynHenvendelsePortType(), personService);
     }
 
     private HenvendelsePortType henvendelsePortType() {
@@ -61,12 +100,9 @@ public class HenvendelseMockContext {
 
             @Override
             public WSHentBehandlingskjedeResponse hentBehandlingskjede(final WSHentBehandlingskjedeRequest req) {
-                List<XMLHenvendelse> behandlingskjede = on(henvendelser).filter(new Predicate<XMLHenvendelse>() {
-                    @Override
-                    public boolean evaluate(XMLHenvendelse henvendelse) {
-                        return req.getBehandlingskjedeId().equals(henvendelse.getBehandlingskjedeId());
-                    }
-                }).collect();
+                List<XMLHenvendelse> behandlingskjede = henvendelser.stream()
+                        .filter(henvendelse -> req.getBehandlingskjedeId().equals(henvendelse.getBehandlingskjedeId()))
+                        .collect(toList());
                 return new WSHentBehandlingskjedeResponse().withAny(behandlingskjede.toArray());
             }
         };
@@ -110,12 +146,10 @@ public class HenvendelseMockContext {
     }
 
     private XMLHenvendelse hent(final String behandlingsId) {
-        return on(henvendelser).filter(new Predicate<XMLHenvendelse>() {
-            @Override
-            public boolean evaluate(XMLHenvendelse henvendelse) {
-                return behandlingsId.equals(henvendelse.getBehandlingsId());
-            }
-        }).head().get();
+        return henvendelser.stream()
+                .filter(henvendelse -> behandlingsId.equals(henvendelse.getBehandlingsId()))
+                .findFirst()
+                .get();
     }
 
     private static List<XMLHenvendelse> lagBehandlingskjede(Temagruppe tema, DateTime dato, XMLHenvendelseType... typer) {

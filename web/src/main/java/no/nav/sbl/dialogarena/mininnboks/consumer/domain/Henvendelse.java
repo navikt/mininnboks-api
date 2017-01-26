@@ -1,18 +1,22 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.domain;
 
-import org.apache.commons.collections15.Transformer;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import static java.util.Collections.reverseOrder;
-import static no.nav.modig.lang.collections.ComparatorUtils.compareWith;
 
 public class Henvendelse implements Serializable {
 
     public String id;
-    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet, temagruppeNavn, statusTekst, kontorsperreEnhet;
+    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet,
+            temagruppeNavn, statusTekst, kontorsperreEnhet, temaNavn, temaKode, korrelasjonsId, journalpostId;
+    public List<String> dokumentIdListe = new ArrayList<>();
+    public String oppgaveType;
+    public String oppgaveUrl;
     public Henvendelsetype type;
     public Temagruppe temagruppe;
     public DateTime opprettet, avsluttet;
@@ -59,34 +63,11 @@ public class Henvendelse implements Serializable {
         return lestDato != null;
     }
 
-    public static final Transformer<Henvendelse, DateTime> OPPRETTET = new Transformer<Henvendelse, DateTime>() {
-        @Override
-        public DateTime transform(Henvendelse henvendelse) {
-            return henvendelse.opprettet;
-        }
-    };
+    public static final Comparator<Henvendelse> NYESTE_OVERST = reverseOrder(Comparator.comparing(henvendelse -> henvendelse.opprettet));
 
-    public static final Transformer<Henvendelse, String> ID = new Transformer<Henvendelse, String>() {
-        @Override
-        public String transform(Henvendelse henvendelse) {
-            return henvendelse.id;
-        }
-    };
-
-    public static final Transformer<Henvendelse, String> TRAAD_ID = new Transformer<Henvendelse, String>() {
-        @Override
-        public String transform(Henvendelse henvendelse) {
-            return henvendelse.traadId;
-        }
-    };
-
-    public static final Transformer<Henvendelse, Boolean> ER_LEST = new Transformer<Henvendelse, Boolean>() {
-        @Override
-        public Boolean transform(Henvendelse henvendelse) {
-            return henvendelse.isLest();
-        }
-    };
-
-    public static final Comparator<Henvendelse> NYESTE_OVERST = reverseOrder(compareWith(OPPRETTET));
+    public Henvendelse withTemaNavn(String temaNavn) {
+        this.temaNavn = temaNavn;
+        return this;
+    }
 
 }

@@ -2,29 +2,30 @@ package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
 import no.nav.modig.core.context.ThreadLocalSubjectHandler;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
+import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController.NyHenvendelseResultat;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 import javax.ws.rs.core.Response;
+import javax.xml.ws.soap.SOAPFaultException;
 import java.util.List;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.nCopies;
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
-import static no.nav.modig.lang.collections.PredicateUtils.where;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.join;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -41,6 +42,9 @@ public class HenvendelseControllerTest {
     @Mock
     HenvendelseService service;
 
+    @Mock
+    TekstService tekstService = mock(TekstService.class);
+
     @InjectMocks
     HenvendelseController controller = new HenvendelseController();
 
@@ -56,20 +60,27 @@ public class HenvendelseControllerTest {
                 new Henvendelse("6").withTraadId("2").withType(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE).withOpprettetTid(now().plus(100)),
                 new Henvendelse("7").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(now())
         );
-        when(service.hentAlleHenvendelser(anyString())).thenReturn(henvendelser);
-        when(service.hentTraad(anyString())).thenAnswer(new Answer<List<Henvendelse>>() {
-            @Override
-            public List<Henvendelse> answer(InvocationOnMock invocation) throws Throwable {
-                String traadId = (String) invocation.getArguments()[0];
 
-                return on(henvendelser)
-                        .filter(where(Henvendelse.TRAAD_ID, equalTo(traadId)))
-                        .collect();
-            }
+        HenvendelsesUtils.setTekstService(tekstService);
+
+        when(service.hentAlleHenvendelser(anyString())).thenReturn(henvendelser);
+
+        when(service.hentTraad(anyString())).thenAnswer((Answer<List<Henvendelse>>) invocation -> {
+            String traadId = (String) invocation.getArguments()[0];
+
+            return henvendelser.stream()
+                    .filter(henvendelse -> traadId.equals(henvendelse.traadId))
+                    .collect(toList());
         });
+
         when(service.sendSvar(any(Henvendelse.class), anyString())).thenReturn(
                 new WSSendInnHenvendelseResponse().withBehandlingsId(UUID.randomUUID().toString())
         );
+    }
+
+    @After
+    public void after() {
+        HenvendelsesUtils.setTekstService(null);
     }
 
     @Test
@@ -80,7 +91,7 @@ public class HenvendelseControllerTest {
 
     @Test
     public void serviceKanFeileUtenAtEndepunktFeiler() throws Exception {
-        when(service.hentAlleHenvendelser(anyString())).thenReturn(null);
+        when(service.hentAlleHenvendelser(anyString())).thenReturn(emptyList());
         List<Traad> traader = controller.hentTraader();
         assertThat(traader.size(), is(0));
     }
@@ -104,10 +115,26 @@ public class HenvendelseControllerTest {
     }
 
     @Test
+    public void girStatuskodeIkkeFunnetHvisHenvendelseServiceGirSoapFault() {
+        when(service.hentTraad(anyString())).thenThrow(SOAPFaultException.class);
+
+        Response response = controller.hentEnkeltTraad("1");
+
+        assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
+    }
+
+    @Test
     public void markeringSomLest() throws Exception {
         controller.markerSomLest("1");
 
         verify(service, times(1)).merkSomLest("1");
+    }
+
+    @Test
+    public void markeringAlleSomLest() throws Exception {
+        controller.markerAlleSomLest("1");
+
+        verify(service, times(1)).merkAlleSomLest("1");
     }
 
     @Test
@@ -180,12 +207,25 @@ public class HenvendelseControllerTest {
         assertThat(henvendelseArgumentCaptor.getValue().brukersEnhet, is(brukersEnhet));
     }
 
+    @Test
+    public void senderIkkeFunnetNaarTraadOptionalIkkeErPresent() {
+        when(service.hentTraad(anyString())).thenReturn(null);
+
+        Svar svar = new Svar();
+        svar.fritekst = "fritekst";
+        svar.traadId = "0";
+        Response response = controller.sendSvar(svar);
+
+        assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
+
+    }
+
     @Test(expected = AssertionError.class)
     public void smellerHvisTomFritekstISporsmal() {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = "";
         sporsmal.temagruppe = Temagruppe.ARBD.name();
-        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
+        controller.sendSporsmal(sporsmal);
     }
 
     @Test(expected = AssertionError.class)
@@ -193,7 +233,7 @@ public class HenvendelseControllerTest {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = join(nCopies(1001, 'a'), "");
         sporsmal.temagruppe = Temagruppe.ARBD.name();
-        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
+        controller.sendSporsmal(sporsmal);
     }
 
     @Test(expected = AssertionError.class)
@@ -201,6 +241,6 @@ public class HenvendelseControllerTest {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = "DUMMY";
         sporsmal.temagruppe = Temagruppe.ANSOS.name();
-        controller.sendSporsmal(sporsmal, new MockHttpServletResponse());
+        controller.sendSporsmal(sporsmal);
     }
 }

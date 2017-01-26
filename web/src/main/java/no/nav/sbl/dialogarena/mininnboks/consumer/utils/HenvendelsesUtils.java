@@ -1,36 +1,39 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMelding;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
-import no.nav.modig.content.PropertyResolver;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
-import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static java.util.Optional.ofNullable;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.fromValue;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
 
 public abstract class HenvendelsesUtils {
 
+    private static TekstService tekstService;
+
+    final static Logger logger = LoggerFactory.getLogger(HenvendelsesUtils.class);
     private static final String LINE_REPLACEMENT_STRING = UUID.randomUUID().toString();
     private static final String LINE_BREAK = "\n";
 
     public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
-    public static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON);
 
-    public static final Map<XMLHenvendelseType, Henvendelsetype> HENVENDELSETYPE_MAP = new HashMap<XMLHenvendelseType, Henvendelsetype>() {
+    public static void setTekstService(TekstService tekstService) {
+        HenvendelsesUtils.tekstService = tekstService;
+    }
+
+    private static final Map<XMLHenvendelseType, Henvendelsetype> HENVENDELSETYPE_MAP = new HashMap<XMLHenvendelseType, Henvendelsetype>() {
         {
             put(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, SPORSMAL_SKRIFTLIG);
             put(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, SPORSMAL_MODIA_UTGAAENDE);
@@ -40,59 +43,138 @@ public abstract class HenvendelsesUtils {
             put(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, SVAR_SBL_INNGAAENDE);
             put(XMLHenvendelseType.REFERAT_OPPMOTE, SAMTALEREFERAT_OPPMOTE);
             put(XMLHenvendelseType.REFERAT_TELEFON, SAMTALEREFERAT_TELEFON);
+            put(XMLHenvendelseType.DOKUMENT_VARSEL, DOKUMENT_VARSEL);
+            put(XMLHenvendelseType.OPPGAVE_VARSEL, OPPGAVE_VARSEL);
         }
     };
 
-    public static Transformer<Object, Henvendelse> tilHenvendelse(final PropertyResolver propertyResolver) {
-        return new Transformer<Object, Henvendelse>() {
-            @Override
-            public Henvendelse transform(Object wsMelding) {
-                XMLHenvendelse info = (XMLHenvendelse) wsMelding;
+    private static final DomainMapper<XMLHenvendelse, Henvendelse> domainMapper = new DomainMapper<>();
 
-                Henvendelse henvendelse = new Henvendelse(info.getBehandlingsId());
-                henvendelse.opprettet = info.getOpprettetDato();
-                henvendelse.avsluttet = info.getAvsluttetDato();
-                henvendelse.traadId = info.getBehandlingskjedeId();
-                henvendelse.eksternAktor = info.getEksternAktor();
-                henvendelse.tilknyttetEnhet = info.getTilknyttetEnhet();
-                henvendelse.kontorsperreEnhet = info.getKontorsperreEnhet();
-                henvendelse.erTilknyttetAnsatt = info.isErTilknyttetAnsatt();
-                henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(info.getHenvendelseType()));
-                henvendelse.brukersEnhet = info.getBrukersEnhet();
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> DEFAULT_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse) -> true,
+            (xmlHenvendelse, henvendelse) -> {
+                henvendelse = new Henvendelse(xmlHenvendelse.getBehandlingsId());
+                henvendelse.opprettet = xmlHenvendelse.getOpprettetDato();
+                henvendelse.avsluttet = xmlHenvendelse.getAvsluttetDato();
+                henvendelse.traadId = ofNullable(xmlHenvendelse.getBehandlingskjedeId()).orElse(xmlHenvendelse.getBehandlingsId());
+                henvendelse.eksternAktor = xmlHenvendelse.getEksternAktor();
+                henvendelse.tilknyttetEnhet = xmlHenvendelse.getTilknyttetEnhet();
+                henvendelse.kontorsperreEnhet = xmlHenvendelse.getKontorsperreEnhet();
+                henvendelse.erTilknyttetAnsatt = xmlHenvendelse.isErTilknyttetAnsatt();
+                henvendelse.type = HENVENDELSETYPE_MAP.get(fromValue(xmlHenvendelse.getHenvendelseType()));
+                henvendelse.brukersEnhet = xmlHenvendelse.getBrukersEnhet();
                 henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type);
                 henvendelse.fraNav = !henvendelse.fraBruker;
+                henvendelse.temaKode = xmlHenvendelse.getTema();
+                henvendelse.korrelasjonsId = xmlHenvendelse.getKorrelasjonsId();
+                return henvendelse;
+            }
+    );
+
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> LEST_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse) -> true,
+            (xmlHenvendelse, henvendelse) -> {
                 if (FRA_BRUKER.contains(henvendelse.type)) {
                     henvendelse.markerSomLest();
                 } else {
-                    henvendelse.markerSomLest(info.getLestDato());
+                    henvendelse.markerSomLest(xmlHenvendelse.getLestDato());
                 }
 
-                if (innholdErKassert(info)) {
-                    henvendelse.kassert = true;
-                    henvendelse.fritekst = propertyResolver.getProperty("innhold.kassert");
-                    henvendelse.statusTekst = propertyResolver.getProperty("temagruppe.kassert");
-                    henvendelse.temagruppe = null;
-                    henvendelse.kanal = null;
-                    return henvendelse;
-                }
+                return henvendelse;
+            }
+    );
 
-                XMLMelding xmlMelding = (XMLMelding) info.getMetadataListe().getMetadata().get(0);
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> KASSERT_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse) -> xmlHenvendelse.getMetadataListe() == null,
+            (xmlHenvendelse, henvendelse) -> {
+                henvendelse.kassert = true;
+                henvendelse.fritekst = tekstService.hentTekst("innhold.kassert");
+                henvendelse.statusTekst = tekstService.hentTekst("temagruppe.kassert");
+                henvendelse.temagruppe = null;
+                henvendelse.kanal = null;
+
+                return henvendelse;
+            },
+            true
+    );
+
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> DOKUMENTVARSEL_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse -> DOKUMENT_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType())),
+            (xmlHenvendelse, henvendelse) -> {
+                XMLDokumentVarsel varsel = (XMLDokumentVarsel) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
+                henvendelse.statusTekst = varsel.getDokumenttittel();
+                henvendelse.withTemaNavn(varsel.getTemanavn());
+                henvendelse.temagruppe = null;
+                henvendelse.fritekst = ofNullable(varsel.getFritekst()).orElse("");
+                henvendelse.opprettet = varsel.getFerdigstiltDato();
+                henvendelse.dokumentIdListe.addAll(varsel.getDokumentIdListe());
+                henvendelse.journalpostId = varsel.getJournalpostId();
+
+                return henvendelse;
+            }
+    );
+
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> OPPGAVEVARSEL_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse -> OPPGAVE_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType())),
+            (xmlHenvendelse, henvendelse) -> {
+                XMLOppgaveVarsel varsel = (XMLOppgaveVarsel) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
+                henvendelse.oppgaveType = varsel.getOppgaveType();
+                henvendelse.oppgaveUrl = varsel.getOppgaveURL();
+                henvendelse.statusTekst = hentTekst(tekstService, format("oppgave.%s", varsel.getOppgaveType()), "oppgave.GEN");
+                henvendelse.fritekst = hentTekst(tekstService, format("oppgave.%s.fritekst", varsel.getOppgaveType()), "oppgave.GEN.fritekst");
+                return henvendelse;
+            }
+    );
+
+    private static final DomainMapper.Mapper<XMLHenvendelse, Henvendelse> IKKEVARSEL_MAPPER = new DomainMapper.Mapper<>(
+            (xmlHenvendelse -> (
+                    !OPPGAVE_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType()) &&
+                            !DOKUMENT_VARSEL.name().equals(xmlHenvendelse.getHenvendelseType())
+            )),
+            (xmlHenvendelse, henvendelse) -> {
+                XMLMelding xmlMelding = (XMLMelding) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
                 henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.getTemagruppe());
-                henvendelse.temagruppeNavn = propertyResolver.getProperty(henvendelse.temagruppe.name());
-                henvendelse.statusTekst = statusTekst(henvendelse, propertyResolver);
+                henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe.name());
+                henvendelse.statusTekst = HenvendelsesUtils.statusTekst(henvendelse);
                 henvendelse.fritekst = cleanOutHtml(xmlMelding.getFritekst());
 
                 if (xmlMelding instanceof XMLMeldingTilBruker) {
                     XMLMeldingTilBruker meldingTilBruker = (XMLMeldingTilBruker) xmlMelding;
                     henvendelse.kanal = meldingTilBruker.getKanal();
                 }
+
                 return henvendelse;
             }
-        };
+    );
+
+    static {
+        domainMapper.registerMapper(DEFAULT_MAPPER);
+        domainMapper.registerMapper(LEST_MAPPER);
+        domainMapper.registerMapper(KASSERT_MAPPER);
+        domainMapper.registerMapper(DOKUMENTVARSEL_MAPPER);
+        domainMapper.registerMapper(OPPGAVEVARSEL_MAPPER);
+        domainMapper.registerMapper(IKKEVARSEL_MAPPER);
     }
 
-    private static boolean innholdErKassert(XMLHenvendelse info) {
-        return info.getMetadataListe() == null;
+    public static Henvendelse tilHenvendelse(XMLHenvendelse wsMelding) {
+        return domainMapper.apply(wsMelding);
+    }
+
+    public static String hentTekst(TekstService tekster, String key, String defaultKey) {
+        try {
+            return tekster.hentTekst(key);
+        } catch (Exception e) {
+            return tekster.hentTekst(defaultKey);
+        }
+    }
+
+    private static String hentTemagruppeNavn(String temagruppeNavn) {
+        try {
+            return tekstService.hentTekst(temagruppeNavn);
+        } catch (MissingResourceException exception) {
+            logger.error("Finner ikke cms-oppslag for " + temagruppeNavn, exception);
+            return temagruppeNavn;
+        }
     }
 
     public static String cleanOutHtml(String text) {
@@ -100,10 +182,10 @@ public abstract class HenvendelsesUtils {
         return StringEscapeUtils.unescapeHtml4(clean).replaceAll(LINE_REPLACEMENT_STRING, LINE_BREAK);
     }
 
-    private static String statusTekst(Henvendelse henvendelse, PropertyResolver resolver) {
-        String type = resolver.getProperty(String.format("status.%s", henvendelse.type.name()));
-        String temagruppe = resolver.getProperty(henvendelse.temagruppe.name());
-        return String.format(type, temagruppe);
+    private static String statusTekst(Henvendelse henvendelse) { //NOSONAR
+        String type = hentTemagruppeNavn(format("status.%s", henvendelse.type.name()));
+        String temagruppe = hentTemagruppeNavn(henvendelse.temagruppe.name());
+        return format(type, temagruppe);
 
     }
 

@@ -4,7 +4,10 @@
 
     <name>mininnboks</name>
 
-    <selftestPagePath>/mininnboks/internal/selftest</selftestPagePath>
+    <selftest>
+        <path>mininnboks/internal/selftest.json</path>
+        <humanReadablePath>mininnboks/internal/selftest</humanReadablePath>
+    </selftest>
 
     <artifacts>
         <ear groupId="no.nav.sbl.dialogarena" artifactId="mininnboks-jee"/>
@@ -16,6 +19,7 @@
         <baseUrl alias="dittnav.link" mapToProperty="dittnav.link"/>
         <baseUrl alias="temavelger.link" mapToProperty="temavelger.link"/>
         <baseUrl alias="brukerprofil.link" mapToProperty="brukerprofil.link"/>
+        <baseUrl alias="saksoversikt.link" mapToProperty="saksoversikt.link"/>
 
         <credential alias="srvmininnboks" mapToProperty="systembruker"/>
         <applicationCertificate alias="srvmininnboks"/>
@@ -25,6 +29,9 @@
         <webservice alias="virksomhet:Brukerprofil_v3" mapToProperty="brukerprofil.v3"/>
         <webservice alias="domene.Brukerdialog:SendInnHenvendelse_v1" mapToProperty="send.inn.henvendelse.ws"/>
         <webservice alias="domene.Brukerdialog:InnsynHenvendelse_v1" mapToProperty="innsyn.henvendelse.ws"/>
+
+        <directory name="mininnboks" mapToProperty="mininnboks.datadir"/>
+        <!--<fileLibrary alias="mininnboks.ledetekster.v1" mapToProperty="folder.ledetekster" />-->
     </resources>
 
     <exposed-services>
@@ -41,10 +48,6 @@
         </logins>
     </security>
 
-    <loadBalancer>
-        <contextRoot>mininnboks</contextRoot>
-        <lbHealthMonitor type="HTTPS" isAliveUrl="internal/isAlive" interval="5" timeout="16"/>
-        <lbPool slowRampTime="30" loadBalancingMethod="LEAST_CONNECTIONS" connectionLimit="500"/>
-    </loadBalancer>
+    <loadBalancer isAlive="/mininnboks/internal/isAlive" />
 
 </application>

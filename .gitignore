@@ -3,11 +3,18 @@
 *.ipr
 *.iws
 
+**/node_modules/
+
 *.log
 
 target
-web/node_modules
-web/src/main/webapp/build
+
+**/webapp/css/**/*
+**/webapp/img/**/*
+**/webapp/build/**/*
+**/webapp/js/**/*
+**/webapp/*.html
+**/npm-debug.log
 
 npm-debug.log
 

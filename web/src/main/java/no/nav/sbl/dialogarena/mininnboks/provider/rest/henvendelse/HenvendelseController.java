@@ -1,28 +1,32 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
-import no.nav.modig.lang.option.Optional;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
-import org.apache.commons.collections15.Transformer;
 import org.apache.cxf.binding.soap.SoapFault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.xml.ws.soap.SOAPFaultException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.groupingBy;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.CREATED;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.NOT_ACCEPTABLE;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.status;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.ReduceUtils.indexBy;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.TRAAD_ID;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SBL_INNGAAENDE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad.NYESTE_FORST;
 import static org.joda.time.DateTime.now;
@@ -40,37 +44,44 @@ public class HenvendelseController {
     public List<Traad> hentTraader() {
         String fnr = getSubjectHandler().getUid();
         List<Henvendelse> henvendelser = henvendelseService.hentAlleHenvendelser(fnr);
-        final Map<String, List<Henvendelse>> traader = on(henvendelser).reduce(indexBy(TRAAD_ID));
+        final Map<String, List<Henvendelse>> traader = henvendelser.stream()
+                .collect(groupingBy(henvendelse -> henvendelse.traadId));
 
-        return on(traader.values()).map(new Transformer<List<Henvendelse>, Traad>() {
-            @Override
-            public Traad transform(List<Henvendelse> henvendelser) {
-                return new Traad(henvendelser);
-            }
-        }).collect(NYESTE_FORST);
+        return traader.values().stream()
+                .map(henvendelse -> new Traad(henvendelse))
+                .sorted(NYESTE_FORST)
+                .collect(Collectors.toList());
     }
 
     @GET
     @Path("/{id}")
     public Response hentEnkeltTraad(@PathParam("id") String id) {
         Optional<Traad> traad = hentTraad(id);
-        if (traad.isSome()) {
-            return Response.ok(traad.get()).build();
+        if (traad.isPresent()) {
+            return ok(traad.get()).build();
         } else {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
+            return status(NOT_FOUND.getStatusCode()).build();
         }
     }
 
     @POST
-    @Path("/lest/{id}")
-    public void markerSomLest(@PathParam("id") String id) {
-        henvendelseService.merkSomLest(id);
+    @Path("/lest/{behandlingsId}")
+    public Response markerSomLest(@PathParam("behandlingsId") String behandlingsId) {
+        henvendelseService.merkSomLest(behandlingsId);
+        return ok(TupleResultat.of("traadId", behandlingsId)).build();
+    }
+
+    @POST
+    @Path("/allelest/{behandlingskjedeId}")
+    public Response markerAlleSomLest(@PathParam("behandlingskjedeId") String behandlingskjedeId) {
+        henvendelseService.merkAlleSomLest(behandlingskjedeId);
+        return ok(TupleResultat.of("traadId", behandlingskjedeId)).build();
     }
 
     @POST
     @Path("/sporsmal")
     @Consumes(APPLICATION_JSON)
-    public Response sendSporsmal(Sporsmal sporsmal, @Context HttpServletResponse httpResponse) {
+    public Response sendSporsmal(Sporsmal sporsmal) {
         assertFritekst(sporsmal.fritekst);
         assertTemagruppe(sporsmal.temagruppe);
 
@@ -78,7 +89,7 @@ public class HenvendelseController {
         Henvendelse henvendelse = new Henvendelse(sporsmal.fritekst, temagruppe);
 
         WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
-        return Response.status(Response.Status.CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
+        return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
     @POST
@@ -87,14 +98,14 @@ public class HenvendelseController {
     public Response sendSvar(Svar svar) {
         assertFritekst(svar.fritekst);
         Optional<Traad> traadOptional = hentTraad(svar.traadId);
-        if (!traadOptional.isSome()) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
+        if (!traadOptional.isPresent()) {
+            return status(NOT_FOUND.getStatusCode()).build();
         }
 
         Traad traad = traadOptional.get();
 
         if (!traad.kanBesvares) {
-            return Response.status(Response.Status.NOT_ACCEPTABLE.getStatusCode()).build();
+            return status(NOT_ACCEPTABLE.getStatusCode()).build();
         }
 
         Henvendelse henvendelse = new Henvendelse(svar.fritekst, traad.nyeste.temagruppe);
@@ -109,20 +120,20 @@ public class HenvendelseController {
         henvendelse.kontorsperreEnhet = traad.nyeste.kontorsperreEnhet;
 
         WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
-        return Response.status(Response.Status.CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
+        return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
     private Optional<Traad> hentTraad(String id) {
         try {
             List<Henvendelse> meldinger = henvendelseService.hentTraad(id);
             if (meldinger == null || meldinger.isEmpty()) {
-                return Optional.none();
+                return empty();
             } else {
-                return Optional.optional(new Traad(meldinger));
+                return of(new Traad(meldinger));
             }
         } catch (SoapFault | SOAPFaultException fault) {
             logger.error("Fant ikke tråd med id: " + id, fault);
-            return Optional.none();
+            return empty();
         }
     }
 
@@ -142,5 +153,12 @@ public class HenvendelseController {
         }
     }
 
+    static final class TupleResultat extends HashMap<String, String> {
+        public static TupleResultat of(String key, String value) {
+            TupleResultat tr = new TupleResultat();
+            tr.put(key, value);
+            return tr;
+        }
+    }
 
 }

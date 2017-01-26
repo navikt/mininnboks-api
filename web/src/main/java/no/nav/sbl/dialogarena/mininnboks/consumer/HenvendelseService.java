@@ -3,8 +3,8 @@ package no.nav.sbl.dialogarena.mininnboks.consumer;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
-import no.nav.modig.content.PropertyResolver;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseRequest;
@@ -14,21 +14,15 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentBehand
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
-import static no.nav.modig.lang.collections.IterUtils.on;
-import static no.nav.modig.lang.collections.PredicateUtils.equalTo;
-import static no.nav.modig.lang.collections.PredicateUtils.where;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ER_LEST;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.ID;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
 import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
-
-    String KONTAKT_NAV_SAKSTEMA = "KNA";
 
     WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer);
 
@@ -38,28 +32,33 @@ public interface HenvendelseService {
 
     List<Henvendelse> hentTraad(String behandlingskjedeId);
 
-    void merkSomLest(String behandlingskjedeId);
+    void merkAlleSomLest(String behandlingskjedeId);
+
+    void merkSomLest(String id);
 
     class Default implements HenvendelseService {
 
-        private final PropertyResolver resolver;
+        public static final String KONTAKT_NAV_SAKSTEMA = "KNA";
         private final HenvendelsePortType henvendelsePortType;
         private final SendInnHenvendelsePortType sendInnHenvendelsePortType;
         private final InnsynHenvendelsePortType innsynHenvendelsePortType;
         private final PersonService personService;
 
-        public Default(HenvendelsePortType henvendelsePortType, SendInnHenvendelsePortType sendInnHenvendelsePortType, InnsynHenvendelsePortType innsynHenvendelsePortType, PropertyResolver resolver, PersonService personService) {
+        public Default(HenvendelsePortType henvendelsePortType,
+                       SendInnHenvendelsePortType sendInnHenvendelsePortType,
+                       InnsynHenvendelsePortType innsynHenvendelsePortType,
+                       PersonService personService) {
+
             this.henvendelsePortType = henvendelsePortType;
             this.sendInnHenvendelsePortType = sendInnHenvendelsePortType;
             this.innsynHenvendelsePortType = innsynHenvendelsePortType;
-            this.resolver = resolver;
             this.personService = personService;
         }
 
         @Override
         public WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer) {
             String xmlHenvendelseType = SPORSMAL_SKRIFTLIG.name();
-            String enhet = personService.hentEnhet().getOrElse(null);
+            String enhet = personService.hentEnhet().orElse(null);
             XMLHenvendelse info =
                     new XMLHenvendelse()
                             .withHenvendelseType(xmlHenvendelseType)
@@ -106,10 +105,18 @@ public interface HenvendelseService {
         }
 
         @Override
-        public void merkSomLest(String behandlingskjedeId) {
+        public void merkAlleSomLest(String behandlingskjedeId) {
             List<Henvendelse> traad = hentTraad(behandlingskjedeId);
-            List<String> ids = on(traad).filter(where(ER_LEST, equalTo(false))).map(ID).collect();
+            List<String> ids = traad.stream()
+                    .filter(henvendelse -> !henvendelse.isLest())
+                    .map(henvendelse -> henvendelse.id)
+                    .collect(toList());
             innsynHenvendelsePortType.merkSomLest(ids);
+        }
+
+        @Override
+        public void merkSomLest(String behandlingsId) {
+            innsynHenvendelsePortType.merkSomLest(asList(behandlingsId));
         }
 
         @Override
@@ -122,19 +129,31 @@ public interface HenvendelseService {
                     REFERAT_OPPMOTE.name(),
                     REFERAT_TELEFON.name(),
                     SPORSMAL_MODIA_UTGAAENDE.name(),
-                    SVAR_SBL_INNGAAENDE.name());
-            return on(henvendelsePortType.hentHenvendelseListe(
+                    SVAR_SBL_INNGAAENDE.name(),
+                    DOKUMENT_VARSEL.name(),
+                    OPPGAVE_VARSEL.name());
+
+            Stream<XMLHenvendelse> wsHenvendelser = henvendelsePortType.hentHenvendelseListe(
                     new WSHentHenvendelseListeRequest()
                             .withFodselsnummer(fodselsnummer)
                             .withTyper(typer))
-                    .getAny())
-                    .map(tilHenvendelse(resolver)).collect();
+                    .getAny()
+                    .stream()
+                    .map(XMLHenvendelse.class::cast);
+
+            return wsHenvendelser
+                    .map(HenvendelsesUtils::tilHenvendelse)
+                    .collect(toList());
         }
 
         @Override
         public List<Henvendelse> hentTraad(String behandlingskjedeId) {
-            return on(henvendelsePortType.hentBehandlingskjede(new WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).getAny())
-                    .map(tilHenvendelse(resolver)).collect();
+            List<Object> wsBehandlingskjeder = henvendelsePortType.hentBehandlingskjede(new WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).getAny();
+
+            return wsBehandlingskjeder.stream()
+                    .map(XMLHenvendelse.class::cast)
+                    .map(HenvendelsesUtils::tilHenvendelse)
+                    .collect(toList());
         }
     }
 }

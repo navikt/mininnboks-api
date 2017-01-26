@@ -36,7 +36,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>no.nav.sbl.dialogarena.mininnboks.config.MinInnboksApplicationContext</param-value>
+        <param-value>no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig</param-value>
     </context-param>
 
     <filter>
@@ -55,6 +55,7 @@
     <filter-mapping>
         <filter-name>decoratorFilter</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
@@ -75,6 +76,15 @@
     <filter-mapping>
         <filter-name>MDCFilter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>xsrf</filter-name>
+        <filter-class>no.nav.sbl.dialogarena.mininnboks.provider.filter.XsrfFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>xsrf</filter-name>
+        <servlet-name>restservlet</servlet-name>
     </filter-mapping>
 
     <servlet>
@@ -117,18 +127,23 @@
         <url-pattern>/tjenester/*</url-pattern>
     </servlet-mapping>
 
-    <filter>
-        <filter-name>xsrf</filter-name>
-        <filter-class>no.nav.sbl.dialogarena.mininnboks.provider.filter.XsrfFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>xsrf</filter-name>
-        <servlet-name>restservlet</servlet-name>
-    </filter-mapping>
-
     <error-page>
         <error-code>404</error-code>
-        <location>/index.html</location>
+        <location>/app/index.html</location>
     </error-page>
+
+
+    <servlet>
+        <servlet-name>reactapp</servlet-name>
+        <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.ApplicationServlet</servlet-class>
+        <init-param>
+            <param-name>applicationFile</param-name>
+            <param-value>index.html</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>reactapp</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>

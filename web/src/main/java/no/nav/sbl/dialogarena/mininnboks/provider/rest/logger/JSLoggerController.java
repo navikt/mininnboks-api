@@ -11,7 +11,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/logging")
 public class JSLoggerController {
-    final Logger logger = LoggerFactory.getLogger("frontendlog");
+    Logger logger = LoggerFactory.getLogger("frontendlog");
 
     @POST
     @Consumes(APPLICATION_JSON)
