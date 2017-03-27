@@ -5,12 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>no.nav.sbl.dialogarena</groupId>
-        <artifactId>mininnboks</artifactId>
-        <version>6.0-SNAPSHOT</version>
+        <groupId>no.nav.sbl</groupId>
+        <artifactId>mor-pom</artifactId>
+        <version>3</version>
     </parent>
 
     <artifactId>mininnboks-tekster</artifactId>
+    <version>1.0</version>
 
     <build>
         <resources>
@@ -45,7 +46,6 @@
                         <configuration>
                             <tekster>src/main/tekster</tekster>
                             <outputDirectory>${project.build.outputDirectory}/tekster</outputDirectory>
-                            <!--<autoFix>true</autoFix>-->
                         </configuration>
                     </execution>
                 </executions>
@@ -53,7 +53,7 @@
         </plugins>
     </build>
     <scm>
-        <developerConnection>scm:git:http://stash.devillo.no/scm/sbl/mininnboks.git</developerConnection>
-        <url>http://stash.devillo.no:7990/projects/SBL/repos/mininnboks/browse</url>
+        <developerConnection>scm:git:http://stash.devillo.no/scm/tekst/mininnboks-tekster.git</developerConnection>
+        <url>http://stash.devillo.no/projects/TEKST/repos/mininnboks-tekster/browse</url>
     </scm>
 </project>
