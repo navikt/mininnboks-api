@@ -7,13 +7,13 @@
     <name>mininnboks-tekster</name>
 
     <resources>
-        <directory name="ledetekster" temporary="true" mapToProperty="folder.ledetekster">
+        <directory name="mininnboks">
             <file source="tekster"/>
         </directory>
     </resources>
 
     <exposed-services>
-        <exposedFileLibrary name="mininnboks.ledetekster.v1" directory="tekster"/>
+        <exposedFileLibrary name="mininnboks.ledetekster.v1" directory="mininnboks"/>
     </exposed-services>
 
 </application>
