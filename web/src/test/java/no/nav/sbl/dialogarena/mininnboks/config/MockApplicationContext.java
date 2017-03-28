@@ -8,7 +8,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 @Import({
-        TeksterServiceLokalConfig.class,
+        TeksterServiceConfig.class,
         ContentConfig.class,
         PersonServiceMockContext.class,
         HenvendelseMockContext.class,
