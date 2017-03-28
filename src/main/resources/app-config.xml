@@ -13,7 +13,7 @@
     </resources>
 
     <exposed-services>
-        <exposedFileLibrary name="mininnboks.ledetekster.v1" directory="mininnboks"/>
+        <exposedFileLibrary name="mininnboks.ledetekster.v1" directory="tekster"/>
     </exposed-services>
 
 </application>
