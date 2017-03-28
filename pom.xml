@@ -52,6 +52,43 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>KopierBundles</id>
+            <activation>
+                <property>
+                    <name>dev</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.0.2</version>
+                        <executions>
+                            <execution>
+                                <id>copy-ledetekster</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.outputDirectory}/tekster</directory>
+                                        </resource>
+                                    </resources>
+                                    <outputDirectory>c:/Temp/mininnboks/utave/mininnboks/tekster</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <scm>
         <developerConnection>scm:git:http://stash.devillo.no/scm/tekst/mininnboks-tekster.git</developerConnection>
         <url>http://stash.devillo.no/projects/TEKST/repos/mininnboks-tekster/browse</url>
