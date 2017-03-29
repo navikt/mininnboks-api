@@ -12,11 +12,10 @@
     <name>Dialogarena - mininnboks</name>
     <groupId>no.nav.sbl.dialogarena</groupId>
     <artifactId>mininnboks</artifactId>
-    <version>6.0-SNAPSHOT</version>
+    <version>7.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>tekster</module> <!-- Denne skal fjernes i det mininnboks-tekster deployes som egen applikasjon -->
         <module>config</module>
         <module>web</module>
         <module>jee</module>
