@@ -51,4 +51,8 @@
 
     <loadBalancer isAlive="/mininnboks/internal/isAlive" />
 
+    <serverOptions>
+        <memoryParameters resourceAlias="mininnboks-memparams"/>
+    </serverOptions>
+
 </application>
