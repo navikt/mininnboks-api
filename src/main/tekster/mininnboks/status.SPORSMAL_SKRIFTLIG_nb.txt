@@ -1,1 +1,1 @@
-Spørsmål – %s
+Beskjed – %s
