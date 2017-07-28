@@ -20,6 +20,7 @@ public class StartJettyMinInnboks {
         setProperty("henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/Henvendelse_v2");
         setProperty("send.inn.henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/SendInnHenvendelse_v1");
         setProperty("innsyn.henvendelse.ws.url", "https://localhost:8443/henvendelse/services/domene.Brukerdialog/InnsynHenvendelse_v1");
+        setProperty("xsrf-credentials.password", "123_temp_password");
 
         //Må ha https for csrf-token
         final Jetty jetty = Jetty.usingWar()
