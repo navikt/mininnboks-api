@@ -21,6 +21,7 @@ public class XsrfUtilsTest {
     @BeforeClass
     public static void beforeClass() {
         setProperty(SUBJECTHANDLER_KEY, StaticSubjectHandler.class.getName());
+        setProperty("xsrf-credentials.password", "123_temp_password");
     }
 
     @Test
@@ -70,6 +71,11 @@ public class XsrfUtilsTest {
         assertThat(cookie.getSecure(), is(true));
         assertThat(cookie.getMaxAge(), is(-1));
         assertThat(cookie.getPath(), is(equalTo(httpSession.getServletContext().getContextPath())));
+    }
+
+    @Test
+    public void testXSRFPassord(){
+        assertThat(System.getProperty("xsrf-credentials.password"), is("123_temp_password"));
     }
 
 }

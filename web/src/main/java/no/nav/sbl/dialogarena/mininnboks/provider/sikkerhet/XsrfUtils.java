@@ -22,10 +22,6 @@ public class XsrfUtils {
 
     public static final String SESSION_UUID_ID = "xsrfuuid";
 
-
-    private static final String SECRET = "871128f0-558f-4c88-acee-466a48bb5e95";
-
-
     public static String genererXsrfToken(HttpSession session) {
         String sessionUUID = (String) ofNullable(session.getAttribute(SESSION_UUID_ID)).orElse(UUID.randomUUID().toString());
         session.setAttribute(SESSION_UUID_ID, sessionUUID);
