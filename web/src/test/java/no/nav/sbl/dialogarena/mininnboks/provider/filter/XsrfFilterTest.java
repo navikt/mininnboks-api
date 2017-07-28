@@ -27,6 +27,7 @@ public class XsrfFilterTest {
     @BeforeClass
     public static void beforeClass() {
         setProperty(SUBJECTHANDLER_KEY, StaticSubjectHandler.class.getName());
+        setProperty("xsrf-credentials.password", "123_temp_password");
     }
 
     @Test
