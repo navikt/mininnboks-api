@@ -12,6 +12,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+import static java.lang.System.getProperty;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -21,7 +22,9 @@ public class XsrfUtils {
 
     public static final String SESSION_UUID_ID = "xsrfuuid";
 
+
     private static final String SECRET = "871128f0-558f-4c88-acee-466a48bb5e95";
+
 
     public static String genererXsrfToken(HttpSession session) {
         String sessionUUID = (String) ofNullable(session.getAttribute(SESSION_UUID_ID)).orElse(UUID.randomUUID().toString());
@@ -33,7 +36,7 @@ public class XsrfUtils {
         try {
             String signKey = SubjectHandler.getSubjectHandler().getEksternSsoToken() + sessionUUID;
             Mac hmac = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secretKey = new SecretKeySpec(SECRET.getBytes(), "HmacSHA256");
+            SecretKeySpec secretKey = new SecretKeySpec(hentXsrfPassord().getBytes(), "HmacSHA256");
             hmac.init(secretKey);
             return Base64.encodeBase64URLSafeString(hmac.doFinal(signKey.getBytes()));
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
@@ -54,5 +57,9 @@ public class XsrfUtils {
         xsrfCookie.setMaxAge(-1);
         xsrfCookie.setSecure(true);
         return xsrfCookie;
+    }
+
+    private static String hentXsrfPassord() {
+            return getProperty("xsrf-credentials.password");
     }
 }
