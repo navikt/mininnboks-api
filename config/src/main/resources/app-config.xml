@@ -24,6 +24,8 @@
         <credential alias="srvmininnboks" mapToProperty="systembruker"/>
         <applicationCertificate alias="srvmininnboks"/>
 
+        <credential alias="xsrf-credentials" mapToProperty="xsrf-credentials"/>
+
         <webservice alias="domene.Brukerdialog:Henvendelse_v2" mapToProperty="henvendelse.ws"/>
         <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="diskresjonskode.ws"/>
         <webservice alias="virksomhet:Brukerprofil_v3" mapToProperty="brukerprofil.v3"/>
