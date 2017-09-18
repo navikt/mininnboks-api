@@ -85,6 +85,16 @@
             <artifactId>brukerprofil-v3-tjenestespesifikasjon</artifactId>
             <version>${brukerprofil-v3-tjenestespesifikasjon.version}</version>
         </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>person-v3-tjenestespesifikasjon</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>organisasjonenhet-v2-tjenestespesifikasjon</artifactId>
+            <version>1.0.6</version>
+        </dependency>
 
         <!--Dialogarena-->
         <dependency>

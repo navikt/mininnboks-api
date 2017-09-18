@@ -1,11 +1,18 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSBruker;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSNorskIdent;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSPerson;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSPersonidenter;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.meldinger.WSHentKontaktinformasjonOgPreferanserRequest;
+import no.nav.tjeneste.virksomhet.organisasjonenhet.v2.OrganisasjonEnhetV2;
+import no.nav.tjeneste.virksomhet.organisasjonenhet.v2.informasjon.WSDiskresjonskoder;
+import no.nav.tjeneste.virksomhet.organisasjonenhet.v2.informasjon.WSGeografi;
+import no.nav.tjeneste.virksomhet.organisasjonenhet.v2.meldinger.WSFinnNAVKontorRequest;
+import no.nav.tjeneste.virksomhet.organisasjonenhet.v2.meldinger.WSFinnNAVKontorResponse;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.WSPersonidenter;
+import no.nav.tjeneste.virksomhet.person.v3.PersonV3;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.WSNorskIdent;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.WSPersonIdent;
+import no.nav.tjeneste.virksomhet.person.v3.meldinger.WSHentGeografiskTilknytningRequest;
+import no.nav.tjeneste.virksomhet.person.v3.meldinger.WSHentGeografiskTilknytningResponse;
+
 
 import java.util.Optional;
 
@@ -21,21 +28,46 @@ public interface PersonService {
         static final WSPersonidenter identtype = new WSPersonidenter()
                 .withKodeRef("http://nav.no/kodeverk/Term/Personidenter/FNR/nb/F_c3_b8dselnummer?v=1")
                 .withValue("FNR");
-        private final BrukerprofilV3 brukerprofilV3;
+        private final PersonV3 personV3;
+        private final OrganisasjonEnhetV2 organisasjonEnhetV2;
 
-        public Default(BrukerprofilV3 brukerprofilV3) {
-            this.brukerprofilV3 = brukerprofilV3;
+        public Default(PersonV3 personV3, OrganisasjonEnhetV2 organisasjonEnhetV2) {
+            this.personV3 = personV3;
+            this.organisasjonEnhetV2 = organisasjonEnhetV2;
         }
 
         @Override
         public Optional<String> hentEnhet() {
             try {
+//                String fnr = getSubjectHandler().getUid();
+//                WSNorskIdent ident = new WSNorskIdent().withType(identtype).withIdent(fnr);
+//                WSHentKontaktinformasjonOgPreferanserRequest kontaktRequest = new WSHentKontaktinformasjonOgPreferanserRequest().withIdent(ident);
+//                WSPerson person = brukerprofilV3.hentKontaktinformasjonOgPreferanser(kontaktRequest).getBruker();
+//                WSBruker bruker = (WSBruker) person;
+//                return of(bruker.getAnsvarligEnhet().getOrganisasjonselementId());
+                return finnNavKontor();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public Optional<String> finnNavKontor() {
+            try {
                 String fnr = getSubjectHandler().getUid();
                 WSNorskIdent ident = new WSNorskIdent().withType(identtype).withIdent(fnr);
-                WSHentKontaktinformasjonOgPreferanserRequest kontaktRequest = new WSHentKontaktinformasjonOgPreferanserRequest().withIdent(ident);
-                WSPerson person = brukerprofilV3.hentKontaktinformasjonOgPreferanser(kontaktRequest).getBruker();
-                WSBruker bruker = (WSBruker) person;
-                return of(bruker.getAnsvarligEnhet().getOrganisasjonselementId());
+                WSPersonIdent personIdent = new WSPersonIdent().withIdent(ident);
+
+                WSHentGeografiskTilknytningResponse geografiskTilknytningResponse =
+                        personV3.hentGeografiskTilknytning(new WSHentGeografiskTilknytningRequest().withAktoer(personIdent));
+
+                WSFinnNAVKontorResponse finnNAVKontorResponse =
+                        organisasjonEnhetV2.finnNAVKontor(new WSFinnNAVKontorRequest()
+                                .withGeografiskTilknytning(new WSGeografi().withValue(
+                                        geografiskTilknytningResponse.getGeografiskTilknytning().getGeografiskTilknytning())
+                                )
+                        );
+                return of(finnNAVKontorResponse.getNAVKontor().getEnhetId());
+
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
