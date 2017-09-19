@@ -47,22 +47,9 @@ public class DefaultPersonServiceTest {
         personService = new PersonService.Default(personV3, organisasjonEnhetV2);
     }
 
-//    @Test
-//    public void henterEnhet() throws HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning, HentKontaktinformasjonOgPreferanserPersonIkkeFunnet, HentKontaktinformasjonOgPreferanserPersonIdentErUtgaatt {
-//        String enhet = "1234";
-//        when(brukerprofilV3.hentKontaktinformasjonOgPreferanser(any(WSHentKontaktinformasjonOgPreferanserRequest.class)))
-//                .thenReturn(new WSHentKontaktinformasjonOgPreferanserResponse().withBruker(new WSBruker().withAnsvarligEnhet(new WSAnsvarligEnhet().withOrganisasjonselementId(enhet))));
-//
-//        assertThat(personService.hentEnhet().get(), is(enhet));
-//    }
-
     @Test
     public void finnerNavKontor() throws FinnNAVKontorUgyldigInput, HentGeografiskTilknytningSikkerhetsbegrensing, HentGeografiskTilknytningPersonIkkeFunnet {
         String enhet = "1234";
-
-        WSPersonidenter identtype = new WSPersonidenter()
-                .withKodeRef("http://nav.no/kodeverk/Term/Personidenter/FNR/nb/F_c3_b8dselnummer?v=1")
-                .withValue("FNR");
 
         when(personV3.hentGeografiskTilknytning(any(WSHentGeografiskTilknytningRequest.class)))
                 .thenReturn(new WSHentGeografiskTilknytningResponse().withGeografiskTilknytning(new WSGeografiskTilknytning() {
@@ -78,13 +65,11 @@ public class DefaultPersonServiceTest {
         assertThat(personService.finnNavKontor().get(), is(enhet));
     }
 
-//    @Test(expected = RuntimeException.class)
-//    public void kasterRuntimeExceptionOmEnhetIkkeKanhentes() throws HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning, HentKontaktinformasjonOgPreferanserPersonIdentErUtgaatt, HentKontaktinformasjonOgPreferanserPersonIkkeFunnet {
-//
-//        when(brukerprofilV3.hentKontaktinformasjonOgPreferanser(any(WSHentKontaktinformasjonOgPreferanserRequest.class)))
-//                .thenThrow(new HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning());
-//
-//        personService.hentEnhet();
-//
-//    }
+    @Test(expected = RuntimeException.class)
+    public void kasterRuntimeExceptionOmNAVKontorIkkeKanFinnes() throws FinnNAVKontorUgyldigInput {
+        when(organisasjonEnhetV2.finnNAVKontor(any(WSFinnNAVKontorRequest.class)))
+                .thenThrow(new FinnNAVKontorUgyldigInput());
+
+        personService.finnNavKontor();
+    }
 }

@@ -58,7 +58,7 @@ public interface HenvendelseService {
         @Override
         public WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer) {
             String xmlHenvendelseType = SPORSMAL_SKRIFTLIG.name();
-            String enhet = personService.hentEnhet().orElse(null);
+            String enhet = personService.finnNavKontor().orElse(null);
             XMLHenvendelse info =
                     new XMLHenvendelse()
                             .withHenvendelseType(xmlHenvendelseType)

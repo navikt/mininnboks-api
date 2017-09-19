@@ -78,7 +78,7 @@ public class HenvendelseServiceTest {
                 new WSHentHenvendelseListeResponse().withAny(henvendelseListe));
         when(sendInnHenvendelsePortType.sendInnHenvendelse(any(WSSendInnHenvendelseRequest.class)))
                 .thenReturn(new WSSendInnHenvendelseResponse().withBehandlingsId("id"));
-        when(personService.hentEnhet()).thenReturn(of(BRUKER_ENHET));
+        when(personService.finnNavKontor()).thenReturn(of(BRUKER_ENHET));
     }
 
     @After

@@ -1,8 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.meldinger.WSHentKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.organisasjonenhet.v2.OrganisasjonEnhetV2;
-import no.nav.tjeneste.virksomhet.organisasjonenhet.v2.informasjon.WSDiskresjonskoder;
 import no.nav.tjeneste.virksomhet.organisasjonenhet.v2.informasjon.WSGeografi;
 import no.nav.tjeneste.virksomhet.organisasjonenhet.v2.meldinger.WSFinnNAVKontorRequest;
 import no.nav.tjeneste.virksomhet.organisasjonenhet.v2.meldinger.WSFinnNAVKontorResponse;
@@ -21,7 +19,7 @@ import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 
 public interface PersonService {
 
-    Optional<String> hentEnhet();
+    Optional<String> finnNavKontor();
 
     class Default implements PersonService {
 
@@ -37,20 +35,6 @@ public interface PersonService {
         }
 
         @Override
-        public Optional<String> hentEnhet() {
-            try {
-//                String fnr = getSubjectHandler().getUid();
-//                WSNorskIdent ident = new WSNorskIdent().withType(identtype).withIdent(fnr);
-//                WSHentKontaktinformasjonOgPreferanserRequest kontaktRequest = new WSHentKontaktinformasjonOgPreferanserRequest().withIdent(ident);
-//                WSPerson person = brukerprofilV3.hentKontaktinformasjonOgPreferanser(kontaktRequest).getBruker();
-//                WSBruker bruker = (WSBruker) person;
-//                return of(bruker.getAnsvarligEnhet().getOrganisasjonselementId());
-                return finnNavKontor();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
         public Optional<String> finnNavKontor() {
             try {
                 String fnr = getSubjectHandler().getUid();
