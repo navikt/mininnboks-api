@@ -43,8 +43,8 @@ public interface PersonService {
                 String fnr = getSubjectHandler().getUid();
                 WSNorskIdent ident = new WSNorskIdent().withType(identtype).withIdent(fnr);
                 WSPersonIdent personIdent = new WSPersonIdent().withIdent(ident);
-                
-                logger.info("ident: " + personIdent.getIdent().getIdent());
+
+                logger.warn("ident: " + personIdent.getIdent().getIdent());
 
                 WSHentGeografiskTilknytningResponse geografiskTilknytningResponse =
                         personV3.hentGeografiskTilknytning(new WSHentGeografiskTilknytningRequest().withAktoer(personIdent));
