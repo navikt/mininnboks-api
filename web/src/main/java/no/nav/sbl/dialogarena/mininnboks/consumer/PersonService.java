@@ -39,17 +39,17 @@ public interface PersonService {
 
         @Override
         public Optional<String> finnNavKontor() {
-            try {
-                String fnr = getSubjectHandler().getUid();
-                WSNorskIdent ident = new WSNorskIdent().withType(identtype).withIdent(fnr);
-                WSPersonIdent personIdent = new WSPersonIdent().withIdent(ident);
+            String fnr = getSubjectHandler().getUid();
+            WSNorskIdent ident = new WSNorskIdent().withType(identtype).withIdent(fnr);
+            WSPersonIdent personIdent = new WSPersonIdent().withIdent(ident);
 
-                logger.warn("ident: " + personIdent.getIdent().getIdent());
+            logger.warn("ident: " + personIdent.getIdent().getIdent());
+
+            try {
 
                 WSHentGeografiskTilknytningResponse geografiskTilknytningResponse =
                         personV3.hentGeografiskTilknytning(new WSHentGeografiskTilknytningRequest().withAktoer(personIdent));
 
-                logger.info("geo: " + geografiskTilknytningResponse.getGeografiskTilknytning().getGeografiskTilknytning());
 
                 WSFinnNAVKontorResponse finnNAVKontorResponse =
                         organisasjonEnhetV2.finnNAVKontor(new WSFinnNAVKontorRequest()
