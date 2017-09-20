@@ -16,12 +16,15 @@ import java.util.Optional;
 
 import static java.util.Optional.of;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public interface PersonService {
 
     Optional<String> finnNavKontor();
 
     class Default implements PersonService {
+
+        private static final org.slf4j.Logger logger = getLogger(PersonService.class);
 
         static final WSPersonidenter identtype = new WSPersonidenter()
                 .withKodeRef("http://nav.no/kodeverk/Term/Personidenter/FNR/nb/F_c3_b8dselnummer?v=1")
@@ -40,9 +43,13 @@ public interface PersonService {
                 String fnr = getSubjectHandler().getUid();
                 WSNorskIdent ident = new WSNorskIdent().withType(identtype).withIdent(fnr);
                 WSPersonIdent personIdent = new WSPersonIdent().withIdent(ident);
+                
+                logger.info("ident: " + personIdent.getIdent().getIdent());
 
                 WSHentGeografiskTilknytningResponse geografiskTilknytningResponse =
                         personV3.hentGeografiskTilknytning(new WSHentGeografiskTilknytningRequest().withAktoer(personIdent));
+
+                logger.info("geo: " + geografiskTilknytningResponse.getGeografiskTilknytning().getGeografiskTilknytning());
 
                 WSFinnNAVKontorResponse finnNAVKontorResponse =
                         organisasjonEnhetV2.finnNAVKontor(new WSFinnNAVKontorRequest()
