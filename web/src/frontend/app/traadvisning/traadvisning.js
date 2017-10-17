@@ -64,7 +64,7 @@ class TraadVisning extends React.Component {
                         visibleIf={valgttraad.kanBesvares && !skalViseBesvarBoks}
                         onClick={actions.visBesvarBoks}
                     />
-                    <Infopanel type="standard" visibleIf={!valgttraad.kanBesvares} horisontal>
+                    <Infopanel type="standard" visibleIf={valgttraad.avsluttet} horisontal>
                         <FormattedMessage id="skriv.ny.link">{(lenke) => (
                             <FormattedHTMLMessage id="traadvisning.kan-ikke-svare" values={{ lenke }} />
                         )}</FormattedMessage>
