@@ -9,7 +9,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
@@ -44,7 +47,6 @@ public class HenvendelsesUtilsTest {
     private static final String KONTORSPERRE_ENHET = "kontorsperreEnhet";
     private static final String OPPGAVE_URL = "oppgave/url";
     private static final String OPPGAVE_TYPE = "sykepenger";
-
 
 
     private TekstService tekstService = mock(TekstService.class);
@@ -98,6 +100,20 @@ public class HenvendelsesUtilsTest {
         assertThat(sporsmal.isLest(), is(true));
         assertThat(sporsmal.kanal, is(nullValue()));
         assertThat(sporsmal.brukersEnhet, is(BRUKERS_ENHET));
+    }
+
+    @Test
+    public void transformererXMLHenvendelseFerdigstiltUtenSvar() {
+        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1);
+        info.setFerdigstiltUtenSvar(true);
+        List<XMLHenvendelse> infoList = Collections.singletonList(info);
+
+        List<Henvendelse> henvendelserListe = infoList.stream()
+                .map(HenvendelsesUtils::tilHenvendelse)
+                .collect(toList());
+        Henvendelse sporsmal = henvendelserListe.get(0);
+
+        assertThat(sporsmal.ferdigstiltUtenSvar, is(true));
     }
 
     @Test
