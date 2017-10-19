@@ -28,7 +28,10 @@ public class Traad {
         this.nyeste = this.meldinger.get(0);
         this.eldste = this.meldinger.get(this.meldinger.size() - 1);
         this.kanBesvares = SPORSMAL_MODIA_UTGAAENDE.equals(nyeste.type);
-        this.avsluttet = FRA_NAV.contains(nyeste.type) && !kanBesvares;
+
+        boolean avsluttet = FRA_NAV.contains(nyeste.type) && !kanBesvares;
+        boolean ferdigstiltUtenSvar = Boolean.TRUE.equals(nyeste.ferdigstiltUtenSvar);
+        this.avsluttet =  avsluttet || ferdigstiltUtenSvar;
         this.traadId = this.nyeste.traadId;
     }
 

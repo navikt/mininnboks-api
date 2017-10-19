@@ -27,6 +27,14 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe.*;
 @Configuration
 public class HenvendelseMockContext {
     List<XMLHenvendelse> henvendelser = new ArrayList<XMLHenvendelse>() {{
+        List<XMLHenvendelse> avsluttetUtenSvar = lagBehandlingskjede(FMLI, DateTime.now(), SPORSMAL_SKRIFTLIG);
+        avsluttetUtenSvar.get(0).setFerdigstiltUtenSvar(true);
+        addAll(avsluttetUtenSvar);
+
+        List<XMLHenvendelse> ikkeAvsluttetUtenSvar = lagBehandlingskjede(ARBD, DateTime.now(), SPORSMAL_SKRIFTLIG);
+        ikkeAvsluttetUtenSvar.get(0).setFerdigstiltUtenSvar(false);
+        addAll(ikkeAvsluttetUtenSvar);
+
         addAll(lagBehandlingskjede(FMLI, DateTime.now().minusDays(1), SPORSMAL_MODIA_UTGAAENDE));
         addAll(lagBehandlingskjede(ARBD, DateTime.now().minusDays(2), SPORSMAL_MODIA_UTGAAENDE));
         addAll(lagBehandlingskjede(ORT_HJE, DateTime.now().minusDays(3), SPORSMAL_MODIA_UTGAAENDE));

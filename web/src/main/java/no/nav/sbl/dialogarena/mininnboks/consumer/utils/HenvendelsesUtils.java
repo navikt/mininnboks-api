@@ -56,6 +56,7 @@ public abstract class HenvendelsesUtils {
                 henvendelse = new Henvendelse(xmlHenvendelse.getBehandlingsId());
                 henvendelse.opprettet = xmlHenvendelse.getOpprettetDato();
                 henvendelse.avsluttet = xmlHenvendelse.getAvsluttetDato();
+                henvendelse.ferdigstiltUtenSvar = xmlHenvendelse.isFerdigstiltUtenSvar();
                 henvendelse.traadId = ofNullable(xmlHenvendelse.getBehandlingskjedeId()).orElse(xmlHenvendelse.getBehandlingsId());
                 henvendelse.eksternAktor = xmlHenvendelse.getEksternAktor();
                 henvendelse.tilknyttetEnhet = xmlHenvendelse.getTilknyttetEnhet();
