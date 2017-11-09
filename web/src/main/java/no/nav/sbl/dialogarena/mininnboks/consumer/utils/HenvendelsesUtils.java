@@ -45,6 +45,7 @@ public abstract class HenvendelsesUtils {
             put(XMLHenvendelseType.REFERAT_TELEFON, SAMTALEREFERAT_TELEFON);
             put(XMLHenvendelseType.DOKUMENT_VARSEL, DOKUMENT_VARSEL);
             put(XMLHenvendelseType.OPPGAVE_VARSEL, OPPGAVE_VARSEL);
+            put(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, DELVIS_SVAR_SKRIFTLIG);
         }
     };
 

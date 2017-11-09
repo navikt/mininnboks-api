@@ -235,6 +235,15 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
+    public void transformererXmlHenvendelseSomDelviseSvar() {
+        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1);
+
+        Henvendelse henvendelse = tilHenvendelse(info);
+
+        assertThat(henvendelse.type, is(DELVIS_SVAR_SKRIFTLIG));
+    }
+
+    @Test
     public void returnererDefaultKeyHvisHentTekstKasterException() {
         String key = "nokkel";
         String defaultKey = "defaultKey";

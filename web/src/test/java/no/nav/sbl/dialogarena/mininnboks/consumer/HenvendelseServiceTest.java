@@ -1,8 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
@@ -11,15 +9,10 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.Sen
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeResponse;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.*;
+import org.junit.*;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -70,15 +63,19 @@ public class HenvendelseServiceTest {
     @Before
     public void setUp() {
         henvendelseService = new HenvendelseService.Default(henvendelsePortType, sendInnHenvendelsePortType, innsynHenvendelsePortType, personService);
-
-        HenvendelsesUtils.setTekstService(tekstService);
+        setupTekstServiceMock();
         List<Object> henvendelseListe = new ArrayList<>();
-        henvendelseListe.add(new XMLHenvendelse().withHenvendelseType(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name()).withBehandlingsId("id"));
+        henvendelseListe.add(lagHenvendelse(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name()).withBehandlingsId("id"));
         when(henvendelsePortType.hentHenvendelseListe(any(WSHentHenvendelseListeRequest.class))).thenReturn(
                 new WSHentHenvendelseListeResponse().withAny(henvendelseListe));
         when(sendInnHenvendelsePortType.sendInnHenvendelse(any(WSSendInnHenvendelseRequest.class)))
                 .thenReturn(new WSSendInnHenvendelseResponse().withBehandlingsId("id"));
         when(personService.hentEnhet()).thenReturn(of(BRUKER_ENHET));
+    }
+
+    private void setupTekstServiceMock() {
+        when(tekstService.hentTekst(anyString())).thenReturn("Tekst");
+        HenvendelsesUtils.setTekstService(tekstService);
     }
 
     @After
@@ -161,5 +158,36 @@ public class HenvendelseServiceTest {
         for (String type : request.getTyper()) {
             assertThat(values.contains(XMLHenvendelseType.fromValue(type)), is(true));
         }
+    }
+
+    @Test
+    public void hentTraadSomInneholderDelviseSvar() {
+        List<Object> henvendelseListe = new ArrayList<>();
+        henvendelseListe.add(lagSporsmalSkriftlig());
+        henvendelseListe.add(lagDelvisSvarSkriftlig());
+
+        when(henvendelsePortType.hentBehandlingskjede(any()))
+                .thenReturn(new WSHentBehandlingskjedeResponse().withAny(henvendelseListe));
+
+        henvendelseService.hentTraad(TRAAD_ID);
+    }
+
+    private XMLHenvendelse lagSporsmalSkriftlig() {
+        return lagHenvendelse(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name())
+                .withMetadataListe(new XMLMetadataListe().withMetadata(new XMLMeldingFraBruker()
+                        .withFritekst("Jeg har et spørsmål")
+                        .withTemagruppe(TEMAGRUPPE.name())));
+    }
+
+    private XMLHenvendelse lagDelvisSvarSkriftlig() {
+        return lagHenvendelse(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name())
+                .withMetadataListe(new XMLMetadataListe().withMetadata(new XMLMeldingTilBruker()
+                        .withFritekst("Delvis svar til deg")
+                        .withTemagruppe(TEMAGRUPPE.name())));
+    }
+
+    private XMLHenvendelse lagHenvendelse(String type) {
+        return new XMLHenvendelse().withHenvendelseType(type)
+                .withBehandlingsId("id");
     }
 }
