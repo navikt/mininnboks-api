@@ -185,10 +185,17 @@ public abstract class HenvendelsesUtils {
     }
 
     private static String statusTekst(Henvendelse henvendelse) { //NOSONAR
+        if (!skalVisesTilBruker(henvendelse.type)) {
+            return "";
+        }
         String type = hentTemagruppeNavn(format("status.%s", henvendelse.type.name()));
         String temagruppe = hentTemagruppeNavn(henvendelse.temagruppe.name());
         return format(type, temagruppe);
 
+    }
+
+    private static boolean skalVisesTilBruker(Henvendelsetype type) {
+        return type != DELVIS_SVAR_SKRIFTLIG;
     }
 
 }
