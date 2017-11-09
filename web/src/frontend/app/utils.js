@@ -47,6 +47,18 @@ export function nyesteTraadForst(traad1, traad2) {
     return 0;
 }
 
+export function eldsteMeldingForst(melding1, melding2) {
+    const d1 = new Date(melding1.opprettet);
+    const d2 = new Date(melding2.opprettet);
+
+    if (d1 > d2) {
+        return 1;
+    } else if (d1 < d2) {
+        return -1;
+    }
+    return 0;
+}
+
 export const reduxFormProps = ({
     checked, name, onBlur, onChange, onDragStart, onDrop, onFocus, value
 }) => ({ checked, name, onBlur, onChange, onDragStart, onDrop, onFocus, value });

@@ -6,7 +6,7 @@ import SkrivKnapp from './skriv-knapp';
 import { STATUS } from './../ducks/utils';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Infopanel from './../infopanel/infopanel';
-import { markerTraadSomLest, sendSvar } from './../ducks/traader';
+import { markerTraadSomLest, sendSvar, selectTraaderMedSammenslatteMeldinger } from './../ducks/traader';
 import { visBesvarBoks, skjulBesvarBoks } from './../ducks/ui';
 import { connect } from 'react-redux';
 import { storeShape, traadShape } from './../proptype-shapes';
@@ -104,9 +104,12 @@ TraadVisning.propTypes = {
     routes: PT.array.isRequired
 };
 
-const mapStateToProps = ({ traader, ui }) => (
-    { traader, innsendingStatus: traader.innsendingStatus, skalViseBesvarBoks: ui.visBesvarBoks }
-);
+const mapStateToProps = (state) => ({
+    traader: selectTraaderMedSammenslatteMeldinger(state),
+    innsendingStatus: state.traader.innsendingStatus,
+    skalViseBesvarBoks: state.ui.visBesvarBoks
+});
+
 const mapDispatchToProps = (dispatch) => ({
     actions: {
         markerSomLest: (traadId) => dispatch(markerTraadSomLest(traadId)),
