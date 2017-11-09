@@ -8,6 +8,7 @@ import Breadcrumbs from '../brodsmulesti/custom-breadcrumbs';
 import VisibleIf from './../utils/hocs/visible-if';
 import { storeShape, traadShape } from './../proptype-shapes';
 import { Sidetittel } from 'nav-react-design/dist/tittel';
+import { selectTraaderMedSammenslatteMeldinger } from './../ducks/traader';
 
 
 const getTraadLister = (traader) => {
@@ -67,6 +68,7 @@ ListeVisning.propTypes = {
     location: PT.object.isRequired
 };
 
-const mapStateToProps = ({ traader }) => ({ traader });
-
+const mapStateToProps = state => ({
+    traader: selectTraaderMedSammenslatteMeldinger(state)
+});
 export default connect(mapStateToProps)(ListeVisning);
