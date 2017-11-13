@@ -1,4 +1,6 @@
 import * as Api from './../utils/api';
+import { MeldingsTyper } from '../utils/constants';
+import { eldsteMeldingForst } from './../utils';
 import { STATUS, doThenDispatch } from './utils';
 
 // Actions
@@ -96,4 +98,40 @@ export function markerBehandlingsIdSomLest(behandlingsId) {
         OK: MARKERT_SOM_LEST_OK,
         FEILET: MARKERT_SOM_LEST_FEILET
     });
+}
+
+
+// Selectors
+
+function erSkriftligSvar(melding) {
+    return melding.type === MeldingsTyper.SVAR_SKRIFTLIG;
+}
+
+function erDelvisSvar(melding) {
+    return melding.type === MeldingsTyper.DELVIS_SVAR;
+}
+
+function flettDelviseSvarInnISkriftligSvar(traad, delviseSvar) {
+    const skriftligeSvar = traad.meldinger.filter(erSkriftligSvar);
+    if (skriftligeSvar.length > 0) {
+        const avsluttendeSvar = skriftligeSvar.sort(eldsteMeldingForst)[0];
+        avsluttendeSvar.fritekst = delviseSvar.concat(avsluttendeSvar)
+            .map(melding => melding.fritekst)
+            .join(`\n${'\u2014'.repeat(20)}\n`);
+    }
+}
+
+function flettMeldingerITraad(traad) {
+    const delviseSvar = traad.meldinger.filter(erDelvisSvar);
+    if (delviseSvar.length > 0) {
+        flettDelviseSvarInnISkriftligSvar(traad, delviseSvar);
+    }
+
+    const sammenslaatTraad = traad;
+    sammenslaatTraad.meldinger = traad.meldinger.filter(melding => !erDelvisSvar(melding));
+    return sammenslaatTraad;
+}
+
+export function selectTraaderMedSammenslatteMeldinger(store) {
+    return { data: store.traader.data.map(flettMeldingerITraad) };
 }
