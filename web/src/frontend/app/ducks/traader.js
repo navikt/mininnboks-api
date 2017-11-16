@@ -115,9 +115,10 @@ function flettDelviseSvarInnISkriftligSvar(traad, delviseSvar) {
     const skriftligeSvar = traad.meldinger.filter(erSkriftligSvar);
     if (skriftligeSvar.length > 0) {
         const avsluttendeSvar = skriftligeSvar.sort(eldsteMeldingForst)[0];
+        const dobbeltLinjeskift = '\n\u00A0\n';
         avsluttendeSvar.fritekst = delviseSvar.concat(avsluttendeSvar)
             .map(melding => melding.fritekst)
-            .join(`\n${'\u2014'.repeat(20)}\n`);
+            .join(dobbeltLinjeskift);
     }
 }
 
