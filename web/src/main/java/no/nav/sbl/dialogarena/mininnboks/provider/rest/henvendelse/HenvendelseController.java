@@ -1,5 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
+import no.nav.metrics.MetricsFactory;
+import no.nav.metrics.Timer;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
@@ -43,7 +45,13 @@ public class HenvendelseController {
     @GET
     public List<Traad> hentTraader() {
         String fnr = getSubjectHandler().getUid();
+
+        Timer timer = MetricsFactory.createTimer("mininnboks.henttrader.responstid");
+        timer.start();
         List<Henvendelse> henvendelser = henvendelseService.hentAlleHenvendelser(fnr);
+        timer.stop();
+        timer.report();
+
         final Map<String, List<Henvendelse>> traader = henvendelser.stream()
                 .collect(groupingBy(henvendelse -> henvendelse.traadId));
 
@@ -88,7 +96,13 @@ public class HenvendelseController {
         Temagruppe temagruppe = Temagruppe.valueOf(sporsmal.temagruppe);
         Henvendelse henvendelse = new Henvendelse(sporsmal.fritekst, temagruppe);
 
+        MetricsFactory.createEvent("mininnboks.sendsporsmal").report();
+        Timer timer = MetricsFactory.createTimer("mininnboks.sendsporsmal.responstid");
+        timer.start();
+
         WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
+        timer.stop();
+        timer.report();
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
@@ -119,7 +133,13 @@ public class HenvendelseController {
         henvendelse.erTilknyttetAnsatt = traad.nyeste.erTilknyttetAnsatt;
         henvendelse.kontorsperreEnhet = traad.nyeste.kontorsperreEnhet;
 
+        MetricsFactory.createEvent("mininnboks.sendsvar").report();
+        Timer timer = MetricsFactory.createTimer("mininnboks.sendsvar.responstid");
+        timer.start();
+
         WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
+        timer.stop();
+        timer.report();
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
