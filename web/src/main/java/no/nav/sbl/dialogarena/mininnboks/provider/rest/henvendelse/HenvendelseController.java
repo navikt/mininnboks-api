@@ -97,12 +97,8 @@ public class HenvendelseController {
         Henvendelse henvendelse = new Henvendelse(sporsmal.fritekst, temagruppe);
 
         MetricsFactory.createEvent("mininnboks.sendsporsmal").report();
-        Timer timer = MetricsFactory.createTimer("mininnboks.sendsporsmal.responstid");
-        timer.start();
-
         WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
-        timer.stop();
-        timer.report();
+
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
@@ -134,12 +130,8 @@ public class HenvendelseController {
         henvendelse.kontorsperreEnhet = traad.nyeste.kontorsperreEnhet;
 
         MetricsFactory.createEvent("mininnboks.sendsvar").report();
-        Timer timer = MetricsFactory.createTimer("mininnboks.sendsvar.responstid");
-        timer.start();
-
         WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
-        timer.stop();
-        timer.report();
+
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
