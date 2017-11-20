@@ -45,12 +45,7 @@ public class HenvendelseController {
     @GET
     public List<Traad> hentTraader() {
         String fnr = getSubjectHandler().getUid();
-
-        Timer timer = MetricsFactory.createTimer("mininnboks.henttrader.responstid");
-        timer.start();
         List<Henvendelse> henvendelser = henvendelseService.hentAlleHenvendelser(fnr);
-        timer.stop();
-        timer.report();
 
         final Map<String, List<Henvendelse>> traader = henvendelser.stream()
                 .collect(groupingBy(henvendelse -> henvendelse.traadId));
