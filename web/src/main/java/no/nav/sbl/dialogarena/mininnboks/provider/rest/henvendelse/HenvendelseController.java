@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
+import no.nav.metrics.Event;
 import no.nav.metrics.MetricsFactory;
-import no.nav.metrics.Timer;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
@@ -91,7 +91,10 @@ public class HenvendelseController {
         Temagruppe temagruppe = Temagruppe.valueOf(sporsmal.temagruppe);
         Henvendelse henvendelse = new Henvendelse(sporsmal.fritekst, temagruppe);
 
-        MetricsFactory.createEvent("mininnboks.sendsporsmal").report();
+        Event metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmal");
+        metrikk.addTagToReport("tema",sporsmal.temagruppe);
+        metrikk.report();
+
         WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
 
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
@@ -124,7 +127,9 @@ public class HenvendelseController {
         henvendelse.erTilknyttetAnsatt = traad.nyeste.erTilknyttetAnsatt;
         henvendelse.kontorsperreEnhet = traad.nyeste.kontorsperreEnhet;
 
-        MetricsFactory.createEvent("mininnboks.sendsvar").report();
+        Event metrikk = MetricsFactory.createEvent("mininnboks.sendsvar");
+        metrikk.addTagToReport("tema", traad.nyeste.temaKode);
+        metrikk.report();
         WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
 
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
