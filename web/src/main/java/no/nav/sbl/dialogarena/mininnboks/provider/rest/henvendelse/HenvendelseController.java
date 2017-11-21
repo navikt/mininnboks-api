@@ -92,7 +92,7 @@ public class HenvendelseController {
         Henvendelse henvendelse = new Henvendelse(sporsmal.fritekst, temagruppe);
 
         Event metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmal");
-        metrikk.addTagToReport("tema",sporsmal.temagruppe);
+        metrikk.addTagToReport("tema", sporsmal.temagruppe);
         metrikk.report();
 
         WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
