@@ -29,6 +29,7 @@
             **/RestConfig.java
         </sonar.exclusions>
 
+        <metrics.version>3.2.1</metrics.version>
         <ehcache.version>2.6.11</ehcache.version>
     </properties>
 
@@ -38,6 +39,11 @@
                 <groupId>net.sf.ehcache</groupId>
                 <artifactId>ehcache-core</artifactId>
                 <version>${ehcache.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav</groupId>
+                <artifactId>metrics</artifactId>
+                <version>${metrics.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -97,7 +103,7 @@
             <plugin>
                 <groupId>no.nav.maven.plugins</groupId>
                 <artifactId>modig-scm-plugin</artifactId>
-                <version>1.1.9</version>
+                <version>1.1.10</version>
                 <reportSets>
                     <reportSet>
                         <reports>

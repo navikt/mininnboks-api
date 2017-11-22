@@ -4,6 +4,7 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendel
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
+import no.nav.metrics.MetricsFactory;
 import no.nav.sbl.dialogarena.common.cxf.CXFClient;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
@@ -22,15 +23,18 @@ public class HenvendelseServiceConfig {
     }
 
     private SendInnHenvendelsePortType sendInnHenvendelseSSO() {
-        return henvendelseCXF(SendInnHenvendelsePortType.class, "send.inn.henvendelse.ws.url", "classpath:SendInnHenvendelse.wsdl");
+        SendInnHenvendelsePortType factory = henvendelseCXF(SendInnHenvendelsePortType.class, "send.inn.henvendelse.ws.url", "classpath:SendInnHenvendelse.wsdl");
+        return MetricsFactory.createTimerProxyForWebService("SendInnHenvendelse", factory, SendInnHenvendelsePortType.class);
     }
 
     private HenvendelsePortType henvendelseSSO() {
-        return henvendelseCXF(HenvendelsePortType.class, "henvendelse.ws.url", "classpath:Henvendelse.wsdl");
+        HenvendelsePortType factory = henvendelseCXF(HenvendelsePortType.class, "henvendelse.ws.url", "classpath:Henvendelse.wsdl");
+        return MetricsFactory.createTimerProxyForWebService("Henvendelse", factory, HenvendelsePortType.class);
     }
 
     private InnsynHenvendelsePortType innsynHenvendelseSSO() {
-        return henvendelseCXF(InnsynHenvendelsePortType.class, "innsyn.henvendelse.ws.url", "classpath:InnsynHenvendelse.wsdl");
+        InnsynHenvendelsePortType factory = henvendelseCXF(InnsynHenvendelsePortType.class, "innsyn.henvendelse.ws.url", "classpath:InnsynHenvendelse.wsdl");
+        return MetricsFactory.createTimerProxyForWebService("InnsynHenvendelse", factory, InnsynHenvendelsePortType.class);
     }
 
     private <T> T henvendelseCXF(Class<T> serviceClass, String addressProperty, String wsdl) {
