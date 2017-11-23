@@ -45,6 +45,7 @@ public abstract class HenvendelsesUtils {
             put(XMLHenvendelseType.REFERAT_TELEFON, SAMTALEREFERAT_TELEFON);
             put(XMLHenvendelseType.DOKUMENT_VARSEL, DOKUMENT_VARSEL);
             put(XMLHenvendelseType.OPPGAVE_VARSEL, OPPGAVE_VARSEL);
+            put(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, DELVIS_SVAR_SKRIFTLIG);
         }
     };
 
@@ -184,10 +185,17 @@ public abstract class HenvendelsesUtils {
     }
 
     private static String statusTekst(Henvendelse henvendelse) { //NOSONAR
+        if (!skalVisesTilBruker(henvendelse.type)) {
+            return "";
+        }
         String type = hentTemagruppeNavn(format("status.%s", henvendelse.type.name()));
         String temagruppe = hentTemagruppeNavn(henvendelse.temagruppe.name());
         return format(type, temagruppe);
 
+    }
+
+    private static boolean skalVisesTilBruker(Henvendelsetype type) {
+        return type != DELVIS_SVAR_SKRIFTLIG;
     }
 
 }

@@ -12,5 +12,6 @@ public enum Henvendelsetype implements Serializable {
     SPORSMAL_MODIA_UTGAAENDE,
     SAMTALEREFERAT_TELEFON,
     DOKUMENT_VARSEL,
-    OPPGAVE_VARSEL
+    OPPGAVE_VARSEL,
+    DELVIS_SVAR_SKRIFTLIG
 }

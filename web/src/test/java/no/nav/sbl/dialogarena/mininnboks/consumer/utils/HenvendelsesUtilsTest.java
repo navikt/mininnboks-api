@@ -23,8 +23,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class HenvendelsesUtilsTest {
 
@@ -235,6 +234,15 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
+    public void transformererXmlHenvendelseSomDelviseSvar() {
+        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1);
+
+        Henvendelse henvendelse = tilHenvendelse(info);
+
+        assertThat(henvendelse.type, is(DELVIS_SVAR_SKRIFTLIG));
+    }
+
+    @Test
     public void returnererDefaultKeyHvisHentTekstKasterException() {
         String key = "nokkel";
         String defaultKey = "defaultKey";
@@ -245,6 +253,15 @@ public class HenvendelsesUtilsTest {
         String tekst = HenvendelsesUtils.hentTekst(tekstService, key, defaultKey);
 
         assertThat(tekst, is(defaultKey));
+    }
+
+    @Test
+    public void proverIkkeAaHenteStatusTekstForDelviseSvar() {
+        XMLHenvendelse henvendelse = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1);
+
+        HenvendelsesUtils.tilHenvendelse(henvendelse);
+
+        verify(tekstService, times(0)).hentTekst("status." + DELVIS_SVAR_SKRIFTLIG.name());
     }
 
     @Test
