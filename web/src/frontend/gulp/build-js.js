@@ -139,6 +139,5 @@ module.exports = {
     buildJsWatchify: (gulp) => buildJsWatchify(gulp),
     buildVendors: (gulp) => buildVendors(gulp),
     buildMoment: (gulp) => buildMoment(gulp),
-    buildJs: (gulp) => buildJs(gulp),
-    getFilename: (basename, extension) => getFilename(basename, extension)
+    buildJs: (gulp) => buildJs(gulp)
 };

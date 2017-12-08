@@ -1,7 +1,6 @@
 var gutil = require('gulp-util');
 
 const OUTPUT_DIRECTORY = require('./constants').OUTPUT_DIRECTORY;
-const getFilename = require('./build-js').getFilename;
 
 var isDevelopment = !!gutil.env.dev;
 var isProduction = !isDevelopment;
