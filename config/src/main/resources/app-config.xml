@@ -25,6 +25,7 @@
         <applicationCertificate alias="srvmininnboks"/>
 
         <credential alias="xsrf-credentials" mapToProperty="xsrf-credentials"/>
+        <credential alias="suspender"/>
 
         <webservice alias="domene.Brukerdialog:Henvendelse_v2" mapToProperty="henvendelse.ws"/>
         <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="diskresjonskode.ws"/>
@@ -52,6 +53,7 @@
     </security>
 
     <loadBalancer isAlive="/mininnboks/internal/isAlive" />
+    <!--<suspend url="/mininnboks/management/suspend" credential="suspender"/>-->
 
     <serverOptions>
         <memoryParameters resourceAlias="mininnboks-memparams"/>

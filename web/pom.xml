@@ -119,6 +119,10 @@
             <artifactId>common-types</artifactId>
             <version>${common-types.version}</version>
         </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>common-suspend</artifactId>
+        </dependency>
 
         <!--Modig-->
         <dependency>

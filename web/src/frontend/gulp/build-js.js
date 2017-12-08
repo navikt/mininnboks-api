@@ -33,7 +33,9 @@ function bundle(gulp, bundle, bundleFileName) {
     const source = require('vinyl-source-stream');
     const streamify = require('gulp-streamify');
     const replace = require('gulp-replace');
+    var rename = require('gulp-rename');
     const gutil = require('gulp-util');
+    var splitBundleFileName = bundleFileName.split(".");
 
     return bundle
         .bundle()
@@ -48,6 +50,7 @@ function bundle(gulp, bundle, bundleFileName) {
             onError(error);
             process.exit(1);
         })
+        .pipe(rename(getFilename(splitBundleFileName[0], splitBundleFileName[1])))
         .pipe(gulp.dest(OUTPUT_DIRECTORY + 'js/'));
 }
 
@@ -128,9 +131,14 @@ function buildJsWatchify(gulp) {
     };
 }
 
+function getFilename(basename, extension) {
+    return basename + "." + extension;
+}
+
 module.exports = {
     buildJsWatchify: (gulp) => buildJsWatchify(gulp),
     buildVendors: (gulp) => buildVendors(gulp),
     buildMoment: (gulp) => buildMoment(gulp),
-    buildJs: (gulp) => buildJs(gulp)
+    buildJs: (gulp) => buildJs(gulp),
+    getFilename: (basename, extension) => getFilename(basename, extension)
 };
