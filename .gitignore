@@ -17,6 +17,7 @@ target
 **/npm-debug.log
 
 npm-debug.log
+web/src/frontend/package-lock.json
 
 .classpath
 .project
