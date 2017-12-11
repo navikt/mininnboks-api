@@ -33,6 +33,7 @@
         "gulp-if": "2.0.1",
         "gulp-less": "3.1.0",
         "gulp-mocha": "3.0.1",
+        "gulp-rename": "^1.2.2",
         "gulp-replace": "0.5.4",
         "gulp-streamify": "1.0.2",
         "gulp-uglify": "2.0.0",
@@ -59,7 +60,6 @@
     },
     "dependencies": {
         "classnames": "2.2.5",
-        "gulp-rename": "^1.2.2",
         "history": "2.0.1",
         "intl": "1.2.5",
         "jquery": "2.1.4",
