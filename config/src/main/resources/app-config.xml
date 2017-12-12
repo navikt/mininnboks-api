@@ -53,7 +53,7 @@
     </security>
 
     <loadBalancer isAlive="/mininnboks/internal/isAlive" />
-    <suspend url="/mininnboks/management/suspend" credential="suspender" timeoutSeconds="25"/>
+    <!--<suspend url="/mininnboks/management/suspend" credential="suspender" timeoutSeconds="25"/>-->
 
     <serverOptions>
         <memoryParameters resourceAlias="mininnboks-memparams"/>
