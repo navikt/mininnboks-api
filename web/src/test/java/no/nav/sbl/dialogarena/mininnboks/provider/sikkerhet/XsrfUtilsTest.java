@@ -11,9 +11,9 @@ import javax.servlet.http.HttpSession;
 
 import static java.lang.System.setProperty;
 import static no.nav.modig.core.context.SubjectHandler.SUBJECTHANDLER_KEY;
+import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.sbl.dialogarena.mininnboks.provider.sikkerhet.XsrfUtils.*;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class XsrfUtilsTest {
@@ -24,40 +24,21 @@ public class XsrfUtilsTest {
         setProperty("xsrf-credentials.password", "123_temp_password");
     }
 
-    @Test
-    public void lagrerUuidPaaSessionVedGenerering() {
-        HttpSession httpSession = new MockHttpSession();
-
-        genererXsrfToken(httpSession);
-
-        assertThat(httpSession.getAttribute(SESSION_UUID_ID), is(not(nullValue())));
-    }
-
-    @Test
-    public void lagrerIkkeNyUuidPaaSessionHvisEnAlleredeEksisterer() {
-        HttpSession httpSession = new MockHttpSession();
-
-        genererXsrfToken(httpSession);
-        String uuid = (String) httpSession.getAttribute(SESSION_UUID_ID);
-        genererXsrfToken(httpSession);
-
-        assertThat((String) httpSession.getAttribute(SESSION_UUID_ID), is(equalTo(uuid)));
-    }
-
     @Test(expected = AuthorizationException.class)
     public void throwsHvisFeilToken() {
-        HttpSession httpSession = new MockHttpSession();
+        String fnr = getSubjectHandler().getUid();
 
-        sjekkXsrfToken("bogus", httpSession);
+        sjekkXsrfToken("bogus", fnr);
     }
 
     @Test
     public void lagerCookieFraEksisterendeToken() {
         HttpSession httpSession = new MockHttpSession();
+        String fnr = getSubjectHandler().getUid();
 
-        String xsrfToken = genererXsrfToken(httpSession);
+        String xsrfToken = genererXsrfToken(fnr);
 
-        Cookie cookie = xsrfCookie(httpSession);
+        Cookie cookie = xsrfCookie(fnr, httpSession);
 
         assertThat(cookie.getValue(), is(equalTo(xsrfToken)));
     }
@@ -65,8 +46,9 @@ public class XsrfUtilsTest {
     @Test
     public void lagerCookieMedKorrekteVerdier() {
         HttpSession httpSession = new MockHttpSession();
+        String fnr = getSubjectHandler().getUid();
 
-        Cookie cookie = xsrfCookie(httpSession);
+        Cookie cookie = xsrfCookie(fnr, httpSession);
 
         assertThat(cookie.getSecure(), is(true));
         assertThat(cookie.getMaxAge(), is(-1));

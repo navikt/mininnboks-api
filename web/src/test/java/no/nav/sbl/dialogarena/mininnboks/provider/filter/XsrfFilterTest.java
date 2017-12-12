@@ -15,6 +15,7 @@ import java.io.IOException;
 import static java.lang.System.setProperty;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static no.nav.modig.core.context.SubjectHandler.SUBJECTHANDLER_KEY;
+import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.sbl.dialogarena.mininnboks.provider.sikkerhet.XsrfUtils.genererXsrfToken;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -44,8 +45,9 @@ public class XsrfFilterTest {
     @Test
     public void godkjennerGyldigHeaderVedPOST() throws IOException, ServletException {
         MockHttpSession httpSession = new MockHttpSession();
+        String fnr = getSubjectHandler().getUid();
 
-        String xsrfToken = genererXsrfToken(httpSession);
+        String xsrfToken = genererXsrfToken(fnr);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setMethod("POST");
