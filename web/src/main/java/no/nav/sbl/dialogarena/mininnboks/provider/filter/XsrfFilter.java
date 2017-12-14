@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
 import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.sbl.dialogarena.mininnboks.provider.sikkerhet.XsrfUtils.sjekkXsrfToken;
 import static no.nav.sbl.dialogarena.mininnboks.provider.sikkerhet.XsrfUtils.xsrfCookie;
@@ -31,6 +32,8 @@ public class XsrfFilter implements Filter {
             case "POST":
                 sjekkToken(request, response, chain, httpRequest, httpResponse);
                 break;
+            default:
+                httpResponse.sendError(SC_METHOD_NOT_ALLOWED);
         }
     }
 
