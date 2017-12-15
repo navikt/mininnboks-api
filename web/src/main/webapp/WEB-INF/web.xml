@@ -40,6 +40,15 @@
     </context-param>
 
     <filter>
+        <filter-name>basicAuthenticationFilter</filter-name>
+        <filter-class>no.nav.sbl.dialogarena.common.suspend.BasicAuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>basicAuthenticationFilter</filter-name>
+        <url-pattern>/management/suspend</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>HttpSessionSecurityIntegrationFilter</filter-name>
         <filter-class>no.nav.modig.security.filter.OpenAMLoginFilter</filter-class>
     </filter>
@@ -105,7 +114,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>isAlive</servlet-name>
-        <servlet-class>no.nav.sbl.dialogarena.mininnboks.servlet.IsAliveServlet</servlet-class>
+        <servlet-class>no.nav.sbl.dialogarena.common.suspend.IsAliveServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>isAlive</servlet-name>
@@ -144,6 +153,15 @@
     <servlet-mapping>
         <servlet-name>reactapp</servlet-name>
         <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>suspend</servlet-name>
+        <servlet-class>no.nav.sbl.dialogarena.common.suspend.SuspendServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>suspend</servlet-name>
+        <url-pattern>/management/suspend</url-pattern>
     </servlet-mapping>
 
 </web-app>
