@@ -32,8 +32,6 @@ public class XsrfFilter implements Filter {
             case "POST":
                 sjekkToken(request, response, chain, httpRequest, httpResponse);
                 break;
-            default:
-                httpResponse.sendError(SC_METHOD_NOT_ALLOWED);
         }
     }
 
