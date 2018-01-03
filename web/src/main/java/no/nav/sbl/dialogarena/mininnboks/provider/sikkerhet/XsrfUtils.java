@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks.provider.sikkerhet;
 import no.nav.modig.core.context.SubjectHandler;
 import no.nav.modig.core.exception.AuthorizationException;
 import org.apache.commons.codec.binary.Base64;
+import org.joda.time.DateTime;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -10,27 +11,21 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.UUID;
 
 import static java.lang.System.getProperty;
-import static java.util.Optional.ofNullable;
 
 /**
  * Klasse som håndterer XSRF tokens
  */
 public class XsrfUtils {
 
-    public static final String SESSION_UUID_ID = "xsrfuuid";
-
-    public static String genererXsrfToken(HttpSession session) {
-        String sessionUUID = (String) ofNullable(session.getAttribute(SESSION_UUID_ID)).orElse(UUID.randomUUID().toString());
-        session.setAttribute(SESSION_UUID_ID, sessionUUID);
-        return genererXsrfToken(sessionUUID);
+    public static String genererXsrfToken(String fnr) {
+        return genererXsrfToken(fnr, new DateTime().toString("yyyyMMdd"));
     }
 
-    private static String genererXsrfToken(String sessionUUID) {
+    private static String genererXsrfToken(String fnr, String dato) {
         try {
-            String signKey = SubjectHandler.getSubjectHandler().getEksternSsoToken() + sessionUUID;
+            String signKey = SubjectHandler.getSubjectHandler().getEksternSsoToken() + fnr + dato;
             Mac hmac = Mac.getInstance("HmacSHA256");
             SecretKeySpec secretKey = new SecretKeySpec(hentXsrfPassord().getBytes(), "HmacSHA256");
             hmac.init(secretKey);
@@ -40,15 +35,16 @@ public class XsrfUtils {
         }
     }
 
-    public static void sjekkXsrfToken(String givenToken, HttpSession session) {
-        String token = genererXsrfToken((String) session.getAttribute(SESSION_UUID_ID));
-        if (!token.equals(givenToken)) {
+    public static void sjekkXsrfToken(String givenToken, String fnr) {
+        String token = genererXsrfToken(fnr);
+        boolean valid = token.equals(givenToken) || genererXsrfToken(fnr, new DateTime().minusDays(1).toString("yyyyMMdd")).equals(givenToken);
+        if (!valid) {
             throw new AuthorizationException("XSRF sjekk feilet: Feil token");
         }
     }
 
-    public static Cookie xsrfCookie(HttpSession session) {
-        Cookie xsrfCookie = new Cookie("XSRF-TOKEN-MININNBOKS", genererXsrfToken(session));
+    public static Cookie xsrfCookie(String fnr, HttpSession session) {
+        Cookie xsrfCookie = new Cookie("XSRF-TOKEN-MININNBOKS", genererXsrfToken(fnr));
         xsrfCookie.setPath(session.getServletContext().getContextPath());
         xsrfCookie.setMaxAge(-1);
         xsrfCookie.setSecure(true);
@@ -56,6 +52,6 @@ public class XsrfUtils {
     }
 
     private static String hentXsrfPassord() {
-            return getProperty("xsrf-credentials.password");
+        return getProperty("xsrf-credentials.password");
     }
 }

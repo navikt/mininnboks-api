@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
+import static no.nav.modig.core.context.SubjectHandler.getSubjectHandler;
 import static no.nav.sbl.dialogarena.mininnboks.provider.sikkerhet.XsrfUtils.sjekkXsrfToken;
 import static no.nav.sbl.dialogarena.mininnboks.provider.sikkerhet.XsrfUtils.xsrfCookie;
 
@@ -24,7 +26,7 @@ public class XsrfFilter implements Filter {
 
         switch (httpRequest.getMethod()) {
             case "GET":
-                httpResponse.addCookie(xsrfCookie(httpRequest.getSession()));
+                httpResponse.addCookie(xsrfCookie(getFnr(), httpRequest.getSession()));
                 chain.doFilter(request, response);
                 break;
             case "POST":
@@ -38,11 +40,15 @@ public class XsrfFilter implements Filter {
             throws IOException, ServletException {
 
         try {
-            sjekkXsrfToken(httpRequest.getHeader("X-XSRF-TOKEN"), httpRequest.getSession());
+            sjekkXsrfToken(httpRequest.getHeader("X-XSRF-TOKEN"), getFnr());
             chain.doFilter(request, response);
         } catch (AuthorizationException e) {
             httpResponse.sendError(SC_UNAUTHORIZED, e.getMessage());
         }
+    }
+
+    private String getFnr(){
+        return getSubjectHandler().getUid();
     }
 
     @Override
