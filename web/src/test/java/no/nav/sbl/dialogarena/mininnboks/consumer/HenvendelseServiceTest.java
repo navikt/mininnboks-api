@@ -9,10 +9,16 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.Sen
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseRequest;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.*;
-import org.junit.*;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentBehandlingskjedeResponse;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest;
+import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeResponse;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -20,8 +26,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Optional.of;
-import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SPORSMAL_SKRIFTLIG;
-import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.SVAR_SBL_INNGAAENDE;
+import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService.Default.KONTAKT_NAV_SAKSTEMA;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -161,15 +166,28 @@ public class HenvendelseServiceTest {
     }
 
     @Test
-    public void hentTraadSomInneholderDelviseSvar() {
+    public void hentTraadSomInneholderDelsvar() {
+        when(henvendelsePortType.hentBehandlingskjede(any()))
+                .thenReturn(new WSHentBehandlingskjedeResponse().withAny(mockBehandlingskjedeMedDelsvar()));
+
+        henvendelseService.hentTraad(TRAAD_ID);
+    }
+
+    @Test
+    public void hentAlleHenvendelserHenterDelsvar() {
+        ArgumentCaptor<WSHentHenvendelseListeRequest> argumentCaptor = ArgumentCaptor.forClass(WSHentHenvendelseListeRequest.class);
+        when(henvendelsePortType.hentHenvendelseListe(argumentCaptor.capture())).thenReturn(new WSHentHenvendelseListeResponse());
+
+        henvendelseService.hentAlleHenvendelser(FNR);
+
+        assertThat(argumentCaptor.getValue().getTyper(), hasItem(DELVIS_SVAR_SKRIFTLIG.name()));
+    }
+
+    private List<Object> mockBehandlingskjedeMedDelsvar() {
         List<Object> henvendelseListe = new ArrayList<>();
         henvendelseListe.add(lagSporsmalSkriftlig());
         henvendelseListe.add(lagDelvisSvarSkriftlig());
-
-        when(henvendelsePortType.hentBehandlingskjede(any()))
-                .thenReturn(new WSHentBehandlingskjedeResponse().withAny(henvendelseListe));
-
-        henvendelseService.hentTraad(TRAAD_ID);
+        return henvendelseListe;
     }
 
     private XMLHenvendelse lagSporsmalSkriftlig() {
