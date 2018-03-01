@@ -131,7 +131,8 @@ public interface HenvendelseService {
                     SPORSMAL_MODIA_UTGAAENDE.name(),
                     SVAR_SBL_INNGAAENDE.name(),
                     DOKUMENT_VARSEL.name(),
-                    OPPGAVE_VARSEL.name());
+                    OPPGAVE_VARSEL.name(),
+                    DELVIS_SVAR_SKRIFTLIG.name());
 
             Stream<XMLHenvendelse> wsHenvendelser = henvendelsePortType.hentHenvendelseListe(
                     new WSHentHenvendelseListeRequest()
