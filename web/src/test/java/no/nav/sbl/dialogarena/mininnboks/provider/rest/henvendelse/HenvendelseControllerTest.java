@@ -7,6 +7,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController.NyHenvendelseResultat;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,9 @@ import org.mockito.stubbing.Answer;
 
 import javax.ws.rs.core.Response;
 import javax.xml.ws.soap.SOAPFaultException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
@@ -87,6 +90,25 @@ public class HenvendelseControllerTest {
     public void henterUtAlleHenvendelserOgGjorOmTilTraader() throws Exception {
         List<Traad> traader = controller.hentTraader();
         assertThat(traader.size(), is(3));
+    }
+
+    @Test
+    public void filtrererBortUavsluttedeDelsvar() {
+        when(service.hentAlleHenvendelser(anyString())).thenReturn(mockBehandlingskjedeMedDelsvar());
+
+        List<Traad> traader = controller.hentTraader();
+        Optional<Henvendelse> delsvar = traader.get(0).meldinger.stream()
+                    .filter(henvendelse -> henvendelse.type == Henvendelsetype.DELVIS_SVAR_SKRIFTLIG)
+                    .findAny();
+
+        assertThat(delsvar.isPresent(), is(false));
+    }
+
+    private List<Henvendelse> mockBehandlingskjedeMedDelsvar() {
+        return Arrays.asList(
+                new Henvendelse("123").withType(Henvendelsetype.SPORSMAL_SKRIFTLIG).withTraadId("1").withOpprettetTid(DateTime.now()),
+                new Henvendelse("234").withType(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG).withTraadId("1").withOpprettetTid(DateTime.now())
+        );
     }
 
     @Test
