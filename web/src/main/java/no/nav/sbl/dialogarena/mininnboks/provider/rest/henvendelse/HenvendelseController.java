@@ -51,17 +51,36 @@ public class HenvendelseController {
                 .collect(groupingBy(henvendelse -> henvendelse.traadId));
 
         return traader.values().stream()
-                .map(henvendelse -> new Traad(henvendelse))
+                .map(this::filtrerDelsvar)
+                .map(Traad::new)
                 .sorted(NYESTE_FORST)
                 .collect(Collectors.toList());
+    }
+
+    private List<Henvendelse> filtrerDelsvar(List<Henvendelse> traad) {
+        if (traadHarIkkeSkriftligSvarFraNAV(traad)) {
+            return traad.stream()
+                    .filter(henvendelse -> henvendelse.type != Henvendelsetype.DELVIS_SVAR_SKRIFTLIG)
+                    .collect(Collectors.toList());
+        }
+        return traad;
+    }
+
+    private boolean traadHarIkkeSkriftligSvarFraNAV(List<Henvendelse> traad) {
+        Optional<Henvendelse> skriftligSvarFraNAV = traad.stream()
+                .filter(henvendelse -> henvendelse.type == Henvendelsetype.SVAR_SKRIFTLIG)
+                .findAny();
+        return !skriftligSvarFraNAV.isPresent();
     }
 
     @GET
     @Path("/{id}")
     public Response hentEnkeltTraad(@PathParam("id") String id) {
-        Optional<Traad> traad = hentTraad(id);
-        if (traad.isPresent()) {
-            return ok(traad.get()).build();
+        Optional<Traad> optionalTraad = hentTraad(id);
+        if (optionalTraad.isPresent()) {
+            Traad traad = optionalTraad.get();
+            Traad filtrertTraad = new Traad(filtrerDelsvar(traad.meldinger));
+            return ok(filtrertTraad).build();
         } else {
             return status(NOT_FOUND.getStatusCode()).build();
         }

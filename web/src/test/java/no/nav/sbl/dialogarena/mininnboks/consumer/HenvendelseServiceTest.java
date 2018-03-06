@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
