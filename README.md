@@ -19,6 +19,7 @@ npm config set strict-ssl false
 
 * Alternativt og anbefalt, kan du installere gulp globalt (`npm install gulp -g`) og så kjøre `npm install && gulp` fra /web.
 
+* Hent ned [mininnboks-tekster](http://stash.devillo.no/projects/TEKST/repos/mininnboks-tekster/browse) og følg instruksjonene i README.
 ## Utvikling
 
 * Under utvikling kjøres `gulp dev` fra web-katalogen (/web). Forandringer i koden vil da automatisk bli bygd inn og lagt i `target` mappen.
