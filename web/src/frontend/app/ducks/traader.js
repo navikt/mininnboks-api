@@ -116,7 +116,9 @@ function flettDelviseSvarInnISkriftligSvar(traad, delviseSvar) {
     if (skriftligeSvar.length > 0) {
         const avsluttendeSvar = skriftligeSvar.sort(eldsteMeldingForst)[0];
         const dobbeltLinjeskift = '\n\u00A0\n';
-        avsluttendeSvar.fritekst = delviseSvar.concat(avsluttendeSvar)
+
+        const sorterteDelsvar = delviseSvar.sort(eldsteMeldingForst);
+        avsluttendeSvar.fritekst = sorterteDelsvar.concat(avsluttendeSvar)
             .map(melding => melding.fritekst)
             .join(dobbeltLinjeskift);
     }

@@ -41,6 +41,9 @@ public class HenvendelseMockContext {
         addAll(lagBehandlingskjede(OVRG, DateTime.now().minusDays(4), SPORSMAL_MODIA_UTGAAENDE));
         addAll(lagBehandlingskjede(FMLI, DateTime.now().minusDays(3), SPORSMAL_SKRIFTLIG));
         addAll(lagBehandlingskjede(PENS, DateTime.now().minusDays(4), SPORSMAL_SKRIFTLIG, SVAR_SKRIFTLIG, SPORSMAL_MODIA_UTGAAENDE, SVAR_SBL_INNGAAENDE, SVAR_SKRIFTLIG));
+
+        addAll(lagBehandlingskjedeForDelsvar(PENS, DateTime.now().minusDays(10)));
+
         addAll(lagBehandlingskjede(HJLPM, DateTime.now().minusWeeks(2), REFERAT_OPPMOTE));
         addAll(lagBehandlingskjede(ARBD, DateTime.now().minusMonths(1), SPORSMAL_MODIA_UTGAAENDE, SVAR_SBL_INNGAAENDE));
         addAll(lagBehandlingskjede(BIL, DateTime.now().minusMonths(6), true, SPORSMAL_SKRIFTLIG, SVAR_SKRIFTLIG, SVAR_SKRIFTLIG));
@@ -173,6 +176,19 @@ public class HenvendelseMockContext {
         }
         return traad;
     }
+
+    private static List<XMLHenvendelse> lagBehandlingskjedeForDelsvar(Temagruppe tema, DateTime dato) {
+        Integer behandlingskjedeId = nextId();
+        List<XMLHenvendelse> traad = new ArrayList<>();
+
+        traad.add(lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, SPORSMAL_SKRIFTLIG, tema, dato, false));
+        traad.add(lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, DELVIS_SVAR_SKRIFTLIG, tema, dato.plusDays(1), false);
+        traad.add(lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, DELVIS_SVAR_SKRIFTLIG, tema, dato.plusDays(2), false);
+        lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, SVAR_SKRIFTLIG, tema, dato.plusDays(3), false);
+
+        return traad;
+    }
+
 
     private static XMLHenvendelse lagHenvendelse(Integer behandlingsId, Integer behandlingskjedeId, XMLHenvendelseType type, final Temagruppe tema, DateTime opprettet, Boolean kassert) {
         final String tekst = (int) ((Math.random() * 1000)) + halvpartenEllerMer(LOREM);
