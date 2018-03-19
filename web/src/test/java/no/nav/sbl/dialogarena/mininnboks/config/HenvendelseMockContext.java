@@ -182,9 +182,9 @@ public class HenvendelseMockContext {
         List<XMLHenvendelse> traad = new ArrayList<>();
 
         traad.add(lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, SPORSMAL_SKRIFTLIG, tema, dato, false));
-        traad.add(lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, DELVIS_SVAR_SKRIFTLIG, tema, dato.plusDays(1), false);
-        traad.add(lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, DELVIS_SVAR_SKRIFTLIG, tema, dato.plusDays(2), false);
-        lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, SVAR_SKRIFTLIG, tema, dato.plusDays(3), false);
+        traad.add(lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, DELVIS_SVAR_SKRIFTLIG, tema, dato.plusDays(1), false));
+        traad.add(lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, DELVIS_SVAR_SKRIFTLIG, tema, dato.plusDays(2), false));
+        traad.add(lagHenvendelse(behandlingskjedeId + 1, behandlingskjedeId, SVAR_SKRIFTLIG, tema, dato.plusDays(3), false));
 
         return traad;
     }
