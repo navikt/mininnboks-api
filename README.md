@@ -3,15 +3,15 @@ Mininnboks
 
 ## Forberedelser for å kjøre
 
-* Installer node.js, finnes på *F:\F2990\Felles Filer\3 Forvaltningsseksjonen\3.4 Kontor for brukerdialog\Portaler og SBL forvaltning\7. Teknisk\Programmer\nodejs*. Ikke benytt nyeste versjon, men hold deg til 0.10.*-versjoner - det bygger iallefall OK  med v0.10.17 og v0.10.26.
+* Installer node.js, finnes på *F:\F2990\Felles Filer\3 Forvaltningsseksjonen\3.4 Kontor for brukerdialog\Portaler og SBL forvaltning\7. Teknisk\Programmer\nodejs*. Benytt siste versjon.
 
-* Kjør følgende kommandoer i en terminal, (2a, 2b, 2c, 2d fra [denne confluence siden](http://confluence.adeo.no/display/AURA/Karma)):
+* Sett følgende i .npmrc filen din
 
 ```
-npm config set https-proxy "https://155.55.60.117:8088"
-npm config set proxy "http://155.55.60.117:8088/"
-npm config set registry "http://registry.npmjs.org/"
-npm config set strict-ssl false
+http.http://stash.devillo.no.proxy=
+registry=http://maven.adeo.no/nexus/content/groups/npm-all/
+strict-ssl=false
+url.https://.insteadof=git://
 ```
 
 
