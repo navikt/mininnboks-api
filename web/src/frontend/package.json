@@ -65,7 +65,7 @@
         "jquery": "2.1.4",
         "keymirror": "0.1.1",
         "lodash.mapvalues": "4.6.0",
-        "nav-logger": "1.0.4",
+        "nav-logger": "1.0.5",
         "nav-react-design": "0.1.4",
         "react": "15.3.2",
         "react-aria-modal": "2.3.1",
