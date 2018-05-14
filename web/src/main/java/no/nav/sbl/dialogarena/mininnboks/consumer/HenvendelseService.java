@@ -20,6 +20,7 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType.*;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
+import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.fjernHardeMellomrom;
 import static org.joda.time.DateTime.now;
 
 public interface HenvendelseService {
@@ -59,6 +60,7 @@ public interface HenvendelseService {
         public WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer) {
             String xmlHenvendelseType = SPORSMAL_SKRIFTLIG.name();
             String enhet = personService.hentEnhet().orElse(null);
+            String sporsmaltekst = cleanOutHtml(fjernHardeMellomrom(henvendelse.fritekst));
             XMLHenvendelse info =
                     new XMLHenvendelse()
                             .withHenvendelseType(xmlHenvendelseType)
@@ -70,7 +72,7 @@ public interface HenvendelseService {
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(henvendelse.temagruppe.name())
-                                            .withFritekst(cleanOutHtml(henvendelse.fritekst))));
+                                            .withFritekst(sporsmaltekst)));
             return sendInnHenvendelsePortType.sendInnHenvendelse(
                     new WSSendInnHenvendelseRequest()
                             .withType(xmlHenvendelseType)
@@ -81,6 +83,7 @@ public interface HenvendelseService {
         @Override
         public WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String fodselsnummer) {
             String xmlHenvendelseType = SVAR_SBL_INNGAAENDE.name();
+            String svartekst = cleanOutHtml(fjernHardeMellomrom(henvendelse.fritekst));
             XMLHenvendelse info =
                     new XMLHenvendelse()
                             .withHenvendelseType(xmlHenvendelseType)
@@ -96,7 +99,7 @@ public interface HenvendelseService {
                             .withMetadataListe(new XMLMetadataListe().withMetadata(
                                     new XMLMeldingFraBruker()
                                             .withTemagruppe(henvendelse.temagruppe.name())
-                                            .withFritekst(cleanOutHtml(henvendelse.fritekst))));
+                                            .withFritekst(svartekst)));
             return sendInnHenvendelsePortType.sendInnHenvendelse(
                     new WSSendInnHenvendelseRequest()
                             .withType(xmlHenvendelseType)
