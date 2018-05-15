@@ -184,6 +184,10 @@ public abstract class HenvendelsesUtils {
         return StringEscapeUtils.unescapeHtml4(clean).replaceAll(LINE_REPLACEMENT_STRING, LINE_BREAK);
     }
 
+    public static String fjernHardeMellomrom(String tekst) {
+        return tekst.replaceAll("[\\u00a0\\u2007\\u202f]", " ");
+    }
+
     private static String statusTekst(Henvendelse henvendelse) { //NOSONAR
         if (!skalVisesTilBruker(henvendelse.type)) {
             return "";
