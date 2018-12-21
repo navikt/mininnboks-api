@@ -1,124 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>no.nav.sbl</groupId>
+        <groupId>no.nav.common</groupId>
         <artifactId>mor-pom</artifactId>
-        <version>3.2</version>
+        <version>2018.12.19.19.00</version>
     </parent>
-
-    <name>Dialogarena - mininnboks</name>
-    <groupId>no.nav.sbl.dialogarena</groupId>
-    <artifactId>mininnboks</artifactId>
-    <version>7.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>config</module>
-        <module>web</module>
-        <module>jee</module>
-    </modules>
+    <artifactId>mininnboks-api</artifactId>
+    <version>1</version>
+    <packaging>war</packaging>
 
     <properties>
-        <sonar.exclusions>
-            **/config/**,
-            **/servlet/**,
-            **/DateTimeObjectMapperProvider.java,
-            **/RestConfig.java
-        </sonar.exclusions>
 
-        <metrics.version>3.2.1</metrics.version>
-        <ehcache.version>2.6.11</ehcache.version>
+        <!-- Tjenester -->
+        <dialogarena-behandlingsinformasjon.version>1.4.0</dialogarena-behandlingsinformasjon.version>
+        <henvendelse-informasjon-v2.version>0.7</henvendelse-informasjon-v2.version>
+        <send-inn-henvendelse.version>0.3</send-inn-henvendelse.version>
+        <brukerprofil-v3-tjenestespesifikasjon.version>3.0.3</brukerprofil-v3-tjenestespesifikasjon.version>
+        <innsyn-henvendelse.version>0.3</innsyn-henvendelse.version>
+
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>net.sf.ehcache</groupId>
-                <artifactId>ehcache-core</artifactId>
-                <version>${ehcache.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav</groupId>
-                <artifactId>metrics</artifactId>
-                <version>${metrics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>common-suspend</artifactId>
-                <version>1.0.7</version>
-                <scope>runtime</scope>
+                <groupId>no.nav.common</groupId>
+                <artifactId>bom</artifactId>
+                <version>2018.12.19.19.00</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>no.nav.common</groupId>
+            <artifactId>api-app</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl</groupId>
+            <artifactId>utave</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!--Dialogarena tjenestespesifikasjon-->
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>dialogarena-behandlingsinformasjon</artifactId>
+            <version>${dialogarena-behandlingsinformasjon.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>henvendelse-informasjon-v2</artifactId>
+            <version>${henvendelse-informasjon-v2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>send-inn-henvendelse</artifactId>
+            <version>${send-inn-henvendelse.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>innsyn-henvendelse</artifactId>
+            <version>${innsyn-henvendelse.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl</groupId>
+            <artifactId>brukerprofil-v3-tjenestespesifikasjon</artifactId>
+            <version>${brukerprofil-v3-tjenestespesifikasjon.version}</version>
+        </dependency>
+
+        <!-- test -->
+        <dependency>
+            <groupId>no.nav.common</groupId>
+            <artifactId>test-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.common</groupId>
+            <artifactId>auth</artifactId>
+            <type>test-jar</type>
+        </dependency>
+
+    </dependencies>
+
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>no.nav.maven.plugins</groupId>
-                    <artifactId>modig-scm-plugin</artifactId>
-                    <version>1.1.10</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
-        <plugins>
-            <plugin>
-                <groupId>no.nav.maven.plugins</groupId>
-                <artifactId>modig-scm-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>Check illegal or unwanted dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>failon-unwanted-dependencies</goal>
-                            <goal>report-unapproved-dependencies</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-content-maven-plugin</artifactId>
-                <version>2.1.0</version>
-                <configuration>
-                    <propertiesFilesRoot>${project.basedir}/web/src/main/resources/content</propertiesFilesRoot>
-                    <propertiesFiler>
-                        <mininnboksnb>mininnboks_nb_NO.properties</mininnboksnb>
-                    </propertiesFiler>
-                    <menyPunktUrler>
-                        <mininnboksnb>/site/18/app/mininnboks/nb/tekster</mininnboksnb>
-                    </menyPunktUrler>
-                </configuration>
-            </plugin>
-        </plugins>
-
+        <finalName>mininnboks-api</finalName>
     </build>
-
-    <scm>
-        <developerConnection>scm:git:http://stash.devillo.no/scm/sbl/mininnboks.git</developerConnection>
-        <url>http://stash.devillo.no:7990/projects/SBL/repos/mininnboks/browse</url>
-		<tag>HEAD</tag>
-	</scm>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>no.nav.maven.plugins</groupId>
-                <artifactId>modig-scm-plugin</artifactId>
-                <version>1.1.10</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>generate-jira-changes</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
 
 </project>
