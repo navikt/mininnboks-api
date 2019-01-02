@@ -1,0 +1,15 @@
+Sjekk formattering:
+\\\\\\\\\\\\\\\\
+
+feilmelding.journalfortannettema.tekst
+dokumentvisning.kontakt.nav.link
+feilmelding.sikkerhetsbegrensning.tekst
+
+
+Sjekk med Tone:
+\\\\\\\\\\\\\\\\
+oppgave.nysykemelding
+oppgave.nysykemelding.fritekst
+
+
+ - Mangler dittnav.link i dagens versjon? (frontenden ser ut til å forvente denne)

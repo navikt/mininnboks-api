@@ -1,8 +1,0 @@
-https://${DomainName}/mininnboks/js/*
-https://${DomainName}/mininnboks/css/*
-https://${DomainName}/mininnboks/img/*
-https://${DomainName}/mininnboks/internal/selftest*
-https://${DomainName}/mininnboks/internal/isAlive*
-https://${DomainName}/mininnboks/*.js
-https://${DomainName}/mininnboks/build/js/*
-https://${DomainName}/mininnboks/build/css/*
