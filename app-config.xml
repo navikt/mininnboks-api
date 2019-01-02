@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://appconfig.aura.nav.no" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://appconfig.aura.nav.no http://maven.adeo.no/xsd/appconfig.xsd">
+
+
+    <resources>
+
+        <!-- TODO -->
+        <!-- TODO sjekk denne -->
+        <baseUrl alias="dittnav.link" mapToProperty="dittnav.link"/>
+
+        <!--<baseUrl alias="mininnboks.link" mapToProperty="mininnboks.link"/>-->
+        <!--<baseUrl alias="temavelger.link" mapToProperty="temavelger.link"/>-->
+        <!--<baseUrl alias="brukerprofil.link" mapToProperty="brukerprofil.link"/>-->
+        <!--<baseUrl alias="saksoversikt.link" mapToProperty="saksoversikt.link"/>-->
+
+        <!-- TODO sjekk joda -->
+        <!-- TODO sjekk denne -->
+        <credential alias="xsrf-credentials" mapToProperty="xsrf-credentials"/>
+
+
+        <!-- TODO legge på dependency? -->
+        <webservice alias="domene.Brukerdialog:Henvendelse_v2" mapToProperty="henvendelse.ws"/>
+        <webservice alias="virksomhet:Diskresjonskode_v1" mapToProperty="diskresjonskode.ws"/>
+        <webservice alias="virksomhet:Brukerprofil_v3" mapToProperty="brukerprofil.v3"/>
+        <webservice alias="domene.Brukerdialog:SendInnHenvendelse_v1" mapToProperty="send.inn.henvendelse.ws"/>
+        <webservice alias="domene.Brukerdialog:InnsynHenvendelse_v1" mapToProperty="innsyn.henvendelse.ws"/>
+
+    </resources>
+
+
+</application>
