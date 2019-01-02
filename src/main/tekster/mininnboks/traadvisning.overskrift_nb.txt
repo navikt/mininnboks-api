@@ -1,0 +1,1 @@
+{ kassert, select, true { Kassert dialog } false { Dialog om {temagruppeNavn }} other { Ukjent kasseringsstatus }}
