@@ -1,11 +1,11 @@
-import no.nav.dialogarena.config.fasit.FasitUtils;
-import no.nav.dialogarena.config.fasit.ServiceUser;
+import no.nav.fasit.FasitUtils;
+import no.nav.fasit.ServiceUser;
 import no.nav.testconfig.ApiAppTest;
 
 import static no.nav.brukerdialog.security.oidc.provider.AzureADB2CConfig.AZUREAD_B2C_DISCOVERY_URL_PROPERTY_NAME;
 import static no.nav.brukerdialog.security.oidc.provider.AzureADB2CConfig.AZUREAD_B2C_EXPECTED_AUDIENCE_PROPERTY_NAME;
-import static no.nav.dialogarena.config.fasit.FasitUtils.*;
-import static no.nav.dialogarena.config.fasit.FasitUtils.Zone.SBS;
+import static no.nav.fasit.FasitUtils.*;
+import static no.nav.fasit.FasitUtils.Zone.SBS;
 import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.*;
 import static no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig.*;
 import static no.nav.sbl.dialogarena.mininnboks.provider.LinkService.*;
@@ -28,8 +28,8 @@ public class MainTest {
         setProperty(SRVMININNBOKS_PASSWORD, serviceUser.getPassword(), SECRET);
 
         String serviceGatewayUrl = String.format("https://service-gw-%s.%s",
-                FasitUtils.getDefaultEnvironment(),
-                FasitUtils.getDefaultDomain(SBS)
+                getDefaultEnvironment(),
+                getDefaultDomain(SBS)
         );
         setProperty(INNSYN_HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
         setProperty(HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);

@@ -54,6 +54,7 @@ public class ApplicationConfig implements ApiApplication {
                         .password(getRequiredProperty(SRVMININNBOKS_PASSWORD))
                         .build()
                 )
+                .openAmLogin()
                 .azureADB2CLogin();
     }
 

@@ -56,6 +56,10 @@ fasitResources:
   - alias: aad_b2c_discovery
     resourceType: baseurl
 
+  # slik at vi støtter at dittnav bruker openam
+  - alias: openam
+    resourceType: openam
+
   # lenker
   - alias: mininnboks.link
     resourceType: baseurl
