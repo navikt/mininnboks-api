@@ -19,10 +19,10 @@ prometheus:
 resources:
   limits:
     cpu: 3
-    memory: 768Mi
+    memory: 1024Mi
   requests:
-    cpu: 200m
-    memory: 512Mi
+    cpu: 500m
+    memory: 768Mi
 fasitResources:
   used:
   - alias: appdynamics
