@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker;
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
@@ -26,6 +27,8 @@ import static org.joda.time.DateTime.now;
 public interface HenvendelseService {
 
     WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer);
+
+    WSSendInnHenvendelseResponse stillSporsmalDirekte(Henvendelse henvendelse, String fodselsnummer);
 
     WSSendInnHenvendelseResponse sendSvar(Henvendelse henvendelse, String uid);
 
@@ -58,12 +61,20 @@ public interface HenvendelseService {
 
         @Override
         public WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer) {
-            String xmlHenvendelseType = SPORSMAL_SKRIFTLIG.name();
+            return stillSporsmal(henvendelse, fodselsnummer, SPORSMAL_SKRIFTLIG);
+        }
+
+        @Override
+        public WSSendInnHenvendelseResponse stillSporsmalDirekte(Henvendelse henvendelse, String fodselsnummer) {
+            return stillSporsmal(henvendelse, fodselsnummer, SPORSMAL_SKRIFTLIG_DIREKTE);
+        }
+
+        private WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer, XMLHenvendelseType xmlHenvendelseType) {
             String enhet = personService.hentEnhet().orElse(null);
             String sporsmaltekst = cleanOutHtml(fjernHardeMellomrom(henvendelse.fritekst));
             XMLHenvendelse info =
                     new XMLHenvendelse()
-                            .withHenvendelseType(xmlHenvendelseType)
+                            .withHenvendelseType(xmlHenvendelseType.name())
                             .withOpprettetDato(now())
                             .withAvsluttetDato(now())
                             .withTema(KONTAKT_NAV_SAKSTEMA)
@@ -75,7 +86,7 @@ public interface HenvendelseService {
                                             .withFritekst(sporsmaltekst)));
             return sendInnHenvendelsePortType.sendInnHenvendelse(
                     new WSSendInnHenvendelseRequest()
-                            .withType(xmlHenvendelseType)
+                            .withType(xmlHenvendelseType.name())
                             .withFodselsnummer(fodselsnummer)
                             .withAny(info));
         }

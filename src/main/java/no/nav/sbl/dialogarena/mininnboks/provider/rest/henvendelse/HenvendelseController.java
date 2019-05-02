@@ -101,11 +101,7 @@ public class HenvendelseController {
     @Path("/sporsmal")
     @Consumes(APPLICATION_JSON)
     public Response sendSporsmal(Sporsmal sporsmal) {
-        assertFritekst(sporsmal.fritekst);
-        assertTemagruppe(sporsmal.temagruppe);
-
-        Temagruppe temagruppe = Temagruppe.valueOf(sporsmal.temagruppe);
-        Henvendelse henvendelse = new Henvendelse(sporsmal.fritekst, temagruppe);
+        Henvendelse henvendelse = lagHenvendelse(sporsmal);
 
         Event metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmal");
         metrikk.addTagToReport("tema", sporsmal.temagruppe);
@@ -114,6 +110,29 @@ public class HenvendelseController {
         WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
 
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
+    }
+
+    @POST
+    @Path("/sporsmaldirekte")
+    @Consumes(APPLICATION_JSON)
+    public Response sendSporsmalDirekte(Sporsmal sporsmal) {
+        Henvendelse henvendelse = lagHenvendelse(sporsmal);
+
+        Event metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmaldirekte");
+        metrikk.addTagToReport("tema", sporsmal.temagruppe);
+        metrikk.report();
+
+        WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmalDirekte(henvendelse, getSubjectHandler().getUid());
+
+        return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
+    }
+
+    private Henvendelse lagHenvendelse(Sporsmal sporsmal) {
+        assertFritekst(sporsmal.fritekst);
+        assertTemagruppe(sporsmal.temagruppe);
+
+        Temagruppe temagruppe = Temagruppe.valueOf(sporsmal.temagruppe);
+        return new Henvendelse(sporsmal.fritekst, temagruppe);
     }
 
     @POST
