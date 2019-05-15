@@ -28,7 +28,7 @@ public abstract class HenvendelsesUtils {
     private static final String LINE_REPLACEMENT_STRING = UUID.randomUUID().toString();
     private static final String LINE_BREAK = "\n";
 
-    public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SVAR_SBL_INNGAAENDE);
+    public static final List<Henvendelsetype> FRA_BRUKER = asList(SPORSMAL_SKRIFTLIG, SPORSMAL_SKRIFTLIG_DIREKTE, SVAR_SBL_INNGAAENDE);
 
     public static void setTekstService(TekstService tekstService) {
         HenvendelsesUtils.tekstService = tekstService;
@@ -37,6 +37,7 @@ public abstract class HenvendelsesUtils {
     private static final Map<XMLHenvendelseType, Henvendelsetype> HENVENDELSETYPE_MAP = new HashMap<XMLHenvendelseType, Henvendelsetype>() {
         {
             put(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, SPORSMAL_SKRIFTLIG);
+            put(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE, SPORSMAL_SKRIFTLIG_DIREKTE);
             put(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, SPORSMAL_MODIA_UTGAAENDE);
             put(XMLHenvendelseType.SVAR_SKRIFTLIG, SVAR_SKRIFTLIG);
             put(XMLHenvendelseType.SVAR_OPPMOTE, SVAR_OPPMOTE);

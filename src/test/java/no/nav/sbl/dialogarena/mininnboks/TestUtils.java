@@ -1,7 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks;
 
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
-import org.joda.time.DateTime;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -9,7 +10,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static java.util.UUID.randomUUID;
-import static org.joda.time.DateTime.now;
 
 public class TestUtils {
 

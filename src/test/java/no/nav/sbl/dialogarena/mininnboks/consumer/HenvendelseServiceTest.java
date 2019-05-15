@@ -113,6 +113,29 @@ public class HenvendelseServiceTest {
     }
 
     @Test
+    public void senderInnDirekteSporsmalMedRiktigeFelter() {
+        Henvendelse henvendelse = new Henvendelse(FRITEKST, TEMAGRUPPE);
+
+        henvendelseService.stillSporsmalDirekte(henvendelse, FNR);
+
+        verify(sendInnHenvendelsePortType).sendInnHenvendelse(sendInnHenvendelseRequestArgumentCaptor.capture());
+        WSSendInnHenvendelseRequest request = sendInnHenvendelseRequestArgumentCaptor.getValue();
+
+        assertThat(request.getType(), is(SPORSMAL_SKRIFTLIG_DIREKTE.name()));
+        assertThat(request.getFodselsnummer(), is(FNR));
+        XMLHenvendelse xmlHenvendelse = (XMLHenvendelse) request.getAny();
+        assertThat(xmlHenvendelse.getHenvendelseType(), is(SPORSMAL_SKRIFTLIG_DIREKTE.name()));
+        assertThat(xmlHenvendelse.getOpprettetDato(), is(notNullValue()));
+        assertThat(xmlHenvendelse.getAvsluttetDato(), is(notNullValue()));
+        assertThat(xmlHenvendelse.getTema(), is(KONTAKT_NAV_SAKSTEMA));
+        assertThat(xmlHenvendelse.getBehandlingskjedeId(), is(nullValue()));
+        assertThat(xmlHenvendelse.getBrukersEnhet(), is(BRUKER_ENHET));
+        XMLMeldingFraBruker meldingFraBruker = (XMLMeldingFraBruker) xmlHenvendelse.getMetadataListe().getMetadata().get(0);
+        assertThat(meldingFraBruker.getTemagruppe(), is(TEMAGRUPPE.name()));
+        assertThat(meldingFraBruker.getFritekst(), is(FRITEKST));
+    }
+
+    @Test
     public void senderInnSvarMedRiktigeFelter() {
         Henvendelse henvendelse = new Henvendelse(FRITEKST, TEMAGRUPPE);
         henvendelse.traadId = TRAAD_ID;

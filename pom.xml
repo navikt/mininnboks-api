@@ -16,7 +16,7 @@
     <properties>
 
         <!-- Tjenester -->
-        <dialogarena-behandlingsinformasjon.version>1.4.0</dialogarena-behandlingsinformasjon.version>
+        <behandlingsinformasjon.tjenestespec.version>1.2019.04.01-14.11-bd945ca760ae</behandlingsinformasjon.tjenestespec.version>
         <henvendelse-informasjon-v2.version>0.7</henvendelse-informasjon-v2.version>
         <send-inn-henvendelse.version>0.3</send-inn-henvendelse.version>
         <brukerprofil-v3-tjenestespesifikasjon.version>3.0.3</brukerprofil-v3-tjenestespesifikasjon.version>
@@ -48,9 +48,9 @@
 
         <!--Dialogarena tjenestespesifikasjon-->
         <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>dialogarena-behandlingsinformasjon</artifactId>
-            <version>${dialogarena-behandlingsinformasjon.version}</version>
+            <version>${behandlingsinformasjon.tjenestespec.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>

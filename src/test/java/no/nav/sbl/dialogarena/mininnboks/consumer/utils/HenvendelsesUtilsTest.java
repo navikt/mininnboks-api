@@ -104,6 +104,26 @@ public class HenvendelsesUtilsTest {
     }
 
     @Test
+    public void transformererXMLHenvendelseSomSporsmalDirekteFraBruker() {
+        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE, ID_1, ID_1);
+        List<XMLHenvendelse> infoList = Collections.singletonList(info);
+
+        List<Henvendelse> henvendelserListe = infoList.stream()
+                .map(HenvendelsesUtils::tilHenvendelse)
+                .collect(toList());
+        Henvendelse sporsmal = henvendelserListe.get(0);
+
+        assertStandardFelter(sporsmal);
+        assertThat(sporsmal.id, is(ID_1));
+        assertThat(sporsmal.traadId, is(ID_1));
+        assertThat(sporsmal.type, is(SPORSMAL_SKRIFTLIG_DIREKTE));
+        assertThat(sporsmal.getLestDato(), is(notNullValue()));
+        assertThat(sporsmal.isLest(), is(true));
+        assertThat(sporsmal.kanal, is(nullValue()));
+        assertThat(sporsmal.brukersEnhet, is(BRUKERS_ENHET));
+    }
+
+    @Test
     public void transformererXMLHenvendelseFerdigstiltUtenSvar() {
         XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1);
         info.setFerdigstiltUtenSvar(true);
