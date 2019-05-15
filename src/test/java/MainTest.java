@@ -1,11 +1,11 @@
-import no.nav.fasit.FasitUtils;
 import no.nav.fasit.ServiceUser;
 import no.nav.testconfig.ApiAppTest;
 
 import static no.nav.brukerdialog.security.oidc.provider.AzureADB2CConfig.AZUREAD_B2C_DISCOVERY_URL_PROPERTY_NAME;
 import static no.nav.brukerdialog.security.oidc.provider.AzureADB2CConfig.AZUREAD_B2C_EXPECTED_AUDIENCE_PROPERTY_NAME;
-import static no.nav.fasit.FasitUtils.*;
+import static no.nav.common.auth.openam.sbs.OpenAmConfig.OPENAM_RESTURL;
 import static no.nav.fasit.FasitUtils.Zone.SBS;
+import static no.nav.fasit.FasitUtils.*;
 import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.*;
 import static no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig.*;
 import static no.nav.sbl.dialogarena.mininnboks.provider.LinkService.*;
@@ -40,6 +40,7 @@ public class MainTest {
         setProperty(TEMAVELGER_LINK_PROPERTY, resolveLink("temavelger.link"), PUBLIC);
         setProperty(BRUKERPROFIL_LINK_PROPERTY, resolveLink("brukerprofil.link"), PUBLIC);
         setProperty(SAKSOVERSIKT_LINK_PROPERTY, resolveLink("saksoversikt.link"), PUBLIC);
+        setProperty(OPENAM_RESTURL, getOpenAmConfig(getDefaultEnvironment()).restUrl, PUBLIC);
 
         setProperty(AZUREAD_B2C_DISCOVERY_URL_PROPERTY_NAME, getBaseUrl("aad_b2c_discovery"), PUBLIC);
         setProperty(AZUREAD_B2C_EXPECTED_AUDIENCE_PROPERTY_NAME, getServiceUser("aad_b2c_clientid", MININNBOKS).getUsername(), PUBLIC);
