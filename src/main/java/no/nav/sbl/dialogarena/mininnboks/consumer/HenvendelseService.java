@@ -137,6 +137,7 @@ public interface HenvendelseService {
         public List<Henvendelse> hentAlleHenvendelser(String fodselsnummer) {
             List<String> typer = asList(
                     SPORSMAL_SKRIFTLIG.name(),
+                    SPORSMAL_SKRIFTLIG_DIREKTE.name(),
                     SVAR_SKRIFTLIG.name(),
                     SVAR_OPPMOTE.name(),
                     SVAR_TELEFON.name(),
