@@ -39,7 +39,7 @@ public class PortTypeUtils {
         return new CXFClient<>(serviceClass)
                 .address(address)
                 .wsdl(wsdlUrl)
-                .timeout(20_000, 20_000)
+                .timeout(5_000, 20_000)
                 .withProperty("jaxb.additionalContextClasses", new Class[]{
                         XMLHenvendelse.class,
                         XMLMetadataListe.class,
