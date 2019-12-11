@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.NYESTE_OVERST;
-import static no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.UbehandletMelding.erUbesvart;
-import static no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.UbehandletMelding.erUlest;
+import static no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.UbehandletMelding.*;
 
 public class UbehandletMeldingUtils {
     static Supplier<Set<Henvendelse>> supplier = () -> new TreeSet<>(Comparator.comparing(h -> h.traadId));
@@ -24,6 +23,7 @@ public class UbehandletMeldingUtils {
                 .sorted(NYESTE_OVERST)
                 .collect(Collectors.toCollection(supplier))
                 .stream()
+                .filter(erIkkeKassert)
                 .filter(erUbesvart.or(erUlest))
                 .map(UbehandletMelding::new)
                 .collect(toList());

@@ -26,7 +26,7 @@ public class Traad {
                 .collect(toList());
         this.nyeste = this.meldinger.get(0);
         this.eldste = this.meldinger.get(this.meldinger.size() - 1);
-        this.kanBesvares = SPORSMAL_MODIA_UTGAAENDE.equals(nyeste.type);
+        this.kanBesvares = !nyeste.kassert && SPORSMAL_MODIA_UTGAAENDE.equals(nyeste.type);
 
         boolean avsluttet = FRA_NAV.contains(nyeste.type) && !kanBesvares;
         boolean ferdigstiltUtenSvar = Boolean.TRUE.equals(nyeste.ferdigstiltUtenSvar);
