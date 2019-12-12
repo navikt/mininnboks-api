@@ -18,6 +18,7 @@ public class UbehandletMelding {
 
     public enum Status {ULEST, UBESVART}
 
+    public static Predicate<Henvendelse> erIkkeKassert = (henvendelse) -> !henvendelse.kassert;
     public static Predicate<Henvendelse> erUbesvart = (henvendelse) -> henvendelse.type == SPORSMAL_MODIA_UTGAAENDE;
     public static Predicate<Henvendelse> erUlest = (henvendelse) -> !henvendelse.isLest();
 
