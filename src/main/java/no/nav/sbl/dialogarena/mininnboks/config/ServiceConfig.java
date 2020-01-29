@@ -18,6 +18,7 @@ import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
 @Configuration
 public class ServiceConfig {
 
+    public static final String SERVICEGATEWAY_URL = "SERVICEGATEWAY_URL";
     public static final String INNSYN_HENVENDELSE_WS_URL = "innsyn.henvendelse.ws.url";
     public static final String HENVENDELSE_WS_URL = "henvendelse.ws.url";
     public static final String SEND_INN_HENVENDELSE_WS_URL = "send.inn.henvendelse.ws.url";
@@ -59,7 +60,7 @@ public class ServiceConfig {
     private PortTypeUtils.PortType<SendInnHenvendelsePortType> sendInnHenvendelse() {
         return createPortType(
                 EnvironmentUtils.getRequiredProperty(SEND_INN_HENVENDELSE_WS_URL),
-                "classpath:SendInnHenvendelse.wsdl",
+                "classpath:wsdl/SendInnHenvendelse.wsdl",
                 SendInnHenvendelsePortType.class,
                 SendInnHenvendelsePortType::ping
         );
@@ -73,7 +74,7 @@ public class ServiceConfig {
     private PortTypeUtils.PortType<HenvendelsePortType> henvendelse() {
         return createPortType(
                 getRequiredProperty(HENVENDELSE_WS_URL),
-                "classpath:Henvendelse.wsdl",
+                "classpath:wsdl/Henvendelse.wsdl",
                 HenvendelsePortType.class,
                 HenvendelsePortType::ping
         );
@@ -87,7 +88,7 @@ public class ServiceConfig {
     private PortTypeUtils.PortType<InnsynHenvendelsePortType> innsynHenvendesle() {
         return createPortType(
                 getRequiredProperty(INNSYN_HENVENDELSE_WS_URL),
-                "classpath:InnsynHenvendelse.wsdl",
+                "classpath:wsdl/InnsynHenvendelse.wsdl",
                 InnsynHenvendelsePortType.class,
                 InnsynHenvendelsePortType::ping
         );

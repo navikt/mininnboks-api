@@ -22,3 +22,5 @@ npm-debug.log
 .classpath
 .project
 .settings
+
+.vault.properties
