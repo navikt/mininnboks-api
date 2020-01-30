@@ -7,7 +7,7 @@
     <parent>
         <groupId>no.nav.common</groupId>
         <artifactId>mor-pom</artifactId>
-        <version>2019.03.06.14.00</version>
+        <version>1.2020.01.23-17.30-c6684f7b3098</version>
     </parent>
     <artifactId>mininnboks-api</artifactId>
     <version>1</version>
@@ -16,11 +16,12 @@
     <properties>
 
         <!-- Tjenester -->
-        <behandlingsinformasjon.tjenestespec.version>1.2019.04.01-14.11-bd945ca760ae</behandlingsinformasjon.tjenestespec.version>
-        <henvendelse-informasjon-v2.version>0.7</henvendelse-informasjon-v2.version>
-        <send-inn-henvendelse.version>0.3</send-inn-henvendelse.version>
-        <brukerprofil-v3-tjenestespesifikasjon.version>3.0.3</brukerprofil-v3-tjenestespesifikasjon.version>
-        <innsyn-henvendelse.version>0.3</innsyn-henvendelse.version>
+        <tjenestespec.version>1.2019.04.01-14.11-bd945ca760ae</tjenestespec.version>
+<!--        <behandlingsinformasjon.tjenestespec.version>1.2019.04.01-14.11-bd945ca760ae</behandlingsinformasjon.tjenestespec.version>-->
+<!--        <henvendelse-informasjon-v2.version>0.7</henvendelse-informasjon-v2.version>-->
+<!--        <send-inn-henvendelse.version>0.3</send-inn-henvendelse.version>-->
+<!--        <brukerprofil-v3-tjenestespesifikasjon.version>3.0.3</brukerprofil-v3-tjenestespesifikasjon.version>-->
+<!--        <innsyn-henvendelse.version>0.3</innsyn-henvendelse.version>-->
 
     </properties>
 
@@ -42,6 +43,10 @@
             <artifactId>api-app</artifactId>
         </dependency>
         <dependency>
+            <groupId>no.nav.common</groupId>
+            <artifactId>nais</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
@@ -50,27 +55,27 @@
         <dependency>
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>dialogarena-behandlingsinformasjon</artifactId>
-            <version>${behandlingsinformasjon.tjenestespec.version}</version>
+            <version>${tjenestespec.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>henvendelse-informasjon-v2</artifactId>
-            <version>${henvendelse-informasjon-v2.version}</version>
+            <version>${tjenestespec.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>send-inn-henvendelse</artifactId>
-            <version>${send-inn-henvendelse.version}</version>
+            <version>${tjenestespec.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>innsyn-henvendelse</artifactId>
-            <version>${innsyn-henvendelse.version}</version>
+            <version>${tjenestespec.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.sbl</groupId>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>brukerprofil-v3-tjenestespesifikasjon</artifactId>
-            <version>${brukerprofil-v3-tjenestespesifikasjon.version}</version>
+            <version>${tjenestespec.version}</version>
         </dependency>
 
         <!-- test -->

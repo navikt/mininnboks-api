@@ -1,0 +1,96 @@
+---
+kind: Application
+apiVersion: nais.io/v1alpha1
+metadata:
+  name: mininnboks-api
+  namespace: {{ namespace }}
+  labels:
+    team: personoversikt
+spec:
+  image: {{ image }}
+  port: 8080
+  ingresses:
+  - https://mininnboks-api-{{ namespace }}.nais.oera-q.local
+  liveness:
+    path: /internal/isAlive
+    initialDelay: 20
+  readiness:
+    path: /internal/isReady
+  prometheus:
+    enabled: true
+    path: /internal/metrics
+  replicas:
+    min: 2
+    max: 4
+    cpuThresholdPercentage: 50
+  resources:
+    limits:
+      cpu: 3000m
+      memory: 1024Mi
+    requests:
+      cpu: 500m
+      memory: 768Mi
+  vault:
+    enabled: true
+    paths:
+    - kvPath: /serviceuser/data/dev/srvmininnboks-sbs
+      mountPath: /var/run/secrets/nais.io/srvmininnboks
+    - kvPath: /apikey/appdynamics/dev
+      mountPath: /var/run/secrets/nais.io/vault
+  webproxy: true
+  env:
+    - name: APP_NAME
+      value: "mininnboks-api"
+    - name: APP_VERSION
+      value: "{{ version }}"
+    - name: APP_ENVIRONMENT
+      value: "{{ namespace }}"
+    - name: SECURITYTOKENSERVICE_URL
+      value: "https://sts-{{ namespace }}.oera-q.local/SecurityTokenServiceProvider/"
+    - name: SERVICEGATEWAY_URL
+      value: "https://service-gw-{{ namespace }}.oera-q.local/"
+    - name: AAD_B2C_CLIENTID_USERNAME
+      value: "0090b6e1-ffcc-4c37-bc21-049f7d1f0fe5"
+    - name: AAD_B2C_DISCOVERY_URL
+      value: "https://login.microsoftonline.com/NAVtestB2C.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1A_idporten_ver1"
+    - name: OPENAM_RESTURL
+      value: "https://itjenester-{{ namespace }}.oera.no/esso"
+    - name: MININNBOKS_LINK_URL
+      value: "https://tjenester-{{ namespace }}.nav.no/mininnboks"
+    - name: TEMAVELGER_LINK_URL
+      value: "https://www-{{ namespace }}.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Kontakt+oss/skriv+til+oss/"
+    - name: BRUKERPROFIL_LINK_URL
+      value: "https://tjenester-{{ namespace }}.nav.no/brukerprofil/"
+    - name: SAKSOVERSIKT_LINK_URL
+      value: "https://tjenester-{{ namespace }}.nav.no/saksoversikt"
+#     Properties nedenfor brukes egentlig ikke. Men appen har en avhengighet mot disse tjenestene via service-gateway.
+    - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_SECURITYTOKEN
+      value: "SAML"
+    - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_ENDPOINTURL
+      value: "https://modapp-{{ namespace }}.adeo.no/henvendelse/services/domene.Brukerdialog/Henvendelse_v2"
+    - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_WSDLURL
+      value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/henvendelse-informasjon-v2/0.6/henvendelse-informasjon-v2-0.6.zip"
+    - name: VIRKSOMHET_DISKRESJONSKODE_V1_SECURITYTOKEN
+      value: "SAML"
+    - name: VIRKSOMHET_DISKRESJONSKODE_V1_ENDPOINTURL
+      value: "https://wasapp-{{ namespace }}.adeo.no/tpsws/Diskresjonskode"
+    - name: VIRKSOMHET_DISKRESJONSKODE_V1_WSDLURL
+      value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/tjenester/pip/nav-pip-diskresjonskode-v1-tjenestespesifikasjon/1.2.3/nav-pip-diskresjonskode-v1-tjenestespesifikasjon-1.2.3.zip"
+    - name: VIRKSOMHET_BRUKERPROFIL_V3_SECURITYTOKEN
+      value: "SAML"
+    - name: VIRKSOMHET_BRUKERPROFIL_V3_ENDPOINTURL
+      value: "https://wasapp-{{ namespace }}.adeo.no/tpsws/Brukerprofil_v3"
+    - name: VIRKSOMHET_BRUKERPROFIL_V3_WSDLURL
+      value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/tjenester/nav-brukerprofil-v3-tjenestespesifikasjon/3.0.0/nav-brukerprofil-v3-tjenestespesifikasjon-3.0.0.zip"
+    - name: DOMENE_BRUKERDIALOG_SENDINNHENVENDELSE_V1_WSDLURL
+      value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/send-inn-henvendelse/0.3/send-inn-henvendelse-0.3.zip"
+    - name: DOMENE_BRUKERDIALOG_SENDINNHENVENDELSE_V1_SECURITYTOKEN
+      value: "SAML"
+    - name: DOMENE_BRUKERDIALOG_SENDINNHENVENDELSE_V1_ENDPOINTURL
+      value: "https://modapp-{{ namespace }}.adeo.no/henvendelse/services/domene.Brukerdialog/SendInnHenvendelse_v1"
+    - name: DOMENE_BRUKERDIALOG_INNSYNHENVENDELSE_V1_SECURITYTOKEN
+      value: "SAML"
+    - name: DOMENE_BRUKERDIALOG_INNSYNHENVENDELSE_V1_ENDPOINTURL
+      value: "https://modapp-{{ namespace }}.adeo.no/henvendelse/services/domene.Brukerdialog/InnsynHenvendelse_v1"
+    - name: DOMENE_BRUKERDIALOG_INNSYNHENVENDELSE_V1_WSDLURL
+      value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/innsyn-henvendelse/0.3/innsyn-henvendelse-0.3.zip"
