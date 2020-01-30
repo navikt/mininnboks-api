@@ -38,6 +38,9 @@ jobs:
           key: ${{ runner.os }}-maven-cache-${{ hashFiles('pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-cache-
+      - name: Build using maven
+        run: |
+          mvn -P ci -B verify
       - name: Publish Docker image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
