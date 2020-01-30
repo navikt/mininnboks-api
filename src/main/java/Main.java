@@ -1,28 +1,31 @@
 import no.nav.apiapp.ApiApp;
+import no.nav.common.nais.utils.NaisUtils;
 import no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig;
 
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.SRVMININNBOKS_PASSWORD;
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.SRVMININNBOKS_USERNAME;
 import static no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig.*;
 import static no.nav.sbl.util.EnvironmentUtils.Type.PUBLIC;
 import static no.nav.sbl.util.EnvironmentUtils.*;
+import static no.nav.sbl.util.EnvironmentUtils.Type.SECRET;
 
 public class Main {
-
-    private static final String SERVICEGATEWAY_URL = "SERVICEGATEWAY_URL";
-
     public static void main(String[] args) {
+        loadVaultSecrets();
 
-        setupWsProperty(INNSYN_HENVENDELSE_WS_URL);
-        setupWsProperty(HENVENDELSE_WS_URL);
-        setupWsProperty(SEND_INN_HENVENDELSE_WS_URL);
-        setupWsProperty(BRUKERPROFIL_V_3_URL);
+        String serviceGatewayUrl = getRequiredProperty(SERVICEGATEWAY_URL);
+        setProperty(INNSYN_HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
+        setProperty(HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
+        setProperty(SEND_INN_HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
+        setProperty(BRUKERPROFIL_V_3_URL, serviceGatewayUrl, PUBLIC);
 
         ApiApp.runApp(ApplicationConfig.class, args);
     }
 
-    private static void setupWsProperty(String propertyName) {
-        if(!getOptionalProperty(propertyName).isPresent()){
-            setProperty(propertyName, getRequiredProperty(SERVICEGATEWAY_URL), PUBLIC);
-        }
+    private static void loadVaultSecrets() {
+        NaisUtils.Credentials serviceUser = NaisUtils.getCredentials("srvmininnboks");
+        setProperty(SRVMININNBOKS_USERNAME, serviceUser.username, PUBLIC);
+        setProperty(SRVMININNBOKS_PASSWORD, serviceUser.password, SECRET);
     }
 
 }
