@@ -263,12 +263,4 @@ public class HenvendelseControllerTest {
         sporsmal.temagruppe = Temagruppe.ARBD.name();
         controller.sendSporsmal(sporsmal);
     }
-
-    @Test(expected = AssertionError.class)
-    public void smellerHvisAndreSosialtjenesterTemagruppeISporsmal() {
-        Sporsmal sporsmal = new Sporsmal();
-        sporsmal.fritekst = "DUMMY";
-        sporsmal.temagruppe = Temagruppe.ANSOS.name();
-        controller.sendSporsmal(sporsmal);
-    }
 }
