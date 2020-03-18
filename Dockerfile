@@ -9,5 +9,7 @@ WORKDIR /source
 RUN mvn package -DskipTests
 
 FROM navikt/java:8-appdynamics
+ENV JAVA_OPTS="${JAVA_OPTS} -XX:MaxRAMPercentage=65.0"
 ENV APPD_ENABLED=true
+
 COPY --from=builder /source/target/mininnboks-api /app
