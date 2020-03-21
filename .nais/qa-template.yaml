@@ -58,7 +58,7 @@ spec:
     - name: MININNBOKS_LINK_URL
       value: "https://tjenester-{{ namespace }}.nav.no/mininnboks"
     - name: TEMAVELGER_LINK_URL
-      value: "https://www-{{ namespace }}.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Kontakt+oss/skriv+til+oss/"
+      value: "https://www-{{ namespace }}.nav.no/person/Kontakt+oss/skriv+til+oss/"
     - name: BRUKERPROFIL_LINK_URL
       value: "https://tjenester-{{ namespace }}.nav.no/brukerprofil/"
     - name: SAKSOVERSIKT_LINK_URL
