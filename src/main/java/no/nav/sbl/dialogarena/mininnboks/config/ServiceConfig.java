@@ -1,16 +1,26 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
+import no.nav.brukerdialog.security.oidc.SystemUserTokenProvider;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.utils.ApigwRequestFilter;
 import no.nav.sbl.dialogarena.types.Pingable;
+import no.nav.sbl.rest.RestUtils;
 import no.nav.sbl.util.EnvironmentUtils;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
+import org.eclipse.jetty.util.annotation.Name;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.inject.Named;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import static no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils.createPortType;
 import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
@@ -23,6 +33,9 @@ public class ServiceConfig {
     public static final String HENVENDELSE_WS_URL = "henvendelse.ws.url";
     public static final String SEND_INN_HENVENDELSE_WS_URL = "send.inn.henvendelse.ws.url";
     public static final String BRUKERPROFIL_V_3_URL = "brukerprofil.v3.url";
+
+    public static final String PDL_API_URL = "PDL_API_URL";
+    public static final String PDL_API_APIKEY = "PDL_API_APIKEY";
 
     @Bean
     public PersonService personService() {
@@ -50,6 +63,45 @@ public class ServiceConfig {
                 innsynHenvendesle().port,
                 personService
         );
+    }
+
+    @Bean
+    public Client pdlClient() {
+        String pdlapiApikey = EnvironmentUtils.getRequiredProperty(PDL_API_APIKEY);
+        return RestUtils.createClient().register(new ApigwRequestFilter(pdlapiApikey));
+    }
+
+    @Bean
+    public PdlService pdlService(@Named("pdlClient") Client client, SystemUserTokenProvider stsService) {
+        return new PdlService(client, stsService);
+    }
+
+    @Bean
+    public Pingable pdlPing(Client pdlClient) {
+        Pingable.Ping.PingMetadata metadata = new Pingable.Ping.PingMetadata(
+                "pdl",
+                EnvironmentUtils.getOptionalProperty(PDL_API_URL).orElse("NOT FOUND"),
+                "Henter diskresjonskode",
+                false
+        );
+
+        return () -> {
+            try {
+                String pdlapiUrl = EnvironmentUtils.getRequiredProperty(PDL_API_URL);
+                Response response = pdlClient
+                        .target(pdlapiUrl)
+                        .request()
+                        .options();
+
+                if (response.getStatus() == 200) {
+                    return Pingable.Ping.lyktes(metadata);
+                } else {
+                    return Pingable.Ping.feilet(metadata, "Fikk statuskode: " + response.getStatus());
+                }
+            } catch (Exception e) {
+                return Pingable.Ping.feilet(metadata, e);
+            }
+        };
     }
 
     @Bean
@@ -93,5 +145,4 @@ public class ServiceConfig {
                 InnsynHenvendelsePortType::ping
         );
     }
-
 }

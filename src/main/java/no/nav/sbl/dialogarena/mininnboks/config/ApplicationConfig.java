@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks.config;
 import no.nav.apiapp.ApiApplication;
 import no.nav.apiapp.config.ApiAppConfigurator;
 import no.nav.apiapp.config.StsConfig;
+import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig;
 import no.nav.sbl.dialogarena.mininnboks.provider.LinkService;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.ResourcesController;
@@ -55,6 +56,7 @@ public class ApplicationConfig implements ApiApplication {
                         .build()
                 )
                 .openAmLogin()
+                .objectMapper(JacksonConfig.mapper)
                 .azureADB2CLogin();
     }
 
