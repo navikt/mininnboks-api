@@ -37,6 +37,8 @@ spec:
       mountPath: /var/run/secrets/nais.io/srvmininnboks
     - kvPath: /apikey/appdynamics/prod
       mountPath: /var/run/secrets/nais.io/vault
+    - kvPath: /apikey/apigw/prod/pdl-api/mininnboks-api
+      mountPath: /var/run/secrets/nais.io/apigw/pdl-api
   webproxy: true
   env:
     - name: APP_NAME
@@ -63,6 +65,8 @@ spec:
       value: "https://tjenester.nav.no/brukerprofil/"
     - name: SAKSOVERSIKT_LINK_URL
       value: "https://tjenester.nav.no/saksoversikt"
+    - name: PDL_API_URL
+      value: "http://api-gw.adeo.no/pdl-api"
 #     Properties nedenfor brukes egentlig ikke. Men appen har en avhengighet mot disse tjenestene via service-gateway.
     - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_SECURITYTOKEN
       value: "SAML"
