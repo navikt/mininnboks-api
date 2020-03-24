@@ -64,13 +64,10 @@ public class ServiceConfig {
     }
 
     @Bean
-    public Client pdlClient() {
+    public PdlService pdlService(SystemUserTokenProvider stsService) {
         String pdlapiApikey = EnvironmentUtils.getRequiredProperty(PDL_API_APIKEY);
-        return RestUtils.createClient().register(new ApigwRequestFilter(pdlapiApikey));
-    }
+        Client client =  RestUtils.createClient().register(new ApigwRequestFilter(pdlapiApikey));
 
-    @Bean
-    public PdlService pdlService(@Named("pdlClient") Client client, SystemUserTokenProvider stsService) {
         return new PdlServiceImpl(client, stsService);
     }
 
