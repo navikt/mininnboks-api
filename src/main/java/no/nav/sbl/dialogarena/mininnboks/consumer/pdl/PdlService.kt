@@ -15,16 +15,25 @@ import java.util.*
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.Entity
 
-class PdlService(private val pdlClient: Client, private val stsService: SystemUserTokenProvider) {
+interface PdlService {
+    fun harKode6(fnr: String): Boolean
+    fun harKode7(fnr: String): Boolean
+    fun harStrengtFortroligAdresse(fnr: String): Boolean
+    fun harFortroligAdresse(fnr: String): Boolean
+    fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering?
+    fun getHelsesjekk(): Pingable
+}
+
+class PdlServiceImpl(private val pdlClient: Client, private val stsService: SystemUserTokenProvider) : PdlService {
     private val log = LoggerFactory.getLogger(PdlService::class.java)
     private val adressebeskyttelseQuery: String = lastQueryFraFil("hentAdressebeskyttelse")
 
-    fun harKode6(fnr: String): Boolean = hentAdresseBeskyttelse(fnr) == PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG
-    fun harKode7(fnr: String): Boolean = hentAdresseBeskyttelse(fnr) == PdlAdressebeskyttelseGradering.FORTROLIG
-    fun harStrengtFortroligAdresse(fnr: String) = harKode6(fnr)
-    fun harFortroligAdresse(fnr: String) = harKode7(fnr)
+    override fun harStrengtFortroligAdresse(fnr: String) = harKode6(fnr)
+    override fun harFortroligAdresse(fnr: String) = harKode7(fnr)
+    override fun harKode6(fnr: String): Boolean = harGradering(fnr, PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG)
+    override fun harKode7(fnr: String): Boolean = harGradering(fnr, PdlAdressebeskyttelseGradering.FORTROLIG)
 
-    fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
+    override fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
         return try {
             val response: PdlResponse = graphqlRequest(PdlRequest(adressebeskyttelseQuery, Variables(fnr)))
             val adressebeskyttelse: List<PdlAdressebeskyttelse> = response
@@ -42,7 +51,7 @@ class PdlService(private val pdlClient: Client, private val stsService: SystemUs
         }
     }
 
-    fun getHelsesjekk(): Pingable {
+    override fun getHelsesjekk(): Pingable {
         val metadata = Pingable.Ping.PingMetadata(
                 "pdl",
                 getRequiredProperty(ServiceConfig.PDL_API_URL),
@@ -66,6 +75,11 @@ class PdlService(private val pdlClient: Client, private val stsService: SystemUs
                 Pingable.Ping.feilet(metadata, e)
             }
         }
+    }
+
+    private fun harGradering(fnr: String, gradering: PdlAdressebeskyttelseGradering): Boolean {
+        val pdlGradering = hentAdresseBeskyttelse(fnr) ?: return true
+        return gradering == pdlGradering
     }
 
     private fun graphqlRequest(request: PdlRequest): PdlResponse {

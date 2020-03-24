@@ -66,7 +66,7 @@ internal class PdlServiceTest {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(body = gittErrorPdlResponse("Det skjedde en feil"))
         val stsService = gittStsService()
-        val pdlService = PdlService(mockContext.client, stsService)
+        val pdlService = PdlServiceImpl(mockContext.client, stsService)
 
         val adressebeskyttelseGradering : PdlAdressebeskyttelseGradering? = SubjectHandler.withSubject(mockSubject, UnsafeSupplier {
             pdlService.hentAdresseBeskyttelse("anyfnr")
@@ -76,11 +76,25 @@ internal class PdlServiceTest {
     }
 
     @Test
+    fun `ved feil fra pdl behandles alle som kode6`() {
+        gittUrlTilPdl()
+        val mockContext = gittClientSomSvarer(body = gittErrorPdlResponse("Det skjedde en feil"))
+        val stsService = gittStsService()
+        val pdlService = PdlServiceImpl(mockContext.client, stsService)
+
+        val harKode6 : Boolean = SubjectHandler.withSubject(mockSubject, UnsafeSupplier {
+            pdlService.harKode6("anyfnr")
+        })
+
+        assertThat(harKode6).isTrue()
+    }
+
+    @Test
     fun `bruker http-options for ping`() {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer()
         val stsService = gittStsService()
-        val pdlService = PdlService(mockContext.client, stsService)
+        val pdlService = PdlServiceImpl(mockContext.client, stsService)
 
         val ping = pdlService.getHelsesjekk().ping()
 
@@ -93,7 +107,7 @@ internal class PdlServiceTest {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(status = 199)
         val stsService = gittStsService()
-        val pdlService = PdlService(mockContext.client, stsService)
+        val pdlService = PdlServiceImpl(mockContext.client, stsService)
 
         val ping = pdlService.getHelsesjekk().ping()
 
@@ -107,7 +121,7 @@ internal class PdlServiceTest {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(throwException = true)
         val stsService = gittStsService()
-        val pdlService = PdlService(mockContext.client, stsService)
+        val pdlService = PdlServiceImpl(mockContext.client, stsService)
 
         val ping = pdlService.getHelsesjekk().ping()
 
@@ -182,7 +196,7 @@ internal class PdlServiceTest {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(body = gittOkPdlResponse(gradering))
         val stsService = gittStsService()
-        val pdlService = PdlService(mockContext.client, stsService)
+        val pdlService = PdlServiceImpl(mockContext.client, stsService)
 
         SubjectHandler.withSubject(mockSubject) {
             fn(Pair(mockContext, pdlService))

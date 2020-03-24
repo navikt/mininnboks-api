@@ -5,6 +5,7 @@ import no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlServiceImpl;
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.ApigwRequestFilter;
 import no.nav.sbl.dialogarena.types.Pingable;
 import no.nav.sbl.rest.RestUtils;
@@ -70,7 +71,7 @@ public class ServiceConfig {
 
     @Bean
     public PdlService pdlService(@Named("pdlClient") Client client, SystemUserTokenProvider stsService) {
-        return new PdlService(client, stsService);
+        return new PdlServiceImpl(client, stsService);
     }
 
     @Bean
