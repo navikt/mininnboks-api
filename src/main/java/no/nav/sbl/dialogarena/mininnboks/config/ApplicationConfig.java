@@ -7,6 +7,7 @@ import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig;
 import no.nav.sbl.dialogarena.mininnboks.provider.LinkService;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.ResourcesController;
+import no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang.TilgangController;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.SporsmalController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +20,10 @@ import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
 @Import({
         TeksterServiceConfig.class,
         ServiceConfig.class,
-        ServiceConfig.class,
         ResourcesController.class,
         SporsmalController.class,
-        HenvendelseController.class
+        HenvendelseController.class,
+        TilgangController.class
 })
 public class ApplicationConfig implements ApiApplication {
 
