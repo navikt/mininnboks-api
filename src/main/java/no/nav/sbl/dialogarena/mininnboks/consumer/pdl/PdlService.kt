@@ -1,12 +1,12 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import no.nav.brukerdialog.security.oidc.SystemUserTokenProvider
 import no.nav.common.auth.SsoToken
 import no.nav.common.auth.SubjectHandler
 import no.nav.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig
 import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig
+import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.types.Pingable
 import no.nav.sbl.util.EnvironmentUtils.getRequiredProperty
 import org.slf4j.LoggerFactory
@@ -24,7 +24,7 @@ interface PdlService {
     fun getHelsesjekk(): Pingable
 }
 
-class PdlServiceImpl(private val pdlClient: Client, private val stsService: SystemUserTokenProvider) : PdlService {
+class PdlServiceImpl(private val pdlClient: Client, private val stsService: SystemuserTokenProvider) : PdlService {
     private val log = LoggerFactory.getLogger(PdlService::class.java)
     private val adressebeskyttelseQuery: String = lastQueryFraFil("hentAdressebeskyttelse")
 
@@ -85,7 +85,7 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
     private fun graphqlRequest(request: PdlRequest): PdlResponse {
         val uuid = UUID.randomUUID()
         try {
-            val consumerOidcToken: String = stsService.token
+            val consumerOidcToken: String = stsService.getSystemUserAccessToken()!!
             val veilederOidcToken: String = SubjectHandler.getSsoToken(SsoToken.Type.OIDC).orElseThrow { IllegalStateException("Kunne ikke hente ut veileders ssoTOken") }
 
             log.info("""
