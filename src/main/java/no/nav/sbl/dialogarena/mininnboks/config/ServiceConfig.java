@@ -13,14 +13,11 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.Inns
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
-import org.eclipse.jetty.util.annotation.Name;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.inject.Named;
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 
 import static no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils.createPortType;
 import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
@@ -77,31 +74,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public Pingable pdlPing(Client pdlClient) {
-        Pingable.Ping.PingMetadata metadata = new Pingable.Ping.PingMetadata(
-                "pdl",
-                EnvironmentUtils.getOptionalProperty(PDL_API_URL).orElse("NOT FOUND"),
-                "Henter diskresjonskode",
-                false
-        );
-
-        return () -> {
-            try {
-                String pdlapiUrl = EnvironmentUtils.getRequiredProperty(PDL_API_URL);
-                Response response = pdlClient
-                        .target(pdlapiUrl)
-                        .request()
-                        .options();
-
-                if (response.getStatus() == 200) {
-                    return Pingable.Ping.lyktes(metadata);
-                } else {
-                    return Pingable.Ping.feilet(metadata, "Fikk statuskode: " + response.getStatus());
-                }
-            } catch (Exception e) {
-                return Pingable.Ping.feilet(metadata, e);
-            }
-        };
+    public Pingable pdlPing(PdlService pdlService) {
+        return pdlService.getHelsesjekk();
     }
 
     @Bean

@@ -7,6 +7,7 @@ import no.nav.common.auth.SubjectHandler
 import no.nav.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig
 import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig
+import no.nav.sbl.dialogarena.types.Pingable
 import no.nav.sbl.util.EnvironmentUtils.getRequiredProperty
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -14,24 +15,60 @@ import java.util.*
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.Entity
 
-class PdlService(val pdlClient: Client, val stsService: SystemUserTokenProvider) {
+class PdlService(private val pdlClient: Client, private val stsService: SystemUserTokenProvider) {
     private val log = LoggerFactory.getLogger(PdlService::class.java)
     private val adressebeskyttelseQuery: String = lastQueryFraFil("hentAdressebeskyttelse")
 
-    fun harAdressebeskyttelse(fnr: String): Boolean {
-        val response: PdlResponse? = graphqlRequest(PdlRequest(adressebeskyttelseQuery, Variables(fnr)))
-        val adressebeskyttelse: List<PdlAdressebeskyttelse> = response
-                ?.data
-                ?.hentPerson
-                ?.adressebeskyttelse
-                ?: emptyList()
+    fun harKode6(fnr: String): Boolean = hentAdresseBeskyttelse(fnr) == PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG
+    fun harKode7(fnr: String): Boolean = hentAdresseBeskyttelse(fnr) == PdlAdressebeskyttelseGradering.FORTROLIG
+    fun harStrengtFortroligAdresse(fnr: String) = harKode6(fnr)
+    fun harFortroligAdresse(fnr: String) = harKode7(fnr)
 
-        return adressebeskyttelse
-                .map { it.gradering }
-                .any { it != PdlAdressebeskyttelseGradering.UGRADERT }
+    fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
+        return try {
+            val response: PdlResponse = graphqlRequest(PdlRequest(adressebeskyttelseQuery, Variables(fnr)))
+            val adressebeskyttelse: List<PdlAdressebeskyttelse> = response
+                    ?.data
+                    ?.hentPerson
+                    ?.adressebeskyttelse
+                    ?: emptyList()
+
+            adressebeskyttelse
+                    .map { it.gradering }
+                    .firstOrNull()
+        } catch (exception: Exception) {
+            log.error("Kunne ikke utlede adressebeskyttelse, antar skjermet bruker", exception)
+            null
+        }
     }
 
-    private fun graphqlRequest(request: PdlRequest): PdlResponse? {
+    fun getHelsesjekk(): Pingable {
+        val metadata = Pingable.Ping.PingMetadata(
+                "pdl",
+                getRequiredProperty(ServiceConfig.PDL_API_URL),
+                "Henter adressebeskyttelse",
+                false
+        )
+
+        return Pingable {
+            try {
+                val response = pdlClient.target(getRequiredProperty(ServiceConfig.PDL_API_URL))
+                        .path("/graphql")
+                        .request()
+                        .options()
+
+                if (response.status == 200) {
+                    Pingable.Ping.lyktes(metadata)
+                } else {
+                    Pingable.Ping.feilet(metadata, "Statuskode: ${response.status}")
+                }
+            } catch (e: Exception) {
+                Pingable.Ping.feilet(metadata, e)
+            }
+        }
+    }
+
+    private fun graphqlRequest(request: PdlRequest): PdlResponse {
         val uuid = UUID.randomUUID()
         try {
             val consumerOidcToken: String = stsService.token
@@ -65,14 +102,17 @@ class PdlService(val pdlClient: Client, val stsService: SystemUserTokenProvider)
             val pdlResponse = JacksonConfig.mapper.readValue<PdlResponse>(body)
 
             if (pdlResponse.errors?.isNotEmpty() == true) {
-                log.info("""
-                PDL-response: $uuid
-                ------------------------------------------------------------------------------------
-                    status: ${response.status} ${response.statusInfo}
-                    errors: ${pdlResponse.errors.map { it.message }.joinToString(", ")}
-                ------------------------------------------------------------------------------------
-            """.trimIndent())
-                return null
+                val errorMessages = pdlResponse.errors.map { it.message }.joinToString(", ")
+                log.info(
+                """
+                    PDL-response: $uuid
+                    ------------------------------------------------------------------------------------
+                        status: ${response.status} ${response.statusInfo}
+                        errors: $errorMessages
+                    ------------------------------------------------------------------------------------
+                """.trimIndent()
+                )
+                throw Exception(errorMessages)
             }
 
             return pdlResponse
@@ -85,7 +125,8 @@ class PdlService(val pdlClient: Client, val stsService: SystemUserTokenProvider)
                         $exception
                     ------------------------------------------------------------------------------------
                 """.trimIndent())
-            return null
+
+            throw exception
         }
     }
 }
@@ -93,7 +134,7 @@ class PdlService(val pdlClient: Client, val stsService: SystemUserTokenProvider)
 
 private fun lastQueryFraFil(name: String): String {
     return PdlService::class.java
-            .getResource("pdl/$name.graphql")
+            .getResource("/pdl/$name.graphql")
             .readText()
             .replace("[\n\r]", "")
 }
