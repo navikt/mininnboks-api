@@ -8,6 +8,7 @@ import no.nav.common.auth.Subject
 import no.nav.common.auth.SubjectHandler
 import no.nav.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig
+import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.util.EnvironmentUtils
 import no.nav.sbl.util.fn.UnsafeSupplier
 import org.assertj.core.api.Assertions.assertThat
@@ -155,10 +156,10 @@ internal class PdlServiceTest {
         return MockContext(client, webTarget, invocationBuiler, response)
     }
 
-    fun gittStsService(token: String = UUID.randomUUID().toString()): SystemUserTokenProvider {
-        val stsService = mock<SystemUserTokenProvider>()
+    fun gittStsService(token: String = UUID.randomUUID().toString()): SystemuserTokenProvider {
+        val stsService = mock<SystemuserTokenProvider>()
 
-        whenever(stsService.token).thenReturn(token)
+        whenever(stsService.getSystemUserAccessToken()).thenReturn(token)
 
         return stsService
     }

@@ -14,21 +14,7 @@ import javax.ws.rs.core.MediaType
 
 const val MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH = 60 * 1000L
 
-// TODO Kan erstattes av tilsvarende klass i common etter bump.
-class SystemuserTokenProvider private constructor(
-        startingUrlIsDiscoveryUrl: Boolean,
-        startingUrl: String,
-        private val srvUsername: String,
-        private val srvPassword: String,
-        private val client: Client
-) {
-    private var accessToken: JWT? = null
-    private val tokenEndpointUrl: String = if (startingUrlIsDiscoveryUrl) {
-        hentOidcDiscoveryConfiguration(client, startingUrl).tokenEndpoint
-    } else {
-        startingUrl
-    }
-
+interface SystemuserTokenProvider {
     companion object {
         @JvmStatic
         fun fromDiscoveryUrl(
@@ -36,7 +22,7 @@ class SystemuserTokenProvider private constructor(
                 srvUsername: String,
                 srvPassword: String,
                 client: Client = RestUtils.createClient()
-        ): SystemuserTokenProvider = SystemuserTokenProvider(true, discoveryUrl, srvUsername, srvPassword, client)
+        ): SystemuserTokenProvider = SystemuserTokenProviderImpl(true, discoveryUrl, srvUsername, srvPassword, client)
 
         @JvmStatic
         fun fromTokenEndpoint(
@@ -44,10 +30,27 @@ class SystemuserTokenProvider private constructor(
                 srvUsername: String,
                 srvPassword: String,
                 client: Client = RestUtils.createClient()
-        ): SystemuserTokenProvider = SystemuserTokenProvider(false, tokenEndpointUrl, srvUsername, srvPassword, client)
+        ): SystemuserTokenProvider = SystemuserTokenProviderImpl(false, tokenEndpointUrl, srvUsername, srvPassword, client)
     }
 
-    fun getSystemUserAccessToken(): String? {
+    fun getSystemUserAccessToken(): String?
+}
+// TODO Kan erstattes av tilsvarende klass i common etter bump.
+class SystemuserTokenProviderImpl internal constructor(
+        startingUrlIsDiscoveryUrl: Boolean,
+        startingUrl: String,
+        private val srvUsername: String,
+        private val srvPassword: String,
+        private val client: Client
+) : SystemuserTokenProvider {
+    private var accessToken: JWT? = null
+    private val tokenEndpointUrl: String = if (startingUrlIsDiscoveryUrl) {
+        hentOidcDiscoveryConfiguration(client, startingUrl).tokenEndpoint
+    } else {
+        startingUrl
+    }
+
+    override fun getSystemUserAccessToken(): String? {
         if (tokenIsSoonExpired()) {
             refreshToken()
         }
