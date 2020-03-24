@@ -39,6 +39,8 @@ spec:
       mountPath: /var/run/secrets/nais.io/vault
     - kvPath: /apikey/apigw/prod/pdl-api/mininnboks-api
       mountPath: /var/run/secrets/nais.io/apigw/pdl-api
+    - kvPath: /apikey/apigw/prod/security-token-service/mininnboks-api
+      mountPath: /var/run/secrets/nais.io/apigw/security-token-service
   webproxy: true
   env:
     - name: APP_NAME
