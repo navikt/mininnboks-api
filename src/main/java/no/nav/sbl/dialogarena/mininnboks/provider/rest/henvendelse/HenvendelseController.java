@@ -1,9 +1,11 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse;
 
+import no.nav.common.auth.SubjectHandler;
 import no.nav.metrics.Event;
 import no.nav.metrics.MetricsFactory;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
+import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import org.apache.cxf.binding.soap.SoapFault;
 import org.slf4j.Logger;
@@ -25,10 +27,8 @@ import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.NOT_ACCEPTABLE;
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.status;
-import static no.nav.brukerdialog.security.context.SubjectHandler.getSubjectHandler;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SVAR_SBL_INNGAAENDE;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad.NYESTE_FORST;
-import static org.joda.time.DateTime.now;
 
 @Path("/traader")
 @Produces(APPLICATION_JSON)
@@ -39,9 +39,12 @@ public class HenvendelseController {
     @Inject
     private HenvendelseService henvendelseService;
 
+    @Inject
+    private PdlService pdlService;
+
     @GET
     public List<Traad> hentTraader() {
-        String fnr = getSubjectHandler().getUid();
+        String fnr = SubjectHandler.getIdent().orElseThrow(() -> new NotAuthorizedException("Fant ikke brukers OIDC-token"));
         List<Henvendelse> henvendelser = henvendelseService.hentAlleHenvendelser(fnr);
 
         final Map<String, List<Henvendelse>> traader = henvendelser.stream()
@@ -52,22 +55,6 @@ public class HenvendelseController {
                 .map(Traad::new)
                 .sorted(NYESTE_FORST)
                 .collect(Collectors.toList());
-    }
-
-    private List<Henvendelse> filtrerDelsvar(List<Henvendelse> traad) {
-        if (traadHarIkkeSkriftligSvarFraNAV(traad)) {
-            return traad.stream()
-                    .filter(henvendelse -> henvendelse.type != Henvendelsetype.DELVIS_SVAR_SKRIFTLIG)
-                    .collect(Collectors.toList());
-        }
-        return traad;
-    }
-
-    private boolean traadHarIkkeSkriftligSvarFraNAV(List<Henvendelse> traad) {
-        Optional<Henvendelse> skriftligSvarFraNAV = traad.stream()
-                .filter(henvendelse -> henvendelse.type == Henvendelsetype.SVAR_SKRIFTLIG)
-                .findAny();
-        return !skriftligSvarFraNAV.isPresent();
     }
 
     @GET
@@ -101,13 +88,15 @@ public class HenvendelseController {
     @Path("/sporsmal")
     @Consumes(APPLICATION_JSON)
     public Response sendSporsmal(Sporsmal sporsmal) {
+        String fnr = SubjectHandler.getIdent().orElseThrow(() -> new NotAuthorizedException("Fant ikke brukers OIDC-token"));
         Henvendelse henvendelse = lagHenvendelse(sporsmal);
+        sjekkTilgangTilTemagruppe(fnr, henvendelse);
 
         Event metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmal");
         metrikk.addTagToReport("tema", sporsmal.temagruppe);
         metrikk.report();
 
-        WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, getSubjectHandler().getUid());
+        WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmal(henvendelse, fnr);
 
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
@@ -116,23 +105,23 @@ public class HenvendelseController {
     @Path("/sporsmaldirekte")
     @Consumes(APPLICATION_JSON)
     public Response sendSporsmalDirekte(Sporsmal sporsmal) {
+        String fnr = SubjectHandler.getIdent().orElseThrow(() -> new NotAuthorizedException("Fant ikke brukers OIDC-token"));
         Henvendelse henvendelse = lagHenvendelse(sporsmal);
+        sjekkTilgangTilTemagruppe(fnr, henvendelse);
 
         Event metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmaldirekte");
         metrikk.addTagToReport("tema", sporsmal.temagruppe);
         metrikk.report();
 
-        WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmalDirekte(henvendelse, getSubjectHandler().getUid());
+        WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmalDirekte(henvendelse, fnr);
 
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
-    private Henvendelse lagHenvendelse(Sporsmal sporsmal) {
-        assertFritekst(sporsmal.fritekst);
-        assertTemagruppe(sporsmal.temagruppe);
-
-        Temagruppe temagruppe = Temagruppe.valueOf(sporsmal.temagruppe);
-        return new Henvendelse(sporsmal.fritekst, temagruppe);
+    private void sjekkTilgangTilTemagruppe(String fnr, Henvendelse henvendelse) {
+        if (henvendelse.temagruppe == Temagruppe.OKSOS && pdlService.harKode6(fnr)) {
+            throw new BadRequestException("Bruker har ikke lov til å sende inn henvendelse på temagruppe OKSOS.");
+        }
     }
 
     @POST
@@ -165,9 +154,35 @@ public class HenvendelseController {
         Event metrikk = MetricsFactory.createEvent("mininnboks.sendsvar");
         metrikk.addTagToReport("tema", traad.nyeste.temaKode);
         metrikk.report();
-        WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, getSubjectHandler().getUid());
+
+        String fnr = SubjectHandler.getIdent().orElseThrow(() -> new NotAuthorizedException("Fant ikke brukers OIDC-token"));
+        WSSendInnHenvendelseResponse response = henvendelseService.sendSvar(henvendelse, fnr);
 
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
+    }
+
+    private Henvendelse lagHenvendelse(Sporsmal sporsmal) {
+        assertFritekst(sporsmal.fritekst);
+        assertTemagruppe(sporsmal.temagruppe);
+
+        Temagruppe temagruppe = Temagruppe.valueOf(sporsmal.temagruppe);
+        return new Henvendelse(sporsmal.fritekst, temagruppe);
+    }
+
+    private List<Henvendelse> filtrerDelsvar(List<Henvendelse> traad) {
+        if (traadHarIkkeSkriftligSvarFraNAV(traad)) {
+            return traad.stream()
+                    .filter(henvendelse -> henvendelse.type != Henvendelsetype.DELVIS_SVAR_SKRIFTLIG)
+                    .collect(Collectors.toList());
+        }
+        return traad;
+    }
+
+    private boolean traadHarIkkeSkriftligSvarFraNAV(List<Henvendelse> traad) {
+        Optional<Henvendelse> skriftligSvarFraNAV = traad.stream()
+                .filter(henvendelse -> henvendelse.type == Henvendelsetype.SVAR_SKRIFTLIG)
+                .findAny();
+        return !skriftligSvarFraNAV.isPresent();
     }
 
     private Optional<Traad> hentTraad(String id) {
