@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang;
 
 import no.nav.common.auth.SubjectHandler;
+import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
 
 import javax.inject.Inject;
@@ -18,10 +19,15 @@ public class TilgangController {
     @Inject
     private PdlService pdlService;
 
+    @Inject
+    private PersonService personService;
+
     @GET
     @Path("/oksos")
     public Boolean harTilgangTilKommunalInnsending() {
         String fnr = SubjectHandler.getIdent().orElseThrow(() -> new NotAuthorizedException("Fant ikke brukers OIDC-token"));
-        return !pdlService.harKode6(fnr);
+        boolean harEnhet = personService.hentEnhet().isPresent();
+        boolean harKode6 = pdlService.harKode6(fnr);
+        return harEnhet && !harKode6;
     }
 }
