@@ -35,7 +35,7 @@ public class Main {
 
     private static void loadApigwKeys() {
         setProperty(PDL_API_APIKEY, getApigwKey("pdl-api"), SECRET);
-        setProperty(STS_APIKEY, getApigwKey("security-token-service"), SECRET);
+        setProperty(STS_APIKEY, getApigwKey("security-token-service-token"), SECRET);
     }
 
     private static String getApigwKey(String producerApp) {
