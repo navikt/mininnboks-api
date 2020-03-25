@@ -52,7 +52,7 @@ spec:
     - name: SECURITYTOKENSERVICE_URL
       value: "https://sts-{{ namespace }}.oera-q.local/SecurityTokenServiceProvider/"
     - name: STS_TOKENENDPOINT_URL
-      value: "https://api-gw-{{ namespace }}.oera.no/security-token-service-token/rest/v1/sts/token"
+      value: "https://api-gw-{{ namespace }}.oera.no/security-token-service/rest/v1/sts/token"
     - name: SERVICEGATEWAY_URL
       value: "https://service-gw-{{ namespace }}.oera-q.local/"
     - name: AAD_B2C_CLIENTID_USERNAME
