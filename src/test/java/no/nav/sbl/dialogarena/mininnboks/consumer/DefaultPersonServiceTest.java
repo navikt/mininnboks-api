@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
+import no.nav.common.auth.SubjectHandler;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.HentKontaktinformasjonOgPreferanserPersonIdentErUtgaatt;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.HentKontaktinformasjonOgPreferanserPersonIkkeFunnet;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -21,7 +23,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultPersonServiceTest {
-
     @Mock
     private BrukerprofilV3 brukerprofilV3;
     private PersonService.Default personService;
@@ -37,7 +38,9 @@ public class DefaultPersonServiceTest {
         when(brukerprofilV3.hentKontaktinformasjonOgPreferanser(any(WSHentKontaktinformasjonOgPreferanserRequest.class)))
                 .thenReturn(new WSHentKontaktinformasjonOgPreferanserResponse().withBruker(new WSBruker().withAnsvarligEnhet(new WSAnsvarligEnhet().withOrganisasjonselementId(enhet))));
 
-        assertThat(personService.hentEnhet().get(), is(enhet));
+        SubjectHandler.withSubject(MOCK_SUBJECT, () -> {
+            assertThat(personService.hentEnhet().get(), is(enhet));
+        });
     }
 
     @Test(expected = RuntimeException.class)
