@@ -70,7 +70,7 @@ spec:
     - name: SAKSOVERSIKT_LINK_URL
       value: "https://tjenester-{{ namespace }}.nav.no/saksoversikt"
     - name: PDL_API_URL
-      value: "https://api-gw-{{ namespace }}.oera./pdl-api"
+      value: "https://api-gw-{{ namespace }}.oera.no/pdl-api"
 #     Properties nedenfor brukes egentlig ikke. Men appen har en avhengighet mot disse tjenestene via service-gateway.
     - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_SECURITYTOKEN
       value: "SAML"
