@@ -1,11 +1,11 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
-import no.nav.brukerdialog.security.oidc.SystemUserTokenProvider;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlServiceImpl;
+import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider;
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.ApigwRequestFilter;
 import no.nav.sbl.dialogarena.types.Pingable;
 import no.nav.sbl.rest.RestUtils;
@@ -17,9 +17,10 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.inject.Named;
 import javax.ws.rs.client.Client;
 
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.SRVMININNBOKS_PASSWORD;
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.SRVMININNBOKS_USERNAME;
 import static no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils.createPortType;
 import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
 
@@ -34,6 +35,9 @@ public class ServiceConfig {
 
     public static final String PDL_API_URL = "PDL_API_URL";
     public static final String PDL_API_APIKEY = "PDL_API_APIKEY";
+
+    public static final String STS_APIKEY = "STS_APIKEY";
+    public static final String STS_TOKENENDPOINT_URL = "STS_TOKENENDPOINT_URL";
 
     @Bean
     public PersonService personService() {
@@ -64,7 +68,20 @@ public class ServiceConfig {
     }
 
     @Bean
-    public PdlService pdlService(SystemUserTokenProvider stsService) {
+    public SystemuserTokenProvider systemUserTokenProvider() {
+        String stsApikey = EnvironmentUtils.getRequiredProperty(STS_APIKEY);
+        Client client =  RestUtils.createClient().register(new ApigwRequestFilter(stsApikey));
+
+        return SystemuserTokenProvider.fromTokenEndpoint(
+                getRequiredProperty(STS_TOKENENDPOINT_URL),
+                getRequiredProperty(SRVMININNBOKS_USERNAME),
+                getRequiredProperty(SRVMININNBOKS_PASSWORD),
+                client
+        );
+    }
+
+    @Bean
+    public PdlService pdlService(SystemuserTokenProvider stsService) {
         String pdlapiApikey = EnvironmentUtils.getRequiredProperty(PDL_API_APIKEY);
         Client client =  RestUtils.createClient().register(new ApigwRequestFilter(pdlapiApikey));
 

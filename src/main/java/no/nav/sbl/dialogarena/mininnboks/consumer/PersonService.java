@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
+import no.nav.common.auth.SubjectHandler;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSBruker;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSNorskIdent;
@@ -7,6 +8,7 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSPerson;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSPersonidenter;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.meldinger.WSHentKontaktinformasjonOgPreferanserRequest;
 
+import javax.ws.rs.NotAuthorizedException;
 import java.util.Optional;
 
 import static java.util.Optional.of;
@@ -30,7 +32,7 @@ public interface PersonService {
         @Override
         public Optional<String> hentEnhet() {
             try {
-                String fnr = getSubjectHandler().getUid();
+                String fnr = SubjectHandler.getIdent().orElseThrow(() -> new NotAuthorizedException("Fant ikke brukers OIDC-token"));
                 WSNorskIdent ident = new WSNorskIdent().withType(identtype).withIdent(fnr);
                 WSHentKontaktinformasjonOgPreferanserRequest kontaktRequest = new WSHentKontaktinformasjonOgPreferanserRequest().withIdent(ident);
                 WSPerson person = brukerprofilV3.hentKontaktinformasjonOgPreferanser(kontaktRequest).getBruker();

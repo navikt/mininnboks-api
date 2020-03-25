@@ -7,7 +7,9 @@ import no.nav.common.auth.SsoToken
 import no.nav.common.auth.Subject
 import no.nav.common.auth.SubjectHandler
 import no.nav.log.MDCConstants
+import no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT
 import no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig
+import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.util.EnvironmentUtils
 import no.nav.sbl.util.fn.UnsafeSupplier
 import org.assertj.core.api.Assertions.assertThat
@@ -27,8 +29,6 @@ internal data class MockContext(
 )
 
 internal class PdlServiceTest {
-    val mockSubject: Subject = Subject("uid", IdentType.EksternBruker, SsoToken.oidcToken("token", mutableMapOf<String, Any>()))
-
     @Test
     fun `henter adressebeskyttelsegradering om det finnes`() {
         gittGradering(PdlAdressebeskyttelseGradering.UGRADERT) {(_, pdlService) ->
@@ -68,7 +68,7 @@ internal class PdlServiceTest {
         val stsService = gittStsService()
         val pdlService = PdlServiceImpl(mockContext.client, stsService)
 
-        val adressebeskyttelseGradering : PdlAdressebeskyttelseGradering? = SubjectHandler.withSubject(mockSubject, UnsafeSupplier {
+        val adressebeskyttelseGradering : PdlAdressebeskyttelseGradering? = SubjectHandler.withSubject(MOCK_SUBJECT, UnsafeSupplier {
             pdlService.hentAdresseBeskyttelse("anyfnr")
         })
 
@@ -82,7 +82,7 @@ internal class PdlServiceTest {
         val stsService = gittStsService()
         val pdlService = PdlServiceImpl(mockContext.client, stsService)
 
-        val harKode6 : Boolean = SubjectHandler.withSubject(mockSubject, UnsafeSupplier {
+        val harKode6 : Boolean = SubjectHandler.withSubject(MOCK_SUBJECT, UnsafeSupplier {
             pdlService.harKode6("anyfnr")
         })
 
@@ -155,10 +155,10 @@ internal class PdlServiceTest {
         return MockContext(client, webTarget, invocationBuiler, response)
     }
 
-    fun gittStsService(token: String = UUID.randomUUID().toString()): SystemUserTokenProvider {
-        val stsService = mock<SystemUserTokenProvider>()
+    fun gittStsService(token: String = UUID.randomUUID().toString()): SystemuserTokenProvider {
+        val stsService = mock<SystemuserTokenProvider>()
 
-        whenever(stsService.token).thenReturn(token)
+        whenever(stsService.getSystemUserAccessToken()).thenReturn(token)
 
         return stsService
     }
@@ -198,7 +198,7 @@ internal class PdlServiceTest {
         val stsService = gittStsService()
         val pdlService = PdlServiceImpl(mockContext.client, stsService)
 
-        SubjectHandler.withSubject(mockSubject) {
+        SubjectHandler.withSubject(MOCK_SUBJECT) {
             fn(Pair(mockContext, pdlService))
         }
     }

@@ -1,5 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks;
 
+import no.nav.brukerdialog.security.domain.IdentType;
+import no.nav.common.auth.SsoToken;
+import no.nav.common.auth.Subject;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
@@ -8,11 +11,12 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 import static java.util.UUID.randomUUID;
 
 public class TestUtils {
-
+    public static final Subject MOCK_SUBJECT = new Subject("uid", IdentType.EksternBruker, SsoToken.oidcToken("token", new HashMap<>()));
     public static final String DEFAULT_EKSTERN_AKTOR = "eksternAktor";
     public static final String DEFAULT_TILKNYTTET_ENHET = "tilknyttetEnhet";
     public static final Henvendelsetype DEFAULT_TYPE = Henvendelsetype.SPORSMAL_SKRIFTLIG;
