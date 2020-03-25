@@ -52,7 +52,7 @@ spec:
     - name: SECURITYTOKENSERVICE_URL
       value: "https://sts-{{ namespace }}.oera-q.local/SecurityTokenServiceProvider/"
     - name: STS_TOKENENDPOINT_URL
-      value: "https://api-gw-{{ namespace }}.oera-q.local/security-token-service-token/rest/v1/sts/token"
+      value: "https://api-gw-{{ namespace }}.oera.no/security-token-service-token/rest/v1/sts/token"
     - name: SERVICEGATEWAY_URL
       value: "https://service-gw-{{ namespace }}.oera-q.local/"
     - name: AAD_B2C_CLIENTID_USERNAME
@@ -70,7 +70,7 @@ spec:
     - name: SAKSOVERSIKT_LINK_URL
       value: "https://tjenester-{{ namespace }}.nav.no/saksoversikt"
     - name: PDL_API_URL
-      value: "https://api-gw-{{ namespace }}.oera-q.local/pdl-api"
+      value: "https://api-gw-{{ namespace }}.oera./pdl-api"
 #     Properties nedenfor brukes egentlig ikke. Men appen har en avhengighet mot disse tjenestene via service-gateway.
     - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_SECURITYTOKEN
       value: "SAML"
