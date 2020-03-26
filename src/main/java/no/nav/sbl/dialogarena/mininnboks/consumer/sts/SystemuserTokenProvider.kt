@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.nimbusds.jwt.JWT
 import com.nimbusds.jwt.JWTParser
 import lombok.SneakyThrows
+import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig
 import no.nav.sbl.rest.RestUtils
 import java.text.ParseException
 import java.util.*
@@ -80,7 +81,8 @@ class SystemuserTokenProviderImpl internal constructor(
             val responseStr = response.readEntity(String::class.java)
             throw RuntimeException(String.format("Received unexpected status %d when requesting access token for system user. Response: %s", response.status, responseStr))
         }
-        return response.readEntity(ClientCredentialsResponse::class.java)
+        val strResponse = response.readEntity(String::class.java)
+        return JacksonConfig.mapper.readValue(strResponse, ClientCredentialsResponse::class.java)
     }
 }
 
