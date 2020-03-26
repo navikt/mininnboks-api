@@ -1,10 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.nhaarman.mockitokotlin2.*
-import no.nav.brukerdialog.security.domain.IdentType
-import no.nav.brukerdialog.security.oidc.SystemUserTokenProvider
-import no.nav.common.auth.SsoToken
-import no.nav.common.auth.Subject
 import no.nav.common.auth.SubjectHandler
 import no.nav.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT
@@ -14,6 +10,7 @@ import no.nav.sbl.util.EnvironmentUtils
 import no.nav.sbl.util.fn.UnsafeSupplier
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.slf4j.MDC
 import java.util.*
 import javax.ws.rs.client.Client
@@ -68,11 +65,11 @@ internal class PdlServiceTest {
         val stsService = gittStsService()
         val pdlService = PdlServiceImpl(mockContext.client, stsService)
 
-        val adressebeskyttelseGradering : PdlAdressebeskyttelseGradering? = SubjectHandler.withSubject(MOCK_SUBJECT, UnsafeSupplier {
-            pdlService.hentAdresseBeskyttelse("anyfnr")
+        SubjectHandler.withSubject(MOCK_SUBJECT, UnsafeSupplier {
+            assertThrows<PdlException> {
+                pdlService.hentAdresseBeskyttelse("anyfnr")
+            }
         })
-
-        assertThat(adressebeskyttelseGradering).isNull()
     }
 
     @Test
@@ -82,11 +79,11 @@ internal class PdlServiceTest {
         val stsService = gittStsService()
         val pdlService = PdlServiceImpl(mockContext.client, stsService)
 
-        val harKode6 : Boolean = SubjectHandler.withSubject(MOCK_SUBJECT, UnsafeSupplier {
-            pdlService.harKode6("anyfnr")
-        })
-
-        assertThat(harKode6).isTrue()
+         SubjectHandler.withSubject(MOCK_SUBJECT) {
+             assertThrows<PdlException> {
+                 pdlService.harKode6("anyfnr")
+             }
+         }
     }
 
     @Test
