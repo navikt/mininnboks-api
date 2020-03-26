@@ -28,6 +28,8 @@ import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
 public class ApplicationConfig implements ApiApplication {
 
     public static final String SECURITYTOKENSERVICE_URL_PROPERTY = "SECURITYTOKENSERVICE_URL";
+    public static final String FSS_SRVMININNBOKS_USERNAME = "FSS_SRVMININNBOKS_USERNAME";
+    public static final String FSS_SRVMININNBOKS_PASSWORD = "FSS_SRVMININNBOKS_PASSWORD";
     public static final String SRVMININNBOKS_USERNAME = "SRVMININNBOKS_USERNAME";
     public static final String SRVMININNBOKS_PASSWORD = "SRVMININNBOKS_PASSWORD";
 

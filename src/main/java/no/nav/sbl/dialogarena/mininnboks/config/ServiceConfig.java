@@ -19,8 +19,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.ws.rs.client.Client;
 
-import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.SRVMININNBOKS_PASSWORD;
-import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.SRVMININNBOKS_USERNAME;
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.*;
 import static no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils.createPortType;
 import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
 
@@ -74,8 +73,8 @@ public class ServiceConfig {
 
         return SystemuserTokenProvider.fromTokenEndpoint(
                 getRequiredProperty(STS_TOKENENDPOINT_URL),
-                getRequiredProperty(SRVMININNBOKS_USERNAME),
-                getRequiredProperty(SRVMININNBOKS_PASSWORD),
+                getRequiredProperty(FSS_SRVMININNBOKS_USERNAME),
+                getRequiredProperty(FSS_SRVMININNBOKS_PASSWORD),
                 client
         );
     }
