@@ -2,8 +2,8 @@ import no.nav.apiapp.ApiApp;
 import no.nav.common.nais.utils.NaisUtils;
 import no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig;
 
-import java.nio.file.Paths;
-
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.FSS_SRVMININNBOKS_PASSWORD;
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.FSS_SRVMININNBOKS_USERNAME;
 import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.SRVMININNBOKS_PASSWORD;
 import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.SRVMININNBOKS_USERNAME;
 import static no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig.*;
@@ -28,6 +28,10 @@ public class Main {
     }
 
     private static void loadVaultSecrets() {
+        NaisUtils.Credentials fssServiceUser = NaisUtils.getCredentials("srvmininnboks-fss");
+        setProperty(FSS_SRVMININNBOKS_USERNAME, fssServiceUser.username, PUBLIC);
+        setProperty(FSS_SRVMININNBOKS_PASSWORD, fssServiceUser.password, SECRET);
+
         NaisUtils.Credentials serviceUser = NaisUtils.getCredentials("srvmininnboks");
         setProperty(SRVMININNBOKS_USERNAME, serviceUser.username, PUBLIC);
         setProperty(SRVMININNBOKS_PASSWORD, serviceUser.password, SECRET);

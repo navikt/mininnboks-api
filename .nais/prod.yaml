@@ -33,6 +33,8 @@ spec:
   vault:
     enabled: true
     paths:
+    - kvPath: /serviceuser/data/prod/srvmininnboks
+      mountPath: /var/run/secrets/nais.io/srvmininnboks-fss
     - kvPath: /serviceuser/data/prod/srvmininnboks-sbs
       mountPath: /var/run/secrets/nais.io/srvmininnboks
     - kvPath: /apikey/appdynamics/prod
