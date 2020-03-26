@@ -29,7 +29,6 @@ public class TilgangController {
                 .getIdent()
                 .map((fnr) -> {
                     Try<Boolean> harEnhet = Try.of(() -> personService.hentEnhet().isPresent());
-                    Try<Boolean> harKode6 = Try.of(() -> pdlService.harKode6(fnr));
 
                     if (harEnhet.isFailure()) {
                         return new TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers enhet: " + harEnhet.getFailure().getMessage());
@@ -37,6 +36,7 @@ public class TilgangController {
                         return new TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ingen enhet");
                     }
 
+                    Try<Boolean> harKode6 = Try.of(() -> pdlService.harKode6(fnr));
                     if (harKode6.isFailure()) {
                         return new TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers diskresjonskode: " + harKode6.getFailure().getMessage());
                     } else if (harKode6.get()) {

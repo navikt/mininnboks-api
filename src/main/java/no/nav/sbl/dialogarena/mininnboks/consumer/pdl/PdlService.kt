@@ -81,15 +81,15 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
     }
 
     private fun harGradering(fnr: String, gradering: PdlAdressebeskyttelseGradering): Boolean {
-        val pdlGradering = hentAdresseBeskyttelse(fnr) ?: return true
+        val pdlGradering = hentAdresseBeskyttelse(fnr)
         return gradering == pdlGradering
     }
 
     private fun graphqlRequest(request: PdlRequest): PdlResponse {
         val uuid = UUID.randomUUID()
         try {
+            val veilederOidcToken: String = SubjectHandler.getSsoToken(SsoToken.Type.OIDC).orElseThrow { IllegalStateException("Kunne ikke hente ut bruker ssoTOken") }
             val consumerOidcToken: String = stsService.getSystemUserAccessToken()!!
-            val veilederOidcToken: String = SubjectHandler.getSsoToken(SsoToken.Type.OIDC).orElseThrow { IllegalStateException("Kunne ikke hente ut veileders ssoTOken") }
 
             log.info("""
                     PDL-request: $uuid
