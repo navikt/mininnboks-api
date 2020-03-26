@@ -11,6 +11,7 @@ import no.nav.sbl.dialogarena.types.Pingable
 import no.nav.sbl.util.EnvironmentUtils.getRequiredProperty
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
+import java.lang.RuntimeException
 import java.util.*
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.Entity
@@ -23,6 +24,8 @@ interface PdlService {
     fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering?
     fun getHelsesjekk(): Pingable
 }
+
+class PdlException(cause: Exception) : RuntimeException("Kunne ikke utlede adressebeskyttelse", cause)
 
 class PdlServiceImpl(private val pdlClient: Client, private val stsService: SystemuserTokenProvider) : PdlService {
     private val log = LoggerFactory.getLogger(PdlService::class.java)
@@ -46,8 +49,8 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
                     .map { it.gradering }
                     .firstOrNull()
         } catch (exception: Exception) {
-            log.error("Kunne ikke utlede adressebeskyttelse, antar skjermet bruker", exception)
-            null
+            log.error("Kunne ikke utlede adressebeskyttelse", exception)
+            throw PdlException(exception)
         }
     }
 
