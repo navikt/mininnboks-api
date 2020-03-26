@@ -1,9 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang;
 
 import no.nav.common.auth.SubjectHandler;
-import no.nav.sbl.dialogarena.mininnboks.Try;
-import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -17,34 +16,14 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class TilgangController {
 
     @Inject
-    private PdlService pdlService;
-
-    @Inject
-    private PersonService personService;
+    private TilgangService tilgangService;
 
     @GET
     @Path("/oksos")
     public TilgangDTO harTilgangTilKommunalInnsending() {
         return SubjectHandler
                 .getIdent()
-                .map((fnr) -> {
-                    Try<Boolean> harEnhet = Try.of(() -> personService.hentEnhet().isPresent());
-
-                    if (harEnhet.isFailure()) {
-                        return new TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers enhet: " + harEnhet.getFailure().getMessage());
-                    } else if (!harEnhet.get()) {
-                        return new TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ingen enhet");
-                    }
-
-                    Try<Boolean> harKode6 = Try.of(() -> pdlService.harKode6(fnr));
-                    if (harKode6.isFailure()) {
-                        return new TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers diskresjonskode: " + harKode6.getFailure().getMessage());
-                    } else if (harKode6.get()) {
-                        return new TilgangDTO(TilgangDTO.Resultat.KODE6, "Bruker har diskresjonskode");
-                    }
-
-                    return new TilgangDTO(TilgangDTO.Resultat.OK, "");
-                })
+                .map((fnr) -> tilgangService.harTilgangTilKommunalInnsending(fnr))
                 .orElse(new TilgangDTO(TilgangDTO.Resultat.FEILET, "Fant ikke brukers OIDC-token"));
     }
 }

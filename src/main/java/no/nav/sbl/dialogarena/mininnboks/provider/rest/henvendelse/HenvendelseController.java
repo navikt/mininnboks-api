@@ -6,6 +6,8 @@ import no.nav.metrics.MetricsFactory;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
 import org.apache.cxf.binding.soap.SoapFault;
 import org.slf4j.Logger;
@@ -40,7 +42,7 @@ public class HenvendelseController {
     private HenvendelseService henvendelseService;
 
     @Inject
-    private PdlService pdlService;
+    private TilgangService tilgangService;
 
     @GET
     public List<Traad> hentTraader() {
@@ -119,9 +121,13 @@ public class HenvendelseController {
     }
 
     private void sjekkTilgangTilTemagruppe(String fnr, Henvendelse henvendelse) {
-        if (henvendelse.temagruppe == Temagruppe.OKSOS && pdlService.harKode6(fnr)) {
+        if (henvendelse.temagruppe == Temagruppe.OKSOS && !harTilgangTilKommunalInnsending(fnr)) {
             throw new BadRequestException("Bruker har ikke lov til å sende inn henvendelse på temagruppe OKSOS.");
         }
+    }
+
+    private boolean harTilgangTilKommunalInnsending(String fnr) {
+        return TilgangDTO.Resultat.OK.equals(tilgangService.harTilgangTilKommunalInnsending(fnr).getResultat());
     }
 
     @POST

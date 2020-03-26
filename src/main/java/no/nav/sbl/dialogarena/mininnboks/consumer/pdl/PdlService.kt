@@ -39,15 +39,12 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
     override fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
         return try {
             val response: PdlResponse = graphqlRequest(PdlRequest(adressebeskyttelseQuery, Variables(fnr)))
-            val adressebeskyttelse: List<PdlAdressebeskyttelse> = response
-                    ?.data
+            response
+                    .data
                     ?.hentPerson
                     ?.adressebeskyttelse
-                    ?: emptyList()
-
-            adressebeskyttelse
-                    .map { it.gradering }
-                    .firstOrNull()
+                    ?.firstOrNull()
+                    ?.gradering
         } catch (exception: Exception) {
             log.error("Kunne ikke utlede adressebeskyttelse", exception)
             throw PdlException(exception)

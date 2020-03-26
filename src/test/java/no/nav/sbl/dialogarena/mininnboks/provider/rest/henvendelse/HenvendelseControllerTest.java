@@ -7,7 +7,8 @@ import no.nav.common.auth.Subject;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
-import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController.NyHenvendelseResultat;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
@@ -55,7 +56,7 @@ public class HenvendelseControllerTest {
     TekstService tekstService = mock(TekstService.class);
 
     @Mock
-    PdlService pdlService = mock(PdlService.class);
+    TilgangService tilgangService = mock(TilgangService.class);
 
     @InjectMocks
     HenvendelseController controller = new HenvendelseController();
@@ -279,7 +280,33 @@ public class HenvendelseControllerTest {
 
     @Test(expected = BadRequestException.class)
     public void smellerHvisBrukerErKode6OgTemagruppeOKSOS() {
-        whenever(pdlService.harKode6(anyString())).thenReturn(true);
+        whenever(tilgangService.harTilgangTilKommunalInnsending(anyString())).thenReturn(
+                new TilgangDTO(TilgangDTO.Resultat.KODE6, "melding")
+        );
+        Sporsmal sporsmal = new Sporsmal();
+        sporsmal.fritekst = "DUMMY";
+        sporsmal.temagruppe = Temagruppe.OKSOS.name();
+
+        controller.sendSporsmal(sporsmal);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void smellerHvisBrukerIkkeHarEnhetOgTemagruppeOKSOS() {
+        whenever(tilgangService.harTilgangTilKommunalInnsending(anyString())).thenReturn(
+                new TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "melding")
+        );
+        Sporsmal sporsmal = new Sporsmal();
+        sporsmal.fritekst = "DUMMY";
+        sporsmal.temagruppe = Temagruppe.OKSOS.name();
+
+        controller.sendSporsmal(sporsmal);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void smellerHvisTemagruppeOKSOSOgUtledningFeiler() {
+        whenever(tilgangService.harTilgangTilKommunalInnsending(anyString())).thenReturn(
+                new TilgangDTO(TilgangDTO.Resultat.FEILET, "melding")
+        );
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = "DUMMY";
         sporsmal.temagruppe = Temagruppe.OKSOS.name();

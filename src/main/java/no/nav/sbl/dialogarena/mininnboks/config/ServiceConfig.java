@@ -6,6 +6,8 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlServiceImpl;
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangServiceImpl;
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.ApigwRequestFilter;
 import no.nav.sbl.dialogarena.types.Pingable;
 import no.nav.sbl.rest.RestUtils;
@@ -90,6 +92,11 @@ public class ServiceConfig {
     @Bean
     public Pingable pdlPing(PdlService pdlService) {
         return pdlService.getHelsesjekk();
+    }
+
+    @Bean
+    public TilgangService tilgangService(PdlService pdlService, PersonService personService) {
+        return new TilgangServiceImpl(pdlService, personService);
     }
 
     @Bean

@@ -48,6 +48,11 @@ internal class PdlServiceTest {
             assertThat(pdlService.harKode6("anyfnr")).isTrue()
             assertThat(pdlService.harStrengtFortroligAdresse("anyfnr")).isTrue()
         }
+
+        gittGradering(null) {(_, pdlService) ->
+            assertThat(pdlService.harKode6("anyfnr")).isFalse()
+            assertThat(pdlService.harStrengtFortroligAdresse("anyfnr")).isFalse()
+        }
     }
 
     @Test
@@ -56,10 +61,15 @@ internal class PdlServiceTest {
             assertThat(pdlService.harKode7("anyfnr")).isTrue()
             assertThat(pdlService.harFortroligAdresse("anyfnr")).isTrue()
         }
+
+        gittGradering(null) {(_, pdlService) ->
+            assertThat(pdlService.harKode7("anyfnr")).isFalse()
+            assertThat(pdlService.harFortroligAdresse("anyfnr")).isFalse()
+        }
     }
 
     @Test
-    fun `håndterer feilmelding fra pdl`() {
+    fun `feil blir pakket inn i egen exceptiontype`() {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(body = gittErrorPdlResponse("Det skjedde en feil"))
         val stsService = gittStsService()
@@ -70,20 +80,6 @@ internal class PdlServiceTest {
                 pdlService.hentAdresseBeskyttelse("anyfnr")
             }
         })
-    }
-
-    @Test
-    fun `ved feil fra pdl behandles alle som kode6`() {
-        gittUrlTilPdl()
-        val mockContext = gittClientSomSvarer(body = gittErrorPdlResponse("Det skjedde en feil"))
-        val stsService = gittStsService()
-        val pdlService = PdlServiceImpl(mockContext.client, stsService)
-
-         SubjectHandler.withSubject(MOCK_SUBJECT) {
-             assertThrows<PdlException> {
-                 pdlService.harKode6("anyfnr")
-             }
-         }
     }
 
     @Test
