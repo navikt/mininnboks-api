@@ -19,7 +19,7 @@ class TilgangServiceImpl(
         private val personService: PersonService
 ) : TilgangService {
     override fun harTilgangTilKommunalInnsending(fnr: String): TilgangDTO {
-        val harEnhet = Try.of { personService.hentEnhet().isPresent }
+        val harEnhet = Try.of { personService.hentEnhet().filter { it.isNotBlank() } .isPresent }
         if (harEnhet.isFailure()) {
             return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers enhet: ${harEnhet.getFailure().message}")
         } else if (!harEnhet.get()) {
