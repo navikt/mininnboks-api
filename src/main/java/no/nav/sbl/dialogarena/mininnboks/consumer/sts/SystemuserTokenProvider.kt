@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.nimbusds.jwt.JWT
 import com.nimbusds.jwt.JWTParser
-import lombok.SneakyThrows
 import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig
 import no.nav.sbl.rest.RestUtils
+import org.slf4j.LoggerFactory
 import java.text.ParseException
 import java.util.*
 import javax.ws.rs.client.Client
@@ -36,6 +36,7 @@ interface SystemuserTokenProvider {
 
     fun getSystemUserAccessToken(): String?
 }
+
 // TODO Kan erstattes av tilsvarende klass i common etter bump.
 class SystemuserTokenProviderImpl internal constructor(
         startingUrlIsDiscoveryUrl: Boolean,
@@ -44,6 +45,7 @@ class SystemuserTokenProviderImpl internal constructor(
         private val srvPassword: String,
         private val client: Client
 ) : SystemuserTokenProvider {
+    private val log = LoggerFactory.getLogger(SystemuserTokenProvider::class.java)
     private var accessToken: JWT? = null
     private val tokenEndpointUrl: String = if (startingUrlIsDiscoveryUrl) {
         hentOidcDiscoveryConfiguration(client, startingUrl).tokenEndpoint
@@ -55,20 +57,19 @@ class SystemuserTokenProviderImpl internal constructor(
         if (tokenIsSoonExpired()) {
             refreshToken()
         }
-        return accessToken!!.parsedString
+        return accessToken?.parsedString
     }
 
-    @SneakyThrows(ParseException::class)
     private fun refreshToken() {
         val clientCredentials = fetchSystemUserAccessToken()
-        this.accessToken = JWTParser.parse(clientCredentials!!.accessToken)
+        this.accessToken = JWTParser.parse(clientCredentials.accessToken)
     }
 
     private fun tokenIsSoonExpired(): Boolean {
         return accessToken == null || expiresWithin(accessToken!!, MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH)
     }
 
-    private fun fetchSystemUserAccessToken(): ClientCredentialsResponse? {
+    private fun fetchSystemUserAccessToken(): ClientCredentialsResponse {
         val targetUrl = "$tokenEndpointUrl?grant_type=client_credentials&scope=openid"
         val basicAuth: String = basicCredentials(srvUsername, srvPassword)
         val response = client
@@ -80,9 +81,14 @@ class SystemuserTokenProviderImpl internal constructor(
 
         val strResponse = response.readEntity(String::class.java)
         if (response.status != 200) {
-            throw RuntimeException(String.format("Received unexpected status %d when requesting access token for system user. Response: %s", response.status, strResponse))
+            val errorMessage = String.format("Received unexpected status %d when requesting access token for system user. Response: %s", response.status, strResponse)
+            log.error("Failed to get SystemUserToken: $errorMessage")
+            throw RuntimeException(errorMessage)
+        } else {
+            val credentials = JacksonConfig.mapper.readValue(strResponse, ClientCredentialsResponse::class.java)
+            log.info("Fetched SystemUserToken, parts: ${credentials.accessToken.split(".").size}")
+            return credentials
         }
-        return JacksonConfig.mapper.readValue(strResponse, ClientCredentialsResponse::class.java)
     }
 }
 
@@ -92,7 +98,7 @@ private fun basicCredentials(username: String, password: String): String {
 
 private fun expiresWithin(jwt: JWT, withinMillis: Long): Boolean {
     return try {
-        val tokenExpiration: Date = jwt.getJWTClaimsSet().getExpirationTime()
+        val tokenExpiration: Date = jwt.jwtClaimsSet.expirationTime
         val expirationTime = tokenExpiration.time - withinMillis
         System.currentTimeMillis() > expirationTime
     } catch (e: ParseException) {

@@ -88,7 +88,7 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
             val veilederOidcToken: String = SubjectHandler.getSsoToken()
                     .map { it.token }
                     .orElseThrow { IllegalStateException("Kunne ikke hente ut bruker ssoTOken") }
-            val consumerOidcToken: String = stsService.getSystemUserAccessToken()!!
+            val consumerOidcToken: String = stsService.getSystemUserAccessToken() ?: throw IllegalStateException("Kunne ikke hente ut systemusertoken")
 
             log.info("""
                     PDL-request: $uuid
