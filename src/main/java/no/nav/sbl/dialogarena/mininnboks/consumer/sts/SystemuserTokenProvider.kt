@@ -77,11 +77,11 @@ class SystemuserTokenProviderImpl internal constructor(
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
                 .header(HttpHeaders.AUTHORIZATION, basicAuth)
                 .get()
-        if (response.status >= 300) {
-            val responseStr = response.readEntity(String::class.java)
-            throw RuntimeException(String.format("Received unexpected status %d when requesting access token for system user. Response: %s", response.status, responseStr))
-        }
+
         val strResponse = response.readEntity(String::class.java)
+        if (response.status != 200) {
+            throw RuntimeException(String.format("Received unexpected status %d when requesting access token for system user. Response: %s", response.status, strResponse))
+        }
         return JacksonConfig.mapper.readValue(strResponse, ClientCredentialsResponse::class.java)
     }
 }
