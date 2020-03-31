@@ -33,10 +33,16 @@ spec:
   vault:
     enabled: true
     paths:
+    - kvPath: /serviceuser/data/prod/srvmininnboks
+      mountPath: /var/run/secrets/nais.io/srvmininnboks-fss
     - kvPath: /serviceuser/data/prod/srvmininnboks-sbs
       mountPath: /var/run/secrets/nais.io/srvmininnboks
     - kvPath: /apikey/appdynamics/prod
       mountPath: /var/run/secrets/nais.io/vault
+    - kvPath: /apikey/apigw/prod/pdl-api/mininnboks-api
+      mountPath: /var/run/secrets/nais.io/apigw/pdl-api
+    - kvPath: /apikey/apigw/prod/security-token-service-token/mininnboks-api
+      mountPath: /var/run/secrets/nais.io/apigw/security-token-service-token
   webproxy: true
   env:
     - name: APP_NAME
@@ -47,6 +53,8 @@ spec:
       value: "p"
     - name: SECURITYTOKENSERVICE_URL
       value: "https://sts.oera.no/SecurityTokenServiceProvider/"
+    - name: STS_TOKENENDPOINT_URL
+      value: "https://api-gw.oera.no/security-token-service/rest/v1/sts/token"
     - name: SERVICEGATEWAY_URL
       value: "https://service-gw.oera.no/"
     - name: AAD_B2C_CLIENTID_USERNAME
@@ -63,6 +71,8 @@ spec:
       value: "https://tjenester.nav.no/brukerprofil/"
     - name: SAKSOVERSIKT_LINK_URL
       value: "https://tjenester.nav.no/saksoversikt"
+    - name: PDL_API_URL
+      value: "https://api-gw.oera.no/pdl-api"
 #     Properties nedenfor brukes egentlig ikke. Men appen har en avhengighet mot disse tjenestene via service-gateway.
     - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_SECURITYTOKEN
       value: "SAML"

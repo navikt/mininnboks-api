@@ -3,7 +3,14 @@ package no.nav.sbl.dialogarena.mininnboks.config;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlServiceImpl;
+import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangServiceImpl;
+import no.nav.sbl.dialogarena.mininnboks.consumer.utils.ApigwRequestFilter;
 import no.nav.sbl.dialogarena.types.Pingable;
+import no.nav.sbl.rest.RestUtils;
 import no.nav.sbl.util.EnvironmentUtils;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
@@ -12,6 +19,9 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.ws.rs.client.Client;
+
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.*;
 import static no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils.createPortType;
 import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
 
@@ -23,6 +33,12 @@ public class ServiceConfig {
     public static final String HENVENDELSE_WS_URL = "henvendelse.ws.url";
     public static final String SEND_INN_HENVENDELSE_WS_URL = "send.inn.henvendelse.ws.url";
     public static final String BRUKERPROFIL_V_3_URL = "brukerprofil.v3.url";
+
+    public static final String PDL_API_URL = "PDL_API_URL";
+    public static final String PDL_API_APIKEY = "PDL_API_APIKEY";
+
+    public static final String STS_APIKEY = "STS_APIKEY";
+    public static final String STS_TOKENENDPOINT_URL = "STS_TOKENENDPOINT_URL";
 
     @Bean
     public PersonService personService() {
@@ -50,6 +66,37 @@ public class ServiceConfig {
                 innsynHenvendesle().port,
                 personService
         );
+    }
+
+    @Bean
+    public SystemuserTokenProvider systemUserTokenProvider() {
+        String stsApikey = EnvironmentUtils.getRequiredProperty(STS_APIKEY);
+        Client client =  RestUtils.createClient().register(new ApigwRequestFilter(stsApikey));
+
+        return SystemuserTokenProvider.fromTokenEndpoint(
+                getRequiredProperty(STS_TOKENENDPOINT_URL),
+                getRequiredProperty(FSS_SRVMININNBOKS_USERNAME),
+                getRequiredProperty(FSS_SRVMININNBOKS_PASSWORD),
+                client
+        );
+    }
+
+    @Bean
+    public PdlService pdlService(SystemuserTokenProvider stsService) {
+        String pdlapiApikey = EnvironmentUtils.getRequiredProperty(PDL_API_APIKEY);
+        Client client =  RestUtils.createClient().register(new ApigwRequestFilter(pdlapiApikey));
+
+        return new PdlServiceImpl(client, stsService);
+    }
+
+    @Bean
+    public Pingable pdlPing(PdlService pdlService) {
+        return pdlService.getHelsesjekk();
+    }
+
+    @Bean
+    public TilgangService tilgangService(PdlService pdlService, PersonService personService) {
+        return new TilgangServiceImpl(pdlService, personService);
     }
 
     @Bean
@@ -93,5 +140,4 @@ public class ServiceConfig {
                 InnsynHenvendelsePortType::ping
         );
     }
-
 }

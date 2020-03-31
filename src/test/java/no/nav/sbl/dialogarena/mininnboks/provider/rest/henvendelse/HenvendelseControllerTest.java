@@ -4,10 +4,11 @@ import no.nav.brukerdialog.security.context.SubjectRule;
 import no.nav.brukerdialog.security.domain.IdentType;
 import no.nav.common.auth.SsoToken;
 import no.nav.common.auth.Subject;
-import no.nav.sbl.dialogarena.mininnboks.TestUtils;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO;
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController.NyHenvendelseResultat;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
@@ -22,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Response;
 import javax.xml.ws.soap.SOAPFaultException;
 import java.util.Arrays;
@@ -29,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.nhaarman.mockitokotlin2.OngoingStubbingKt.whenever;
 import static java.util.Arrays.asList;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
@@ -51,6 +54,9 @@ public class HenvendelseControllerTest {
 
     @Mock
     TekstService tekstService = mock(TekstService.class);
+
+    @Mock
+    TilgangService tilgangService = mock(TilgangService.class);
 
     @InjectMocks
     HenvendelseController controller = new HenvendelseController();
@@ -269,6 +275,42 @@ public class HenvendelseControllerTest {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = "DUMMY";
         sporsmal.temagruppe = Temagruppe.ANSOS.name();
+        controller.sendSporsmal(sporsmal);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void smellerHvisBrukerErKode6OgTemagruppeOKSOS() {
+        whenever(tilgangService.harTilgangTilKommunalInnsending(anyString())).thenReturn(
+                new TilgangDTO(TilgangDTO.Resultat.KODE6, "melding")
+        );
+        Sporsmal sporsmal = new Sporsmal();
+        sporsmal.fritekst = "DUMMY";
+        sporsmal.temagruppe = Temagruppe.OKSOS.name();
+
+        controller.sendSporsmal(sporsmal);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void smellerHvisBrukerIkkeHarEnhetOgTemagruppeOKSOS() {
+        whenever(tilgangService.harTilgangTilKommunalInnsending(anyString())).thenReturn(
+                new TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "melding")
+        );
+        Sporsmal sporsmal = new Sporsmal();
+        sporsmal.fritekst = "DUMMY";
+        sporsmal.temagruppe = Temagruppe.OKSOS.name();
+
+        controller.sendSporsmal(sporsmal);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void smellerHvisTemagruppeOKSOSOgUtledningFeiler() {
+        whenever(tilgangService.harTilgangTilKommunalInnsending(anyString())).thenReturn(
+                new TilgangDTO(TilgangDTO.Resultat.FEILET, "melding")
+        );
+        Sporsmal sporsmal = new Sporsmal();
+        sporsmal.fritekst = "DUMMY";
+        sporsmal.temagruppe = Temagruppe.OKSOS.name();
+
         controller.sendSporsmal(sporsmal);
     }
 }

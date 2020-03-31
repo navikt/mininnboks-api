@@ -33,10 +33,16 @@ spec:
   vault:
     enabled: true
     paths:
+    - kvPath: /serviceuser/data/dev/srvmininnboks
+      mountPath: /var/run/secrets/nais.io/srvmininnboks-fss
     - kvPath: /serviceuser/data/dev/srvmininnboks-sbs
       mountPath: /var/run/secrets/nais.io/srvmininnboks
     - kvPath: /apikey/appdynamics/dev
       mountPath: /var/run/secrets/nais.io/vault
+    - kvPath: /apikey/apigw/dev/pdl-api/mininnboks-api_{{ namespace }}
+      mountPath: /var/run/secrets/nais.io/apigw/pdl-api
+    - kvPath: /apikey/apigw/dev/security-token-service-token/mininnboks-api_{{ namespace }}
+      mountPath: /var/run/secrets/nais.io/apigw/security-token-service-token
   webproxy: true
   env:
     - name: APP_NAME
@@ -47,6 +53,8 @@ spec:
       value: "{{ namespace }}"
     - name: SECURITYTOKENSERVICE_URL
       value: "https://sts-{{ namespace }}.oera-q.local/SecurityTokenServiceProvider/"
+    - name: STS_TOKENENDPOINT_URL
+      value: "https://api-gw-{{ namespace }}.oera.no/security-token-service/rest/v1/sts/token"
     - name: SERVICEGATEWAY_URL
       value: "https://service-gw-{{ namespace }}.oera-q.local/"
     - name: AAD_B2C_CLIENTID_USERNAME
@@ -58,11 +66,13 @@ spec:
     - name: MININNBOKS_LINK_URL
       value: "https://tjenester-{{ namespace }}.nav.no/mininnboks"
     - name: TEMAVELGER_LINK_URL
-      value: "https://www-{{ namespace }}.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Kontakt+oss/skriv+til+oss/"
+      value: "https://www-{{ namespace }}.nav.no/person/kontakt-oss/skriv-til-oss/"
     - name: BRUKERPROFIL_LINK_URL
       value: "https://tjenester-{{ namespace }}.nav.no/brukerprofil/"
     - name: SAKSOVERSIKT_LINK_URL
       value: "https://tjenester-{{ namespace }}.nav.no/saksoversikt"
+    - name: PDL_API_URL
+      value: "https://api-gw-{{ namespace }}.oera.no/pdl-api"
 #     Properties nedenfor brukes egentlig ikke. Men appen har en avhengighet mot disse tjenestene via service-gateway.
     - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_SECURITYTOKEN
       value: "SAML"
