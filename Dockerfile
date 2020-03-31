@@ -10,7 +10,7 @@ RUN mvn package -DskipTests
 
 FROM navikt/java:8-appdynamics
 ENV JAVA_OPTS="${JAVA_OPTS} -XX:MaxRAMPercentage=65.0"
-ENV JAVA_OPTS="${JAVA_OPTS} -Xdebug -Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=n"
+#ENV JAVA_OPTS="${JAVA_OPTS} -Xdebug -Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=n"
 ENV APPD_ENABLED=true
 
 COPY --from=builder /source/target/mininnboks-api /app
