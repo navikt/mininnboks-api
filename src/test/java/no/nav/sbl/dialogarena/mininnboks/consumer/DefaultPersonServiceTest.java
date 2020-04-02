@@ -9,6 +9,7 @@ import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSAnsvarligEnhet;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSBruker;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.meldinger.WSHentKontaktinformasjonOgPreferanserRequest;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.meldinger.WSHentKontaktinformasjonOgPreferanserResponse;
+import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,11 +26,13 @@ import static org.mockito.Mockito.when;
 public class DefaultPersonServiceTest {
     @Mock
     private BrukerprofilV3 brukerprofilV3;
+    @Mock
+    private PersonV3 personV3;
     private PersonService.Default personService;
 
     @Before
     public void setUp() {
-        personService = new PersonService.Default(brukerprofilV3);
+        personService = new PersonService.Default(brukerprofilV3, personV3);
     }
 
     @Test
