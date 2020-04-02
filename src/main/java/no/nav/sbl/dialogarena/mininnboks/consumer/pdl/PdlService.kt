@@ -11,7 +11,6 @@ import no.nav.sbl.dialogarena.types.Pingable
 import no.nav.sbl.util.EnvironmentUtils.getRequiredProperty
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
-import java.lang.RuntimeException
 import java.util.*
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.Entity
@@ -85,8 +84,14 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
     private fun graphqlRequest(request: PdlRequest): PdlResponse {
         val uuid = UUID.randomUUID()
         try {
-            val veilederOidcToken: String = SubjectHandler.getSsoToken(SsoToken.Type.OIDC)
+            val ssotoken = SubjectHandler.getSsoToken().map { it.token }
+            val oidctoken = SubjectHandler.getSsoToken(SsoToken.Type.OIDC)
+            val veilederOidcToken: String = listOf(oidctoken, ssotoken)
+                    .first { it.isPresent }
                     .orElseThrow { IllegalStateException("Kunne ikke hente ut bruker ssoToken") }
+
+            log.info("Token extraction, found in ${ssotoken.isPresent} ${oidctoken.isPresent}")
+
             val consumerOidcToken: String = stsService.getSystemUserAccessToken() ?: throw IllegalStateException("Kunne ikke hente ut systemusertoken")
 
             log.info("""

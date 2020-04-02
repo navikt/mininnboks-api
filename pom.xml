@@ -99,6 +99,11 @@
             <artifactId>brukerprofil-v3-tjenestespesifikasjon</artifactId>
             <version>${tjenestespec.version}</version>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
+            <artifactId>person-v3-tjenestespesifikasjon</artifactId>
+            <version>${tjenestespec.version}</version>
+        </dependency>
 
         <!-- test -->
         <dependency>

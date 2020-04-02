@@ -16,12 +16,14 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.Inns
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
 import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
+import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.ws.rs.client.Client;
 
-import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.*;
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.FSS_SRVMININNBOKS_PASSWORD;
+import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.FSS_SRVMININNBOKS_USERNAME;
 import static no.nav.sbl.dialogarena.mininnboks.config.utils.PortTypeUtils.createPortType;
 import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
 
@@ -33,6 +35,7 @@ public class ServiceConfig {
     public static final String HENVENDELSE_WS_URL = "henvendelse.ws.url";
     public static final String SEND_INN_HENVENDELSE_WS_URL = "send.inn.henvendelse.ws.url";
     public static final String BRUKERPROFIL_V_3_URL = "brukerprofil.v3.url";
+    public static final String PERSON_V_3_URL = "person.v3.url";
 
     public static final String PDL_API_URL = "PDL_API_URL";
     public static final String PDL_API_APIKEY = "PDL_API_APIKEY";
@@ -42,7 +45,7 @@ public class ServiceConfig {
 
     @Bean
     public PersonService personService() {
-        return new PersonService.Default(brukerprofil().port);
+        return new PersonService.Default(brukerprofil().port, personV3().port);
     }
 
     @Bean
@@ -50,11 +53,24 @@ public class ServiceConfig {
         return brukerprofil().helsesjekk;
     }
 
+    @Bean
+    public Pingable personV3Ping() {
+        return personV3().helsesjekk;
+    }
+
     private PortTypeUtils.PortType<BrukerprofilV3> brukerprofil() {
         return createPortType(getRequiredProperty(BRUKERPROFIL_V_3_URL),
                 "",
                 BrukerprofilV3.class,
                 BrukerprofilV3::ping
+        );
+    }
+
+    private PortTypeUtils.PortType<PersonV3> personV3() {
+        return createPortType(getRequiredProperty(PERSON_V_3_URL),
+                "",
+                PersonV3.class,
+                PersonV3::ping
         );
     }
 
@@ -71,7 +87,7 @@ public class ServiceConfig {
     @Bean
     public SystemuserTokenProvider systemUserTokenProvider() {
         String stsApikey = EnvironmentUtils.getRequiredProperty(STS_APIKEY);
-        Client client =  RestUtils.createClient().register(new ApigwRequestFilter(stsApikey));
+        Client client = RestUtils.createClient().register(new ApigwRequestFilter(stsApikey));
 
         return SystemuserTokenProvider.fromTokenEndpoint(
                 getRequiredProperty(STS_TOKENENDPOINT_URL),
@@ -84,7 +100,7 @@ public class ServiceConfig {
     @Bean
     public PdlService pdlService(SystemuserTokenProvider stsService) {
         String pdlapiApikey = EnvironmentUtils.getRequiredProperty(PDL_API_APIKEY);
-        Client client =  RestUtils.createClient().register(new ApigwRequestFilter(pdlapiApikey));
+        Client client = RestUtils.createClient().register(new ApigwRequestFilter(pdlapiApikey));
 
         return new PdlServiceImpl(client, stsService);
     }
