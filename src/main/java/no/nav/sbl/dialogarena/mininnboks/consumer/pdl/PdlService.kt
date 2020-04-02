@@ -94,6 +94,8 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
                     PDL-request: $uuid
                     ------------------------------------------------------------------------------------
                         callId: ${MDC.get(MDCConstants.MDC_CALL_ID)}
+                        userTokenParts: ${veilederOidcToken.split(".").size}
+                        consumerTokenParts: ${consumerOidcToken.split(".").size}
                     ------------------------------------------------------------------------------------
                 """.trimIndent())
 
