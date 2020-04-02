@@ -70,7 +70,7 @@ public interface HenvendelseService {
         }
 
         private WSSendInnHenvendelseResponse stillSporsmal(Henvendelse henvendelse, String fodselsnummer, XMLHenvendelseType xmlHenvendelseType) {
-            String enhet = personService.hentEnhet().orElse(null);
+            String enhet = personService.hentGeografiskTilknytning().orElse(null);
             String sporsmaltekst = cleanOutHtml(fjernHardeMellomrom(henvendelse.fritekst));
             XMLHenvendelse info =
                     new XMLHenvendelse()

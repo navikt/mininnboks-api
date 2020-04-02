@@ -3,7 +3,6 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.tilgang
 import no.nav.sbl.dialogarena.mininnboks.Try
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
-import no.nav.sbl.util.EnvironmentUtils
 import org.slf4j.LoggerFactory
 
 data class TilgangDTO(val resultat: Resultat, val melding: String) {
@@ -21,12 +20,6 @@ class TilgangServiceImpl(
         private val personService: PersonService
 ) : TilgangService {
     private val log = LoggerFactory.getLogger(TilgangService::class.java)
-    private val sjekkGT : Boolean = EnvironmentUtils.getOptionalProperty("TILGANG_PERSONV3_SJEKK").map(String::toBoolean).orElse(true)
-    private val sjekkAnsvarligEnhet : Boolean = EnvironmentUtils.getOptionalProperty("TILGANG_BRUKERPROFILV3_SJEKK").map(String::toBoolean).orElse(true)
-
-    init {
-        log.info("Starting tilgangService; $sjekkGT $sjekkAnsvarligEnhet")
-    }
 
     override fun harTilgangTilKommunalInnsending(fnr: String): TilgangDTO {
         val harGT = Try.of {
@@ -36,26 +29,10 @@ class TilgangServiceImpl(
             log.info("PersonV3 (GT): ${gt.orElse("UKJENT/BLANK")}")
             gt.isPresent
         }
-        if (sjekkGT) {
-            if (harGT.isFailure()) {
-                return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers GT: ${harGT.getFailure().message}")
-            } else if (!harGT.get()) {
-                return TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ikke gyldig GT")
-            }
-        }
-
-        val harEnhet = Try.of {
-            val enhet = personService.hentEnhet().filter { it.isNotBlank() }
-            log.info("BrukerProfilV3 (ansvarligEnhet): ${enhet.orElse("UKJENT/BLANK")}")
-            enhet.isPresent
-        }
-
-        if (sjekkAnsvarligEnhet) {
-            if (harEnhet.isFailure()) {
-                return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers enhet: ${harEnhet.getFailure().message}")
-            } else if (!harEnhet.get()) {
-                return TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ingen enhet")
-            }
+        if (harGT.isFailure()) {
+            return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers GT: ${harGT.getFailure().message}")
+        } else if (!harGT.get()) {
+            return TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ikke gyldig GT")
         }
 
         val harKode6 = Try.of { pdlService.harKode6(fnr) }

@@ -15,7 +15,6 @@ import no.nav.sbl.util.EnvironmentUtils;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +33,6 @@ public class ServiceConfig {
     public static final String INNSYN_HENVENDELSE_WS_URL = "innsyn.henvendelse.ws.url";
     public static final String HENVENDELSE_WS_URL = "henvendelse.ws.url";
     public static final String SEND_INN_HENVENDELSE_WS_URL = "send.inn.henvendelse.ws.url";
-    public static final String BRUKERPROFIL_V_3_URL = "brukerprofil.v3.url";
     public static final String PERSON_V_3_URL = "person.v3.url";
 
     public static final String PDL_API_URL = "PDL_API_URL";
@@ -45,25 +43,12 @@ public class ServiceConfig {
 
     @Bean
     public PersonService personService() {
-        return new PersonService.Default(brukerprofil().port, personV3().port);
-    }
-
-    @Bean
-    public Pingable personServicePing() {
-        return brukerprofil().helsesjekk;
+        return new PersonService.Default(personV3().port);
     }
 
     @Bean
     public Pingable personV3Ping() {
         return personV3().helsesjekk;
-    }
-
-    private PortTypeUtils.PortType<BrukerprofilV3> brukerprofil() {
-        return createPortType(getRequiredProperty(BRUKERPROFIL_V_3_URL),
-                "",
-                BrukerprofilV3.class,
-                BrukerprofilV3::ping
-        );
     }
 
     private PortTypeUtils.PortType<PersonV3> personV3() {

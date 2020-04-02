@@ -22,7 +22,6 @@ public class Main {
         setProperty(INNSYN_HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
         setProperty(HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
         setProperty(SEND_INN_HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
-        setProperty(BRUKERPROFIL_V_3_URL, serviceGatewayUrl, PUBLIC);
         setProperty(PERSON_V_3_URL, serviceGatewayUrl, PUBLIC);
 
         ApiApp.runApp(ApplicationConfig.class, args);
