@@ -23,7 +23,7 @@ internal class TilgangServiceTest {
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.FEILET)
-        assertThat(result.melding).contains("brukers enhet")
+        assertThat(result.melding).contains("brukers GT")
         verify(pdlService, never()).harKode6(any())
         verify(pdlService, never()).harStrengtFortroligAdresse(any())
     }
@@ -36,7 +36,7 @@ internal class TilgangServiceTest {
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
-        assertThat(result.melding).contains("ingen enhet")
+        assertThat(result.melding).contains("gyldig GT")
         verify(pdlService, never()).harKode6(any())
         verify(pdlService, never()).harStrengtFortroligAdresse(any())
     }

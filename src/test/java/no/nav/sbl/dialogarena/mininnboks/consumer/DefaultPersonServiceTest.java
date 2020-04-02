@@ -4,7 +4,9 @@ import no.nav.common.auth.SubjectHandler;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentGeografiskTilknytningPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3;
 import no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kommune;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningRequest;
+import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +33,9 @@ public class DefaultPersonServiceTest {
     @Test
     public void henterEnhet() throws Exception {
         String enhet = "1234";
+
+        when(personV3.hentGeografiskTilknytning(any(HentGeografiskTilknytningRequest.class)))
+                .thenReturn(new HentGeografiskTilknytningResponse().withGeografiskTilknytning(new Kommune().withGeografiskTilknytning(enhet)));
 
         SubjectHandler.withSubject(MOCK_SUBJECT, () -> {
             assertThat(personService.hentGeografiskTilknytning().get(), is(enhet));
