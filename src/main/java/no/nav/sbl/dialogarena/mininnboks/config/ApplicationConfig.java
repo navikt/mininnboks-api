@@ -58,9 +58,9 @@ public class ApplicationConfig implements ApiApplication {
                         .password(getRequiredProperty(SRVMININNBOKS_PASSWORD))
                         .build()
                 )
+                .azureADB2CLogin()
                 .openAmLogin()
-                .objectMapper(JacksonConfig.mapper)
-                .azureADB2CLogin();
+                .objectMapper(JacksonConfig.mapper);
     }
 
 }

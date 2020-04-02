@@ -85,9 +85,8 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
     private fun graphqlRequest(request: PdlRequest): PdlResponse {
         val uuid = UUID.randomUUID()
         try {
-            val veilederOidcToken: String = SubjectHandler.getSsoToken()
-                    .map { it.token }
-                    .orElseThrow { IllegalStateException("Kunne ikke hente ut bruker ssoTOken") }
+            val veilederOidcToken: String = SubjectHandler.getSsoToken(SsoToken.Type.OIDC)
+                    .orElseThrow { IllegalStateException("Kunne ikke hente ut bruker ssoToken") }
             val consumerOidcToken: String = stsService.getSystemUserAccessToken() ?: throw IllegalStateException("Kunne ikke hente ut systemusertoken")
 
             log.info("""
