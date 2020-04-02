@@ -1,15 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer;
 
 import no.nav.common.auth.SubjectHandler;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.BrukerprofilV3;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.HentKontaktinformasjonOgPreferanserPersonIdentErUtgaatt;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.HentKontaktinformasjonOgPreferanserPersonIkkeFunnet;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSAnsvarligEnhet;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.informasjon.WSBruker;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.meldinger.WSHentKontaktinformasjonOgPreferanserRequest;
-import no.nav.tjeneste.virksomhet.brukerprofil.v3.meldinger.WSHentKontaktinformasjonOgPreferanserResponse;
+import no.nav.tjeneste.virksomhet.person.v3.binding.HentGeografiskTilknytningPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3;
+import no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet;
+import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,34 +20,29 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultPersonServiceTest {
     @Mock
-    private BrukerprofilV3 brukerprofilV3;
-    @Mock
     private PersonV3 personV3;
     private PersonService.Default personService;
 
     @Before
     public void setUp() {
-        personService = new PersonService.Default(brukerprofilV3, personV3);
+        personService = new PersonService.Default(personV3);
     }
 
     @Test
-    public void henterEnhet() throws HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning, HentKontaktinformasjonOgPreferanserPersonIkkeFunnet, HentKontaktinformasjonOgPreferanserPersonIdentErUtgaatt {
+    public void henterEnhet() throws Exception {
         String enhet = "1234";
-        when(brukerprofilV3.hentKontaktinformasjonOgPreferanser(any(WSHentKontaktinformasjonOgPreferanserRequest.class)))
-                .thenReturn(new WSHentKontaktinformasjonOgPreferanserResponse().withBruker(new WSBruker().withAnsvarligEnhet(new WSAnsvarligEnhet().withOrganisasjonselementId(enhet))));
 
         SubjectHandler.withSubject(MOCK_SUBJECT, () -> {
-            assertThat(personService.hentEnhet().get(), is(enhet));
+            assertThat(personService.hentGeografiskTilknytning().get(), is(enhet));
         });
     }
 
     @Test(expected = RuntimeException.class)
-    public void kasterRuntimeExceptionOmEnhetIkkeKanhentes() throws HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning, HentKontaktinformasjonOgPreferanserPersonIdentErUtgaatt, HentKontaktinformasjonOgPreferanserPersonIkkeFunnet {
+    public void kasterRuntimeExceptionOmEnhetIkkeKanhentes() throws Exception {
 
-        when(brukerprofilV3.hentKontaktinformasjonOgPreferanser(any(WSHentKontaktinformasjonOgPreferanserRequest.class))).thenThrow(new HentKontaktinformasjonOgPreferanserSikkerhetsbegrensning());
+        when(personV3.hentGeografiskTilknytning(any(HentGeografiskTilknytningRequest.class))).thenThrow(new HentGeografiskTilknytningPersonIkkeFunnet("En feil", new PersonIkkeFunnet()));
 
-        personService.hentEnhet();
-
+        personService.hentGeografiskTilknytning();
     }
 
 }

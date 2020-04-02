@@ -18,8 +18,7 @@ internal class TilgangServiceTest {
     @Test
     fun `gir FEILET om hentEnhet feiler`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentEnhet()).thenThrow(IllegalStateException::class.java)
-        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.of("0123"))
+        whenever(personService.hentGeografiskTilknytning()).thenThrow(IllegalStateException::class.java)
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
@@ -32,8 +31,7 @@ internal class TilgangServiceTest {
     @Test
     fun `gir INGEN_ENHET om bruker ikke har enhet`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentEnhet()).thenReturn(Optional.empty())
-        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.of("0123"))
+        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.empty())
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
@@ -46,14 +44,12 @@ internal class TilgangServiceTest {
     @Test
     fun `gir INGEN_ENHET om bruker ikke har GT`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentEnhet()).thenReturn(Optional.of("0123"))
         whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.empty())
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
-        verify(personService, never()).hentEnhet()
         verify(pdlService, never()).harKode6(any())
         verify(pdlService, never()).harStrengtFortroligAdresse(any())
     }
@@ -61,14 +57,12 @@ internal class TilgangServiceTest {
     @Test
     fun `gir INGEN_ENHET om bruker har GT utland`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentEnhet()).thenReturn(Optional.of("SWE"))
-        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.empty())
+        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.of("SWE"))
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
-        verify(personService, never()).hentEnhet()
         verify(pdlService, never()).harKode6(any())
         verify(pdlService, never()).harStrengtFortroligAdresse(any())
     }
@@ -76,7 +70,6 @@ internal class TilgangServiceTest {
     @Test
     fun `gir FEILET om pdl-api kall feiler`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentEnhet()).thenReturn(Optional.of("0123"))
         whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.of("0123"))
         whenever(pdlService.harKode6(any())).thenThrow(IllegalStateException::class.java)
 
@@ -90,7 +83,6 @@ internal class TilgangServiceTest {
     @Test
     fun `gir KODE6 om bruker har kode6`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentEnhet()).thenReturn(Optional.of("0123"))
         whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.of("0123"))
         whenever(pdlService.harKode6(any())).thenReturn(true)
 
@@ -103,7 +95,6 @@ internal class TilgangServiceTest {
     @Test
     fun `gir OK om bruker har har enhet og ikke kode6`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentEnhet()).thenReturn(Optional.of("0123"))
         whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.of("0123"))
         whenever(pdlService.harKode6(any())).thenReturn(false)
 
