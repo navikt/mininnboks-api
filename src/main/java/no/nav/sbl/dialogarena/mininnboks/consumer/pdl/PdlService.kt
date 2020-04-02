@@ -126,7 +126,7 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
             if (pdlResponse.errors?.isNotEmpty() == true) {
                 val errorMessages = pdlResponse.errors.map { it.message }.joinToString(", ")
                 log.info(
-                        """
+                """
                     PDL-response: $uuid
                     ------------------------------------------------------------------------------------
                         status: ${response.status} ${response.statusInfo}

@@ -22,13 +22,16 @@ class TilgangServiceImpl(
     private val log = LoggerFactory.getLogger(TilgangService::class.java)
 
     override fun harTilgangTilKommunalInnsending(fnr: String): TilgangDTO {
-        val harEnhet = Try.of { personService.hentEnhet().filter { it.isNotBlank() }.isPresent }
+        val harEnhet = Try.of {
+            val enhet = personService.hentEnhet().filter { it.isNotBlank() }
+            log.info("Brukersenhet: ${enhet.orElse("UKJENT/BLANK")}")
+            enhet.isPresent
+        }
+
         if (harEnhet.isFailure()) {
             return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers enhet: ${harEnhet.getFailure().message}")
         } else if (!harEnhet.get()) {
             return TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ingen enhet")
-        } else {
-            log.info("Fant enhet for bruker: ${harEnhet.get()}")
         }
 
         val harKode6 = Try.of { pdlService.harKode6(fnr) }
