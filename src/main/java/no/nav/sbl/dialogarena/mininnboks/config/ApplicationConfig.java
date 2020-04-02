@@ -59,7 +59,6 @@ public class ApplicationConfig implements ApiApplication {
                         .build()
                 )
                 .azureADB2CLogin()
-                .openAmLogin()
                 .objectMapper(JacksonConfig.mapper);
     }
 
