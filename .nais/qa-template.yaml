@@ -86,12 +86,6 @@ spec:
       value: "https://wasapp-{{ namespace }}.adeo.no/tpsws/Diskresjonskode"
     - name: VIRKSOMHET_DISKRESJONSKODE_V1_WSDLURL
       value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/tjenester/pip/nav-pip-diskresjonskode-v1-tjenestespesifikasjon/1.2.3/nav-pip-diskresjonskode-v1-tjenestespesifikasjon-1.2.3.zip"
-    - name: VIRKSOMHET_BRUKERPROFIL_V3_SECURITYTOKEN
-      value: "SAML"
-    - name: VIRKSOMHET_BRUKERPROFIL_V3_ENDPOINTURL
-      value: "https://wasapp-{{ namespace }}.adeo.no/tpsws/Brukerprofil_v3"
-    - name: VIRKSOMHET_BRUKERPROFIL_V3_WSDLURL
-      value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/tjenester/nav-brukerprofil-v3-tjenestespesifikasjon/3.0.0/nav-brukerprofil-v3-tjenestespesifikasjon-3.0.0.zip"
     - name: DOMENE_BRUKERDIALOG_SENDINNHENVENDELSE_V1_WSDLURL
       value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/send-inn-henvendelse/0.3/send-inn-henvendelse-0.3.zip"
     - name: DOMENE_BRUKERDIALOG_SENDINNHENVENDELSE_V1_SECURITYTOKEN

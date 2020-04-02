@@ -27,7 +27,6 @@ public class MainTest {
         setProperty(INNSYN_HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
         setProperty(HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
         setProperty(SEND_INN_HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
-        setProperty(BRUKERPROFIL_V_3_URL, serviceGatewayUrl, PUBLIC);
 
         ApiAppTest.setupTestContext(ApiAppTest.Config.builder().applicationName(APPLICATION_NAME).build());
         ApiApp.runApp(ApplicationConfig.class, new String[]{"8455"});
