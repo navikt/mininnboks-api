@@ -73,6 +73,10 @@ spec:
       value: "https://tjenester.nav.no/saksoversikt"
     - name: PDL_API_URL
       value: "https://api-gw.oera.no/pdl-api"
+    - name: TILGANG_PERSONV3_SJEKK
+      value: "true"
+    - name: TILGANG_BRUKERPROFILV3_SJEKK
+      value: "true"
 #     Properties nedenfor brukes egentlig ikke. Men appen har en avhengighet mot disse tjenestene via service-gateway.
     - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_SECURITYTOKEN
       value: "SAML"
