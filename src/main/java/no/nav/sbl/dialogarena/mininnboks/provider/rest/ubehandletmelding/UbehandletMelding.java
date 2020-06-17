@@ -9,9 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static java.lang.System.getProperty;
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE;
-import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
 
 public class UbehandletMelding {
 
