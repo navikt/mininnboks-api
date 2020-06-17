@@ -3,6 +3,8 @@ package no.nav.sbl.dialogarena.mininnboks.config;
 import no.nav.apiapp.ApiApplication;
 import no.nav.apiapp.config.ApiAppConfigurator;
 import no.nav.apiapp.config.StsConfig;
+import no.nav.brukerdialog.security.domain.IdentType;
+import no.nav.common.oidc.auth.OidcAuthenticatorConfig;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig;
 import no.nav.sbl.dialogarena.mininnboks.provider.LinkService;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController;
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
+import static no.nav.common.oidc.Constants.AZURE_AD_B2C_ID_TOKEN_COOKIE_NAME;
 import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
 
 @Configuration
@@ -51,6 +54,13 @@ public class ApplicationConfig implements ApiApplication {
     @Override
     public void configure(ApiAppConfigurator apiAppConfigurator) {
         LinkService.touch();
+
+        OidcAuthenticatorConfig azureADB2CConfig = new OidcAuthenticatorConfig()
+                .withClientId(getRequiredProperty("AAD_B2C_CLIENTID_USERNAME"))
+                .withDiscoveryUrl(getRequiredProperty("AAD_B2C_DISCOVERY_URL"))
+                .withIdentType(IdentType.EksternBruker)
+                .withIdTokenCookieName(AZURE_AD_B2C_ID_TOKEN_COOKIE_NAME);
+
         apiAppConfigurator
                 .sts(StsConfig.builder()
                         .url(getRequiredProperty(SECURITYTOKENSERVICE_URL_PROPERTY))
@@ -58,7 +68,7 @@ public class ApplicationConfig implements ApiApplication {
                         .password(getRequiredProperty(SRVMININNBOKS_PASSWORD))
                         .build()
                 )
-                .azureADB2CLogin()
+                .addOidcAuthenticator(azureADB2CConfig)
                 .objectMapper(JacksonConfig.mapper);
     }
 
