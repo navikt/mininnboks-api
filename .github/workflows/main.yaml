@@ -22,7 +22,7 @@ jobs:
             ${{ runner.os }}-maven-cache-
       - name: Build using maven
         run: |
-          mvn -P ci -B verify --settings maven-settings.xml
+          mvn -P ci -B verify --settings .github/maven-settings.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -42,7 +42,7 @@ jobs:
             ${{ runner.os }}-maven-cache-
       - name: Build using maven
         run: |
-          mvn -P ci -B verify --settings maven-settings.xml
+          mvn -P ci -B verify --settings .github/maven-settings.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish Docker image
