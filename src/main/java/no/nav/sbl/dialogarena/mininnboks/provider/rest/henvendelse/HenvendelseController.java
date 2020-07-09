@@ -5,7 +5,6 @@ import no.nav.metrics.Event;
 import no.nav.metrics.MetricsFactory;
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*;
-import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService;
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO;
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService;
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse;
@@ -91,8 +90,7 @@ public class HenvendelseController {
     @Consumes(APPLICATION_JSON)
     public Response sendSporsmal(Sporsmal sporsmal) {
         String fnr = SubjectHandler.getIdent().orElseThrow(() -> new NotAuthorizedException("Fant ikke brukers OIDC-token"));
-        Henvendelse henvendelse = lagHenvendelse(sporsmal);
-        sjekkTilgangTilTemagruppe(fnr, henvendelse);
+        Henvendelse henvendelse = lagHenvendelse(fnr, sporsmal);
 
         Event metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmal");
         metrikk.addTagToReport("tema", sporsmal.temagruppe);
@@ -108,8 +106,7 @@ public class HenvendelseController {
     @Consumes(APPLICATION_JSON)
     public Response sendSporsmalDirekte(Sporsmal sporsmal) {
         String fnr = SubjectHandler.getIdent().orElseThrow(() -> new NotAuthorizedException("Fant ikke brukers OIDC-token"));
-        Henvendelse henvendelse = lagHenvendelse(sporsmal);
-        sjekkTilgangTilTemagruppe(fnr, henvendelse);
+        Henvendelse henvendelse = lagHenvendelse(fnr, sporsmal);
 
         Event metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmaldirekte");
         metrikk.addTagToReport("tema", sporsmal.temagruppe);
@@ -118,16 +115,6 @@ public class HenvendelseController {
         WSSendInnHenvendelseResponse response = henvendelseService.stillSporsmalDirekte(henvendelse, fnr);
 
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
-    }
-
-    private void sjekkTilgangTilTemagruppe(String fnr, Henvendelse henvendelse) {
-        if (henvendelse.temagruppe == Temagruppe.OKSOS && !harTilgangTilKommunalInnsending(fnr)) {
-            throw new BadRequestException("Bruker har ikke lov til å sende inn henvendelse på temagruppe OKSOS.");
-        }
-    }
-
-    private boolean harTilgangTilKommunalInnsending(String fnr) {
-        return TilgangDTO.Resultat.OK.equals(tilgangService.harTilgangTilKommunalInnsending(fnr).getResultat());
     }
 
     @POST
@@ -167,12 +154,35 @@ public class HenvendelseController {
         return status(CREATED).entity(new NyHenvendelseResultat(response.getBehandlingsId())).build();
     }
 
-    private Henvendelse lagHenvendelse(Sporsmal sporsmal) {
-        assertFritekst(sporsmal.fritekst);
-        assertTemagruppe(sporsmal.temagruppe);
-
+    private Henvendelse lagHenvendelse(String fnr, Sporsmal sporsmal) {
         Temagruppe temagruppe = Temagruppe.valueOf(sporsmal.temagruppe);
+        assertFritekst(sporsmal.fritekst);
+        assertTemagruppeTilgang(fnr, temagruppe);
+
         return new Henvendelse(sporsmal.fritekst, temagruppe);
+    }
+
+    private static void assertFritekst(String fritekst) {
+        if (fritekst == null) {
+            throw new BadRequestException("Fritekst må være sendt med");
+        } else if (fritekst.trim().length() == 0) {
+            throw new BadRequestException("Fritekst må inneholde tekst");
+        } else if (fritekst.trim().length() > 1000) {
+            throw new BadRequestException("Fritekst kan ikke være lengre enn 1000 tegn");
+        }
+    }
+
+    private void assertTemagruppeTilgang(String fnr, Temagruppe temagruppe) {
+        if (!Temagruppe.GODKJENTE_FOR_INNGAAENDE_SPORSMAAL.contains(temagruppe)) {
+            throw new BadRequestException("Innsending på temagruppe er ikke godkjent");
+        }
+        if (temagruppe == Temagruppe.OKSOS && !harTilgangTilKommunalInnsending(fnr)) {
+            throw new BadRequestException("Bruker har ikke lov til å sende inn henvendelse på temagruppe OKSOS.");
+        }
+    }
+
+    private boolean harTilgangTilKommunalInnsending(String fnr) {
+        return TilgangDTO.Resultat.OK.equals(tilgangService.harTilgangTilKommunalInnsending(fnr).getResultat());
     }
 
     private List<Henvendelse> filtrerDelsvar(List<Henvendelse> traad) {
@@ -203,14 +213,6 @@ public class HenvendelseController {
             logger.error("Fant ikke tråd med id: " + id, fault);
             return empty();
         }
-    }
-
-    private static void assertFritekst(String fritekst) {
-        assert fritekst.length() > 0 && fritekst.length() <= 1000;
-    }
-
-    private static void assertTemagruppe(String temagruppe) {
-        assert Temagruppe.GODKJENTE_FOR_INNGAAENDE_SPORSMAAL.contains(Temagruppe.valueOf(temagruppe));
     }
 
     static final class NyHenvendelseResultat {
