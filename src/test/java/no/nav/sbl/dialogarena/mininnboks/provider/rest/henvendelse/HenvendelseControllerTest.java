@@ -16,11 +16,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.mockito.stubbing.Answer;
 
 import javax.ws.rs.BadRequestException;
@@ -46,8 +46,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
-
-@RunWith(MockitoJUnitRunner.class)
 public class HenvendelseControllerTest {
     @Mock
     HenvendelseService service;
@@ -63,6 +61,8 @@ public class HenvendelseControllerTest {
 
     @Rule
     public SubjectRule subjectRule = new SubjectRule(new Subject("fnr", IdentType.EksternBruker, SsoToken.oidcToken("token", emptyMap())));
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule().silent();
 
     @Before
     public void setup() {
@@ -110,8 +110,8 @@ public class HenvendelseControllerTest {
 
         List<Traad> traader = controller.hentTraader();
         Optional<Henvendelse> delsvar = traader.get(0).meldinger.stream()
-                    .filter(henvendelse -> henvendelse.type == Henvendelsetype.DELVIS_SVAR_SKRIFTLIG)
-                    .findAny();
+                .filter(henvendelse -> henvendelse.type == Henvendelsetype.DELVIS_SVAR_SKRIFTLIG)
+                .findAny();
 
         assertThat(delsvar.isPresent(), is(false));
     }
@@ -254,7 +254,7 @@ public class HenvendelseControllerTest {
 
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = BadRequestException.class)
     public void smellerHvisTomFritekstISporsmal() {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = "";
@@ -262,7 +262,7 @@ public class HenvendelseControllerTest {
         controller.sendSporsmal(sporsmal);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = BadRequestException.class)
     public void smellerHvisForLangFritekstISporsmal() {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = join(nCopies(1001, 'a'), "");
@@ -270,7 +270,7 @@ public class HenvendelseControllerTest {
         controller.sendSporsmal(sporsmal);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = BadRequestException.class)
     public void smellerHvisAndreSosialtjenesterTemagruppeISporsmal() {
         Sporsmal sporsmal = new Sporsmal();
         sporsmal.fritekst = "DUMMY";
