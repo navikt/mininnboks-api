@@ -39,6 +39,7 @@ public abstract class HenvendelsesUtils {
             put(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, SPORSMAL_SKRIFTLIG);
             put(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE, SPORSMAL_SKRIFTLIG_DIREKTE);
             put(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, SPORSMAL_MODIA_UTGAAENDE);
+            put(XMLHenvendelseType.INFOMELDING_MODIA_UTGAAENDE, INFOMELDING_MODIA_UTGAAENDE);
             put(XMLHenvendelseType.SVAR_SKRIFTLIG, SVAR_SKRIFTLIG);
             put(XMLHenvendelseType.SVAR_OPPMOTE, SVAR_OPPMOTE);
             put(XMLHenvendelseType.SVAR_TELEFON, SVAR_TELEFON);

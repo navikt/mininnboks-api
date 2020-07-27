@@ -13,7 +13,8 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.NYES
 import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
 
 public class Traad {
-    private static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON, DOKUMENT_VARSEL);
+    private static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, INFOMELDING_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON, DOKUMENT_VARSEL);
+    private static final List<Henvendelsetype> KAN_BESVARES = asList(SPORSMAL_MODIA_UTGAAENDE, INFOMELDING_MODIA_UTGAAENDE);
 
     public final String traadId;
     public final List<Henvendelse> meldinger;
@@ -26,7 +27,7 @@ public class Traad {
                 .collect(toList());
         this.nyeste = this.meldinger.get(0);
         this.eldste = this.meldinger.get(this.meldinger.size() - 1);
-        this.kanBesvares = !nyeste.kassert && SPORSMAL_MODIA_UTGAAENDE.equals(nyeste.type);
+        this.kanBesvares = !nyeste.kassert && KAN_BESVARES.contains(nyeste.type);
 
         boolean avsluttet = FRA_NAV.contains(nyeste.type) && !kanBesvares;
         boolean ferdigstiltUtenSvar = Boolean.TRUE.equals(nyeste.ferdigstiltUtenSvar);
