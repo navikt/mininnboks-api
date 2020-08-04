@@ -14,7 +14,7 @@ import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.
 
 public class Traad {
     private static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, INFOMELDING_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON, DOKUMENT_VARSEL);
-    private static final List<Henvendelsetype> KAN_BESVARES = asList(SPORSMAL_MODIA_UTGAAENDE, INFOMELDING_MODIA_UTGAAENDE);
+    private static final List<Henvendelsetype> KAN_BESVARES = asList(SPORSMAL_MODIA_UTGAAENDE);
 
     public final String traadId;
     public final List<Henvendelse> meldinger;
