@@ -1,0 +1,90 @@
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'org.jetbrains.kotlin.jvm' version "${kotlin_version}"
+
+}
+
+    def ktor_version = '1.3.2'
+    def kotlin_version = '1.3.72'
+    def logback_version = '1.2.1'
+    def tjenestespec_version = "1.2020.06.16-14.51-3b45df54f90a"
+    def mor_pom_version = '1.2020.06.15_15.55-ecdbeb12b893'
+
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+
+    maven {
+        credentials {
+            username  "$githubUser"
+            password  "$githubPassword"
+        }
+        url 'https://github-package-registry-mirror.gc.nav.no/cached/maven-release'
+    }
+}
+
+dependencies {
+
+    implementation platform("no.nav.common:mor-pom:${mor_pom_version}")
+    implementation platform("no.nav.common:bom:${mor_pom_version}")
+    implementation platform("org.jetbrains.kotlin:kotlin-bom:${kotlin_version}")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
+    implementation "no.nav.common:api-app"
+    implementation "no.nav.common:nais"
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.10.0'
+    implementation 'com.nimbusds:oauth2-oidc-sdk:6.23'
+    implementation "no.nav.tjenestespesifikasjoner:dialogarena-behandlingsinformasjon:${tjenestespec_version}"
+    implementation "no.nav.tjenestespesifikasjoner:henvendelse-informasjon-v2:${tjenestespec_version}"
+    implementation "no.nav.tjenestespesifikasjoner:send-inn-henvendelse:${tjenestespec_version}"
+    implementation "no.nav.tjenestespesifikasjoner:innsyn-henvendelse:${tjenestespec_version}"
+    implementation "no.nav.tjenestespesifikasjoner:person-v3-tjenestespesifikasjon:${tjenestespec_version}"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.71'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.3.71'
+    implementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+    testCompile 'org.hamcrest:hamcrest:2.2'
+    testCompile 'org.assertj:assertj-core:3.11.1'
+    testCompile 'com.willowtreeapps.assertk:assertk-jvm:0.21'
+    testCompile "no.nav.common:test-config"
+    testCompile "no.nav.common:auth:test-jar:tests"
+    testCompile 'org.junit.platform:junit-platform-launcher:1.1.1'
+    testCompile 'org.junit.vintage:junit-vintage-engine:5.1.1'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
+    // https://projectlombok.org
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+}
+
+group = 'no.nav.common'
+version = '1'
+sourceCompatibility = '1.8'
+targetCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

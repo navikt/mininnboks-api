@@ -43,9 +43,7 @@ public class DefaultPersonServiceTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void kasterRuntimeExceptionOmEnhetIkkeKanhentes() throws Exception {
-
-        when(personV3.hentGeografiskTilknytning(any(HentGeografiskTilknytningRequest.class))).thenThrow(new HentGeografiskTilknytningPersonIkkeFunnet("En feil", new PersonIkkeFunnet()));
+    public void kasterRuntimeExceptionOmEnhetIkkeKanhentes() {
 
         personService.hentGeografiskTilknytning();
     }
