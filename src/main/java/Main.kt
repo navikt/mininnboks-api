@@ -1,49 +1,40 @@
-import no.nav.apiapp.ApiApp;
-import no.nav.common.nais.utils.NaisUtils;
-import no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig;
+import no.nav.apiapp.ApiApp
+import no.nav.common.nais.utils.NaisUtils
+import no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig
+import no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig
+import no.nav.sbl.util.EnvironmentUtils
 
-import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.FSS_SRVMININNBOKS_PASSWORD;
-import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.FSS_SRVMININNBOKS_USERNAME;
-import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.SRVMININNBOKS_PASSWORD;
-import static no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig.SRVMININNBOKS_USERNAME;
-import static no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig.*;
-import static no.nav.sbl.util.EnvironmentUtils.Type.PUBLIC;
-import static no.nav.sbl.util.EnvironmentUtils.*;
-import static no.nav.sbl.util.EnvironmentUtils.Type.SECRET;
+object Main {
+    private const val DEFAULT_SECRETS_BASE_PATH = "/var/run/secrets/nais.io"
 
-public class Main {
-    private static String DEFAULT_SECRETS_BASE_PATH = "/var/run/secrets/nais.io";
-
-    public static void main(String[] args) {
-        loadVaultSecrets();
-        loadApigwKeys();
-
-        String serviceGatewayUrl = getRequiredProperty(SERVICEGATEWAY_URL);
-        setProperty(INNSYN_HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
-        setProperty(HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
-        setProperty(SEND_INN_HENVENDELSE_WS_URL, serviceGatewayUrl, PUBLIC);
-        setProperty(PERSON_V_3_URL, serviceGatewayUrl, PUBLIC);
-
-        ApiApp.runApp(ApplicationConfig.class, args);
+    @JvmStatic
+    fun main(args: Array<String>) {
+        loadVaultSecrets()
+        loadApigwKeys()
+        val serviceGatewayUrl = EnvironmentUtils.getRequiredProperty(ServiceConfig.SERVICEGATEWAY_URL)
+        EnvironmentUtils.setProperty(ServiceConfig.INNSYN_HENVENDELSE_WS_URL, serviceGatewayUrl, EnvironmentUtils.Type.PUBLIC)
+        EnvironmentUtils.setProperty(ServiceConfig.HENVENDELSE_WS_URL, serviceGatewayUrl, EnvironmentUtils.Type.PUBLIC)
+        EnvironmentUtils.setProperty(ServiceConfig.SEND_INN_HENVENDELSE_WS_URL, serviceGatewayUrl, EnvironmentUtils.Type.PUBLIC)
+        EnvironmentUtils.setProperty(ServiceConfig.PERSON_V_3_URL, serviceGatewayUrl, EnvironmentUtils.Type.PUBLIC)
+        ApiApp.runApp(ApplicationConfig::class.java, args)
     }
 
-    private static void loadVaultSecrets() {
-        NaisUtils.Credentials fssServiceUser = NaisUtils.getCredentials("srvmininnboks-fss");
-        setProperty(FSS_SRVMININNBOKS_USERNAME, fssServiceUser.username, PUBLIC);
-        setProperty(FSS_SRVMININNBOKS_PASSWORD, fssServiceUser.password, SECRET);
-
-        NaisUtils.Credentials serviceUser = NaisUtils.getCredentials("srvmininnboks");
-        setProperty(SRVMININNBOKS_USERNAME, serviceUser.username, PUBLIC);
-        setProperty(SRVMININNBOKS_PASSWORD, serviceUser.password, SECRET);
+    private fun loadVaultSecrets() {
+        val fssServiceUser = NaisUtils.getCredentials("srvmininnboks-fss")
+        EnvironmentUtils.setProperty(ApplicationConfig.FSS_SRVMININNBOKS_USERNAME, fssServiceUser.username, EnvironmentUtils.Type.PUBLIC)
+        EnvironmentUtils.setProperty(ApplicationConfig.FSS_SRVMININNBOKS_PASSWORD, fssServiceUser.password, EnvironmentUtils.Type.SECRET)
+        val serviceUser = NaisUtils.getCredentials("srvmininnboks")
+        EnvironmentUtils.setProperty(ApplicationConfig.SRVMININNBOKS_USERNAME, serviceUser.username, EnvironmentUtils.Type.PUBLIC)
+        EnvironmentUtils.setProperty(ApplicationConfig.SRVMININNBOKS_PASSWORD, serviceUser.password, EnvironmentUtils.Type.SECRET)
     }
 
-    private static void loadApigwKeys() {
-        setProperty(PDL_API_APIKEY, getApigwKey("pdl-api"), SECRET);
-        setProperty(STS_APIKEY, getApigwKey("security-token-service-token"), SECRET);
+    private fun loadApigwKeys() {
+        EnvironmentUtils.setProperty(ServiceConfig.PDL_API_APIKEY, getApigwKey("pdl-api"), EnvironmentUtils.Type.SECRET)
+        EnvironmentUtils.setProperty(ServiceConfig.STS_APIKEY, getApigwKey("security-token-service-token"), EnvironmentUtils.Type.SECRET)
     }
 
-    private static String getApigwKey(String producerApp) {
-        String location = String.format("%s/apigw/%s/x-nav-apiKey", DEFAULT_SECRETS_BASE_PATH, producerApp);
-        return NaisUtils.getFileContent(location);
+    private fun getApigwKey(producerApp: String): String {
+        val location = String.format("%s/apigw/%s/x-nav-apiKey", DEFAULT_SECRETS_BASE_PATH, producerApp)
+        return NaisUtils.getFileContent(location)
     }
 }

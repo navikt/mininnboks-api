@@ -1,317 +1,257 @@
-package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
+package no.nav.sbl.dialogarena.mininnboks.consumer.utils
 
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*;
-import no.nav.sbl.dialogarena.mininnboks.TestUtils;
-import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
-import org.joda.time.DateTime;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*
+import no.nav.sbl.dialogarena.mininnboks.TestUtils
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
+import org.hamcrest.CoreMatchers
+import org.hamcrest.Matchers
+import org.joda.time.DateTime
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito
+import java.util.*
+import java.util.stream.Collectors
 
-import java.util.*;
-
-import static java.util.stream.Collectors.toList;
-import static no.nav.sbl.dialogarena.mininnboks.TestUtils.date;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.cleanOutHtml;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils.tilHenvendelse;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
-
-public class HenvendelsesUtilsTest {
-
-    private static final String ID_1 = "1";
-    private static final String ID_2 = "2";
-    private static final String ID_3 = "3";
-    private static final String ID_4 = "4";
-    private static final String ID_5 = "5";
-    private static final String FRITEKST = "fritekst";
-    private static final Date OPPRETTET_DATO = date(new GregorianCalendar(Calendar.YEAR, 1, 1));
-    private static final Date AVSLUTTET_DATO = date(new GregorianCalendar(Calendar.YEAR, 1, 2));
-    private static final Date LEST_DATO = date(new GregorianCalendar(Calendar.YEAR, 1, 3));
-    private static final DateTime OPPRETTET_DATO_JODA = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 1));
-    private static final DateTime AVSLUTTET_DATO_JODA = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 2));
-    private static final DateTime LEST_DATO_JODA = new DateTime(new GregorianCalendar(Calendar.YEAR, 1, 3));
-    private static final Temagruppe TEMAGRUPPE = Temagruppe.FMLI;
-    private static final String KANAL = "kanal";
-    private static final String NAVIDENT = "navident";
-    private static final String TILKNYTTET_ENHET = "tilknyttetEnhet";
-    private static final Boolean ER_TILKNYTTET_ANSATT = false;
-    private static final Boolean REPETERENDE_VARSEL = false;
-    private static final String BRUKERS_ENHET = "1234";
-    private static final String KONTORSPERRE_ENHET = "kontorsperreEnhet";
-    private static final String OPPGAVE_URL = "oppgave/url";
-    private static final String OPPGAVE_TYPE = "sykepenger";
-
-
-    private TekstService tekstService = mock(TekstService.class);
+class HenvendelsesUtilsTest {
+    private val tekstService = Mockito.mock(TekstService::class.java)
 
     @Before
-    public void setup() {
-        HenvendelsesUtils.setTekstService(tekstService);
-        when(tekstService.hentTekst(anyString())).thenReturn("value");
+    fun setup() {
+        HenvendelsesUtils.setTekstService(tekstService)
+        Mockito.`when`(tekstService.hentTekst(ArgumentMatchers.anyString())).thenReturn("value")
     }
 
     @After
-    public void after() {
-        HenvendelsesUtils.setTekstService(null);
+    fun after() {
+        HenvendelsesUtils.setTekstService(null)
     }
 
     @Test
-    public void transformererDokumentHenvendelse() {
-        XMLHenvendelse dokument = mockDokumentHenvendelse();
-
-        List<XMLHenvendelse> infoList = Collections.singletonList(dokument);
-
-        List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(HenvendelsesUtils::tilHenvendelse)
-                .collect(toList());
-        Henvendelse dokumentHenvendelse = henvendelserListe.get(0);
-
-        assertThat(dokumentHenvendelse.id, is(ID_1));
-        assertThat(dokumentHenvendelse.traadId, is(ID_1));
-        assertThat(dokumentHenvendelse.type, is(DOKUMENT_VARSEL));
-        assertThat(dokumentHenvendelse.getLestDato(), is(nullValue()));
-        assertThat(dokumentHenvendelse.isLest(), is(false));
-        assertThat(dokumentHenvendelse.kanal, is(nullValue()));
-        assertThat(dokumentHenvendelse.brukersEnhet, is(BRUKERS_ENHET));
+    fun transformererDokumentHenvendelse() {
+        val dokument = mockDokumentHenvendelse()
+        val infoList = listOf(dokument)
+        val henvendelserListe = infoList.stream()
+                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+                .collect(Collectors.toList())
+        val dokumentHenvendelse = henvendelserListe[0]
+        Assert.assertThat(dokumentHenvendelse?.id, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(dokumentHenvendelse?.traadId, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(dokumentHenvendelse?.type, CoreMatchers.`is`(Henvendelsetype.DOKUMENT_VARSEL))
+        Assert.assertThat(dokumentHenvendelse?.lestDato, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        Assert.assertThat(dokumentHenvendelse?.isLest, CoreMatchers.`is`(false))
+        Assert.assertThat(dokumentHenvendelse?.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        Assert.assertThat(dokumentHenvendelse?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
-    public void transformererXMLHenvendelseSomSporsmalFraBruker() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1);
-        List<XMLHenvendelse> infoList = Collections.singletonList(info);
-
-        List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(HenvendelsesUtils::tilHenvendelse)
-                .collect(toList());
-        Henvendelse sporsmal = henvendelserListe.get(0);
-
-        assertStandardFelter(sporsmal);
-        assertThat(sporsmal.id, is(ID_1));
-        assertThat(sporsmal.traadId, is(ID_1));
-        assertThat(sporsmal.type, is(SPORSMAL_SKRIFTLIG));
-        assertThat(sporsmal.getLestDato(), is(notNullValue()));
-        assertThat(sporsmal.isLest(), is(true));
-        assertThat(sporsmal.kanal, is(nullValue()));
-        assertThat(sporsmal.brukersEnhet, is(BRUKERS_ENHET));
+    fun transformererXMLHenvendelseSomSporsmalFraBruker() {
+        val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1)
+        val infoList = listOf(info)
+        val henvendelserListe = infoList.stream()
+                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+                .collect(Collectors.toList())
+        val sporsmal = henvendelserListe[0]
+        sporsmal?.let { assertStandardFelter(it) }
+        Assert.assertThat(sporsmal?.id, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(sporsmal?.traadId, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(sporsmal?.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG))
+        Assert.assertThat(sporsmal?.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
+        Assert.assertThat(sporsmal?.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(sporsmal?.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        Assert.assertThat(sporsmal?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
-    public void transformererXMLHenvendelseSomSporsmalDirekteFraBruker() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE, ID_1, ID_1);
-        List<XMLHenvendelse> infoList = Collections.singletonList(info);
-
-        List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(HenvendelsesUtils::tilHenvendelse)
-                .collect(toList());
-        Henvendelse sporsmal = henvendelserListe.get(0);
-
-        assertStandardFelter(sporsmal);
-        assertThat(sporsmal.id, is(ID_1));
-        assertThat(sporsmal.traadId, is(ID_1));
-        assertThat(sporsmal.type, is(SPORSMAL_SKRIFTLIG_DIREKTE));
-        assertThat(sporsmal.getLestDato(), is(notNullValue()));
-        assertThat(sporsmal.isLest(), is(true));
-        assertThat(sporsmal.kanal, is(nullValue()));
-        assertThat(sporsmal.brukersEnhet, is(BRUKERS_ENHET));
+    fun transformererXMLHenvendelseSomSporsmalDirekteFraBruker() {
+        val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE, ID_1, ID_1)
+        val infoList = listOf(info)
+        val henvendelserListe = infoList.stream()
+                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+                .collect(Collectors.toList())
+        val sporsmal = henvendelserListe[0]
+        sporsmal?.let { assertStandardFelter(it) }
+        Assert.assertThat(sporsmal?.id, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(sporsmal?.traadId, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(sporsmal?.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG_DIREKTE))
+        Assert.assertThat(sporsmal?.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
+        Assert.assertThat(sporsmal?.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(sporsmal?.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        Assert.assertThat(sporsmal?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
-    public void transformererXMLHenvendelseFerdigstiltUtenSvar() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1);
-        info.setFerdigstiltUtenSvar(true);
-        List<XMLHenvendelse> infoList = Collections.singletonList(info);
-
-        List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(HenvendelsesUtils::tilHenvendelse)
-                .collect(toList());
-        Henvendelse sporsmal = henvendelserListe.get(0);
-
-        assertThat(sporsmal.ferdigstiltUtenSvar, is(true));
+    fun transformererXMLHenvendelseFerdigstiltUtenSvar() {
+        val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1)
+        info.isFerdigstiltUtenSvar = true
+        val infoList = listOf(info)
+        val henvendelserListe = infoList.stream()
+                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+                .collect(Collectors.toList())
+        val sporsmal = henvendelserListe[0]
+        Assert.assertThat(sporsmal?.ferdigstiltUtenSvar, CoreMatchers.`is`(true))
     }
 
     @Test
-    public void transformererXMLHenvendelseSomSvarFraBruker() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, ID_2, ID_2);
-        List<XMLHenvendelse> infoList = Collections.singletonList(info);
-
-        List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(HenvendelsesUtils::tilHenvendelse)
-                .collect(toList());
-        Henvendelse svar = henvendelserListe.get(0);
-
-        assertStandardFelter(svar);
-        assertThat(svar.id, is(ID_2));
-        assertThat(svar.traadId, is(ID_2));
-        assertThat(svar.type, is(SVAR_SBL_INNGAAENDE));
-        assertThat(svar.getLestDato(), is(notNullValue()));
-        assertThat(svar.isLest(), is(true));
-        assertThat(svar.kanal, is(nullValue()));
-        assertThat(svar.brukersEnhet, is(BRUKERS_ENHET));
-        assertThat(svar.kontorsperreEnhet, is(KONTORSPERRE_ENHET));
+    fun transformererXMLHenvendelseSomSvarFraBruker() {
+        val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, ID_2, ID_2)
+        val infoList = listOf(info)
+        val henvendelserListe = infoList.stream()
+                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+                .collect(Collectors.toList())
+        val svar = henvendelserListe[0]
+        svar?.let { assertStandardFelter(it) }
+        Assert.assertThat(svar?.id, CoreMatchers.`is`(ID_2))
+        Assert.assertThat(svar?.traadId, CoreMatchers.`is`(ID_2))
+        Assert.assertThat(svar?.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SBL_INNGAAENDE))
+        Assert.assertThat(svar?.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
+        Assert.assertThat(svar?.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(svar?.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        Assert.assertThat(svar?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        Assert.assertThat(svar?.kontorsperreEnhet, CoreMatchers.`is`(KONTORSPERRE_ENHET))
     }
 
     @Test
-    public void transformererXMLHenvendelseSomSporsmalTilBruker() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, ID_3, ID_3);
-        List<XMLHenvendelse> infoList = Collections.singletonList(info);
-
-        List<Henvendelse> henvendelserListe = infoList.stream()
-                .map(HenvendelsesUtils::tilHenvendelse)
-                .collect(toList());
-        Henvendelse sporsmal = henvendelserListe.get(0);
-
-        assertStandardFelter(sporsmal);
-        assertThat(sporsmal.id, is(ID_3));
-        assertThat(sporsmal.traadId, is(ID_3));
-        assertThat(sporsmal.type, is(SPORSMAL_MODIA_UTGAAENDE));
-        assertThat(sporsmal.getLestDato(), is(LEST_DATO));
-        assertThat(sporsmal.isLest(), is(true));
-        assertThat(sporsmal.kanal, is(KANAL));
-        assertThat(sporsmal.eksternAktor, is(NAVIDENT));
-        assertThat(sporsmal.tilknyttetEnhet, is(TILKNYTTET_ENHET));
-        assertThat(sporsmal.erTilknyttetAnsatt, is(ER_TILKNYTTET_ANSATT));
-        assertThat(sporsmal.brukersEnhet, is(BRUKERS_ENHET));
-
+    fun transformererXMLHenvendelseSomSporsmalTilBruker() {
+        val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, ID_3, ID_3)
+        val infoList = listOf(info)
+        val henvendelserListe = infoList.stream()
+                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+                .collect(Collectors.toList())
+        val sporsmal = henvendelserListe[0]
+        if (sporsmal != null) {
+            assertStandardFelter(sporsmal)
+        }
+        Assert.assertThat(sporsmal?.id, CoreMatchers.`is`(ID_3))
+        Assert.assertThat(sporsmal?.traadId, CoreMatchers.`is`(ID_3))
+        Assert.assertThat(sporsmal?.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE))
+        Assert.assertThat(sporsmal?.lestDato, CoreMatchers.`is`(LEST_DATO))
+        Assert.assertThat(sporsmal?.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(sporsmal?.kanal, CoreMatchers.`is`(KANAL))
+        Assert.assertThat(sporsmal?.eksternAktor, CoreMatchers.`is`(NAVIDENT))
+        Assert.assertThat(sporsmal?.tilknyttetEnhet, CoreMatchers.`is`(TILKNYTTET_ENHET))
+        Assert.assertThat(sporsmal?.erTilknyttetAnsatt, CoreMatchers.`is`(ER_TILKNYTTET_ANSATT))
+        Assert.assertThat(sporsmal?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
-    public void transformererXMLHenvendelseSomSvarTilBruker() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SVAR_SKRIFTLIG, ID_4, ID_1);
-        List<XMLHenvendelse> infoList = Collections.singletonList(info);
-
-        List<Henvendelse> henvendelserListe = infoList.stream().map(HenvendelsesUtils::tilHenvendelse).collect(toList());
-        Henvendelse svar = henvendelserListe.get(0);
-
-        assertStandardFelter(svar);
-        assertThat(svar.id, is(ID_4));
-        assertThat(svar.traadId, is(ID_1));
-        assertThat(svar.type, is(SVAR_SKRIFTLIG));
-        assertThat(svar.getLestDato(), is(LEST_DATO));
-        assertThat(svar.isLest(), is(true));
-        assertThat(svar.kanal, is(KANAL));
-        assertThat(svar.brukersEnhet, is(BRUKERS_ENHET));
+    fun transformererXMLHenvendelseSomSvarTilBruker() {
+        val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SVAR_SKRIFTLIG, ID_4, ID_1)
+        val infoList = listOf(info)
+        val henvendelserListe = infoList.stream().map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }.collect(Collectors.toList())
+        val svar = henvendelserListe[0]
+        svar?.let { assertStandardFelter(it) }
+        Assert.assertThat(svar?.id, CoreMatchers.`is`(ID_4))
+        Assert.assertThat(svar?.traadId, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(svar?.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SKRIFTLIG))
+        Assert.assertThat(svar?.lestDato, CoreMatchers.`is`(LEST_DATO))
+        Assert.assertThat(svar?.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(svar?.kanal, CoreMatchers.`is`(KANAL))
+        Assert.assertThat(svar?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
-    public void transformererXMLHenvendelseSomReferatTilBruker() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
-        List<XMLHenvendelse> infoList = Collections.singletonList(info);
-
-        List<Henvendelse> henvendelserListe = infoList.stream().map(HenvendelsesUtils::tilHenvendelse).collect(toList());
-        Henvendelse referat = henvendelserListe.get(0);
-
-        assertStandardFelter(referat);
-        assertThat(referat.id, is(ID_5));
-        assertThat(referat.traadId, is(ID_5));
-        assertThat(referat.type, is(SAMTALEREFERAT_OPPMOTE));
-        assertThat(referat.getLestDato(), is(LEST_DATO));
-        assertThat(referat.isLest(), is(true));
-        assertThat(referat.kanal, is(KANAL));
-        assertThat(referat.brukersEnhet, is(BRUKERS_ENHET));
+    fun transformererXMLHenvendelseSomReferatTilBruker() {
+        val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5)
+        val infoList = listOf(info)
+        val henvendelserListe = infoList.stream().map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }.collect(Collectors.toList())
+        val referat = henvendelserListe[0]
+        referat?.let { assertStandardFelter(it) }
+        Assert.assertThat(referat?.id, CoreMatchers.`is`(ID_5))
+        Assert.assertThat(referat?.traadId, CoreMatchers.`is`(ID_5))
+        Assert.assertThat(referat?.type, CoreMatchers.`is`(Henvendelsetype.SAMTALEREFERAT_OPPMOTE))
+        Assert.assertThat(referat?.lestDato, CoreMatchers.`is`(LEST_DATO))
+        Assert.assertThat(referat?.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(referat?.kanal, CoreMatchers.`is`(KANAL))
+        Assert.assertThat(referat?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
-    private void assertStandardFelter(Henvendelse sporsmal) {
-        assertThat(sporsmal.fritekst, is(FRITEKST));
-        assertThat(sporsmal.temagruppe, is(TEMAGRUPPE));
-        assertThat(sporsmal.opprettet, is(OPPRETTET_DATO));
-        assertThat(sporsmal.avsluttet, is(AVSLUTTET_DATO));
-    }
-
-    @Test
-    public void hvisInnholdetErBorteBlirHenvendelsenMerketSomKassert() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5);
-        info.setMetadataListe(null);
-
-        when(tekstService.hentTekst("innhold.kassert")).thenReturn("Innholdet er kassert");
-        when(tekstService.hentTekst("temagruppe.kassert")).thenReturn("Kassert");
-        Henvendelse referat = HenvendelsesUtils.tilHenvendelse(info);
-
-        assertThat(referat.fritekst, is("Innholdet er kassert"));
-        assertThat(referat.statusTekst, is("Kassert"));
-        assertThat(referat.temagruppe, nullValue());
-    }
-
-
-    @Test
-    public void transformererXMLHenvendelseSomOppgaveVarsel() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLOppgaveVarsel(XMLHenvendelseType.OPPGAVE_VARSEL, ID_5, ID_5);
-
-        when(tekstService.hentTekst("oppgave." + OPPGAVE_TYPE)).thenReturn("Oppgave varsel");
-        when(tekstService.hentTekst("oppgave." + OPPGAVE_TYPE + ".fritekst")).thenReturn("Oppgave");
-
-        Henvendelse henvendelse = tilHenvendelse(info);
-
-        assertThat(henvendelse.oppgaveType, is(OPPGAVE_TYPE));
-        assertThat(henvendelse.oppgaveUrl, is(OPPGAVE_URL));
-        assertThat(henvendelse.statusTekst, is("Oppgave varsel"));
-        assertThat(henvendelse.fritekst, is("Oppgave"));
+    private fun assertStandardFelter(sporsmal: Henvendelse) {
+        Assert.assertThat(sporsmal.fritekst, CoreMatchers.`is`(FRITEKST))
+        Assert.assertThat(sporsmal.temagruppe, CoreMatchers.`is`(TEMAGRUPPE))
+        Assert.assertThat(sporsmal.opprettet, CoreMatchers.`is`(OPPRETTET_DATO))
+        Assert.assertThat(sporsmal.avsluttet, CoreMatchers.`is`(AVSLUTTET_DATO))
     }
 
     @Test
-    public void transformererXmlHenvendelseSomDelviseSvar() {
-        XMLHenvendelse info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1);
-
-        Henvendelse henvendelse = tilHenvendelse(info);
-
-        assertThat(henvendelse.type, is(DELVIS_SVAR_SKRIFTLIG));
+    fun hvisInnholdetErBorteBlirHenvendelsenMerketSomKassert() {
+        val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5)
+        info.metadataListe = null
+        Mockito.`when`(tekstService.hentTekst("innhold.kassert")).thenReturn("Innholdet er kassert")
+        Mockito.`when`(tekstService.hentTekst("temagruppe.kassert")).thenReturn("Kassert")
+        val referat = HenvendelsesUtils.tilHenvendelse(info)
+        Assert.assertThat(referat?.fritekst, CoreMatchers.`is`("Innholdet er kassert"))
+        Assert.assertThat(referat?.statusTekst, CoreMatchers.`is`("Kassert"))
+        Assert.assertThat(referat?.temagruppe, CoreMatchers.nullValue())
     }
 
     @Test
-    public void returnererDefaultKeyHvisHentTekstKasterException() {
-        String key = "nokkel";
-        String defaultKey = "defaultKey";
-
-        when(tekstService.hentTekst(key)).thenThrow(NullPointerException.class);
-        when(tekstService.hentTekst(defaultKey)).thenReturn(defaultKey);
-
-        String tekst = HenvendelsesUtils.hentTekst(tekstService, key, defaultKey);
-
-        assertThat(tekst, is(defaultKey));
+    fun transformererXMLHenvendelseSomOppgaveVarsel() {
+        val info = mockXMLHenvendelseMedXMLOppgaveVarsel(XMLHenvendelseType.OPPGAVE_VARSEL, ID_5, ID_5)
+        Mockito.`when`(tekstService.hentTekst("oppgave.$OPPGAVE_TYPE")).thenReturn("Oppgave varsel")
+        Mockito.`when`(tekstService.hentTekst("oppgave.$OPPGAVE_TYPE.fritekst")).thenReturn("Oppgave")
+        val henvendelse = HenvendelsesUtils.tilHenvendelse(info)
+        Assert.assertThat(henvendelse.oppgaveType, CoreMatchers.`is`(OPPGAVE_TYPE))
+        Assert.assertThat(henvendelse.oppgaveUrl, CoreMatchers.`is`(OPPGAVE_URL))
+        Assert.assertThat(henvendelse.statusTekst, CoreMatchers.`is`("Oppgave varsel"))
+        Assert.assertThat(henvendelse.fritekst, CoreMatchers.`is`("Oppgave"))
     }
 
     @Test
-    public void proverIkkeAaHenteStatusTekstForDelviseSvar() {
-        XMLHenvendelse henvendelse = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1);
-
-        HenvendelsesUtils.tilHenvendelse(henvendelse);
-
-        verify(tekstService, times(0)).hentTekst("status." + DELVIS_SVAR_SKRIFTLIG.name());
+    fun transformererXmlHenvendelseSomDelviseSvar() {
+        val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1)
+        val henvendelse = HenvendelsesUtils.tilHenvendelse(info)
+        Assert.assertThat(henvendelse.type, CoreMatchers.`is`(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG))
     }
 
     @Test
-    public void vaskerHtmlIFritekstMenBevarerLineEndings() {
-        String tekst = "<h1>Hei</h1> \n Hallo";
-        String cleanTekst = cleanOutHtml(tekst);
-        assertThat(cleanTekst, is("Hei \n Hallo"));
+    fun returnererDefaultKeyHvisHentTekstKasterException() {
+        val key = "nokkel"
+        val defaultKey = "defaultKey"
+        Mockito.`when`(tekstService.hentTekst(key)).thenThrow(NullPointerException::class.java)
+        Mockito.`when`(tekstService.hentTekst(defaultKey)).thenReturn(defaultKey)
+        val tekst = HenvendelsesUtils.hentTekst(tekstService, key, defaultKey)
+        Assert.assertThat(tekst, CoreMatchers.`is`(defaultKey))
     }
 
-    private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType type, String id, String kjedeId) {
-        return new XMLHenvendelse()
-                .withHenvendelseType(type.name())
+    @Test
+    fun proverIkkeAaHenteStatusTekstForDelviseSvar() {
+        val henvendelse = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1)
+        HenvendelsesUtils.tilHenvendelse(henvendelse)
+        Mockito.verify(tekstService, Mockito.times(0)).hentTekst("status." + Henvendelsetype.DELVIS_SVAR_SKRIFTLIG.name)
+    }
+
+    @Test
+    fun vaskerHtmlIFritekstMenBevarerLineEndings() {
+        val tekst = "<h1>Hei</h1> \n Hallo"
+        val cleanTekst = HenvendelsesUtils.cleanOutHtml(tekst)
+        Assert.assertThat(cleanTekst, CoreMatchers.`is`("Hei \n Hallo"))
+    }
+
+    private fun mockXMLHenvendelseMedXMLMeldingFraBruker(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
+        return XMLHenvendelse()
+                .withHenvendelseType(type.name)
                 .withBehandlingsId(id)
                 .withBehandlingskjedeId(kjedeId)
                 .withOpprettetDato(OPPRETTET_DATO_JODA)
                 .withAvsluttetDato(AVSLUTTET_DATO_JODA)
                 .withBrukersEnhet(BRUKERS_ENHET)
                 .withKontorsperreEnhet(KONTORSPERRE_ENHET)
-                .withMetadataListe(new XMLMetadataListe().withMetadata(
-                        new XMLMeldingFraBruker()
+                .withMetadataListe(XMLMetadataListe().withMetadata(
+                        XMLMeldingFraBruker()
                                 .withFritekst(FRITEKST)
-                                .withTemagruppe(TEMAGRUPPE.name())
-                ));
+                                .withTemagruppe(TEMAGRUPPE.name)
+                ))
     }
 
-    private XMLHenvendelse mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType type, String id, String kjedeId) {
-        return new XMLHenvendelse()
-                .withHenvendelseType(type.name())
+    private fun mockXMLHenvendelseMedXMLMeldingTilBruker(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
+        return XMLHenvendelse()
+                .withHenvendelseType(type.name)
                 .withBehandlingsId(id)
                 .withBehandlingskjedeId(kjedeId)
                 .withOpprettetDato(OPPRETTET_DATO_JODA)
@@ -321,49 +261,73 @@ public class HenvendelsesUtilsTest {
                 .withBrukersEnhet(BRUKERS_ENHET)
                 .withTilknyttetEnhet(TILKNYTTET_ENHET)
                 .withErTilknyttetAnsatt(ER_TILKNYTTET_ANSATT)
-                .withMetadataListe(new XMLMetadataListe().withMetadata(
-                        new XMLMeldingTilBruker()
+                .withMetadataListe(XMLMetadataListe().withMetadata(
+                        XMLMeldingTilBruker()
                                 .withFritekst(FRITEKST)
-                                .withTemagruppe(TEMAGRUPPE.name())
+                                .withTemagruppe(TEMAGRUPPE.name)
                                 .withKanal(KANAL)
                                 .withNavident(NAVIDENT)
-                ));
+                ))
     }
 
-    private XMLHenvendelse mockDokumentHenvendelse() {
-        return new XMLHenvendelse()
-                .withHenvendelseType(XMLHenvendelseType.DOKUMENT_VARSEL.name())
+    private fun mockDokumentHenvendelse(): XMLHenvendelse {
+        return XMLHenvendelse()
+                .withHenvendelseType(XMLHenvendelseType.DOKUMENT_VARSEL.name)
                 .withBehandlingsId(ID_1)
                 .withBehandlingskjedeId(ID_1)
                 .withOpprettetDato(OPPRETTET_DATO_JODA)
                 .withAvsluttetDato(AVSLUTTET_DATO_JODA)
                 .withBrukersEnhet(BRUKERS_ENHET)
                 .withKontorsperreEnhet(KONTORSPERRE_ENHET)
-                .withMetadataListe(new XMLMetadataListe().withMetadata(
-                        new XMLDokumentVarsel()
+                .withMetadataListe(XMLMetadataListe().withMetadata(
+                        XMLDokumentVarsel()
                                 .withTemagruppe("OVRG")
                                 .withFritekst("")
                                 .withStoppRepeterendeVarsel(true)
-                ));
+                ))
     }
 
-    private XMLHenvendelse mockXMLHenvendelseMedXMLOppgaveVarsel(XMLHenvendelseType type, String id, String kjedeId) {
-        return new XMLHenvendelse()
-                .withHenvendelseType(type.name())
+    private fun mockXMLHenvendelseMedXMLOppgaveVarsel(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
+        return XMLHenvendelse()
+                .withHenvendelseType(type.name)
                 .withBehandlingsId(id)
                 .withBehandlingskjedeId(kjedeId)
                 .withOpprettetDato(OPPRETTET_DATO_JODA)
                 .withAvsluttetDato(AVSLUTTET_DATO_JODA)
                 .withBrukersEnhet(BRUKERS_ENHET)
                 .withKontorsperreEnhet(KONTORSPERRE_ENHET)
-                .withMetadataListe(new XMLMetadataListe().withMetadata(
-                        new XMLOppgaveVarsel()
+                .withMetadataListe(XMLMetadataListe().withMetadata(
+                        XMLOppgaveVarsel()
                                 .withOppgaveType(OPPGAVE_TYPE)
-                                .withFritekst("oppgave." + OPPGAVE_TYPE + ".fritekst")
-                                .withTemagruppe(TEMAGRUPPE.name())
+                                .withFritekst("oppgave.$OPPGAVE_TYPE.fritekst")
+                                .withTemagruppe(TEMAGRUPPE.name)
                                 .withStoppRepeterendeVarsel(REPETERENDE_VARSEL)
                                 .withOppgaveURL(OPPGAVE_URL)
-                ));
+                ))
     }
 
+    companion object {
+        private const val ID_1 = "1"
+        private const val ID_2 = "2"
+        private const val ID_3 = "3"
+        private const val ID_4 = "4"
+        private const val ID_5 = "5"
+        private const val FRITEKST = "fritekst"
+        private val OPPRETTET_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 1))
+        private val AVSLUTTET_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 2))
+        private val LEST_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 3))
+        private val OPPRETTET_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 1))
+        private val AVSLUTTET_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 2))
+        private val LEST_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 3))
+        private val TEMAGRUPPE = Temagruppe.FMLI
+        private const val KANAL = "kanal"
+        private const val NAVIDENT = "navident"
+        private const val TILKNYTTET_ENHET = "tilknyttetEnhet"
+        private const val ER_TILKNYTTET_ANSATT = false
+        private const val REPETERENDE_VARSEL = false
+        private const val BRUKERS_ENHET = "1234"
+        private const val KONTORSPERRE_ENHET = "kontorsperreEnhet"
+        private const val OPPGAVE_URL = "oppgave/url"
+        private const val OPPGAVE_TYPE = "sykepenger"
+    }
 }

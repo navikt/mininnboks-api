@@ -1,54 +1,35 @@
-package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
+package no.nav.sbl.dialogarena.mininnboks.consumer.utils
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
+import java.util.*
+import java.util.function.Function
+import java.util.function.Predicate
 
-public class DomainMapper<S, T> implements Function<S, T> {
-    static class Mapper<S, T> {
-        final Predicate<S> brukMapper;
-        final BiFunction<S, T, T> mapper;
-        final Boolean breakAfterMapping;
+class DomainMapper<S, T> {
+    class Mapper<S, T>(val brukMapper: (S) -> Boolean, val mapper: (S, T) -> T, val breakAfterMapping: Boolean = false)
 
-        public Mapper(Predicate<S> brukMapper, BiFunction<S, T, T> mapper) {
-            this(brukMapper, mapper, false);
-        }
+    private val mappers: MutableList<Mapper<S, T>>
 
-        public Mapper(Predicate<S> brukMapper, BiFunction<S, T, T> mapper, Boolean breakAfterMapping) {
-            this.brukMapper = brukMapper;
-            this.mapper = mapper;
-            this.breakAfterMapping = breakAfterMapping;
-        }
+    fun registerMapper(mapper: Mapper<S, T>) {
+        mappers.add(mapper)
     }
 
-    private List<Mapper<S, T>> mappers;
+    fun apply(xmlValue: S, initailValue: T): T {
+        var value: T = initailValue
+        for (mapper in mappers) {
+            if (mapper.brukMapper(xmlValue)) {
+                value = mapper.mapper(xmlValue, value)
 
-    public DomainMapper() {
-        this.mappers = new LinkedList<>();
-    }
-
-    public void registerMapper(Mapper<S, T> mapper) {
-        this.mappers.add(mapper);
-    }
-
-    public void registerMapper(Predicate<S> predicate, BiFunction<S, T, T> mapper) {
-        this.mappers.add(new Mapper<>(predicate, mapper));
-    }
-
-    @Override
-    public T apply(S xmlValue) {
-        T value = null;
-
-        for (Mapper<S, T> mapper : mappers) {
-            if (mapper.brukMapper.test(xmlValue)) {
-                value = mapper.mapper.apply(xmlValue, value);
                 if (mapper.breakAfterMapping) {
-                    break;
+                    break
                 }
             }
         }
-        return value;
+        return value
+    }
+
+    init {
+        mappers = LinkedList<Mapper<S, T>>()
     }
 }

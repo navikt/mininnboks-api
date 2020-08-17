@@ -1,94 +1,83 @@
-package no.nav.sbl.dialogarena.mininnboks;
+package no.nav.sbl.dialogarena.mininnboks
 
-import no.nav.brukerdialog.security.domain.IdentType;
-import no.nav.common.auth.SsoToken;
-import no.nav.common.auth.Subject;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype;
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe;
+import no.nav.brukerdialog.security.domain.IdentType
+import no.nav.common.auth.SsoToken
+import no.nav.common.auth.Subject
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.util.*
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-
-import static java.util.UUID.randomUUID;
-
-public class TestUtils {
-    public static final Subject MOCK_SUBJECT = new Subject("uid", IdentType.EksternBruker, SsoToken.oidcToken("token", new HashMap<>()));
-    public static final String DEFAULT_EKSTERN_AKTOR = "eksternAktor";
-    public static final String DEFAULT_TILKNYTTET_ENHET = "tilknyttetEnhet";
-    public static final Henvendelsetype DEFAULT_TYPE = Henvendelsetype.SPORSMAL_SKRIFTLIG;
-    public static final Temagruppe DEFAULT_TEMAGRUPPE = Temagruppe.ARBD;
-    public static final Date DEFAULT_OPPRETTET = now();
-
-
-    public static Henvendelse lagHenvendelse(boolean erLest) {
-        Henvendelse henvendelse = lagForsteHenvendelseITraad();
+object TestUtils {
+    val MOCK_SUBJECT = Subject("uid", IdentType.EksternBruker, SsoToken.oidcToken("token", HashMap<String, Any?>()))
+    const val DEFAULT_EKSTERN_AKTOR = "eksternAktor"
+    const val DEFAULT_TILKNYTTET_ENHET = "tilknyttetEnhet"
+    val DEFAULT_TYPE = Henvendelsetype.SPORSMAL_SKRIFTLIG
+    val DEFAULT_TEMAGRUPPE = Temagruppe.ARBD
+    val DEFAULT_OPPRETTET = now()
+    fun lagHenvendelse(erLest: Boolean): Henvendelse {
+        val henvendelse = lagForsteHenvendelseITraad()
         if (erLest) {
-            henvendelse.markerSomLest();
+            henvendelse.markerSomLest()
         }
-        return henvendelse;
+        return henvendelse
     }
 
-    public static Henvendelse lagHenvendelse(String traadId) {
-        return lagHenvendelse(traadId, now());
+    fun lagHenvendelse(id: String?, traadId: String?): Henvendelse {
+        return opprettHenvendelse(id, traadId, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
     }
 
-    public static Henvendelse lagHenvendelse(String id, String traadId) {
-        return opprettHenvendelse(id, traadId, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET);
+    fun lagHenvendelse(id: String?, traadId: String?, opprettet: Date?): Henvendelse {
+        return opprettHenvendelse(id, traadId, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, opprettet, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
     }
 
-    public static Henvendelse lagHenvendelse(String id, String traadId, Date opprettet) {
-        return opprettHenvendelse(id, traadId, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, opprettet, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET);
+    @JvmOverloads
+    fun lagHenvendelse(traadId: String?, opprettet: Date? = now()): Henvendelse {
+        return opprettHenvendelse(UUID.randomUUID().toString(), traadId, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, opprettet, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
     }
 
-    public static Henvendelse lagHenvendelse(String traadId, Date opprettet) {
-        return opprettHenvendelse(randomUUID().toString(), traadId, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, opprettet, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET);
+    fun lagForsteHenvendelseITraad(): Henvendelse {
+        val id = UUID.randomUUID().toString()
+        return opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
     }
 
-    public static Henvendelse lagForsteHenvendelseITraad() {
-        String id = randomUUID().toString();
-        return opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET);
+    fun lagForsteHenvendelseITraad(opprettet: Date?): Henvendelse {
+        val id = UUID.randomUUID().toString()
+        return opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, opprettet, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
     }
 
-    public static Henvendelse lagForsteHenvendelseITraad(Date opprettet) {
-        String id = randomUUID().toString();
-        return opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, opprettet, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET);
-    }
-
-    public static Henvendelse lagForsteHenvendelseITraad(Henvendelsetype type, boolean lest) {
-        String id = randomUUID().toString();
-        Henvendelse henvendelse = opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, type, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET);
+    fun lagForsteHenvendelseITraad(type: Henvendelsetype?, lest: Boolean): Henvendelse {
+        val id = UUID.randomUUID().toString()
+        val henvendelse = opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, type, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
         if (lest) {
-            henvendelse.markerSomLest();
+            henvendelse.markerSomLest()
         }
-        return henvendelse;
+        return henvendelse
     }
 
-    public static Henvendelse opprettHenvendelse(String id, String traadId, Temagruppe temagruppe,
-                                                 Henvendelsetype type, Date opprettet, String eksternAktor, String tilknyttetEnhet) {
-        Henvendelse henvendelse = new Henvendelse(id);
-        henvendelse.temagruppe = temagruppe;
-        henvendelse.traadId = traadId;
-        henvendelse.type = type;
-        henvendelse.opprettet = opprettet;
-        henvendelse.eksternAktor = eksternAktor;
-        henvendelse.tilknyttetEnhet = tilknyttetEnhet;
-        return henvendelse;
+    fun opprettHenvendelse(id: String?, traadId: String?, temagruppe: Temagruppe?,
+                           type: Henvendelsetype?, opprettet: Date?, eksternAktor: String?, tilknyttetEnhet: String?): Henvendelse {
+        val henvendelse = Henvendelse(id)
+        henvendelse.temagruppe = temagruppe
+        henvendelse.traadId = traadId
+        henvendelse.type = type
+        henvendelse.opprettet = opprettet
+        henvendelse.eksternAktor = eksternAktor
+        henvendelse.tilknyttetEnhet = tilknyttetEnhet
+        return henvendelse
     }
 
-    public static Date nowPlus(int days){
-        return new Date(Instant.now().plus(days, ChronoUnit.DAYS).toEpochMilli());
+    fun nowPlus(days: Int): Date {
+        return Date(Instant.now().plus(days.toLong(), ChronoUnit.DAYS).toEpochMilli())
     }
 
-    public static Date now(){
-        return new Date();
+    fun now(): Date {
+        return Date()
     }
 
-    public static Date date(GregorianCalendar gregorianCalendar) {
-        return new Date(gregorianCalendar.getTimeInMillis());
+    fun date(gregorianCalendar: GregorianCalendar): Date {
+        return Date(gregorianCalendar.timeInMillis)
     }
-
 }

@@ -1,18 +1,13 @@
-package no.nav.sbl.dialogarena.mininnboks.consumer.utils;
+package no.nav.sbl.dialogarena.mininnboks.consumer.utils
 
-import javax.ws.rs.client.ClientRequestContext;
-import javax.ws.rs.client.ClientRequestFilter;
-import java.io.IOException;
+import java.io.IOException
+import javax.ws.rs.client.ClientRequestContext
+import javax.ws.rs.client.ClientRequestFilter
 
-public class ApigwRequestFilter implements ClientRequestFilter {
-    private final String apikey;
-
-    public ApigwRequestFilter(String apikey) {
-        this.apikey = apikey;
+class ApigwRequestFilter(private val apikey: String) : ClientRequestFilter {
+    @Throws(IOException::class)
+    override fun filter(request: ClientRequestContext) {
+        request.headers.putSingle("x-nav-apiKey", apikey)
     }
 
-    @Override
-    public void filter(ClientRequestContext request) throws IOException {
-        request.getHeaders().putSingle("x-nav-apiKey", apikey);
-    }
 }

@@ -1,17 +1,14 @@
-package no.nav.sbl.dialogarena.mininnboks.config;
+package no.nav.sbl.dialogarena.mininnboks.config
 
-import static no.nav.sbl.dialogarena.mininnboks.provider.LinkService.*;
-import static no.nav.sbl.util.EnvironmentUtils.Type.PUBLIC;
-import static no.nav.sbl.util.EnvironmentUtils.setProperty;
+import no.nav.sbl.dialogarena.mininnboks.provider.LinkService
+import no.nav.sbl.util.EnvironmentUtils
 
-public class LinkMock {
-
-    public static void setup() {
-        setProperty(MININNBOKS_LINK_PROPERTY,"/", PUBLIC);
-        setProperty(SAKSOVERSIKT_LINK_PROPERTY,"/", PUBLIC);
-        setProperty(TEMAVELGER_LINK_PROPERTY,"/", PUBLIC);
-        setProperty(BRUKERPROFIL_LINK_PROPERTY,"/", PUBLIC);
+object LinkMock {
+    @JvmStatic
+    fun setup() {
+        EnvironmentUtils.setProperty(LinkService.MININNBOKS_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
+        EnvironmentUtils.setProperty(LinkService.SAKSOVERSIKT_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
+        EnvironmentUtils.setProperty(LinkService.TEMAVELGER_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
+        EnvironmentUtils.setProperty(LinkService.BRUKERPROFIL_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
     }
-
 }
-
