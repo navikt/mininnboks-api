@@ -4,10 +4,10 @@ import no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig
 import no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig
 import no.nav.sbl.util.EnvironmentUtils
 
-object Main {
+object Main1 {
     private const val DEFAULT_SECRETS_BASE_PATH = "/var/run/secrets/nais.io"
 
-    @JvmStatic
+    //@JvmStatic
     fun main(args: Array<String>) {
         loadVaultSecrets()
         loadApigwKeys()

@@ -1,29 +1,27 @@
-package no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang;
+package no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang
 
-import no.nav.common.auth.SubjectHandler;
-import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO;
-import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService;
+import io.ktor.application.call
+import io.ktor.response.respond
+import io.ktor.routing.Route
+import io.ktor.routing.get
+import io.ktor.routing.route
+import no.nav.common.auth.SubjectHandler
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
+import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
+import javax.inject.Inject
+import javax.ws.rs.GET
+import javax.ws.rs.Path
+import javax.ws.rs.Produces
+import javax.ws.rs.core.MediaType
 
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+fun Route.TilgangController(tilgangService: TilgangService?) {
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
-@Path("/tilgang")
-@Produces(APPLICATION_JSON + "; charset=UTF-8")
-public class TilgangController {
-
-    @Inject
-    private TilgangService tilgangService;
-
-    @GET
-    @Path("/oksos")
-    public TilgangDTO harTilgangTilKommunalInnsending() {
-        return SubjectHandler
-                .getIdent()
-                .map((fnr) -> tilgangService.harTilgangTilKommunalInnsending(fnr))
-                .orElse(new TilgangDTO(TilgangDTO.Resultat.FEILET, "Fant ikke brukers OIDC-token"));
+    route("/tilgang") {
+    get("/oksos") {
+            call.respond(SubjectHandler
+                    .getIdent()
+                    .map { fnr: String? -> tilgangService!!.harTilgangTilKommunalInnsending(fnr!!) }
+                    .orElse(TilgangDTO(TilgangDTO.Resultat.FEILET, "Fant ikke brukers OIDC-token")))
+        }
     }
 }

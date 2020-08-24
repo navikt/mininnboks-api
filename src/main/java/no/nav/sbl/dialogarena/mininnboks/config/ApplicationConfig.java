@@ -7,27 +7,12 @@ import no.nav.brukerdialog.security.domain.IdentType;
 import no.nav.common.oidc.auth.OidcAuthenticatorConfig;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig;
 import no.nav.sbl.dialogarena.mininnboks.provider.LinkService;
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController;
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.ResourcesController;
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang.TilgangController;
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.SporsmalController;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import static no.nav.common.oidc.Constants.AZURE_AD_B2C_ID_TOKEN_COOKIE_NAME;
 import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
 
-@Configuration
-@Import({
-        TeksterServiceConfig.class,
-        ServiceConfig.class,
-        ResourcesController.class,
-        SporsmalController.class,
-        HenvendelseController.class,
-        TilgangController.class
-})
 public class ApplicationConfig implements ApiApplication {
 
     public static final String SECURITYTOKENSERVICE_URL_PROPERTY = "SECURITYTOKENSERVICE_URL";

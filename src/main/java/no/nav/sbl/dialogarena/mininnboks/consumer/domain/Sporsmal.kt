@@ -1,5 +1,6 @@
-package no.nav.sbl.dialogarena.mininnboks.consumer.domain;
+package no.nav.sbl.dialogarena.mininnboks.consumer.domain
 
-public class Sporsmal {
-    public String temagruppe, fritekst;
+class Sporsmal {
+    var temagruppe: String? = null
+    var fritekst: String? = null
 }

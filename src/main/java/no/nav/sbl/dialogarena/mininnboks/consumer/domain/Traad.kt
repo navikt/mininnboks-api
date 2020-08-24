@@ -1,41 +1,37 @@
-package no.nav.sbl.dialogarena.mininnboks.consumer.domain;
+package no.nav.sbl.dialogarena.mininnboks.consumer.domain
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.function.Function;
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
+import java.util.*
+import java.util.function.Function
+import java.util.stream.Collectors
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.reverseOrder;
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse.NYESTE_OVERST;
-import static no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype.*;
+class Traad(meldinger: List<Henvendelse?>?) {
+    var traadId: String? = null
+    var meldinger: List<Henvendelse?>? = null
+    var nyeste: Henvendelse? = null
+    var eldste: Henvendelse? = null
+    var kanBesvares: Boolean = false
+    var avsluttet: Boolean? = null
 
-public class Traad {
-    private static final List<Henvendelsetype> FRA_NAV = asList(SPORSMAL_MODIA_UTGAAENDE, INFOMELDING_MODIA_UTGAAENDE, SVAR_SKRIFTLIG, SVAR_OPPMOTE, SVAR_TELEFON, SAMTALEREFERAT_OPPMOTE, SAMTALEREFERAT_TELEFON, DOKUMENT_VARSEL);
-    private static final List<Henvendelsetype> KAN_BESVARES = asList(SPORSMAL_MODIA_UTGAAENDE);
-
-    public final String traadId;
-    public final List<Henvendelse> meldinger;
-    public final Henvendelse nyeste, eldste;
-    public final Boolean kanBesvares, avsluttet;
-
-    public Traad(List<Henvendelse> meldinger) {
-        this.meldinger = meldinger.stream()
-                .sorted(NYESTE_OVERST)
-                .collect(toList());
-        this.nyeste = this.meldinger.get(0);
-        this.eldste = this.meldinger.get(this.meldinger.size() - 1);
-        this.kanBesvares = !nyeste.kassert && KAN_BESVARES.contains(nyeste.type);
-
-        boolean avsluttet = FRA_NAV.contains(nyeste.type) && !kanBesvares;
-        boolean ferdigstiltUtenSvar = Boolean.TRUE.equals(nyeste.ferdigstiltUtenSvar);
-        this.avsluttet =  avsluttet || ferdigstiltUtenSvar;
-        this.traadId = this.nyeste.traadId;
+    companion object {
+        private val FRA_NAV = Arrays.asList(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE, Henvendelsetype.INFOMELDING_MODIA_UTGAAENDE, Henvendelsetype.SVAR_SKRIFTLIG, Henvendelsetype.SVAR_OPPMOTE, Henvendelsetype.SVAR_TELEFON, Henvendelsetype.SAMTALEREFERAT_OPPMOTE, Henvendelsetype.SAMTALEREFERAT_TELEFON, Henvendelsetype.DOKUMENT_VARSEL)
+        private val KAN_BESVARES = Arrays.asList(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE)
+        val NYESTE_OPPRETTET = Function { traad: Traad -> traad.nyeste?.opprettet }
+        val NYESTE_FORST = Collections.reverseOrder(Comparator.comparing(NYESTE_OPPRETTET))
     }
 
-    public static final Function<Traad, Date> NYESTE_OPPRETTET = traad -> traad.nyeste.opprettet;
+    init {
+        if (meldinger != null) {
+            this.meldinger = meldinger
+                    .sortedWith(Henvendelse.NYESTE_OVERST)
 
-    public static final Comparator<Traad> NYESTE_FORST = reverseOrder(comparing(Traad.NYESTE_OPPRETTET));
+            nyeste = this.meldinger!![0]!!
+            eldste = this.meldinger!![this.meldinger!!.size - 1]!!
+            kanBesvares = !nyeste?.kassert!! && KAN_BESVARES.contains(nyeste?.type)
+            val avsluttet = FRA_NAV.contains(nyeste?.type) && !kanBesvares
+            val ferdigstiltUtenSvar = java.lang.Boolean.TRUE == nyeste?.ferdigstiltUtenSvar
+            this.avsluttet = avsluttet || ferdigstiltUtenSvar
+            traadId = nyeste?.traadId
+        }
+    }
 }

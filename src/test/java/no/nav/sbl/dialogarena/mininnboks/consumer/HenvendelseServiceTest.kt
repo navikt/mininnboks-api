@@ -44,11 +44,11 @@ class HenvendelseServiceTest {
 
     @Mock
     private val tekstService = Mockito.mock(TekstService::class.java)
-    private var henvendelseService: HenvendelseService.Default? = null
+    private var henvendelseService: HenvendelseService? = null
 
     @Before
     fun setUp() {
-        henvendelseService = HenvendelseService.Default(henvendelsePortType!!, sendInnHenvendelsePortType!!, innsynHenvendelsePortType!!, personService!!)
+        henvendelseService = HenvendelseServiceImpl(henvendelsePortType!!, sendInnHenvendelsePortType!!, innsynHenvendelsePortType!!, personService!!)
         setupTekstServiceMock()
         val henvendelseListe: MutableList<Any> = ArrayList()
         henvendelseListe.add(lagHenvendelse(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name).withBehandlingsId("id"))
@@ -61,12 +61,12 @@ class HenvendelseServiceTest {
 
     private fun setupTekstServiceMock() {
         Mockito.`when`(tekstService.hentTekst(ArgumentMatchers.anyString())).thenReturn("Tekst")
-        HenvendelsesUtils.setTekstService(tekstService)
+       // HenvendelsesUtils.setTekstService(tekstService)
     }
 
     @After
     fun after() {
-        HenvendelsesUtils.setTekstService(null)
+        //HenvendelsesUtils.setTekstService(null)
     }
 
     @Test
@@ -81,7 +81,7 @@ class HenvendelseServiceTest {
         MatcherAssert.assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name))
         MatcherAssert.assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
         MatcherAssert.assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
-        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.Default.KONTAKT_NAV_SAKSTEMA))
+        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseServiceImpl.KONTAKT_NAV_SAKSTEMA))
         MatcherAssert.assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(Matchers.nullValue()))
         MatcherAssert.assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
         val meldingFraBruker = xmlHenvendelse.metadataListe.metadata[0] as XMLMeldingFraBruker
@@ -101,7 +101,7 @@ class HenvendelseServiceTest {
         MatcherAssert.assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name))
         MatcherAssert.assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
         MatcherAssert.assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
-        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.Default.KONTAKT_NAV_SAKSTEMA))
+        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseServiceImpl.KONTAKT_NAV_SAKSTEMA))
         MatcherAssert.assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(Matchers.nullValue()))
         MatcherAssert.assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
         val meldingFraBruker = xmlHenvendelse.metadataListe.metadata[0] as XMLMeldingFraBruker
@@ -127,7 +127,7 @@ class HenvendelseServiceTest {
         MatcherAssert.assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name))
         MatcherAssert.assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
         MatcherAssert.assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
-        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.Default.KONTAKT_NAV_SAKSTEMA))
+        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseServiceImpl.KONTAKT_NAV_SAKSTEMA))
         MatcherAssert.assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(TRAAD_ID))
         MatcherAssert.assertThat(xmlHenvendelse.eksternAktor, Matchers.`is`(EKSTERN_AKTOR))
         MatcherAssert.assertThat(xmlHenvendelse.tilknyttetEnhet, Matchers.`is`(TILKNYTTET_ENHET))

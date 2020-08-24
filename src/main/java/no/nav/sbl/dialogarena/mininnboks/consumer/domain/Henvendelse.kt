@@ -1,72 +1,80 @@
-package no.nav.sbl.dialogarena.mininnboks.consumer.domain;
+package no.nav.sbl.dialogarena.mininnboks.consumer.domain
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.io.Serializable
+import java.util.*
+import kotlin.collections.ArrayList
 
-import static java.util.Collections.reverseOrder;
+class Henvendelse : Serializable {
+    var id: String? = null
+    var traadId: String? = null
+    var fritekst: String? = null
+    var kanal: String? = null
+    var eksternAktor: String? = null
+    var brukersEnhet: String? = null
+    var tilknyttetEnhet: String? = null
+    var temagruppeNavn: String? = null
+    var statusTekst: String? = null
+    var kontorsperreEnhet: String? = null
+    var temaNavn: String? = null
+    var temaKode: String? = null
+    var korrelasjonsId: String? = null
+    var journalpostId: String? = null
+    var dokumentIdListe: ArrayList<String> = ArrayList()
+    var oppgaveType: String? = null
+    var oppgaveUrl: String? = null
+    var type: Henvendelsetype? = null
+    var temagruppe: Temagruppe? = null
+    var opprettet: Date? = null
+    var avsluttet: Date? = null
+    var fraNav: Boolean? = null
+    var fraBruker: Boolean? = null
+    var kassert = false
+    var erTilknyttetAnsatt: Boolean? = null
+    var ferdigstiltUtenSvar: Boolean? = null
+    var lestDato: Date? = null
+        private set
 
-public class Henvendelse implements Serializable {
-
-    public String id;
-    public String traadId, fritekst, kanal, eksternAktor, brukersEnhet, tilknyttetEnhet,
-            temagruppeNavn, statusTekst, kontorsperreEnhet, temaNavn, temaKode, korrelasjonsId, journalpostId;
-    public List<String> dokumentIdListe = new ArrayList<>();
-    public String oppgaveType;
-    public String oppgaveUrl;
-    public Henvendelsetype type;
-    public Temagruppe temagruppe;
-    public Date opprettet, avsluttet;
-    public Boolean fraNav, fraBruker, kassert = false, erTilknyttetAnsatt, ferdigstiltUtenSvar;
-    private Date lestDato;
-
-    public Henvendelse(String id) {
-        this.id = id;
+    constructor(id: String?) {
+        this.id = id
     }
 
-    public Henvendelse(String fritekst, Temagruppe temagruppe) {
-        this.fritekst = fritekst;
-        this.temagruppe = temagruppe;
+    constructor(fritekst: String?, temagruppe: Temagruppe?) {
+        this.fritekst = fritekst
+        this.temagruppe = temagruppe
     }
 
-    public Henvendelse withTraadId(String traadId) {
-        this.traadId = traadId;
-        return this;
+    fun withTraadId(traadId: String?): Henvendelse {
+        this.traadId = traadId
+        return this
     }
 
-    public Henvendelse withType(Henvendelsetype type) {
-        this.type = type;
-        return this;
+    fun withType(type: Henvendelsetype?): Henvendelse {
+        this.type = type
+        return this
     }
 
-    public Henvendelse withOpprettetTid(Date opprettetTid) {
-        this.opprettet = opprettetTid;
-        return this;
+    fun withOpprettetTid(opprettetTid: Date?): Henvendelse {
+        opprettet = opprettetTid
+        return this
     }
 
-    public void markerSomLest(Date lestDato) {
-        this.lestDato = lestDato;
+    fun markerSomLest(lestDato: Date?) {
+        this.lestDato = lestDato
     }
 
-    public void markerSomLest() {
-        this.lestDato = new Date();
+    fun markerSomLest() {
+        lestDato = Date()
     }
 
-    public Date getLestDato() {
-        return lestDato;
+    val isLest: Boolean
+        get() = lestDato != null
+
+    fun withTemaNavn(temaNavn: String?): Henvendelse {
+        this.temaNavn = temaNavn
+        return this
     }
 
-    public boolean isLest() {
-        return lestDato != null;
+    companion object {
+        val NYESTE_OVERST = Collections.reverseOrder(Comparator.comparing { henvendelse: Henvendelse -> henvendelse.opprettet })
     }
-
-    public static final Comparator<Henvendelse> NYESTE_OVERST = reverseOrder(Comparator.comparing(henvendelse -> henvendelse.opprettet));
-
-    public Henvendelse withTemaNavn(String temaNavn) {
-        this.temaNavn = temaNavn;
-        return this;
-    }
-
 }

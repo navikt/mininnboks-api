@@ -1,6 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse
 
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import io.ktor.http.ContentType
+import io.ktor.http.HttpMethod
 import no.nav.brukerdialog.security.context.SubjectRule
 import no.nav.brukerdialog.security.domain.IdentType
 import no.nav.common.auth.SsoToken
@@ -11,8 +15,6 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
-import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController.NyHenvendelseResultat
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse
 import org.apache.commons.lang3.StringUtils
 import org.hamcrest.CoreMatchers
@@ -28,19 +30,21 @@ import java.util.stream.Collectors
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 import javax.xml.ws.soap.SOAPFaultException
-@Ignore
+import io.ktor.application.*
+import io.ktor.http.*
+import io.ktor.server.testing.*
+import org.mockito.Mockito.mock
+import kotlin.test.*
+
 class HenvendelseControllerTest {
     @Mock
-    var service: HenvendelseService? = null
+    var service: HenvendelseService? =  mock()
 
     @Mock
-    var tekstService = Mockito.mock(TekstService::class.java)
+    var tilgangService: TilgangService = mock()
 
-    @Mock
-    var tilgangService = Mockito.mock(TilgangService::class.java)
-
-    @InjectMocks
-    var controller = HenvendelseController()
+   // @InjectMocks
+   // var controller: Henvend= mock()
 
     @Rule
     var subjectRule = SubjectRule(Subject("fnr", IdentType.EksternBruker, SsoToken.oidcToken("token", emptyMap<String, Any>())))
@@ -59,7 +63,6 @@ class HenvendelseControllerTest {
                 Henvendelse("6").withTraadId("2").withType(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE).withOpprettetTid(TestUtils.nowPlus(100)),
                 Henvendelse("7").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now())
         )
-        HenvendelsesUtils.setTekstService(tekstService)
         Mockito.`when`(service!!.hentAlleHenvendelser(ArgumentMatchers.anyString())).thenReturn(henvendelser)
         Mockito.`when`(service!!.hentTraad(ArgumentMatchers.anyString())).thenAnswer(Answer { invocation: InvocationOnMock ->
             val traadId = invocation.arguments[0] as String
@@ -72,15 +75,11 @@ class HenvendelseControllerTest {
         )
     }
 
-    @After
-    fun after() {
-        HenvendelsesUtils.setTekstService(null)
-    }
 
     @Test
     @Throws(Exception::class)
     fun henterUtAlleHenvendelserOgGjorOmTilTraader() {
-        val traader = controller.hentTraader()
+        val traader = service.hentAlleHenvendelser(any())
         MatcherAssert.assertThat(traader.size, Is.`is`(3))
     }
 

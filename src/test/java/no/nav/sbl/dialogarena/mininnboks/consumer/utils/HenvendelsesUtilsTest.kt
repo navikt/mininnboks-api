@@ -23,13 +23,13 @@ class HenvendelsesUtilsTest {
 
     @Before
     fun setup() {
-        HenvendelsesUtils.setTekstService(tekstService)
+       // HenvendelsesUtils.setTekstService(tekstService)
         Mockito.`when`(tekstService.hentTekst(ArgumentMatchers.anyString())).thenReturn("value")
     }
 
     @After
     fun after() {
-        HenvendelsesUtils.setTekstService(null)
+       // HenvendelsesUtils.setTekstService(null)
     }
 
     @Test

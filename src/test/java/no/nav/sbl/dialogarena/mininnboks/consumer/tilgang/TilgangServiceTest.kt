@@ -14,7 +14,7 @@ internal data class MockContext(
         val tilgangService: TilgangService
 )
 
-internal class TilgangServiceTest {
+class TilgangServiceTest {
     @Test
     fun `gir FEILET om hentEnhet feiler`() {
         val (pdlService, personService, tilgangService) = gittContext()

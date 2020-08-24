@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.utils
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstServiceImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
@@ -11,19 +12,13 @@ import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
 import org.slf4j.LoggerFactory
 import java.util.*
-import java.util.function.BiFunction
-import java.util.function.Predicate
 
 object HenvendelsesUtils {
-    private var tekstService: TekstService? = null
+    private var tekstService: TekstService? = TekstServiceImpl()
     val logger = LoggerFactory.getLogger(HenvendelsesUtils::class.java)
     private val LINE_REPLACEMENT_STRING = UUID.randomUUID().toString()
-    private const val LINE_BREAK = "\n"
+    private val LINE_BREAK = "\n"
     val FRA_BRUKER = Arrays.asList(Henvendelsetype.SPORSMAL_SKRIFTLIG, Henvendelsetype.SPORSMAL_SKRIFTLIG_DIREKTE, Henvendelsetype.SVAR_SBL_INNGAAENDE)
-    @JvmStatic
-    fun setTekstService(tekstService: TekstService?) {
-        HenvendelsesUtils.tekstService = tekstService
-    }
 
     private val HENVENDELSETYPE_MAP: HashMap<XMLHenvendelseType, Henvendelsetype> = object : HashMap<XMLHenvendelseType, Henvendelsetype>() {
         init {
@@ -57,7 +52,7 @@ object HenvendelsesUtils {
                 henvendelse.type = HENVENDELSETYPE_MAP[XMLHenvendelseType.fromValue(xmlHenvendelse.henvendelseType)]
                 henvendelse.brukersEnhet = xmlHenvendelse.brukersEnhet
                 henvendelse.fraBruker = FRA_BRUKER.contains(henvendelse.type)
-                henvendelse.fraNav = !henvendelse.fraBruker
+                henvendelse.fraNav = !henvendelse.fraBruker!!
                 henvendelse.temaKode = xmlHenvendelse.tema
                 henvendelse.korrelasjonsId = xmlHenvendelse.korrelasjonsId
                 henvendelse
@@ -119,7 +114,7 @@ object HenvendelsesUtils {
              { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
                 val xmlMelding = xmlHenvendelse.metadataListe.metadata[0] as XMLMelding
                 henvendelse.temagruppe = Temagruppe.valueOf(xmlMelding.temagruppe)
-                henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe.name)
+                henvendelse.temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe!!.name)
                 henvendelse.statusTekst = statusTekst(henvendelse)
                 henvendelse.fritekst = cleanOutHtml(xmlMelding.fritekst)
                 if (xmlMelding is XMLMeldingTilBruker) {
@@ -156,16 +151,16 @@ object HenvendelsesUtils {
         return StringEscapeUtils.unescapeHtml4(clean).replace(LINE_REPLACEMENT_STRING.toRegex(), LINE_BREAK)
     }
 
-    fun fjernHardeMellomrom(tekst: String): String {
-        return tekst.replace("[\\u00a0\\u2007\\u202f]".toRegex(), " ")
+    fun fjernHardeMellomrom(tekst: String?): String {
+        return tekst?.replace("[\\u00a0\\u2007\\u202f]".toRegex(), " ").toString()
     }
 
     private fun statusTekst(henvendelse: Henvendelse): String { //NOSONAR
-        if (!skalVisesTilBruker(henvendelse.type)) {
+        if (!henvendelse.type?.let { skalVisesTilBruker(it) }!!) {
             return ""
         }
-        val type = hentTemagruppeNavn(String.format("status.%s", henvendelse.type.name))
-        val temagruppe = hentTemagruppeNavn(henvendelse.temagruppe.name)
+        val type = hentTemagruppeNavn(String.format("status.%s", henvendelse.type!!.name))
+        val temagruppe = hentTemagruppeNavn(henvendelse.temagruppe!!.name)
         return String.format(type!!, temagruppe)
     }
 

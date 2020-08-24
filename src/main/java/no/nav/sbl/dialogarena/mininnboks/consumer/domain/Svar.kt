@@ -1,5 +1,6 @@
-package no.nav.sbl.dialogarena.mininnboks.consumer.domain;
+package no.nav.sbl.dialogarena.mininnboks.consumer.domain
 
-public class Svar {
-    public String traadId, fritekst;
+class Svar {
+    var traadId: String? = null
+    var fritekst: String? = null
 }
