@@ -121,7 +121,7 @@ public class HenvendelseController {
     @Path("/svar")
     @Consumes(APPLICATION_JSON)
     public Response sendSvar(Svar svar) {
-        assertFritekst(svar.fritekst);
+        assertFritekst(svar.fritekst, 2500);
         Optional<Traad> traadOptional = hentTraad(svar.traadId);
         if (!traadOptional.isPresent()) {
             return status(NOT_FOUND.getStatusCode()).build();
@@ -163,12 +163,15 @@ public class HenvendelseController {
     }
 
     private static void assertFritekst(String fritekst) {
+        assertFritekst(fritekst, 1000);
+    }
+    private static void assertFritekst(String fritekst, int maxLengde) {
         if (fritekst == null) {
             throw new BadRequestException("Fritekst må være sendt med");
         } else if (fritekst.trim().length() == 0) {
             throw new BadRequestException("Fritekst må inneholde tekst");
-        } else if (fritekst.trim().length() > 1000) {
-            throw new BadRequestException("Fritekst kan ikke være lengre enn 1000 tegn");
+        } else if (fritekst.trim().length() > maxLengde) {
+            throw new BadRequestException("Fritekst kan ikke være lengre enn " + maxLengde + " tegn");
         }
     }
 
