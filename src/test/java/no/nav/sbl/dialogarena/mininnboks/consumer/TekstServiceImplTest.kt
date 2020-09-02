@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class TekstServiceImplTest {
     @Test

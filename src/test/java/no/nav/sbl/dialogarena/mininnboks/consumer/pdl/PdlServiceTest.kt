@@ -1,10 +1,11 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.nhaarman.mockitokotlin2.*
+import io.mockk.mockk
 import no.nav.common.auth.SubjectHandler
 import no.nav.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT
-import no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig
+import no.nav.sbl.dialogarena.mininnboks.Configuration
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.util.EnvironmentUtils
 import no.nav.sbl.util.fn.UnsafeSupplier
@@ -26,6 +27,8 @@ internal data class MockContext(
 )
 
 internal class PdlServiceTest {
+
+    val configuration: Configuration = mockk()
     @Test
     fun `henter adressebeskyttelsegradering om det finnes`() {
         gittGradering(PdlAdressebeskyttelseGradering.UGRADERT) {(_, pdlService) ->
@@ -73,7 +76,7 @@ internal class PdlServiceTest {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(body = gittErrorPdlResponse("Det skjedde en feil"))
         val stsService = gittStsService()
-        val pdlService = PdlServiceImpl(mockContext.client, stsService)
+        val pdlService = PdlServiceImpl(mockContext.client, stsService, configuration)
 
         SubjectHandler.withSubject(MOCK_SUBJECT, UnsafeSupplier {
             assertThrows<PdlException> {
@@ -87,7 +90,7 @@ internal class PdlServiceTest {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer()
         val stsService = gittStsService()
-        val pdlService = PdlServiceImpl(mockContext.client, stsService)
+        val pdlService = PdlServiceImpl(mockContext.client, stsService, configuration)
 
         val ping = pdlService.getHelsesjekk().ping()
 
@@ -100,7 +103,7 @@ internal class PdlServiceTest {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(status = 199)
         val stsService = gittStsService()
-        val pdlService = PdlServiceImpl(mockContext.client, stsService)
+        val pdlService = PdlServiceImpl(mockContext.client, stsService, configuration)
 
         val ping = pdlService.getHelsesjekk().ping()
 
@@ -114,7 +117,7 @@ internal class PdlServiceTest {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(throwException = true)
         val stsService = gittStsService()
-        val pdlService = PdlServiceImpl(mockContext.client, stsService)
+        val pdlService = PdlServiceImpl(mockContext.client, stsService, configuration)
 
         val ping = pdlService.getHelsesjekk().ping()
 
@@ -158,7 +161,7 @@ internal class PdlServiceTest {
 
     fun gittUrlTilPdl(url: String = "http://mock.com") {
         MDC.put(MDCConstants.MDC_CALL_ID, UUID.randomUUID().toString())
-        EnvironmentUtils.setProperty(ServiceConfig.PDL_API_URL, url, EnvironmentUtils.Type.PUBLIC)
+        EnvironmentUtils.setProperty(configuration.PDL_API_URL, url, EnvironmentUtils.Type.PUBLIC)
     }
 
     fun gittOkPdlResponse(gradering: PdlAdressebeskyttelseGradering? = null): String {
@@ -189,7 +192,7 @@ internal class PdlServiceTest {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(body = gittOkPdlResponse(gradering))
         val stsService = gittStsService()
-        val pdlService = PdlServiceImpl(mockContext.client, stsService)
+        val pdlService = PdlServiceImpl(mockContext.client, stsService, configuration)
 
         SubjectHandler.withSubject(MOCK_SUBJECT) {
             fn(Pair(mockContext, pdlService))

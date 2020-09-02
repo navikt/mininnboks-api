@@ -4,7 +4,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.common.auth.SsoToken
 import no.nav.common.auth.SubjectHandler
 import no.nav.log.MDCConstants
-import no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig
 import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.types.Pingable
@@ -12,6 +11,7 @@ import no.nav.sbl.util.EnvironmentUtils.getRequiredProperty
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.util.*
+import no.nav.sbl.dialogarena.mininnboks.Configuration
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.Entity
 
@@ -26,7 +26,9 @@ interface PdlService {
 
 class PdlException(cause: Exception) : RuntimeException("Kunne ikke utlede adressebeskyttelse", cause)
 
-class PdlServiceImpl(private val pdlClient: Client, private val stsService: SystemuserTokenProvider) : PdlService {
+class PdlServiceImpl(private val pdlClient: Client,
+                     private val stsService: SystemuserTokenProvider,
+                     private val configuration:  Configuration) : PdlService {
     private val log = LoggerFactory.getLogger(PdlService::class.java)
     private val adressebeskyttelseQuery: String = lastQueryFraFil("hentAdressebeskyttelse")
 
@@ -53,14 +55,14 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
     override fun getHelsesjekk(): Pingable {
         val metadata = Pingable.Ping.PingMetadata(
                 "pdl",
-                getRequiredProperty(ServiceConfig.PDL_API_URL),
+                getRequiredProperty(configuration.PDL_API_URL),
                 "Henter adressebeskyttelse",
                 false
         )
 
         return Pingable {
             try {
-                val response = pdlClient.target(getRequiredProperty(ServiceConfig.PDL_API_URL))
+                val response = pdlClient.target(getRequiredProperty(configuration.PDL_API_URL))
                         .path("/graphql")
                         .request()
                         .options()
@@ -103,7 +105,7 @@ class PdlServiceImpl(private val pdlClient: Client, private val stsService: Syst
                     ------------------------------------------------------------------------------------
                 """.trimIndent())
 
-            val response = pdlClient.target(getRequiredProperty(ServiceConfig.PDL_API_URL))
+            val response = pdlClient.target(getRequiredProperty(configuration.PDL_API_URL))
                     .path("/graphql")
                     .request()
                     .header("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))

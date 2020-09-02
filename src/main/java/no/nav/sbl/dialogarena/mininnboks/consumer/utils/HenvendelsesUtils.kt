@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory
 import java.util.*
 
 object HenvendelsesUtils {
-    private var tekstService: TekstService? = TekstServiceImpl()
+    private var tekstService: TekstService? = null
     val logger = LoggerFactory.getLogger(HenvendelsesUtils::class.java)
     private val LINE_REPLACEMENT_STRING = UUID.randomUUID().toString()
     private val LINE_BREAK = "\n"
@@ -125,8 +125,7 @@ object HenvendelsesUtils {
     )
 
     fun tilHenvendelse(wsMelding: XMLHenvendelse): Henvendelse {
-        return wsMelding.let { domainMapper.apply(it, Henvendelse(wsMelding.behandlingsId)
-            ) }
+        return wsMelding.let { domainMapper.apply(it, Henvendelse(wsMelding.behandlingsId)) }
     }
 
     fun hentTekst(tekster: TekstService?, key: String?, defaultKey: String?): String? {
@@ -173,6 +172,7 @@ object HenvendelsesUtils {
     }
 
     init {
+        tekstService = TekstServiceImpl()
         domainMapper.registerMapper(DEFAULT_MAPPER)
         domainMapper.registerMapper(LEST_MAPPER)
         domainMapper.registerMapper(KASSERT_MAPPER)

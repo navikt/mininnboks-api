@@ -1,7 +1,5 @@
-import no.nav.apiapp.ApiApp
 import no.nav.common.nais.utils.NaisUtils
-import no.nav.sbl.dialogarena.mininnboks.config.ApplicationConfig
-import no.nav.sbl.dialogarena.mininnboks.config.ServiceConfig
+import no.nav.sbl.dialogarena.mininnboks.ServiceConfig
 import no.nav.sbl.util.EnvironmentUtils
 
 object Main1 {
@@ -11,21 +9,21 @@ object Main1 {
     fun main(args: Array<String>) {
         loadVaultSecrets()
         loadApigwKeys()
-        val serviceGatewayUrl = EnvironmentUtils.getRequiredProperty(ServiceConfig.SERVICEGATEWAY_URL)
+       /* val serviceGatewayUrl = EnvironmentUtils.getRequiredProperty(ServiceConfig.SERVICEGATEWAY_URL)
         EnvironmentUtils.setProperty(ServiceConfig.INNSYN_HENVENDELSE_WS_URL, serviceGatewayUrl, EnvironmentUtils.Type.PUBLIC)
         EnvironmentUtils.setProperty(ServiceConfig.HENVENDELSE_WS_URL, serviceGatewayUrl, EnvironmentUtils.Type.PUBLIC)
         EnvironmentUtils.setProperty(ServiceConfig.SEND_INN_HENVENDELSE_WS_URL, serviceGatewayUrl, EnvironmentUtils.Type.PUBLIC)
         EnvironmentUtils.setProperty(ServiceConfig.PERSON_V_3_URL, serviceGatewayUrl, EnvironmentUtils.Type.PUBLIC)
-        ApiApp.runApp(ApplicationConfig::class.java, args)
+        ApiApp.runApp(ApplicationConfig::class.java, args)*/
     }
 
     private fun loadVaultSecrets() {
-        val fssServiceUser = NaisUtils.getCredentials("srvmininnboks-fss")
+ /*       val fssServiceUser = NaisUtils.getCredentials("srvmininnboks-fss")
         EnvironmentUtils.setProperty(ApplicationConfig.FSS_SRVMININNBOKS_USERNAME, fssServiceUser.username, EnvironmentUtils.Type.PUBLIC)
         EnvironmentUtils.setProperty(ApplicationConfig.FSS_SRVMININNBOKS_PASSWORD, fssServiceUser.password, EnvironmentUtils.Type.SECRET)
         val serviceUser = NaisUtils.getCredentials("srvmininnboks")
         EnvironmentUtils.setProperty(ApplicationConfig.SRVMININNBOKS_USERNAME, serviceUser.username, EnvironmentUtils.Type.PUBLIC)
-        EnvironmentUtils.setProperty(ApplicationConfig.SRVMININNBOKS_PASSWORD, serviceUser.password, EnvironmentUtils.Type.SECRET)
+        EnvironmentUtils.setProperty(ApplicationConfig.SRVMININNBOKS_PASSWORD, serviceUser.password, EnvironmentUtils.Type.SECRET)*/
     }
 
     private fun loadApigwKeys() {

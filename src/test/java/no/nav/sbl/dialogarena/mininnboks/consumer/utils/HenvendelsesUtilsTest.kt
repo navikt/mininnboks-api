@@ -1,5 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils
 
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService
@@ -9,32 +12,22 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers
 import org.joda.time.DateTime
-import org.junit.After
 import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
 import java.util.*
 import java.util.stream.Collectors
 
 class HenvendelsesUtilsTest {
-    private val tekstService = Mockito.mock(TekstService::class.java)
+    val tekstService = mockk<TekstService>()
 
-    @Before
-    fun setup() {
-       // HenvendelsesUtils.setTekstService(tekstService)
-        Mockito.`when`(tekstService.hentTekst(ArgumentMatchers.anyString())).thenReturn("value")
-    }
-
-    @After
-    fun after() {
-       // HenvendelsesUtils.setTekstService(null)
-    }
 
     @Test
-    fun transformererDokumentHenvendelse() {
-        val dokument = mockDokumentHenvendelse()
+    fun `transformerer Dokument Henvendelse`() {
+        every {tekstService.hentTekst(ArgumentMatchers.anyString())}  returns "value"
+
+        val dokument = mockDokumentHenvendelse();
+
         val infoList = listOf(dokument)
         val henvendelserListe = infoList.stream()
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
@@ -50,7 +43,7 @@ class HenvendelsesUtilsTest {
     }
 
     @Test
-    fun transformererXMLHenvendelseSomSporsmalFraBruker() {
+    fun `transformerer XMLHenvendelse Som Sporsmal Fra Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1)
         val infoList = listOf(info)
         val henvendelserListe = infoList.stream()
@@ -68,7 +61,7 @@ class HenvendelsesUtilsTest {
     }
 
     @Test
-    fun transformererXMLHenvendelseSomSporsmalDirekteFraBruker() {
+    fun `transformerer XMLHenvendelse Som Sporsmal Direkte Fra Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE, ID_1, ID_1)
         val infoList = listOf(info)
         val henvendelserListe = infoList.stream()
@@ -86,7 +79,7 @@ class HenvendelsesUtilsTest {
     }
 
     @Test
-    fun transformererXMLHenvendelseFerdigstiltUtenSvar() {
+    fun `transformerer XMLHenvendelse Ferdigstilt Uten Svar`() {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1)
         info.isFerdigstiltUtenSvar = true
         val infoList = listOf(info)
@@ -98,7 +91,7 @@ class HenvendelsesUtilsTest {
     }
 
     @Test
-    fun transformererXMLHenvendelseSomSvarFraBruker() {
+    fun `transformerer XMLHenvendelse Som Svar Fra Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, ID_2, ID_2)
         val infoList = listOf(info)
         val henvendelserListe = infoList.stream()
@@ -117,7 +110,7 @@ class HenvendelsesUtilsTest {
     }
 
     @Test
-    fun transformererXMLHenvendelseSomSporsmalTilBruker() {
+    fun `transformerer XMLHenvendelse Som Sporsmal Til Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, ID_3, ID_3)
         val infoList = listOf(info)
         val henvendelserListe = infoList.stream()
@@ -140,7 +133,7 @@ class HenvendelsesUtilsTest {
     }
 
     @Test
-    fun transformererXMLHenvendelseSomSvarTilBruker() {
+    fun `transformerer XMLHenvendelse Som Svar Til Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SVAR_SKRIFTLIG, ID_4, ID_1)
         val infoList = listOf(info)
         val henvendelserListe = infoList.stream().map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }.collect(Collectors.toList())
@@ -156,7 +149,7 @@ class HenvendelsesUtilsTest {
     }
 
     @Test
-    fun transformererXMLHenvendelseSomReferatTilBruker() {
+    fun `transformerer XMLHenvendelse Som Referat Til Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5)
         val infoList = listOf(info)
         val henvendelserListe = infoList.stream().map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }.collect(Collectors.toList())
@@ -179,55 +172,53 @@ class HenvendelsesUtilsTest {
     }
 
     @Test
-    fun hvisInnholdetErBorteBlirHenvendelsenMerketSomKassert() {
+    fun `hvis Innholdet Er Borte Blir Henvendelsen Merket Som Kassert`() {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5)
         info.metadataListe = null
-        Mockito.`when`(tekstService.hentTekst("innhold.kassert")).thenReturn("Innholdet er kassert")
-        Mockito.`when`(tekstService.hentTekst("temagruppe.kassert")).thenReturn("Kassert")
+        every {tekstService.hentTekst("innhold.kassert") } returns ("Innholdet er kassert")
+        every {tekstService.hentTekst("temagruppe.kassert") }returns ("Kassert")
         val referat = HenvendelsesUtils.tilHenvendelse(info)
-        Assert.assertThat(referat?.fritekst, CoreMatchers.`is`("Innholdet er kassert"))
+        Assert.assertThat(referat?.fritekst, CoreMatchers.`is`("Innholdet i denne henvendelsen er kassert av NAV."))
         Assert.assertThat(referat?.statusTekst, CoreMatchers.`is`("Kassert"))
         Assert.assertThat(referat?.temagruppe, CoreMatchers.nullValue())
     }
 
     @Test
-    fun transformererXMLHenvendelseSomOppgaveVarsel() {
+    fun `transformerer XMLHenvendelse Som Oppgave Varsel`() {
         val info = mockXMLHenvendelseMedXMLOppgaveVarsel(XMLHenvendelseType.OPPGAVE_VARSEL, ID_5, ID_5)
-        Mockito.`when`(tekstService.hentTekst("oppgave.$OPPGAVE_TYPE")).thenReturn("Oppgave varsel")
-        Mockito.`when`(tekstService.hentTekst("oppgave.$OPPGAVE_TYPE.fritekst")).thenReturn("Oppgave")
         val henvendelse = HenvendelsesUtils.tilHenvendelse(info)
         Assert.assertThat(henvendelse.oppgaveType, CoreMatchers.`is`(OPPGAVE_TYPE))
         Assert.assertThat(henvendelse.oppgaveUrl, CoreMatchers.`is`(OPPGAVE_URL))
-        Assert.assertThat(henvendelse.statusTekst, CoreMatchers.`is`("Oppgave varsel"))
-        Assert.assertThat(henvendelse.fritekst, CoreMatchers.`is`("Oppgave"))
+        Assert.assertThat(henvendelse.statusTekst, CoreMatchers.`is`("Oppgave"))
+        Assert.assertThat(henvendelse.fritekst, CoreMatchers.`is`("Du har mottatt en oppgave."))
     }
 
     @Test
-    fun transformererXmlHenvendelseSomDelviseSvar() {
+    fun `transformerer XmlHenvendelse Som Delvise Svar`() {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1)
         val henvendelse = HenvendelsesUtils.tilHenvendelse(info)
         Assert.assertThat(henvendelse.type, CoreMatchers.`is`(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG))
     }
 
     @Test
-    fun returnererDefaultKeyHvisHentTekstKasterException() {
+    fun `returnerer DefaultKey Hvis Hent Tekst Kaster Exception` () {
         val key = "nokkel"
         val defaultKey = "defaultKey"
-        Mockito.`when`(tekstService.hentTekst(key)).thenThrow(NullPointerException::class.java)
-        Mockito.`when`(tekstService.hentTekst(defaultKey)).thenReturn(defaultKey)
+        every {(tekstService.hentTekst(key)) } throws NullPointerException()
+        every {(tekstService.hentTekst(defaultKey)) } returns(defaultKey)
         val tekst = HenvendelsesUtils.hentTekst(tekstService, key, defaultKey)
         Assert.assertThat(tekst, CoreMatchers.`is`(defaultKey))
     }
 
     @Test
-    fun proverIkkeAaHenteStatusTekstForDelviseSvar() {
+    fun `prover Ikke Aa Hente Status Tekst For DelviseSvar`() {
         val henvendelse = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1)
         HenvendelsesUtils.tilHenvendelse(henvendelse)
-        Mockito.verify(tekstService, Mockito.times(0)).hentTekst("status." + Henvendelsetype.DELVIS_SVAR_SKRIFTLIG.name)
+        verify(exactly = 0)  { tekstService.hentTekst("status." + Henvendelsetype.DELVIS_SVAR_SKRIFTLIG.name)}
     }
 
     @Test
-    fun vaskerHtmlIFritekstMenBevarerLineEndings() {
+    fun `vasker Html I Fritekst Men Bevarer Line Endings`() {
         val tekst = "<h1>Hei</h1> \n Hallo"
         val cleanTekst = HenvendelsesUtils.cleanOutHtml(tekst)
         Assert.assertThat(cleanTekst, CoreMatchers.`is`("Hei \n Hallo"))

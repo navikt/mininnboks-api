@@ -1,37 +1,49 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding
 
-import no.nav.brukerdialog.security.context.SubjectRule
-import no.nav.brukerdialog.security.domain.IdentType
-import no.nav.common.auth.SsoToken
-import no.nav.common.auth.Subject
+import com.auth0.jwt.JWT
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
+import io.ktor.routing.routing
+import io.mockk.mockk
+import io.mockk.verify
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
-import org.junit.Ignore
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.runners.MockitoJUnitRunner
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import java.util.*
-@Ignore
-@RunWith(MockitoJUnitRunner::class)
-class SporsmalControllerTest {
-    @Mock
-    var henvendelseService: HenvendelseService? = null
+import com.auth0.jwt.algorithms.Algorithm
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.auth.Authentication.Feature.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.jackson.*
+import io.ktor.server.testing.*
+import io.mockk.every
+import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
+import no.nav.sbl.dialogarena.mininnboks.mininboks
 
-    @InjectMocks
-    var controller: SporsmalController? = null
 
-    @Rule
-    var subjectRule = SubjectRule(Subject("fnr", IdentType.EksternBruker, SsoToken.oidcToken("token", emptyMap<String, Any>())))
+class SporsmalControllerTest: Spek({
 
-    @Test
-    @Throws(Exception::class)
-    fun kallerHenvendelseServiceMedSubjectID() {
-        Mockito.`when`(henvendelseService!!.hentAlleHenvendelser(ArgumentMatchers.anyString())).thenReturn(ArrayList())
-        controller!!.ubehandledeMeldinger()
-        Mockito.verify(henvendelseService, Mockito.times(1))?.hentAlleHenvendelser(ArgumentMatchers.anyString())
+    describe("kaller Henvendelse Service Med SubjectID"){
+        withTestApplication({mininboks(true)}) {
+            val henvendelseService = mockk<HenvendelseService>()
+            application.routing { sporsmalController(henvendelseService, false) }
+            every { (henvendelseService.hentAlleHenvendelser(any())) } returns listOf(Henvendelse("223"))
+
+            it("retunerer Exception") {
+
+                with(handleRequest(HttpMethod.Get, "/sporsmal/ubehandlet") {
+                    addHeader(HttpHeaders.ContentType, ContentType.Application.Json.contentType)
+
+                }) {
+                    verify(exactly=1) {henvendelseService.hentAlleHenvendelser(any())}
+
+                }
+        }
+
+        }
     }
-}
+})

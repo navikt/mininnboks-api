@@ -4,6 +4,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import java.util.*
 import java.util.function.Supplier
 import java.util.stream.Collectors
+import kotlin.Comparator
 
 object UbehandletMeldingUtils {
     var supplier = Supplier<Set<Henvendelse>> { TreeSet(Comparator.comparing { h: Henvendelse -> h.traadId!! }) }

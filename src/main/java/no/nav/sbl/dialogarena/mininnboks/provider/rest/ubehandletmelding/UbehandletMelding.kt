@@ -11,13 +11,13 @@ class UbehandletMelding(henvendelse: Henvendelse) {
         ULEST, UBESVART
     }
 
-    var behandlingskjedeId: String
-    var opprettetDato: Date
-    var type: Henvendelsetype
-    var undertype: String
-    var uri: String
+    var behandlingskjedeId: String? = null
+    var opprettetDato: Date? = null
+    var type: Henvendelsetype? = null
+    var undertype: String? = null
+    var uri: String? = null
     var statuser: MutableList<Status> = ArrayList()
-    var varselid: String
+    var varselid: String? = null
 
     companion object {
         @JvmField
@@ -29,12 +29,12 @@ class UbehandletMelding(henvendelse: Henvendelse) {
     }
 
     init {
-        behandlingskjedeId = henvendelse?.traadId!!
-        opprettetDato = henvendelse?.opprettet!!
-        type = henvendelse?.type!!
-        undertype = henvendelse?.oppgaveType!!
+        behandlingskjedeId = henvendelse.traadId
+        opprettetDato = henvendelse.opprettet
+        type = henvendelse.type
+        undertype = henvendelse?.oppgaveType
         uri = lagDirektelenkeTilMelding(henvendelse)
-        varselid = henvendelse?.korrelasjonsId!!
+        varselid = henvendelse?.korrelasjonsId
         if (erUbesvart.test(henvendelse)) {
             statuser.add(Status.UBESVART)
         }
