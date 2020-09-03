@@ -77,6 +77,7 @@ public class ApplicationConfig implements ApiApplication {
                     ThreadPool threadPool = jetty.server.getThreadPool();
                     if (threadPool instanceof ThreadPool.SizedThreadPool) {
                         ((ThreadPool.SizedThreadPool) threadPool).setMaxThreads(400);
+                        log.info("Jetty Threadpool, setting max to 400");
                     } else {
                         log.warn(String.format(
                                 "Jetty Threadpool[%s] is not sized",
