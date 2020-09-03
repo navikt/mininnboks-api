@@ -1,16 +1,19 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
+import lombok.extern.slf4j.Slf4j;
 import no.nav.apiapp.ApiApplication;
 import no.nav.apiapp.config.ApiAppConfigurator;
 import no.nav.apiapp.config.StsConfig;
 import no.nav.brukerdialog.security.domain.IdentType;
 import no.nav.common.oidc.auth.OidcAuthenticatorConfig;
+import no.nav.sbl.dialogarena.common.jetty.Jetty;
 import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig;
 import no.nav.sbl.dialogarena.mininnboks.provider.LinkService;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.ResourcesController;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang.TilgangController;
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.SporsmalController;
+import org.eclipse.jetty.util.thread.ThreadPool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -28,6 +31,7 @@ import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
         HenvendelseController.class,
         TilgangController.class
 })
+@Slf4j
 public class ApplicationConfig implements ApiApplication {
 
     public static final String SECURITYTOKENSERVICE_URL_PROPERTY = "SECURITYTOKENSERVICE_URL";
@@ -69,6 +73,18 @@ public class ApplicationConfig implements ApiApplication {
                         .build()
                 )
                 .addOidcAuthenticator(azureADB2CConfig)
+                .customizeJetty((Jetty jetty) -> {
+                    ThreadPool threadPool = jetty.server.getThreadPool();
+                    if (threadPool instanceof ThreadPool.SizedThreadPool) {
+                        ((ThreadPool.SizedThreadPool) threadPool).setMaxThreads(400);
+                        log.info("Jetty Threadpool, setting max to 400");
+                    } else {
+                        log.warn(String.format(
+                                "Jetty Threadpool[%s] is not sized",
+                                threadPool.getClass().getSimpleName()
+                        ));
+                    }
+                })
                 .objectMapper(JacksonConfig.mapper);
     }
 
