@@ -1,7 +1,3 @@
-import no.nav.common.nais.utils.NaisUtils
-import no.nav.sbl.dialogarena.mininnboks.ServiceConfig
-import no.nav.sbl.util.EnvironmentUtils
-
 object Main1 {
     private const val DEFAULT_SECRETS_BASE_PATH = "/var/run/secrets/nais.io"
 
@@ -27,12 +23,13 @@ object Main1 {
     }
 
     private fun loadApigwKeys() {
-        EnvironmentUtils.setProperty(ServiceConfig.PDL_API_APIKEY, getApigwKey("pdl-api"), EnvironmentUtils.Type.SECRET)
-        EnvironmentUtils.setProperty(ServiceConfig.STS_APIKEY, getApigwKey("security-token-service-token"), EnvironmentUtils.Type.SECRET)
+       // EnvironmentUtils.setProperty(ServiceConfig.PDL_API_APIKEY, getApigwKey("pdl-api"), EnvironmentUtils.Type.SECRET)
+       // EnvironmentUtils.setProperty(ServiceConfig.STS_APIKEY, getApigwKey("security-token-service-token"), EnvironmentUtils.Type.SECRET)
     }
 
     private fun getApigwKey(producerApp: String): String {
-        val location = String.format("%s/apigw/%s/x-nav-apiKey", DEFAULT_SECRETS_BASE_PATH, producerApp)
-        return NaisUtils.getFileContent(location)
+       // val location = String.format("%s/apigw/%s/x-nav-apiKey", DEFAULT_SECRETS_BASE_PATH, producerApp)
+       // return NaisUtils.getFileContent(location)
+        return ""
     }
 }

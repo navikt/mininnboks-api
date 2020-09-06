@@ -1,11 +1,13 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.tilgang
 
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import java.lang.IllegalStateException
 import java.util.*
 
 internal data class MockContext(
@@ -18,60 +20,60 @@ class TilgangServiceTest {
     @Test
     fun `gir FEILET om hentEnhet feiler`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentGeografiskTilknytning()).thenThrow(IllegalStateException::class.java)
+        every {personService.hentGeografiskTilknytning() } throws IllegalStateException()
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.FEILET)
         assertThat(result.melding).contains("brukers GT")
-        verify(pdlService, never()).harKode6(any())
-        verify(pdlService, never()).harStrengtFortroligAdresse(any())
+        verify(exactly = 0) {pdlService.harKode6(any())}
+        verify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
     }
 
     @Test
     fun `gir INGEN_ENHET om bruker ikke har enhet`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.empty())
+        every {personService.hentGeografiskTilknytning() } returns Optional.empty()
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
-        verify(pdlService, never()).harKode6(any())
-        verify(pdlService, never()).harStrengtFortroligAdresse(any())
+        verify(exactly = 0) {pdlService.harKode6(any())}
+        verify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
     }
 
     @Test
     fun `gir INGEN_ENHET om bruker ikke har GT`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.empty())
+        every {personService.hentGeografiskTilknytning() } returns (Optional.empty())
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
-        verify(pdlService, never()).harKode6(any())
-        verify(pdlService, never()).harStrengtFortroligAdresse(any())
+        verify(exactly = 0) {pdlService.harKode6(any())}
+        verify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
     }
 
     @Test
     fun `gir INGEN_ENHET om bruker har GT utland`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.of("SWE"))
+        every {personService.hentGeografiskTilknytning() } returns (Optional.of("SWE"))
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
-        verify(pdlService, never()).harKode6(any())
-        verify(pdlService, never()).harStrengtFortroligAdresse(any())
+        verify(exactly = 0) {pdlService.harKode6(any())}
+        verify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
     }
 
     @Test
     fun `gir FEILET om pdl-api kall feiler`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.of("0123"))
-        whenever(pdlService.harKode6(any())).thenThrow(IllegalStateException::class.java)
+        every {personService.hentGeografiskTilknytning() } .returns (Optional.of("0123"))
+        every {pdlService.harKode6(any())} throws IllegalStateException()
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
@@ -83,8 +85,8 @@ class TilgangServiceTest {
     @Test
     fun `gir KODE6 om bruker har kode6`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.of("0123"))
-        whenever(pdlService.harKode6(any())).thenReturn(true)
+        every { personService.hentGeografiskTilknytning()}  returns (Optional.of("0123"))
+        every { pdlService.harKode6(any()) } returns  true
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
@@ -95,17 +97,16 @@ class TilgangServiceTest {
     @Test
     fun `gir OK om bruker har har enhet og ikke kode6`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        whenever(personService.hentGeografiskTilknytning()).thenReturn(Optional.of("0123"))
-        whenever(pdlService.harKode6(any())).thenReturn(false)
+        every {personService.hentGeografiskTilknytning() } returns (Optional.of("0123"))
+        every {pdlService.harKode6(any()) } returns false
 
         val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.OK)
     }
-
     private fun gittContext(): MockContext {
-        val pdlService = mock<PdlService>()
-        val personService = mock<PersonService>()
+        val pdlService = mockk<PdlService>()
+        val personService = mockk<PersonService>()
         val tilgangService = TilgangServiceImpl(pdlService, personService)
         return MockContext(pdlService, personService, tilgangService)
     }

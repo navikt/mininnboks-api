@@ -1,20 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.config;
 
-import no.nav.apiapp.ApiApplication;
-import no.nav.apiapp.config.ApiAppConfigurator;
-import no.nav.apiapp.config.StsConfig;
-import no.nav.brukerdialog.security.domain.IdentType;
-import no.nav.common.oidc.auth.OidcAuthenticatorConfig;
-import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig;
-import no.nav.sbl.dialogarena.mininnboks.provider.LinkService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+public class ApplicationConfig  {
 
-import static no.nav.common.oidc.Constants.AZURE_AD_B2C_ID_TOKEN_COOKIE_NAME;
-import static no.nav.sbl.util.EnvironmentUtils.getRequiredProperty;
-
-public class ApplicationConfig implements ApiApplication {
-
+    /*
     public static final String SECURITYTOKENSERVICE_URL_PROPERTY = "SECURITYTOKENSERVICE_URL";
     public static final String FSS_SRVMININNBOKS_USERNAME = "FSS_SRVMININNBOKS_USERNAME";
     public static final String FSS_SRVMININNBOKS_PASSWORD = "FSS_SRVMININNBOKS_PASSWORD";
@@ -56,5 +44,5 @@ public class ApplicationConfig implements ApiApplication {
                 .addOidcAuthenticator(azureADB2CConfig)
                 .objectMapper(JacksonConfig.mapper);
     }
-
+*/
 }

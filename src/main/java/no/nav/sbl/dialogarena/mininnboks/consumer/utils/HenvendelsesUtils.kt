@@ -6,7 +6,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.TekstServiceImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
-import org.apache.commons.lang3.StringEscapeUtils
+import org.apache.commons.lang.StringEscapeUtils
 import org.joda.time.DateTime
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
@@ -147,7 +147,7 @@ object HenvendelsesUtils {
 
     fun cleanOutHtml(text: String): String {
         val clean = Jsoup.clean(text.replace(LINE_BREAK.toRegex(), LINE_REPLACEMENT_STRING), Whitelist.none())
-        return StringEscapeUtils.unescapeHtml4(clean).replace(LINE_REPLACEMENT_STRING.toRegex(), LINE_BREAK)
+        return StringEscapeUtils.unescapeHtml(clean).replace(LINE_REPLACEMENT_STRING.toRegex(), LINE_BREAK)
     }
 
     fun fjernHardeMellomrom(tekst: String?): String {

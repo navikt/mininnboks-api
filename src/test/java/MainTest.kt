@@ -2,8 +2,8 @@
 object MainTest {
     private const val APPLICATION_NAME = "mininnboks-api"
 
-    @JvmStatic
-    fun main(args: Array<String>) {
+   // @JvmStatic
+   // fun main(args: Array<String>) {
         /*SystemProperties.setFrom(".vault.properties")
         NaisYamlUtils.loadFromYaml(NaisYamlUtils.getTemplatedConfig(".nais/qa-template.yaml", object : HashMap<String?, String?>() {
             init {
@@ -19,5 +19,5 @@ object MainTest {
         EnvironmentUtils.setProperty(ServiceConfig.SEND_INN_HENVENDELSE_WS_URL, serviceGatewayUrl, EnvironmentUtils.Type.PUBLIC)
         ApiAppTest.setupTestContext(ApiAppTest.Config.builder().applicationName(APPLICATION_NAME).build())
         ApiApp.runApp(ApplicationConfig::class.java, arrayOf("8455"))*/
-    }
+    //}
 }

@@ -1,49 +1,49 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding
 
-import com.auth0.jwt.JWT
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.jackson.JacksonConverter
 import io.ktor.routing.routing
+import io.ktor.server.testing.TestApplicationEngine
+import io.ktor.server.testing.createTestEnvironment
+import io.ktor.server.testing.handleRequest
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import junit.framework.Assert.assertEquals
+import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
-import org.mockito.ArgumentMatchers
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import java.util.*
-import com.auth0.jwt.algorithms.Algorithm
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.auth.Authentication.Feature.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.jackson.*
-import io.ktor.server.testing.*
-import io.mockk.every
-import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
-import no.nav.sbl.dialogarena.mininnboks.mininboks
 
 
-class SporsmalControllerTest: Spek({
+class SporsmalControllerTest : Spek({
 
-    describe("kaller Henvendelse Service Med SubjectID"){
-        withTestApplication({mininboks(true)}) {
-            val henvendelseService = mockk<HenvendelseService>()
-            application.routing { sporsmalController(henvendelseService, false) }
-            every { (henvendelseService.hentAlleHenvendelser(any())) } returns listOf(Henvendelse("223"))
+    describe("kaller Henvendelse Service Med SubjectID") {
+        val engine = TestApplicationEngine(createTestEnvironment() )
+        engine.start(wait = false) // for now we can't eliminate it
+        val henvendelseService = mockk<HenvendelseService>()
+        engine.application.routing { sporsmalController(henvendelseService, false) }
+        engine.application. install(ContentNegotiation) {
+            register(ContentType.Application.Json, JacksonConverter(objectMapper))
+        }
+
+        with(engine) {
+            every { (henvendelseService.hentAlleHenvendelser(any())) } returns emptyList<Henvendelse>()
 
             it("retunerer Exception") {
 
-                with(handleRequest(HttpMethod.Get, "/sporsmal/ubehandlet") {
-                    addHeader(HttpHeaders.ContentType, ContentType.Application.Json.contentType)
+                handleRequest(HttpMethod.Get, "/sporsmal/ubehandlet") {
 
-                }) {
-                    verify(exactly=1) {henvendelseService.hentAlleHenvendelser(any())}
-
+                }.apply {
+                    assertEquals(HttpStatusCode.OK, response.status())
+                    verify(exactly = 1) { henvendelseService.hentAlleHenvendelser(any()) }
                 }
-        }
-
+            }
         }
     }
 })

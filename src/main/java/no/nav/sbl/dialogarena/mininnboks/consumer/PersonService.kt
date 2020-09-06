@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
-import no.nav.common.auth.SubjectHandler
+import no.nav.common.auth.subject.SubjectHandler
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentGeografiskTilknytningPersonIkkeFunnet
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentGeografiskTilknytningSikkerhetsbegrensing
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3

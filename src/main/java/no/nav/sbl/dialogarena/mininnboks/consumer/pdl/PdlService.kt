@@ -1,43 +1,45 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import no.nav.common.auth.SsoToken
-import no.nav.common.auth.SubjectHandler
-import no.nav.log.MDCConstants
+import no.nav.common.auth.subject.SsoToken
+import no.nav.common.auth.subject.SubjectHandler
+import no.nav.common.log.MDCConstants
+import no.nav.common.rest.client.RestUtils.parseJsonResponseOrThrow
+import no.nav.sbl.dialogarena.mininnboks.Configuration
 import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
-import no.nav.sbl.dialogarena.types.Pingable
-import no.nav.sbl.util.EnvironmentUtils.getRequiredProperty
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.util.*
-import no.nav.sbl.dialogarena.mininnboks.Configuration
-import javax.ws.rs.client.Client
+import no.nav.common.health.HealthCheck;
+import no.nav.common.health.HealthCheckResult
+import no.nav.common.rest.client.RestUtils.toJsonRequestBody
+import okhttp3.*
 import javax.ws.rs.client.Entity
 
-interface PdlService {
+/*interface PdlService {
     fun harKode6(fnr: String): Boolean
     fun harKode7(fnr: String): Boolean
     fun harStrengtFortroligAdresse(fnr: String): Boolean
     fun harFortroligAdresse(fnr: String): Boolean
     fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering?
     fun getHelsesjekk(): Pingable
-}
+}*/
 
 class PdlException(cause: Exception) : RuntimeException("Kunne ikke utlede adressebeskyttelse", cause)
 
-class PdlServiceImpl(private val pdlClient: Client,
-                     private val stsService: SystemuserTokenProvider,
-                     private val configuration:  Configuration) : PdlService {
+open class PdlService(private val pdlClient: OkHttpClient,
+                      private val stsService: SystemuserTokenProvider,
+                      private val configuration: Configuration) : HealthCheck {
     private val log = LoggerFactory.getLogger(PdlService::class.java)
     private val adressebeskyttelseQuery: String = lastQueryFraFil("hentAdressebeskyttelse")
 
-    override fun harStrengtFortroligAdresse(fnr: String) = harKode6(fnr)
-    override fun harFortroligAdresse(fnr: String) = harKode7(fnr)
-    override fun harKode6(fnr: String): Boolean = harGradering(fnr, PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG)
-    override fun harKode7(fnr: String): Boolean = harGradering(fnr, PdlAdressebeskyttelseGradering.FORTROLIG)
+    fun harStrengtFortroligAdresse(fnr: String) = harKode6(fnr)
+    fun harFortroligAdresse(fnr: String) = harKode7(fnr)
+    fun harKode6(fnr: String): Boolean = harGradering(fnr, PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG)
+    fun harKode7(fnr: String): Boolean = harGradering(fnr, PdlAdressebeskyttelseGradering.FORTROLIG)
 
-    override fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
+    fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
         return try {
             val response: PdlResponse = graphqlRequest(PdlRequest(adressebeskyttelseQuery, Variables(fnr)))
             response
@@ -52,32 +54,32 @@ class PdlServiceImpl(private val pdlClient: Client,
         }
     }
 
-    override fun getHelsesjekk(): Pingable {
-        val metadata = Pingable.Ping.PingMetadata(
-                "pdl",
-                getRequiredProperty(configuration.PDL_API_URL),
-                "Henter adressebeskyttelse",
-                false
-        )
+    /* fun getHelsesjekk(): Pingable {
+         val metadata = Pingable.Ping.PingMetadata(
+                 "pdl",
+                 configuration.PDL_API_URL,
+                 "Henter adressebeskyttelse",
+                 false
+         )
 
-        return Pingable {
-            try {
-                val response = pdlClient.target(getRequiredProperty(configuration.PDL_API_URL))
-                        .path("/graphql")
-                        .request()
-                        .options()
+         return Pingable {
+             try {
+                 val response = pdlClient.target(configuration.PDL_API_URL)
+                         .path("/graphql")
+                         .request()
+                         .options()
 
-                if (response.status == 200) {
-                    Pingable.Ping.lyktes(metadata)
-                } else {
-                    Pingable.Ping.feilet(metadata, "Statuskode: ${response.status}")
-                }
-            } catch (e: Exception) {
-                Pingable.Ping.feilet(metadata, e)
-            }
-        }
-    }
-
+                 if (response.status == 200) {
+                     Pingable.Ping.lyktes(metadata)
+                 } else {
+                     Pingable.Ping.feilet(metadata, "Statuskode: ${response.status}")
+                 }
+             } catch (e: Exception) {
+                 Pingable.Ping.feilet(metadata, e)
+             }
+         }
+     }
+ */
     private fun harGradering(fnr: String, gradering: PdlAdressebeskyttelseGradering): Boolean {
         val pdlGradering = hentAdresseBeskyttelse(fnr)
         return gradering == pdlGradering
@@ -94,7 +96,8 @@ class PdlServiceImpl(private val pdlClient: Client,
 
             log.info("Token extraction, found in ${ssotoken.isPresent} ${oidctoken.isPresent}")
 
-            val consumerOidcToken: String = stsService.getSystemUserAccessToken() ?: throw IllegalStateException("Kunne ikke hente ut systemusertoken")
+            val consumerOidcToken: String = stsService.getSystemUserAccessToken()
+                    ?: throw IllegalStateException("Kunne ikke hente ut systemusertoken")
 
             log.info("""
                     PDL-request: $uuid
@@ -105,33 +108,36 @@ class PdlServiceImpl(private val pdlClient: Client,
                     ------------------------------------------------------------------------------------
                 """.trimIndent())
 
-            val response = pdlClient.target(getRequiredProperty(configuration.PDL_API_URL))
-                    .path("/graphql")
-                    .request()
-                    .header("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))
-                    .header("Nav-Consumer-Id", "mininnboks-api")
-                    .header("Authorization", "Bearer $veilederOidcToken")
-                    .header("Nav-Consumer-Token", "Bearer $consumerOidcToken")
-                    .header("Tema", "GEN")
-                    .post(Entity.json(request))
+            val request: Request = Request.Builder()
+                    .url(configuration.PDL_API_URL + "/graphql")
+                    .addHeader("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))
+                    .addHeader("Nav-Consumer-Id", "mininnboks-api")
+                    .addHeader("Authorization", "Bearer $veilederOidcToken")
+                    .addHeader("Nav-Consumer-Token", "Bearer $consumerOidcToken")
+                    .addHeader("Tema", "GEN")
+                    .post(toJsonRequestBody(request))
+                    .build()
 
-            val body = response.readEntity(String::class.java)
+
+            val response: Response = pdlClient.newCall(request).execute()
+            val body = response.body()?.string()
+            //val body = response.readEntity(String::class.java)
             log.info("""
                 PDL-response: $uuid
                 ------------------------------------------------------------------------------------
-                    status: ${response.status} ${response.statusInfo}
+                    status: ${response.code()} ${response.message()}
                 ------------------------------------------------------------------------------------
             """.trimIndent())
 
-            val pdlResponse = JacksonConfig.mapper.readValue<PdlResponse>(body)
+            val pdlResponse = body?.let { JacksonConfig.mapper.readValue<PdlResponse>(it) }
 
-            if (pdlResponse.errors?.isNotEmpty() == true) {
+            if (pdlResponse?.errors?.isNotEmpty() == true) {
                 val errorMessages = pdlResponse.errors.map { it.message }.joinToString(", ")
                 log.info(
-                """
+                        """
                     PDL-response: $uuid
                     ------------------------------------------------------------------------------------
-                        status: ${response.status} ${response.statusInfo}
+                        status: ${response.code()} ${response.message()}
                         errors: $errorMessages
                     ------------------------------------------------------------------------------------
                 """.trimIndent()
@@ -139,7 +145,7 @@ class PdlServiceImpl(private val pdlClient: Client,
                 throw Exception(errorMessages)
             }
 
-            return pdlResponse
+            return pdlResponse!!
         } catch (exception: Exception) {
             log.error("Feilet ved oppslag mot PDL (ID: $uuid)", exception)
             log.error("""
@@ -152,6 +158,10 @@ class PdlServiceImpl(private val pdlClient: Client,
 
             throw exception
         }
+    }
+
+    override fun checkHealth(): HealthCheckResult {
+        TODO("Not yet implemented")
     }
 }
 

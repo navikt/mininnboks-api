@@ -9,7 +9,6 @@ import io.ktor.request.ApplicationRequest
 import io.ktor.response.respond
 import org.slf4j.LoggerFactory
 
-val log = LoggerFactory.getLogger("rate-limiter.Application")
 
 fun StatusPages.Configuration.exceptionHandler() {
     exception<Throwable> { cause ->

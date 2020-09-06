@@ -8,6 +8,10 @@ ADD / /source
 WORKDIR /source
 RUN mvn package -DskipTests
 
+COPY init.sh /init-scripts/init.sh
+RUN chmod +x /init-scripts/init.sh
+CMD ./init-scripts/init.sh
+
 FROM navikt/java:8-appdynamics
 ENV JAVA_OPTS="${JAVA_OPTS} -XX:MaxRAMPercentage=65.0"
 #ENV JAVA_OPTS="${JAVA_OPTS} -Xdebug -Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=n"

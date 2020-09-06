@@ -1,18 +1,14 @@
 package no.nav.sbl.dialogarena.mininnboks.config.utils
 
 import lombok.Builder
-import no.nav.apiapp.selftest.Helsesjekk
-import no.nav.apiapp.selftest.HelsesjekkMetadata
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe
-import no.nav.sbl.dialogarena.common.cxf.CXFClient
-import no.nav.sbl.util.fn.UnsafeConsumer
 
-typealias Consumer<T> = (T) -> Unit
 
 object PortTypeUtils {
+    /*
     fun <T> createPortType(address: String, wsdlUrl: String, serviceClass: Class<T>, ping: Consumer<T>): PortType<T> {
         val portType = clientBuilder(address, serviceClass, wsdlUrl).configureStsForOnBehalfOfWithJWT().build()
         val pingPort = clientBuilder(address, serviceClass, wsdlUrl).configureStsForSystemUser().build()
@@ -50,5 +46,5 @@ object PortTypeUtils {
     class PortType<T> {
         var port: T? = null
         var helsesjekk: Helsesjekk? = null
-    }
+    }*/
 }

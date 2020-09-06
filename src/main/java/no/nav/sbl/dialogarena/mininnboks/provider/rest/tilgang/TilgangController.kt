@@ -5,10 +5,9 @@ import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.routing.route
-import no.nav.common.auth.SubjectHandler
+import no.nav.common.auth.subject.SubjectHandler
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
-import javax.inject.Inject
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.Produces

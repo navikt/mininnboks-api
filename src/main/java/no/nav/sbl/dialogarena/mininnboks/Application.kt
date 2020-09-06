@@ -1,36 +1,38 @@
 package no.nav.sbl.dialogarena.mininnboks
 
-import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.auth.jwt.jwt
-import io.ktor.features.CORS
-import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.StatusPages
-import io.ktor.http.ContentType
-import io.ktor.http.HttpMethod
-import io.ktor.jackson.*
-import io.ktor.locations.Locations
-import io.ktor.request.path
-import io.ktor.routing.routing
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.ResourcesController
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang.TilgangController
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.sporsmalController
-import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
+
 import org.slf4j.LoggerFactory
-import org.slf4j.event.Level
 
-import no.nav.sbl.dialogarena.mininnboks.JwtUtil.Companion as JwtUtil
+val log = LoggerFactory.getLogger("mininnboks.Application")
+data class ApplicationState(var running: Boolean = true, var initialized: Boolean = false)
 
+fun main() {
+    val configuration = Configuration()
+    val applicationState = ApplicationState()
 
+    val applicationServer = createHttpServer(
+            applicationState = applicationState,
+            configuration = configuration,
+            useAuthentication = true
+    )
+
+    Runtime.getRuntime().addShutdownHook(Thread {
+        log.info("Shutdown hook called, shutting down gracefully")
+        applicationState.initialized = false
+        applicationServer.stop(5000, 5000)
+    })
+
+    applicationServer.start(wait = true)
+}
+
+/*
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
-fun Application.mininboks(testing: Boolean = false) {
+fun Application.mininnboks(testing: Boolean = false) {
 
-    val log = LoggerFactory.getLogger("rate-limiter.Application")
+   // val log = LoggerFactory.getLogger("mininnboks.Application")
 
     val configuration = Configuration()
 
@@ -65,11 +67,11 @@ fun Application.mininboks(testing: Boolean = false) {
 
     install(CallLogging) {
         level = Level.INFO
-        filter { call -> call.request.path().contains("/api/") }
+        filter { call -> call.request.path().contains("/") }
     }
 
 
-    var serviceConfig = ServiceConfig(configuration)
+    val serviceConfig = ServiceConfig(configuration)
     val henvendelseService = serviceConfig.henvendelseService(serviceConfig.personService())
 
     val tilgangService = serviceConfig.tilgangService(serviceConfig.pdlService(serviceConfig.systemUserTokenProvider()),
@@ -86,3 +88,4 @@ fun Application.mininboks(testing: Boolean = false) {
 
     }
 }
+*/

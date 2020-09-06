@@ -178,7 +178,7 @@ class HenvendelsesUtilsTest {
         every {tekstService.hentTekst("innhold.kassert") } returns ("Innholdet er kassert")
         every {tekstService.hentTekst("temagruppe.kassert") }returns ("Kassert")
         val referat = HenvendelsesUtils.tilHenvendelse(info)
-        Assert.assertThat(referat?.fritekst, CoreMatchers.`is`("Innholdet i denne henvendelsen er kassert av NAV."))
+        Assert.assertThat(referat?.fritekst, CoreMatchers.`is`("Innholdet  i  denne  henvendelsen  er  kassert  av  NAV."))
         Assert.assertThat(referat?.statusTekst, CoreMatchers.`is`("Kassert"))
         Assert.assertThat(referat?.temagruppe, CoreMatchers.nullValue())
     }
@@ -190,7 +190,7 @@ class HenvendelsesUtilsTest {
         Assert.assertThat(henvendelse.oppgaveType, CoreMatchers.`is`(OPPGAVE_TYPE))
         Assert.assertThat(henvendelse.oppgaveUrl, CoreMatchers.`is`(OPPGAVE_URL))
         Assert.assertThat(henvendelse.statusTekst, CoreMatchers.`is`("Oppgave"))
-        Assert.assertThat(henvendelse.fritekst, CoreMatchers.`is`("Du har mottatt en oppgave."))
+        Assert.assertThat(henvendelse.fritekst, CoreMatchers.`is`("Du  har  mottatt  en  oppgave."))
     }
 
     @Test

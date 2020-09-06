@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
 import lombok.SneakyThrows
-import org.apache.commons.io.FileUtils
+import org.apache.cxf.helpers.FileUtils
 import java.io.File
 import java.net.URL
 import java.util.*
@@ -21,7 +21,7 @@ class TekstServiceImpl : TekstService {
         if (file.isDirectory) {
             Arrays.stream(file.listFiles()).forEach { file: File -> this.lastTekster(file) }
         } else {
-            tekster[finnKey(file)] = FileUtils.readFileToString(file, "UTF-8").trim { it <= ' ' }
+            tekster[finnKey(file)] = FileUtils.getStringFromFile(file).trim { it <= ' ' }
         }
     }
 

@@ -1,7 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.config
 
+import no.nav.common.utils.EnvironmentUtils
 import no.nav.sbl.dialogarena.mininnboks.provider.LinkService
-import no.nav.sbl.util.EnvironmentUtils
 
 object LinkMock {
     @JvmStatic

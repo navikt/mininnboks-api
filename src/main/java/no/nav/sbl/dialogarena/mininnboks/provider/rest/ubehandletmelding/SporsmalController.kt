@@ -45,7 +45,7 @@ fun Route.sporsmalController(henvendelseService: HenvendelseService, useAuthenti
     }
 }
 
-private fun ApplicationCall.getIdentifikator(): String? {
+fun ApplicationCall.getIdentifikator(): String? {
     return this.principal<JWTPrincipal>()
             ?.payload
             ?.subject

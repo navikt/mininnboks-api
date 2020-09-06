@@ -1,14 +1,14 @@
 package no.nav.sbl.dialogarena.mininnboks
 
-import no.nav.brukerdialog.security.domain.IdentType
-import no.nav.common.auth.SsoToken
-import no.nav.common.auth.Subject
+import no.nav.common.auth.subject.IdentType
+import no.nav.common.auth.subject.SsoToken
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
+import no.nav.common.auth.subject.Subject
 
 object TestUtils {
     val MOCK_SUBJECT = Subject("uid", IdentType.EksternBruker, SsoToken.oidcToken("token", HashMap<String, Any?>()))

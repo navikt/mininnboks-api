@@ -1,9 +1,9 @@
 package no.nav.sbl.dialogarena.mininnboks.provider
 
 import lombok.extern.slf4j.Slf4j
+import no.nav.common.utils.EnvironmentUtils
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
-import no.nav.sbl.util.EnvironmentUtils
 
 @Slf4j
 object LinkService {

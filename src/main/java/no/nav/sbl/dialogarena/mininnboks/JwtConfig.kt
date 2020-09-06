@@ -14,6 +14,7 @@ import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+
 private val logger = LoggerFactory.getLogger("mininnboks-api.JwtConfig")
 
 class JwtUtil {

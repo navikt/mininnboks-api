@@ -2,36 +2,88 @@ package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.http.ContentType
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.jackson.JacksonConverter
+import io.ktor.routing.routing
+import io.ktor.server.testing.TestApplicationEngine
+import io.ktor.server.testing.createTestEnvironment
+import io.ktor.server.testing.handleRequest
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
+import io.mockk.verify
+import junit.framework.Assert
+import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
+import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.sporsmalController
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse
 import org.apache.commons.lang3.StringUtils
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
+import org.hamcrest.Matchers.stringContainsInOrder
 import org.hamcrest.core.Is
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import java.util.*
 import java.util.stream.Collectors
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
-import javax.xml.ws.soap.SOAPFaultException
 
 class HenvendelseControllerTest : Spek({
 
-val service = mockk<HenvendelseService>()
+    describe("Henvendelse tester") {
+
+        val service = mockk<HenvendelseService>()
+        val tilgangService  = mockk<TilgangService>()
+
+        beforeEachTest {
+
+            setUp(service, tilgangService)
+        }
+
+        val engine = TestApplicationEngine(createTestEnvironment())
+        engine.start(wait = false) // for now we can't eliminate it
+
+        engine.application.routing { HenvendelseController(service, tilgangService, false) }
+        engine.application.install(ContentNegotiation) {
+            register(ContentType.Application.Json, JacksonConverter(ObjectMapperProvider.objectMapper))
+        }
+        with(engine) {
+          //  every { (henvendelseService.hentAlleHenvendelser(any())) } returns emptyList<Henvendelse>()
+
+            it( "filtrerer Bort Uavsluttede Delsvar") {
+                val lstHenvendelserBehandlingskjedeMedDelsvar = listOf(
+                        Henvendelse("123").withType(Henvendelsetype.SPORSMAL_SKRIFTLIG).withTraadId("1").withOpprettetTid(TestUtils.now()),
+                        Henvendelse("234").withType(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG).withTraadId("1").withOpprettetTid(TestUtils.now())
+                )
+                every {service.hentAlleHenvendelser(any()) } returns lstHenvendelserBehandlingskjedeMedDelsvar
+                handleRequest(HttpMethod.Get, "/traader") {
+                }.apply {
+                    MatcherAssert.assertThat(response.content, stringContainsInOrder(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG.name))
+                }
+
+            }
+        }
+    }
+})
+
+
 
 
    // @Rule
     //var subjectRule = SubjectRule(Subject("fnr", IdentType.EksternBruker, SsoToken.oidcToken("token", emptyMap<String, Any>())))
 
-    beforeEachTest {
+    fun setUp(service: HenvendelseService , tilgangService :TilgangService) {
         val henvendelser = Arrays.asList(
                 Henvendelse("1").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),
                 Henvendelse("2").withTraadId("2").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),
@@ -55,40 +107,14 @@ val service = mockk<HenvendelseService>()
         )
     }
 
-
+/*
     @Test
-    fun `henterUt Alle Henvendelser Og Gjor Om Til Traader` () {
-        val traader = service.hentAlleHenvendelser(any())
-        MatcherAssert.assertThat(traader?.size, Is.`is`(3))
-    }
-})
+    @Throws(Exception::class)
 
- /*
-    @Test
-    fun `filtrerer Bort Uavsluttede Delsvar`() {
-        val lstHenvendelserBehandlingskjedeMedDelsvar = listOf(
-                Henvendelse("123").withType(Henvendelsetype.SPORSMAL_SKRIFTLIG).withTraadId("1").withOpprettetTid(TestUtils.now()),
-                Henvendelse("234").withType(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG).withTraadId("1").withOpprettetTid(TestUtils.now())
-        )
-        every {service.hentAlleHenvendelser(any()) } returns lstHenvendelserBehandlingskjedeMedDelsvar
-        val traader = service.hentTraader()
-        val delsvar = traader[0].meldinger.stream()
-                .filter { henvendelse: Henvendelse -> henvendelse.type == Henvendelsetype.DELVIS_SVAR_SKRIFTLIG }
-                .findAny()
-        MatcherAssert.assertThat(delsvar.isPresent, Is.`is`(false))
-    }
 
     @Test
     @Throws(Exception::class)
-    fun `service Kan Feile Uten At EndepunktFeiler`() {
-        every { service.hentAlleHenvendelser(anyString()) } returns (emptyList())
-        val traader = controller.hentTraader()
-        MatcherAssert.assertThat(traader.size, Is.`is`(0))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun `henter Ut Enkelt Traad Basert PaId`() {
+   it("henter Ut Enkelt Traad Basert PaId") {
         val traad1 = controller.hentEnkeltTraad("1").entity as Traad
         val traad2 = controller.hentEnkeltTraad("2").entity as Traad
         val traad3 = controller.hentEnkeltTraad("3").entity as Traad
@@ -99,13 +125,13 @@ val service = mockk<HenvendelseService>()
 
     @Test
     @Throws(Exception::class)
-    fun `henter Ut Traad Som Ikke Finnes`() {
+   it("henter Ut Traad Som Ikke Finnes") {
         val response = controller.hentEnkeltTraad("avabv")
         MatcherAssert.assertThat(response.status, Is.`is`(404))
     }
 
     @Test
-    fun `gir Statuskode Ikke Funnet Hvis Henvendelse Service Gir Soap Fault`() {
+   it("gir Statuskode Ikke Funnet Hvis Henvendelse Service Gir Soap Fault") {
         every {service!!.hentTraad(any()) } throws SOAPFaultException()
         val response = controller.hentEnkeltTraad("1")
         MatcherAssert.assertThat(response.status, Is.`is`(Response.Status.NOT_FOUND.statusCode))
@@ -113,31 +139,31 @@ val service = mockk<HenvendelseService>()
 
     @Test
     @Throws(Exception::class)
-    fun `markering Som Lest`() {
+   it("markering Som Lest") {
         controller.markerSomLest("1")
         Mockito.verify(service, Mockito.times(1))?.merkSomLest("1")
     }
 
     @Test
     @Throws(Exception::class)
-    fun `markering Alle Som Lest`() {
+   it("markering Alle Som Lest") {
         controller.markerAlleSomLest("1")
         Mockito.verify(service, Mockito.times(1))?.merkAlleSomLest("1")
     }
 
     @Test
     @Throws(Exception::class)
-    fun `kan Ikke Sende Svar Nar Siste Henvendelse Ikke Er Sporsmal`() {
+   it("kan Ikke Sende Svar Nar Siste Henvendelse Ikke Er Sporsmal") {
         val svar = Svar()
         svar.traadId = "1"
         svar.fritekst = "Tekst"
         val response = controller.sendSvar(svar)
-        MatcherAssert.assertThat(response.status, Is.`is`(Response.Status.NOT_ACCEPTABLE.statusCode))
+        MatcherAssert.assertThat(response.status, Is."is"(Response.Status.NOT_ACCEPTABLE.statusCode))
     }
 
     @Test
     @Throws(Exception::class)
-    fun `kan Sende Svar Nar Siste Henvendelse Er Sporsmal`() {
+   it("kan Sende Svar Nar Siste Henvendelse Er Sporsmal") {
         val svar = Svar()
         svar.traadId = "2"
         svar.fritekst = "Tekst"
@@ -146,7 +172,7 @@ val service = mockk<HenvendelseService>()
     }
 
     @Test
-    fun `kopierer Nyeste Er Tilknyttet Ansatt Flagg Til Svaret`() {
+   it("kopierer Nyeste Er Tilknyttet Ansatt Flagg Til Svaret") {
         val henvendelse1 = Henvendelse("1")
         henvendelse1.erTilknyttetAnsatt = true
         henvendelse1.opprettet = TestUtils.now()
@@ -162,11 +188,11 @@ val service = mockk<HenvendelseService>()
         controller.sendSvar(svar)
         val henvendelseArgumentCaptor = ArgumentCaptor.forClass(Henvendelse::class.java)
         Mockito.verify(service)?.sendSvar(henvendelseArgumentCaptor.capture(), ArgumentMatchers.anyString())
-        MatcherAssert.assertThat(henvendelseArgumentCaptor.value.erTilknyttetAnsatt, Is.`is`(true))
+        MatcherAssert.assertThat(henvendelseArgumentCaptor.value.erTilknyttetAnsatt, Is."is"(true))
     }
 
     @Test
-    fun `kopierer Brukers Enhet Til Svaret`() {
+   it("kopierer Brukers Enhet Til Svaret") {
         val brukersEnhet = "1234"
         val henvendelse1 = Henvendelse("1")
         henvendelse1.opprettet = TestUtils.nowPlus(-1)
@@ -186,7 +212,7 @@ val service = mockk<HenvendelseService>()
     }
 
     @Test
-    fun `sender Ikke Funnet Naar Traad Optional Ikke Er Present`() {
+   it("sender Ikke Funnet Naar Traad Optional Ikke Er Present") {
         every {service!!.hentTraad(anyString())} returns (null)
         val svar = Svar()
         svar.fritekst = "fritekst"
@@ -196,7 +222,7 @@ val service = mockk<HenvendelseService>()
     }
 
     @Test(expected = BadRequestException::class)
-    fun `smeller Hvis Tom FritekstI Sporsmal`() {
+   it("smeller Hvis Tom FritekstI Sporsmal") {
         val sporsmal = Sporsmal()
         sporsmal.fritekst = ""
         sporsmal.temagruppe = Temagruppe.ARBD.name
@@ -204,7 +230,7 @@ val service = mockk<HenvendelseService>()
     }
 
     @Test(expected = BadRequestException::class)
-    fun `smeller Hvis For Lang Fritekst I Sporsmal`() {
+   it(`smeller Hvis For Lang Fritekst I Sporsmal") {
         val sporsmal = Sporsmal()
         sporsmal.fritekst = StringUtils.join(Collections.nCopies(1001, 'a'), "")
         sporsmal.temagruppe = Temagruppe.ARBD.name
@@ -212,7 +238,7 @@ val service = mockk<HenvendelseService>()
     }
 
     @Test(expected = BadRequestException::class)
-    fun `smeller Hvis Andre Sosial tjenester Temagruppe I Sporsmal`() {
+   it("smeller Hvis Andre Sosial tjenester Temagruppe I Sporsmal") {
         val sporsmal = Sporsmal()
         sporsmal.fritekst = "DUMMY"
         sporsmal.temagruppe = Temagruppe.ANSOS.name
@@ -220,8 +246,8 @@ val service = mockk<HenvendelseService>()
     }
 
     @Test(expected = BadRequestException::class)
-    fun `smeller Hvis Bruker Er Kode6 Og Temagruppe OKSOS`() {
-        whenever(tilgangService.harTilgangTilKommunalInnsending(ArgumentMatchers.anyString())).thenReturn(
+   it("smeller Hvis Bruker Er Kode6 Og Temagruppe OKSOS") {
+        every {tilgangService.harTilgangTilKommunalInnsending(ArgumentMatchers.anyString())).thenReturn(
                 TilgangDTO(TilgangDTO.Resultat.KODE6, "melding")
         )
         val sporsmal = Sporsmal()
@@ -231,8 +257,8 @@ val service = mockk<HenvendelseService>()
     }
 
     @Test(expected = BadRequestException::class)
-    fun `smeller Hvis Bruker Ikke Har Enhet Og Temagruppe OKSOS`() {
-        whenever(tilgangService.harTilgangTilKommunalInnsending(ArgumentMatchers.anyString())).thenReturn(
+   it("smeller Hvis Bruker Ikke Har Enhet Og Temagruppe OKSOS") {
+        every {tilgangService.harTilgangTilKommunalInnsending(ArgumentMatchers.anyString())).thenReturn(
                 TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "melding")
         )
         val sporsmal = Sporsmal()
@@ -242,12 +268,15 @@ val service = mockk<HenvendelseService>()
     }
 
     @Test(expected = BadRequestException::class)
-    fun `smeller Hvis Temagruppe OKSOS Og Utledning Feiler`() {
-        whenever(tilgangService.harTilgangTilKommunalInnsending(ArgumentMatchers.anyString())).thenReturn(
+   it("smeller Hvis Temagruppe OKSOS Og Utledning Feiler") {
+        every {tilgangService.harTilgangTilKommunalInnsending(ArgumentMatchers.anyString())).thenReturn(
                 TilgangDTO(TilgangDTO.Resultat.FEILET, "melding")
         )
         val sporsmal = Sporsmal()
         sporsmal.fritekst = "DUMMY"
         sporsmal.temagruppe = Temagruppe.OKSOS.name
         controller.sendSporsmal(sporsmal)
-    }*/
+    }
+
+})*/
+
