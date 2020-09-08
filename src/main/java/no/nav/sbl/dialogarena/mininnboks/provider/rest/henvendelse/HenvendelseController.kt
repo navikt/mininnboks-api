@@ -1,8 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse
 
 import io.ktor.application.call
+import io.ktor.features.BadRequestException
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
+import io.ktor.response.ApplicationResponse
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
@@ -16,8 +18,9 @@ import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.conditi
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.getIdentifikator
 import org.apache.cxf.binding.soap.SoapFault
 import java.util.*
-import javax.ws.rs.BadRequestException
+//import javax.ws.rs.BadRequestException
 import javax.ws.rs.NotAuthorizedException
+import javax.xml.ws.soap.SOAPFaultException
 
 
 fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangService: TilgangService, useAuthentication: Boolean) {
@@ -27,11 +30,11 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
 
             get("/") {
                 val fnr = call.getIdentifikator() ?: throw  NotAuthorizedException("Fant ikke brukers OIDC-token")
-                val henvendelser = henvendelseService.hentAlleHenvendelser(fnr)
-                val traader = henvendelser!!.groupBy { it?.traadId }
+                val henvendelser: List<Henvendelse> = henvendelseService.hentAlleHenvendelser(fnr)
+                val traader : Map<String?, List<Henvendelse>> = henvendelser.groupBy { it.traadId }
                 call.respond(traader.values
-                        .map { t: List<Henvendelse?>? -> filtrerDelsvar(t) }
-                        .map { meldinger: List<Henvendelse?>? -> Traad(meldinger) }
+                        .map { list: List<Henvendelse> ->  filtrerDelsvar(list) }
+                        .map { meldinger: List<Henvendelse> -> Traad(meldinger) }
                         .sortedWith(Traad.NYESTE_FORST))
             }
 
@@ -66,6 +69,7 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
                 val fnr = call.getIdentifikator() ?: throw  NotAuthorizedException("Fant ikke brukers OIDC-token")
                 val sporsmal = call.receive(Sporsmal::class)
                 val henvendelse = lagHenvendelse(tilgangService, fnr, sporsmal)
+                TODO("Erstatte metrikk med noen")
                 //  val metrikk = MetricsClient.createEvent("mininnboks.sendsporsmal")
                 //  metrikk.addTagToReport("tema", sporsmal.temagruppe)
                 // metrikk.report()
@@ -90,30 +94,30 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
                 val traadOptional = hentTraad(henvendelseService, svar.traadId)
                 if (!traadOptional.isPresent) {
                     call.respond(HttpStatusCode.NotFound)
+                } else {
+                    val traad = traadOptional.get()
+                    if (!traad.kanBesvares) {
+                        call.respond(HttpStatusCode.NotAcceptable)
+                        return@post
+                    }
+                    val henvendelse = Henvendelse(svar.fritekst, traad.nyeste?.temagruppe)
+                    henvendelse.traadId = svar.traadId
+                    henvendelse.eksternAktor = traad.nyeste?.eksternAktor
+                    henvendelse.brukersEnhet = traad.eldste?.brukersEnhet
+                    henvendelse.tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet
+                    henvendelse.type = Henvendelsetype.SVAR_SBL_INNGAAENDE
+                    henvendelse.opprettet = Date()
+                    henvendelse.markerSomLest()
+                    henvendelse.erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt
+                    henvendelse.kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet
+                    //val metrikk = MetricsFactory.createEvent("mininnboks.sendsvar")
+                    //metrikk.addTagToReport("tema", traad.nyeste?.temaKode)
+                    //metrikk.report()
+                    val fnr = call.getIdentifikator() ?: throw  NotAuthorizedException("Fant ikke brukers OIDC-token")
+                    val response = henvendelseService.sendSvar(henvendelse, fnr)
+                    call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response!!.behandlingsId))
                 }
-                val traad = traadOptional.get()
-                if (!traad.kanBesvares) {
-                    call.respond(HttpStatusCode.NotAcceptable)
-                }
-                val henvendelse = Henvendelse(svar.fritekst, traad.nyeste?.temagruppe)
-                henvendelse.traadId = svar.traadId
-                henvendelse.eksternAktor = traad.nyeste?.eksternAktor
-                henvendelse.brukersEnhet = traad.eldste?.brukersEnhet
-                henvendelse.tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet
-                henvendelse.type = Henvendelsetype.SVAR_SBL_INNGAAENDE
-                henvendelse.opprettet = Date()
-                henvendelse.markerSomLest()
-                henvendelse.erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt
-                henvendelse.kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet
-                //val metrikk = MetricsFactory.createEvent("mininnboks.sendsvar")
-                //metrikk.addTagToReport("tema", traad.nyeste?.temaKode)
-                //metrikk.report()
-                val fnr = call.getIdentifikator() ?: throw  NotAuthorizedException("Fant ikke brukers OIDC-token")
-                val response = henvendelseService!!.sendSvar(henvendelse, fnr)
-                call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response!!.behandlingsId))
             }
-
-
         }
 
     }
@@ -141,9 +145,9 @@ fun harTilgangTilKommunalInnsending(tilgangService: TilgangService, fnr: String)
     return TilgangDTO.Resultat.OK == tilgangService!!.harTilgangTilKommunalInnsending(fnr).resultat
 }
 
-fun filtrerDelsvar(traad: List<Henvendelse?>?): List<Henvendelse?>? {
+fun filtrerDelsvar(traad: List<Henvendelse>): List<Henvendelse> {
     if (traadHarIkkeSkriftligSvarFraNAV(traad)) {
-        return traad?.sortedBy { henvendelse -> henvendelse?.type != Henvendelsetype.DELVIS_SVAR_SKRIFTLIG }
+        return traad.filter { henvendelse -> henvendelse.type != Henvendelsetype.DELVIS_SVAR_SKRIFTLIG }
     } else
         return traad
 }
@@ -164,11 +168,16 @@ fun hentTraad(henvendelseService: HenvendelseService, id: String?): Optional<Tra
         } else {
             Optional.of(Traad(meldinger))
         }
-    } catch (fault: SoapFault) {
-       //TODO( logger.error("Fant ikke tråd med id: $id", fault)
+    } catch (fault: SoapFault ) {
+        //TODO( logger.error("Fant ikke tråd med id: $id", fault)
+        Optional.empty()
+
+    } catch( fault1: SOAPFaultException) {
+        //TODO( logger.error("Fant ikke tråd med id: $id", fault)
         Optional.empty()
     }
 }
+
 
 class NyHenvendelseResultat(val behandlingsId: String?)
 
@@ -181,7 +190,6 @@ class TupleResultat : HashMap<String?, String?>() {
         }
     }
 }
-
 
 fun assertFritekst(fritekst: String?) {
     if (fritekst == null) {

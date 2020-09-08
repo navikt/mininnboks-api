@@ -21,7 +21,7 @@ interface HenvendelseService {
     fun stillSporsmal(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse
     fun stillSporsmalDirekte(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse
     fun sendSvar(henvendelse: Henvendelse, uid: String?): WSSendInnHenvendelseResponse?
-    fun hentAlleHenvendelser(fodselsnummer: String?): List<Henvendelse?>?
+    fun hentAlleHenvendelser(fodselsnummer: String?): List<Henvendelse>
     fun hentTraad(behandlingskjedeId: String?): List<Henvendelse>
     fun merkAlleSomLest(behandlingskjedeId: String?)
     fun merkSomLest(id: String)
@@ -79,8 +79,7 @@ interface HenvendelseService {
                             XMLMeldingFraBruker()
                                     .withTemagruppe(henvendelse.temagruppe!!.name)
                                     .withFritekst(svartekst)))
-            return sendInnHenvendelsePortType.sendInnHenvendelse(
-                    WSSendInnHenvendelseRequest()
+            return sendInnHenvendelsePortType.sendInnHenvendelse(WSSendInnHenvendelseRequest()
                             .withType(xmlHenvendelseType)
                             .withFodselsnummer(fodselsnummer)
                             .withAny(info))
@@ -95,11 +94,11 @@ interface HenvendelseService {
             innsynHenvendelsePortType.merkSomLest(ids)
         }
 
-        override fun merkSomLest(behandlingsId: String) {
-            innsynHenvendelsePortType.merkSomLest(Arrays.asList(behandlingsId))
+        override fun merkSomLest(id: String) {
+            innsynHenvendelsePortType.merkSomLest(listOf(id))
         }
 
-        override fun hentAlleHenvendelser(fodselsnummer: String?): List<Henvendelse>? {
+        override fun hentAlleHenvendelser(fodselsnummer: String?): List<Henvendelse> {
             val typer = Arrays.asList(
                     XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name,
                     XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name,

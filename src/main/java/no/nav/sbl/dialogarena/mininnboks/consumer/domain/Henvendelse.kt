@@ -32,7 +32,6 @@ class Henvendelse : Serializable {
     var erTilknyttetAnsatt: Boolean? = null
     var ferdigstiltUtenSvar: Boolean? = null
     var lestDato: Date? = null
-        private set
 
     constructor(id: String?) {
         this.id = id

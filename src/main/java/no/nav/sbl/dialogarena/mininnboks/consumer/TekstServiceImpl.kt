@@ -13,13 +13,13 @@ class TekstServiceImpl : TekstService {
     @SneakyThrows
     private fun lastTekster() {
         val resources = TekstServiceImpl::class.java.classLoader.getResources("tekster/mininnboks")
-        Collections.list(resources).stream().map { obj: URL -> obj.file }.map { pathname: String? -> File(pathname) }.forEach { file: File -> this.lastTekster(file) }
+        Collections.list(resources).stream().map { obj: URL -> obj.file }.map(::File).forEach { file: File -> this.lastTekster(file) }
     }
 
     @SneakyThrows
     private fun lastTekster(file: File) {
         if (file.isDirectory) {
-            Arrays.stream(file.listFiles()).forEach { file: File -> this.lastTekster(file) }
+            Arrays.stream(file.listFiles()).forEach(this::lastTekster)
         } else {
             tekster[finnKey(file)] = FileUtils.getStringFromFile(file).trim { it <= ' ' }
         }

@@ -1,5 +1,5 @@
 object Main1 {
-    private const val DEFAULT_SECRETS_BASE_PATH = "/var/run/secrets/nais.io"
+    /*private const val DEFAULT_SECRETS_BASE_PATH = "/var/run/secrets/nais.io"
 
     //@JvmStatic
     fun main(args: Array<String>) {
@@ -31,5 +31,5 @@ object Main1 {
        // val location = String.format("%s/apigw/%s/x-nav-apiKey", DEFAULT_SECRETS_BASE_PATH, producerApp)
        // return NaisUtils.getFileContent(location)
         return ""
-    }
+    }*/
 }
