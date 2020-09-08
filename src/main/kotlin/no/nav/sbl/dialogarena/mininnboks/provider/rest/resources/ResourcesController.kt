@@ -10,15 +10,15 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.TekstServiceImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
 import no.nav.sbl.dialogarena.mininnboks.provider.LinkService
 
-fun Route.ResourcesController() {
+fun Route.resourcesController() {
 
     route("/resources") {
 
         get {
-            var tekstService: TekstService = TekstServiceImpl()
+            val tekstService: TekstService = TekstServiceImpl()
 
             val tekster: MutableMap<String?, Any?> = HashMap()
-            tekster.putAll(tekstService!!.hentTekster()!!)
+            tekstService.hentTekster()?.let { it1 -> tekster.putAll(it1) }
             tekster["skriv.ny.link"] = LinkService.TEMAVELGER_LINK
             tekster["brukerprofil.link"] = LinkService.BRUKERPROFIL_LINK
             tekster["saksoversikt.link"] = LinkService.SAKSOVERSIKT_LINK

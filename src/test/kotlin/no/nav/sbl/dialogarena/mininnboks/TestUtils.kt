@@ -33,19 +33,9 @@ object TestUtils {
         return opprettHenvendelse(id, traadId, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, opprettet, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
     }
 
-    @JvmOverloads
-    fun lagHenvendelse(traadId: String?, opprettet: Date? = now()): Henvendelse {
-        return opprettHenvendelse(UUID.randomUUID().toString(), traadId, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, opprettet, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
-    }
-
     fun lagForsteHenvendelseITraad(): Henvendelse {
         val id = UUID.randomUUID().toString()
         return opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
-    }
-
-    fun lagForsteHenvendelseITraad(opprettet: Date?): Henvendelse {
-        val id = UUID.randomUUID().toString()
-        return opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, opprettet, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
     }
 
     fun lagForsteHenvendelseITraad(type: Henvendelsetype?, lest: Boolean): Henvendelse {

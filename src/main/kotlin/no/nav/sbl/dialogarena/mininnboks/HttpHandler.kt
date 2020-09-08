@@ -10,15 +10,17 @@ import io.ktor.features.StatusPages
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.jackson.JacksonConverter
+import io.ktor.metrics.dropwizard.DropwizardMetrics
 import io.ktor.request.path
 import io.ktor.server.netty.Netty
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.routing.routing
+import io.prometheus.client.dropwizard.DropwizardExports
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.HenvendelseController
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.ResourcesController
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang.TilgangController
+import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.henvendelseController
+import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.resourcesController
+import no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang.tilgangController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.sporsmalController
 
 import org.slf4j.event.Level
@@ -50,6 +52,10 @@ fun createHttpServer(applicationState: ApplicationState,
         }
     }
 
+    install(DropwizardMetrics) {
+        io.prometheus.client.CollectorRegistry.defaultRegistry.register(DropwizardExports(registry))
+    }
+
     install(ContentNegotiation) {
         register(ContentType.Application.Json, JacksonConverter(objectMapper))
     }
@@ -67,9 +73,9 @@ fun createHttpServer(applicationState: ApplicationState,
 
     routing {
         sporsmalController(henvendelseService, true)
-        HenvendelseController(henvendelseService, tilgangService, true)
-        TilgangController(tilgangService)
-        ResourcesController()
+        henvendelseController(henvendelseService, tilgangService, true)
+        tilgangController(tilgangService)
+        resourcesController()
     }
 
     applicationState.initialized = true

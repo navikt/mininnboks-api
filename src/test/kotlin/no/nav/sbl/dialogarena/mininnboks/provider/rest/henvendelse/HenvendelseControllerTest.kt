@@ -30,7 +30,6 @@ import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers.*
 import org.hamcrest.core.Is
-import org.mockito.ArgumentMatchers
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import java.util.*
@@ -57,7 +56,7 @@ class HenvendelseControllerTest : Spek({
         val engine = TestApplicationEngine(createTestEnvironment())
         engine.start(wait = false) // for now we can't eliminate it
 
-        engine.application.routing { HenvendelseController(service, tilgangService, false) }
+        engine.application.routing { henvendelseController(service, tilgangService, false) }
         engine.application.install(ContentNegotiation) {
             register(ContentType.Application.Json, JacksonConverter(ObjectMapperProvider.objectMapper))
         }
@@ -183,7 +182,7 @@ class HenvendelseControllerTest : Spek({
                 val henvendelse2 = Henvendelse("2")
                 henvendelse2.erTilknyttetAnsatt = false
                 henvendelse2.opprettet = TestUtils.now()
-                val henvendelser = Arrays.asList(henvendelse1, henvendelse2)
+                val henvendelser = listOf(henvendelse1, henvendelse2)
 
                 every { service.hentTraad(any()) } returns (henvendelser)
 
@@ -215,7 +214,7 @@ class HenvendelseControllerTest : Spek({
                 val henvendelse2 = Henvendelse("2")
                 henvendelse2.opprettet = TestUtils.now()
                 henvendelse2.type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE
-                every { service.hentTraad(any()) } returns (Arrays.asList(henvendelse1, henvendelse2))
+                every { service.hentTraad(any()) } returns (listOf(henvendelse1, henvendelse2))
                 handleRequest(HttpMethod.Post, "/traader/svar") {
 
                     addHeader("Content-Type", "application/json; charset=utf8")
@@ -355,7 +354,7 @@ class HenvendelseControllerTest : Spek({
 
 
 fun setUp(service: HenvendelseService, tilgangService: TilgangService) {
-    val henvendelser = Arrays.asList(
+    val henvendelser = listOf(
             Henvendelse("1").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),
             Henvendelse("2").withTraadId("2").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),
             Henvendelse("3").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),

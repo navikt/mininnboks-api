@@ -11,7 +11,6 @@ import io.ktor.routing.get
 import io.ktor.routing.route
 import no.nav.sbl.dialogarena.mininnboks.MockPayload
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import javax.ws.rs.ForbiddenException
 
 fun Route.conditionalAuthenticate(useAuthentication: Boolean, build: Route.() -> Unit): Route {
@@ -37,7 +36,7 @@ fun Route.sporsmalController(henvendelseService: HenvendelseService, useAuthenti
                 val fnr = call.getIdentifikator()
                 call.respond(
                         henvendelseService.hentAlleHenvendelser(fnr)
-                                ?.map { UbehandletMeldingUtils::hentUbehandledeMeldinger }
+                                .map { UbehandletMeldingUtils::hentUbehandledeMeldinger }
                                 ?: throw ForbiddenException("Fant ikke subjecthandler-ident"))
 
             }

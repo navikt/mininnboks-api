@@ -4,9 +4,6 @@ package no.nav.sbl.dialogarena.mininnboks
 import no.nav.common.cxf.CXFClient
 import no.nav.common.cxf.StsConfig
 import no.nav.common.rest.client.RestClient
-import no.nav.common.rest.client.RestUtils
-import no.nav.common.utils.EnvironmentUtils
-import no.nav.common.utils.NaisUtils
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
@@ -26,13 +23,6 @@ class ServiceConfig(val configuration: Configuration) {
     fun personService(): PersonService {
         return PersonService.Default(personV3())
     }
-
-
-/*
-    fun personV3Ping(): Pingable {
-        return personV3().helsesjekk!!
-    }
-*/
 
     private fun personV3(): PersonV3 {
         return CXFClient<PersonV3>(PersonV3::class.java)

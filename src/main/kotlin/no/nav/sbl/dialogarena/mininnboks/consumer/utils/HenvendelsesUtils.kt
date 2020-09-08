@@ -10,15 +10,16 @@ import org.apache.commons.lang.StringEscapeUtils
 import org.joda.time.DateTime
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 
 object HenvendelsesUtils {
     private var tekstService: TekstService? = null
-    val logger = LoggerFactory.getLogger(HenvendelsesUtils::class.java)
+    val logger: Logger = LoggerFactory.getLogger(HenvendelsesUtils::class.java)
     private val LINE_REPLACEMENT_STRING = UUID.randomUUID().toString()
-    private val LINE_BREAK = "\n"
-    val FRA_BRUKER = Arrays.asList(Henvendelsetype.SPORSMAL_SKRIFTLIG, Henvendelsetype.SPORSMAL_SKRIFTLIG_DIREKTE, Henvendelsetype.SVAR_SBL_INNGAAENDE)
+    private const val LINE_BREAK = "\n"
+    val FRA_BRUKER: List<Henvendelsetype> = listOf(Henvendelsetype.SPORSMAL_SKRIFTLIG, Henvendelsetype.SPORSMAL_SKRIFTLIG_DIREKTE, Henvendelsetype.SVAR_SBL_INNGAAENDE)
 
     private val HENVENDELSETYPE_MAP: HashMap<XMLHenvendelseType, Henvendelsetype> = object : HashMap<XMLHenvendelseType, Henvendelsetype>() {
         init {

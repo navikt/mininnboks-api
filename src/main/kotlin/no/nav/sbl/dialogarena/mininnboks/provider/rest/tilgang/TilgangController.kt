@@ -8,12 +8,8 @@ import io.ktor.routing.route
 import no.nav.common.auth.subject.SubjectHandler
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
-import javax.ws.rs.GET
-import javax.ws.rs.Path
-import javax.ws.rs.Produces
-import javax.ws.rs.core.MediaType
 
-fun Route.TilgangController(tilgangService: TilgangService?) {
+fun Route.tilgangController(tilgangService: TilgangService?) {
 
     route("/tilgang") {
     get("/oksos") {

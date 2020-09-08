@@ -26,7 +26,7 @@ class HenvendelsesUtilsTest {
     fun `transformerer Dokument Henvendelse`() {
         every {tekstService.hentTekst(ArgumentMatchers.anyString())}  returns "value"
 
-        val dokument = mockDokumentHenvendelse();
+        val dokument = mockDokumentHenvendelse()
 
         val infoList = listOf(dokument)
         val henvendelserListe = infoList.stream()
@@ -178,9 +178,9 @@ class HenvendelsesUtilsTest {
         every {tekstService.hentTekst("innhold.kassert") } returns ("Innholdet er kassert")
         every {tekstService.hentTekst("temagruppe.kassert") }returns ("Kassert")
         val referat = HenvendelsesUtils.tilHenvendelse(info)
-        Assert.assertThat(referat?.fritekst, CoreMatchers.`is`("Innholdet  i  denne  henvendelsen  er  kassert  av  NAV."))
-        Assert.assertThat(referat?.statusTekst, CoreMatchers.`is`("Kassert"))
-        Assert.assertThat(referat?.temagruppe, CoreMatchers.nullValue())
+        Assert.assertThat(referat.fritekst, CoreMatchers.`is`("Innholdet  i  denne  henvendelsen  er  kassert  av  NAV."))
+        Assert.assertThat(referat.statusTekst, CoreMatchers.`is`("Kassert"))
+        Assert.assertThat(referat.temagruppe, CoreMatchers.nullValue())
     }
 
     @Test

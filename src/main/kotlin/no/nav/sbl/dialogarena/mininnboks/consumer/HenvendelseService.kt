@@ -99,7 +99,7 @@ interface HenvendelseService {
         }
 
         override fun hentAlleHenvendelser(fodselsnummer: String?): List<Henvendelse> {
-            val typer = Arrays.asList(
+            val typer = listOf(
                     XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name,
                     XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name,
                     XMLHenvendelseType.SVAR_SKRIFTLIG.name,

@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
-import com.nhaarman.mockitokotlin2.any
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.common.auth.subject.SubjectHandler
@@ -13,7 +12,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.`when`
 import org.slf4j.MDC
 import java.util.*
 

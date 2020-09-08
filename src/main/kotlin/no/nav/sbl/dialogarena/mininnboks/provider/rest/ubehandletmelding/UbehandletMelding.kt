@@ -32,9 +32,9 @@ class UbehandletMelding(henvendelse: Henvendelse) {
         behandlingskjedeId = henvendelse.traadId
         opprettetDato = henvendelse.opprettet
         type = henvendelse.type
-        undertype = henvendelse?.oppgaveType
+        undertype = henvendelse.oppgaveType
         uri = lagDirektelenkeTilMelding(henvendelse)
-        varselid = henvendelse?.korrelasjonsId
+        varselid = henvendelse.korrelasjonsId
         if (erUbesvart.test(henvendelse)) {
             statuser.add(Status.UBESVART)
         }

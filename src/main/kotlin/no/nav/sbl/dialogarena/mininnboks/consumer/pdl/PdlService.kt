@@ -9,19 +9,10 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.util.*
-import no.nav.common.health.HealthCheck;
+import no.nav.common.health.HealthCheck
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.rest.client.RestUtils.toJsonRequestBody
 import okhttp3.*
-
-/*interface PdlService {
-    fun harKode6(fnr: String): Boolean
-    fun harKode7(fnr: String): Boolean
-    fun harStrengtFortroligAdresse(fnr: String): Boolean
-    fun harFortroligAdresse(fnr: String): Boolean
-    fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering?
-    fun getHelsesjekk(): Pingable
-}*/
 
 class PdlException(cause: Exception) : RuntimeException("Kunne ikke utlede adressebeskyttelse", cause)
 
@@ -129,7 +120,7 @@ open class PdlService(private val pdlClient: OkHttpClient,
             val pdlResponse = body?.let { JacksonConfig.mapper.readValue<PdlResponse>(it) }
 
             if (pdlResponse?.errors?.isNotEmpty() == true) {
-                val errorMessages = pdlResponse.errors.map { it.message }.joinToString(", ")
+                val errorMessages = pdlResponse.errors.joinToString(", ") { it.message }
                 log.info(
                         """
                     PDL-response: $uuid
