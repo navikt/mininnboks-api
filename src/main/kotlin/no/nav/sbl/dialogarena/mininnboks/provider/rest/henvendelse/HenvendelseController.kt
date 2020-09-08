@@ -4,7 +4,6 @@ import io.ktor.application.call
 import io.ktor.features.BadRequestException
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
-import io.ktor.response.ApplicationResponse
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
@@ -18,7 +17,6 @@ import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.conditi
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.getIdentifikator
 import org.apache.cxf.binding.soap.SoapFault
 import java.util.*
-//import javax.ws.rs.BadRequestException
 import javax.ws.rs.NotAuthorizedException
 import javax.xml.ws.soap.SOAPFaultException
 
@@ -60,7 +58,7 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
             }
 
             post("/allelest/{behandlingskjedeId}") {
-                var behandlingskjedeId = call.parameters.get("behandlingskjedeId")
+                val behandlingskjedeId = call.parameters.get("behandlingskjedeId")
                 henvendelseService.merkAlleSomLest(behandlingskjedeId)
                 call.respond(TupleResultat.of("traadId", behandlingskjedeId))
             }
@@ -69,11 +67,11 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
                 val fnr = call.getIdentifikator() ?: throw  NotAuthorizedException("Fant ikke brukers OIDC-token")
                 val sporsmal = call.receive(Sporsmal::class)
                 val henvendelse = lagHenvendelse(tilgangService, fnr, sporsmal)
-                TODO("Erstatte metrikk med noen")
+                //TODO("Erstatte metrikk med noen")
                 //  val metrikk = MetricsClient.createEvent("mininnboks.sendsporsmal")
                 //  metrikk.addTagToReport("tema", sporsmal.temagruppe)
                 // metrikk.report()
-                val response = henvendelseService!!.stillSporsmal(henvendelse, fnr)
+                val response = henvendelseService.stillSporsmal(henvendelse, fnr)
                 call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
             }
 
@@ -84,13 +82,13 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
                 //val metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmaldirekte")
                 //metrikk.addTagToReport("tema", sporsmal.temagruppe)
                 //metrikk.report()
-                val response = henvendelseService!!.stillSporsmalDirekte(henvendelse, fnr)
+                val response = henvendelseService.stillSporsmalDirekte(henvendelse, fnr)
                 call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
             }
 
             post("/svar") {
                 val svar = call.receive(Svar::class)
-                assertFritekst(svar.fritekst)
+                assertFritekst(svar.fritekst, 2500);
                 val traadOptional = hentTraad(henvendelseService, svar.traadId)
                 if (!traadOptional.isPresent) {
                     call.respond(HttpStatusCode.NotFound)
@@ -125,7 +123,7 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
 
 fun lagHenvendelse(tilgangService: TilgangService, fnr: String, sporsmal: Sporsmal): Henvendelse {
     val temagruppe = sporsmal.temagruppe?.let { Temagruppe.valueOf(it) }
-    assertFritekst(sporsmal.fritekst)
+    sporsmal.fritekst?.let { assertFritekst(it) }
     if (temagruppe != null) {
         assertTemagruppeTilgang(tilgangService, fnr, temagruppe)
     }
@@ -142,7 +140,7 @@ fun assertTemagruppeTilgang(tilgangService: TilgangService, fnr: String, temagru
 }
 
 fun harTilgangTilKommunalInnsending(tilgangService: TilgangService, fnr: String): Boolean {
-    return TilgangDTO.Resultat.OK == tilgangService!!.harTilgangTilKommunalInnsending(fnr).resultat
+    return TilgangDTO.Resultat.OK == tilgangService.harTilgangTilKommunalInnsending(fnr).resultat
 }
 
 fun filtrerDelsvar(traad: List<Henvendelse>): List<Henvendelse> {
@@ -163,7 +161,7 @@ fun traadHarIkkeSkriftligSvarFraNAV(traad: List<Henvendelse?>?): Boolean {
 fun hentTraad(henvendelseService: HenvendelseService, id: String?): Optional<Traad> {
     return try {
         val meldinger = henvendelseService.hentTraad(id)
-        if (meldinger == null || meldinger.isEmpty()) {
+        if (meldinger.isEmpty()) {
             Optional.empty()
         } else {
             Optional.of(Traad(meldinger))
@@ -191,15 +189,20 @@ class TupleResultat : HashMap<String?, String?>() {
     }
 }
 
-fun assertFritekst(fritekst: String?) {
+fun assertFritekst(fritekst: String) {
+    assertFritekst(fritekst, 1000)
+}
+
+fun assertFritekst(fritekst: String?, maxLengde: Int) {
     if (fritekst == null) {
         throw BadRequestException("Fritekst må være sendt med")
-    } else if (fritekst.trim { it <= ' ' }.length == 0) {
+    } else if (fritekst.trim { it <= ' ' }.isEmpty()) {
         throw BadRequestException("Fritekst må inneholde tekst")
-    } else if (fritekst.trim { it <= ' ' }.length > 1000) {
-        throw BadRequestException("Fritekst kan ikke være lengre enn 1000 tegn")
+    } else if (fritekst.trim { it <= ' ' }.length > maxLengde) {
+        throw BadRequestException("Fritekst kan ikke være lengre enn $maxLengde tegn")
     }
 }
+
 
 
 

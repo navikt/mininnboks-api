@@ -4,9 +4,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.common.auth.subject.SsoToken
 import no.nav.common.auth.subject.SubjectHandler
 import no.nav.common.log.MDCConstants
-import no.nav.common.rest.client.RestUtils.parseJsonResponseOrThrow
 import no.nav.sbl.dialogarena.mininnboks.Configuration
-import no.nav.sbl.dialogarena.mininnboks.config.utils.JacksonConfig
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -15,7 +13,6 @@ import no.nav.common.health.HealthCheck;
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.rest.client.RestUtils.toJsonRequestBody
 import okhttp3.*
-import javax.ws.rs.client.Entity
 
 /*interface PdlService {
     fun harKode6(fnr: String): Boolean

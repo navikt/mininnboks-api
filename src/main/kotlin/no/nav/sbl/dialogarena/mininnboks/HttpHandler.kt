@@ -11,7 +11,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.jackson.JacksonConverter
 import io.ktor.request.path
-import javax.sql.DataSource
 import io.ktor.server.netty.Netty
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
@@ -57,9 +56,8 @@ fun createHttpServer(applicationState: ApplicationState,
 
     install(CallLogging) {
         level = Level.INFO
-        filter { call -> call.request.path().contains("/api/") }
+        filter { call -> call.request.path().contains("/") }
     }
-
 
     val serviceConfig = ServiceConfig(configuration)
     val henvendelseService = serviceConfig.henvendelseService(serviceConfig.personService())

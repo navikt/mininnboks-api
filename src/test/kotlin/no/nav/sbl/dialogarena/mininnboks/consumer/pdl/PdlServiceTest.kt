@@ -166,39 +166,6 @@ internal class PdlServiceTest {
         every { remoteCall.execute() } returns response
         every { client.newCall(any()) } returns (remoteCall)
 
-        // val webTarget = mockk<WebTarget>()
-        // val invocationBuiler = mockk<Invocation.Builder>()
-
-        /*
-        val request = mockk<okhttp3.Request.Builder>()
-        val response = Response.Builder()
-                .request(Request.Builder().url("http://test.org").build())
-                .protocol(Protocol.HTTP_2)
-                .code(status) // status code
-                .message("")
-                .body(ResponseBody.create(
-                        MediaType.get("application/json; charset=utf-8"),
-                        body
-                )).build()
-
-
-       // every {webTarget.path(any()) } returns (webTarget)
-       // every {webTarget.request() } returns (invocationBuiler)
-        //every {invocationBuiler.header(any(), any())} returns (invocationBuiler)
-        val JSON: MediaType? = MediaType.parse("application/json; charset=utf-8")
-        val requestBody = RequestBody.create(JSON, "dummy")
-        if (throwException) {
-            every { request.post( requestBody)} throws IllegalStateException()
-        } else {
-            every { request.method("OPTIONS", requestBody)} throws IllegalStateException()
-            every { request.post( requestBody)} throws IllegalStateException()
-        }
-
-        every { client.newCall(any()).execute()} returns response
-
-        every {response.code()} returns(status)
-//        every {response.body()} returns(ResponseBody.create(null, body))
-*/
         return MockContext(client, response)
     }
 

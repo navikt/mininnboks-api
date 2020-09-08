@@ -25,6 +25,7 @@ def mor_pom_version = '2.2020.08.28_14.16-420d1471cb04'
 def logback_version='1.2.1'
 def spek_version = '2.0.12'
 def konfig_version = "1.6.10.0"
+def prometheusVersion = "0.4.0"
 
 
 apply plugin: 'java'
@@ -83,6 +84,7 @@ dependencies {
     implementation "com.natpryce:konfig:$konfig_version"
     implementation "io.ktor:ktor-jackson:$ktor_version"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9"
+    implementation "io.ktor:ktor-metrics:$ktor_version"
 
 
     testCompile 'org.hamcrest:hamcrest:2.2'
