@@ -5,7 +5,6 @@ import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*
-import no.nav.sbl.dialogarena.mininnboks.TestUtils.lagHenvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType
@@ -145,7 +144,7 @@ class HenvendelseServiceTest {
         verify {
             henvendelsePortType?.hentHenvendelseListe(capture(hentHenvendelseListeRequestArgumentCaptor)) }
             val request = hentHenvendelseListeRequestArgumentCaptor.captured
-            val values: List<XMLHenvendelseType> = ArrayList(Arrays.asList(*XMLHenvendelseType.values()))
+            val values: List<XMLHenvendelseType> = ArrayList(listOf(*XMLHenvendelseType.values()))
                 for (type in request.typer) {
                     MatcherAssert.assertThat(values.contains(XMLHenvendelseType.fromValue(type)), Matchers.`is`(true))
                 }

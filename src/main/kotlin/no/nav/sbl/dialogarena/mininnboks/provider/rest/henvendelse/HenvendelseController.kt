@@ -21,7 +21,7 @@ import javax.ws.rs.NotAuthorizedException
 import javax.xml.ws.soap.SOAPFaultException
 
 
-fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangService: TilgangService, useAuthentication: Boolean) {
+fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangService: TilgangService, useAuthentication: Boolean) {
 
     conditionalAuthenticate(useAuthentication) {
         route("/traader") {
@@ -37,7 +37,7 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
             }
 
             get("/{id}") {
-                val id = call.parameters.get("id")
+                val id = call.parameters["id"]
                 val optionalTraad = hentTraad(henvendelseService, id)
                 if (optionalTraad.isPresent) {
                     val traad = optionalTraad.get()
@@ -49,7 +49,7 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
             }
 
             post("/lest/{behandlingsId}") {
-                val behandlingsId = call.parameters.get("behandlingsId")
+                val behandlingsId = call.parameters["behandlingsId"]
 
                 if (behandlingsId != null) {
                     henvendelseService.merkSomLest(behandlingsId)
@@ -58,7 +58,7 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
             }
 
             post("/allelest/{behandlingskjedeId}") {
-                val behandlingskjedeId = call.parameters.get("behandlingskjedeId")
+                val behandlingskjedeId = call.parameters["behandlingskjedeId"]
                 henvendelseService.merkAlleSomLest(behandlingskjedeId)
                 call.respond(TupleResultat.of("traadId", behandlingskjedeId))
             }
@@ -88,7 +88,7 @@ fun Route.HenvendelseController(henvendelseService: HenvendelseService, tilgangS
 
             post("/svar") {
                 val svar = call.receive(Svar::class)
-                assertFritekst(svar.fritekst, 2500);
+                assertFritekst(svar.fritekst, 2500)
                 val traadOptional = hentTraad(henvendelseService, svar.traadId)
                 if (!traadOptional.isPresent) {
                     call.respond(HttpStatusCode.NotFound)
@@ -144,10 +144,10 @@ fun harTilgangTilKommunalInnsending(tilgangService: TilgangService, fnr: String)
 }
 
 fun filtrerDelsvar(traad: List<Henvendelse>): List<Henvendelse> {
-    if (traadHarIkkeSkriftligSvarFraNAV(traad)) {
-        return traad.filter { henvendelse -> henvendelse.type != Henvendelsetype.DELVIS_SVAR_SKRIFTLIG }
+    return if (traadHarIkkeSkriftligSvarFraNAV(traad)) {
+        traad.filter { henvendelse -> henvendelse.type != Henvendelsetype.DELVIS_SVAR_SKRIFTLIG }
     } else
-        return traad
+        traad
 }
 
 

@@ -1,9 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks
 
 
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-val log = LoggerFactory.getLogger("mininnboks.Application")
+val log: Logger = LoggerFactory.getLogger("mininnboks.Application")
 data class ApplicationState(var running: Boolean = true, var initialized: Boolean = false)
 
 fun main() {

@@ -28,7 +28,7 @@ class UbehandletMeldingUtilsTest {
         val traad1henvendelse1 = TestUtils.lagHenvendelse("1", "1")
         val traad1henvendelse2 = TestUtils.lagHenvendelse("2", traad1henvendelse1.id)
         val traad2henvendelse1 = TestUtils.lagHenvendelse("3", "3")
-        val henvendelser: List<Henvendelse> = ArrayList(Arrays.asList(traad1henvendelse1, traad1henvendelse2, traad2henvendelse1))
+        val henvendelser: List<Henvendelse> = ArrayList(listOf(traad1henvendelse1, traad1henvendelse2, traad2henvendelse1))
         val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(henvendelser)
         Assert.assertThat(sporsmalVarsler.size, Matchers.`is`(2))
     }
@@ -38,7 +38,7 @@ class UbehandletMeldingUtilsTest {
         val nyesteDato = TestUtils.nowPlus(-1)
         val traad1henvendelse1 = TestUtils.lagHenvendelse("1", "1", nyesteDato)
         val traad1henvendelse2 = TestUtils.lagHenvendelse("2", "1", TestUtils.nowPlus(-100))
-        val henvendelser: List<Henvendelse> = ArrayList(Arrays.asList(traad1henvendelse1, traad1henvendelse2))
+        val henvendelser: List<Henvendelse> = ArrayList(listOf(traad1henvendelse1, traad1henvendelse2))
         val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(henvendelser)
         Assert.assertThat(sporsmalVarsler.size, Matchers.`is`(1))
         Assert.assertThat(sporsmalVarsler[0].opprettetDato, Matchers.`is`(nyesteDato))
@@ -48,7 +48,7 @@ class UbehandletMeldingUtilsTest {
     fun henterUtUlesteMeldinger() {
         val ulestIkkeUbesvartHenvendelse = TestUtils.lagHenvendelse(false)
         val lestIkkeUbesvartHenvendelse = TestUtils.lagHenvendelse(true)
-        val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(Arrays.asList(ulestIkkeUbesvartHenvendelse, lestIkkeUbesvartHenvendelse))
+        val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(listOf(ulestIkkeUbesvartHenvendelse, lestIkkeUbesvartHenvendelse))
         Assert.assertThat(sporsmalVarsler.size, Matchers.`is`(1))
         Assert.assertThat(sporsmalVarsler[0].behandlingskjedeId, Matchers.`is`(ulestIkkeUbesvartHenvendelse.traadId))
         Assert.assertThat(sporsmalVarsler[0].statuser[0], Matchers.`is`(UbehandletMelding.Status.ULEST))
@@ -58,7 +58,7 @@ class UbehandletMeldingUtilsTest {
     fun henterUtUbesvarteSporsmaal() {
         val ubesvartLestHenvendelse = TestUtils.lagForsteHenvendelseITraad(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE, true)
         val besvartLestHenvendelse = TestUtils.lagForsteHenvendelseITraad(Henvendelsetype.SVAR_SKRIFTLIG, true)
-        val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(Arrays.asList(ubesvartLestHenvendelse, besvartLestHenvendelse))
+        val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(listOf(ubesvartLestHenvendelse, besvartLestHenvendelse))
         Assert.assertThat(sporsmalVarsler.size, Matchers.`is`(1))
         Assert.assertThat(sporsmalVarsler[0].behandlingskjedeId, Matchers.`is`(ubesvartLestHenvendelse.traadId))
         Assert.assertThat(sporsmalVarsler[0].statuser[0], Matchers.`is`(UbehandletMelding.Status.UBESVART))
@@ -67,7 +67,7 @@ class UbehandletMeldingUtilsTest {
     @Test
     fun lagerKunEttVarselForEtUlestUbesvartSporsmaal() {
         val ubesvartUlestHenvendelse = TestUtils.lagForsteHenvendelseITraad(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE, false)
-        val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(Arrays.asList(ubesvartUlestHenvendelse))
+        val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(listOf(ubesvartUlestHenvendelse))
         Assert.assertThat(sporsmalVarsler.size, Matchers.`is`(1))
         Assert.assertThat(sporsmalVarsler[0].statuser.size, Matchers.`is`(2))
         Assert.assertThat(sporsmalVarsler[0].statuser.contains(UbehandletMelding.Status.UBESVART), Matchers.`is`(true))

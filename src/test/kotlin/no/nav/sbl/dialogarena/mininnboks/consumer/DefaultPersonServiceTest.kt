@@ -14,7 +14,7 @@ import org.junit.jupiter.api.assertThrows
 
 class DefaultPersonServiceTest {
 
-    val personV3: PersonV3 = mockk();
+    val personV3: PersonV3 = mockk()
     var personService: PersonService.Default = PersonService.Default(personV3)
 
     @Test

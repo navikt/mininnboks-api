@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.tilgang
 
-import com.nhaarman.mockitokotlin2.any
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

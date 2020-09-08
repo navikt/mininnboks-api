@@ -74,6 +74,6 @@ class Henvendelse : Serializable {
     }
 
     companion object {
-        val NYESTE_OVERST = Collections.reverseOrder(Comparator.comparing { henvendelse: Henvendelse -> henvendelse.opprettet })
+        val NYESTE_OVERST: Comparator<Henvendelse?> = Collections.reverseOrder(Comparator.comparing { henvendelse: Henvendelse -> henvendelse.opprettet })
     }
 }

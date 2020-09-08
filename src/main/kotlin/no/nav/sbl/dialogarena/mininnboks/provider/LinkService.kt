@@ -25,12 +25,4 @@ object LinkService {
             String.format("%s/?varselid=%s", MININNBOKS_LINK, henvendelse.korrelasjonsId)
         } else String.format("%s/traad/%s", MININNBOKS_LINK, henvendelse.traadId)
     }
-
-    @JvmStatic
-    fun touch() {
-     /*   log.info(MININNBOKS_LINK)
-        log.info(TEMAVELGER_LINK)
-        log.info(BRUKERPROFIL_LINK)
-        log.info(SAKSOVERSIKT_LINK)*/
-    }
 }
