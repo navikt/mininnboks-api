@@ -1,4 +1,4 @@
-FROM navikt/java:11
+FROM navikt/java:11-appdynamics
 
 # sett riktig tidssone
 ENV TZ Europe/Oslo
@@ -10,6 +10,9 @@ COPY init.sh /init-scripts/init.sh
 #COPY init.sh /init-scripts/init.sh
 #RUN chmod +x /init-scripts/init.sh
 #CMD ./init-scripts/init.sh
+
+ENV APPD_ENABLED=true
+ENV APP_NAME=mininnboks-api
 
 # Netty bruker jdk.internal.misc.Unsafe så dette må åpnes opp for max ytelse
 ENV JAVA_OPTS="${JAVA_OPTS} --add-opens java.base/jdk.internal.misc=ALL-UNNAMED"
