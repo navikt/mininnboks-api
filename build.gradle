@@ -35,10 +35,7 @@ repositories {
     jcenter()
 
     maven {
-        credentials {
-            username  "$githubUser"
-            password  "$githubPassword"
-        }
+       
         url 'https://github-package-registry-mirror.gc.nav.no/cached/maven-release'
     }
 }
