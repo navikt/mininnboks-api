@@ -42,32 +42,6 @@ open class PdlService(private val pdlClient: OkHttpClient,
         }
     }
 
-    /* fun getHelsesjekk(): Pingable {
-         val metadata = Pingable.Ping.PingMetadata(
-                 "pdl",
-                 configuration.PDL_API_URL,
-                 "Henter adressebeskyttelse",
-                 false
-         )
-
-         return Pingable {
-             try {
-                 val response = pdlClient.target(configuration.PDL_API_URL)
-                         .path("/graphql")
-                         .request()
-                         .options()
-
-                 if (response.status == 200) {
-                     Pingable.Ping.lyktes(metadata)
-                 } else {
-                     Pingable.Ping.feilet(metadata, "Statuskode: ${response.status}")
-                 }
-             } catch (e: Exception) {
-                 Pingable.Ping.feilet(metadata, e)
-             }
-         }
-     }
- */
     private fun harGradering(fnr: String, gradering: PdlAdressebeskyttelseGradering): Boolean {
         val pdlGradering = hentAdresseBeskyttelse(fnr)
         return gradering == pdlGradering

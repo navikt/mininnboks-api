@@ -97,50 +97,6 @@ internal class PdlServiceTest {
             pdlService.hentAdresseBeskyttelse("anyfnr")
         }
     }
-    //)
-    // }
-
-    /*
-    @Test
-    fun `bruker http-options for ping`() {
-        gittUrlTilPdl()
-        val mockContext = gittClientSomSvarer()
-        val stsService = gittStsService()
-        val pdlService = PdlService(mockContext.client, stsService, configuration)
-
-      //  val ping = pdlService.getHelsesjekk().ping()
-
-        verify(mockContext.invocationBuilder, times(1)).options()
-       // assertThat(ping.erVellykket()).isTrue()
-    }
-
-    @Test
-    fun `ping rapporterer feil ved annen statuskode`() {
-        gittUrlTilPdl()
-        val mockContext = gittClientSomSvarer(status = 199)
-        val stsService = gittStsService()
-        val pdlService = PdlService(mockContext.client, stsService, configuration)
-
-        //val ping = pdlService.getHelsesjekk().ping()
-
-        verify(mockContext.invocationBuilder, times(1)).options()
-        assertThat(ping.erVellykket()).isFalse()
-       // assertThat(ping.feilmelding).contains("199")
-    }
-
-    @Test
-    fun `ping rapporterer feil ved exception`() {
-        gittUrlTilPdl()
-        val mockContext = gittClientSomSvarer(throwException = true)
-        val stsService = gittStsService()
-        val pdlService = PdlService(mockContext.client, stsService, configuration)
-
-        //val ping = pdlService.getHelsesjekk().ping()
-
-        verify(mockContext.invocationBuilder, times(1)).options()
-        assertThat(ping.erVellykket()).isFalse()
-        assertThat(ping.feil).isNotNull()
-    }*/
 
     fun gittClientSomSvarer(status: Int = 200, body: String = "", throwException: Boolean = false): MockContext {
         val client = mockk<OkHttpClient>()

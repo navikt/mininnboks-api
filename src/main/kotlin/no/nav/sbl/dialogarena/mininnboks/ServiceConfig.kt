@@ -70,19 +70,9 @@ class ServiceConfig(val configuration: Configuration) {
     }
 
 
-    /*fun pdlPing(pdlService: PdlService): PdlService {
-        return pdlService.getHelsesjekk()
-     }*/
-
-
     fun tilgangService(pdlService: PdlService?, personService: PersonService?): TilgangService {
         return TilgangServiceImpl(pdlService!!, personService!!)
     }
-
-
-    // fun sendInnHenvendelsePing(): Pingable {
-    //     return sendInnHenvendelse().helsesjekk!!
-    // }
 
     private fun sendInnHenvendelse(): SendInnHenvendelsePortType {
         return CXFClient<SendInnHenvendelsePortType>(SendInnHenvendelsePortType::class.java)
@@ -91,11 +81,6 @@ class ServiceConfig(val configuration: Configuration) {
                 .build()
     }
 
-
-    /*  fun henvendelsePing(): Pingable {
-          return henvendelse().helsesjekk!!
-      }*/
-
     private fun henvendelse(): HenvendelsePortType {
 
         return CXFClient<HenvendelsePortType>(HenvendelsePortType::class.java)
@@ -103,13 +88,6 @@ class ServiceConfig(val configuration: Configuration) {
                 .configureStsForSubject(stsConfig())
                 .build()
     }
-
-
-/*
-    fun innsynHenvendelsePing(): Pingable {
-        return innsynHenvendesle().helsesjekk!!
-    }
-*/
 
     private fun innsynHenvendesle(): InnsynHenvendelsePortType {
         return CXFClient<InnsynHenvendelsePortType>(InnsynHenvendelsePortType::class.java)
