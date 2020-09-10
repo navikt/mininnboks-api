@@ -17,6 +17,8 @@ import junit.framework.Assert.assertEquals
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
+import org.hamcrest.MatcherAssert
+import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -40,7 +42,7 @@ class SporsmalControllerTest : Spek({
                 handleRequest(HttpMethod.Get, "/sporsmal/ubehandlet") {
 
                 }.apply {
-                    assertEquals(HttpStatusCode.OK, response.status())
+                    MatcherAssert.assertThat(response.status(), Matchers.`is`(HttpStatusCode.OK))
                     verify(exactly = 1) { henvendelseService.hentAlleHenvendelser(any()) }
                 }
             }

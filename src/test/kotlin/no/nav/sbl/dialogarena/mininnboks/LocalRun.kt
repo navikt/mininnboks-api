@@ -1,26 +1,30 @@
 package no.nav.sbl.dialogarena.mininnboks
 
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-val log: Logger = LoggerFactory.getLogger("mininnboks.Application")
-data class ApplicationState(var running: Boolean = true, var initialized: Boolean = false)
+private val log = LoggerFactory.getLogger("mininnboks-api.LocalRun")
 
-fun main() {
-    val configuration = Configuration()
+fun runLocally(useAuthentication: Boolean) {
+
     val applicationState = ApplicationState()
+
 
     val applicationServer = createHttpServer(
             applicationState = applicationState,
-            configuration = configuration,
-            useAuthentication = true
+            port = 8081,
+            configuration = Configuration(),
+            useAuthentication = false
     )
 
     Runtime.getRuntime().addShutdownHook(Thread {
         log.info("Shutdown hook called, shutting down gracefully")
         applicationState.initialized = false
-        applicationServer.stop(5000, 5000)
+        applicationServer.stop(1000, 1000)
     })
 
     applicationServer.start(wait = true)
+}
+
+fun main() {
+    runLocally(true)
 }

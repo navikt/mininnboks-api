@@ -43,10 +43,7 @@ repositories {
 
 dependencies {
 
-    implementation(platform("no.nav.common:mor-pom:$mor_pom_version"))
     implementation(platform("no.nav.common:bom:$mor_pom_version"))
-    implementation(platform(kotlin("bom", version = "$kotlin_version")))
-
     implementation(kotlin("stdlib"))
     implementation("no.nav.common:cxf")
     implementation("no.nav.common:auth")
