@@ -6,7 +6,7 @@ plugins {
 
 }
 
-val mainClassName = "io.ktor.server.netty.EngineMain"
+val mainClass = "no.nav.sbl.dialogarena.mininnboks.ApplicationKt"
 val ktor_version = "1.3.2"
 val kotlin_version = "1.3.72"
 val tjenestespec_version = "1.2020.06.16-14.51-3b45df54f90a"
@@ -26,6 +26,10 @@ buildscript {
     dependencies {
         classpath(kotlin("gradle-plugin", version = "1.3.72"))
     }
+}
+
+application {
+    mainClassName = mainClass.toString()
 }
 
 apply(plugin = "kotlin")
