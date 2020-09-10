@@ -134,7 +134,3 @@ task<Jar>("fatJar") {
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     with(tasks.jar.get() as CopySpec)
 }
-
-tasks.named<KotlinCompile>("compileKotlin") {
-    kotlinOptions.jvmTarget = "11"
-}
