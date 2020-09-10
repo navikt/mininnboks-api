@@ -36,7 +36,7 @@ jobs:
 
   build-and-push:
     name: Build and push Docker container
-    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/OPP-1208_mininnboks-api-ktor'
     env:
       TZ: Europe/Oslo
     runs-on: ubuntu-latest
