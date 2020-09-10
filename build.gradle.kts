@@ -122,3 +122,19 @@ tasks.test {
 
 }
 
+task<Jar>("fatJar") {
+    baseName = "app"
+
+    manifest {
+        attributes["Main-Class"] = mainClass
+        configurations.runtimeClasspath.get().joinToString(separator = " ") {
+            it.name
+        }
+    }
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    with(tasks.jar.get() as CopySpec)
+}
+
+tasks.named<KotlinCompile>("compileKotlin") {
+    kotlinOptions.jvmTarget = "11"
+}
