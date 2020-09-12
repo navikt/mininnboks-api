@@ -59,15 +59,11 @@ dependencies {
     implementation("no.nav.tjenestespesifikasjoner:send-inn-henvendelse:$tjenestespec_version")
     implementation("no.nav.tjenestespesifikasjoner:innsyn-henvendelse:$tjenestespec_version")
     implementation("no.nav.tjenestespesifikasjoner:person-v3-tjenestespesifikasjon:$tjenestespec_version")
-    implementation(kotlin("stdlib"))
     implementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     implementation("com.sun.xml.ws:jaxws-ri:2.3.3")
 
 
     //Ktor
-    implementation(kotlin("stdlib"))
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
-    implementation(kotlin("stdlib"))
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-core:$ktor_version")
@@ -125,8 +121,6 @@ tasks.test {
 
 tasks {
     named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
-       // archiveBaseName.set("app")
-       // archiveClassifier.set("")
         archiveFileName.set("app.jar")
 
 
@@ -139,9 +133,10 @@ tasks {
             include("bus-extensions.txt")
         }
 
-        exclude ("META-INF/*.SF")
+/*        exclude ("META-INF/*.SF")
         exclude ("META-INF/*.DSA")
         exclude ("META-INF/*.RSA")
+        */
 
     }
 
