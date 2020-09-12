@@ -87,8 +87,8 @@ dependencies {
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spek_version")
     testImplementation("io.mockk:mockk:1.9.3")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-api:5.4.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.4.2")
 
   compileOnly("org.projectlombok:lombok:1.18.4")
     annotationProcessor("org.projectlombok:lombok:1.18.4")
