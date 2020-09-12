@@ -133,10 +133,10 @@ tasks {
             include("bus-extensions.txt")
         }
 
-/*        exclude ("META-INF/*.SF")
+       exclude ("META-INF/*.SF")
         exclude ("META-INF/*.DSA")
         exclude ("META-INF/*.RSA")
-        */
+        
 
     }
 
