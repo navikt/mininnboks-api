@@ -58,7 +58,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-wrapper-
       - name: Build JAR
-        run: ./gradlew clean build fatJar -x test
+        run: ./gradlew clean build shadowJar -x test
       - name: Publish Docker image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

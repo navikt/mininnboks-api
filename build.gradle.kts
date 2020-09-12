@@ -2,11 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    id("application")
-
+    id ("com.github.johnrengelman.shadow") version "6.0.0"
 }
 
-val mainClass = "no.nav.sbl.dialogarena.mininnboks.ApplicationKt"
+val mainClassMinn = "no.nav.sbl.dialogarena.mininnboks.ApplicationKt"
+
 val ktor_version = "1.3.2"
 val kotlin_version = "1.3.72"
 val tjenestespec_version = "1.2020.06.16-14.51-3b45df54f90a"
@@ -25,11 +25,8 @@ buildscript {
     }
     dependencies {
         classpath(kotlin("gradle-plugin", version = "1.3.72"))
+        classpath( "com.github.jengelman.gradle.plugins:shadow:6.0.0")
     }
-}
-
-application {
-    mainClassName = mainClass.toString()
 }
 
 apply(plugin = "kotlin")
@@ -126,15 +123,27 @@ tasks.test {
 
 }
 
-task<Jar>("fatJar") {
-    baseName = "app"
+tasks {
+    named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+       // archiveBaseName.set("app")
+       // archiveClassifier.set("")
+        archiveFileName.set("app.jar")
 
-    manifest {
-        attributes["Main-Class"] = mainClass
-        configurations.runtimeClasspath.get().joinToString(separator = " ") {
-            it.name
-        }
+
+        manifest {
+            attributes["Main-Class"] = mainClassMinn
+
     }
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-    with(tasks.jar.get() as CopySpec)
+        mergeServiceFiles {
+            setPath("META-INF/cxf")
+            include("bus-extensions.txt")
+        }
+
+        exclude ("META-INF/*.SF")
+        exclude ("META-INF/*.DSA")
+        exclude ("META-INF/*.RSA")
+
+    }
+
 }
+
