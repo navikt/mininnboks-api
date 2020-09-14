@@ -14,6 +14,9 @@ spec:
   liveness:
     path: mininnboks-api/internal/isAlive
     initialDelay: 20
+    timeout: 1
+    periodSeconds: 5
+    failureThreshold: 10
   readiness:
     path: mininnboks-api/internal/isReady
   prometheus:
