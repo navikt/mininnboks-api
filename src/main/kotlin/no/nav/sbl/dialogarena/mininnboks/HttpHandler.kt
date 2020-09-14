@@ -12,13 +12,14 @@ import io.ktor.http.HttpMethod
 import io.ktor.jackson.JacksonConverter
 import io.ktor.metrics.dropwizard.DropwizardMetrics
 import io.ktor.request.path
+import io.ktor.routing.*
 import io.ktor.server.netty.Netty
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
-import io.ktor.routing.routing
 import io.prometheus.client.dropwizard.DropwizardExports
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.henvendelseController
+import no.nav.sbl.dialogarena.mininnboks.provider.rest.naisRoutes
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.resourcesController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang.tilgangController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.sporsmalController
@@ -72,10 +73,16 @@ fun createHttpServer(applicationState: ApplicationState,
             serviceConfig.personService())
 
     routing {
-        sporsmalController(henvendelseService, true)
-        henvendelseController(henvendelseService, tilgangService, true)
-        tilgangController(tilgangService)
-        resourcesController()
+        route("mininnboks-api") {
+            sporsmalController(henvendelseService, true)
+            henvendelseController(henvendelseService, tilgangService, true)
+            tilgangController(tilgangService)
+            resourcesController()
+
+            route("internal") {
+                naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
+            }
+        }
     }
 
     applicationState.initialized = true
