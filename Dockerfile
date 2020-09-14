@@ -18,7 +18,7 @@ ENV APP_NAME=mininnboks-api
 ENV JAVA_OPTS="${JAVA_OPTS} --add-opens java.base/jdk.internal.misc=ALL-UNNAMED"
 ENV JAVA_OPTS="${JAVA_OPTS} --add-opens java.base/java.nio=ALL-UNNAMED"
 ENV JAVA_OPTS="${JAVA_OPTS} -Dio.netty.tryReflectionSetAccessible=true"
-ENV JAVA_OPTS="${JAVA_OPTS} --illegal-access=deny"
+#ENV JAVA_OPTS="${JAVA_OPTS} --illegal-access=deny"
 ENV JAVA_OPTS="${JAVA_OPTS} -XX:MaxRAMPercentage=65.0"
 ENV JAVA_OPTS="${JAVA_OPTS} -XX:+IgnoreUnrecognizedVMOptions"
 
