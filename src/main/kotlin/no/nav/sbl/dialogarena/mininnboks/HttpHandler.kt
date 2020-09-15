@@ -29,7 +29,7 @@ import no.nav.sbl.dialogarena.mininnboks.JwtUtil.Companion as JwtUtil
 
 fun createHttpServer(applicationState: ApplicationState,
                      configuration: Configuration,
-                     port: Int = 8081,
+                     port: Int = 8080,
                      useAuthentication: Boolean): ApplicationEngine = embeddedServer(Netty, port) {
 
     install(StatusPages) {
