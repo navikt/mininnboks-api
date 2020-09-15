@@ -12,13 +12,13 @@ spec:
   ingresses:
   - https://mininnboks-api-{{ namespace }}.nais.oera-q.local
   liveness:
-    path: mininnboks-api/internal/isAlive
+    path: /internal/isAlive
     initialDelay: 20
     timeout: 1
     periodSeconds: 5
     failureThreshold: 10
   readiness:
-    path: mininnboks-api/internal/isReady
+    path: /internal/isReady
     initialDelay: 20
   prometheus:
     enabled: true

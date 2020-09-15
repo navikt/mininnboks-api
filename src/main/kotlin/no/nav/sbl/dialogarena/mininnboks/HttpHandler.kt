@@ -73,7 +73,6 @@ fun createHttpServer(applicationState: ApplicationState,
             serviceConfig.personService())
 
     routing {
-        route("mininnboks-api") {
             sporsmalController(henvendelseService, true)
             henvendelseController(henvendelseService, tilgangService, true)
             tilgangController(tilgangService)
@@ -82,9 +81,7 @@ fun createHttpServer(applicationState: ApplicationState,
             route("internal") {
                 naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
             }
-        }
     }
 
     applicationState.initialized = true
-
 }
