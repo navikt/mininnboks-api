@@ -17,9 +17,9 @@ jobs:
       - uses: actions/cache@v1
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-maven-cache-bust-${{ hashFiles('pom.xml') }}
+          key: ${{ runner.os }}-maven-cache-${{ hashFiles('pom.xml') }}
           restore-keys: |
-            ${{ runner.os }}-maven-cache-bust-
+            ${{ runner.os }}-maven-cache-
       - name: Build using maven
         run: |
           mvn -P ci -B verify --settings .github/maven-settings.xml
@@ -37,9 +37,9 @@ jobs:
       - uses: actions/cache@v1
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-maven-cache-bust-${{ hashFiles('pom.xml') }}
+          key: ${{ runner.os }}-maven-cache-${{ hashFiles('pom.xml') }}
           restore-keys: |
-            ${{ runner.os }}-maven-cache-bust-
+            ${{ runner.os }}-maven-cache-
       - name: Build using maven
         run: |
           mvn -P ci -B verify --settings .github/maven-settings.xml
