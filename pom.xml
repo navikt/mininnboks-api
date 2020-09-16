@@ -27,6 +27,12 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- overskriver nimbus version TODO kan fjernes når common bumpes til nyeste versjon -->
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>oauth2-oidc-sdk</artifactId>
+                <version>8.19.1</version>
+            </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-bom</artifactId>
@@ -62,7 +68,6 @@
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>oauth2-oidc-sdk</artifactId>
-            <version>6.23</version>
         </dependency>
 
         <!--Dialogarena tjenestespesifikasjon-->
