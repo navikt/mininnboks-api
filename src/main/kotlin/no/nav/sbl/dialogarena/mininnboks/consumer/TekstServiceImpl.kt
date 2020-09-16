@@ -1,33 +1,33 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
-import lombok.SneakyThrows
-import org.apache.cxf.helpers.FileUtils
-import java.io.File
-import java.net.URL
+import java.net.URI
+import java.nio.file.*
+import java.nio.file.attribute.BasicFileAttributes
 import java.util.*
 import java.util.regex.Pattern
+
 
 class TekstServiceImpl : TekstService {
     private val tekster: MutableMap<String?, String?> = HashMap()
 
-    @SneakyThrows
     private fun lastTekster() {
-        val resources = TekstServiceImpl::class.java.classLoader.getResources("tekster/mininnboks")
-        Collections.list(resources).stream().map { obj: URL -> obj.file }.map(::File).forEach { file: File -> this.lastTekster(file) }
-    }
-
-    @SneakyThrows
-    private fun lastTekster(file: File) {
-        if (file.isDirectory) {
-            Arrays.stream(file.listFiles()).forEach(this::lastTekster)
-        } else {
-            tekster[finnKey(file)] = FileUtils.getStringFromFile(file).trim { it <= ' ' }
+        val uri: URI? = TekstServiceImpl::class.java.classLoader?.getResource("tekster/mininnboks")?.toURI()
+        println("Starting from: $uri")
+        (if (uri?.scheme == "jar") FileSystems.newFileSystem(uri, Collections.emptyMap<String, Any>()) else null).use { fileSystem ->
+            val myPath: Path = Paths.get(uri!!)
+            Files.walkFileTree(myPath, object : SimpleFileVisitor<Path>() {
+                override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
+                    tekster[finnKey(file)] = Files.readString(file).trim { it <= ' ' }
+                    System.out.println(file)
+                    return FileVisitResult.CONTINUE
+                }
+            })
         }
     }
 
-    private fun finnKey(tekstFil: File): String {
-        val fileName = tekstFil.name
-        val matcher = Pattern.compile("(.*)_nb.(txt|html)").matcher(fileName)
+    private fun finnKey(tekstFil: Path): String {
+        val fileName = tekstFil.fileName
+        val matcher = Pattern.compile("(.*)_nb.(txt|html)").matcher(fileName.toString())
         check(matcher.find()) { fileName }
         return matcher.group(1)
     }
