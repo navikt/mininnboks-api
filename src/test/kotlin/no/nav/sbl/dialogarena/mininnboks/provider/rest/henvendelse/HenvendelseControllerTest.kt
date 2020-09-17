@@ -14,10 +14,9 @@ import io.ktor.server.testing.TestApplicationEngine
 import io.ktor.server.testing.createTestEnvironment
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
+import io.mockk.*
 import io.mockk.every
-import io.mockk.mockk
-import io.mockk.slot
-import io.mockk.verify
+import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
@@ -45,6 +44,7 @@ class HenvendelseControllerTest : Spek({
 
         val service = mockk<HenvendelseService>(relaxed = true)
         val tilgangService = mockk<TilgangService>()
+        val subject = mockk<Subject>()
         val mapper = jacksonObjectMapper()
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -74,7 +74,7 @@ class HenvendelseControllerTest : Spek({
                         Henvendelse("123").withType(Henvendelsetype.SPORSMAL_SKRIFTLIG).withTraadId("1").withOpprettetTid(TestUtils.now()),
                         Henvendelse("234").withType(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG).withTraadId("1").withOpprettetTid(TestUtils.now())
                 )
-                every { service.hentAlleHenvendelser(any()) } returns lstHenvendelserBehandlingskjedeMedDelsvar
+                coEvery { service.hentAlleHenvendelser(any()) } returns lstHenvendelserBehandlingskjedeMedDelsvar
                 handleRequest(HttpMethod.Get, "/traader") {
                 }.apply {
                     MatcherAssert.assertThat(response.content, not(stringContainsInOrder(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG.name))
@@ -113,7 +113,7 @@ class HenvendelseControllerTest : Spek({
             }
 
             it("gir Statuskode Ikke Funnet Hvis Henvendelse Service Gir Soap Fault") {
-                every { service.hentTraad(any()) } throws SOAPFaultException(SOAPFactory.newInstance().createFault("Error", QName.valueOf("")))
+                coEvery { service.hentTraad(any(), any()) } throws SOAPFaultException(SOAPFactory.newInstance().createFault("Error", QName.valueOf("")))
 
                 handleRequest(HttpMethod.Get, "/traader/1") {
                 }.apply {
@@ -125,7 +125,7 @@ class HenvendelseControllerTest : Spek({
             it("markering Som Lest") {
                 handleRequest(HttpMethod.Post, "/traader/lest/1") {
                 }.apply {
-                    verify(exactly = 1) { service.merkSomLest("1") }
+                    coVerify (exactly = 1) { service.merkSomLest( "1", any()) }
                 }
 
             }
@@ -133,7 +133,7 @@ class HenvendelseControllerTest : Spek({
             it("markering Alle Som Lest") {
                 handleRequest(HttpMethod.Post, "/traader/allelest/1") {
                 }.apply {
-                    verify(exactly = 1) { service.merkAlleSomLest("1") }
+                    coVerify(exactly = 1) { service.merkAlleSomLest("1", any()) }
                 }
 
             }
@@ -184,7 +184,7 @@ class HenvendelseControllerTest : Spek({
                 henvendelse2.opprettet = TestUtils.now()
                 val henvendelser = listOf(henvendelse1, henvendelse2)
 
-                every { service.hentTraad(any()) } returns (henvendelser)
+                coEvery { service.hentTraad(any(), any()) } returns (henvendelser)
 
                 handleRequest(HttpMethod.Post, "/traader/svar") {
 
@@ -198,7 +198,7 @@ class HenvendelseControllerTest : Spek({
                     setBody(mapper.writeValueAsString(svar))
                 }.apply {
                     val henvendelseArgumentCaptor = slot<Henvendelse>()
-                    verify { service.sendSvar(capture(henvendelseArgumentCaptor), any()) }
+                    coVerify { service.sendSvar(capture(henvendelseArgumentCaptor), any()) }
                     MatcherAssert.assertThat(henvendelseArgumentCaptor.captured.erTilknyttetAnsatt, Is.`is`(true))
                 }
 
@@ -214,7 +214,7 @@ class HenvendelseControllerTest : Spek({
                 val henvendelse2 = Henvendelse("2")
                 henvendelse2.opprettet = TestUtils.now()
                 henvendelse2.type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE
-                every { service.hentTraad(any()) } returns (listOf(henvendelse1, henvendelse2))
+                coEvery { service.hentTraad(any(), any()) } returns (listOf(henvendelse1, henvendelse2))
                 handleRequest(HttpMethod.Post, "/traader/svar") {
 
                     addHeader("Content-Type", "application/json; charset=utf8")
@@ -225,14 +225,14 @@ class HenvendelseControllerTest : Spek({
                     setBody(mapper.writeValueAsString(svar))
                 }.apply {
                     val henvendelseArgumentCaptor = slot<Henvendelse>()
-                    verify { service.sendSvar(capture(henvendelseArgumentCaptor), any()) }
+                    coVerify { service.sendSvar(capture(henvendelseArgumentCaptor), any()) }
 
                     MatcherAssert.assertThat(henvendelseArgumentCaptor.captured.brukersEnhet, Is.`is`(brukersEnhet))
                 }
             }
 
             it("sender Ikke Funnet Naar Traad Optional Ikke Er Present") {
-                every { service.hentTraad(any()) } returns emptyList()
+                coEvery { service.hentTraad(any(), any()) } returns emptyList()
                 handleRequest(HttpMethod.Post, "/traader/svar") {
 
                     addHeader("Content-Type", "application/json; charset=utf8")
@@ -365,14 +365,15 @@ fun setUp(service: HenvendelseService, tilgangService: TilgangService) {
     )
 
     val slot = slot<String>()
-    every { service.hentAlleHenvendelser(any()) } returns henvendelser
-    every { service.hentTraad(capture(slot)) } answers {
+    coEvery { service.hentAlleHenvendelser(any()) } returns henvendelser
+    coEvery { service.hentTraad(capture(slot), any()) } answers {
         val traadId = slot.captured
         henvendelser.stream()
                 .filter { henvendelse: Henvendelse? -> traadId == henvendelse!!.traadId }
                 .collect(Collectors.toList())
     }
-    every { service.sendSvar(any(), any()) } returns (
+
+    coEvery { service.sendSvar(any(), any()) } returns (
             WSSendInnHenvendelseResponse().withBehandlingsId(UUID.randomUUID().toString())
             )
 }

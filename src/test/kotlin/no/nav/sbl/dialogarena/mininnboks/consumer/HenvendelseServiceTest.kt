@@ -4,7 +4,11 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
+import no.nav.common.auth.subject.IdentType
+import no.nav.common.auth.subject.SsoToken
+import no.nav.common.auth.subject.Subject
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*
+import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService.Companion.KONTAKT_NAV_SAKSTEMA
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType
@@ -34,6 +38,7 @@ class HenvendelseServiceTest {
     private val personService: PersonService? = mockk()
     private val tekstService: TekstService = mockk()
     private var henvendelseService: HenvendelseService? = mockk()
+    private val subject = Subject("123", IdentType.EksternBruker, SsoToken.oidcToken("fnr", emptyMap<String, Any>()))
 
     val FNR = "fnr"
     val TEMAGRUPPE = Temagruppe.ARBD
@@ -59,9 +64,9 @@ class HenvendelseServiceTest {
 
 
     @Test
-    fun `sender Inn Sporsmal Med Riktige Felter`() {
+    suspend fun `sender Inn Sporsmal Med Riktige Felter`() {
         val henvendelse = Henvendelse(FRITEKST, TEMAGRUPPE)
-        henvendelseService!!.stillSporsmal(henvendelse, FNR)
+        henvendelseService!!.stillSporsmal(henvendelse, subject)
         verify { sendInnHenvendelsePortType?.sendInnHenvendelse(capture(sendInnHenvendelseRequestArgumentCaptor)) }
         val request = sendInnHenvendelseRequestArgumentCaptor.captured
         MatcherAssert.assertThat(request.type, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name))
@@ -70,7 +75,7 @@ class HenvendelseServiceTest {
         MatcherAssert.assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name))
         MatcherAssert.assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
         MatcherAssert.assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
-        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.Default.KONTAKT_NAV_SAKSTEMA))
+        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
         MatcherAssert.assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(Matchers.nullValue()))
         MatcherAssert.assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
         val meldingFraBruker = xmlHenvendelse.metadataListe.metadata[0] as XMLMeldingFraBruker
@@ -79,9 +84,9 @@ class HenvendelseServiceTest {
     }
 
     @Test
-    fun `sender Inn Direkte Sporsmal Med Riktige Felter`() {
+    suspend fun `sender Inn Direkte Sporsmal Med Riktige Felter`() {
         val henvendelse = Henvendelse(FRITEKST, TEMAGRUPPE)
-        henvendelseService!!.stillSporsmalDirekte(henvendelse, FNR)
+        henvendelseService!!.stillSporsmalDirekte(henvendelse, subject)
         verify { sendInnHenvendelsePortType?.sendInnHenvendelse(capture(sendInnHenvendelseRequestArgumentCaptor)) }
         val request = sendInnHenvendelseRequestArgumentCaptor.captured
         MatcherAssert.assertThat(request.type, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name))
@@ -90,7 +95,7 @@ class HenvendelseServiceTest {
         MatcherAssert.assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name))
         MatcherAssert.assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
         MatcherAssert.assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
-        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.Default.KONTAKT_NAV_SAKSTEMA))
+        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
         MatcherAssert.assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(Matchers.nullValue()))
         MatcherAssert.assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
         val meldingFraBruker = xmlHenvendelse.metadataListe.metadata[0] as XMLMeldingFraBruker
@@ -99,7 +104,7 @@ class HenvendelseServiceTest {
     }
 
     @Test
-    fun `sender Inn Svar Med Riktige Felter`() {
+    suspend fun `sender Inn Svar Med Riktige Felter`() {
         val henvendelse = Henvendelse(FRITEKST, TEMAGRUPPE)
         henvendelse.traadId = TRAAD_ID
         henvendelse.eksternAktor = EKSTERN_AKTOR
@@ -107,7 +112,7 @@ class HenvendelseServiceTest {
         henvendelse.tilknyttetEnhet = TILKNYTTET_ENHET
         henvendelse.erTilknyttetAnsatt = ER_TILKNYTTET_ANSATT
         henvendelse.kontorsperreEnhet = KONTORSPERRE_ENHET
-        henvendelseService!!.sendSvar(henvendelse, FNR)
+        henvendelseService!!.sendSvar(henvendelse, subject)
         verify {
             sendInnHenvendelsePortType?.sendInnHenvendelse(capture(sendInnHenvendelseRequestArgumentCaptor))
         }
@@ -118,7 +123,7 @@ class HenvendelseServiceTest {
         MatcherAssert.assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name))
         MatcherAssert.assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
         MatcherAssert.assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
-        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.Default.KONTAKT_NAV_SAKSTEMA))
+        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
         MatcherAssert.assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(TRAAD_ID))
         MatcherAssert.assertThat(xmlHenvendelse.eksternAktor, Matchers.`is`(EKSTERN_AKTOR))
         MatcherAssert.assertThat(xmlHenvendelse.tilknyttetEnhet, Matchers.`is`(TILKNYTTET_ENHET))
@@ -131,16 +136,16 @@ class HenvendelseServiceTest {
     }
 
     @Test
-    fun `spor Om Riktig Fodselsnummer Naar Den Henter Alle`() {
-        henvendelseService!!.hentAlleHenvendelser(FNR)
+    suspend fun `spor Om Riktig Fodselsnummer Naar Den Henter Alle`() {
+        henvendelseService!!.hentAlleHenvendelser(subject)
         verify { henvendelsePortType?.hentHenvendelseListe(capture(hentHenvendelseListeRequestArgumentCaptor)) }
         val request = hentHenvendelseListeRequestArgumentCaptor.captured
         MatcherAssert.assertThat(request.fodselsnummer, Matchers.`is`(FNR))
     }
 
     @Test
-    fun `spor Om Alle Henvendelsestyper Naar Den Henter Alle`() {
-        henvendelseService!!.hentAlleHenvendelser(FNR)
+    suspend fun `spor Om Alle Henvendelsestyper Naar Den Henter Alle`() {
+        henvendelseService!!.hentAlleHenvendelser(subject)
         verify {
             henvendelsePortType?.hentHenvendelseListe(capture(hentHenvendelseListeRequestArgumentCaptor)) }
             val request = hentHenvendelseListeRequestArgumentCaptor.captured
@@ -180,16 +185,16 @@ class HenvendelseServiceTest {
 
 
     @Test
-    fun `hent Traad Som Inne holder Delsvar`() {
+    suspend fun `hent Traad Som Inne holder Delsvar`() {
         every { henvendelsePortType!!.hentBehandlingskjede(any()) } returns WSHentBehandlingskjedeResponse().withAny(mockBehandlingskjedeMedDelsvar())
-        henvendelseService!!.hentTraad(TRAAD_ID)
+        henvendelseService!!.hentTraad(TRAAD_ID, subject)
     }
 
     @Test
-    fun `hent Alle Henvendelser Henter Delsvar`() {
+    suspend fun `hent Alle Henvendelser Henter Delsvar`() {
         val argumentCaptor = slot<WSHentHenvendelseListeRequest>()
         every { henvendelsePortType!!.hentHenvendelseListe(capture(argumentCaptor)) } returns WSHentHenvendelseListeResponse()
-        henvendelseService!!.hentAlleHenvendelser(FNR)
+        henvendelseService!!.hentAlleHenvendelser(subject)
         MatcherAssert.assertThat(argumentCaptor.captured.typer, Matchers.hasItem(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name))
     }
 }

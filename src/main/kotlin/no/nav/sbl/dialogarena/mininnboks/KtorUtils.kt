@@ -12,7 +12,7 @@ import no.nav.common.auth.subject.SubjectHandler
 import no.nav.common.utils.fn.UnsafeSupplier
 
 suspend fun PipelineContext<Unit, ApplicationCall>.withSubject(block: suspend PipelineContext<Unit, ApplicationCall>.(Subject) -> Unit) {
-    this.call.principal<SubjectPrincipal>()
+    this.call.authentication.principal<SubjectPrincipal>()
             ?.subject
             ?.let { block(this, it) }
             ?: this.call.respond(HttpStatusCode.Forbidden, "Fant ikke subject")
@@ -21,4 +21,3 @@ suspend fun PipelineContext<Unit, ApplicationCall>.withSubject(block: suspend Pi
 suspend fun <T> externalCall(subject: Subject, block: () -> T): T = withContext(Dispatchers.IO) {
     SubjectHandler.withSubject(subject, UnsafeSupplier { block() })
 }
-

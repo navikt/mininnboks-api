@@ -9,8 +9,9 @@ import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.routing.route
+import no.nav.common.auth.subject.IdentType
+import no.nav.common.auth.subject.SsoToken
 import no.nav.common.auth.subject.Subject
-import no.nav.sbl.dialogarena.mininnboks.MockPayload
 import no.nav.sbl.dialogarena.mininnboks.SubjectPrincipal
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.withSubject
@@ -22,7 +23,8 @@ fun Route.conditionalAuthenticate(useAuthentication: Boolean, build: Route.() ->
     val route = createChild(AuthenticationRouteSelector(listOf<String?>(null)))
     route.insertPhaseAfter(ApplicationCallPipeline.Features, Authentication.AuthenticatePhase)
     route.intercept(Authentication.AuthenticatePhase) {
-        this.context.authentication.principal = JWTPrincipal(MockPayload("12345678910"))
+        val subject = Subject("1234", IdentType.EksternBruker, SsoToken.oidcToken("3434", emptyMap<String, Any>()))
+        this.context.authentication.principal = SubjectPrincipal(subject)
     }
     route.build()
     return route

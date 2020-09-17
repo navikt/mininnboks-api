@@ -12,13 +12,11 @@ class TekstServiceImpl : TekstService {
 
     private fun lastTekster() {
         val uri: URI? = TekstServiceImpl::class.java.classLoader?.getResource("tekster/mininnboks")?.toURI()
-        println("Starting from: $uri")
         (if (uri?.scheme == "jar") FileSystems.newFileSystem(uri, Collections.emptyMap<String, Any>()) else null).use { fileSystem ->
             val myPath: Path = Paths.get(uri!!)
             Files.walkFileTree(myPath, object : SimpleFileVisitor<Path>() {
                 override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
                     tekster[finnKey(file)] = Files.readString(file).trim { it <= ' ' }
-                    System.out.println(file)
                     return FileVisitResult.CONTINUE
                 }
             })

@@ -19,13 +19,13 @@ import org.joda.time.DateTime
 import java.util.stream.Collectors
 
 interface HenvendelseService {
-    suspend fun stillSporsmal(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse
-    suspend fun stillSporsmalDirekte(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse
-    suspend fun sendSvar(henvendelse: Henvendelse, uid: String?): WSSendInnHenvendelseResponse?
+    suspend fun stillSporsmal(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse
+    suspend fun stillSporsmalDirekte(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse
+    suspend fun sendSvar(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse?
     suspend fun hentAlleHenvendelser(subject: Subject): List<Henvendelse>
-    suspend fun hentTraad(subject: Subject, behandlingskjedeId: String?): List<Henvendelse>
-    suspend fun merkAlleSomLest(subject: Subject, behandlingskjedeId: String?)
-    suspend fun merkSomLest(id: String)
+    suspend fun hentTraad(behandlingskjedeId: String?, subject: Subject): List<Henvendelse>
+    suspend fun merkAlleSomLest(behandlingskjedeId: String?, subject: Subject)
+    suspend fun merkSomLest(id: String, subject: Subject)
 
     class Default(private val henvendelsePortType: HenvendelsePortType,
                   private val sendInnHenvendelsePortType: SendInnHenvendelsePortType,
@@ -33,18 +33,20 @@ interface HenvendelseService {
                   private val personService: PersonService) : HenvendelseService {
 
 
-        override suspend fun stillSporsmal(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse {
-            return stillSporsmal(henvendelse, fodselsnummer, XMLHenvendelseType.SPORSMAL_SKRIFTLIG)
+       override suspend fun stillSporsmal(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse {
+            return stillSporsmal(henvendelse, subject, XMLHenvendelseType.SPORSMAL_SKRIFTLIG)
         }
 
-        override suspend fun stillSporsmalDirekte(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse {
-            return stillSporsmal(henvendelse, fodselsnummer, XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE)
+        override suspend fun stillSporsmalDirekte(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse {
+            return stillSporsmal(henvendelse, subject, XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE)
         }
 
-        private fun stillSporsmal(henvendelse: Henvendelse, fodselsnummer: String, xmlHenvendelseType: XMLHenvendelseType): WSSendInnHenvendelseResponse {
+        private suspend fun stillSporsmal(henvendelse: Henvendelse, subject: Subject, xmlHenvendelseType: XMLHenvendelseType): WSSendInnHenvendelseResponse {
             val enhet = personService.hentGeografiskTilknytning().orElse(null)
             val sporsmaltekst = HenvendelsesUtils.cleanOutHtml(HenvendelsesUtils.fjernHardeMellomrom(henvendelse.fritekst))
-            val info = XMLHenvendelse()
+
+             return externalCall(subject){
+                val info = XMLHenvendelse()
                     .withHenvendelseType(xmlHenvendelseType.name)
                     .withOpprettetDato(DateTime.now())
                     .withAvsluttetDato(DateTime.now())
@@ -55,14 +57,15 @@ interface HenvendelseService {
                             XMLMeldingFraBruker()
                                     .withTemagruppe(henvendelse.temagruppe?.name)
                                     .withFritekst(sporsmaltekst)))
-            return sendInnHenvendelsePortType.sendInnHenvendelse(
+             sendInnHenvendelsePortType.sendInnHenvendelse(
                     WSSendInnHenvendelseRequest()
                             .withType(xmlHenvendelseType.name)
-                            .withFodselsnummer(fodselsnummer)
+                            .withFodselsnummer(subject.uid)
                             .withAny(info))
+            }
         }
 
-        override suspend fun sendSvar(henvendelse: Henvendelse, fodselsnummer: String?): WSSendInnHenvendelseResponse? {
+        override suspend fun sendSvar(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse? {
             val xmlHenvendelseType = XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name
             val svartekst = HenvendelsesUtils.cleanOutHtml(HenvendelsesUtils.fjernHardeMellomrom(henvendelse.fritekst))
             val info = XMLHenvendelse()
@@ -80,14 +83,16 @@ interface HenvendelseService {
                             XMLMeldingFraBruker()
                                     .withTemagruppe(henvendelse.temagruppe!!.name)
                                     .withFritekst(svartekst)))
-            return sendInnHenvendelsePortType.sendInnHenvendelse(WSSendInnHenvendelseRequest()
-                    .withType(xmlHenvendelseType)
-                    .withFodselsnummer(fodselsnummer)
-                    .withAny(info))
+            return externalCall(subject) {
+                sendInnHenvendelsePortType.sendInnHenvendelse(WSSendInnHenvendelseRequest()
+                        .withType(xmlHenvendelseType)
+                        .withFodselsnummer(subject.uid)
+                        .withAny(info))
+            }
         }
 
-        override suspend fun merkAlleSomLest(subject: Subject, behandlingskjedeId: String?) {
-            val traad = hentTraad(subject, behandlingskjedeId)
+        override suspend fun merkAlleSomLest( behandlingskjedeId: String?, subject: Subject) {
+            val traad = hentTraad( behandlingskjedeId, subject)
             val ids = traad.stream()
                     .filter { henvendelse: Henvendelse -> !henvendelse.isLest }
                     .map { henvendelse: Henvendelse -> henvendelse.id }
@@ -95,8 +100,10 @@ interface HenvendelseService {
             innsynHenvendelsePortType.merkSomLest(ids)
         }
 
-        override suspend fun merkSomLest(id: String) {
-            innsynHenvendelsePortType.merkSomLest(listOf(id))
+        override suspend fun merkSomLest(id: String, subject: Subject) {
+            externalCall(subject) {
+                innsynHenvendelsePortType.merkSomLest(listOf(id))
+            }
         }
 
         override suspend fun hentAlleHenvendelser(subject: Subject): List<Henvendelse> {
@@ -130,7 +137,7 @@ interface HenvendelseService {
                     .collect(Collectors.toList())
         }
 
-        override suspend fun hentTraad(subject: Subject, behandlingskjedeId: String?): List<Henvendelse> {
+        override suspend fun hentTraad(behandlingskjedeId: String?, subject: Subject): List<Henvendelse> {
             val wsBehandlingskjeder = externalCall(subject) {
                 henvendelsePortType.hentBehandlingskjede(WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).any
             }
