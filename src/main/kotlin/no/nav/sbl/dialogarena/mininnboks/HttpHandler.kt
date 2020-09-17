@@ -48,7 +48,7 @@ fun createHttpServer(applicationState: ApplicationState,
             jwt {
                 authHeader(JwtUtil::useJwtFromCookie)
                 verifier(configuration.jwksUrl, configuration.jwtIssuer)
-                validate { JwtUtil.validateJWT(it) }
+                validate { JwtUtil.validateJWT(this, it) }
             }
         }
     }

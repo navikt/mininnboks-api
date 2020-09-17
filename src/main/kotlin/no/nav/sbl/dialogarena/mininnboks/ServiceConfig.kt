@@ -82,7 +82,6 @@ class ServiceConfig(val configuration: Configuration) {
     }
 
     private fun henvendelse(): HenvendelsePortType {
-
         return CXFClient<HenvendelsePortType>(HenvendelsePortType::class.java)
                 .address(configuration.HENVENDELSE_WS_URL)
                 .configureStsForSubject(stsConfig())

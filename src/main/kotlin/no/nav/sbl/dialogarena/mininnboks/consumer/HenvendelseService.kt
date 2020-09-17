@@ -1,11 +1,13 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
+import no.nav.common.auth.subject.Subject
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelseType
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.utils.HenvendelsesUtils
+import no.nav.sbl.dialogarena.mininnboks.externalCall
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseRequest
@@ -14,17 +16,16 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.Henvendels
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentBehandlingskjedeRequest
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest
 import org.joda.time.DateTime
-import java.util.*
 import java.util.stream.Collectors
 
 interface HenvendelseService {
-    fun stillSporsmal(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse
-    fun stillSporsmalDirekte(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse
-    fun sendSvar(henvendelse: Henvendelse, uid: String?): WSSendInnHenvendelseResponse?
-    fun hentAlleHenvendelser(fodselsnummer: String?): List<Henvendelse>
-    fun hentTraad(behandlingskjedeId: String?): List<Henvendelse>
-    fun merkAlleSomLest(behandlingskjedeId: String?)
-    fun merkSomLest(id: String)
+    suspend fun stillSporsmal(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse
+    suspend fun stillSporsmalDirekte(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse
+    suspend fun sendSvar(henvendelse: Henvendelse, uid: String?): WSSendInnHenvendelseResponse?
+    suspend fun hentAlleHenvendelser(subject: Subject): List<Henvendelse>
+    suspend fun hentTraad(subject: Subject, behandlingskjedeId: String?): List<Henvendelse>
+    suspend fun merkAlleSomLest(subject: Subject, behandlingskjedeId: String?)
+    suspend fun merkSomLest(id: String)
 
     class Default(private val henvendelsePortType: HenvendelsePortType,
                   private val sendInnHenvendelsePortType: SendInnHenvendelsePortType,
@@ -32,11 +33,11 @@ interface HenvendelseService {
                   private val personService: PersonService) : HenvendelseService {
 
 
-        override fun stillSporsmal(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse {
+        override suspend fun stillSporsmal(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse {
             return stillSporsmal(henvendelse, fodselsnummer, XMLHenvendelseType.SPORSMAL_SKRIFTLIG)
         }
 
-        override fun stillSporsmalDirekte(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse {
+        override suspend fun stillSporsmalDirekte(henvendelse: Henvendelse, fodselsnummer: String): WSSendInnHenvendelseResponse {
             return stillSporsmal(henvendelse, fodselsnummer, XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE)
         }
 
@@ -61,7 +62,7 @@ interface HenvendelseService {
                             .withAny(info))
         }
 
-        override fun sendSvar(henvendelse: Henvendelse, fodselsnummer: String?): WSSendInnHenvendelseResponse? {
+        override suspend fun sendSvar(henvendelse: Henvendelse, fodselsnummer: String?): WSSendInnHenvendelseResponse? {
             val xmlHenvendelseType = XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name
             val svartekst = HenvendelsesUtils.cleanOutHtml(HenvendelsesUtils.fjernHardeMellomrom(henvendelse.fritekst))
             val info = XMLHenvendelse()
@@ -80,13 +81,13 @@ interface HenvendelseService {
                                     .withTemagruppe(henvendelse.temagruppe!!.name)
                                     .withFritekst(svartekst)))
             return sendInnHenvendelsePortType.sendInnHenvendelse(WSSendInnHenvendelseRequest()
-                            .withType(xmlHenvendelseType)
-                            .withFodselsnummer(fodselsnummer)
-                            .withAny(info))
+                    .withType(xmlHenvendelseType)
+                    .withFodselsnummer(fodselsnummer)
+                    .withAny(info))
         }
 
-        override fun merkAlleSomLest(behandlingskjedeId: String?) {
-            val traad = hentTraad(behandlingskjedeId)
+        override suspend fun merkAlleSomLest(subject: Subject, behandlingskjedeId: String?) {
+            val traad = hentTraad(subject, behandlingskjedeId)
             val ids = traad.stream()
                     .filter { henvendelse: Henvendelse -> !henvendelse.isLest }
                     .map { henvendelse: Henvendelse -> henvendelse.id }
@@ -94,11 +95,11 @@ interface HenvendelseService {
             innsynHenvendelsePortType.merkSomLest(ids)
         }
 
-        override fun merkSomLest(id: String) {
+        override suspend fun merkSomLest(id: String) {
             innsynHenvendelsePortType.merkSomLest(listOf(id))
         }
 
-        override fun hentAlleHenvendelser(fodselsnummer: String?): List<Henvendelse> {
+        override suspend fun hentAlleHenvendelser(subject: Subject): List<Henvendelse> {
             val typer = listOf(
                     XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name,
                     XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name,
@@ -113,27 +114,33 @@ interface HenvendelseService {
                     XMLHenvendelseType.DOKUMENT_VARSEL.name,
                     XMLHenvendelseType.OPPGAVE_VARSEL.name,
                     XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name)
-            val wsHenvendelser = henvendelsePortType.hentHenvendelseListe(
-                            WSHentHenvendelseListeRequest()
-                                    .withFodselsnummer(fodselsnummer)
-                                    .withTyper(typer))
-                    .any
-                    .stream()
-                    .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
+
+            val wsHenvendelser = externalCall(subject) {
+                henvendelsePortType.hentHenvendelseListe(
+                        WSHentHenvendelseListeRequest()
+                                .withFodselsnummer(subject.uid)
+                                .withTyper(typer))
+                        .any
+                        .stream()
+                        .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
+            }
+
             return wsHenvendelser
                     .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
                     .collect(Collectors.toList())
         }
 
-        override fun hentTraad(behandlingskjedeId: String?): List<Henvendelse> {
-            val wsBehandlingskjeder = henvendelsePortType.hentBehandlingskjede(WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).any
+        override suspend fun hentTraad(subject: Subject, behandlingskjedeId: String?): List<Henvendelse> {
+            val wsBehandlingskjeder = externalCall(subject) {
+                henvendelsePortType.hentBehandlingskjede(WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).any
+            }
             return wsBehandlingskjeder
                     .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
                     .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         }
+    }
 
-        companion object {
-            const val KONTAKT_NAV_SAKSTEMA = "KNA"
-        }
+    companion object {
+        const val KONTAKT_NAV_SAKSTEMA = "KNA"
     }
 }

@@ -9,9 +9,11 @@ import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.routing.route
+import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.MockPayload
+import no.nav.sbl.dialogarena.mininnboks.SubjectPrincipal
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
-import javax.ws.rs.ForbiddenException
+import no.nav.sbl.dialogarena.mininnboks.withSubject
 
 fun Route.conditionalAuthenticate(useAuthentication: Boolean, build: Route.() -> Unit): Route {
     if (useAuthentication) {
@@ -31,22 +33,18 @@ fun Route.sporsmalController(henvendelseService: HenvendelseService, useAuthenti
 
     conditionalAuthenticate(useAuthentication) {
         route("/sporsmal") {
-
             get("/ubehandlet") {
-                val fnr = call.getIdentifikator()
-                call.respond(
-                        henvendelseService.hentAlleHenvendelser(fnr)
-                                .map { UbehandletMeldingUtils::hentUbehandledeMeldinger }
-                                ?: throw ForbiddenException("Fant ikke subjecthandler-ident"))
-
+                withSubject { subject ->
+                    call.respond(
+                            henvendelseService.hentAlleHenvendelser(subject)
+                                    .map { UbehandletMeldingUtils::hentUbehandledeMeldinger }
+                    )
+                }
             }
         }
     }
 }
 
-fun ApplicationCall.getIdentifikator(): String? {
-    return this.principal<JWTPrincipal>()
-            ?.payload
-            ?.subject
+fun ApplicationCall.getIdentifikator(): Subject? {
+    return this.principal<SubjectPrincipal>()?.subject
 }
-

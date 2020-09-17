@@ -9,6 +9,9 @@ import io.ktor.auth.Principal
 import io.ktor.auth.jwt.JWTCredential
 import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.http.auth.HttpAuthHeader
+import no.nav.common.auth.subject.IdentType
+import no.nav.common.auth.subject.SsoToken
+import no.nav.common.auth.subject.Subject
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.util.*
@@ -35,10 +38,15 @@ class JwtUtil {
                         .rateLimited(10, 1, TimeUnit.MINUTES)
                         .build()
 
-        fun validateJWT(credentials: JWTCredential): Principal? {
+        fun validateJWT(call: ApplicationCall, credentials: JWTCredential): Principal? {
             return try {
                 requireNotNull(credentials.payload.audience) { "Audience not present" }
-                JWTPrincipal(credentials.payload)
+                val token = call.request.cookies["selvbetjening-idtoken"]
+                SubjectPrincipal(Subject(
+                        credentials.payload.subject,
+                        IdentType.EksternBruker,
+                        SsoToken.oidcToken(token, credentials.payload.claims)
+                ))
             } catch (e: Exception) {
                 logger.error("Failed to validate JWT token", e)
                 null
@@ -46,6 +54,8 @@ class JwtUtil {
         }
     }
 }
+
+class SubjectPrincipal(val subject: Subject) : Principal
 
 
 class MockPayload(val staticSubject: String) : Payload {
