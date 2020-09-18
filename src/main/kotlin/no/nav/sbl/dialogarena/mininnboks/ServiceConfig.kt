@@ -76,14 +76,14 @@ class ServiceConfig(val configuration: Configuration) {
 
     private fun sendInnHenvendelse(): SendInnHenvendelsePortType {
         return CXFClient<SendInnHenvendelsePortType>(SendInnHenvendelsePortType::class.java)
-                .address(configuration.SEND_INN_HENVENDELSE_WS_URL+"wsdl/SendInnHenvendelse.wsdl")
+                .address(configuration.SEND_INN_HENVENDELSE_WS_URL)
                 .configureStsForSubject(stsConfig())
                 .build()
     }
 
     private fun henvendelse(): HenvendelsePortType {
         return CXFClient<HenvendelsePortType>(HenvendelsePortType::class.java)
-                .address(configuration.HENVENDELSE_WS_URL + "wsdl/Henvendelse.wsdl")
+                .address(configuration.HENVENDELSE_WS_URL)
                 .configureStsForSubject(stsConfig())
                 .build()
     }
