@@ -93,7 +93,7 @@ class ServiceConfig(val configuration: Configuration) {
     private fun innsynHenvendesle(): InnsynHenvendelsePortType {
         return CXFClient<InnsynHenvendelsePortType>(InnsynHenvendelsePortType::class.java)
                 .address(configuration.INNSYN_HENVENDELSE_WS_URL)
-                .wsdl("classpath:wsdl/InnsynHenvendelse.wsdl")
+               // .wsdl("classpath:wsdl/InnsynHenvendelse.wsdl")
                 .configureStsForSubject(stsConfig())
                 .build()
 
