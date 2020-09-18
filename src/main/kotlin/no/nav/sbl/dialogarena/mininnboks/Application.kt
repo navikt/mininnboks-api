@@ -21,6 +21,7 @@ fun main() {
     loadVaultSecrets()
     loadApigwKeys()
     val configuration = Configuration()
+    println("Configuration:" + configuration.toString())
     val applicationState = ApplicationState()
 
     val applicationServer = createHttpServer(
