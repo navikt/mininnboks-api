@@ -76,8 +76,8 @@ class ServiceConfig(val configuration: Configuration) {
 
     private fun sendInnHenvendelse(): SendInnHenvendelsePortType {
         return CXFClient<SendInnHenvendelsePortType>(SendInnHenvendelsePortType::class.java)
-                .wsdl("classpath:wsdl/SendInnHenvendelse.wsdl")
                 .address(configuration.SEND_INN_HENVENDELSE_WS_URL)
+                .wsdl("classpath:wsdl/SendInnHenvendelse.wsdl")
                 .configureStsForSubject(stsConfig())
                 .build()
     }
