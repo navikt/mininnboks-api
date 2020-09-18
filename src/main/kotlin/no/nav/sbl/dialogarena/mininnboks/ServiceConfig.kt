@@ -76,7 +76,8 @@ class ServiceConfig(val configuration: Configuration) {
 
     private fun sendInnHenvendelse(): SendInnHenvendelsePortType {
         return CXFClient<SendInnHenvendelsePortType>(SendInnHenvendelsePortType::class.java)
-                .address(configuration.SEND_INN_HENVENDELSE_WS_URL+"wsdl/SendInnHenvendelse.wsdl")
+                .wsdl("classpath:wsdl/SendInnHenvendelse.wsdl")
+                .address(configuration.SEND_INN_HENVENDELSE_WS_URL)
                 .configureStsForSubject(stsConfig())
                 .build()
     }
@@ -84,6 +85,7 @@ class ServiceConfig(val configuration: Configuration) {
     private fun henvendelse(): HenvendelsePortType {
         return CXFClient<HenvendelsePortType>(HenvendelsePortType::class.java)
                 .address(configuration.HENVENDELSE_WS_URL)
+                .wsdl("classpath:wsdl/Henvendelse.wsdl")
                 .configureStsForSubject(stsConfig())
                 .build()
     }
@@ -91,6 +93,7 @@ class ServiceConfig(val configuration: Configuration) {
     private fun innsynHenvendesle(): InnsynHenvendelsePortType {
         return CXFClient<InnsynHenvendelsePortType>(InnsynHenvendelsePortType::class.java)
                 .address(configuration.INNSYN_HENVENDELSE_WS_URL)
+                .wsdl("classpath:wsdl/InnsynHenvendelse.wsdl")
                 .configureStsForSubject(stsConfig())
                 .build()
 
