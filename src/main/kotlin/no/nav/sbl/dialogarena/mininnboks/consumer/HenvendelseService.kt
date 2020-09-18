@@ -58,10 +58,10 @@ interface HenvendelseService {
                                     .withTemagruppe(henvendelse.temagruppe?.name)
                                     .withFritekst(sporsmaltekst)))
              sendInnHenvendelsePortType.sendInnHenvendelse(
-                    WSSendInnHenvendelseRequest()
-                            .withType(xmlHenvendelseType.name)
-                            .withFodselsnummer(subject.uid)
-                            .withAny(info))
+                     WSSendInnHenvendelseRequest()
+                             .withType(xmlHenvendelseType.name)
+                             .withFodselsnummer(subject.uid)
+                             .withAny(info))
             }
         }
 
@@ -91,8 +91,8 @@ interface HenvendelseService {
             }
         }
 
-        override suspend fun merkAlleSomLest( behandlingskjedeId: String?, subject: Subject) {
-            val traad = hentTraad( behandlingskjedeId, subject)
+        override suspend fun merkAlleSomLest(behandlingskjedeId: String?, subject: Subject) {
+            val traad = hentTraad(behandlingskjedeId, subject)
             val ids = traad.stream()
                     .filter { henvendelse: Henvendelse -> !henvendelse.isLest }
                     .map { henvendelse: Henvendelse -> henvendelse.id }
@@ -129,7 +129,7 @@ interface HenvendelseService {
                                 .withTyper(typer))
                         .any
                         .stream()
-                        .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
+                        .map { obj: Any? -> obj as XMLHenvendelse }
             }
 
             return wsHenvendelser
