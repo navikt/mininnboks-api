@@ -128,13 +128,12 @@ interface HenvendelseService {
                                 .withFodselsnummer(subject.uid)
                                 .withTyper(typer))
                         .any
-                        .stream()
                         .map { obj: Any? -> obj as XMLHenvendelse }
             }
 
             return wsHenvendelser
                     .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
-                    .collect(Collectors.toList())
+                   // .collect(Collectors.toList())
         }
 
         override suspend fun hentTraad(behandlingskjedeId: String?, subject: Subject): List<Henvendelse> {
