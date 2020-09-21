@@ -128,7 +128,7 @@ interface HenvendelseService {
                                 .withFodselsnummer(subject.uid)
                                 .withTyper(typer))
                         .any
-                        .map { obj: Any? -> obj as XMLHenvendelse }
+                        .map { obj  -> obj as XMLHenvendelse }
             }
 
             return wsHenvendelser
