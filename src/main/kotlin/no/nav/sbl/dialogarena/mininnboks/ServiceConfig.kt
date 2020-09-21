@@ -4,6 +4,10 @@ package no.nav.sbl.dialogarena.mininnboks
 import no.nav.common.cxf.CXFClient
 import no.nav.common.cxf.StsConfig
 import no.nav.common.rest.client.RestClient
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker
+import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
@@ -52,19 +56,19 @@ class ServiceConfig(val configuration: Configuration) {
 
 
     fun systemUserTokenProvider(): SystemuserTokenProvider {
-       // val stsApikey = EnvironmentUtils.getRequiredProperty(configuration.STS_APIKEY)
-       // val client = RestUtils.createClient().register(ApigwRequestFilter(stsApikey))
+        // val stsApikey = EnvironmentUtils.getRequiredProperty(configuration.STS_APIKEY)
+        // val client = RestUtils.createClient().register(ApigwRequestFilter(stsApikey))
         return fromTokenEndpoint(
                 configuration.STS_TOKENENDPOINT_URL,
                 configuration.FSS_SRVMININNBOKS_USERNAME,
-               configuration.FSS_SRVMININNBOKS_PASSWORD,
+                configuration.FSS_SRVMININNBOKS_PASSWORD,
                 RestClient.baseClientBuilder().build()
         )
     }
 
 
     fun pdlService(stsService: SystemuserTokenProvider?): PdlService {
-       // val pdlapiApikey = EnvironmentUtils.getRequiredProperty(configuration.PDL_API_APIKEY)
+        // val pdlapiApikey = EnvironmentUtils.getRequiredProperty(configuration.PDL_API_APIKEY)
         //val client = RestClient.baseClient().register(ApigwRequestFilter(pdlapiApikey))
         return PdlService(RestClient.baseClientBuilder().build(), stsService!!, configuration)
     }
@@ -78,6 +82,7 @@ class ServiceConfig(val configuration: Configuration) {
         return CXFClient<SendInnHenvendelsePortType>(SendInnHenvendelsePortType::class.java)
                 .address(configuration.SEND_INN_HENVENDELSE_WS_URL)
                 .wsdl("classpath:wsdl/SendInnHenvendelse.wsdl")
+                .timeout(5_000, 20_000)
                 .configureStsForSubject(stsConfig())
                 .build()
     }
@@ -87,14 +92,22 @@ class ServiceConfig(val configuration: Configuration) {
                 .address(configuration.HENVENDELSE_WS_URL)
                 .wsdl("classpath:wsdl/Henvendelse.wsdl")
                 .configureStsForSubject(stsConfig())
+                .timeout(5_000, 20_000)
+                .withProperty("jaxb.additionalContextClasses", arrayOf<Class<*>>(
+                        XMLHenvendelse::class.java,
+                        XMLMetadataListe::class.java,
+                        XMLMeldingFraBruker::class.java,
+                        XMLMeldingTilBruker::class.java)
+                )
                 .build()
     }
 
     private fun innsynHenvendesle(): InnsynHenvendelsePortType {
         return CXFClient<InnsynHenvendelsePortType>(InnsynHenvendelsePortType::class.java)
                 .address(configuration.INNSYN_HENVENDELSE_WS_URL)
-               // .wsdl("classpath:wsdl/InnsynHenvendelse.wsdl")
+                // .wsdl("classpath:wsdl/InnsynHenvendelse.wsdl")
                 .configureStsForSubject(stsConfig())
+                .timeout(5_000, 20_000)
                 .build()
 
     }
