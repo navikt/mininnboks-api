@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
@@ -53,13 +53,13 @@ class HenvendelseServiceTest {
     @BeforeEach
     fun setUp() {
         henvendelseService = HenvendelseService.Default(henvendelsePortType!!, sendInnHenvendelsePortType!!, innsynHenvendelsePortType!!, personService!!)
-        every { tekstService.hentTekst(any()) } returns "Tekst"
+        coEvery { tekstService.hentTekst(any()) } returns "Tekst"
         val henvendelseListe: MutableList<Any> = ArrayList()
         henvendelseListe.add(lagHenvendelse(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name))
-        every { henvendelsePortType.hentHenvendelseListe(any()) } returns
+        coEvery { henvendelsePortType.hentHenvendelseListe(any()) } returns
                 WSHentHenvendelseListeResponse().withAny(henvendelseListe)
-        every { sendInnHenvendelsePortType.sendInnHenvendelse(any()) } returns (WSSendInnHenvendelseResponse().withBehandlingsId("id"))
-        every { personService.hentGeografiskTilknytning() } returns Optional.of(BRUKER_ENHET)
+        coEvery { sendInnHenvendelsePortType.sendInnHenvendelse(any()) } returns (WSSendInnHenvendelseResponse().withBehandlingsId("id"))
+        coEvery { personService.hentGeografiskTilknytning(any()) } returns Optional.of(BRUKER_ENHET)
     }
 
 
@@ -186,14 +186,14 @@ class HenvendelseServiceTest {
 
     @Test
     suspend fun `hent Traad Som Inne holder Delsvar`() {
-        every { henvendelsePortType!!.hentBehandlingskjede(any()) } returns WSHentBehandlingskjedeResponse().withAny(mockBehandlingskjedeMedDelsvar())
+        coEvery { henvendelsePortType!!.hentBehandlingskjede(any()) } returns WSHentBehandlingskjedeResponse().withAny(mockBehandlingskjedeMedDelsvar())
         henvendelseService!!.hentTraad(TRAAD_ID, subject)
     }
 
     @Test
     suspend fun `hent Alle Henvendelser Henter Delsvar`() {
         val argumentCaptor = slot<WSHentHenvendelseListeRequest>()
-        every { henvendelsePortType!!.hentHenvendelseListe(capture(argumentCaptor)) } returns WSHentHenvendelseListeResponse()
+        coEvery { henvendelsePortType!!.hentHenvendelseListe(capture(argumentCaptor)) } returns WSHentHenvendelseListeResponse()
         henvendelseService!!.hentAlleHenvendelser(subject)
         MatcherAssert.assertThat(argumentCaptor.captured.typer, Matchers.hasItem(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name))
     }

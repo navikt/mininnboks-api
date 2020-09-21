@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.tilgang
 
-import io.mockk.every
+import com.nhaarman.mockitokotlin2.any
+import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
@@ -17,11 +18,11 @@ internal data class MockContext(
 
 class TilgangServiceTest {
     @Test
-    fun `gir FEILET om hentEnhet feiler`() {
+    suspend fun `gir FEILET om hentEnhet feiler`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        every {personService.hentGeografiskTilknytning() } throws IllegalStateException()
+        coEvery {personService.hentGeografiskTilknytning(any()) } throws IllegalStateException()
 
-        val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
+        val result = tilgangService.harTilgangTilKommunalInnsending(any())
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.FEILET)
         assertThat(result.melding).contains("brukers GT")
@@ -30,11 +31,11 @@ class TilgangServiceTest {
     }
 
     @Test
-    fun `gir INGEN_ENHET om bruker ikke har enhet`() {
+    suspend fun `gir INGEN_ENHET om bruker ikke har enhet`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        every {personService.hentGeografiskTilknytning() } returns Optional.empty()
+        coEvery {personService.hentGeografiskTilknytning(any()) } returns Optional.empty()
 
-        val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
+        val result = tilgangService.harTilgangTilKommunalInnsending(any())
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
@@ -43,11 +44,11 @@ class TilgangServiceTest {
     }
 
     @Test
-    fun `gir INGEN_ENHET om bruker ikke har GT`() {
+    suspend fun `gir INGEN_ENHET om bruker ikke har GT`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        every {personService.hentGeografiskTilknytning() } returns (Optional.empty())
+        coEvery {personService.hentGeografiskTilknytning(any()) } returns (Optional.empty())
 
-        val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
+        val result = tilgangService.harTilgangTilKommunalInnsending(any())
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
@@ -56,11 +57,11 @@ class TilgangServiceTest {
     }
 
     @Test
-    fun `gir INGEN_ENHET om bruker har GT utland`() {
+    suspend fun `gir INGEN_ENHET om bruker har GT utland`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        every {personService.hentGeografiskTilknytning() } returns (Optional.of("SWE"))
+        coEvery {personService.hentGeografiskTilknytning(any()) } returns (Optional.of("SWE"))
 
-        val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
+        val result = tilgangService.harTilgangTilKommunalInnsending(any())
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
@@ -69,12 +70,12 @@ class TilgangServiceTest {
     }
 
     @Test
-    fun `gir FEILET om pdl-api kall feiler`() {
+    suspend fun `gir FEILET om pdl-api kall feiler`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        every {personService.hentGeografiskTilknytning() } .returns (Optional.of("0123"))
-        every {pdlService.harKode6(any())} throws IllegalStateException()
+        coEvery {personService.hentGeografiskTilknytning(any()) } .returns (Optional.of("0123"))
+        coEvery {pdlService.harKode6(any())} throws IllegalStateException()
 
-        val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
+        val result = tilgangService.harTilgangTilKommunalInnsending(any())
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.FEILET)
         assertThat(result.melding).contains("brukers diskresjonskode")
@@ -82,24 +83,24 @@ class TilgangServiceTest {
     }
 
     @Test
-    fun `gir KODE6 om bruker har kode6`() {
+    suspend fun `gir KODE6 om bruker har kode6`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        every { personService.hentGeografiskTilknytning()}  returns (Optional.of("0123"))
-        every { pdlService.harKode6(any()) } returns  true
+        coEvery { personService.hentGeografiskTilknytning(any())}  returns (Optional.of("0123"))
+        coEvery { pdlService.harKode6(any()) } returns  true
 
-        val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
+        val result = tilgangService.harTilgangTilKommunalInnsending(any())
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.KODE6)
         assertThat(result.melding).contains("diskresjonskode")
     }
 
     @Test
-    fun `gir OK om bruker har har enhet og ikke kode6`() {
+    suspend fun `gir OK om bruker har har enhet og ikke kode6`() {
         val (pdlService, personService, tilgangService) = gittContext()
-        every {personService.hentGeografiskTilknytning() } returns (Optional.of("0123"))
-        every {pdlService.harKode6(any()) } returns false
+        coEvery {personService.hentGeografiskTilknytning(any()) } returns (Optional.of("0123"))
+        coEvery {pdlService.harKode6(any()) } returns false
 
-        val result = tilgangService.harTilgangTilKommunalInnsending("anyfnr")
+        val result = tilgangService.harTilgangTilKommunalInnsending(any())
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.OK)
     }

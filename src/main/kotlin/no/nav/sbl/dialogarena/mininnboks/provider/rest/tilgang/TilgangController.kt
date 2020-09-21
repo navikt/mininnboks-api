@@ -13,7 +13,7 @@ fun Route.tilgangController(tilgangService: TilgangService?) {
     route("/tilgang") {
         get("/oksos") {
             withSubject { subject ->
-                call.respond(tilgangService!!.harTilgangTilKommunalInnsending(subject.uid))
+                call.respond(tilgangService!!.harTilgangTilKommunalInnsending(subject))
             }
 
         }

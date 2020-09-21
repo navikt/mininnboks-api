@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.common.auth.subject.SsoToken
+import no.nav.common.auth.subject.Subject
 import no.nav.common.auth.subject.SubjectHandler
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.Configuration
@@ -22,10 +23,10 @@ open class PdlService(private val pdlClient: OkHttpClient,
     private val log = LoggerFactory.getLogger(PdlService::class.java)
     private val adressebeskyttelseQuery: String = lastQueryFraFil("hentAdressebeskyttelse")
 
-    fun harStrengtFortroligAdresse(fnr: String) = harKode6(fnr)
-    fun harFortroligAdresse(fnr: String) = harKode7(fnr)
-    fun harKode6(fnr: String): Boolean = harGradering(fnr, PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG)
-    fun harKode7(fnr: String): Boolean = harGradering(fnr, PdlAdressebeskyttelseGradering.FORTROLIG)
+    fun harStrengtFortroligAdresse(subject: Subject) = harKode6(subject)
+    fun harFortroligAdresse(subject: Subject) = harKode7(subject)
+    fun harKode6(subject: Subject): Boolean = harGradering(subject, PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG)
+    fun harKode7(subject: Subject): Boolean = harGradering(subject, PdlAdressebeskyttelseGradering.FORTROLIG)
 
     fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
         return try {
@@ -42,8 +43,8 @@ open class PdlService(private val pdlClient: OkHttpClient,
         }
     }
 
-    private fun harGradering(fnr: String, gradering: PdlAdressebeskyttelseGradering): Boolean {
-        val pdlGradering = hentAdresseBeskyttelse(fnr)
+    private fun harGradering(subject: Subject, gradering: PdlAdressebeskyttelseGradering): Boolean {
+        val pdlGradering = hentAdresseBeskyttelse(subject.uid)
         return gradering == pdlGradering
     }
 

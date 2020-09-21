@@ -11,7 +11,7 @@ import java.util.*
 import no.nav.common.auth.subject.Subject
 
 object TestUtils {
-    val MOCK_SUBJECT = Subject("uid", IdentType.EksternBruker, SsoToken.oidcToken("token", HashMap<String, Any?>()))
+    val MOCK_SUBJECT = Subject("12345678901", IdentType.EksternBruker, SsoToken.oidcToken("token", HashMap<String, Any?>()))
     const val DEFAULT_EKSTERN_AKTOR = "eksternAktor"
     const val DEFAULT_TILKNYTTET_ENHET = "tilknyttetEnhet"
     val DEFAULT_TYPE = Henvendelsetype.SPORSMAL_SKRIFTLIG

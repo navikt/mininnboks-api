@@ -42,7 +42,8 @@ interface HenvendelseService {
         }
 
         private suspend fun stillSporsmal(henvendelse: Henvendelse, subject: Subject, xmlHenvendelseType: XMLHenvendelseType): WSSendInnHenvendelseResponse {
-            val enhet = personService.hentGeografiskTilknytning().orElse(null)
+
+            val enhet = personService.hentGeografiskTilknytning(subject).orElse(null)
             val sporsmaltekst = HenvendelsesUtils.cleanOutHtml(HenvendelsesUtils.fjernHardeMellomrom(henvendelse.fritekst))
 
              return externalCall(subject){
@@ -97,7 +98,9 @@ interface HenvendelseService {
                     .filter { henvendelse: Henvendelse -> !henvendelse.isLest }
                     .map { henvendelse: Henvendelse -> henvendelse.id }
                     .collect(Collectors.toList())
-            innsynHenvendelsePortType.merkSomLest(ids)
+            externalCall(subject) {
+                innsynHenvendelsePortType.merkSomLest(ids)
+            }
         }
 
         override suspend fun merkSomLest(id: String, subject: Subject) {

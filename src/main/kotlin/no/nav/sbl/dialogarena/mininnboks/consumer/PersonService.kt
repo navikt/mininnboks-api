@@ -1,6 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
+import no.nav.common.auth.subject.Subject
 import no.nav.common.auth.subject.SubjectHandler
+import no.nav.sbl.dialogarena.mininnboks.externalCall
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentGeografiskTilknytningPersonIkkeFunnet
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentGeografiskTilknytningSikkerhetsbegrensing
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
@@ -15,14 +17,15 @@ import java.util.*
 import javax.ws.rs.NotAuthorizedException
 
 interface PersonService {
-    fun hentGeografiskTilknytning(): Optional<String>
+      suspend fun hentGeografiskTilknytning(subject: Subject): Optional<String>
     class Default(private val personV3: PersonV3) : PersonService {
-        override fun hentGeografiskTilknytning(): Optional<String> {
-            val fnr = SubjectHandler.getIdent().orElseThrow { NotAuthorizedException("Fant ikke brukers OIDC-token") }
-            val request = HentGeografiskTilknytningRequest().withAktoer(lagAktoer(fnr))
+        override suspend fun hentGeografiskTilknytning(subject: Subject): Optional<String> {
+            val request = HentGeografiskTilknytningRequest().withAktoer(lagAktoer(subject.uid))
             val response: HentGeografiskTilknytningResponse
             response = try {
-                personV3.hentGeografiskTilknytning(request)
+                externalCall(subject) {
+                    personV3.hentGeografiskTilknytning(request)
+                }
             } catch (hentGeografiskTilknytningSikkerhetsbegrensing: HentGeografiskTilknytningSikkerhetsbegrensing) {
                 logger.info("HentGeografiskTilknytningSikkerhetsbegrensing ved kall på hentGeografiskTilknyttning", hentGeografiskTilknytningSikkerhetsbegrensing)
                 return Optional.empty()

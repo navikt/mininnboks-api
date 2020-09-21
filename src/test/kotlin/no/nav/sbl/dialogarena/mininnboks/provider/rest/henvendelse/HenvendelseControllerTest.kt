@@ -15,7 +15,7 @@ import io.ktor.server.testing.createTestEnvironment
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.mockk.*
-import io.mockk.every
+import io.mockk.coEvery
 import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
@@ -44,7 +44,6 @@ class HenvendelseControllerTest : Spek({
 
         val service = mockk<HenvendelseService>(relaxed = true)
         val tilgangService = mockk<TilgangService>()
-        val subject = mockk<Subject>()
         val mapper = jacksonObjectMapper()
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -291,7 +290,7 @@ class HenvendelseControllerTest : Spek({
             }
 
             it("smeller Hvis Bruker Er Kode6 Og Temagruppe OKSOS") {
-                every {
+                coEvery {
                     tilgangService.harTilgangTilKommunalInnsending(any())
                 } returns
                         TilgangDTO(TilgangDTO.Resultat.KODE6, "melding")
@@ -309,7 +308,7 @@ class HenvendelseControllerTest : Spek({
             }
 
             it("smeller Hvis Bruker Ikke Har Enhet Og Temagruppe OKSOS") {
-                every {
+                coEvery {
                     tilgangService.harTilgangTilKommunalInnsending(any())
                 } returns (
                         TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "melding")
@@ -329,7 +328,7 @@ class HenvendelseControllerTest : Spek({
             }
 
             it("smeller Hvis Temagruppe OKSOS Og Utledning Feiler") {
-                every {
+                coEvery {
                     tilgangService.harTilgangTilKommunalInnsending(any())
                 } returns (
                         TilgangDTO(TilgangDTO.Resultat.FEILET, "melding")

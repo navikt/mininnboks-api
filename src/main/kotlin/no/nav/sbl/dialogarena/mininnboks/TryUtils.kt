@@ -1,13 +1,13 @@
 package no.nav.sbl.dialogarena.mininnboks
 
-private typealias Supplier<S> = () -> S
-private typealias Function<S, T> = (s: S) -> T
+private typealias Supplier<S> = suspend () -> S
+private typealias Function<S, T> = suspend (s: S) -> T
 sealed class Try<S> {
     companion object {
         @JvmStatic
-        fun <S> of(fn: Supplier<S>): Try<S> = create(fn)
+        suspend fun <S> of(fn: Supplier<S>) = create(fn)
 
-        private fun <S> create(fn: Supplier<S>): Try<S> {
+        private suspend fun <S> create(fn: Supplier<S>): Try<S> {
             return try {
                 val result = fn()
                 Success(result)
@@ -17,7 +17,7 @@ sealed class Try<S> {
         }
     }
 
-    abstract fun <T> map(fn: Function<S, T>): Try<T>
+    abstract suspend fun <T> map(fn: Function<S, T>): Try<T>
     abstract fun isSuccess(): Boolean
     abstract fun isFailure(): Boolean
     abstract fun get(): S
@@ -28,7 +28,7 @@ sealed class Try<S> {
         override fun getFailure(): Throwable = throw IllegalStateException("'getFailure' called on 'Try.Success'")
         override fun isSuccess(): Boolean = true
         override fun isFailure(): Boolean = false
-        override fun <T> map(fn: Function<S, T>): Try<T> {
+        override suspend fun <T> map(fn: Function<S, T>): Try<T> {
             return create { fn(result) }
         }
 
@@ -40,6 +40,6 @@ sealed class Try<S> {
         override fun getFailure(): Throwable = throwable
         override fun isSuccess(): Boolean = false
         override fun isFailure(): Boolean = true
-        override fun <T> map(fn: Function<S, T>): Try<T> = this as Failure<T>
+        override suspend fun <T> map(fn: Function<S, T>): Try<T> = this as Failure<T>
     }
 }

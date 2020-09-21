@@ -1,5 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
+import com.nhaarman.mockitokotlin2.any
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.common.auth.subject.SubjectHandler
@@ -11,6 +13,7 @@ import org.hamcrest.MatcherAssert
 import org.hamcrest.core.Is
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.lang.RuntimeException
 
 class DefaultPersonServiceTest {
 
@@ -18,17 +21,20 @@ class DefaultPersonServiceTest {
     var personService: PersonService.Default = PersonService.Default(personV3)
 
     @Test
-    fun `henter Enhet`() {
+    suspend fun `henter Enhet`() {
         val enhet = "1234"
-        every { personV3.hentGeografiskTilknytning(any()) } returns HentGeografiskTilknytningResponse().withGeografiskTilknytning(Kommune().withGeografiskTilknytning(enhet))
+        coEvery { personV3.hentGeografiskTilknytning(any()) } returns HentGeografiskTilknytningResponse().withGeografiskTilknytning(Kommune().withGeografiskTilknytning(enhet))
 
-        SubjectHandler.withSubject(MOCK_SUBJECT) {
-            MatcherAssert.assertThat(personService.hentGeografiskTilknytning().get(), Is.`is`(enhet))
-        }
+            MatcherAssert.assertThat(personService.hentGeografiskTilknytning(any()).get(), Is.`is`(enhet))
     }
 
     @Test
-    fun `kaster Runtime Exception Om Enhet Ikke Kan hentes`() {
-        assertThrows<RuntimeException> { personService.hentGeografiskTilknytning() }
+    suspend fun `kaster Runtime Exception Om Enhet Ikke Kan hentes`() {
+        try {
+            personService.hentGeografiskTilknytning(any())
+        }catch (e: Exception) {
+            MatcherAssert.assertThat(e.message, Is.`isA`(RuntimeException::class.java))
+        }
+
     }
 }

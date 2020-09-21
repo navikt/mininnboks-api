@@ -1,10 +1,13 @@
+
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
+import com.nhaarman.mockitokotlin2.any
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.common.auth.subject.SubjectHandler
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.Configuration
+import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import okhttp3.*
@@ -33,7 +36,7 @@ internal class PdlServiceTest {
     @Test
     fun `henter adressebeskyttelsegradering om det finnes`() {
         gittGradering(PdlAdressebeskyttelseGradering.UGRADERT) { (_, pdlService) ->
-            val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("anyfnr")
+            val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("any()")
             assertThat(harAdressebeskyttelse).isEqualTo(PdlAdressebeskyttelseGradering.UGRADERT)
         }
     }
@@ -41,7 +44,7 @@ internal class PdlServiceTest {
     @Test
     fun `henter null om adressebeskyttelsegradering ikke finnes`() {
         gittGradering(null) { (_, pdlService) ->
-            val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("anyfnr")
+            val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("any()")
             assertThat(harAdressebeskyttelse).isNull()
         }
     }
@@ -49,38 +52,38 @@ internal class PdlServiceTest {
     @Test
     fun `sjekk for kode6`() {
         gittGradering(PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG) { (_, pdlService) ->
-            assertThat(pdlService.harKode6("anyfnr")).isTrue()
+            assertThat(pdlService.harKode6(MOCK_SUBJECT)).isTrue()
         }
 
         gittGradering(PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG) { (_, pdlService) ->
-            assertThat(pdlService.harStrengtFortroligAdresse("anyfnr")).isTrue()
+            assertThat(pdlService.harStrengtFortroligAdresse(MOCK_SUBJECT)).isTrue()
         }
 
         gittGradering(null) { (_, pdlService) ->
-            assertThat(pdlService.harKode6("anyfnr")).isFalse()
+            assertThat(pdlService.harKode6(MOCK_SUBJECT)).isFalse()
         }
 
         gittGradering(null) { (_, pdlService) ->
-            assertThat(pdlService.harStrengtFortroligAdresse("anyfnr")).isFalse()
+            assertThat(pdlService.harStrengtFortroligAdresse(MOCK_SUBJECT)).isFalse()
         }
     }
 
     @Test
     fun `sjekk for kode7`() {
         gittGradering(PdlAdressebeskyttelseGradering.FORTROLIG) { (_, pdlService) ->
-            assertThat(pdlService.harKode7("anyfnr")).isTrue()
+            assertThat(pdlService.harKode7(MOCK_SUBJECT)).isTrue()
         }
 
         gittGradering(PdlAdressebeskyttelseGradering.FORTROLIG) { (_, pdlService) ->
-            assertThat(pdlService.harFortroligAdresse("anyfnr")).isTrue()
+            assertThat(pdlService.harFortroligAdresse(MOCK_SUBJECT)).isTrue()
         }
 
         gittGradering(null) { (_, pdlService) ->
-            assertThat(pdlService.harKode7("anyfnr")).isFalse()
+            assertThat(pdlService.harKode7(MOCK_SUBJECT)).isFalse()
         }
 
         gittGradering(null) { (_, pdlService) ->
-            assertThat(pdlService.harFortroligAdresse("anyfnr")).isFalse()
+            assertThat(pdlService.harFortroligAdresse(MOCK_SUBJECT)).isFalse()
         }
 
     }
@@ -94,7 +97,7 @@ internal class PdlServiceTest {
 
         // SubjectHandler.withSubject(MOCK_SUBJECT, UnsafeSupplier {
         assertThrows<PdlException> {
-            pdlService.hentAdresseBeskyttelse("anyfnr")
+            pdlService.hentAdresseBeskyttelse("any()")
         }
     }
 

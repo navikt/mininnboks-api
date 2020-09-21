@@ -76,7 +76,7 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
                 withSubject { subject ->
 
                     val sporsmal = call.receive(Sporsmal::class)
-                    val henvendelse = lagHenvendelse(tilgangService, subject.uid, sporsmal)
+                    val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
                     //TODO("Erstatte metrikk med noen")
                     //  val metrikk = MetricsClient.createEvent("mininnboks.sendsporsmal")
                     //  metrikk.addTagToReport("tema", sporsmal.temagruppe)
@@ -89,7 +89,7 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
             post("/sporsmaldirekte") {
                 withSubject { subject ->
                     val sporsmal = call.receive(Sporsmal::class)
-                    val henvendelse = lagHenvendelse(tilgangService, subject.uid, sporsmal)
+                    val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
                     //val metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmaldirekte")
                     //metrikk.addTagToReport("tema", sporsmal.temagruppe)
                     //metrikk.report()
@@ -135,26 +135,26 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
     }
 }
 
-fun lagHenvendelse(tilgangService: TilgangService, fnr: String, sporsmal: Sporsmal): Henvendelse {
+suspend fun lagHenvendelse(tilgangService: TilgangService, subject: Subject, sporsmal: Sporsmal): Henvendelse {
     val temagruppe = sporsmal.temagruppe?.let { Temagruppe.valueOf(it) }
     sporsmal.fritekst?.let { assertFritekst(it) }
     if (temagruppe != null) {
-        assertTemagruppeTilgang(tilgangService, fnr, temagruppe)
+        assertTemagruppeTilgang(tilgangService, subject, temagruppe)
     }
     return Henvendelse(sporsmal.fritekst, temagruppe)
 }
 
-fun assertTemagruppeTilgang(tilgangService: TilgangService, fnr: String, temagruppe: Temagruppe) {
+suspend fun assertTemagruppeTilgang(tilgangService: TilgangService, subject: Subject, temagruppe: Temagruppe) {
     if (!Temagruppe.GODKJENTE_FOR_INNGAAENDE_SPORSMAAL.contains(temagruppe)) {
         throw BadRequestException("Innsending på temagruppe er ikke godkjent")
     }
-    if (temagruppe == Temagruppe.OKSOS && !harTilgangTilKommunalInnsending(tilgangService, fnr)) {
+    if (temagruppe == Temagruppe.OKSOS && !harTilgangTilKommunalInnsending(tilgangService, subject)) {
         throw BadRequestException("Bruker har ikke lov til å sende inn henvendelse på temagruppe OKSOS.")
     }
 }
 
-fun harTilgangTilKommunalInnsending(tilgangService: TilgangService, fnr: String): Boolean {
-    return TilgangDTO.Resultat.OK == tilgangService.harTilgangTilKommunalInnsending(fnr).resultat
+suspend fun harTilgangTilKommunalInnsending(tilgangService: TilgangService, subject: Subject): Boolean {
+    return TilgangDTO.Resultat.OK == tilgangService.harTilgangTilKommunalInnsending(subject).resultat
 }
 
 fun filtrerDelsvar(traad: List<Henvendelse>): List<Henvendelse> {
