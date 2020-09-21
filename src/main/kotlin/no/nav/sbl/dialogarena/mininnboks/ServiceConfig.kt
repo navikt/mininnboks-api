@@ -107,6 +107,12 @@ class ServiceConfig(val configuration: Configuration) {
                 .address(configuration.INNSYN_HENVENDELSE_WS_URL)
                 .wsdl("classpath:wsdl/InnsynHenvendelse.wsdl")
                 .configureStsForSubject(stsConfig())
+                .withProperty("jaxb.additionalContextClasses", arrayOf<Class<*>>(
+                        XMLHenvendelse::class.java,
+                        XMLMetadataListe::class.java,
+                        XMLMeldingFraBruker::class.java,
+                        XMLMeldingTilBruker::class.java)
+                )
                 .timeout(5_000, 20_000)
                 .build()
 
