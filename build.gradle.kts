@@ -122,6 +122,13 @@ tasks {
     named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
         archiveFileName.set("app.jar")
 
+        dependencies {
+            dependency("no.nav.tjenestespesifikasjoner:dialogarena-behandlingsinformasjon:$tjenestespec_version")
+            dependency("no.nav.tjenestespesifikasjoner:henvendelse-informasjon-v2:$tjenestespec_version")
+            dependency("no.nav.tjenestespesifikasjoner:send-inn-henvendelse:$tjenestespec_version")
+            dependency("no.nav.tjenestespesifikasjoner:innsyn-henvendelse:$tjenestespec_version")
+            dependency("no.nav.tjenestespesifikasjoner:person-v3-tjenestespesifikasjon:$tjenestespec_version")
+        }
 
         manifest {
             attributes["Main-Class"] = mainClassMinn
@@ -135,7 +142,7 @@ tasks {
        exclude ("META-INF/*.SF")
         exclude ("META-INF/*.DSA")
         exclude ("META-INF/*.RSA")
-        
+
 
     }
 
