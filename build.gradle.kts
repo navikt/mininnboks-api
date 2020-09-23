@@ -150,7 +150,7 @@ project.configurations.implementation.get().isCanBeResolved = true
 val fatJar = task("fatJar", type = Jar::class) {
 
 
-         setProperty("archiveBaseName" , "app.jar")
+         setProperty("archiveFileName" , "app.jar")
 
         manifest {
             attributes["Implementation-Title"] = "Gradle Jar File Example"
