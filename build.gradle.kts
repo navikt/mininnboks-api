@@ -150,26 +150,34 @@ project.configurations.implementation.get().isCanBeResolved = true
 val fatJar = task("fatJar", type = Jar::class) {
 
 
-         setProperty("archiveBaseName" , "app.jar")
+         setProperty("archiveFileName" , "app.jar")
 
         manifest {
             attributes["Implementation-Title"] = "Gradle Jar File Example"
             attributes["Main-Class"] = mainClassMinn
-            attributes["Class-Path"] = configurations.implementation.get().toList().joinToString(" ")
+            attributes["Class-Path"] = configurations.implementation.get().map {
+                                "lib/${it.name}"
+                            }.joinToString(" ")
         }
     // To add all of the dependencies otherwise a "NoClassDefFoundError" error
     from(sourceSets.main.get().output)
 
     dependsOn(configurations.runtimeClasspath)
     from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-         configurations.runtimeClasspath.get().filter { it.isDirectory() }.map { zipTree(it) }
+        configurations.implementation.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+         configurations.implementation.get().filter { it.isDirectory() }.map { zipTree(it) }
 
     } )
         with(tasks.jar.get() as CopySpec)
     }
 
 
+distributions {
+    main {
+        distributionBaseName.set("app")
+
+    }
+}
 
     tasks {
         named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
