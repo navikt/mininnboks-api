@@ -23,5 +23,5 @@ ENV JAVA_OPTS="${JAVA_OPTS} -XX:MaxRAMPercentage=65.0"
 ENV JAVA_OPTS="${JAVA_OPTS} -XX:+IgnoreUnrecognizedVMOptions"
 ENV JAVA_OPTS="${JAVA_OPTS} -port=8080"
 
-RUN  ccp -r build/install/app/lib/  ./lib
+RUN  cp -r build/install/app/lib/  ./lib
 COPY build/libs/app*.jar ./app.jar
