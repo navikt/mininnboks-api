@@ -83,6 +83,12 @@ class ServiceConfig(val configuration: Configuration) {
                 .address(configuration.SEND_INN_HENVENDELSE_WS_URL)
                 .wsdl("classpath:wsdl/SendInnHenvendelse.wsdl")
                 .timeout(5_000, 20_000)
+                .withProperty("jaxb.additionalContextClasses", arrayOf<Class<*>>(
+                        XMLHenvendelse::class.java,
+                        XMLMetadataListe::class.java,
+                        XMLMeldingFraBruker::class.java,
+                        XMLMeldingTilBruker::class.java)
+                )
                 .configureStsForSubject(stsConfig())
                 .build()
     }
