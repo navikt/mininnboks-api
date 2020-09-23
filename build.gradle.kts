@@ -1,8 +1,13 @@
+import org.jetbrains.kotlin.contracts.model.structure.UNKNOWN_COMPUTATION.type
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import kotlin.streams.toList
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.72"
     id ("com.github.johnrengelman.shadow") version "6.0.0"
+    id ("java-library-distribution")
+    id("com.github.onslip.gradle-one-jar") version "1.0.5"
+
 }
 
 val mainClassMinn = "no.nav.sbl.dialogarena.mininnboks.ApplicationKt"
@@ -26,6 +31,8 @@ buildscript {
     dependencies {
         classpath(kotlin("gradle-plugin", version = "1.3.72"))
         classpath( "com.github.jengelman.gradle.plugins:shadow:6.0.0")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.2.RELEASE")
+       classpath("com.github.rholder:gradle-one-jar:1.0.4")
     }
 }
 
@@ -58,6 +65,7 @@ dependencies {
     implementation("no.nav.tjenestespesifikasjoner:henvendelse-informasjon-v2:$tjenestespec_version")
     implementation("no.nav.tjenestespesifikasjoner:send-inn-henvendelse:$tjenestespec_version")
     implementation("no.nav.tjenestespesifikasjoner:innsyn-henvendelse:$tjenestespec_version")
+
     implementation("no.nav.tjenestespesifikasjoner:person-v3-tjenestespesifikasjon:$tjenestespec_version")
     implementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     implementation("com.sun.xml.ws:jaxws-ri:2.3.3")
@@ -90,6 +98,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.4.2")
 
+
   compileOnly("org.projectlombok:lombok:1.18.4")
     annotationProcessor("org.projectlombok:lombok:1.18.4")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.9")
@@ -119,32 +128,75 @@ tasks.test {
 }
 
 tasks {
-    named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
-        archiveFileName.set("app.jar")
-
-        dependencies {
-            dependency("no.nav.tjenestespesifikasjoner:dialogarena-behandlingsinformasjon:$tjenestespec_version")
-            dependency("no.nav.tjenestespesifikasjoner:henvendelse-informasjon-v2:$tjenestespec_version")
-            dependency("no.nav.tjenestespesifikasjoner:send-inn-henvendelse:$tjenestespec_version")
-            dependency("no.nav.tjenestespesifikasjoner:innsyn-henvendelse:$tjenestespec_version")
-            dependency("no.nav.tjenestespesifikasjoner:person-v3-tjenestespesifikasjon:$tjenestespec_version")
-        }
-
-        manifest {
-            attributes["Main-Class"] = mainClassMinn
-
+    val deps = registering(Copy::class) {
+        from(configurations.runtimeClasspath)
+        into("build/lib")
     }
-        mergeServiceFiles {
-            setPath("META-INF/cxf")
-            include("bus-extensions.txt")
-        }
+}
 
-       exclude ("META-INF/*.SF")
-        exclude ("META-INF/*.DSA")
-        exclude ("META-INF/*.RSA")
+val copyDeps = tasks.register<Copy>("copyDeps") {
+    from(configurations.runtimeClasspath)
+    into(file("$buildDir/lib"))
+}
 
-
-    }
+val awesomeFunJar = task( "awesomeFunJar", type = com.github.rholder.gradle.task.OneJar::class) {
+    mainClass = mainClassMinn
+    setProperty("archiveBaseName" , "${project.name}-awesome-test")
 
 }
+
+project.configurations.implementation.get().isCanBeResolved = true
+
+val fatJar = task("fatJar", type = Jar::class) {
+
+
+         setProperty("archiveBaseName" , "app.jar")
+
+        manifest {
+            attributes["Implementation-Title"] = "Gradle Jar File Example"
+            attributes["Main-Class"] = mainClassMinn
+            attributes["Class-Path"] = configurations.implementation.get().toList().joinToString(" ")
+        }
+    // To add all of the dependencies otherwise a "NoClassDefFoundError" error
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+         configurations.runtimeClasspath.get().filter { it.isDirectory() }.map { zipTree(it) }
+
+    } )
+        with(tasks.jar.get() as CopySpec)
+    }
+
+
+
+    tasks {
+        named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+            archiveFileName.set("app.jar")
+
+            manifest {
+                attributes["Main-Class"] = mainClassMinn
+
+            }
+            mergeServiceFiles {
+                setPath("META-INF/cxf")
+                include("bus-extensions.txt")
+            }
+
+
+            exclude ("META-INF/*.SF")
+            exclude ("META-INF/*.DSA")
+            exclude ("META-INF/*.RSA")
+
+            // getByPath(":innsyn-henvendelse-1.2020.06.16-14.51-3b45df54f90a:jar")
+            // getByPath(":innsyn-henvendelse-1.2020.06.16-14.51-3b45df54f90a:jar")
+            //destinationDirectory('build/shadow-bug-workaround')
+
+
+        }
+
+
+    }
+
 
