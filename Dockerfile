@@ -24,5 +24,5 @@ ENV JAVA_OPTS="${JAVA_OPTS} -XX:+IgnoreUnrecognizedVMOptions"
 ENV JAVA_OPTS="${JAVA_OPTS} -port=8080"
 
 
-COPY -r build/install/app/lib/  lib
+COPY -r build/install/app/lib/  ./lib
 COPY build/libs/app*.jar ./app.jar
