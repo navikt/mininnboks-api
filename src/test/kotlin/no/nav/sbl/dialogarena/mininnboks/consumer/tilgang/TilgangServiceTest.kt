@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.tilgang
 
 import com.nhaarman.mockitokotlin2.any
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
@@ -26,9 +27,10 @@ class TilgangServiceTest {
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.FEILET)
         assertThat(result.melding).contains("brukers GT")
-        verify(exactly = 0) {pdlService.harKode6(any())}
-        verify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
+        coVerify(exactly = 0) {pdlService.harKode6(any())}
+        coVerify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
     }
+
 
     @Test
     suspend fun `gir INGEN_ENHET om bruker ikke har enhet`() {
@@ -39,8 +41,8 @@ class TilgangServiceTest {
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
-        verify(exactly = 0) {pdlService.harKode6(any())}
-        verify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
+        coVerify(exactly = 0) {pdlService.harKode6(any())}
+        coVerify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
     }
 
     @Test
@@ -52,8 +54,8 @@ class TilgangServiceTest {
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
-        verify(exactly = 0) {pdlService.harKode6(any())}
-        verify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
+        coVerify(exactly = 0) {pdlService.harKode6(any())}
+        coVerify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
     }
 
     @Test
@@ -65,8 +67,8 @@ class TilgangServiceTest {
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.INGEN_ENHET)
         assertThat(result.melding).contains("gyldig GT")
-        verify(exactly = 0) {pdlService.harKode6(any())}
-        verify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
+        coVerify(exactly = 0) {pdlService.harKode6(any())}
+        coVerify(exactly = 0) {pdlService.harStrengtFortroligAdresse(any())}
     }
 
     @Test
@@ -104,6 +106,7 @@ class TilgangServiceTest {
 
         assertThat(result.resultat).isEqualTo(TilgangDTO.Resultat.OK)
     }
+
     private fun gittContext(): MockContext {
         val pdlService = mockk<PdlService>()
         val personService = mockk<PersonService>()

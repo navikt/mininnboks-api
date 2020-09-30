@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
 import no.nav.common.auth.subject.Subject
-import no.nav.common.auth.subject.SubjectHandler
 import no.nav.sbl.dialogarena.mininnboks.externalCall
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentGeografiskTilknytningPersonIkkeFunnet
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentGeografiskTilknytningSikkerhetsbegrensing
@@ -14,10 +13,9 @@ import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningR
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningResponse
 import org.slf4j.LoggerFactory
 import java.util.*
-import javax.ws.rs.NotAuthorizedException
 
 interface PersonService {
-      suspend fun hentGeografiskTilknytning(subject: Subject): Optional<String>
+    suspend fun hentGeografiskTilknytning(subject: Subject): Optional<String>
     class Default(private val personV3: PersonV3) : PersonService {
         override suspend fun hentGeografiskTilknytning(subject: Subject): Optional<String> {
             val request = HentGeografiskTilknytningRequest().withAktoer(lagAktoer(subject.uid))

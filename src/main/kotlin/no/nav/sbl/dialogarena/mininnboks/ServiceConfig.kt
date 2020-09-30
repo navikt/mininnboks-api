@@ -56,8 +56,6 @@ class ServiceConfig(val configuration: Configuration) {
 
 
     fun systemUserTokenProvider(): SystemuserTokenProvider {
-        // val stsApikey = EnvironmentUtils.getRequiredProperty(configuration.STS_APIKEY)
-        // val client = RestUtils.createClient().register(ApigwRequestFilter(stsApikey))
         return fromTokenEndpoint(
                 configuration.STS_TOKENENDPOINT_URL,
                 configuration.FSS_SRVMININNBOKS_USERNAME,
@@ -68,8 +66,6 @@ class ServiceConfig(val configuration: Configuration) {
 
 
     fun pdlService(stsService: SystemuserTokenProvider?): PdlService {
-        // val pdlapiApikey = EnvironmentUtils.getRequiredProperty(configuration.PDL_API_APIKEY)
-        //val client = RestClient.baseClient().register(ApigwRequestFilter(pdlapiApikey))
         return PdlService(RestClient.baseClientBuilder().build(), stsService!!, configuration)
     }
 
@@ -124,3 +120,4 @@ class ServiceConfig(val configuration: Configuration) {
 
     }
 }
+''

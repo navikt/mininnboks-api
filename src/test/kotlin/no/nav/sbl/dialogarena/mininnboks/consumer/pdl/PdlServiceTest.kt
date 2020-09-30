@@ -1,13 +1,13 @@
 
+
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
-import com.nhaarman.mockitokotlin2.any
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
 import no.nav.common.auth.subject.SubjectHandler
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.Configuration
-import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import okhttp3.*
@@ -34,7 +34,7 @@ internal class PdlServiceTest {
     }
 
     @Test
-    fun `henter adressebeskyttelsegradering om det finnes`() {
+    suspend fun `henter adressebeskyttelsegradering om det finnes`() {
         gittGradering(PdlAdressebeskyttelseGradering.UGRADERT) { (_, pdlService) ->
             val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("any()")
             assertThat(harAdressebeskyttelse).isEqualTo(PdlAdressebeskyttelseGradering.UGRADERT)
@@ -42,7 +42,7 @@ internal class PdlServiceTest {
     }
 
     @Test
-    fun `henter null om adressebeskyttelsegradering ikke finnes`() {
+    suspend fun `henter null om adressebeskyttelsegradering ikke finnes`() {
         gittGradering(null) { (_, pdlService) ->
             val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("any()")
             assertThat(harAdressebeskyttelse).isNull()
@@ -50,7 +50,7 @@ internal class PdlServiceTest {
     }
 
     @Test
-    fun `sjekk for kode6`() {
+    suspend fun `sjekk for kode6`() {
         gittGradering(PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG) { (_, pdlService) ->
             assertThat(pdlService.harKode6(MOCK_SUBJECT)).isTrue()
         }
@@ -69,7 +69,7 @@ internal class PdlServiceTest {
     }
 
     @Test
-    fun `sjekk for kode7`() {
+    suspend fun `sjekk for kode7`() {
         gittGradering(PdlAdressebeskyttelseGradering.FORTROLIG) { (_, pdlService) ->
             assertThat(pdlService.harKode7(MOCK_SUBJECT)).isTrue()
         }
@@ -89,15 +89,16 @@ internal class PdlServiceTest {
     }
 
     @Test
-    fun `feil blir pakket inn i egen exceptiontype`() {
+    suspend fun `feil blir pakket inn i egen exceptiontype`() {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(body = gittErrorPdlResponse("Det skjedde en feil"))
         val stsService = gittStsService()
         val pdlService = PdlService(mockContext.client, stsService, configuration)
 
-        // SubjectHandler.withSubject(MOCK_SUBJECT, UnsafeSupplier {
-        assertThrows<PdlException> {
-            pdlService.hentAdresseBeskyttelse("any()")
+            assertThrows<PdlException> {
+                runBlocking {
+                pdlService.hentAdresseBeskyttelse("any()")
+            }
         }
     }
 
@@ -163,14 +164,15 @@ internal class PdlServiceTest {
         """.trimIndent()
     }
 
-    fun gittGradering(gradering: PdlAdressebeskyttelseGradering?, fn: (Pair<MockContext, PdlService>) -> Unit) {
+     suspend fun gittGradering(gradering: PdlAdressebeskyttelseGradering?, fn: suspend (Pair<MockContext, PdlService>) -> Unit) {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(body = gittOkPdlResponse(gradering))
         val stsService = gittStsService()
         val pdlService = PdlService(mockContext.client, stsService, configuration)
 
-        SubjectHandler.withSubject(MOCK_SUBJECT) {
-            fn(Pair(mockContext, pdlService))
-        }
+          //  SubjectHandler.withSubject(MOCK_SUBJECT) {
+                fn(Pair(mockContext, pdlService))
+          // }
+       // }
     }
 }

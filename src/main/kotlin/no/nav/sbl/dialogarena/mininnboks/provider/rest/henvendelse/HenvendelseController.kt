@@ -17,8 +17,12 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.conditionalAuthenticate
 import no.nav.sbl.dialogarena.mininnboks.withSubject
 import org.apache.cxf.binding.soap.SoapFault
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.util.*
 import javax.xml.ws.soap.SOAPFaultException
+
+val logger: Logger = LoggerFactory.getLogger("mininnboks.henvendelseController")
 
 
 fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangService: TilgangService, useAuthentication: Boolean) {
@@ -56,8 +60,8 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
                 val behandlingsId = call.parameters["behandlingsId"]
 
                 if (behandlingsId != null) {
-                    withSubject() {
-                         subject ->  henvendelseService.merkSomLest(behandlingsId,subject)
+                    withSubject() { subject ->
+                        henvendelseService.merkSomLest(behandlingsId, subject)
                         call.respond(TupleResultat.of("traadId", behandlingsId))
                     }
 
@@ -65,7 +69,7 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
             }
 
             post("/allelest/{behandlingskjedeId}") {
-                withSubject {subject ->
+                withSubject { subject ->
                     val behandlingskjedeId = call.parameters["behandlingskjedeId"]
                     henvendelseService.merkAlleSomLest(behandlingskjedeId, subject)
                     call.respond(TupleResultat.of("traadId", behandlingskjedeId))
@@ -77,10 +81,6 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
 
                     val sporsmal = call.receive(Sporsmal::class)
                     val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-                    //TODO("Erstatte metrikk med noen")
-                    //  val metrikk = MetricsClient.createEvent("mininnboks.sendsporsmal")
-                    //  metrikk.addTagToReport("tema", sporsmal.temagruppe)
-                    // metrikk.report()
                     val response = henvendelseService.stillSporsmal(henvendelse, subject)
                     call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
                 }
@@ -90,9 +90,6 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
                 withSubject { subject ->
                     val sporsmal = call.receive(Sporsmal::class)
                     val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-                    //val metrikk = MetricsFactory.createEvent("mininnboks.sendsporsmaldirekte")
-                    //metrikk.addTagToReport("tema", sporsmal.temagruppe)
-                    //metrikk.report()
                     val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
                     call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
                 }
@@ -102,28 +99,25 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
                 val svar = call.receive(Svar::class)
                 assertFritekst(svar.fritekst, 2500)
                 withSubject { subject ->
-                val traadOptional = hentTraad(henvendelseService, svar.traadId, subject)
-                if (!traadOptional.isPresent) {
-                    call.respond(HttpStatusCode.NotFound)
-                } else {
-                    val traad = traadOptional.get()
-                    if (!traad.kanBesvares) {
-                        call.respond(HttpStatusCode.NotAcceptable)
-                        return@withSubject
-                    }
-                    val henvendelse = Henvendelse(svar.fritekst, traad.nyeste?.temagruppe)
-                    henvendelse.traadId = svar.traadId
-                    henvendelse.eksternAktor = traad.nyeste?.eksternAktor
-                    henvendelse.brukersEnhet = traad.eldste?.brukersEnhet
-                    henvendelse.tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet
-                    henvendelse.type = Henvendelsetype.SVAR_SBL_INNGAAENDE
-                    henvendelse.opprettet = Date()
-                    henvendelse.markerSomLest()
-                    henvendelse.erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt
-                    henvendelse.kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet
-                    //val metrikk = MetricsFactory.createEvent("mininnboks.sendsvar")
-                    //metrikk.addTagToReport("tema", traad.nyeste?.temaKode)
-                    //metrikk.report()
+                    val traadOptional = hentTraad(henvendelseService, svar.traadId, subject)
+                    if (!traadOptional.isPresent) {
+                        call.respond(HttpStatusCode.NotFound)
+                    } else {
+                        val traad = traadOptional.get()
+                        if (!traad.kanBesvares) {
+                            call.respond(HttpStatusCode.NotAcceptable)
+                            return@withSubject
+                        }
+                        val henvendelse = Henvendelse(svar.fritekst, traad.nyeste?.temagruppe)
+                        henvendelse.traadId = svar.traadId
+                        henvendelse.eksternAktor = traad.nyeste?.eksternAktor
+                        henvendelse.brukersEnhet = traad.eldste?.brukersEnhet
+                        henvendelse.tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet
+                        henvendelse.type = Henvendelsetype.SVAR_SBL_INNGAAENDE
+                        henvendelse.opprettet = Date()
+                        henvendelse.markerSomLest()
+                        henvendelse.erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt
+                        henvendelse.kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet
                         val response = henvendelseService.sendSvar(henvendelse, subject)
                         call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response!!.behandlingsId))
                     }
@@ -179,12 +173,12 @@ suspend fun hentTraad(henvendelseService: HenvendelseService, id: String?, subje
         if (meldinger.isEmpty()) {
             Optional.empty()
         } else Optional.of(Traad(meldinger))
-    } catch (fault: SoapFault ) {
-        //TODO( logger.error("Fant ikke tråd med id: $id", fault)
+    } catch (fault: SoapFault) {
+        logger.error("Fant ikke tråd med id: $id", fault)
         Optional.empty()
 
-    } catch( fault1: SOAPFaultException) {
-        //TODO( logger.error("Fant ikke tråd med id: $id", fault)
+    } catch (fault1: SOAPFaultException) {
+        logger.error("Fant ikke tråd med id: $id", fault1)
         Optional.empty()
     }
 }

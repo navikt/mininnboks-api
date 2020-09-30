@@ -32,16 +32,6 @@ class SporsmalControllerTest : Spek({
             register(ContentType.Application.Json, JacksonConverter(objectMapper))
         }
 
-        /*engine.application.install(Authentication) {
-            jwt {
-                authHeader(JwtUtil.Companion::useJwtFromCookie)
-                //verifier(configuration.jwksUrl, configuration.jwtIssuer)
-                //validate { JwtUtil.validateJWT(this, it) }
-            }
-        }*/
-
-
-
         with(engine) {
             coEvery { (henvendelseService.hentAlleHenvendelser(any())) } returns emptyList()
 

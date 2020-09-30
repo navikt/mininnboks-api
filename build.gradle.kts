@@ -1,12 +1,8 @@
-import org.jetbrains.kotlin.contracts.model.structure.UNKNOWN_COMPUTATION.type
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import kotlin.streams.toList
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    id ("com.github.johnrengelman.shadow") version "6.0.0"
     id ("java-library-distribution")
-    id("com.github.onslip.gradle-one-jar") version "1.0.5"
 
 }
 
@@ -30,9 +26,6 @@ buildscript {
     }
     dependencies {
         classpath(kotlin("gradle-plugin", version = "1.3.72"))
-        classpath( "com.github.jengelman.gradle.plugins:shadow:6.0.0")
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.2.RELEASE")
-       classpath("com.github.rholder:gradle-one-jar:1.0.4")
     }
 }
 
@@ -65,6 +58,7 @@ dependencies {
     implementation("no.nav.tjenestespesifikasjoner:henvendelse-informasjon-v2:$tjenestespec_version")
     implementation("no.nav.tjenestespesifikasjoner:send-inn-henvendelse:$tjenestespec_version")
     implementation("no.nav.tjenestespesifikasjoner:innsyn-henvendelse:$tjenestespec_version")
+    implementation( "io.micrometer:micrometer-registry-prometheus:1.5.5")
 
     implementation("no.nav.tjenestespesifikasjoner:person-v3-tjenestespesifikasjon:$tjenestespec_version")
     implementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
@@ -72,6 +66,7 @@ dependencies {
 
 
     //Ktor
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.3.3")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-core:$ktor_version")
@@ -81,10 +76,9 @@ dependencies {
     implementation("io.ktor:ktor-jackson:$ktor_version")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9")
     implementation("io.ktor:ktor-metrics:$ktor_version")
-    implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
-    implementation("io.prometheus:simpleclient_common:$prometheusVersion")
-    implementation("io.prometheus:simpleclient_dropwizard:$prometheusVersion")
+    implementation("io.ktor:ktor-metrics-micrometer:$ktor_version")
 
+    //test
     testImplementation("org.hamcrest:hamcrest:2.2")
     testImplementation("org.assertj:assertj-core:3.11.1")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.21")
@@ -127,24 +121,6 @@ tasks.test {
 
 }
 
-tasks {
-    val deps = registering(Copy::class) {
-        from(configurations.runtimeClasspath)
-        into("build/lib")
-    }
-}
-
-val copyDeps = tasks.register<Copy>("copyDeps") {
-    from(configurations.runtimeClasspath)
-    into(file("$buildDir/lib"))
-}
-
-val awesomeFunJar = task( "awesomeFunJar", type = com.github.rholder.gradle.task.OneJar::class) {
-    mainClass = mainClassMinn
-    setProperty("archiveBaseName" , "${project.name}-awesome-test")
-
-}
-
 project.configurations.implementation.get().isCanBeResolved = true
 
 val fatJar = task("fatJar", type = Jar::class) {
@@ -178,33 +154,4 @@ distributions {
 
     }
 }
-
-    tasks {
-        named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
-            archiveFileName.set("app.jar")
-
-            manifest {
-                attributes["Main-Class"] = mainClassMinn
-
-            }
-            mergeServiceFiles {
-                setPath("META-INF/cxf")
-                include("bus-extensions.txt")
-            }
-
-
-            exclude ("META-INF/*.SF")
-            exclude ("META-INF/*.DSA")
-            exclude ("META-INF/*.RSA")
-
-            // getByPath(":innsyn-henvendelse-1.2020.06.16-14.51-3b45df54f90a:jar")
-            // getByPath(":innsyn-henvendelse-1.2020.06.16-14.51-3b45df54f90a:jar")
-            //destinationDirectory('build/shadow-bug-workaround')
-
-
-        }
-
-
-    }
-
 

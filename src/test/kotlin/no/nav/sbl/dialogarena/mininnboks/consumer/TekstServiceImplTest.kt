@@ -23,9 +23,7 @@ class TekstServiceImplTest {
 
     fun String.asResource(work: (String) -> Unit) {
         val path = "tekster/mininnboks"
-      //  var content = TekstServiceImplTest::class.java.classLoader.getResources(path)
         val content = object {}.javaClass.classLoader.getResources(path)
-
         work(content.toList().size.toString())
     }
 }

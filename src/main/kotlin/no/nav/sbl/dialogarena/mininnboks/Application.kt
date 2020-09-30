@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks
 
+import mu.KotlinLogging
 import no.nav.common.utils.EnvironmentUtils
 import no.nav.common.utils.NaisUtils
 import org.slf4j.Logger
@@ -8,7 +9,7 @@ import org.slf4j.LoggerFactory
 val log: Logger = LoggerFactory.getLogger("mininnboks.Application")
 data class ApplicationState(var running: Boolean = true, var initialized: Boolean = false)
 const val FSS_SRVMININNBOKS_USERNAME = "FSS_SRVMININNBOKS_USERNAME"
-const val FSS_SRVMININNBOKS_PASSWORD = "FSS_SRVMININNBOKS_PASSWORD"
+const val FSS_SRVMININNBOKS_PASSWORD = "FSS_◊SRVMININNBOKS_PASSWORD"
 const val SRVMININNBOKS_USERNAME = "SRVMININNBOKS_USERNAME"
 const val SRVMININNBOKS_PASSWORD = "SRVMININNBOKS_PASSWORD"
 const val PDL_API_URL = "PDL_API_URL"

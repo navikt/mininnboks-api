@@ -2,19 +2,15 @@ package no.nav.sbl.dialogarena.mininnboks
 
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
-import com.auth0.jwt.interfaces.Claim
-import com.auth0.jwt.interfaces.Payload
-import io.ktor.application.ApplicationCall
-import io.ktor.auth.Principal
-import io.ktor.auth.jwt.JWTCredential
-import io.ktor.auth.jwt.JWTPrincipal
-import io.ktor.http.auth.HttpAuthHeader
+import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
+import io.ktor.http.auth.*
 import no.nav.common.auth.subject.IdentType
 import no.nav.common.auth.subject.SsoToken
 import no.nav.common.auth.subject.Subject
 import org.slf4j.LoggerFactory
 import java.net.URL
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -25,7 +21,7 @@ class JwtUtil {
         fun useJwtFromCookie(call: ApplicationCall): HttpAuthHeader? {
             return try {
                 val token = call.request.cookies["selvbetjening-idtoken"]
-                io.ktor.http.auth.parseAuthorizationHeader("Bearer $token")
+                parseAuthorizationHeader("Bearer $token")
             } catch (ex: Throwable) {
                 logger.error("Illegal HTTP auth header", ex)
                 null

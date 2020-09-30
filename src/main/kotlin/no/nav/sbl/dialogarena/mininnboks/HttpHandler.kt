@@ -6,15 +6,18 @@ import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.jackson.*
-import io.ktor.metrics.dropwizard.*
+import io.ktor.metrics.micrometer.*
 import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.prometheus.client.dropwizard.DropwizardExports
-import no.nav.common.utils.EnvironmentUtils
-import no.nav.common.utils.EnvironmentUtils.setProperty
-import no.nav.common.utils.NaisUtils
+import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
+import io.micrometer.core.instrument.binder.system.ProcessorMetrics
+import io.micrometer.prometheus.PrometheusConfig
+import io.micrometer.prometheus.PrometheusMeterRegistry
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.henvendelseController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.naisRoutes
@@ -24,8 +27,7 @@ import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.sporsma
 import org.slf4j.event.Level
 import no.nav.sbl.dialogarena.mininnboks.JwtUtil.Companion as JwtUtil
 
-
-
+val metricsRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 
 fun createHttpServer(applicationState: ApplicationState,
                      configuration: Configuration,
@@ -43,6 +45,17 @@ fun createHttpServer(applicationState: ApplicationState,
         method(HttpMethod.Delete)
     }
 
+    install(MicrometerMetrics) {
+        registry = metricsRegistry
+        meterBinders = listOf(
+                ClassLoaderMetrics(),
+                JvmMemoryMetrics(),
+                JvmGcMetrics(),
+                ProcessorMetrics(),
+                JvmThreadMetrics()
+        )
+    }
+
     if (useAuthentication) {
         install(Authentication) {
             jwt {
@@ -51,10 +64,6 @@ fun createHttpServer(applicationState: ApplicationState,
                 validate { JwtUtil.validateJWT(this, it) }
             }
         }
-    }
-
-    install(DropwizardMetrics) {
-        io.prometheus.client.CollectorRegistry.defaultRegistry.register(DropwizardExports(registry))
     }
 
     install(ContentNegotiation) {

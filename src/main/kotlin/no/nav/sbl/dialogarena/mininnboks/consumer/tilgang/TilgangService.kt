@@ -4,7 +4,6 @@ import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.Try
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
-import no.nav.sbl.dialogarena.mininnboks.externalCall
 import org.slf4j.LoggerFactory
 
 data class TilgangDTO(val resultat: Resultat, val melding: String) {

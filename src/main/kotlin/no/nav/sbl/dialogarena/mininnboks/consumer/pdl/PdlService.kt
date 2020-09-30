@@ -1,6 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import kotlinx.coroutines.slf4j.MDCContext
+import kotlinx.coroutines.withContext
 import no.nav.common.auth.subject.SsoToken
 import no.nav.common.auth.subject.Subject
 import no.nav.common.auth.subject.SubjectHandler
@@ -23,27 +25,30 @@ open class PdlService(private val pdlClient: OkHttpClient,
     private val log = LoggerFactory.getLogger(PdlService::class.java)
     private val adressebeskyttelseQuery: String = lastQueryFraFil("hentAdressebeskyttelse")
 
-    fun harStrengtFortroligAdresse(subject: Subject) = harKode6(subject)
-    fun harFortroligAdresse(subject: Subject) = harKode7(subject)
-    fun harKode6(subject: Subject): Boolean = harGradering(subject, PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG)
-    fun harKode7(subject: Subject): Boolean = harGradering(subject, PdlAdressebeskyttelseGradering.FORTROLIG)
+    suspend fun harStrengtFortroligAdresse(subject: Subject) = harKode6(subject)
+    suspend fun harFortroligAdresse(subject: Subject) = harKode7(subject)
+    suspend fun harKode6(subject: Subject): Boolean = harGradering(subject, PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG)
+    suspend fun harKode7(subject: Subject): Boolean = harGradering(subject, PdlAdressebeskyttelseGradering.FORTROLIG)
 
-    fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
-        return try {
-            val response: PdlResponse = graphqlRequest(PdlRequest(adressebeskyttelseQuery, Variables(fnr)))
-            response
-                    .data
-                    ?.hentPerson
-                    ?.adressebeskyttelse
-                    ?.firstOrNull()
-                    ?.gradering
-        } catch (exception: Exception) {
-            log.error("Kunne ikke utlede adressebeskyttelse", exception)
-            throw PdlException(exception)
+    suspend fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
+        return withContext(MDCContext()) {
+            return@withContext try {
+
+                val response: PdlResponse = graphqlRequest(PdlRequest(adressebeskyttelseQuery, Variables(fnr)))
+                response
+                        .data
+                        ?.hentPerson
+                        ?.adressebeskyttelse
+                        ?.firstOrNull()
+                        ?.gradering
+            } catch (exception: Exception) {
+                log.error("Kunne ikke utlede adressebeskyttelse", exception)
+                throw PdlException(exception)
+            }
         }
     }
 
-    private fun harGradering(subject: Subject, gradering: PdlAdressebeskyttelseGradering): Boolean {
+    private suspend fun harGradering(subject: Subject, gradering: PdlAdressebeskyttelseGradering): Boolean {
         val pdlGradering = hentAdresseBeskyttelse(subject.uid)
         return gradering == pdlGradering
     }
