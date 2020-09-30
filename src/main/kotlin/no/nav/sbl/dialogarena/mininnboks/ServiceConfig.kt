@@ -120,4 +120,3 @@ class ServiceConfig(val configuration: Configuration) {
 
     }
 }
-''
