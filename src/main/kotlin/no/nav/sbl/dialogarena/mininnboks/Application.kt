@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.mininnboks
 
-import mu.KotlinLogging
 import no.nav.common.utils.EnvironmentUtils
 import no.nav.common.utils.NaisUtils
 import org.slf4j.Logger
