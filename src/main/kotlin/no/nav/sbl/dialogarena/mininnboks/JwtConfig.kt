@@ -45,7 +45,6 @@ class JwtUtil {
                 ))
             } catch (e: Exception) {
                 logger.error("Failed to validate JWT token", e)
-                e.printStackTrace()
                 null
             }
         }
