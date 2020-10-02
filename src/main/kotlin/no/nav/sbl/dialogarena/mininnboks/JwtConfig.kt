@@ -20,7 +20,7 @@ class JwtUtil {
     companion object {
         fun useJwtFromCookie(call: ApplicationCall): HttpAuthHeader? {
             return try {
-                val token = call.request.cookies["selvbetjening-idtoken"]
+                val token = call.request.cookies["selvbetjening-idtoken"]?: call.request.headers["Authorization"]
                 parseAuthorizationHeader("Bearer $token")
             } catch (ex: Throwable) {
                 logger.error("Illegal HTTP auth header", ex)
