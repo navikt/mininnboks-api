@@ -23,9 +23,8 @@ class JwtUtil {
                 val token = call.request.cookies["selvbetjening-idtoken"]
                 if (token != null) {
                     parseAuthorizationHeader("Bearer $token")
-                }
-                else {
-                    call.request.cookies["Authorization"]?.let { parseAuthorizationHeader(it) }
+                } else {
+                    call.request.headers["Authorization"]?.let { parseAuthorizationHeader(it) }
                 }
             } catch (ex: Throwable) {
                 logger.error("Illegal HTTP auth header", ex)
@@ -43,6 +42,7 @@ class JwtUtil {
             return try {
                 requireNotNull(credentials.payload.audience) { "Audience not present" }
                 val token = call.request.cookies["selvbetjening-idtoken"]
+                        ?: call.request.headers["Authorization"]?.replace("Bearer", "")
                 SubjectPrincipal(Subject(
                         credentials.payload.subject,
                         IdentType.EksternBruker,

@@ -38,8 +38,7 @@ fun Route.sporsmalController(henvendelseService: HenvendelseService, useAuthenti
             get("/ubehandlet") {
                 withSubject { subject ->
                     call.respond(
-                            henvendelseService.hentAlleHenvendelser(subject)
-                                    .map { UbehandletMeldingUtils::hentUbehandledeMeldinger }
+                      UbehandletMeldingUtils.hentUbehandledeMeldinger(henvendelseService.hentAlleHenvendelser(subject))
                     )
                 }
             }
