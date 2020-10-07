@@ -11,6 +11,7 @@ spec:
   port: 8080
   ingresses:
   - https://mininnboks-api-{{ namespace }}.nais.oera-q.local
+  - https://mininnboks-api-{{ namespace }}.dev.adeo.no
   liveness:
     path: /internal/isAlive
     initialDelay: 20
