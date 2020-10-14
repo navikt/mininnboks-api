@@ -7,7 +7,7 @@ import java.util.*
 import java.util.regex.Pattern
 
 
-class TekstServiceImpl : TekstService {
+object TekstServiceImpl : TekstService {
     private val tekster: MutableMap<String?, String?> = HashMap()
 
     private fun lastTekster() {

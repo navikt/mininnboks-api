@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory
 import java.util.*
 
 object HenvendelsesUtils {
-    private var tekstService: TekstService? = null
     val logger: Logger = LoggerFactory.getLogger(HenvendelsesUtils::class.java)
     private val LINE_REPLACEMENT_STRING = UUID.randomUUID().toString()
     private const val LINE_BREAK = "\n"
@@ -74,8 +73,8 @@ object HenvendelsesUtils {
              { xmlHenvendelse: XMLHenvendelse -> xmlHenvendelse.metadataListe == null },
              { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
                 henvendelse.kassert = true
-                henvendelse.fritekst = tekstService!!.hentTekst("innhold.kassert")
-                henvendelse.statusTekst = tekstService!!.hentTekst("temagruppe.kassert")
+                henvendelse.fritekst = TekstServiceImpl.hentTekst("innhold.kassert")
+                henvendelse.statusTekst = TekstServiceImpl.hentTekst("temagruppe.kassert")
                 henvendelse.temagruppe = null
                 henvendelse.kanal = null
                 henvendelse
@@ -102,8 +101,8 @@ object HenvendelsesUtils {
                 val varsel = xmlHenvendelse.metadataListe.metadata[0] as XMLOppgaveVarsel
                 henvendelse.oppgaveType = varsel.oppgaveType
                 henvendelse.oppgaveUrl = varsel.oppgaveURL
-                henvendelse.statusTekst = hentTekst(tekstService, String.format("oppgave.%s", varsel.oppgaveType), "oppgave.GEN")
-                henvendelse.fritekst = hentTekst(tekstService, String.format("oppgave.%s.fritekst", varsel.oppgaveType), "oppgave.GEN.fritekst")
+                henvendelse.statusTekst = hentTekst(TekstServiceImpl, String.format("oppgave.%s", varsel.oppgaveType), "oppgave.GEN")
+                henvendelse.fritekst = hentTekst(TekstServiceImpl, String.format("oppgave.%s.fritekst", varsel.oppgaveType), "oppgave.GEN.fritekst")
                 henvendelse
             }
     )
@@ -139,7 +138,7 @@ object HenvendelsesUtils {
 
     private fun hentTemagruppeNavn(temagruppeNavn: String): String? {
         return try {
-            tekstService!!.hentTekst(temagruppeNavn)
+            TekstServiceImpl.hentTekst(temagruppeNavn)
         } catch (exception: MissingResourceException) {
             logger.error("Finner ikke cms-oppslag for $temagruppeNavn", exception)
             temagruppeNavn
@@ -173,7 +172,6 @@ object HenvendelsesUtils {
     }
 
     init {
-        tekstService = TekstServiceImpl()
         domainMapper.registerMapper(DEFAULT_MAPPER)
         domainMapper.registerMapper(LEST_MAPPER)
         domainMapper.registerMapper(KASSERT_MAPPER)

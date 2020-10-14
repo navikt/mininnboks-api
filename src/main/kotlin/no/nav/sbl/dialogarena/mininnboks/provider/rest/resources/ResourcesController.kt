@@ -15,10 +15,9 @@ fun Route.resourcesController() {
     route("/resources") {
 
         get {
-            val tekstService: TekstService = TekstServiceImpl()
 
             val tekster: MutableMap<String?, Any?> = HashMap()
-            tekstService.hentTekster()?.let { it1 -> tekster.putAll(it1) }
+            TekstServiceImpl.hentTekster()?.let { it1 -> tekster.putAll(it1) }
             tekster["skriv.ny.link"] = LinkService.TEMAVELGER_LINK
             tekster["brukerprofil.link"] = LinkService.BRUKERPROFIL_LINK
             tekster["saksoversikt.link"] = LinkService.SAKSOVERSIKT_LINK
