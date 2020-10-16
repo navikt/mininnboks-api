@@ -209,8 +209,3 @@ fun assertFritekst(fritekst: String?, maxLengde: Int) {
         throw BadRequestException("Fritekst kan ikke være lengre enn $maxLengde tegn")
     }
 }
-
-
-
-
-
