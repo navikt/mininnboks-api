@@ -31,13 +31,3 @@ enum class PdlAdressebeskyttelseGradering {
 data class PdlError(
         val message: String
 )
-
-data class PdlErrorLocation(
-        val line: Int?,
-        val column: Int?
-)
-
-data class PdlErrorExtension(
-        val code: String?,
-        val classification: String
-)

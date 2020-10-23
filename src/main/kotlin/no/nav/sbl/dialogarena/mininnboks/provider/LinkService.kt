@@ -11,15 +11,12 @@ object LinkService {
     const val MININNBOKS_LINK_PROPERTY = "MININNBOKS_LINK_URL"
     private val MININNBOKS_LINK = EnvironmentUtils.getRequiredProperty(MININNBOKS_LINK_PROPERTY)
     const val TEMAVELGER_LINK_PROPERTY = "TEMAVELGER_LINK_URL"
-    @JvmField
-    val TEMAVELGER_LINK = EnvironmentUtils.getRequiredProperty(TEMAVELGER_LINK_PROPERTY)
+    val TEMAVELGER_LINK: String = EnvironmentUtils.getRequiredProperty(TEMAVELGER_LINK_PROPERTY)
     const val BRUKERPROFIL_LINK_PROPERTY = "BRUKERPROFIL_LINK_URL"
-    @JvmField
-    val BRUKERPROFIL_LINK = EnvironmentUtils.getRequiredProperty(BRUKERPROFIL_LINK_PROPERTY)
+    val BRUKERPROFIL_LINK: String = EnvironmentUtils.getRequiredProperty(BRUKERPROFIL_LINK_PROPERTY)
     const val SAKSOVERSIKT_LINK_PROPERTY = "SAKSOVERSIKT_LINK_URL"
-    @JvmField
-    val SAKSOVERSIKT_LINK = EnvironmentUtils.getRequiredProperty(SAKSOVERSIKT_LINK_PROPERTY)
-    @JvmStatic
+    val SAKSOVERSIKT_LINK: String = EnvironmentUtils.getRequiredProperty(SAKSOVERSIKT_LINK_PROPERTY)
+
     fun lagDirektelenkeTilMelding(henvendelse: Henvendelse): String {
         return if (Henvendelsetype.DOKUMENT_VARSEL == henvendelse.type || Henvendelsetype.OPPGAVE_VARSEL == henvendelse.type) {
             String.format("%s/?varselid=%s", MININNBOKS_LINK, henvendelse.korrelasjonsId)

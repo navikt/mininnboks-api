@@ -18,6 +18,7 @@ import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
+import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.henvendelseController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.naisRoutes
@@ -34,6 +35,27 @@ fun createHttpServer(applicationState: ApplicationState,
                      port: Int = 8080,
                      useAuthentication: Boolean): ApplicationEngine = embeddedServer(Netty, port) {
 
+    installKtorFeatures(useAuthentication, configuration)
+
+
+    val serviceConfig = ServiceConfig(configuration)
+    routing {
+        sporsmalController(serviceConfig.henvendelseService, true)
+        henvendelseController(serviceConfig.henvendelseService, serviceConfig.tilgangService, true)
+        tilgangController(serviceConfig.tilgangService, true)
+        resourcesController()
+
+        route("internal") {
+            naisRoutes(readinessCheck = { applicationState.initialized },
+                    livenessCheck = { applicationState.running },
+                    selftestChecks = serviceConfig.selfTestChecklist as List<SelfTestCheck>)
+        }
+    }
+
+    applicationState.initialized = true
+}
+
+private fun Application.installKtorFeatures(useAuthentication: Boolean, configuration: Configuration) {
     install(StatusPages) {
         notFoundHandler()
         exceptionHandler()
@@ -61,7 +83,7 @@ fun createHttpServer(applicationState: ApplicationState,
             jwt {
                 authHeader(JwtUtil::useJwtFromCookie)
                 verifier(configuration.jwksUrl, configuration.jwtIssuer)
-                validate { JwtUtil.validateJWT(this, it) }
+                validate { JwtUtil.validateJWT(this, it, configuration.LOGINSERVICE_IDPORTEN_AUDIENCE) }
             }
         }
     }
@@ -74,27 +96,5 @@ fun createHttpServer(applicationState: ApplicationState,
         level = Level.INFO
         filter { call -> call.request.path().contains("/") }
     }
-
-
-
-
-    val serviceConfig = ServiceConfig(configuration)
-    val henvendelseService = serviceConfig.henvendelseService(serviceConfig.personService())
-
-    val tilgangService = serviceConfig.tilgangService(serviceConfig.pdlService(serviceConfig.systemUserTokenProvider()),
-            serviceConfig.personService())
-
-    routing {
-            sporsmalController(henvendelseService, true)
-            henvendelseController(henvendelseService, tilgangService, true)
-            tilgangController(tilgangService)
-            resourcesController()
-
-            route("internal") {
-                naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
-            }
-    }
-
-    applicationState.initialized = true
 }
 

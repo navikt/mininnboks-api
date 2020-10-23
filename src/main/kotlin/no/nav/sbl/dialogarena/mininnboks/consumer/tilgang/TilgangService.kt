@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.tilgang
 
 import no.nav.common.auth.subject.Subject
-import no.nav.sbl.dialogarena.mininnboks.Try
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
 import org.slf4j.LoggerFactory
@@ -13,7 +12,7 @@ data class TilgangDTO(val resultat: Resultat, val melding: String) {
 }
 
 interface TilgangService {
-    suspend fun  harTilgangTilKommunalInnsending(subject: Subject): TilgangDTO
+    suspend fun harTilgangTilKommunalInnsending(subject: Subject): TilgangDTO
 }
 
 class TilgangServiceImpl(
@@ -23,30 +22,36 @@ class TilgangServiceImpl(
     private val log = LoggerFactory.getLogger(TilgangService::class.java)
 
     override suspend fun harTilgangTilKommunalInnsending(subject: Subject): TilgangDTO {
-        val harGT = Try.of {
-            val gt = personService.hentGeografiskTilknytning(subject)
-                    .filter { it.isNotBlank() }
-                    .filter { it.matches(Regex("\\d{4,}")) }
-            log.info("PersonV3 (GT): ${gt.orElse("UKJENT/BLANK")}")
-                gt.isPresent
-
+        var tilgangDTO = TilgangDTO(TilgangDTO.Resultat.OK, "")
+        runCatching {
+            sjekkGTPresent(subject)
+        }.onSuccess {
+            if (!it) {
+                tilgangDTO = TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ikke gyldig GT")
             }
-
-        if (harGT.isFailure()) {
-            return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers GT: ${harGT.getFailure().message}")
-        } else if (!harGT.get()) {
-            return TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ikke gyldig GT")
+        }.onFailure {
+            tilgangDTO = TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers GT: ${it.message}")
         }
 
-        val harKode6 = Try.of {
-            pdlService.harKode6(subject) }
-        if (harKode6.isFailure()) {
-            return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers diskresjonskode: ${harKode6.getFailure().message}")
-        } else if (harKode6.get()) {
-            return TilgangDTO(TilgangDTO.Resultat.KODE6, "Bruker har diskresjonskode")
-        }
+        runCatching {
+            pdlService.harKode6(subject)
+        }.onSuccess {
+            if (it) {
+                tilgangDTO = TilgangDTO(TilgangDTO.Resultat.KODE6, "Bruker har diskresjonskode")
+            }
+        }.onFailure {
+            tilgangDTO = TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers diskresjonskode: ${it.message}")
 
-        return TilgangDTO(TilgangDTO.Resultat.OK, "")
+        }
+        return tilgangDTO
+    }
+
+    private suspend fun sjekkGTPresent(subject: Subject): Boolean {
+        val gt = personService.hentGeografiskTilknytning(subject)
+                .filter { it.isNotBlank() }
+                .filter { it.matches(Regex("\\d{4,}")) }
+        log.info("PersonV3 (GT): ${gt.orElse("UKJENT/BLANK")}")
+        return gt.isPresent
     }
 
 }

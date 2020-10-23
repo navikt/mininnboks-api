@@ -4,7 +4,6 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
 import no.nav.sbl.dialogarena.mininnboks.provider.LinkService.lagDirektelenkeTilMelding
 import java.util.*
-import java.util.function.Predicate
 
 class UbehandletMelding(henvendelse: Henvendelse) {
     enum class Status {
@@ -20,12 +19,9 @@ class UbehandletMelding(henvendelse: Henvendelse) {
     var varselid: String? = null
 
     companion object {
-        @JvmField
-        var erIkkeKassert = Predicate { henvendelse: Henvendelse -> !henvendelse.kassert }
-        @JvmField
-        var erUbesvart = Predicate { henvendelse: Henvendelse -> henvendelse.type == Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE }
-        @JvmField
-        var erUlest = Predicate { henvendelse: Henvendelse -> !henvendelse.isLest }
+        val erIkkeKassert: (Henvendelse?) -> Boolean = { henvendelse: Henvendelse? -> !henvendelse?.kassert!! }
+        var erUbesvart: (Henvendelse?) -> Boolean = { henvendelse: Henvendelse? -> henvendelse?.type == Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE }
+        var erUlest: (Henvendelse?) -> Boolean = { henvendelse: Henvendelse? -> !henvendelse?.isLest!! }
     }
 
     init {
@@ -35,10 +31,10 @@ class UbehandletMelding(henvendelse: Henvendelse) {
         undertype = henvendelse.oppgaveType
         uri = lagDirektelenkeTilMelding(henvendelse)
         varselid = henvendelse.korrelasjonsId
-        if (erUbesvart.test(henvendelse)) {
+        if (erUbesvart.invoke(henvendelse)) {
             statuser.add(Status.UBESVART)
         }
-        if (erUlest.test(henvendelse)) {
+        if (erUlest.invoke(henvendelse)) {
             statuser.add(Status.ULEST)
         }
     }

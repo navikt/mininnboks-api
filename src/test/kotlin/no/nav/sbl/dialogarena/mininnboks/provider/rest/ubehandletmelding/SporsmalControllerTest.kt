@@ -1,20 +1,16 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding
 
-import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.http.ContentType
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import io.ktor.jackson.JacksonConverter
-import io.ktor.routing.routing
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.jackson.*
+import io.ktor.routing.*
 import io.ktor.server.testing.*
-import io.mockk.*
-import io.mockk.verify
-import junit.framework.Assert.assertEquals
-import no.nav.sbl.dialogarena.mininnboks.JwtUtil
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
@@ -36,10 +32,7 @@ class SporsmalControllerTest : Spek({
             coEvery { (henvendelseService.hentAlleHenvendelser(any())) } returns emptyList()
 
             it("retunerer Exception") {
-
                 handleRequest(HttpMethod.Get, "/sporsmal/ubehandlet") {
-
-
                 }.apply {
                     MatcherAssert.assertThat(response.status(), Matchers.`is`(HttpStatusCode.OK))
                     coVerify(exactly = 1) { henvendelseService.hentAlleHenvendelser(any()) }

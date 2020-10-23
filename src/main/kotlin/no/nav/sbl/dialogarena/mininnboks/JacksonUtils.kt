@@ -13,7 +13,6 @@ class ObjectMapperProvider {
                     registerModule(JavaTimeModule())
                     configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
                     setDefaultPrettyPrinter(DefaultPrettyPrinter().apply {
-                        indentArraysWith(DefaultPrettyPrinter.FixedSpaceIndenter.instance)
                         indentObjectsWith(DefaultIndenter("  ", "\n"))
                     })
                     enable(SerializationFeature.INDENT_OUTPUT)

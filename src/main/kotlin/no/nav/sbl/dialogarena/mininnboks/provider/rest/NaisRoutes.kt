@@ -1,12 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest
 
-import io.ktor.application.call
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
-import io.ktor.response.respondText
-import io.ktor.response.respondTextWriter
-import io.ktor.routing.Route
-import io.ktor.routing.get
+import io.ktor.application.*
+import io.ktor.http.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import io.ktor.util.pipeline.*
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.common.TextFormat
 import kotlinx.coroutines.Dispatchers
@@ -21,29 +19,32 @@ fun Route.naisRoutes(readinessCheck: () -> Boolean,
                      collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry
 ) {
 
-    get("/isAlive") {
-        if (livenessCheck()) {
-            call.respondText("Alive")
-        } else {
-            call.respondText("Not alive", status = HttpStatusCode.InternalServerError)
-        }
-    }
+    get("/isAlive") { checkRespond({ livenessCheck() }, "Alive", "Not alive") }
+    get("/isReady") { checkRespond({ readinessCheck() }, "Ready", "Not ready") }
 
-    get("/isReady") {
-        if (readinessCheck()) {
-            call.respondText("Ready")
-        } else {
-            call.respondText("Not ready", status = HttpStatusCode.InternalServerError)
-        }
-    }
+    metrics(collectorRegistry)
 
+    selfTest(selftestChecks)
+}
+
+private suspend fun PipelineContext<Unit, ApplicationCall>.checkRespond(condition: () -> Boolean, successMessage: String, failureMessage: String) {
+    if (condition()) {
+        call.respondText(successMessage)
+    } else {
+        call.respondText(failureMessage, status = HttpStatusCode.InternalServerError)
+    }
+}
+
+private fun Route.metrics(collectorRegistry: CollectorRegistry) {
     get("/metrics") {
         val names = call.request.queryParameters.getAll("name[]")?.toSet() ?: setOf()
         call.respondTextWriter(ContentType.parse(TextFormat.CONTENT_TYPE_004)) {
             TextFormat.write004(this, collectorRegistry.filteredMetricFamilySamples(names))
         }
     }
+}
 
+private fun Route.selfTest(selftestChecks: List<SelfTestCheck>) {
     get("/selftest") {
         withContext(Dispatchers.IO) {
             val selftest = SelfTestUtils.checkAllParallel(selftestChecks)
@@ -53,5 +54,3 @@ fun Route.naisRoutes(readinessCheck: () -> Boolean,
         }
     }
 }
-
-

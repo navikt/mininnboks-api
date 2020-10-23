@@ -11,8 +11,8 @@ class DomainMapper<S, T> {
         mappers.add(mapper)
     }
 
-    fun apply(xmlValue: S, initailValue: T): T {
-        var value: T = initailValue
+    fun apply(xmlValue: S, initialValue: T): T {
+        var value: T = initialValue
         for (mapper in mappers) {
             if (mapper.brukMapper(xmlValue)) {
                 value = mapper.mapper(xmlValue, value)
@@ -26,6 +26,6 @@ class DomainMapper<S, T> {
     }
 
     init {
-        mappers = LinkedList<Mapper<S, T>>()
+        mappers = LinkedList()
     }
 }

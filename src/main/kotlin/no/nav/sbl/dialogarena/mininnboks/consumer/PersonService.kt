@@ -11,6 +11,7 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningRequest
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningResponse
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -41,8 +42,8 @@ interface PersonService {
         }
 
         companion object {
-            val logger = LoggerFactory.getLogger(PersonService::class.java)
-            val personV3IdentType = Personidenter()
+            val logger: Logger = LoggerFactory.getLogger(PersonService::class.java)
+            val personV3IdentType: Personidenter = Personidenter()
                     .withValue("FNR")
         }
 

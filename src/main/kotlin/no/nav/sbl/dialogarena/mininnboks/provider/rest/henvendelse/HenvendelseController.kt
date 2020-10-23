@@ -1,20 +1,17 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse
 
-import io.ktor.application.call
-import io.ktor.features.BadRequestException
-import io.ktor.http.HttpStatusCode
-import io.ktor.request.receive
-import io.ktor.response.respond
-import io.ktor.routing.Route
-import io.ktor.routing.get
-import io.ktor.routing.post
-import io.ktor.routing.route
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.request.*
+import io.ktor.response.*
+import io.ktor.routing.*
 import no.nav.common.auth.subject.Subject
+import no.nav.sbl.dialogarena.mininnboks.conditionalAuthenticate
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.conditionalAuthenticate
 import no.nav.sbl.dialogarena.mininnboks.withSubject
 import org.apache.cxf.binding.soap.SoapFault
 import org.slf4j.Logger
@@ -29,7 +26,6 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
 
     conditionalAuthenticate(useAuthentication) {
         route("/traader") {
-
             get("/") {
                 withSubject { subject ->
                     val henvendelser: List<Henvendelse> = henvendelseService.hentAlleHenvendelser(subject)
@@ -41,101 +37,138 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
                 }
             }
 
-            get("/{id}") {
-                val id = call.parameters["id"]
-                withSubject { subject ->
-                    val optionalTraad = hentTraad(henvendelseService, id, subject)
+            getId(henvendelseService)
 
-                    if (optionalTraad.isPresent) {
-                        val traad = optionalTraad.get()
-                        val filtrertTraad = Traad(filtrerDelsvar(traad.meldinger))
-                        call.respond(filtrertTraad)
-                    } else {
-                        call.respond(HttpStatusCode.Companion.NotFound)
+            postByBehandlingsId(henvendelseService)
+
+            alleLest(henvendelseService)
+
+            sporsmal(tilgangService, henvendelseService)
+
+            sporsmaldirekte(tilgangService, henvendelseService)
+
+            svar(henvendelseService)
+        }
+    }
+}
+
+private fun Route.svar(henvendelseService: HenvendelseService) {
+    post("/svar") {
+        val svar = call.receive(Svar::class)
+        assertFritekst(svar.fritekst, 2500)
+        withSubject { subject ->
+            if (svar.traadId != null) {
+                val traadOptional = hentTraad(henvendelseService, svar.traadId!!, subject)
+                if (!traadOptional.isPresent) {
+                    call.respond(HttpStatusCode.NotFound)
+                } else {
+                    val traad = traadOptional.get()
+                    if (!traad.kanBesvares) {
+                        call.respond(HttpStatusCode.NotAcceptable)
+                        return@withSubject
                     }
-                }
-            }
-
-            post("/lest/{behandlingsId}") {
-                val behandlingsId = call.parameters["behandlingsId"]
-
-                if (behandlingsId != null) {
-                    withSubject() { subject ->
-                        henvendelseService.merkSomLest(behandlingsId, subject)
-                        call.respond(TupleResultat.of("traadId", behandlingsId))
-                    }
-
-                }
-            }
-
-            post("/allelest/{behandlingskjedeId}") {
-                withSubject { subject ->
-                    val behandlingskjedeId = call.parameters["behandlingskjedeId"]
-                    henvendelseService.merkAlleSomLest(behandlingskjedeId, subject)
-                    call.respond(TupleResultat.of("traadId", behandlingskjedeId))
-                }
-            }
-
-            post("/sporsmal") {
-                withSubject { subject ->
-
-                    val sporsmal = call.receive(Sporsmal::class)
-                    val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-                    val response = henvendelseService.stillSporsmal(henvendelse, subject)
+                    val henvendelse = createHenvendelse(svar, traad)
+                    val response = henvendelseService.sendSvar(henvendelse, subject)
                     call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
                 }
+
             }
+        }
+    }
+}
 
-            post("/sporsmaldirekte") {
-                withSubject { subject ->
-                    val sporsmal = call.receive(Sporsmal::class)
-                    val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-                    val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
-                    call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
-                }
+private fun createHenvendelse(svar: Svar, traad: Traad): Henvendelse {
+    val henvendelse = Henvendelse(
+            fritekst = svar.fritekst,
+            temagruppe = traad.nyeste?.temagruppe,
+            traadId = svar.traadId,
+            eksternAktor = traad.nyeste?.eksternAktor,
+            brukersEnhet = traad.eldste?.brukersEnhet,
+            tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet,
+            type = Henvendelsetype.SVAR_SBL_INNGAAENDE,
+            opprettet = Date(),
+            lestDato = Date(),
+            erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt,
+            kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet)
+    return henvendelse
+}
+
+private fun Route.sporsmaldirekte(tilgangService: TilgangService, henvendelseService: HenvendelseService) {
+    post("/sporsmaldirekte") {
+        withSubject { subject ->
+            val sporsmal = call.receive(Sporsmal::class)
+            val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+            val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
+            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+        }
+    }
+}
+
+private fun Route.sporsmal(tilgangService: TilgangService, henvendelseService: HenvendelseService) {
+    post("/sporsmal") {
+        withSubject { subject ->
+            val sporsmal = call.receive(Sporsmal::class)
+            val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+            val response = henvendelseService.stillSporsmal(henvendelse, subject)
+            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+        }
+    }
+}
+
+private fun Route.alleLest(henvendelseService: HenvendelseService) {
+    post("/allelest/{behandlingskjedeId}") {
+        val behandlingskjedeId = call.parameters["behandlingskjedeId"]
+
+        withSubject { subject ->
+            if (behandlingskjedeId != null) {
+                henvendelseService.merkAlleSomLest(behandlingskjedeId, subject)
+                call.respond(mutableMapOf("traadId" to behandlingskjedeId))
             }
+        }
+    }
+}
 
-            post("/svar") {
-                val svar = call.receive(Svar::class)
-                assertFritekst(svar.fritekst, 2500)
-                withSubject { subject ->
-                    val traadOptional = hentTraad(henvendelseService, svar.traadId, subject)
-                    if (!traadOptional.isPresent) {
-                        call.respond(HttpStatusCode.NotFound)
-                    } else {
-                        val traad = traadOptional.get()
-                        if (!traad.kanBesvares) {
-                            call.respond(HttpStatusCode.NotAcceptable)
-                            return@withSubject
-                        }
-                        val henvendelse = Henvendelse(svar.fritekst, traad.nyeste?.temagruppe)
-                        henvendelse.traadId = svar.traadId
-                        henvendelse.eksternAktor = traad.nyeste?.eksternAktor
-                        henvendelse.brukersEnhet = traad.eldste?.brukersEnhet
-                        henvendelse.tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet
-                        henvendelse.type = Henvendelsetype.SVAR_SBL_INNGAAENDE
-                        henvendelse.opprettet = Date()
-                        henvendelse.markerSomLest()
-                        henvendelse.erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt
-                        henvendelse.kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet
-                        val response = henvendelseService.sendSvar(henvendelse, subject)
-                        call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response!!.behandlingsId))
-                    }
+private fun Route.postByBehandlingsId(henvendelseService: HenvendelseService) {
+    post("/lest/{behandlingsId}") {
+        val behandlingsId = call.parameters["behandlingsId"]
 
+        if (behandlingsId != null) {
+            withSubject { subject ->
+                henvendelseService.merkSomLest(behandlingsId, subject)
+                call.respond(mapOf("traadId" to behandlingsId))
+            }
+        } else {
+            call.respond(HttpStatusCode.NotFound)
+        }
+    }
+}
+
+private fun Route.getId(henvendelseService: HenvendelseService) {
+    get("/{id}") {
+        val id = call.parameters["id"]
+        if (id == null)
+            call.respond(HttpStatusCode.NotFound)
+        withSubject { subject ->
+            if (id != null) {
+                val optionalTraad = hentTraad(henvendelseService, id, subject)
+
+                if (optionalTraad.isPresent) {
+                    val traad = optionalTraad.get()
+                    val filtrertTraad = Traad(filtrerDelsvar(traad.meldinger))
+                    call.respond(filtrertTraad)
+                } else {
+                    call.respond(HttpStatusCode.NotFound)
                 }
             }
         }
-
     }
 }
 
 suspend fun lagHenvendelse(tilgangService: TilgangService, subject: Subject, sporsmal: Sporsmal): Henvendelse {
-    val temagruppe = sporsmal.temagruppe?.let { Temagruppe.valueOf(it) }
+    val temagruppe = Temagruppe.valueOf(sporsmal.temagruppe)
     sporsmal.fritekst?.let { assertFritekst(it) }
-    if (temagruppe != null) {
-        assertTemagruppeTilgang(tilgangService, subject, temagruppe)
-    }
-    return Henvendelse(sporsmal.fritekst, temagruppe)
+    assertTemagruppeTilgang(tilgangService, subject, temagruppe)
+    return Henvendelse(fritekst = sporsmal.fritekst, temagruppe = temagruppe)
 }
 
 suspend fun assertTemagruppeTilgang(tilgangService: TilgangService, subject: Subject, temagruppe: Temagruppe) {
@@ -166,7 +199,7 @@ fun traadHarIkkeSkriftligSvarFraNAV(traad: List<Henvendelse?>?): Boolean {
     return !skriftligSvarFraNAV?.isPresent!!
 }
 
-suspend fun hentTraad(henvendelseService: HenvendelseService, id: String?, subject: Subject): Optional<Traad> {
+suspend fun hentTraad(henvendelseService: HenvendelseService, id: String, subject: Subject): Optional<Traad> {
     return try {
 
         val meldinger = henvendelseService.hentTraad(id, subject)
@@ -186,26 +219,20 @@ suspend fun hentTraad(henvendelseService: HenvendelseService, id: String?, subje
 
 class NyHenvendelseResultat(val behandlingsId: String?)
 
-class TupleResultat : HashMap<String?, String?>() {
-    companion object {
-        fun of(key: String, value: String?): TupleResultat {
-            val tr = TupleResultat()
-            tr[key] = value
-            return tr
-        }
-    }
-}
-
 fun assertFritekst(fritekst: String) {
     assertFritekst(fritekst, 1000)
 }
 
 fun assertFritekst(fritekst: String?, maxLengde: Int) {
-    if (fritekst == null) {
-        throw BadRequestException("Fritekst må være sendt med")
-    } else if (fritekst.trim { it <= ' ' }.isEmpty()) {
-        throw BadRequestException("Fritekst må inneholde tekst")
-    } else if (fritekst.trim { it <= ' ' }.length > maxLengde) {
-        throw BadRequestException("Fritekst kan ikke være lengre enn $maxLengde tegn")
+    when {
+        fritekst == null -> {
+            throw BadRequestException("Fritekst må være sendt med")
+        }
+        fritekst.trim { it <= ' ' }.isEmpty() -> {
+            throw BadRequestException("Fritekst må inneholde tekst")
+        }
+        fritekst.trim { it <= ' ' }.length > maxLengde -> {
+            throw BadRequestException("Fritekst kan ikke være lengre enn $maxLengde tegn")
+        }
     }
 }

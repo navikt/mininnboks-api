@@ -38,16 +38,20 @@ class JwtUtil {
                         .rateLimited(10, 1, TimeUnit.MINUTES)
                         .build()
 
-        fun validateJWT(call: ApplicationCall, credentials: JWTCredential): Principal? {
+        fun validateJWT(call: ApplicationCall, credentials: JWTCredential, clientId: String): Principal? {
             return try {
                 requireNotNull(credentials.payload.audience) { "Audience not present" }
+                require(credentials.payload.audience.contains(clientId)) { "Audience claim is not correct: $credentials.payload.audience" }
+
                 val token = call.request.cookies["selvbetjening-idtoken"]
                         ?: call.request.headers["Authorization"]?.replace("Bearer", "")
                 SubjectPrincipal(Subject(
                         credentials.payload.subject,
                         IdentType.EksternBruker,
                         SsoToken.oidcToken(token, credentials.payload.claims)
-                ))
+                ),
+                        credentials.payload.claims.getValue("acr").asString()
+                )
             } catch (e: Exception) {
                 logger.error("Failed to validate JWT token", e)
                 null
@@ -56,4 +60,4 @@ class JwtUtil {
     }
 }
 
-class SubjectPrincipal(val subject: Subject) : Principal
+class SubjectPrincipal(val subject: Subject, val authLevel: String) : Principal

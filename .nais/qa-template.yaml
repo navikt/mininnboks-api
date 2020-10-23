@@ -15,9 +15,6 @@ spec:
   liveness:
     path: /internal/isAlive
     initialDelay: 20
-    timeout: 1
-    periodSeconds: 5
-    failureThreshold: 10
   readiness:
     path: /internal/isReady
     initialDelay: 20
@@ -25,8 +22,8 @@ spec:
     enabled: true
     path: /internal/metrics
   replicas:
-    min: 2
-    max: 4
+    min: 1
+    max: 1
     cpuThresholdPercentage: 50
   resources:
     limits:
@@ -49,6 +46,8 @@ spec:
     - kvPath: /apikey/apigw/dev/security-token-service-token/mininnboks-api_{{ namespace }}
       mountPath: /var/run/secrets/nais.io/apigw/security-token-service-token
   webproxy: true
+  envFrom:
+    - configmap: loginservice-idporten
   env:
     - name: APP_NAME
       value: "mininnboks-api"
@@ -65,7 +64,11 @@ spec:
     - name: AAD_B2C_CLIENTID_USERNAME
       value: "0090b6e1-ffcc-4c37-bc21-049f7d1f0fe5"
     - name: AAD_B2C_DISCOVERY_URL
-      value: "https://login.microsoftonline.com/NAVtestB2C.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1A_idporten_ver1"
+      value: "https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1A_idporten_ver1"
+    - name: JWKS_URL
+      value: "https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1"
+    - name: ISSUER
+      value: "https://navtestb2c.b2clogin.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/"
     - name: OPENAM_RESTURL
       value: "https://itjenester-{{ namespace }}.oera.no/esso"
     - name: MININNBOKS_LINK_URL

@@ -1,12 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks
 
-import io.ktor.application.ApplicationCall
-import io.ktor.application.call
-import io.ktor.features.StatusPages
-import io.ktor.features.origin
-import io.ktor.http.HttpStatusCode
-import io.ktor.request.ApplicationRequest
-import io.ktor.response.respond
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.request.*
+import io.ktor.response.*
 
 
 fun StatusPages.Configuration.exceptionHandler() {

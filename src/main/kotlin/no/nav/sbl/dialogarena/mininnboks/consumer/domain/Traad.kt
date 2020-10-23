@@ -15,7 +15,7 @@ class Traad(meldinger: List<Henvendelse>) {
         private val FRA_NAV = listOf(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE, Henvendelsetype.INFOMELDING_MODIA_UTGAAENDE, Henvendelsetype.SVAR_SKRIFTLIG, Henvendelsetype.SVAR_OPPMOTE, Henvendelsetype.SVAR_TELEFON, Henvendelsetype.SAMTALEREFERAT_OPPMOTE, Henvendelsetype.SAMTALEREFERAT_TELEFON, Henvendelsetype.DOKUMENT_VARSEL)
         private val KAN_BESVARES = listOf(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE)
         val NYESTE_OPPRETTET = Function { traad: Traad -> traad.nyeste?.opprettet }
-        val NYESTE_FORST = Collections.reverseOrder(Comparator.comparing(NYESTE_OPPRETTET))
+        val NYESTE_FORST: Comparator<Traad> = Collections.reverseOrder(Comparator.comparing(NYESTE_OPPRETTET))
     }
 
     init {

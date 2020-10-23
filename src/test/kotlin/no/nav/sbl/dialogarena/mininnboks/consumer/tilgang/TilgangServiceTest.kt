@@ -4,7 +4,6 @@ import com.nhaarman.mockitokotlin2.any
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
 import org.assertj.core.api.Assertions.assertThat
