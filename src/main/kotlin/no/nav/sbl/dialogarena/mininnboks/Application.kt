@@ -8,10 +8,9 @@ import org.slf4j.LoggerFactory
 val log: Logger = LoggerFactory.getLogger("mininnboks.Application")
 data class ApplicationState(var running: Boolean = true, var initialized: Boolean = false)
 const val FSS_SRVMININNBOKS_USERNAME = "FSS_SRVMININNBOKS_USERNAME"
-const val FSS_SRVMININNBOKS_PASSWORD = "FSS_◊SRVMININNBOKS_PASSWORD"
+const val FSS_SRVMININNBOKS_PASSWORD = "FSS_SRVMININNBOKS_PASSWORD"
 const val SRVMININNBOKS_USERNAME = "SRVMININNBOKS_USERNAME"
 const val SRVMININNBOKS_PASSWORD = "SRVMININNBOKS_PASSWORD"
-const val PDL_API_URL = "PDL_API_URL"
 const val PDL_API_APIKEY = "PDL_API_APIKEY"
 const val STS_APIKEY = "STS_APIKEY"
 private const val DEFAULT_SECRETS_BASE_PATH = "/var/run/secrets/nais.io"
@@ -53,6 +52,6 @@ private fun loadApigwKeys() {
 }
 
 private fun getApigwKey(producerApp: String): String? {
-    val location = java.lang.String.format("%s/apigw/%s/x-nav-apiKey", DEFAULT_SECRETS_BASE_PATH, producerApp)
+    val location = "%s/apigw/%s/x-nav-apiKey".format(DEFAULT_SECRETS_BASE_PATH, producerApp)
     return NaisUtils.getFileContent(location)
 }

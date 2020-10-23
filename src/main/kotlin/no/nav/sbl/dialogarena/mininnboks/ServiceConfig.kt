@@ -23,10 +23,10 @@ import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
 
 class ServiceConfig(val configuration: Configuration) {
 
-
-    fun personService(): PersonService {
-        return PersonService.Default(personV3())
-    }
+    private val personV3  = personV3()
+    val personService = PersonService.Default(personV3)
+    val henvendelseService = henvendelseService()
+    val tilgangService = tilgangService(pdlService(systemUserTokenProvider()))
 
     private fun personV3(): PersonV3 {
         return CXFClient<PersonV3>(PersonV3::class.java)
@@ -35,8 +35,7 @@ class ServiceConfig(val configuration: Configuration) {
                 .build()
     }
 
-
-    fun henvendelseService(personService: PersonService): HenvendelseService {
+    private fun henvendelseService(): HenvendelseService {
         return HenvendelseService.Default(
                 henvendelse(),
                 sendInnHenvendelse(),
@@ -45,8 +44,7 @@ class ServiceConfig(val configuration: Configuration) {
         )
     }
 
-
-    fun stsConfig(): StsConfig? {
+    private fun stsConfig(): StsConfig? {
         return StsConfig.builder()
                 .url(configuration.SECURITYTOKENSERVICE_URL)
                 .username(configuration.SRVMININNBOKS_USERNAME)
@@ -54,8 +52,7 @@ class ServiceConfig(val configuration: Configuration) {
                 .build()
     }
 
-
-    fun systemUserTokenProvider(): SystemuserTokenProvider {
+    private fun systemUserTokenProvider(): SystemuserTokenProvider {
         return fromTokenEndpoint(
                 configuration.STS_TOKENENDPOINT_URL,
                 configuration.FSS_SRVMININNBOKS_USERNAME,
@@ -65,13 +62,13 @@ class ServiceConfig(val configuration: Configuration) {
     }
 
 
-    fun pdlService(stsService: SystemuserTokenProvider?): PdlService {
-        return PdlService(RestClient.baseClientBuilder().build(), stsService!!, configuration)
+    private fun pdlService(stsService: SystemuserTokenProvider): PdlService {
+        return PdlService(RestClient.baseClientBuilder().build(), stsService, configuration)
     }
 
 
-    fun tilgangService(pdlService: PdlService?, personService: PersonService?): TilgangService {
-        return TilgangServiceImpl(pdlService!!, personService!!)
+    private fun tilgangService(pdlService: PdlService): TilgangService {
+        return TilgangServiceImpl(pdlService, personService)
     }
 
     private fun sendInnHenvendelse(): SendInnHenvendelsePortType {

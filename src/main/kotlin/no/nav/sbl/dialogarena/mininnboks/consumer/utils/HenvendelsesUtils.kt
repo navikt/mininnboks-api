@@ -20,8 +20,7 @@ object HenvendelsesUtils {
     private const val LINE_BREAK = "\n"
     val FRA_BRUKER: List<Henvendelsetype> = listOf(Henvendelsetype.SPORSMAL_SKRIFTLIG, Henvendelsetype.SPORSMAL_SKRIFTLIG_DIREKTE, Henvendelsetype.SVAR_SBL_INNGAAENDE)
 
-    private val HENVENDELSETYPE_MAP: HashMap<XMLHenvendelseType, Henvendelsetype> = object : HashMap<XMLHenvendelseType, Henvendelsetype>() {
-        init {
+    private val HENVENDELSETYPE_MAP = HashMap<XMLHenvendelseType, Henvendelsetype>().apply {
             put(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, Henvendelsetype.SPORSMAL_SKRIFTLIG)
             put(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE, Henvendelsetype.SPORSMAL_SKRIFTLIG_DIREKTE)
             put(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE)
@@ -35,7 +34,6 @@ object HenvendelsesUtils {
             put(XMLHenvendelseType.DOKUMENT_VARSEL, Henvendelsetype.DOKUMENT_VARSEL)
             put(XMLHenvendelseType.OPPGAVE_VARSEL, Henvendelsetype.OPPGAVE_VARSEL)
             put(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, Henvendelsetype.DELVIS_SVAR_SKRIFTLIG)
-        }
     }
     private val domainMapper = DomainMapper<XMLHenvendelse, Henvendelse>()
     private val DEFAULT_MAPPER = DomainMapper.Mapper(
@@ -128,7 +126,7 @@ object HenvendelsesUtils {
         return wsMelding.let { domainMapper.apply(it, Henvendelse(wsMelding.behandlingsId)) }
     }
 
-    fun hentTekst(tekster: TekstService?, key: String?, defaultKey: String?): String? {
+    fun hentTekst(tekster: TekstService?, key: String, defaultKey: String): String? {
         return try {
             tekster!!.hentTekst(key)
         } catch (e: Exception) {

@@ -21,10 +21,10 @@ import java.util.stream.Collectors
 interface HenvendelseService {
     suspend fun stillSporsmal(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse
     suspend fun stillSporsmalDirekte(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse
-    suspend fun sendSvar(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse?
+    suspend fun sendSvar(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse
     suspend fun hentAlleHenvendelser(subject: Subject): List<Henvendelse>
-    suspend fun hentTraad(behandlingskjedeId: String?, subject: Subject): List<Henvendelse>
-    suspend fun merkAlleSomLest(behandlingskjedeId: String?, subject: Subject)
+    suspend fun hentTraad(behandlingskjedeId: String, subject: Subject): List<Henvendelse>
+    suspend fun merkAlleSomLest(behandlingskjedeId: String, subject: Subject)
     suspend fun merkSomLest(id: String, subject: Subject)
 
     class Default(private val henvendelsePortType: HenvendelsePortType,
@@ -66,7 +66,7 @@ interface HenvendelseService {
             }
         }
 
-        override suspend fun sendSvar(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse? {
+        override suspend fun sendSvar(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse {
             val xmlHenvendelseType = XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name
             val svartekst = HenvendelsesUtils.cleanOutHtml(HenvendelsesUtils.fjernHardeMellomrom(henvendelse.fritekst))
             val info = XMLHenvendelse()
@@ -92,7 +92,7 @@ interface HenvendelseService {
             }
         }
 
-        override suspend fun merkAlleSomLest( behandlingskjedeId: String?, subject: Subject) {
+        override suspend fun merkAlleSomLest( behandlingskjedeId: String, subject: Subject) {
             val traad = hentTraad( behandlingskjedeId, subject)
             val ids = traad.stream()
                     .filter { henvendelse: Henvendelse -> !henvendelse.isLest }
@@ -140,7 +140,7 @@ interface HenvendelseService {
                     .collect(Collectors.toList())
         }
 
-        override suspend fun hentTraad(behandlingskjedeId: String?, subject: Subject): List<Henvendelse> {
+        override suspend fun hentTraad(behandlingskjedeId: String, subject: Subject): List<Henvendelse> {
             val wsBehandlingskjeder = externalCall(subject) {
                 henvendelsePortType.hentBehandlingskjede(WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).any
             }

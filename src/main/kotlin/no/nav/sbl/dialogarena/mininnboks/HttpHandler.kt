@@ -79,15 +79,10 @@ fun createHttpServer(applicationState: ApplicationState,
 
 
     val serviceConfig = ServiceConfig(configuration)
-    val henvendelseService = serviceConfig.henvendelseService(serviceConfig.personService())
-
-    val tilgangService = serviceConfig.tilgangService(serviceConfig.pdlService(serviceConfig.systemUserTokenProvider()),
-            serviceConfig.personService())
-
     routing {
-            sporsmalController(henvendelseService, true)
-            henvendelseController(henvendelseService, tilgangService, true)
-            tilgangController(tilgangService)
+            sporsmalController(serviceConfig.henvendelseService, true)
+            henvendelseController(serviceConfig.henvendelseService, serviceConfig.tilgangService, true)
+            tilgangController(serviceConfig.tilgangService, true)
             resourcesController()
 
             route("internal") {

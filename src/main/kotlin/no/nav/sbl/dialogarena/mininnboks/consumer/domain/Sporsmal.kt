@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.domain
 
-class Sporsmal {
-    var temagruppe: String? = null
+data class Sporsmal (
+    var temagruppe: String = "",
     var fritekst: String? = null
-}
+)

@@ -7,7 +7,6 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
 import org.hamcrest.Matchers
 import org.junit.Assert
 import org.junit.Test
-import java.time.ZonedDateTime
 import java.util.*
 
 class UbehandletMeldingUtilsTest {
@@ -15,12 +14,6 @@ class UbehandletMeldingUtilsTest {
         init {
             setup()
         }
-    }
-
-    @Test
-    fun asdf() {
-        val parse = ZonedDateTime.parse("2019-01-18T14:51:10.302528Z")
-        println(parse.toEpochSecond())
     }
 
     @Test

@@ -1,20 +1,17 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse
 
-import io.ktor.application.call
-import io.ktor.features.BadRequestException
-import io.ktor.http.HttpStatusCode
-import io.ktor.request.receive
-import io.ktor.response.respond
-import io.ktor.routing.Route
-import io.ktor.routing.get
-import io.ktor.routing.post
-import io.ktor.routing.route
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.request.*
+import io.ktor.response.*
+import io.ktor.routing.*
 import no.nav.common.auth.subject.Subject
+import no.nav.sbl.dialogarena.mininnboks.conditionalAuthenticate
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.conditionalAuthenticate
 import no.nav.sbl.dialogarena.mininnboks.withSubject
 import org.apache.cxf.binding.soap.SoapFault
 import org.slf4j.Logger
@@ -43,15 +40,19 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
 
             get("/{id}") {
                 val id = call.parameters["id"]
+                if (id == null)
+                    call.respond(HttpStatusCode.Companion.NotFound)
                 withSubject { subject ->
-                    val optionalTraad = hentTraad(henvendelseService, id, subject)
+                    if(id != null) {
+                        val optionalTraad = hentTraad(henvendelseService, id, subject)
 
-                    if (optionalTraad.isPresent) {
-                        val traad = optionalTraad.get()
-                        val filtrertTraad = Traad(filtrerDelsvar(traad.meldinger))
-                        call.respond(filtrertTraad)
-                    } else {
-                        call.respond(HttpStatusCode.Companion.NotFound)
+                        if (optionalTraad.isPresent) {
+                            val traad = optionalTraad.get()
+                            val filtrertTraad = Traad(filtrerDelsvar(traad.meldinger))
+                            call.respond(filtrertTraad)
+                        } else {
+                            call.respond(HttpStatusCode.Companion.NotFound)
+                        }
                     }
                 }
             }
@@ -60,19 +61,23 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
                 val behandlingsId = call.parameters["behandlingsId"]
 
                 if (behandlingsId != null) {
-                    withSubject() { subject ->
+                    withSubject { subject ->
                         henvendelseService.merkSomLest(behandlingsId, subject)
-                        call.respond(TupleResultat.of("traadId", behandlingsId))
+                        call.respond(mapOf("traadId" to behandlingsId))
                     }
-
+                } else {
+                    call.respond(HttpStatusCode.Companion.NotFound)
                 }
             }
 
             post("/allelest/{behandlingskjedeId}") {
+                val behandlingskjedeId = call.parameters["behandlingskjedeId"]
+
                 withSubject { subject ->
-                    val behandlingskjedeId = call.parameters["behandlingskjedeId"]
-                    henvendelseService.merkAlleSomLest(behandlingskjedeId, subject)
-                    call.respond(TupleResultat.of("traadId", behandlingskjedeId))
+                    if (behandlingskjedeId != null) {
+                        henvendelseService.merkAlleSomLest(behandlingskjedeId, subject)
+                        call.respond(mutableMapOf("traadId" to behandlingskjedeId))
+                    }
                 }
             }
 
@@ -99,29 +104,31 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
                 val svar = call.receive(Svar::class)
                 assertFritekst(svar.fritekst, 2500)
                 withSubject { subject ->
-                    val traadOptional = hentTraad(henvendelseService, svar.traadId, subject)
-                    if (!traadOptional.isPresent) {
-                        call.respond(HttpStatusCode.NotFound)
-                    } else {
-                        val traad = traadOptional.get()
-                        if (!traad.kanBesvares) {
-                            call.respond(HttpStatusCode.NotAcceptable)
-                            return@withSubject
+                    if (svar.traadId != null) {
+                        val traadOptional = hentTraad(henvendelseService, svar.traadId!!, subject)
+                        if (!traadOptional.isPresent) {
+                            call.respond(HttpStatusCode.NotFound)
+                        } else {
+                            val traad = traadOptional.get()
+                            if (!traad.kanBesvares) {
+                                call.respond(HttpStatusCode.NotAcceptable)
+                                return@withSubject
+                            }
+                            val henvendelse = Henvendelse(svar.fritekst, traad.nyeste?.temagruppe)
+                            henvendelse.traadId = svar.traadId
+                            henvendelse.eksternAktor = traad.nyeste?.eksternAktor
+                            henvendelse.brukersEnhet = traad.eldste?.brukersEnhet
+                            henvendelse.tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet
+                            henvendelse.type = Henvendelsetype.SVAR_SBL_INNGAAENDE
+                            henvendelse.opprettet = Date()
+                            henvendelse.markerSomLest()
+                            henvendelse.erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt
+                            henvendelse.kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet
+                            val response = henvendelseService.sendSvar(henvendelse, subject)
+                            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
                         }
-                        val henvendelse = Henvendelse(svar.fritekst, traad.nyeste?.temagruppe)
-                        henvendelse.traadId = svar.traadId
-                        henvendelse.eksternAktor = traad.nyeste?.eksternAktor
-                        henvendelse.brukersEnhet = traad.eldste?.brukersEnhet
-                        henvendelse.tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet
-                        henvendelse.type = Henvendelsetype.SVAR_SBL_INNGAAENDE
-                        henvendelse.opprettet = Date()
-                        henvendelse.markerSomLest()
-                        henvendelse.erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt
-                        henvendelse.kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet
-                        val response = henvendelseService.sendSvar(henvendelse, subject)
-                        call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response!!.behandlingsId))
-                    }
 
+                    }
                 }
             }
         }
@@ -130,11 +137,9 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
 }
 
 suspend fun lagHenvendelse(tilgangService: TilgangService, subject: Subject, sporsmal: Sporsmal): Henvendelse {
-    val temagruppe = sporsmal.temagruppe?.let { Temagruppe.valueOf(it) }
+    val temagruppe = Temagruppe.valueOf(sporsmal.temagruppe)
     sporsmal.fritekst?.let { assertFritekst(it) }
-    if (temagruppe != null) {
-        assertTemagruppeTilgang(tilgangService, subject, temagruppe)
-    }
+    assertTemagruppeTilgang(tilgangService, subject, temagruppe)
     return Henvendelse(sporsmal.fritekst, temagruppe)
 }
 
@@ -166,7 +171,7 @@ fun traadHarIkkeSkriftligSvarFraNAV(traad: List<Henvendelse?>?): Boolean {
     return !skriftligSvarFraNAV?.isPresent!!
 }
 
-suspend fun hentTraad(henvendelseService: HenvendelseService, id: String?, subject: Subject): Optional<Traad> {
+suspend fun hentTraad(henvendelseService: HenvendelseService, id: String, subject: Subject): Optional<Traad> {
     return try {
 
         val meldinger = henvendelseService.hentTraad(id, subject)
@@ -186,26 +191,20 @@ suspend fun hentTraad(henvendelseService: HenvendelseService, id: String?, subje
 
 class NyHenvendelseResultat(val behandlingsId: String?)
 
-class TupleResultat : HashMap<String?, String?>() {
-    companion object {
-        fun of(key: String, value: String?): TupleResultat {
-            val tr = TupleResultat()
-            tr[key] = value
-            return tr
-        }
-    }
-}
-
 fun assertFritekst(fritekst: String) {
     assertFritekst(fritekst, 1000)
 }
 
 fun assertFritekst(fritekst: String?, maxLengde: Int) {
-    if (fritekst == null) {
-        throw BadRequestException("Fritekst må være sendt med")
-    } else if (fritekst.trim { it <= ' ' }.isEmpty()) {
-        throw BadRequestException("Fritekst må inneholde tekst")
-    } else if (fritekst.trim { it <= ' ' }.length > maxLengde) {
-        throw BadRequestException("Fritekst kan ikke være lengre enn $maxLengde tegn")
+    when {
+        fritekst == null -> {
+            throw BadRequestException("Fritekst må være sendt med")
+        }
+        fritekst.trim { it <= ' ' }.isEmpty() -> {
+            throw BadRequestException("Fritekst må inneholde tekst")
+        }
+        fritekst.trim { it <= ' ' }.length > maxLengde -> {
+            throw BadRequestException("Fritekst kan ikke være lengre enn $maxLengde tegn")
+        }
     }
 }

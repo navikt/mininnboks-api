@@ -16,7 +16,6 @@ import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.mockk.*
 import io.mockk.coEvery
-import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
@@ -49,7 +48,7 @@ class HenvendelseControllerTest : Spek({
 
         beforeEachTest {
 
-            setUp(service, tilgangService)
+            setUp(service)
         }
 
         val engine = TestApplicationEngine(createTestEnvironment())
@@ -352,7 +351,7 @@ class HenvendelseControllerTest : Spek({
 })
 
 
-fun setUp(service: HenvendelseService, tilgangService: TilgangService) {
+fun setUp(service: HenvendelseService) {
     val henvendelser = listOf(
             Henvendelse("1").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),
             Henvendelse("2").withTraadId("2").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),

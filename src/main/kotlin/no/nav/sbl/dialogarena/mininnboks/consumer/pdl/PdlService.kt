@@ -6,16 +6,18 @@ import kotlinx.coroutines.withContext
 import no.nav.common.auth.subject.SsoToken
 import no.nav.common.auth.subject.Subject
 import no.nav.common.auth.subject.SubjectHandler
+import no.nav.common.health.HealthCheck
+import no.nav.common.health.HealthCheckResult
 import no.nav.common.log.MDCConstants
+import no.nav.common.rest.client.RestUtils.toJsonRequestBody
 import no.nav.sbl.dialogarena.mininnboks.Configuration
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.util.*
-import no.nav.common.health.HealthCheck
-import no.nav.common.health.HealthCheckResult
-import no.nav.common.rest.client.RestUtils.toJsonRequestBody
-import okhttp3.*
 
 class PdlException(cause: Exception) : RuntimeException("Kunne ikke utlede adressebeskyttelse", cause)
 
@@ -32,8 +34,7 @@ open class PdlService(private val pdlClient: OkHttpClient,
 
     suspend fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
         return withContext(MDCContext()) {
-            return@withContext try {
-
+            try {
                 val response: PdlResponse = graphqlRequest(PdlRequest(adressebeskyttelseQuery, Variables(fnr)))
                 response
                         .data
@@ -89,7 +90,6 @@ open class PdlService(private val pdlClient: OkHttpClient,
 
             val response: Response = pdlClient.newCall(request).execute()
             val body = response.body()?.string()
-            //val body = response.readEntity(String::class.java)
             log.info("""
                 PDL-response: $uuid
                 ------------------------------------------------------------------------------------

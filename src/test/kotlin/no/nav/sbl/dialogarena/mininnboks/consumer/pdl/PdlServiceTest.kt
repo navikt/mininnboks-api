@@ -5,7 +5,6 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.common.auth.subject.SubjectHandler
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.Configuration
 import no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT
@@ -170,9 +169,6 @@ internal class PdlServiceTest {
         val stsService = gittStsService()
         val pdlService = PdlService(mockContext.client, stsService, configuration)
 
-          //  SubjectHandler.withSubject(MOCK_SUBJECT) {
                 fn(Pair(mockContext, pdlService))
-          // }
-       // }
     }
 }
