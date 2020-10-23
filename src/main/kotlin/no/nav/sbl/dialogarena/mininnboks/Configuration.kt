@@ -22,7 +22,8 @@ private val defaultProperties = ConfigurationMap(
                 "FSS_SRVMININNBOKS_USERNAME" to "FSS_SRVMININNBOKS_USERNAME",
                 "FSS_SRVMININNBOKS_PASSWORD" to "FSS_SRVMININNBOKS_PASSWORD",
                 "SRVMININNBOKS_USERNAME" to "SRVMININNBOKS_USERNAME",
-                "SRVMININNBOKS_PASSWORD" to "SRVMININNBOKS_PASSWORD"
+                "SRVMININNBOKS_PASSWORD" to "SRVMININNBOKS_PASSWORD",
+                "AAD_B2C_CLIENTID_USERNAME" to "AAD_B2C_CLIENTID_USERNAME"
         )
 )
 
@@ -30,6 +31,7 @@ data class Configuration(
         val clusterName: String = config()[Key("NAIS_CLUSTER_NAME", stringType)],
         val jwksUrl: JwkProvider = JwtUtil.makeJwkProvider(config()[Key("JWKS_URL", stringType)]),
         val jwtIssuer: String = config()[Key("ISSUER", stringType)],
+        val AAD_B2C_CLIENTID_USERNAME: String = config()[Key("AAD_B2C_CLIENTID_USERNAME", stringType)],
         val vaultMountpath: String = config()[Key("VAULT_MOUNTPATH", stringType)],
         val SERVICEGATEWAY_URL: String = config()[Key("SERVICEGATEWAY_URL", stringType)],
         val INNSYN_HENVENDELSE_WS_URL: String = config()[Key("SERVICEGATEWAY_URL", stringType)],

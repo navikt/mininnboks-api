@@ -61,7 +61,7 @@ fun createHttpServer(applicationState: ApplicationState,
             jwt {
                 authHeader(JwtUtil::useJwtFromCookie)
                 verifier(configuration.jwksUrl, configuration.jwtIssuer)
-                validate { JwtUtil.validateJWT(this, it) }
+                validate { JwtUtil.validateJWT(this, it, configuration.AAD_B2C_CLIENTID_USERNAME) }
             }
         }
     }

@@ -38,9 +38,11 @@ class JwtUtil {
                         .rateLimited(10, 1, TimeUnit.MINUTES)
                         .build()
 
-        fun validateJWT(call: ApplicationCall, credentials: JWTCredential): Principal? {
+        fun validateJWT(call: ApplicationCall, credentials: JWTCredential, clientId: String): Principal? {
             return try {
                 requireNotNull(credentials.payload.audience) { "Audience not present" }
+                require(credentials.payload.audience.contains(clientId)) { "Audience claim is not correct: $credentials.payload.audience" }
+
                 val token = call.request.cookies["selvbetjening-idtoken"]
                         ?: call.request.headers["Authorization"]?.replace("Bearer", "")
                 SubjectPrincipal(Subject(
