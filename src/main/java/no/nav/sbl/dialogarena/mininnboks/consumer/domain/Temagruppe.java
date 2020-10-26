@@ -6,6 +6,7 @@ import static java.util.Arrays.asList;
 
 public enum Temagruppe {
     ARBD,
+    HELSE,
     FMLI,
     FDAG,
     HJLPM,
@@ -17,5 +18,5 @@ public enum Temagruppe {
     OKSOS,
     ANSOS;
 
-    public static final List<Temagruppe> GODKJENTE_FOR_INNGAAENDE_SPORSMAAL = asList(ARBD, FMLI, FDAG, HJLPM, BIL, ORT_HJE, PENS, UFRT);
+    public static final List<Temagruppe> GODKJENTE_FOR_INNGAAENDE_SPORSMAAL = asList(ARBD, HELSE, FMLI, FDAG, HJLPM, BIL, ORT_HJE, PENS, UFRT);
 }
