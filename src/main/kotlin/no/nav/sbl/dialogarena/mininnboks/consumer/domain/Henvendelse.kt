@@ -1,11 +1,9 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.domain
 
-import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Henvendelse : Serializable {
-    var id: String? = null
+data class Henvendelse(var id: String? = null) {
     var traadId: String? = null
     var fritekst: String? = null
     var kanal: String? = null
@@ -28,16 +26,16 @@ class Henvendelse : Serializable {
     var avsluttet: Date? = null
     var fraNav: Boolean? = null
     var fraBruker: Boolean? = null
-    var kassert = false
+    var kassert: Boolean = false
     var erTilknyttetAnsatt: Boolean? = null
     var ferdigstiltUtenSvar: Boolean? = null
     var lestDato: Date? = null
 
-    constructor(id: String?) {
-        this.id = id
+    companion object {
+        val NYESTE_OVERST: Comparator<Henvendelse?> = Collections.reverseOrder(Comparator.comparing { henvendelse: Henvendelse -> henvendelse.opprettet })
     }
 
-    constructor(fritekst: String?, temagruppe: Temagruppe?) {
+    constructor(fritekst: String?, temagruppe: Temagruppe?) : this(null) {
         this.fritekst = fritekst
         this.temagruppe = temagruppe
     }
@@ -71,9 +69,5 @@ class Henvendelse : Serializable {
     fun withTemaNavn(temaNavn: String?): Henvendelse {
         this.temaNavn = temaNavn
         return this
-    }
-
-    companion object {
-        val NYESTE_OVERST: Comparator<Henvendelse?> = Collections.reverseOrder(Comparator.comparing { henvendelse: Henvendelse -> henvendelse.opprettet })
     }
 }
