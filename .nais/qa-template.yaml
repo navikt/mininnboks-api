@@ -11,6 +11,7 @@ spec:
   port: 8080
   ingresses:
   - https://mininnboks-api-{{ namespace }}.nais.oera-q.local
+  - https://mininnboks-api-{{ namespace }}.dev.nav.no
   liveness:
     path: /internal/isAlive
     initialDelay: 20
@@ -44,6 +45,8 @@ spec:
     - kvPath: /apikey/apigw/dev/security-token-service-token/mininnboks-api_{{ namespace }}
       mountPath: /var/run/secrets/nais.io/apigw/security-token-service-token
   webproxy: true
+  envFrom:
+    - configmap: loginservice-idporten
   env:
     - name: APP_NAME
       value: "mininnboks-api"
