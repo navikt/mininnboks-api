@@ -65,6 +65,13 @@ public class ApplicationConfig implements ApiApplication {
                 .withIdentType(IdentType.EksternBruker)
                 .withIdTokenCookieName(AZURE_AD_B2C_ID_TOKEN_COOKIE_NAME);
 
+        OidcAuthenticatorConfig newAzureADB2CConfig = new OidcAuthenticatorConfig()
+                // LOGINSERVICE-variables comes from `loginservice-idporten` configmap specified in nais-yml files
+                .withClientId(getRequiredProperty("LOGINSERVICE_IDPORTEN_AUDIENCE"))
+                .withDiscoveryUrl(getRequiredProperty("LOGINSERVICE_IDPORTEN_DISCOVERY_URL"))
+                .withIdentType(IdentType.EksternBruker)
+                .withIdTokenCookieName(AZURE_AD_B2C_ID_TOKEN_COOKIE_NAME);
+
         apiAppConfigurator
                 .sts(StsConfig.builder()
                         .url(getRequiredProperty(SECURITYTOKENSERVICE_URL_PROPERTY))
@@ -73,6 +80,7 @@ public class ApplicationConfig implements ApiApplication {
                         .build()
                 )
                 .addOidcAuthenticator(azureADB2CConfig)
+                .addOidcAuthenticator(newAzureADB2CConfig)
                 .customizeJetty((Jetty jetty) -> {
                     ThreadPool threadPool = jetty.server.getThreadPool();
                     if (threadPool instanceof ThreadPool.SizedThreadPool) {
