@@ -1,6 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import io.ktor.http.*
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
 import no.nav.common.auth.subject.SsoToken
@@ -15,7 +16,6 @@ import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.Response
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -29,7 +29,7 @@ open class PdlService(private val pdlClient: OkHttpClient,
     private val log = LoggerFactory.getLogger(PdlService::class.java)
     private val adressebeskyttelseQuery: String = lastQueryFraFil("hentAdressebeskyttelse")
 
-    val selfTestCheck: SelfTestCheck = SelfTestCheck(configuration.PDL_API_URL + "/graphql", true) {
+    val selfTestCheck: SelfTestCheck = SelfTestCheck(configuration.PDL_API_URL + "/graphql", false) {
         checkHealth()
     }
 
@@ -140,8 +140,10 @@ open class PdlService(private val pdlClient: OkHttpClient,
             pingGraphQL()
 
         }.onSuccess {
-            if (it)
+            if (it == 200)
                 return HealthCheckResult.healthy()
+            else
+                return HealthCheckResult.unhealthy("Statuskode: ${it}")
 
         }.onFailure {
             return HealthCheckResult.unhealthy(it.message)
@@ -150,19 +152,20 @@ open class PdlService(private val pdlClient: OkHttpClient,
         return HealthCheckResult.unhealthy("Feil ved Helsesjekk")
     }
 
-    private fun pingGraphQL(): Boolean {
+    private fun pingGraphQL(): Int {
         val request: Request = Request.Builder()
                 .url(configuration.PDL_API_URL + "/graphql")
-                .method("OPTIONS", RequestBody.create(null, ""))
+                .method("OPTIONS", null)
                 .build()
 
         val response: Response = pdlClient.newCall(request).execute()
-        if (response.isSuccessful) {
-            return response.code() == 200
+
+        return if (response.isSuccessful) {
+            response.code()
         } else {
             response.body()?.close()
+            response.code()
         }
-        return false
     }
 }
 
