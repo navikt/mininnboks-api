@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import io.ktor.http.*
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
 import no.nav.common.auth.subject.SsoToken
@@ -90,6 +89,7 @@ open class PdlService(private val pdlClient: OkHttpClient,
                     .addHeader("Authorization", "Bearer $veilederOidcToken")
                     .addHeader("Nav-Consumer-Token", "Bearer $consumerOidcToken")
                     .addHeader("Tema", "GEN")
+                    .addHeader("x-nav-apiKey", configuration.PDL_API_APIKEY)
                     .post(toJsonRequestBody(request))
                     .build()
 
@@ -156,6 +156,7 @@ open class PdlService(private val pdlClient: OkHttpClient,
         val request: Request = Request.Builder()
                 .url(configuration.PDL_API_URL + "/graphql")
                 .method("OPTIONS", null)
+                .addHeader("x-nav-apiKey", configuration.PDL_API_APIKEY)
                 .build()
 
         val response: Response = pdlClient.newCall(request).execute()

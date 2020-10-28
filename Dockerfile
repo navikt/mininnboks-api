@@ -4,7 +4,7 @@ FROM navikt/java:11
 ENV TZ Europe/Oslo
 RUN ln -fs /usr/share/zoneinfo/Europe/Oslo /etc/localtime
 
-COPY java-debug.sh /init-scripts/08-java-debug.sh
+COPY init-scripts /init-scripts
 
 ENV APPD_ENABLED=true
 ENV APP_NAME=mininnboks-api
