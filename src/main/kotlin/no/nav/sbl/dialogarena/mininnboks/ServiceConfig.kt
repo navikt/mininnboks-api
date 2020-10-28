@@ -23,10 +23,11 @@ import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
 
 class ServiceConfig(val configuration: Configuration) {
 
-    private val personV3  = personV3()
+    private val personV3 = personV3()
     val personService = PersonService.Default(personV3)
     val henvendelseService = henvendelseService()
-    val tilgangService = tilgangService(pdlService(systemUserTokenProvider()))
+    val pdlService = pdlService(systemUserTokenProvider())
+    val tilgangService = tilgangService(pdlService)
 
     private fun personV3(): PersonV3 {
         return CXFClient<PersonV3>(PersonV3::class.java)

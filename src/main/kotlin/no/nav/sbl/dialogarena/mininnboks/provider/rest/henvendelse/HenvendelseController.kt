@@ -114,16 +114,18 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
                                 call.respond(HttpStatusCode.NotAcceptable)
                                 return@withSubject
                             }
-                            val henvendelse = Henvendelse(svar.fritekst, traad.nyeste?.temagruppe)
-                            henvendelse.traadId = svar.traadId
-                            henvendelse.eksternAktor = traad.nyeste?.eksternAktor
-                            henvendelse.brukersEnhet = traad.eldste?.brukersEnhet
-                            henvendelse.tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet
-                            henvendelse.type = Henvendelsetype.SVAR_SBL_INNGAAENDE
-                            henvendelse.opprettet = Date()
-                            henvendelse.markerSomLest()
-                            henvendelse.erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt
-                            henvendelse.kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet
+                            val henvendelse = Henvendelse(
+                            fritekst = svar.fritekst,
+                            temagruppe = traad.nyeste?.temagruppe,
+                            traadId = svar.traadId,
+                            eksternAktor = traad.nyeste?.eksternAktor,
+                            brukersEnhet = traad.eldste?.brukersEnhet,
+                            tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet,
+                            type = Henvendelsetype.SVAR_SBL_INNGAAENDE,
+                            opprettet = Date(),
+                            lestDato = Date(),
+                            erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt,
+                            kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet)
                             val response = henvendelseService.sendSvar(henvendelse, subject)
                             call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
                         }
@@ -140,7 +142,7 @@ suspend fun lagHenvendelse(tilgangService: TilgangService, subject: Subject, spo
     val temagruppe = Temagruppe.valueOf(sporsmal.temagruppe)
     sporsmal.fritekst?.let { assertFritekst(it) }
     assertTemagruppeTilgang(tilgangService, subject, temagruppe)
-    return Henvendelse(sporsmal.fritekst, temagruppe)
+    return Henvendelse(fritekst = sporsmal.fritekst, temagruppe = temagruppe)
 }
 
 suspend fun assertTemagruppeTilgang(tilgangService: TilgangService, subject: Subject, temagruppe: Temagruppe) {

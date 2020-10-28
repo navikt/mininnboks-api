@@ -2,13 +2,13 @@ package no.nav.sbl.dialogarena.mininnboks
 
 import no.nav.common.auth.subject.IdentType
 import no.nav.common.auth.subject.SsoToken
+import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
-import no.nav.common.auth.subject.Subject
 
 object TestUtils {
     val MOCK_SUBJECT = Subject("12345678901", IdentType.EksternBruker, SsoToken.oidcToken("token", HashMap<String, Any?>()))
@@ -20,7 +20,9 @@ object TestUtils {
     fun lagHenvendelse(erLest: Boolean): Henvendelse {
         val henvendelse = lagForsteHenvendelseITraad()
         if (erLest) {
-            henvendelse.markerSomLest()
+            return henvendelse.copy(
+                    lestDato = Date()
+            )
         }
         return henvendelse
     }
@@ -42,21 +44,22 @@ object TestUtils {
         val id = UUID.randomUUID().toString()
         val henvendelse = opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, type, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
         if (lest) {
-            henvendelse.markerSomLest()
+            return henvendelse.copy(
+                    lestDato = Date())
         }
         return henvendelse
     }
 
     fun opprettHenvendelse(id: String?, traadId: String?, temagruppe: Temagruppe?,
                            type: Henvendelsetype?, opprettet: Date?, eksternAktor: String?, tilknyttetEnhet: String?): Henvendelse {
-        val henvendelse = Henvendelse(id)
-        henvendelse.temagruppe = temagruppe
-        henvendelse.traadId = traadId
-        henvendelse.type = type
-        henvendelse.opprettet = opprettet
-        henvendelse.eksternAktor = eksternAktor
-        henvendelse.tilknyttetEnhet = tilknyttetEnhet
-        return henvendelse
+        return Henvendelse(
+                id = id,
+                temagruppe = temagruppe,
+                traadId = traadId,
+                type = type,
+                opprettet = opprettet,
+                eksternAktor = eksternAktor,
+                tilknyttetEnhet = tilknyttetEnhet)
     }
 
     fun nowPlus(days: Int): Date {

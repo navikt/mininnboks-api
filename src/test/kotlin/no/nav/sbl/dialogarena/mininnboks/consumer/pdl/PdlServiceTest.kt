@@ -1,5 +1,3 @@
-
-
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import io.mockk.every
@@ -94,14 +92,14 @@ internal class PdlServiceTest {
         val stsService = gittStsService()
         val pdlService = PdlService(mockContext.client, stsService, configuration)
 
-            assertThrows<PdlException> {
-                runBlocking {
+        assertThrows<PdlException> {
+            runBlocking {
                 pdlService.hentAdresseBeskyttelse("any()")
             }
         }
     }
 
-    fun gittClientSomSvarer(status: Int = 200, body: String = "", throwException: Boolean = false): MockContext {
+    fun gittClientSomSvarer(status: Int = 200, body: String = ""): MockContext {
         val client = mockk<OkHttpClient>()
 
         val remoteCall = mockk<Call>()
@@ -136,7 +134,6 @@ internal class PdlServiceTest {
 
     fun gittUrlTilPdl() {
         MDC.put(MDCConstants.MDC_CALL_ID, UUID.randomUUID().toString())
-        //EnvironmentUtils.setProperty(configuration.PDL_API_URL, url, EnvironmentUtils.Type.PUBLIC)
     }
 
     fun gittOkPdlResponse(gradering: PdlAdressebeskyttelseGradering? = null): String {
@@ -163,12 +160,12 @@ internal class PdlServiceTest {
         """.trimIndent()
     }
 
-     suspend fun gittGradering(gradering: PdlAdressebeskyttelseGradering?, fn: suspend (Pair<MockContext, PdlService>) -> Unit) {
+    suspend fun gittGradering(gradering: PdlAdressebeskyttelseGradering?, fn: suspend (Pair<MockContext, PdlService>) -> Unit) {
         gittUrlTilPdl()
         val mockContext = gittClientSomSvarer(body = gittOkPdlResponse(gradering))
         val stsService = gittStsService()
         val pdlService = PdlService(mockContext.client, stsService, configuration)
 
-                fn(Pair(mockContext, pdlService))
+        fn(Pair(mockContext, pdlService))
     }
 }

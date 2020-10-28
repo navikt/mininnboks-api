@@ -3,19 +3,16 @@ package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.http.ContentType
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import io.ktor.jackson.JacksonConverter
-import io.ktor.routing.routing
-import io.ktor.server.testing.TestApplicationEngine
-import io.ktor.server.testing.createTestEnvironment
-import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.setBody
-import io.mockk.*
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.jackson.*
+import io.ktor.routing.*
+import io.ktor.server.testing.*
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import io.mockk.slot
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
@@ -44,7 +41,7 @@ class HenvendelseControllerTest : Spek({
         val service = mockk<HenvendelseService>(relaxed = true)
         val tilgangService = mockk<TilgangService>()
         val mapper = jacksonObjectMapper()
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
         beforeEachTest {
 
@@ -69,8 +66,8 @@ class HenvendelseControllerTest : Spek({
 
             it("filtrerer Bort Uavsluttede Delsvar") {
                 val lstHenvendelserBehandlingskjedeMedDelsvar = listOf(
-                        Henvendelse("123").withType(Henvendelsetype.SPORSMAL_SKRIFTLIG).withTraadId("1").withOpprettetTid(TestUtils.now()),
-                        Henvendelse("234").withType(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG).withTraadId("1").withOpprettetTid(TestUtils.now())
+                        Henvendelse(id = "123", traadId = "1", type = Henvendelsetype.SPORSMAL_SKRIFTLIG, opprettet = TestUtils.now()),
+                        Henvendelse(id = "234", traadId = "1", type = Henvendelsetype.DELVIS_SVAR_SKRIFTLIG, opprettet = TestUtils.now())
                 )
                 coEvery { service.hentAlleHenvendelser(any()) } returns lstHenvendelserBehandlingskjedeMedDelsvar
                 handleRequest(HttpMethod.Get, "/traader") {
@@ -123,7 +120,7 @@ class HenvendelseControllerTest : Spek({
             it("markering Som Lest") {
                 handleRequest(HttpMethod.Post, "/traader/lest/1") {
                 }.apply {
-                    coVerify (exactly = 1) { service.merkSomLest( "1", any()) }
+                    coVerify(exactly = 1) { service.merkSomLest("1", any()) }
                 }
 
             }
@@ -173,13 +170,8 @@ class HenvendelseControllerTest : Spek({
 
             it("kopierer Nyeste Er Tilknyttet Ansatt Flagg Til Svaret") {
 
-                val henvendelse1 = Henvendelse("1")
-                henvendelse1.erTilknyttetAnsatt = true
-                henvendelse1.opprettet = TestUtils.now()
-                henvendelse1.type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE
-                val henvendelse2 = Henvendelse("2")
-                henvendelse2.erTilknyttetAnsatt = false
-                henvendelse2.opprettet = TestUtils.now()
+                val henvendelse1 = Henvendelse(id = "1", erTilknyttetAnsatt = true, opprettet = TestUtils.now(), type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE)
+                val henvendelse2 = Henvendelse(id = "2", erTilknyttetAnsatt = false, opprettet = TestUtils.now())
                 val henvendelser = listOf(henvendelse1, henvendelse2)
 
                 coEvery { service.hentTraad(any(), any()) } returns (henvendelser)
@@ -205,13 +197,9 @@ class HenvendelseControllerTest : Spek({
 
             it("kopierer Brukers Enhet Til Svaret") {
                 val brukersEnhet = "1234"
-                val henvendelse1 = Henvendelse("1")
-                henvendelse1.opprettet = TestUtils.nowPlus(-1)
-                henvendelse1.type = Henvendelsetype.SPORSMAL_SKRIFTLIG
-                henvendelse1.brukersEnhet = brukersEnhet
-                val henvendelse2 = Henvendelse("2")
-                henvendelse2.opprettet = TestUtils.now()
-                henvendelse2.type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE
+                val henvendelse1 = Henvendelse(id = "1", brukersEnhet = brukersEnhet, opprettet = TestUtils.nowPlus(-1), type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
+                val henvendelse2 = Henvendelse(id = "2", opprettet = TestUtils.now(), type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE)
+
                 coEvery { service.hentTraad(any(), any()) } returns (listOf(henvendelse1, henvendelse2))
                 handleRequest(HttpMethod.Post, "/traader/svar") {
 
@@ -353,13 +341,13 @@ class HenvendelseControllerTest : Spek({
 
 fun setUp(service: HenvendelseService) {
     val henvendelser = listOf(
-            Henvendelse("1").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),
-            Henvendelse("2").withTraadId("2").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),
-            Henvendelse("3").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),
-            Henvendelse("4").withTraadId("3").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),
-            Henvendelse("5").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now()),
-            Henvendelse("6").withTraadId("2").withType(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE).withOpprettetTid(TestUtils.nowPlus(100)),
-            Henvendelse("7").withTraadId("1").withType(Henvendelsetype.SAMTALEREFERAT_OPPMOTE).withOpprettetTid(TestUtils.now())
+            Henvendelse(id = "1", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
+            Henvendelse(id = "2", traadId = "2", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
+            Henvendelse(id = "3", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
+            Henvendelse(id = "4", traadId = "3", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
+            Henvendelse(id = "5", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
+            Henvendelse(id = "6", traadId = "2", type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE, opprettet = TestUtils.nowPlus(100)),
+            Henvendelse(id = "7", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now())
     )
 
     val slot = slot<String>()

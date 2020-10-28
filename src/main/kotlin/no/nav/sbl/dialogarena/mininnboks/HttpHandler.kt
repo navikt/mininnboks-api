@@ -76,18 +76,22 @@ fun createHttpServer(applicationState: ApplicationState,
     }
 
 
-
-
     val serviceConfig = ServiceConfig(configuration)
     routing {
-            sporsmalController(serviceConfig.henvendelseService, true)
-            henvendelseController(serviceConfig.henvendelseService, serviceConfig.tilgangService, true)
-            tilgangController(serviceConfig.tilgangService, true)
-            resourcesController()
+        sporsmalController(serviceConfig.henvendelseService, true)
+        henvendelseController(serviceConfig.henvendelseService, serviceConfig.tilgangService, true)
+        tilgangController(serviceConfig.tilgangService, true)
+        resourcesController()
 
-            route("internal") {
-                naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
-            }
+        val selfTestChecklist = listOf(
+                serviceConfig.pdlService.selfTestCheck
+        )
+
+        route("internal") {
+            naisRoutes(readinessCheck = { applicationState.initialized },
+                    livenessCheck = { applicationState.running },
+                    selftestChecks = selfTestChecklist)
+        }
     }
 
     applicationState.initialized = true

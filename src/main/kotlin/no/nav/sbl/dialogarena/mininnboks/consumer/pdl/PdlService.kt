@@ -6,14 +6,16 @@ import kotlinx.coroutines.withContext
 import no.nav.common.auth.subject.SsoToken
 import no.nav.common.auth.subject.Subject
 import no.nav.common.auth.subject.SubjectHandler
-import no.nav.common.health.HealthCheck
 import no.nav.common.health.HealthCheckResult
+import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.common.log.MDCConstants
 import no.nav.common.rest.client.RestUtils.toJsonRequestBody
 import no.nav.sbl.dialogarena.mininnboks.Configuration
+import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.Response
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -23,9 +25,13 @@ class PdlException(cause: Exception) : RuntimeException("Kunne ikke utlede adres
 
 open class PdlService(private val pdlClient: OkHttpClient,
                       private val stsService: SystemuserTokenProvider,
-                      private val configuration: Configuration) : HealthCheck {
+                      private val configuration: Configuration) {
     private val log = LoggerFactory.getLogger(PdlService::class.java)
     private val adressebeskyttelseQuery: String = lastQueryFraFil("hentAdressebeskyttelse")
+
+    val selfTestCheck: SelfTestCheck = SelfTestCheck(configuration.PDL_API_URL + "/graphql", true) {
+        checkHealth()
+    }
 
     suspend fun harStrengtFortroligAdresse(subject: Subject) = harKode6(subject)
     suspend fun harFortroligAdresse(subject: Subject) = harKode7(subject)
@@ -97,7 +103,7 @@ open class PdlService(private val pdlClient: OkHttpClient,
                 ------------------------------------------------------------------------------------
             """.trimIndent())
 
-            val pdlResponse = body?.let { JacksonConfig.mapper.readValue<PdlResponse>(it) }
+            val pdlResponse = body?.let { ObjectMapperProvider.objectMapper.readValue<PdlResponse>(it) }
 
             if (pdlResponse?.errors?.isNotEmpty() == true) {
                 val errorMessages = pdlResponse.errors.joinToString(", ") { it.message }
@@ -128,11 +134,37 @@ open class PdlService(private val pdlClient: OkHttpClient,
         }
     }
 
-    override fun checkHealth(): HealthCheckResult {
-        TODO("Not yet implemented")
+    fun checkHealth(): HealthCheckResult {
+
+        kotlin.runCatching {
+            pingGraphQL()
+
+        }.onSuccess {
+            if (it)
+                return HealthCheckResult.healthy()
+
+        }.onFailure {
+            return HealthCheckResult.unhealthy(it.message)
+        }
+
+        return HealthCheckResult.unhealthy("Feil ved Helsesjekk")
+    }
+
+    private fun pingGraphQL(): Boolean {
+        val request: Request = Request.Builder()
+                .url(configuration.PDL_API_URL + "/graphql")
+                .method("OPTIONS", RequestBody.create(null, ""))
+                .build()
+
+        val response: Response = pdlClient.newCall(request).execute()
+        if (response.isSuccessful) {
+            return response.code() == 200
+        } else {
+            response.body()?.close()
+        }
+        return false
     }
 }
-
 
 private fun lastQueryFraFil(name: String): String {
     return PdlService::class.java
