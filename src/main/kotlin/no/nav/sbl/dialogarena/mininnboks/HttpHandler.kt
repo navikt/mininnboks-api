@@ -19,6 +19,8 @@ import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
+import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
+import no.nav.sbl.dialogarena.mininnboks.common.TruststoreCheck
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.henvendelseController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.naisRoutes
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.resourcesController
@@ -84,7 +86,9 @@ fun createHttpServer(applicationState: ApplicationState,
         resourcesController()
 
         val selfTestChecklist = listOf(
-                serviceConfig.pdlService.selfTestCheck
+                serviceConfig.pdlService.selfTestCheck,
+                DiskCheck.asSelftestCheck(),
+                TruststoreCheck.asSelftestCheck()
         )
 
         route("internal") {

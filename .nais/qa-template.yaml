@@ -15,9 +15,6 @@ spec:
   liveness:
     path: /internal/isAlive
     initialDelay: 20
-    timeout: 1
-    periodSeconds: 5
-    failureThreshold: 10
   readiness:
     path: /internal/isReady
     initialDelay: 20
@@ -49,6 +46,8 @@ spec:
     - kvPath: /apikey/apigw/dev/security-token-service-token/mininnboks-api_{{ namespace }}
       mountPath: /var/run/secrets/nais.io/apigw/security-token-service-token
   webproxy: true
+  envFrom:
+    - configmap: loginservice-idporten
   env:
     - name: APP_NAME
       value: "mininnboks-api"
