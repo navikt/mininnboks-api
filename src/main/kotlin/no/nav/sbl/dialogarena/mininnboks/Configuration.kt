@@ -23,7 +23,8 @@ private val defaultProperties = ConfigurationMap(
                 "FSS_SRVMININNBOKS_PASSWORD" to "FSS_SRVMININNBOKS_PASSWORD",
                 "SRVMININNBOKS_USERNAME" to "SRVMININNBOKS_USERNAME",
                 "SRVMININNBOKS_PASSWORD" to "SRVMININNBOKS_PASSWORD",
-                "AAD_B2C_CLIENTID_USERNAME" to "AAD_B2C_CLIENTID_USERNAME"
+                "AAD_B2C_CLIENTID_USERNAME" to "AAD_B2C_CLIENTID_USERNAME",
+                "AAD_B2C_DISCOVERY_URL" to "AAD_B2C_DISCOVERY_URL"
         )
 )
 
@@ -46,6 +47,7 @@ data class Configuration(
         val FSS_SRVMININNBOKS_USERNAME: String = config()[Key( "FSS_SRVMININNBOKS_USERNAME", stringType)],
         val FSS_SRVMININNBOKS_PASSWORD: String = config()[Key( "FSS_SRVMININNBOKS_PASSWORD", stringType)],
         val SRVMININNBOKS_USERNAME: String = config()[Key( "SRVMININNBOKS_USERNAME", stringType)],
+        val AAD_B2C_DISCOVERY_URL: String = config()[Key( "AAD_B2C_DISCOVERY_URL", stringType)],
         val SRVMININNBOKS_PASSWORD: String = config()[Key( "SRVMININNBOKS_PASSWORD", stringType)]
 
 )

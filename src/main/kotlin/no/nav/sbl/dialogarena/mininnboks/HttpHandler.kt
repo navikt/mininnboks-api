@@ -87,6 +87,8 @@ fun createHttpServer(applicationState: ApplicationState,
 
         val selfTestChecklist = listOf(
                 serviceConfig.pdlService.selfTestCheck,
+          //      serviceConfig.selfTestCheckStsService,
+                serviceConfig.selfTestCheckHenvendelse,
                 DiskCheck.asSelftestCheck(),
                 TruststoreCheck.asSelftestCheck()
         )
