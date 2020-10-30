@@ -31,12 +31,13 @@ import java.util.*
 
 class ServiceConfig(val configuration: Configuration) {
 
-    private val personV3 = personV3()
-    val personService = PersonService.Default(personV3)
-    val henvendelseService = henvendelseService()
-    val stsService = systemUserTokenProvider()
-    val pdlService = pdlService(stsService)
-    val tilgangService = tilgangService(pdlService)
+        private val personV3 = personV3()
+        val personService = PersonService.Default(personV3)
+        val henvendelsePortType = henvendelse()
+        val henvendelseService = henvendelseService()
+        val stsService = systemUserTokenProvider()
+        val pdlService = pdlService(stsService)
+        val tilgangService = tilgangService(pdlService)
 
     val selfTestCheckStsService: SelfTestCheck = SelfTestCheck(configuration.SECURITYTOKENSERVICE_URL, true) {
         runBlocking {
@@ -49,10 +50,14 @@ class ServiceConfig(val configuration: Configuration) {
 
     val selfTestCheckHenvendelse: SelfTestCheck = SelfTestCheck(configuration.HENVENDELSE_WS_URL, true) {
         try {
-            henvendelse().ping()
+            runBlocking {
+                externalCall(KtorUtils.dummySubject()) {
+                    henvendelsePortType.ping()
+                }
+            }
             return@SelfTestCheck HealthCheckResult.healthy()
         } catch (e: Exception) {
-            return@SelfTestCheck HealthCheckResult.unhealthy("henvendelse feilet")
+            return@SelfTestCheck HealthCheckResult.unhealthy("henvendelse feilet ${e.message}")
         }
     }
 
@@ -78,8 +83,9 @@ class ServiceConfig(val configuration: Configuration) {
     }
 
     private fun henvendelseService(): HenvendelseService {
+        checkNotNull(henvendelsePortType)  {"henvendelsePortType is null"}
         return HenvendelseService.Default(
-                henvendelse(),
+                henvendelsePortType,
                 sendInnHenvendelse(),
                 innsynHenvendesle(),
                 personService
