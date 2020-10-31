@@ -31,13 +31,13 @@ import java.util.*
 
 class ServiceConfig(val configuration: Configuration) {
 
-        private val personV3 = personV3()
-        val personService = PersonService.Default(personV3)
-        val henvendelsePortType = henvendelse()
-        val henvendelseService = henvendelseService()
-        val stsService = systemUserTokenProvider()
-        val pdlService = pdlService(stsService)
-        val tilgangService = tilgangService(pdlService)
+    private val personV3 = personV3()
+    val personService = PersonService.Default(personV3)
+    val henvendelsePortType = henvendelse()
+    val henvendelseService = henvendelseService()
+    val stsService = systemUserTokenProvider()
+    val pdlService = pdlService(stsService)
+    val tilgangService = tilgangService(pdlService)
 
     val selfTestCheckStsService: SelfTestCheck = SelfTestCheck(configuration.SECURITYTOKENSERVICE_URL, true) {
         runBlocking {
@@ -83,7 +83,7 @@ class ServiceConfig(val configuration: Configuration) {
     }
 
     private fun henvendelseService(): HenvendelseService {
-        checkNotNull(henvendelsePortType)  {"henvendelsePortType is null"}
+        checkNotNull(henvendelsePortType) { "henvendelsePortType is null" }
         return HenvendelseService.Default(
                 henvendelsePortType,
                 sendInnHenvendelse(),
@@ -103,7 +103,7 @@ class ServiceConfig(val configuration: Configuration) {
     private fun systemUserTokenProvider(): SystemuserTokenProvider {
         return SystemuserTokenProviderImpl(
                 true,
-                configuration.AAD_B2C_DISCOVERY_URL,
+                configuration.LOGINSERVICE_IDPORTEN_DISCOVERY_URL,
                 configuration.FSS_SRVMININNBOKS_USERNAME,
                 configuration.FSS_SRVMININNBOKS_PASSWORD,
                 configuration.STS_APIKEY,

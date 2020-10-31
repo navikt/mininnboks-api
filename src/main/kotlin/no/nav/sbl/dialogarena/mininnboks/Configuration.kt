@@ -24,6 +24,8 @@ private val defaultProperties = ConfigurationMap(
                 "SRVMININNBOKS_USERNAME" to "SRVMININNBOKS_USERNAME",
                 "SRVMININNBOKS_PASSWORD" to "SRVMININNBOKS_PASSWORD",
                 "AAD_B2C_CLIENTID_USERNAME" to "AAD_B2C_CLIENTID_USERNAME",
+                "LOGINSERVICE_IDPORTEN_DISCOVERY_URL" to "LOGINSERVICE_IDPORTEN_DISCOVERY_URL",
+                "LOGINSERVICE_IDPORTEN_AUDIENCE" to "LOGINSERVICE_IDPORTEN_AUDIENCE",
                 "AAD_B2C_DISCOVERY_URL" to "AAD_B2C_DISCOVERY_URL"
         )
 )
@@ -43,12 +45,14 @@ data class Configuration(
         val PDL_API_APIKEY: String = config()[Key("PDL_API_APIKEY", stringType)],
         val STS_APIKEY: String = config()[Key("STS_APIKEY", stringType)],
         val STS_TOKENENDPOINT_URL: String = config()[Key("STS_TOKENENDPOINT_URL", stringType)],
-        val SECURITYTOKENSERVICE_URL: String = config()[Key( "SECURITYTOKENSERVICE_URL", stringType)],
-        val FSS_SRVMININNBOKS_USERNAME: String = config()[Key( "FSS_SRVMININNBOKS_USERNAME", stringType)],
-        val FSS_SRVMININNBOKS_PASSWORD: String = config()[Key( "FSS_SRVMININNBOKS_PASSWORD", stringType)],
-        val SRVMININNBOKS_USERNAME: String = config()[Key( "SRVMININNBOKS_USERNAME", stringType)],
-        val AAD_B2C_DISCOVERY_URL: String = config()[Key( "AAD_B2C_DISCOVERY_URL", stringType)],
-        val SRVMININNBOKS_PASSWORD: String = config()[Key( "SRVMININNBOKS_PASSWORD", stringType)]
+        val SECURITYTOKENSERVICE_URL: String = config()[Key("SECURITYTOKENSERVICE_URL", stringType)],
+        val FSS_SRVMININNBOKS_USERNAME: String = config()[Key("FSS_SRVMININNBOKS_USERNAME", stringType)],
+        val FSS_SRVMININNBOKS_PASSWORD: String = config()[Key("FSS_SRVMININNBOKS_PASSWORD", stringType)],
+        val SRVMININNBOKS_USERNAME: String = config()[Key("SRVMININNBOKS_USERNAME", stringType)],
+        val AAD_B2C_DISCOVERY_URL: String = config()[Key("AAD_B2C_DISCOVERY_URL", stringType)],
+        val LOGINSERVICE_IDPORTEN_DISCOVERY_URL: String = config()[Key("LOGINSERVICE_IDPORTEN_DISCOVERY_URL", stringType)],
+        val LOGINSERVICE_IDPORTEN_AUDIENCE: String = config()[Key("LOGINSERVICE_IDPORTEN_AUDIENCE", stringType)],
+        val SRVMININNBOKS_PASSWORD: String = config()[Key("SRVMININNBOKS_PASSWORD", stringType)]
 
 )
 

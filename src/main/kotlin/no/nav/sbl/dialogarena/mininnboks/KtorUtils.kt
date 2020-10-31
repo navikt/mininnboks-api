@@ -17,9 +17,12 @@ import no.nav.common.utils.fn.UnsafeSupplier
 
 object KtorUtils {
     val authLevel = "Level4"
-    fun dummySubject(): Subject {
+    val claims = mapOf(
+            "acr" to authLevel
+    )
 
-        return Subject("12345678910", IdentType.EksternBruker, SsoToken.oidcToken("3434", emptyMap<String, Any>()))
+    fun dummySubject(): Subject {
+        return Subject("12345678910", IdentType.EksternBruker, SsoToken.oidcToken("3434", claims))
     }
 }
 
