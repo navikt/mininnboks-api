@@ -71,14 +71,14 @@ class SystemuserTokenProviderImpl internal constructor(
 
     private fun refreshToken() {
         val clientCredentials = fetchSystemUserAccessToken()
-        this.accessToken = JWTParser.parse(clientCredentials.accessToken)
+        this.accessToken = JWTParser.parse(clientCredentials?.accessToken)
     }
 
     private fun tokenIsSoonExpired(): Boolean {
         return accessToken == null || expiresWithin(accessToken!!, MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH)
     }
 
-    private fun fetchSystemUserAccessToken(): ClientCredentialsResponse {
+    private fun fetchSystemUserAccessToken(): ClientCredentialsResponse? {
         val targetUrl = "$tokenEndpointUrl?grant_type=client_credentials&scope=openid"
         val basicAuth: String = basicCredentials(srvUsername, srvPassword)
 
@@ -93,15 +93,17 @@ class SystemuserTokenProviderImpl internal constructor(
 
         val response = client.newCall(request).execute()
 
-        val strResponse = RestUtils.parseJsonResponse(response, String::class.java)
         if (response.code() != 200) {
+            val strResponse = RestUtils.parseJsonResponse(response, String::class.java)
             val errorMessage = String.format("Received unexpected status %d when requesting access token for system user. Response: %s", response.code(), strResponse)
             log.error("Failed to get SystemUserToken: $errorMessage")
             throw RuntimeException(errorMessage)
         } else {
-            val credentials = RestUtils.parseJsonResponse(response, ClientCredentialsResponse::class.java)
-            log.info("Fetched SystemUserToken, parts: ${credentials.get().accessToken.split(".").size}")
-            return credentials.get()
+            val body = response.body()?.string()
+            val credentials = body?.let { ObjectMapperProvider.objectMapper.readValue<ClientCredentialsResponse>(it) }
+            //val credentials = RestUtils.parseJsonResponse(response, ClientCredentialsResponse::class.java)
+            log.info("Fetched SystemUserToken, parts: ${credentials?.accessToken?.split(".")?.size}")
+            return credentials
         }
     }
 }
@@ -132,6 +134,7 @@ private fun hentOidcDiscoveryConfiguration(client: OkHttpClient, discoveryUrl: S
     return body?.let { ObjectMapperProvider.objectMapper.readValue<OidcDiscoveryConfiguration>(it) }
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 private data class ClientCredentialsResponse(
         @JsonProperty("access_token") val accessToken: String
 )

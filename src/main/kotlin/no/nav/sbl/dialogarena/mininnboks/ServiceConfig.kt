@@ -102,8 +102,8 @@ class ServiceConfig(val configuration: Configuration) {
 
     private fun systemUserTokenProvider(): SystemuserTokenProvider {
         return SystemuserTokenProviderImpl(
-                true,
-                configuration.LOGINSERVICE_IDPORTEN_DISCOVERY_URL,
+                false,
+                configuration.STS_TOKENENDPOINT_URL,
                 configuration.FSS_SRVMININNBOKS_USERNAME,
                 configuration.FSS_SRVMININNBOKS_PASSWORD,
                 configuration.STS_APIKEY,
