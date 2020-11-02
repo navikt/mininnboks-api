@@ -7,7 +7,8 @@
         </throwableConverter>
     </encoder>
 </appender>
-<root level="INFO">
+<root level="trace">
     <appender-ref ref="stdout_json"/>
 </root>
+    <logger name="io.netty" level="INFO"/>
 </configuration>
