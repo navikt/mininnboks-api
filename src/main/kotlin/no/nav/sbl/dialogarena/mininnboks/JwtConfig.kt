@@ -49,7 +49,9 @@ class JwtUtil {
                         credentials.payload.subject,
                         IdentType.EksternBruker,
                         SsoToken.oidcToken(token, credentials.payload.claims)
-                ))
+                ),
+                        credentials.payload.claims.getValue("acr").asString()
+                )
             } catch (e: Exception) {
                 logger.error("Failed to validate JWT token", e)
                 null
@@ -58,4 +60,4 @@ class JwtUtil {
     }
 }
 
-class SubjectPrincipal(val subject: Subject) : Principal
+class SubjectPrincipal(val subject: Subject, val authLevel: String) : Principal

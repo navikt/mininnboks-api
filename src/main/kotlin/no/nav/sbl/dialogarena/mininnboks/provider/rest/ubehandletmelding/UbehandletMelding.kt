@@ -19,9 +19,9 @@ class UbehandletMelding(henvendelse: Henvendelse) {
     var varselid: String? = null
 
     companion object {
-        val erIkkeKassert:(Henvendelse?) -> Boolean =  { henvendelse: Henvendelse? -> !henvendelse?.kassert!! }
-        var erUbesvart:(Henvendelse?) -> Boolean = { henvendelse: Henvendelse? -> henvendelse?.type == Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE }
-        var erUlest: (Henvendelse?) -> Boolean =  { henvendelse: Henvendelse? -> !henvendelse?.isLest!! }
+        val erIkkeKassert: (Henvendelse?) -> Boolean = { henvendelse: Henvendelse? -> !henvendelse?.kassert!! }
+        var erUbesvart: (Henvendelse?) -> Boolean = { henvendelse: Henvendelse? -> henvendelse?.type == Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE }
+        var erUlest: (Henvendelse?) -> Boolean = { henvendelse: Henvendelse? -> !henvendelse?.isLest!! }
     }
 
     init {

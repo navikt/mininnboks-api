@@ -14,27 +14,28 @@ import no.nav.common.auth.subject.SsoToken
 import no.nav.common.auth.subject.Subject
 import no.nav.common.auth.subject.SubjectHandler
 import no.nav.common.utils.fn.UnsafeSupplier
+import no.nav.sbl.dialogarena.mininnboks.KtorUtils.authLevel3
+import no.nav.sbl.dialogarena.mininnboks.KtorUtils.authLevel4
 
 object KtorUtils {
-    val authLevel = "Level4"
-    val claims = mapOf(
-            "acr" to authLevel
-    )
+    val authLevel4 = "Level4"
+    val authLevel3 = "Level3"
 
     fun dummySubject(): Subject {
-        return Subject("12345678910", IdentType.EksternBruker, SsoToken.oidcToken("3434", claims))
+        return Subject("12345678910", IdentType.EksternBruker, SsoToken.oidcToken("3434", emptyMap<String, Object>()))
     }
 }
 
 suspend fun PipelineContext<Unit, ApplicationCall>.withSubject(block: suspend PipelineContext<Unit, ApplicationCall>.(Subject) -> Unit) =
         this.call.authentication.principal<SubjectPrincipal>()
+                ?.takeIf {
+                    it.authLevel == authLevel4 || (it.authLevel == authLevel3 && this.call.request.url().contains("sporsmal/ubehandlet"))
+                }
                 ?.subject
                 ?.let {
-                    if (it.ssoToken.attributes["acr"]?.equals(KtorUtils.authLevel)!!) {
-                        block(this, it)
-                    }
+                    block(this, it)
                 }
-                ?: this.call.respond(HttpStatusCode.Forbidden, "Fant ikke subject")
+                ?: this.call.respond(HttpStatusCode.Forbidden, "Fant ikke subject ellers authLevel ikke på nivå $authLevel4")
 
 suspend fun <T> externalCall(subject: Subject, block: () -> T): T = withContext(Dispatchers.IO) {
     SubjectHandler.withSubject(subject, UnsafeSupplier { block() })
@@ -49,7 +50,7 @@ fun Route.conditionalAuthenticate(useAuthentication: Boolean, build: Route.() ->
     val route = createChild(AuthenticationRouteSelector(listOf<String?>(null)))
     route.insertPhaseAfter(ApplicationCallPipeline.Features, Authentication.AuthenticatePhase)
     route.intercept(Authentication.AuthenticatePhase) {
-        this.context.authentication.principal = SubjectPrincipal(KtorUtils.dummySubject())
+        this.context.authentication.principal = SubjectPrincipal(KtorUtils.dummySubject(), authLevel4)
     }
     route.build()
     return route

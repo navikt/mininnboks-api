@@ -75,6 +75,8 @@ dependencies {
     implementation("io.ktor:ktor-metrics:$ktor_version")
     implementation("io.ktor:ktor-metrics-micrometer:$ktor_version")
 
+    //Java
+    implementation ("com.auth0:java-jwt:3.11.0")
     //test
     testImplementation("org.hamcrest:hamcrest:2.2")
     testImplementation("org.assertj:assertj-core:3.11.1")
