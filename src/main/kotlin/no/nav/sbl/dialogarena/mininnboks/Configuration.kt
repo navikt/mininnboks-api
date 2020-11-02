@@ -6,8 +6,8 @@ import com.natpryce.konfig.*
 private val defaultProperties = ConfigurationMap(
         mapOf(
                 "NAIS_CLUSTER_NAME" to "local",
-                "JWKS_URL" to "https://login.microsoftonline.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1",
-                "ISSUER" to "https://login.microsoftonline.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/",
+                "JWKS_URL" to "JWKS_URL",
+                "ISSUER" to "ISSUER",
                 "VAULT_MOUNTPATH" to "",
                 "SERVICEGATEWAY_URL" to "SERVICEGATEWAY_URL",
                 "INNSYN_HENVENDELSE_WS_URL" to "innsyn.henvendelse.ws.url",
