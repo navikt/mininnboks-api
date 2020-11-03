@@ -48,11 +48,22 @@ class ServiceConfig(val configuration: Configuration) {
         }
     }
 
-    val selfTestCheckHenvendelse: SelfTestCheck = SelfTestCheck(configuration.HENVENDELSE_WS_URL, true) {
+    val selfTestCheckHenvendelse: SelfTestCheck = SelfTestCheck(configuration.HENVENDELSE_WS_URL, false) {
         try {
             runBlocking {
                 externalCall(KtorUtils.dummySubject()) {
-                    henvendelsePortType.ping()
+                    CXFClient<HenvendelsePortType>(HenvendelsePortType::class.java)
+                            .address(configuration.HENVENDELSE_WS_URL)
+                            .wsdl("classpath:wsdl/Henvendelse.wsdl")
+                            .configureStsForSystemUser(stsConfig())
+                            .timeout(5_000, 20_000)
+                            .withProperty("jaxb.additionalContextClasses", arrayOf<Class<*>>(
+                                    XMLHenvendelse::class.java,
+                                    XMLMetadataListe::class.java,
+                                    XMLMeldingFraBruker::class.java,
+                                    XMLMeldingTilBruker::class.java)
+                            )
+                            .build().ping()
                 }
             }
             return@SelfTestCheck HealthCheckResult.healthy()
