@@ -28,7 +28,7 @@ open class PdlService(private val pdlClient: OkHttpClient,
     private val log = LoggerFactory.getLogger(PdlService::class.java)
     private val adressebeskyttelseQuery: String = lastQueryFraFil("hentAdressebeskyttelse")
 
-    val selfTestCheck: SelfTestCheck = SelfTestCheck(configuration.PDL_API_URL + "/graphql", false) {
+    val selfTestCheck: SelfTestCheck = SelfTestCheck("Henter adressebeskyttelse: " + configuration.PDL_API_URL + "/graphql", false) {
         checkHealth()
     }
 

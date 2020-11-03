@@ -18,6 +18,7 @@ import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
+import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
 import no.nav.sbl.dialogarena.mininnboks.common.TruststoreCheck
@@ -85,18 +86,10 @@ fun createHttpServer(applicationState: ApplicationState,
         tilgangController(serviceConfig.tilgangService, true)
         resourcesController()
 
-        val selfTestChecklist = listOf(
-                serviceConfig.pdlService.selfTestCheck,
-                serviceConfig.selfTestCheckStsService,
-                serviceConfig.selfTestCheckHenvendelse,
-                DiskCheck.asSelftestCheck(),
-                TruststoreCheck.asSelftestCheck()
-        )
-
         route("internal") {
             naisRoutes(readinessCheck = { applicationState.initialized },
                     livenessCheck = { applicationState.running },
-                    selftestChecks = selfTestChecklist)
+                    selftestChecks = serviceConfig.selfTestChecklist as List<SelfTestCheck>)
         }
     }
 

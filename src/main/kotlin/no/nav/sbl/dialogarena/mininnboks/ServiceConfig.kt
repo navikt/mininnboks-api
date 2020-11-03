@@ -4,16 +4,15 @@ package no.nav.sbl.dialogarena.mininnboks
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
-import no.nav.common.cxf.CXFClient
 import no.nav.common.cxf.StsConfig
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.common.log.MDCConstants
 import no.nav.common.rest.client.RestClient
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLHenvendelse
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingFraBruker
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMeldingTilBruker
-import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataListe
+import no.nav.sbl.dialogarena.mininnboks.PortUtils.portBuilder
+import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
+import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
+import no.nav.sbl.dialogarena.mininnboks.common.TruststoreCheck
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
@@ -32,14 +31,16 @@ import java.util.*
 class ServiceConfig(val configuration: Configuration) {
 
     private val personV3 = personV3()
-    val personService = PersonService.Default(personV3)
+    val personService = PersonService.Default(personV3?.s?.build() as PersonV3)
     val henvendelsePortType = henvendelse()
+    val sendInnHenvendelsePortType = sendInnHenvendelse()
+    val innsynHenvendelsePortType = innsynHenvendesle()
     val henvendelseService = henvendelseService()
     val stsService = systemUserTokenProvider()
     val pdlService = pdlService(stsService)
     val tilgangService = tilgangService(pdlService)
 
-    val selfTestCheckStsService: SelfTestCheck = SelfTestCheck(configuration.SECURITYTOKENSERVICE_URL, true) {
+    val selfTestCheckStsService: SelfTestCheck = SelfTestCheck("Sjekker at systembruker kan hente token fra STS", true) {
         runBlocking {
             MDC.put(MDCConstants.MDC_CALL_ID, UUID.randomUUID().toString())
             withContext(MDCContext()) {
@@ -48,29 +49,40 @@ class ServiceConfig(val configuration: Configuration) {
         }
     }
 
-    val selfTestCheckHenvendelse: SelfTestCheck = SelfTestCheck(configuration.HENVENDELSE_WS_URL, false) {
-        try {
-            runBlocking {
-                externalCall(KtorUtils.dummySubject()) {
-                    CXFClient<HenvendelsePortType>(HenvendelsePortType::class.java)
-                            .address(configuration.HENVENDELSE_WS_URL)
-                            .wsdl("classpath:wsdl/Henvendelse.wsdl")
-                            .configureStsForSystemUser(stsConfig())
-                            .timeout(5_000, 20_000)
-                            .withProperty("jaxb.additionalContextClasses", arrayOf<Class<*>>(
-                                    XMLHenvendelse::class.java,
-                                    XMLMetadataListe::class.java,
-                                    XMLMeldingFraBruker::class.java,
-                                    XMLMeldingTilBruker::class.java)
-                            )
-                            .build().ping()
-                }
-            }
-            return@SelfTestCheck HealthCheckResult.healthy()
-        } catch (e: Exception) {
-            return@SelfTestCheck HealthCheckResult.unhealthy("henvendelse feilet ${e.message}")
+    val selfTestCheckPersonV3: SelfTestCheck? = personV3?.let {
+        portTypeSelfTestCheck("personV3") {
+            (it.t?.build() as PersonV3).ping()
         }
     }
+
+    val selfTestCheckHenvendelse: SelfTestCheck? = henvendelsePortType?.let {
+        portTypeSelfTestCheck("no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType") {
+            (it.t?.build() as HenvendelsePortType).ping()
+        }
+    }
+
+    val selfTestCheckSendInnHenvendelsePortType: SelfTestCheck? = sendInnHenvendelsePortType?.let {
+        portTypeSelfTestCheck("no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType") {
+            (it.t?.build() as SendInnHenvendelsePortType).ping()
+        }
+    }
+
+    val selfTestCheckInnsynHenvendelsePortType: SelfTestCheck? = innsynHenvendelsePortType?.let {
+        portTypeSelfTestCheck("no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType") {
+            (it.t?.build() as InnsynHenvendelsePortType).ping()
+        }
+    }
+
+    val selfTestChecklist = listOf(
+            pdlService.selfTestCheck,
+            selfTestCheckStsService,
+            selfTestCheckPersonV3,
+            selfTestCheckHenvendelse,
+            selfTestCheckSendInnHenvendelsePortType,
+            selfTestCheckInnsynHenvendelsePortType,
+            DiskCheck.asSelftestCheck(),
+            TruststoreCheck.asSelftestCheck()
+    )
 
     private fun checkHealthStsService(): HealthCheckResult {
         runCatching {
@@ -86,19 +98,22 @@ class ServiceConfig(val configuration: Configuration) {
         return HealthCheckResult.unhealthy("Feil ved Helsesjekk")
     }
 
-    private fun personV3(): PersonV3 {
-        return CXFClient<PersonV3>(PersonV3::class.java)
-                .address(configuration.PERSON_V_3_URL)
-                .configureStsForSubject(stsConfig())
-                .build()
+    private fun personV3(): PortType? {
+        return portBuilder(PersonV3::class.java,
+                configuration.PERSON_V_3_URL,
+                "",
+                stsConfig()
+        )
     }
 
     private fun henvendelseService(): HenvendelseService {
         checkNotNull(henvendelsePortType) { "henvendelsePortType is null" }
+        checkNotNull(innsynHenvendelsePortType) { "innsynHenvendelsePortType is null" }
+
         return HenvendelseService.Default(
-                henvendelsePortType,
-                sendInnHenvendelse(),
-                innsynHenvendesle(),
+                henvendelsePortType.s?.build() as HenvendelsePortType,
+                sendInnHenvendelsePortType!!.s?.build() as SendInnHenvendelsePortType,
+                innsynHenvendelsePortType!!.s?.build() as InnsynHenvendelsePortType,
                 personService
         )
     }
@@ -122,59 +137,36 @@ class ServiceConfig(val configuration: Configuration) {
         )
     }
 
-
     private fun pdlService(stsService: SystemuserTokenProvider): PdlService {
         return PdlService(RestClient.baseClientBuilder().build(), stsService, configuration)
     }
-
 
     private fun tilgangService(pdlService: PdlService): TilgangService {
         return TilgangServiceImpl(pdlService, personService)
     }
 
-    private fun sendInnHenvendelse(): SendInnHenvendelsePortType {
-        return CXFClient<SendInnHenvendelsePortType>(SendInnHenvendelsePortType::class.java)
-                .address(configuration.SEND_INN_HENVENDELSE_WS_URL)
-                .wsdl("classpath:wsdl/SendInnHenvendelse.wsdl")
-                .timeout(5_000, 20_000)
-                .withProperty("jaxb.additionalContextClasses", arrayOf<Class<*>>(
-                        XMLHenvendelse::class.java,
-                        XMLMetadataListe::class.java,
-                        XMLMeldingFraBruker::class.java,
-                        XMLMeldingTilBruker::class.java)
-                )
-                .configureStsForSubject(stsConfig())
-                .build()
+    private fun sendInnHenvendelse(): PortType? {
+        return portBuilder(SendInnHenvendelsePortType::class.java,
+                configuration.SEND_INN_HENVENDELSE_WS_URL,
+                "classpath:wsdl/SendInnHenvendelse.wsdl",
+                stsConfig()
+        )
+
     }
 
-    private fun henvendelse(): HenvendelsePortType {
-        return CXFClient<HenvendelsePortType>(HenvendelsePortType::class.java)
-                .address(configuration.HENVENDELSE_WS_URL)
-                .wsdl("classpath:wsdl/Henvendelse.wsdl")
-                .configureStsForSubject(stsConfig())
-                .timeout(5_000, 20_000)
-                .withProperty("jaxb.additionalContextClasses", arrayOf<Class<*>>(
-                        XMLHenvendelse::class.java,
-                        XMLMetadataListe::class.java,
-                        XMLMeldingFraBruker::class.java,
-                        XMLMeldingTilBruker::class.java)
-                )
-                .build()
+    private fun henvendelse(): PortType? {
+        return portBuilder(HenvendelsePortType::class.java,
+                configuration.HENVENDELSE_WS_URL,
+                "classpath:wsdl/Henvendelse.wsdl",
+                stsConfig()
+        )
     }
 
-    private fun innsynHenvendesle(): InnsynHenvendelsePortType {
-        return CXFClient<InnsynHenvendelsePortType>(InnsynHenvendelsePortType::class.java)
-                .address(configuration.INNSYN_HENVENDELSE_WS_URL)
-                .wsdl("classpath:wsdl/InnsynHenvendelse.wsdl")
-                .configureStsForSubject(stsConfig())
-                .withProperty("jaxb.additionalContextClasses", arrayOf<Class<*>>(
-                        XMLHenvendelse::class.java,
-                        XMLMetadataListe::class.java,
-                        XMLMeldingFraBruker::class.java,
-                        XMLMeldingTilBruker::class.java)
-                )
-                .timeout(5_000, 20_000)
-                .build()
-
+    private fun innsynHenvendesle(): PortType? {
+        return portBuilder(InnsynHenvendelsePortType::class.java,
+                configuration.INNSYN_HENVENDELSE_WS_URL,
+                "classpath:wsdl/InnsynHenvendelse.wsdl",
+                stsConfig()
+        )
     }
 }
