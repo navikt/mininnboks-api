@@ -16,7 +16,6 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.Henvendels
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentBehandlingskjedeRequest
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest
 import org.joda.time.DateTime
-import java.util.stream.Collectors
 
 interface HenvendelseService {
     suspend fun stillSporsmal(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse
@@ -80,7 +79,7 @@ interface HenvendelseService {
         }
 
         private fun createXmlHenvendelse(xmlHenvendelseType: String, henvendelse: Henvendelse, svartekst: String): XMLHenvendelse {
-            val info = XMLHenvendelse().apply {
+            return XMLHenvendelse().apply {
                 henvendelseType = xmlHenvendelseType
                 opprettetDato = DateTime.now()
                 avsluttetDato = DateTime.now()
@@ -96,15 +95,13 @@ interface HenvendelseService {
                                 .withTemagruppe(henvendelse.temagruppe!!.name)
                                 .withFritekst(svartekst))
             }
-            return info
         }
 
         override suspend fun merkAlleSomLest(behandlingskjedeId: String, subject: Subject) {
             val traad = hentTraad(behandlingskjedeId, subject)
-            val ids = traad.stream()
+            val ids = traad
                     .filter { henvendelse: Henvendelse -> !henvendelse.isLest }
                     .map { henvendelse: Henvendelse -> henvendelse.id }
-                    .collect(Collectors.toList())
             externalCall(subject) {
                 innsynHenvendelsePortType.merkSomLest(ids)
             }
@@ -124,13 +121,10 @@ interface HenvendelseService {
                                 .withFodselsnummer(subject.uid)
                                 .withTyper(typer))
                         .any
-                        .stream()
                         .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
             }
-
             return wsHenvendelser
                     .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
-                    .collect(Collectors.toList())
         }
 
         override suspend fun hentTraad(behandlingskjedeId: String, subject: Subject): List<Henvendelse> {

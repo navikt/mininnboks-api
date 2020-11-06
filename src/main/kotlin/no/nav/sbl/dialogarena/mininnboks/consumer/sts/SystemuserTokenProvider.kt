@@ -101,7 +101,6 @@ class SystemuserTokenProviderImpl internal constructor(
         } else {
             val body = response.body()?.string()
             val credentials = body?.let { ObjectMapperProvider.objectMapper.readValue<ClientCredentialsResponse>(it) }
-            //val credentials = RestUtils.parseJsonResponse(response, ClientCredentialsResponse::class.java)
             log.info("Fetched SystemUserToken, parts: ${credentials?.accessToken?.split(".")?.size}")
             return credentials
         }

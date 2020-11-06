@@ -20,12 +20,8 @@ class JwtUtil {
     companion object {
         fun useJwtFromCookie(call: ApplicationCall): HttpAuthHeader? {
             return try {
-                val token = call.request.cookies["selvbetjening-idtoken"]
-                if (token != null) {
-                    parseAuthorizationHeader("Bearer $token")
-                } else {
-                    call.request.headers["Authorization"]?.let { parseAuthorizationHeader(it) }
-                }
+                val token = extractToken(call)
+                parseAuthorizationHeader("Bearer $token")
             } catch (ex: Throwable) {
                 logger.error("Illegal HTTP auth header", ex)
                 null
@@ -43,8 +39,7 @@ class JwtUtil {
                 requireNotNull(credentials.payload.audience) { "Audience not present" }
                 require(credentials.payload.audience.contains(clientId)) { "Audience claim is not correct: $credentials.payload.audience" }
 
-                val token = call.request.cookies["selvbetjening-idtoken"]
-                        ?: call.request.headers["Authorization"]?.replace("Bearer", "")
+                val token = extractToken(call)
                 SubjectPrincipal(Subject(
                         credentials.payload.subject,
                         IdentType.EksternBruker,
@@ -57,6 +52,9 @@ class JwtUtil {
                 null
             }
         }
+
+        private fun extractToken(call: ApplicationCall) = (call.request.cookies["selvbetjening-idtoken"]
+                ?: call.request.headers["Authorization"]?.removePrefix("Bearer"))
     }
 }
 

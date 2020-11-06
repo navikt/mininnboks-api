@@ -8,7 +8,8 @@ import no.nav.sbl.dialogarena.mininnboks.Configuration
 import no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import okhttp3.*
-import org.assertj.core.api.Assertions.assertThat
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -33,54 +34,54 @@ internal class PdlServiceTest {
     @Test
     suspend fun `henter adressebeskyttelsegradering om det finnes`() {
         gittGradering(PdlAdressebeskyttelseGradering.UGRADERT) { (_, pdlService) ->
-            val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("any()")
-            assertThat(harAdressebeskyttelse).isEqualTo(PdlAdressebeskyttelseGradering.UGRADERT)
+            val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("any")
+            assertThat(harAdressebeskyttelse, Matchers.`is`(PdlAdressebeskyttelseGradering.UGRADERT))
         }
     }
 
     @Test
     suspend fun `henter null om adressebeskyttelsegradering ikke finnes`() {
         gittGradering(null) { (_, pdlService) ->
-            val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("any()")
-            assertThat(harAdressebeskyttelse).isNull()
+            val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("any")
+            assertThat(harAdressebeskyttelse, Matchers.`is`(null))
         }
     }
 
     @Test
     suspend fun `sjekk for kode6`() {
         gittGradering(PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG) { (_, pdlService) ->
-            assertThat(pdlService.harKode6(MOCK_SUBJECT)).isTrue()
+            assertThat(pdlService.harKode6(MOCK_SUBJECT), Matchers.`is`(true))
         }
 
         gittGradering(PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG) { (_, pdlService) ->
-            assertThat(pdlService.harStrengtFortroligAdresse(MOCK_SUBJECT)).isTrue()
+            assertThat(pdlService.harStrengtFortroligAdresse(MOCK_SUBJECT), Matchers.`is`(false))
         }
 
         gittGradering(null) { (_, pdlService) ->
-            assertThat(pdlService.harKode6(MOCK_SUBJECT)).isFalse()
+            assertThat(pdlService.harKode6(MOCK_SUBJECT), Matchers.`is`(false))
         }
 
         gittGradering(null) { (_, pdlService) ->
-            assertThat(pdlService.harStrengtFortroligAdresse(MOCK_SUBJECT)).isFalse()
+            assertThat(pdlService.harStrengtFortroligAdresse(MOCK_SUBJECT), Matchers.`is`(false))
         }
     }
 
     @Test
     suspend fun `sjekk for kode7`() {
         gittGradering(PdlAdressebeskyttelseGradering.FORTROLIG) { (_, pdlService) ->
-            assertThat(pdlService.harKode7(MOCK_SUBJECT)).isTrue()
+            assertThat(pdlService.harKode7(MOCK_SUBJECT), Matchers.`is`(true))
         }
 
         gittGradering(PdlAdressebeskyttelseGradering.FORTROLIG) { (_, pdlService) ->
-            assertThat(pdlService.harFortroligAdresse(MOCK_SUBJECT)).isTrue()
+            assertThat(pdlService.harFortroligAdresse(MOCK_SUBJECT), Matchers.`is`(true))
         }
 
         gittGradering(null) { (_, pdlService) ->
-            assertThat(pdlService.harKode7(MOCK_SUBJECT)).isFalse()
+            assertThat(pdlService.harKode7(MOCK_SUBJECT), Matchers.`is`(false))
         }
 
         gittGradering(null) { (_, pdlService) ->
-            assertThat(pdlService.harFortroligAdresse(MOCK_SUBJECT)).isFalse()
+            assertThat(pdlService.harFortroligAdresse(MOCK_SUBJECT), Matchers.`is`(false))
         }
 
     }

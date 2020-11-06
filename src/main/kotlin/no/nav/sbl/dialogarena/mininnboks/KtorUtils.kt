@@ -20,10 +20,6 @@ import no.nav.sbl.dialogarena.mininnboks.KtorUtils.authLevel4
 object KtorUtils {
     const val authLevel4 = "Level4"
     const val authLevel3 = "Level3"
-
-    fun dummySubject(): Subject {
-        return Subject("12345678910", IdentType.EksternBruker, SsoToken.oidcToken("3434", emptyMap<String, Object>()))
-    }
 }
 
 suspend fun PipelineContext<Unit, ApplicationCall>.withSubject(block: suspend PipelineContext<Unit, ApplicationCall>.(Subject) -> Unit) =
@@ -50,10 +46,13 @@ fun Route.conditionalAuthenticate(useAuthentication: Boolean, build: Route.() ->
     val route = createChild(AuthenticationRouteSelector(listOf<String?>(null)))
     route.insertPhaseAfter(ApplicationCallPipeline.Features, Authentication.AuthenticatePhase)
     route.intercept(Authentication.AuthenticatePhase) {
-        this.context.authentication.principal = SubjectPrincipal(KtorUtils.dummySubject(), authLevel4)
+        this.context.authentication.principal = SubjectPrincipal(dummySubject(), authLevel4)
     }
     route.build()
     return route
 }
 
 
+fun dummySubject(): Subject {
+    return Subject("12345678910", IdentType.EksternBruker, SsoToken.oidcToken("3434", emptyMap<String, Any>()))
+}

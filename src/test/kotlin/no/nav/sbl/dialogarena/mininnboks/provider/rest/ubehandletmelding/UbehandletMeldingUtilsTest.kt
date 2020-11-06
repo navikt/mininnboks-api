@@ -44,7 +44,7 @@ class UbehandletMeldingUtilsTest {
         val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(listOf(ulestIkkeUbesvartHenvendelse, lestIkkeUbesvartHenvendelse))
         Assert.assertThat(sporsmalVarsler.size, Matchers.`is`(1))
         Assert.assertThat(sporsmalVarsler[0].behandlingskjedeId, Matchers.`is`(ulestIkkeUbesvartHenvendelse.traadId))
-        Assert.assertThat(sporsmalVarsler[0].statuser[0], Matchers.`is`(UbehandletMelding.Status.ULEST))
+        Assert.assertThat(sporsmalVarsler[0].statuser[0], Matchers.`is`(Status.ULEST))
     }
 
     @Test
@@ -54,7 +54,7 @@ class UbehandletMeldingUtilsTest {
         val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(listOf(ubesvartLestHenvendelse, besvartLestHenvendelse))
         Assert.assertThat(sporsmalVarsler.size, Matchers.`is`(1))
         Assert.assertThat(sporsmalVarsler[0].behandlingskjedeId, Matchers.`is`(ubesvartLestHenvendelse.traadId))
-        Assert.assertThat(sporsmalVarsler[0].statuser[0], Matchers.`is`(UbehandletMelding.Status.UBESVART))
+        Assert.assertThat(sporsmalVarsler[0].statuser[0], Matchers.`is`(Status.UBESVART))
     }
 
     @Test
@@ -63,7 +63,7 @@ class UbehandletMeldingUtilsTest {
         val sporsmalVarsler = UbehandletMeldingUtils.hentUbehandledeMeldinger(listOf(ubesvartUlestHenvendelse))
         Assert.assertThat(sporsmalVarsler.size, Matchers.`is`(1))
         Assert.assertThat(sporsmalVarsler[0].statuser.size, Matchers.`is`(2))
-        Assert.assertThat(sporsmalVarsler[0].statuser.contains(UbehandletMelding.Status.UBESVART), Matchers.`is`(true))
-        Assert.assertThat(sporsmalVarsler[0].statuser.contains(UbehandletMelding.Status.ULEST), Matchers.`is`(true))
+        Assert.assertThat(sporsmalVarsler[0].statuser.contains(Status.UBESVART), Matchers.`is`(true))
+        Assert.assertThat(sporsmalVarsler[0].statuser.contains(Status.ULEST), Matchers.`is`(true))
     }
 }

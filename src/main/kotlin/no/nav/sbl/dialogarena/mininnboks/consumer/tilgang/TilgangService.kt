@@ -22,28 +22,26 @@ class TilgangServiceImpl(
     private val log = LoggerFactory.getLogger(TilgangService::class.java)
 
     override suspend fun harTilgangTilKommunalInnsending(subject: Subject): TilgangDTO {
-        var tilgangDTO = TilgangDTO(TilgangDTO.Resultat.OK, "")
         runCatching {
             sjekkGTPresent(subject)
         }.onSuccess {
             if (!it) {
-                tilgangDTO = TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ikke gyldig GT")
+                return TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ikke gyldig GT")
             }
         }.onFailure {
-            tilgangDTO = TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers GT: ${it.message}")
+            return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers GT: ${it.message}")
         }
 
         runCatching {
             pdlService.harKode6(subject)
         }.onSuccess {
             if (it) {
-                tilgangDTO = TilgangDTO(TilgangDTO.Resultat.KODE6, "Bruker har diskresjonskode")
+                return TilgangDTO(TilgangDTO.Resultat.KODE6, "Bruker har diskresjonskode")
             }
         }.onFailure {
-            tilgangDTO = TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers diskresjonskode: ${it.message}")
-
+            return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers diskresjonskode: ${it.message}")
         }
-        return tilgangDTO
+        return TilgangDTO(TilgangDTO.Resultat.OK, "")
     }
 
     private suspend fun sjekkGTPresent(subject: Subject): Boolean {

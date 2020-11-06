@@ -5,10 +5,8 @@ import com.natpryce.konfig.*
 
 private val defaultProperties = ConfigurationMap(
         mapOf(
-                "NAIS_CLUSTER_NAME" to "local",
                 "JWKS_URL" to "JWKS_URL",
                 "ISSUER" to "ISSUER",
-                "VAULT_MOUNTPATH" to "",
                 "SERVICEGATEWAY_URL" to "SERVICEGATEWAY_URL",
                 "INNSYN_HENVENDELSE_WS_URL" to "innsyn.henvendelse.ws.url",
                 "HENVENDELSE_WS_URL" to "henvendelse.ws.url",
@@ -23,19 +21,13 @@ private val defaultProperties = ConfigurationMap(
                 "FSS_SRVMININNBOKS_PASSWORD" to "FSS_SRVMININNBOKS_PASSWORD",
                 "SRVMININNBOKS_USERNAME" to "SRVMININNBOKS_USERNAME",
                 "SRVMININNBOKS_PASSWORD" to "SRVMININNBOKS_PASSWORD",
-                "AAD_B2C_CLIENTID_USERNAME" to "AAD_B2C_CLIENTID_USERNAME",
-                "LOGINSERVICE_IDPORTEN_DISCOVERY_URL" to "LOGINSERVICE_IDPORTEN_DISCOVERY_URL",
-                "LOGINSERVICE_IDPORTEN_AUDIENCE" to "LOGINSERVICE_IDPORTEN_AUDIENCE",
-                "AAD_B2C_DISCOVERY_URL" to "AAD_B2C_DISCOVERY_URL"
+                "LOGINSERVICE_IDPORTEN_AUDIENCE" to "LOGINSERVICE_IDPORTEN_AUDIENCE"
         )
 )
 
 data class Configuration(
-        val clusterName: String = config()[Key("NAIS_CLUSTER_NAME", stringType)],
         val jwksUrl: JwkProvider = JwtUtil.makeJwkProvider(config()[Key("JWKS_URL", stringType)]),
         val jwtIssuer: String = config()[Key("ISSUER", stringType)],
-        val AAD_B2C_CLIENTID_USERNAME: String = config()[Key("AAD_B2C_CLIENTID_USERNAME", stringType)],
-        val vaultMountpath: String = config()[Key("VAULT_MOUNTPATH", stringType)],
         val SERVICEGATEWAY_URL: String = config()[Key("SERVICEGATEWAY_URL", stringType)],
         val INNSYN_HENVENDELSE_WS_URL: String = config()[Key("SERVICEGATEWAY_URL", stringType)],
         val HENVENDELSE_WS_URL: String = config()[Key("SERVICEGATEWAY_URL", stringType)],
@@ -49,7 +41,6 @@ data class Configuration(
         val FSS_SRVMININNBOKS_USERNAME: String = config()[Key("FSS_SRVMININNBOKS_USERNAME", stringType)],
         val FSS_SRVMININNBOKS_PASSWORD: String = config()[Key("FSS_SRVMININNBOKS_PASSWORD", stringType)],
         val SRVMININNBOKS_USERNAME: String = config()[Key("SRVMININNBOKS_USERNAME", stringType)],
-        val AAD_B2C_DISCOVERY_URL: String = config()[Key("AAD_B2C_DISCOVERY_URL", stringType)],
         val LOGINSERVICE_IDPORTEN_DISCOVERY_URL: String = config()[Key("LOGINSERVICE_IDPORTEN_DISCOVERY_URL", stringType)],
         val LOGINSERVICE_IDPORTEN_AUDIENCE: String = config()[Key("LOGINSERVICE_IDPORTEN_AUDIENCE", stringType)],
         val SRVMININNBOKS_PASSWORD: String = config()[Key("SRVMININNBOKS_PASSWORD", stringType)]

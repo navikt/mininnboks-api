@@ -61,8 +61,10 @@ spec:
       value: "https://service-gw.oera.no/"
     - name: AAD_B2C_CLIENTID_USERNAME
       value: "45104d6a-f5bc-4e8c-b352-4bbfc9381f25"
-    - name: AAD_B2C_DISCOVERY_URL
-      value: "https://login.microsoftonline.com/navnob2c.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1A_idporten"
+    - name: JWKS_URL
+      value: "https://login.microsoftonline.com/navnob2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten"
+    - name: ISSUER
+      value: "https://login.microsoftonline.com/8b7dfc8b-b52e-4741-bde4-d83ea366f94f/v2.0/"
     - name: OPENAM_RESTURL
       value: "https://itjenester.oera.no/esso"
     - name: MININNBOKS_LINK_URL

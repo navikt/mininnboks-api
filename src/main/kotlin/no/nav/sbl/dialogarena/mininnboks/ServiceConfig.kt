@@ -31,7 +31,7 @@ import java.util.*
 class ServiceConfig(val configuration: Configuration) {
 
     private val personV3 = personV3()
-    val personService = PersonService.Default(personV3?.s?.build() as PersonV3)
+    val personService = PersonService.Default(personV3?.port?.build() as PersonV3)
 
     val henvendelsePortType = portBuilder(HenvendelsePortType::class.java,
             configuration.HENVENDELSE_WS_URL,
@@ -67,23 +67,23 @@ class ServiceConfig(val configuration: Configuration) {
 
     val selfTestCheckPersonV3: SelfTestCheck? = personV3?.let {
         portTypeSelfTestCheck("personV3") {
-            (it.t?.build() as PersonV3).ping()
+            (it.pingPort?.build() as PersonV3).ping()
         }
     }
 
     val selfTestCheckHenvendelse: SelfTestCheck? = portTypeSelfTestCheck(
             "no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType") {
-        (henvendelsePortType.t?.build() as HenvendelsePortType).ping()
+        (henvendelsePortType?.pingPort?.build() as HenvendelsePortType).ping()
     }
 
     val selfTestCheckSendInnHenvendelsePortType: SelfTestCheck? = portTypeSelfTestCheck(
             "no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType") {
-        (sendInnHenvendelsePortType.t?.build() as SendInnHenvendelsePortType).ping()
+        (sendInnHenvendelsePortType?.pingPort?.build() as SendInnHenvendelsePortType).ping()
     }
 
     val selfTestCheckInnsynHenvendelsePortType: SelfTestCheck? = portTypeSelfTestCheck(
             "no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType") {
-        (innsynHenvendelsePortType.t?.build() as InnsynHenvendelsePortType).ping()
+        (innsynHenvendelsePortType?.pingPort?.build() as InnsynHenvendelsePortType).ping()
     }
 
     val selfTestChecklist = listOf(
@@ -98,17 +98,12 @@ class ServiceConfig(val configuration: Configuration) {
     )
 
     private fun checkHealthStsService(): HealthCheckResult {
-        runCatching {
+        return try {
             stsService.getSystemUserAccessToken()
-        }.onSuccess {
-            if (it != null)
-                return HealthCheckResult.healthy()
-            else
-                return HealthCheckResult.unhealthy("Null response")
-        }.onFailure {
-            return HealthCheckResult.unhealthy(it.message)
+            HealthCheckResult.healthy()
+        } catch (e: Exception) {
+            HealthCheckResult.unhealthy(e.message)
         }
-        return HealthCheckResult.unhealthy("Feil ved Helsesjekk")
     }
 
     private fun personV3(): PortType? {
@@ -124,9 +119,9 @@ class ServiceConfig(val configuration: Configuration) {
         checkNotNull(innsynHenvendelsePortType) { "innsynHenvendelsePortType is null" }
 
         return HenvendelseService.Default(
-                henvendelsePortType.s?.build() as HenvendelsePortType,
-                sendInnHenvendelsePortType!!.s?.build() as SendInnHenvendelsePortType,
-                innsynHenvendelsePortType.s?.build() as InnsynHenvendelsePortType,
+                henvendelsePortType.port?.build() as HenvendelsePortType,
+                sendInnHenvendelsePortType!!.port?.build() as SendInnHenvendelsePortType,
+                innsynHenvendelsePortType.port?.build() as InnsynHenvendelsePortType,
                 personService
         )
     }

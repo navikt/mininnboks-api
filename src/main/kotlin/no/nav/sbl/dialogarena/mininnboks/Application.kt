@@ -57,3 +57,4 @@ private fun getApigwKey(producerApp: String): String? {
     val location = "%s/apigw/%s/x-nav-apiKey".format(DEFAULT_SECRETS_BASE_PATH, producerApp)
     return NaisUtils.getFileContent(location)
 }
+

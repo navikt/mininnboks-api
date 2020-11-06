@@ -28,7 +28,6 @@ import org.hamcrest.core.Is
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import java.util.*
-import java.util.stream.Collectors
 import javax.xml.namespace.QName
 import javax.xml.soap.SOAPFactory
 import javax.xml.ws.soap.SOAPFaultException
@@ -139,10 +138,7 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    val svar = Svar()
-                    svar.traadId = "1"
-                    svar.fritekst = "Tekst"
-                    setBody(mapper.writeValueAsString(svar))
+                    setBody(mapper.writeValueAsString(Svar("1", "Tekst")))
 
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotAcceptable.value))
@@ -156,10 +152,7 @@ class HenvendelseControllerTest : Spek({
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
 
-                    val svar = Svar()
-                    svar.traadId = "2"
-                    svar.fritekst = "Tekst"
-                    setBody(mapper.writeValueAsString(svar))
+                    setBody(mapper.writeValueAsString(Svar("2", "Tekst")))
                 }.apply {
 
                     val nyHenvendelseResultat: NyHenvendelseResultat? = response.content?.let { mapper.readValue(it) }
@@ -171,7 +164,7 @@ class HenvendelseControllerTest : Spek({
             it("kopierer Nyeste Er Tilknyttet Ansatt Flagg Til Svaret") {
 
                 val henvendelse1 = Henvendelse(id = "1", erTilknyttetAnsatt = true, opprettet = TestUtils.now(), type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE)
-                val henvendelse2 = Henvendelse(id = "2", erTilknyttetAnsatt = false, opprettet = TestUtils.now())
+                val henvendelse2 = Henvendelse(id = "2", erTilknyttetAnsatt = false, opprettet = TestUtils.now(), type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE)
                 val henvendelser = listOf(henvendelse1, henvendelse2)
 
                 coEvery { service.hentTraad(any(), any()) } returns (henvendelser)
@@ -181,11 +174,7 @@ class HenvendelseControllerTest : Spek({
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
 
-
-                    val svar = Svar()
-                    svar.fritekst = "fritekst"
-                    svar.traadId = "0"
-                    setBody(mapper.writeValueAsString(svar))
+                    setBody(mapper.writeValueAsString(Svar("0", "fritekst")))
                 }.apply {
                     val henvendelseArgumentCaptor = slot<Henvendelse>()
                     coVerify { service.sendSvar(capture(henvendelseArgumentCaptor), any()) }
@@ -205,10 +194,8 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    val svar = Svar()
-                    svar.fritekst = "fritekst"
-                    svar.traadId = "0"
-                    setBody(mapper.writeValueAsString(svar))
+
+                    setBody(mapper.writeValueAsString(Svar("0", "fritekst")))
                 }.apply {
                     val henvendelseArgumentCaptor = slot<Henvendelse>()
                     coVerify { service.sendSvar(capture(henvendelseArgumentCaptor), any()) }
@@ -223,10 +210,8 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    val svar = Svar()
-                    svar.fritekst = "fritekst"
-                    svar.traadId = "0"
-                    setBody(mapper.writeValueAsString(svar))
+
+                    setBody(mapper.writeValueAsString(Svar("0", "fritekst")))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotFound.value))
                 }
@@ -238,9 +223,7 @@ class HenvendelseControllerTest : Spek({
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
 
-                    val sporsmal = Sporsmal()
-                    sporsmal.fritekst = ""
-                    sporsmal.temagruppe = Temagruppe.ARBD.name
+                    val sporsmal = Sporsmal(Temagruppe.ARBD, "" )
                     setBody(mapper.writeValueAsString(sporsmal))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
@@ -252,9 +235,7 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    val sporsmal = Sporsmal()
-                    sporsmal.fritekst = join(Collections.nCopies(1001, 'a'), "")
-                    sporsmal.temagruppe = Temagruppe.ARBD.name
+                    val sporsmal = Sporsmal(Temagruppe.ARBD, join(Collections.nCopies(1001, 'a'), ""))
                     setBody(mapper.writeValueAsString(sporsmal))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
@@ -267,10 +248,7 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    val sporsmal = Sporsmal()
-                    sporsmal.fritekst = "DUMMY"
-                    sporsmal.temagruppe = Temagruppe.ANSOS.name
-                    setBody(mapper.writeValueAsString(sporsmal))
+                    setBody(mapper.writeValueAsString(createSporsmal()))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
                 }
@@ -285,10 +263,7 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    val sporsmal = Sporsmal()
-                    sporsmal.fritekst = "DUMMY"
-                    sporsmal.temagruppe = Temagruppe.OKSOS.name
-                    setBody(mapper.writeValueAsString(sporsmal))
+                    setBody(mapper.writeValueAsString(createSporsmal()))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
                 }
@@ -304,10 +279,7 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    val sporsmal = Sporsmal()
-                    sporsmal.fritekst = "DUMMY"
-                    sporsmal.temagruppe = Temagruppe.OKSOS.name
-                    setBody(mapper.writeValueAsString(sporsmal))
+                    setBody(mapper.writeValueAsString(createSporsmal()))
 
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
@@ -324,10 +296,7 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    val sporsmal = Sporsmal()
-                    sporsmal.fritekst = "DUMMY"
-                    sporsmal.temagruppe = Temagruppe.OKSOS.name
-                    setBody(mapper.writeValueAsString(sporsmal))
+                    setBody(mapper.writeValueAsString(createSporsmal()))
 
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
@@ -337,6 +306,8 @@ class HenvendelseControllerTest : Spek({
     }
 
 })
+
+private fun createSporsmal() = Sporsmal( Temagruppe.ANSOS, "DUMMY")
 
 
 fun setUp(service: HenvendelseService) {
@@ -354,9 +325,8 @@ fun setUp(service: HenvendelseService) {
     coEvery { service.hentAlleHenvendelser(any()) } returns henvendelser
     coEvery { service.hentTraad(capture(slot), any()) } answers {
         val traadId = slot.captured
-        henvendelser.stream()
+        henvendelser
                 .filter { henvendelse: Henvendelse? -> traadId == henvendelse!!.traadId }
-                .collect(Collectors.toList())
     }
 
     coEvery { service.sendSvar(any(), any()) } returns (

@@ -12,18 +12,16 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataL
 
 object PortUtils {
 
-    fun <T> portBuilder(t: Class<T>, address: String, wsdlUrl: String, stsConfig: StsConfig?): PortType {
-        return PortType(cxfClientBuilder(t, address, wsdlUrl)?.configureStsForSubject(stsConfig),
-                cxfClientBuilder(t, address, wsdlUrl)?.configureStsForSystemUser(stsConfig))
+    fun <T> portBuilder(clazz: Class<T>, address: String, wsdlUrl: String, stsConfig: StsConfig?): PortType? {
+        return PortType(cxfClientBuilder(clazz, address, wsdlUrl).configureStsForSubject(stsConfig),
+                cxfClientBuilder(clazz, address, wsdlUrl).configureStsForSystemUser(stsConfig))
     }
 
     fun portTypeSelfTestCheck(portTypeName: String, block: () -> Unit): SelfTestCheck {
         return SelfTestCheck(portTypeName, false) {
             try {
                 runBlocking {
-                    externalCall(KtorUtils.dummySubject()) {
-                        block()
-                    }
+                    block()
                 }
                 return@SelfTestCheck HealthCheckResult.healthy()
             } catch (e: Exception) {
@@ -32,7 +30,7 @@ object PortUtils {
         }
     }
 
-    private fun <T> cxfClientBuilder(t: Class<T>, address: String, wsdlUrl: String): CXFClient<T>? {
+    private fun <T> cxfClientBuilder(t: Class<T>, address: String, wsdlUrl: String): CXFClient<T> {
         return CXFClient<T>(t)
                 .address(address)
                 .wsdl(wsdlUrl)
@@ -46,5 +44,5 @@ object PortUtils {
     }
 }
 
-data class PortType(val s: CXFClient<*>?, val t: CXFClient<*>?)
+data class PortType(val port: CXFClient<*>?, val pingPort: CXFClient<*>?)
 

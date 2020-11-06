@@ -20,8 +20,7 @@ interface PersonService {
     class Default(private val personV3: PersonV3) : PersonService {
         override suspend fun hentGeografiskTilknytning(subject: Subject): Optional<String> {
             val request = HentGeografiskTilknytningRequest().withAktoer(lagAktoer(subject.uid))
-            val response: HentGeografiskTilknytningResponse
-            response = try {
+            val response = try {
                 externalCall(subject) {
                     personV3.hentGeografiskTilknytning(request)
                 }

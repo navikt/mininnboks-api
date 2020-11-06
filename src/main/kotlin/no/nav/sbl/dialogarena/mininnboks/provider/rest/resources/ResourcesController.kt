@@ -13,7 +13,7 @@ fun Route.resourcesController() {
 
         get {
 
-            val tekster: MutableMap<String?, Any?> = HashMap()
+            val tekster: MutableMap<String?, String?> = HashMap()
             TekstServiceImpl.hentTekster().let { it1 -> tekster.putAll(it1) }
             tekster["skriv.ny.link"] = LinkService.TEMAVELGER_LINK
             tekster["brukerprofil.link"] = LinkService.BRUKERPROFIL_LINK

@@ -10,19 +10,4 @@ class TekstServiceImplTest {
     fun smoketest() {
         MatcherAssert.assertThat(TekstServiceImpl.hentTekster().size, Matchers.greaterThan(0) as Matcher<in Int?>?)
     }
-
-    @Test
-    fun basicTest() {
-        asResource {
-            // test on `it` here...
-            println(it)
-        }
-
-    }
-
-    fun asResource(work: (String) -> Unit) {
-        val path = "tekster/mininnboks"
-        val content = object {}.javaClass.classLoader.getResources(path)
-        work(content.toList().size.toString())
-    }
 }

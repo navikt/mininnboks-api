@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    id("java-library-distribution")
+    id("application")
 
 }
 
@@ -58,7 +58,6 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus:1.5.5")
 
     implementation("no.nav.tjenestespesifikasjoner:person-v3-tjenestespesifikasjon:$tjenestespec_version")
-    implementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     implementation("com.sun.xml.ws:jaxws-ri:2.3.3")
 
 
@@ -79,20 +78,15 @@ dependencies {
     implementation ("com.auth0:java-jwt:3.11.0")
     //test
     testImplementation("org.hamcrest:hamcrest:2.2")
-    testImplementation("org.assertj:assertj-core:3.11.1")
     testImplementation("no.nav.common:auth:test-jar:tests")
     testImplementation("org.junit.platform:junit-platform-launcher:1.1.1")
     testImplementation("org.junit.vintage:junit-vintage-engine:5.1.1")
     testImplementation("io.ktor:ktor-server-test-host:1.4.0")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spek_version")
-    testImplementation("io.mockk:mockk:1.9.3")
+    testImplementation("io.mockk:mockk:1.10.2")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.4.2")
-
-
-    compileOnly("org.projectlombok:lombok:1.18.4")
-    annotationProcessor("org.projectlombok:lombok:1.18.4")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.9")
 }
 
@@ -140,7 +134,6 @@ val fatJar = task("fatJar", type = Jar::class) {
     })
     with(tasks.jar.get() as CopySpec)
 }
-
 
 distributions {
     main {

@@ -1,8 +1,7 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.utils
 
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*
-import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService
-import no.nav.sbl.dialogarena.mininnboks.consumer.TekstServiceImpl
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstServiceImpl.hentTekst
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
@@ -37,9 +36,8 @@ object HenvendelsesUtils {
     }
     private val domainMapper = DomainMapper<XMLHenvendelse, Henvendelse>()
     private val henvendelseFactory =
-            { xmlHenvendelse: XMLHenvendelse
-                ->
-                val henvendelseType = HENVENDELSETYPE_MAP[XMLHenvendelseType.fromValue(xmlHenvendelse.henvendelseType)]
+            { xmlHenvendelse: XMLHenvendelse ->
+                val henvendelseType = HENVENDELSETYPE_MAP[XMLHenvendelseType.fromValue(xmlHenvendelse.henvendelseType)]!!
                 Henvendelse(
                         id = xmlHenvendelse.behandlingsId,
                         opprettet = utilDate(xmlHenvendelse.opprettetDato),
@@ -60,7 +58,7 @@ object HenvendelsesUtils {
             }
 
     private val LEST_MAPPER = DomainMapper.Mapper(
-            { xmlHenvendelse: XMLHenvendelse -> true },
+            { true },
             { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
                 henvendelse.copy(
                         lestDato = if (FRA_BRUKER.contains(henvendelse.type)) Date() else utilDate(xmlHenvendelse.lestDato)
@@ -70,11 +68,11 @@ object HenvendelsesUtils {
 
     private val KASSERT_MAPPER = DomainMapper.Mapper(
             { xmlHenvendelse: XMLHenvendelse -> xmlHenvendelse.metadataListe == null },
-            { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
+            { _: XMLHenvendelse, henvendelse: Henvendelse ->
                 henvendelse.copy(
                         kassert = true,
-                        fritekst = TekstServiceImpl.hentTekst("innhold.kassert"),
-                        statusTekst = TekstServiceImpl.hentTekst("temagruppe.kassert"),
+                        fritekst = hentTekst("innhold.kassert"),
+                        statusTekst = hentTekst("temagruppe.kassert"),
                         temagruppe = null,
                         kanal = null
                 )
@@ -92,10 +90,9 @@ object HenvendelsesUtils {
                         temagruppe = null,
                         fritekst = Optional.ofNullable(varsel.fritekst).orElse(""),
                         opprettet = utilDate(varsel.ferdigstiltDato),
-                        journalpostId = varsel.journalpostId
-                ).also {
-                    it.dokumentIdListe.addAll(varsel.dokumentIdListe)
-                }
+                        journalpostId = varsel.journalpostId,
+                        dokumentIdListe = varsel.dokumentIdListe as ArrayList<String>
+                )
             }
     )
     private val OPPGAVEVARSEL_MAPPER = DomainMapper.Mapper(
@@ -105,8 +102,8 @@ object HenvendelsesUtils {
                 henvendelse.copy(
                         oppgaveType = varsel.oppgaveType,
                         oppgaveUrl = varsel.oppgaveURL,
-                        statusTekst = hentTekst(TekstServiceImpl, String.format("oppgave.%s", varsel.oppgaveType), "oppgave.GEN"),
-                        fritekst = hentTekst(TekstServiceImpl, String.format("oppgave.%s.fritekst", varsel.oppgaveType), "oppgave.GEN.fritekst")
+                        statusTekst = hentTekst(String.format("oppgave.%s", varsel.oppgaveType), "oppgave.GEN"),
+                        fritekst = hentTekst(String.format("oppgave.%s.fritekst", varsel.oppgaveType), "oppgave.GEN.fritekst")
                 )
             }
     )
@@ -128,20 +125,13 @@ object HenvendelsesUtils {
     )
 
     fun tilHenvendelse(wsMelding: XMLHenvendelse): Henvendelse {
-        return wsMelding.let { domainMapper.apply(it, henvendelseFactory(wsMelding)) }
+        return domainMapper.apply(wsMelding, henvendelseFactory(wsMelding))
     }
 
-    fun hentTekst(tekster: TekstService?, key: String, defaultKey: String): String? {
-        return try {
-            tekster!!.hentTekst(key)
-        } catch (e: Exception) {
-            tekster!!.hentTekst(defaultKey)
-        }
-    }
 
     private fun hentTemagruppeNavn(temagruppeNavn: String?): String? {
         return try {
-            temagruppeNavn?.let { TekstServiceImpl.hentTekst(it) }
+            temagruppeNavn?.let { hentTekst(it) }
         } catch (exception: MissingResourceException) {
             logger.error("Finner ikke cms-oppslag for $temagruppeNavn", exception)
             temagruppeNavn
@@ -158,7 +148,7 @@ object HenvendelsesUtils {
     }
 
     private fun statusTekst(henvendelse: Henvendelse): String { //NOSONAR
-        if (!henvendelse.type?.let { skalVisesTilBruker(it) }!!) {
+        if (!skalVisesTilBruker(henvendelse.type)) {
             return ""
         }
         val type = hentTemagruppeNavn(String.format("status.%s", henvendelse.type.name))

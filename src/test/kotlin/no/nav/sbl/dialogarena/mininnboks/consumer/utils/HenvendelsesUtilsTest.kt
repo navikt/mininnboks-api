@@ -6,6 +6,8 @@ import io.mockk.verify
 import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.*
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.consumer.TekstService
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstServiceImpl
+import no.nav.sbl.dialogarena.mininnboks.consumer.TekstServiceImpl.hentTekst
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
@@ -14,9 +16,7 @@ import org.hamcrest.Matchers
 import org.joda.time.DateTime
 import org.junit.Assert
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers
 import java.util.*
-import java.util.stream.Collectors
 
 class HenvendelsesUtilsTest {
     val tekstService = mockk<TekstService>()
@@ -24,58 +24,53 @@ class HenvendelsesUtilsTest {
 
     @Test
     fun `transformerer Dokument Henvendelse`() {
-        every {tekstService.hentTekst(ArgumentMatchers.anyString())}  returns "value"
-
+        every { tekstService.hentTekst(any()) } returns "value"
         val dokument = mockDokumentHenvendelse()
 
         val infoList = listOf(dokument)
-        val henvendelserListe = infoList.stream()
+        val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
-                .collect(Collectors.toList())
         val dokumentHenvendelse = henvendelserListe[0]
-        Assert.assertThat(dokumentHenvendelse?.id, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(dokumentHenvendelse?.traadId, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(dokumentHenvendelse?.type, CoreMatchers.`is`(Henvendelsetype.DOKUMENT_VARSEL))
-        Assert.assertThat(dokumentHenvendelse?.lestDato, CoreMatchers.`is`(CoreMatchers.nullValue()))
-        Assert.assertThat(dokumentHenvendelse?.isLest, CoreMatchers.`is`(false))
-        Assert.assertThat(dokumentHenvendelse?.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
-        Assert.assertThat(dokumentHenvendelse?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        Assert.assertThat(dokumentHenvendelse.id, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(dokumentHenvendelse.traadId, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(dokumentHenvendelse.type, CoreMatchers.`is`(Henvendelsetype.DOKUMENT_VARSEL))
+        Assert.assertThat(dokumentHenvendelse.lestDato, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        Assert.assertThat(dokumentHenvendelse.isLest, CoreMatchers.`is`(false))
+        Assert.assertThat(dokumentHenvendelse.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        Assert.assertThat(dokumentHenvendelse.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
     fun `transformerer XMLHenvendelse Som Sporsmal Fra Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1)
         val infoList = listOf(info)
-        val henvendelserListe = infoList.stream()
+        val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
-                .collect(Collectors.toList())
         val sporsmal = henvendelserListe[0]
-        sporsmal?.let { assertStandardFelter(it) }
-        Assert.assertThat(sporsmal?.id, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(sporsmal?.traadId, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(sporsmal?.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG))
-        Assert.assertThat(sporsmal?.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
-        Assert.assertThat(sporsmal?.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(sporsmal?.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
-        Assert.assertThat(sporsmal?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        sporsmal.let { assertStandardFelter(it) }
+        Assert.assertThat(sporsmal.id, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(sporsmal.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG))
+        Assert.assertThat(sporsmal.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
+        Assert.assertThat(sporsmal.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(sporsmal.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        Assert.assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
     fun `transformerer XMLHenvendelse Som Sporsmal Direkte Fra Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE, ID_1, ID_1)
         val infoList = listOf(info)
-        val henvendelserListe = infoList.stream()
+        val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
-                .collect(Collectors.toList())
         val sporsmal = henvendelserListe[0]
-        sporsmal?.let { assertStandardFelter(it) }
-        Assert.assertThat(sporsmal?.id, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(sporsmal?.traadId, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(sporsmal?.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG_DIREKTE))
-        Assert.assertThat(sporsmal?.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
-        Assert.assertThat(sporsmal?.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(sporsmal?.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
-        Assert.assertThat(sporsmal?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        Assert.assertThat(sporsmal.id, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(sporsmal.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG_DIREKTE))
+        Assert.assertThat(sporsmal.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
+        Assert.assertThat(sporsmal.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(sporsmal.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        Assert.assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
@@ -83,85 +78,79 @@ class HenvendelsesUtilsTest {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1)
         info.isFerdigstiltUtenSvar = true
         val infoList = listOf(info)
-        val henvendelserListe = infoList.stream()
+        val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
-                .collect(Collectors.toList())
         val sporsmal = henvendelserListe[0]
-        Assert.assertThat(sporsmal?.ferdigstiltUtenSvar, CoreMatchers.`is`(true))
+        Assert.assertThat(sporsmal.ferdigstiltUtenSvar, CoreMatchers.`is`(true))
     }
 
     @Test
     fun `transformerer XMLHenvendelse Som Svar Fra Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, ID_2, ID_2)
         val infoList = listOf(info)
-        val henvendelserListe = infoList.stream()
+        val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
-                .collect(Collectors.toList())
         val svar = henvendelserListe[0]
-        svar?.let { assertStandardFelter(it) }
-        Assert.assertThat(svar?.id, CoreMatchers.`is`(ID_2))
-        Assert.assertThat(svar?.traadId, CoreMatchers.`is`(ID_2))
-        Assert.assertThat(svar?.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SBL_INNGAAENDE))
-        Assert.assertThat(svar?.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
-        Assert.assertThat(svar?.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(svar?.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
-        Assert.assertThat(svar?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
-        Assert.assertThat(svar?.kontorsperreEnhet, CoreMatchers.`is`(KONTORSPERRE_ENHET))
+        svar.let { assertStandardFelter(it) }
+        Assert.assertThat(svar.id, CoreMatchers.`is`(ID_2))
+        Assert.assertThat(svar.traadId, CoreMatchers.`is`(ID_2))
+        Assert.assertThat(svar.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SBL_INNGAAENDE))
+        Assert.assertThat(svar.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
+        Assert.assertThat(svar.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(svar.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        Assert.assertThat(svar.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        Assert.assertThat(svar.kontorsperreEnhet, CoreMatchers.`is`(KONTORSPERRE_ENHET))
     }
 
     @Test
     fun `transformerer XMLHenvendelse Som Sporsmal Til Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, ID_3, ID_3)
         val infoList = listOf(info)
-        val henvendelserListe = infoList.stream()
+        val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
-                .collect(Collectors.toList())
         val sporsmal = henvendelserListe[0]
-        if (sporsmal != null) {
-            assertStandardFelter(sporsmal)
-        }
-        Assert.assertThat(sporsmal?.id, CoreMatchers.`is`(ID_3))
-        Assert.assertThat(sporsmal?.traadId, CoreMatchers.`is`(ID_3))
-        Assert.assertThat(sporsmal?.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE))
-        Assert.assertThat(sporsmal?.lestDato, CoreMatchers.`is`(LEST_DATO))
-        Assert.assertThat(sporsmal?.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(sporsmal?.kanal, CoreMatchers.`is`(KANAL))
-        Assert.assertThat(sporsmal?.eksternAktor, CoreMatchers.`is`(NAVIDENT))
-        Assert.assertThat(sporsmal?.tilknyttetEnhet, CoreMatchers.`is`(TILKNYTTET_ENHET))
-        Assert.assertThat(sporsmal?.erTilknyttetAnsatt, CoreMatchers.`is`(ER_TILKNYTTET_ANSATT))
-        Assert.assertThat(sporsmal?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        assertStandardFelter(sporsmal)
+        Assert.assertThat(sporsmal.id, CoreMatchers.`is`(ID_3))
+        Assert.assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_3))
+        Assert.assertThat(sporsmal.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE))
+        Assert.assertThat(sporsmal.lestDato, CoreMatchers.`is`(LEST_DATO))
+        Assert.assertThat(sporsmal.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(sporsmal.kanal, CoreMatchers.`is`(KANAL))
+        Assert.assertThat(sporsmal.eksternAktor, CoreMatchers.`is`(NAVIDENT))
+        Assert.assertThat(sporsmal.tilknyttetEnhet, CoreMatchers.`is`(TILKNYTTET_ENHET))
+        Assert.assertThat(sporsmal.erTilknyttetAnsatt, CoreMatchers.`is`(ER_TILKNYTTET_ANSATT))
+        Assert.assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
     fun `transformerer XMLHenvendelse Som Svar Til Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SVAR_SKRIFTLIG, ID_4, ID_1)
         val infoList = listOf(info)
-        val henvendelserListe = infoList.stream().map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }.collect(Collectors.toList())
+        val henvendelserListe = infoList.map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val svar = henvendelserListe[0]
-        svar?.let { assertStandardFelter(it) }
-        Assert.assertThat(svar?.id, CoreMatchers.`is`(ID_4))
-        Assert.assertThat(svar?.traadId, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(svar?.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SKRIFTLIG))
-        Assert.assertThat(svar?.lestDato, CoreMatchers.`is`(LEST_DATO))
-        Assert.assertThat(svar?.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(svar?.kanal, CoreMatchers.`is`(KANAL))
-        Assert.assertThat(svar?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        Assert.assertThat(svar.id, CoreMatchers.`is`(ID_4))
+        Assert.assertThat(svar.traadId, CoreMatchers.`is`(ID_1))
+        Assert.assertThat(svar.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SKRIFTLIG))
+        Assert.assertThat(svar.lestDato, CoreMatchers.`is`(LEST_DATO))
+        Assert.assertThat(svar.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(svar.kanal, CoreMatchers.`is`(KANAL))
+        Assert.assertThat(svar.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
     fun `transformerer XMLHenvendelse Som Referat Til Bruker`() {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5)
         val infoList = listOf(info)
-        val henvendelserListe = infoList.stream().map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }.collect(Collectors.toList())
+        val henvendelserListe = infoList.map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val referat = henvendelserListe[0]
-        referat?.let { assertStandardFelter(it) }
-        Assert.assertThat(referat?.id, CoreMatchers.`is`(ID_5))
-        Assert.assertThat(referat?.traadId, CoreMatchers.`is`(ID_5))
-        Assert.assertThat(referat?.type, CoreMatchers.`is`(Henvendelsetype.SAMTALEREFERAT_OPPMOTE))
-        Assert.assertThat(referat?.lestDato, CoreMatchers.`is`(LEST_DATO))
-        Assert.assertThat(referat?.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(referat?.kanal, CoreMatchers.`is`(KANAL))
-        Assert.assertThat(referat?.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        referat.let { assertStandardFelter(it) }
+        Assert.assertThat(referat.id, CoreMatchers.`is`(ID_5))
+        Assert.assertThat(referat.traadId, CoreMatchers.`is`(ID_5))
+        Assert.assertThat(referat.type, CoreMatchers.`is`(Henvendelsetype.SAMTALEREFERAT_OPPMOTE))
+        Assert.assertThat(referat.lestDato, CoreMatchers.`is`(LEST_DATO))
+        Assert.assertThat(referat.isLest, CoreMatchers.`is`(true))
+        Assert.assertThat(referat.kanal, CoreMatchers.`is`(KANAL))
+        Assert.assertThat(referat.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     private fun assertStandardFelter(sporsmal: Henvendelse) {
@@ -175,8 +164,8 @@ class HenvendelsesUtilsTest {
     fun `hvis Innholdet Er Borte Blir Henvendelsen Merket Som Kassert`() {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5)
         info.metadataListe = null
-        every {tekstService.hentTekst("innhold.kassert") } returns ("Innholdet er kassert")
-        every {tekstService.hentTekst("temagruppe.kassert") }returns ("Kassert")
+        every { tekstService.hentTekst("innhold.kassert") } returns ("Innholdet er kassert")
+        every { tekstService.hentTekst("temagruppe.kassert") } returns ("Kassert")
         val referat = HenvendelsesUtils.tilHenvendelse(info)
         Assert.assertThat(referat.fritekst, CoreMatchers.`is`("Innholdet i denne henvendelsen er kassert av NAV."))
         Assert.assertThat(referat.statusTekst, CoreMatchers.`is`("Kassert"))
@@ -201,20 +190,23 @@ class HenvendelsesUtilsTest {
     }
 
     @Test
-    fun `returnerer DefaultKey Hvis Hent Tekst Kaster Exception` () {
+    fun `returnerer DefaultKey Hvis Hent Tekst Kaster Exception`() {
+
         val key = "nokkel"
         val defaultKey = "defaultKey"
-        every {(tekstService.hentTekst(key)) } throws NullPointerException()
-        every {(tekstService.hentTekst(defaultKey)) } returns(defaultKey)
-        val tekst = HenvendelsesUtils.hentTekst(tekstService, key, defaultKey)
-        Assert.assertThat(tekst, CoreMatchers.`is`(defaultKey))
+        val defaulValue = "Value"
+        TekstServiceImpl.tekster.put(key, null)
+        TekstServiceImpl.tekster.put(defaultKey, defaulValue)
+
+        val tekst = hentTekst(key, defaultKey)
+        Assert.assertThat(tekst, CoreMatchers.`is`(defaulValue))
     }
 
     @Test
     fun `prover Ikke Aa Hente Status Tekst For DelviseSvar`() {
         val henvendelse = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1)
         HenvendelsesUtils.tilHenvendelse(henvendelse)
-        verify(exactly = 0)  { tekstService.hentTekst("status." + Henvendelsetype.DELVIS_SVAR_SKRIFTLIG.name)}
+        verify(exactly = 0) { tekstService.hentTekst("status." + Henvendelsetype.DELVIS_SVAR_SKRIFTLIG.name) }
     }
 
     @Test

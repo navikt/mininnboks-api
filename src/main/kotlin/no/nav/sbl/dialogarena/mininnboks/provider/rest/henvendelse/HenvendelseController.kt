@@ -26,16 +26,7 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
 
     conditionalAuthenticate(useAuthentication) {
         route("/traader") {
-            get("/") {
-                withSubject { subject ->
-                    val henvendelser: List<Henvendelse> = henvendelseService.hentAlleHenvendelser(subject)
-                    val traader: Map<String?, List<Henvendelse>> = henvendelser.groupBy { it.traadId }
-                    call.respond(traader.values
-                            .map { list: List<Henvendelse> -> filtrerDelsvar(list) }
-                            .map { meldinger: List<Henvendelse> -> Traad(meldinger) }
-                            .sortedWith(Traad.NYESTE_FORST))
-                }
-            }
+            hentAlleTraader(henvendelseService)
 
             getId(henvendelseService)
 
@@ -52,26 +43,36 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
     }
 }
 
+private fun Route.hentAlleTraader(henvendelseService: HenvendelseService) {
+    get("/") {
+        withSubject { subject ->
+            val henvendelser: List<Henvendelse> = henvendelseService.hentAlleHenvendelser(subject)
+            val traader: Map<String?, List<Henvendelse>> = henvendelser.groupBy { it.traadId }
+            call.respond(traader.values
+                    .map { list: List<Henvendelse> -> filtrerDelsvar(list) }
+                    .map { meldinger: List<Henvendelse> -> Traad(meldinger) }
+                    .sortedWith(Traad.NYESTE_FORST))
+        }
+    }
+}
+
 private fun Route.svar(henvendelseService: HenvendelseService) {
     post("/svar") {
         val svar = call.receive(Svar::class)
         assertFritekst(svar.fritekst, 2500)
         withSubject { subject ->
-            if (svar.traadId != null) {
-                val traadOptional = hentTraad(henvendelseService, svar.traadId!!, subject)
-                if (!traadOptional.isPresent) {
-                    call.respond(HttpStatusCode.NotFound)
+            val traad = hentTraad(henvendelseService, svar.traadId, subject)
+            if (traad == null) {
+                call.respond(HttpStatusCode.NotFound)
+            } else {
+                if (!traad.kanBesvares) {
+                    call.respond(HttpStatusCode.NotAcceptable)
+                    return@withSubject
                 } else {
-                    val traad = traadOptional.get()
-                    if (!traad.kanBesvares) {
-                        call.respond(HttpStatusCode.NotAcceptable)
-                        return@withSubject
-                    }
                     val henvendelse = createHenvendelse(svar, traad)
                     val response = henvendelseService.sendSvar(henvendelse, subject)
                     call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
                 }
-
             }
         }
     }
@@ -150,10 +151,9 @@ private fun Route.getId(henvendelseService: HenvendelseService) {
             call.respond(HttpStatusCode.NotFound)
         withSubject { subject ->
             if (id != null) {
-                val optionalTraad = hentTraad(henvendelseService, id, subject)
+                val traad = hentTraad(henvendelseService, id, subject)
 
-                if (optionalTraad.isPresent) {
-                    val traad = optionalTraad.get()
+                if (traad != null) {
                     val filtrertTraad = Traad(filtrerDelsvar(traad.meldinger))
                     call.respond(filtrertTraad)
                 } else {
@@ -165,10 +165,9 @@ private fun Route.getId(henvendelseService: HenvendelseService) {
 }
 
 suspend fun lagHenvendelse(tilgangService: TilgangService, subject: Subject, sporsmal: Sporsmal): Henvendelse {
-    val temagruppe = Temagruppe.valueOf(sporsmal.temagruppe)
-    sporsmal.fritekst?.let { assertFritekst(it) }
-    assertTemagruppeTilgang(tilgangService, subject, temagruppe)
-    return Henvendelse(fritekst = sporsmal.fritekst, temagruppe = temagruppe)
+    assertFritekst(sporsmal.fritekst)
+    assertTemagruppeTilgang(tilgangService, subject, sporsmal.temagruppe)
+    return Henvendelse(fritekst = sporsmal.fritekst, temagruppe = sporsmal.temagruppe, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
 }
 
 suspend fun assertTemagruppeTilgang(tilgangService: TilgangService, subject: Subject, temagruppe: Temagruppe) {
@@ -193,26 +192,27 @@ fun filtrerDelsvar(traad: List<Henvendelse>): List<Henvendelse> {
 
 
 fun traadHarIkkeSkriftligSvarFraNAV(traad: List<Henvendelse?>?): Boolean {
-    val skriftligSvarFraNAV = traad?.stream()
-            ?.filter { henvendelse -> henvendelse?.type == Henvendelsetype.SVAR_SKRIFTLIG }
-            ?.findAny()
-    return !skriftligSvarFraNAV?.isPresent!!
+    return traad?.filter { henvendelse -> henvendelse?.type == Henvendelsetype.SVAR_SKRIFTLIG }.isNullOrEmpty()
 }
 
-suspend fun hentTraad(henvendelseService: HenvendelseService, id: String, subject: Subject): Optional<Traad> {
+suspend fun hentTraad(henvendelseService: HenvendelseService, id: String, subject: Subject): Traad? {
     return try {
-
-        val meldinger = henvendelseService.hentTraad(id, subject)
-        if (meldinger.isEmpty()) {
-            Optional.empty()
-        } else Optional.of(Traad(meldinger))
+        val hevendelser = henvendelseService.hentTraad(id, subject)
+        if (hevendelser.isNotEmpty()) {
+            Traad(hevendelser)
+        } else {
+            null
+        }
     } catch (fault: SoapFault) {
         logger.error("Fant ikke tråd med id: $id", fault)
-        Optional.empty()
+        null
 
     } catch (fault1: SOAPFaultException) {
         logger.error("Fant ikke tråd med id: $id", fault1)
-        Optional.empty()
+        null
+    } catch (e: Exception) {
+        logger.error("Uforventet feil $e.message")
+        null
     }
 }
 
@@ -228,10 +228,10 @@ fun assertFritekst(fritekst: String?, maxLengde: Int) {
         fritekst == null -> {
             throw BadRequestException("Fritekst må være sendt med")
         }
-        fritekst.trim { it <= ' ' }.isEmpty() -> {
+        fritekst.trim().isEmpty() -> {
             throw BadRequestException("Fritekst må inneholde tekst")
         }
-        fritekst.trim { it <= ' ' }.length > maxLengde -> {
+        fritekst.trim().length > maxLengde -> {
             throw BadRequestException("Fritekst kan ikke være lengre enn $maxLengde tegn")
         }
     }

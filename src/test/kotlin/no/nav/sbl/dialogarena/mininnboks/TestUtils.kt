@@ -40,7 +40,7 @@ object TestUtils {
         return opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, DEFAULT_TYPE, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
     }
 
-    fun lagForsteHenvendelseITraad(type: Henvendelsetype?, lest: Boolean): Henvendelse {
+    fun lagForsteHenvendelseITraad(type: Henvendelsetype, lest: Boolean): Henvendelse {
         val id = UUID.randomUUID().toString()
         val henvendelse = opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, type, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
         if (lest) {
@@ -51,7 +51,7 @@ object TestUtils {
     }
 
     fun opprettHenvendelse(id: String?, traadId: String?, temagruppe: Temagruppe?,
-                           type: Henvendelsetype?, opprettet: Date?, eksternAktor: String?, tilknyttetEnhet: String?): Henvendelse {
+                           type: Henvendelsetype, opprettet: Date?, eksternAktor: String?, tilknyttetEnhet: String?): Henvendelse {
         return Henvendelse(
                 id = id,
                 temagruppe = temagruppe,
@@ -73,4 +73,9 @@ object TestUtils {
     fun date(gregorianCalendar: GregorianCalendar): Date {
         return Date(gregorianCalendar.timeInMillis)
     }
+
+    fun dummySubject(): Subject {
+        return Subject("12345678910", IdentType.EksternBruker, SsoToken.oidcToken("3434", emptyMap<String, Any>()))
+    }
+
 }

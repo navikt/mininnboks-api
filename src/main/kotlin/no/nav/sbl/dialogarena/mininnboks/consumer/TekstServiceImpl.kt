@@ -8,7 +8,7 @@ import java.util.regex.Pattern
 
 
 object TekstServiceImpl : TekstService {
-    private val tekster: MutableMap<String, String?> = HashMap()
+    val tekster: MutableMap<String, String?> = HashMap()
 
     private fun lastTekster() {
         val uri: URI? = TekstServiceImpl::class.java.classLoader?.getResource("tekster/mininnboks")?.toURI()
@@ -38,7 +38,12 @@ object TekstServiceImpl : TekstService {
         return tekster
     }
 
+    override fun hentTekst(key: String, defaultKey: String): String {
+        return tekster[key] ?: tekster[defaultKey].toString()
+    }
+
     init {
         lastTekster()
     }
+
 }

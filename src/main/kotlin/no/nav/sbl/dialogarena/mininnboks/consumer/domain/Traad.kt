@@ -5,7 +5,7 @@ import java.util.function.Function
 
 class Traad(meldinger: List<Henvendelse>) {
     var traadId: String? = null
-    var meldinger: List<Henvendelse> = mutableListOf()
+    var meldinger: List<Henvendelse> = listOf()
     var nyeste: Henvendelse? = null
     var eldste: Henvendelse? = null
     var kanBesvares: Boolean = false
