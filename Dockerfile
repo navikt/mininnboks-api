@@ -15,5 +15,5 @@ ENV JAVA_OPTS="${JAVA_OPTS} -Dio.netty.tryReflectionSetAccessible=true"
 ENV JAVA_OPTS="${JAVA_OPTS} -XX:MaxRAMPercentage=65.0"
 
 COPY  build/install/app/lib/  ./lib
-COPY build/libs/app*.jar ./app.jar
+COPY build/libs/mininnboks*.jar ./app.jar
 

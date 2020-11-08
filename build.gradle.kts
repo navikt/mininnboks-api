@@ -113,9 +113,8 @@ tasks.test {
 
 project.configurations.implementation.get().isCanBeResolved = true
 
-val fatJar = task("fatJar", type = Jar::class) {
+val thinJar = task("thinJar", type = Jar::class) {
 
-    setProperty("archiveFileName", "app.jar")
     manifest {
         attributes["Implementation-Title"] = "Gradle Jar File Example"
         attributes["Main-Class"] = mainClassMinn
@@ -132,7 +131,6 @@ val fatJar = task("fatJar", type = Jar::class) {
         configurations.implementation.get().filter { it.isDirectory }.map { zipTree(it) }
 
     })
-    with(tasks.jar.get() as CopySpec)
 }
 
 distributions {
