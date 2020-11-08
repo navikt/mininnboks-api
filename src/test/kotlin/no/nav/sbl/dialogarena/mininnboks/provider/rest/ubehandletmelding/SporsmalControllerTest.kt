@@ -10,7 +10,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
+import no.nav.sbl.dialogarena.mininnboks.conditionalAuthenticate
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
+import no.nav.sbl.dialogarena.mininnboks.dummyPrincipalNiva3
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
@@ -23,7 +25,11 @@ class SporsmalControllerTest : Spek({
         val engine = TestApplicationEngine(createTestEnvironment())
         engine.start(wait = false) // for now we can't eliminate it
         val henvendelseService = mockk<HenvendelseService>()
-        engine.application.routing { sporsmalController(henvendelseService, false) }
+        engine.application.routing {
+            conditionalAuthenticate(dummyPrincipalNiva3()) {
+                sporsmalController(henvendelseService)
+            }
+        }
         engine.application.install(ContentNegotiation) {
             register(ContentType.Application.Json, JacksonConverter(objectMapper))
         }

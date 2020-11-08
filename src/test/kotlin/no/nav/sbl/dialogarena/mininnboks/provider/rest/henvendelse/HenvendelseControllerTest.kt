@@ -15,10 +15,12 @@ import io.mockk.mockk
 import io.mockk.slot
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
+import no.nav.sbl.dialogarena.mininnboks.conditionalAuthenticate
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
+import no.nav.sbl.dialogarena.mininnboks.dummyPrincipalNiva4
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.meldinger.WSSendInnHenvendelseResponse
 import org.apache.commons.lang3.StringUtils.join
 import org.hamcrest.CoreMatchers
@@ -50,7 +52,11 @@ class HenvendelseControllerTest : Spek({
         val engine = TestApplicationEngine(createTestEnvironment())
         engine.start(wait = false) // for now we can't eliminate it
 
-        engine.application.routing { henvendelseController(service, tilgangService, false) }
+        engine.application.routing {
+            conditionalAuthenticate(dummyPrincipalNiva4()) {
+                henvendelseController(service, tilgangService)
+            }
+        }
         engine.application.install(ContentNegotiation) {
             register(ContentType.Application.Json, JacksonConverter(ObjectMapperProvider.objectMapper))
         }
@@ -223,7 +229,7 @@ class HenvendelseControllerTest : Spek({
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
 
-                    val sporsmal = Sporsmal(Temagruppe.ARBD, "" )
+                    val sporsmal = Sporsmal(Temagruppe.ARBD, "")
                     setBody(mapper.writeValueAsString(sporsmal))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
@@ -307,7 +313,7 @@ class HenvendelseControllerTest : Spek({
 
 })
 
-private fun createSporsmal() = Sporsmal( Temagruppe.ANSOS, "DUMMY")
+private fun createSporsmal() = Sporsmal(Temagruppe.ANSOS, "DUMMY")
 
 
 fun setUp(service: HenvendelseService) {

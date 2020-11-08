@@ -32,17 +32,17 @@ val metricsRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 
 fun createHttpServer(applicationState: ApplicationState,
                      configuration: Configuration,
-                     port: Int = 8080,
-                     useAuthentication: Boolean): ApplicationEngine = embeddedServer(Netty, port) {
+                     port: Int = 8080): ApplicationEngine = embeddedServer(Netty, port) {
 
-    installKtorFeatures(useAuthentication, configuration)
-
+    installKtorFeatures(configuration)
 
     val serviceConfig = ServiceConfig(configuration)
     routing {
-        sporsmalController(serviceConfig.henvendelseService, true)
-        henvendelseController(serviceConfig.henvendelseService, serviceConfig.tilgangService, true)
-        tilgangController(serviceConfig.tilgangService, true)
+        authenticate {
+            sporsmalController(serviceConfig.henvendelseService)
+            henvendelseController(serviceConfig.henvendelseService, serviceConfig.tilgangService)
+            tilgangController(serviceConfig.tilgangService)
+        }
         resourcesController()
 
         route("internal") {
@@ -55,7 +55,7 @@ fun createHttpServer(applicationState: ApplicationState,
     applicationState.initialized = true
 }
 
-private fun Application.installKtorFeatures(useAuthentication: Boolean, configuration: Configuration) {
+private fun Application.installKtorFeatures(configuration: Configuration) {
     install(StatusPages) {
         notFoundHandler()
         exceptionHandler()
@@ -78,13 +78,12 @@ private fun Application.installKtorFeatures(useAuthentication: Boolean, configur
         )
     }
 
-    if (useAuthentication) {
-        install(Authentication) {
-            jwt {
-                authHeader(JwtUtil::useJwtFromCookie)
-                verifier(configuration.jwksUrl, configuration.jwtIssuer)
-                validate { JwtUtil.validateJWT(this, it, configuration.LOGINSERVICE_IDPORTEN_AUDIENCE) }
-            }
+
+    install(Authentication) {
+        jwt {
+            authHeader(JwtUtil::useJwtFromCookie)
+            verifier(configuration.jwksUrl, configuration.jwtIssuer)
+            validate { JwtUtil.validateJWT(this, it, configuration.LOGINSERVICE_IDPORTEN_AUDIENCE) }
         }
     }
 

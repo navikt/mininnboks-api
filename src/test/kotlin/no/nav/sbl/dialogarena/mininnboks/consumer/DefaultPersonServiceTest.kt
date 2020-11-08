@@ -7,7 +7,6 @@ import kotlinx.coroutines.runBlocking
 import no.nav.sbl.dialogarena.mininnboks.TestUtils.dummySubject
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kommune
-import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningRequest
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningResponse
 import org.hamcrest.MatcherAssert
 import org.hamcrest.core.Is
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.assertThrows
 class DefaultPersonServiceTest {
 
     val personV3: PersonV3 = mockk()
-    val request: HentGeografiskTilknytningRequest = mockk()
     var personService: PersonService.Default = PersonService.Default(personV3)
 
     @Test

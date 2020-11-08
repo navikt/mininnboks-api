@@ -147,10 +147,10 @@ open class PdlService(private val pdlClient: OkHttpClient,
             pingGraphQL()
 
         }.onSuccess {
-            if (it == 200)
-                return HealthCheckResult.healthy()
+            return if (it == 200)
+                HealthCheckResult.healthy()
             else
-                return HealthCheckResult.unhealthy("Statuskode: $it")
+                HealthCheckResult.unhealthy("Statuskode: $it")
 
         }.onFailure {
             return HealthCheckResult.unhealthy(it.message)

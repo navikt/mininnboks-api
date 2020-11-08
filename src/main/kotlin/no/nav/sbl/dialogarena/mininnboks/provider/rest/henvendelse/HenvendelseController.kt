@@ -7,7 +7,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import no.nav.common.auth.subject.Subject
-import no.nav.sbl.dialogarena.mininnboks.conditionalAuthenticate
+import no.nav.sbl.dialogarena.mininnboks.AuthLevel
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
@@ -22,30 +22,28 @@ import javax.xml.ws.soap.SOAPFaultException
 val logger: Logger = LoggerFactory.getLogger("mininnboks.henvendelseController")
 
 
-fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangService: TilgangService, useAuthentication: Boolean) {
+fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangService: TilgangService) {
 
-    conditionalAuthenticate(useAuthentication) {
-        route("/traader") {
-            hentAlleTraader(henvendelseService)
+    route("/traader") {
+        hentAlleTraader(henvendelseService)
 
-            getId(henvendelseService)
+        getId(henvendelseService)
 
-            postByBehandlingsId(henvendelseService)
+        postByBehandlingsId(henvendelseService)
 
-            alleLest(henvendelseService)
+        alleLest(henvendelseService)
 
-            sporsmal(tilgangService, henvendelseService)
+        sporsmal(tilgangService, henvendelseService)
 
-            sporsmaldirekte(tilgangService, henvendelseService)
+        sporsmaldirekte(tilgangService, henvendelseService)
 
-            svar(henvendelseService)
-        }
+        svar(henvendelseService)
     }
 }
 
 private fun Route.hentAlleTraader(henvendelseService: HenvendelseService) {
     get("/") {
-        withSubject { subject ->
+        withSubject(AuthLevel.Level4) { subject ->
             val henvendelser: List<Henvendelse> = henvendelseService.hentAlleHenvendelser(subject)
             val traader: Map<String?, List<Henvendelse>> = henvendelser.groupBy { it.traadId }
             call.respond(traader.values
@@ -60,7 +58,7 @@ private fun Route.svar(henvendelseService: HenvendelseService) {
     post("/svar") {
         val svar = call.receive(Svar::class)
         assertFritekst(svar.fritekst, 2500)
-        withSubject { subject ->
+        withSubject(AuthLevel.Level4) { subject ->
             val traad = hentTraad(henvendelseService, svar.traadId, subject)
             if (traad == null) {
                 call.respond(HttpStatusCode.NotFound)
@@ -79,7 +77,7 @@ private fun Route.svar(henvendelseService: HenvendelseService) {
 }
 
 private fun createHenvendelse(svar: Svar, traad: Traad): Henvendelse {
-    val henvendelse = Henvendelse(
+    return Henvendelse(
             fritekst = svar.fritekst,
             temagruppe = traad.nyeste?.temagruppe,
             traadId = svar.traadId,
@@ -91,12 +89,11 @@ private fun createHenvendelse(svar: Svar, traad: Traad): Henvendelse {
             lestDato = Date(),
             erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt,
             kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet)
-    return henvendelse
 }
 
 private fun Route.sporsmaldirekte(tilgangService: TilgangService, henvendelseService: HenvendelseService) {
     post("/sporsmaldirekte") {
-        withSubject { subject ->
+        withSubject(AuthLevel.Level4) { subject ->
             val sporsmal = call.receive(Sporsmal::class)
             val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
             val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
@@ -107,7 +104,7 @@ private fun Route.sporsmaldirekte(tilgangService: TilgangService, henvendelseSer
 
 private fun Route.sporsmal(tilgangService: TilgangService, henvendelseService: HenvendelseService) {
     post("/sporsmal") {
-        withSubject { subject ->
+        withSubject(AuthLevel.Level4) { subject ->
             val sporsmal = call.receive(Sporsmal::class)
             val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
             val response = henvendelseService.stillSporsmal(henvendelse, subject)
@@ -120,7 +117,7 @@ private fun Route.alleLest(henvendelseService: HenvendelseService) {
     post("/allelest/{behandlingskjedeId}") {
         val behandlingskjedeId = call.parameters["behandlingskjedeId"]
 
-        withSubject { subject ->
+        withSubject(AuthLevel.Level4) { subject ->
             if (behandlingskjedeId != null) {
                 henvendelseService.merkAlleSomLest(behandlingskjedeId, subject)
                 call.respond(mutableMapOf("traadId" to behandlingskjedeId))
@@ -134,7 +131,7 @@ private fun Route.postByBehandlingsId(henvendelseService: HenvendelseService) {
         val behandlingsId = call.parameters["behandlingsId"]
 
         if (behandlingsId != null) {
-            withSubject { subject ->
+            withSubject(AuthLevel.Level4) { subject ->
                 henvendelseService.merkSomLest(behandlingsId, subject)
                 call.respond(mapOf("traadId" to behandlingsId))
             }
@@ -149,7 +146,7 @@ private fun Route.getId(henvendelseService: HenvendelseService) {
         val id = call.parameters["id"]
         if (id == null)
             call.respond(HttpStatusCode.NotFound)
-        withSubject { subject ->
+        withSubject(AuthLevel.Level4) { subject ->
             if (id != null) {
                 val traad = hentTraad(henvendelseService, id, subject)
 

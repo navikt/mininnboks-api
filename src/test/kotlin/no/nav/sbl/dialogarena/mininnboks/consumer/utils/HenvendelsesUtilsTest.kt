@@ -47,7 +47,7 @@ class HenvendelsesUtilsTest {
         val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val sporsmal = henvendelserListe[0]
-        sporsmal.let { assertStandardFelter(it) }
+        assertStandardFelter(sporsmal)
         Assert.assertThat(sporsmal.id, CoreMatchers.`is`(ID_1))
         Assert.assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_1))
         Assert.assertThat(sporsmal.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG))
@@ -91,7 +91,7 @@ class HenvendelsesUtilsTest {
         val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val svar = henvendelserListe[0]
-        svar.let { assertStandardFelter(it) }
+        assertStandardFelter(svar)
         Assert.assertThat(svar.id, CoreMatchers.`is`(ID_2))
         Assert.assertThat(svar.traadId, CoreMatchers.`is`(ID_2))
         Assert.assertThat(svar.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SBL_INNGAAENDE))
@@ -143,7 +143,7 @@ class HenvendelsesUtilsTest {
         val infoList = listOf(info)
         val henvendelserListe = infoList.map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val referat = henvendelserListe[0]
-        referat.let { assertStandardFelter(it) }
+        assertStandardFelter(referat)
         Assert.assertThat(referat.id, CoreMatchers.`is`(ID_5))
         Assert.assertThat(referat.traadId, CoreMatchers.`is`(ID_5))
         Assert.assertThat(referat.type, CoreMatchers.`is`(Henvendelsetype.SAMTALEREFERAT_OPPMOTE))
@@ -195,8 +195,8 @@ class HenvendelsesUtilsTest {
         val key = "nokkel"
         val defaultKey = "defaultKey"
         val defaulValue = "Value"
-        TekstServiceImpl.tekster.put(key, null)
-        TekstServiceImpl.tekster.put(defaultKey, defaulValue)
+        TekstServiceImpl.tekster[key] = null
+        TekstServiceImpl.tekster[defaultKey] = defaulValue
 
         val tekst = hentTekst(key, defaultKey)
         Assert.assertThat(tekst, CoreMatchers.`is`(defaulValue))

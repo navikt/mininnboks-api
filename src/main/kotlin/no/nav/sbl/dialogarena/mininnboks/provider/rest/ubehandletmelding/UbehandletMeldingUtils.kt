@@ -11,7 +11,7 @@ object UbehandletMeldingUtils {
                 .sortedWith(Henvendelse.NYESTE_OVERST)
                 .toSortedSet(compareBy { it.traadId })
                 .filter { UbehandletMelding.erIkkeKassert(it) }
-                .filter { UbehandletMelding.erUbesvart(it) || UbehandletMelding.erUlest(it) }
+                .filter { erUbesvart(it) || erUlest(it) }
                 .map {
                     UbehandletMelding(
                             behandlingskjedeId = it.traadId,

@@ -75,7 +75,7 @@ dependencies {
     implementation("io.ktor:ktor-metrics-micrometer:$ktor_version")
 
     //Java
-    implementation ("com.auth0:java-jwt:3.11.0")
+    implementation("com.auth0:java-jwt:3.11.0")
     //test
     testImplementation("org.hamcrest:hamcrest:2.2")
     testImplementation("no.nav.common:auth:test-jar:tests")
@@ -119,9 +119,9 @@ val fatJar = task("fatJar", type = Jar::class) {
     manifest {
         attributes["Implementation-Title"] = "Gradle Jar File Example"
         attributes["Main-Class"] = mainClassMinn
-        attributes["Class-Path"] = configurations.implementation.get().map {
+        attributes["Class-Path"] = configurations.implementation.get().joinToString(" ") {
             "lib/${it.name}"
-        }.joinToString(" ")
+        }
     }
     // To add all of the dependencies otherwise a "NoClassDefFoundError" error
     from(sourceSets.main.get().output)

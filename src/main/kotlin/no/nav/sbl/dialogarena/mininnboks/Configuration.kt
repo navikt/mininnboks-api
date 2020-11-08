@@ -5,9 +5,9 @@ import com.natpryce.konfig.*
 
 private val defaultProperties = ConfigurationMap(
         mapOf(
-                "JWKS_URL" to "JWKS_URL",
-                "ISSUER" to "ISSUER",
-                "SERVICEGATEWAY_URL" to "SERVICEGATEWAY_URL",
+                "JWKS_URL" to "https://JWKS_URL",
+                "ISSUER" to "https://ISSUER",
+                "SERVICEGATEWAY_URL" to "https://SERVICEGATEWAY_URL",
                 "INNSYN_HENVENDELSE_WS_URL" to "innsyn.henvendelse.ws.url",
                 "HENVENDELSE_WS_URL" to "henvendelse.ws.url",
                 "SEND_INN_HENVENDELSE_WS_URL" to "send.inn.henvendelse.ws.url",

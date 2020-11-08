@@ -26,8 +26,7 @@ fun main() {
 
     val applicationServer = createHttpServer(
             applicationState = applicationState,
-            configuration = configuration,
-            useAuthentication = true
+            configuration = configuration
     )
 
     Runtime.getRuntime().addShutdownHook(Thread {
