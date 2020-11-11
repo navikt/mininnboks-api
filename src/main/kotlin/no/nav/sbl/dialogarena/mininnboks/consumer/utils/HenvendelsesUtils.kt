@@ -118,7 +118,7 @@ object HenvendelsesUtils {
                 henvendelse.copy(
                         temagruppe = Temagruppe.valueOf(xmlMelding.temagruppe),
                         temagruppeNavn = hentTemagruppeNavn(xmlMelding.temagruppe),
-                        statusTekst = statusTekst(henvendelse),
+                        statusTekst = statusTekst(henvendelse, xmlMelding),
                         fritekst = cleanOutHtml(xmlMelding.fritekst),
                         kanal = if (xmlMelding is XMLMeldingTilBruker) xmlMelding.kanal else null
                 )
@@ -148,12 +148,12 @@ object HenvendelsesUtils {
         return tekst?.replace("[\\u00a0\\u2007\\u202f]".toRegex(), " ").toString()
     }
 
-    private fun statusTekst(henvendelse: Henvendelse): String { //NOSONAR
+    private fun statusTekst(henvendelse: Henvendelse, xmlMelding: XMLMelding): String { //NOSONAR
         if (!skalVisesTilBruker(henvendelse.type)) {
             return ""
         }
         val type = hentTemagruppeNavn(String.format("status.%s", henvendelse.type.name))
-        val temagruppe = hentTemagruppeNavn(henvendelse.temagruppe?.name)
+        val temagruppe = hentTemagruppeNavn(xmlMelding.temagruppe)
         return String.format(type!!, temagruppe)
     }
 

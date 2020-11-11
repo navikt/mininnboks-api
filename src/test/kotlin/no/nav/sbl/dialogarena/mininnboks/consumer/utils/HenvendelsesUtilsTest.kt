@@ -82,6 +82,9 @@ class HenvendelsesUtilsTest {
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val sporsmal = henvendelserListe[0]
         Assert.assertThat(sporsmal.ferdigstiltUtenSvar, CoreMatchers.`is`(true))
+        Assert.assertThat(sporsmal.temagruppe?.name, CoreMatchers.`is`(Temagruppe.FMLI.name))
+        Assert.assertThat(sporsmal.statusTekst, CoreMatchers.`is`("Beskjed – Familie"))
+        Assert.assertThat(sporsmal.temagruppeNavn, CoreMatchers.`is`("Familie"))
     }
 
     @Test
