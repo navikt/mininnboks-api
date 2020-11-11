@@ -62,9 +62,9 @@ spec:
     - name: AAD_B2C_CLIENTID_USERNAME
       value: "45104d6a-f5bc-4e8c-b352-4bbfc9381f25"
     - name: JWKS_URL
-      value: "https://login.microsoftonline.com/navnob2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten"
+      value: "https://navnob2c.b2clogin.com/navnob2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten"
     - name: ISSUER
-      value: "https://login.microsoftonline.com/8b7dfc8b-b52e-4741-bde4-d83ea366f94f/v2.0/"
+      value: "https://navnob2c.b2clogin.com/8b7dfc8b-b52e-4741-bde4-d83ea366f94f/v2.0/"
     - name: OPENAM_RESTURL
       value: "https://itjenester.oera.no/esso"
     - name: MININNBOKS_LINK_URL
