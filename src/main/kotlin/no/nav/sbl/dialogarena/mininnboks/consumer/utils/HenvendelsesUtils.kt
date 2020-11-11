@@ -35,6 +35,7 @@ object HenvendelsesUtils {
         put(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, Henvendelsetype.DELVIS_SVAR_SKRIFTLIG)
     }
     private val domainMapper = DomainMapper<XMLHenvendelse, Henvendelse>()
+
     private val henvendelseFactory =
             { xmlHenvendelse: XMLHenvendelse ->
                 val henvendelseType = HENVENDELSETYPE_MAP[XMLHenvendelseType.fromValue(xmlHenvendelse.henvendelseType)]!!
@@ -88,7 +89,7 @@ object HenvendelsesUtils {
                         statusTekst = varsel.dokumenttittel,
                         temaNavn = varsel.temanavn,
                         temagruppe = null,
-                        fritekst = Optional.ofNullable(varsel.fritekst).orElse(""),
+                        fritekst = varsel.fritekst?:"",
                         opprettet = utilDate(varsel.ferdigstiltDato),
                         journalpostId = varsel.journalpostId,
                         dokumentIdListe = varsel.dokumentIdListe as ArrayList<String>
@@ -116,7 +117,7 @@ object HenvendelsesUtils {
                 val xmlMelding = xmlHenvendelse.metadataListe.metadata[0] as XMLMelding
                 henvendelse.copy(
                         temagruppe = Temagruppe.valueOf(xmlMelding.temagruppe),
-                        temagruppeNavn = hentTemagruppeNavn(henvendelse.temagruppe?.name),
+                        temagruppeNavn = hentTemagruppeNavn(xmlMelding.temagruppe),
                         statusTekst = statusTekst(henvendelse),
                         fritekst = cleanOutHtml(xmlMelding.fritekst),
                         kanal = if (xmlMelding is XMLMeldingTilBruker) xmlMelding.kanal else null
