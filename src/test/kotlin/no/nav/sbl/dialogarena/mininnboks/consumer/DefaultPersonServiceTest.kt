@@ -24,7 +24,7 @@ class DefaultPersonServiceTest {
         coEvery { personV3.hentGeografiskTilknytning(any()) } returns
                 HentGeografiskTilknytningResponse().withGeografiskTilknytning(Kommune().withGeografiskTilknytning(enhet))
         runBlocking {
-            MatcherAssert.assertThat(personService.hentGeografiskTilknytning(dummySubject()).get(), Is.`is`(enhet))
+            MatcherAssert.assertThat(personService.hentGeografiskTilknytning(dummySubject()), Is.`is`(enhet))
         }
     }
 

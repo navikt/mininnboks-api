@@ -12,9 +12,9 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataL
 
 object PortUtils {
 
-    fun <T> portBuilder(clazz: Class<T>, address: String, wsdlUrl: String, stsConfig: StsConfig?): PortType? {
-        return PortType(cxfClientBuilder(clazz, address, wsdlUrl).configureStsForSubject(stsConfig),
-                cxfClientBuilder(clazz, address, wsdlUrl).configureStsForSystemUser(stsConfig))
+    fun <T> portBuilder(clazz: Class<T>, address: String, wsdlUrl: String, stsConfig: StsConfig?): PortType<T> {
+        return PortType(cxfClientBuilder(clazz, address, wsdlUrl).configureStsForSubject(stsConfig).build(),
+                cxfClientBuilder(clazz, address, wsdlUrl).configureStsForSystemUser(stsConfig).build())
     }
 
     fun portTypeSelfTestCheck(portTypeName: String, block: () -> Unit): SelfTestCheck {
@@ -44,5 +44,5 @@ object PortUtils {
     }
 }
 
-data class PortType(val port: CXFClient<*>?, val pingPort: CXFClient<*>?)
+data class PortType<T>(val port: T, val pingPort: T)
 

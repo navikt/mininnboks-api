@@ -3,9 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 import com.fasterxml.jackson.module.kotlin.readValue
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
-import no.nav.common.auth.subject.SsoToken
 import no.nav.common.auth.subject.Subject
-import no.nav.common.auth.subject.SubjectHandler
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.common.log.MDCConstants
@@ -37,12 +35,12 @@ open class PdlService(private val pdlClient: OkHttpClient,
     suspend fun harKode6(subject: Subject): Boolean = harGradering(subject, PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG)
     suspend fun harKode7(subject: Subject): Boolean = harGradering(subject, PdlAdressebeskyttelseGradering.FORTROLIG)
 
-    suspend fun hentAdresseBeskyttelse(fnr: String): PdlAdressebeskyttelseGradering? {
+    suspend fun hentAdresseBeskyttelse(subject: Subject): PdlAdressebeskyttelseGradering? {
         return withContext(MDCContext()) {
             try {
-                val response: PdlResponse = graphqlRequest(PdlRequest(adressebeskyttelseQuery, Variables(fnr)))
+                val response: PdlResponse? = graphqlRequest(PdlRequest(adressebeskyttelseQuery, Variables(subject.uid)), subject)
                 response
-                        .data
+                        ?.data
                         ?.hentPerson
                         ?.adressebeskyttelse
                         ?.firstOrNull()
@@ -55,21 +53,14 @@ open class PdlService(private val pdlClient: OkHttpClient,
     }
 
     private suspend fun harGradering(subject: Subject, gradering: PdlAdressebeskyttelseGradering): Boolean {
-        val pdlGradering = hentAdresseBeskyttelse(subject.uid)
+        val pdlGradering = hentAdresseBeskyttelse(subject)
         return gradering == pdlGradering
     }
 
-    private fun graphqlRequest(pdlRequest: PdlRequest): PdlResponse {
+    private fun graphqlRequest(pdlRequest: PdlRequest, subject: Subject): PdlResponse? {
         val uuid = UUID.randomUUID()
         try {
-            val ssotoken = SubjectHandler.getSsoToken().map { it.token }
-            val oidctoken = SubjectHandler.getSsoToken(SsoToken.Type.OIDC)
-            val veilederOidcToken: String = listOf(oidctoken, ssotoken)
-                    .first { it.isPresent }
-                    .orElseThrow { IllegalStateException("Kunne ikke hente ut bruker ssoToken") }
-
-            log.info("Token extraction, found in ${ssotoken.isPresent} ${oidctoken.isPresent}")
-
+            val ssotoken = subject.ssoToken.token
             val consumerOidcToken: String = stsService.getSystemUserAccessToken()
                     ?: throw IllegalStateException("Kunne ikke hente ut systemusertoken")
 
@@ -77,12 +68,12 @@ open class PdlService(private val pdlClient: OkHttpClient,
                     PDL-request: $uuid
                     ------------------------------------------------------------------------------------
                         callId: ${MDC.get(MDCConstants.MDC_CALL_ID)}
-                        userTokenParts: ${veilederOidcToken.split(".").size}
+                        userTokenParts: ${ssotoken.split(".").size}
                         consumerTokenParts: ${consumerOidcToken.split(".").size}
                     ------------------------------------------------------------------------------------
                 """.trimIndent())
 
-            val request: Request = createRequest(veilederOidcToken, consumerOidcToken, pdlRequest)
+            val request: Request = createRequest(ssotoken, consumerOidcToken, pdlRequest)
 
             return handleResponse(request, uuid)
         } catch (exception: Exception) {
@@ -99,7 +90,7 @@ open class PdlService(private val pdlClient: OkHttpClient,
         }
     }
 
-    private fun handleResponse(request: Request, uuid: UUID?): PdlResponse {
+    private fun handleResponse(request: Request, uuid: UUID?): PdlResponse? {
         val response: Response = pdlClient.newCall(request).execute()
         val body = response.body()?.string()
         log.info("""
@@ -125,7 +116,7 @@ open class PdlService(private val pdlClient: OkHttpClient,
             throw Exception(errorMessages)
         }
 
-        return pdlResponse!!
+        return pdlResponse
     }
 
     private fun createRequest(veilederOidcToken: String, consumerOidcToken: String, pdlRequest: PdlRequest): Request {

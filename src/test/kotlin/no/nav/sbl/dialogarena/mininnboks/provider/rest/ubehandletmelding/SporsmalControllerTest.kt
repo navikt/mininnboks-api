@@ -10,7 +10,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
-import no.nav.sbl.dialogarena.mininnboks.conditionalAuthenticate
+import no.nav.sbl.dialogarena.mininnboks.authenticateWithDummySubject
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.dummyPrincipalNiva3
 import org.hamcrest.MatcherAssert
@@ -26,7 +26,7 @@ class SporsmalControllerTest : Spek({
         engine.start(wait = false) // for now we can't eliminate it
         val henvendelseService = mockk<HenvendelseService>()
         engine.application.routing {
-            conditionalAuthenticate(dummyPrincipalNiva3()) {
+            authenticateWithDummySubject(dummyPrincipalNiva3()) {
                 sporsmalController(henvendelseService)
             }
         }

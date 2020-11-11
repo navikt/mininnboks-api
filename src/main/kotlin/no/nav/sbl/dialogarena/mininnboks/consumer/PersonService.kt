@@ -13,12 +13,11 @@ import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningR
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.*
 
 interface PersonService {
-    suspend fun hentGeografiskTilknytning(subject: Subject): Optional<String>
+    suspend fun hentGeografiskTilknytning(subject: Subject): String?
     class Default(private val personV3: PersonV3) : PersonService {
-        override suspend fun hentGeografiskTilknytning(subject: Subject): Optional<String> {
+        override suspend fun hentGeografiskTilknytning(subject: Subject): String? {
             val request = HentGeografiskTilknytningRequest().withAktoer(lagAktoer(subject.uid))
             val response = try {
                 externalCall(subject) {
@@ -26,14 +25,13 @@ interface PersonService {
                 }
             } catch (hentGeografiskTilknytningSikkerhetsbegrensing: HentGeografiskTilknytningSikkerhetsbegrensing) {
                 logger.info("HentGeografiskTilknytningSikkerhetsbegrensing ved kall på hentGeografiskTilknyttning", hentGeografiskTilknytningSikkerhetsbegrensing)
-                return Optional.empty()
+                return null
             } catch (hentGeografiskTilknytningPersonIkkeFunnet: HentGeografiskTilknytningPersonIkkeFunnet) {
                 logger.info("HentGeografiskTilknytningPersonIkkeFunnet ved kall på hentGeografiskTilknyttning", hentGeografiskTilknytningPersonIkkeFunnet)
-                return Optional.empty()
+                return null
             }
-            return Optional.ofNullable(response)
-                    .map { obj: HentGeografiskTilknytningResponse -> obj.geografiskTilknytning }
-                    .map { obj: GeografiskTilknytning -> obj.geografiskTilknytning }
+            return response.let { obj: HentGeografiskTilknytningResponse -> obj.geografiskTilknytning }
+                    .let { obj: GeografiskTilknytning -> obj.geografiskTilknytning }
         }
 
         private fun lagAktoer(ident: String): PersonIdent {

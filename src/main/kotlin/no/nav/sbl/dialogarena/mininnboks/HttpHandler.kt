@@ -18,7 +18,6 @@ import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
-import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.henvendelseController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.naisRoutes
@@ -48,7 +47,7 @@ fun createHttpServer(applicationState: ApplicationState,
         route("internal") {
             naisRoutes(readinessCheck = { applicationState.initialized },
                     livenessCheck = { applicationState.running },
-                    selftestChecks = serviceConfig.selfTestChecklist as List<SelfTestCheck>)
+                    selftestChecks = serviceConfig.selfTestChecklist)
         }
     }
 

@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -7,122 +8,118 @@ import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.Configuration
 import no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
-import okhttp3.*
+import no.nav.sbl.dialogarena.mininnboks.dummySubject
+import okhttp3.OkHttpClient
+import okhttp3.mock.MediaTypes.MEDIATYPE_JSON
+import okhttp3.mock.MockInterceptor
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
+import org.hamcrest.core.IsNull.nullValue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.slf4j.MDC
 import java.util.*
 
-
-internal data class MockContext(
-        val client: OkHttpClient,
-        val response: Response
-)
-
-internal class PdlServiceTest {
+class PdlServiceTest {
 
     val configuration: Configuration = mockk()
 
     @BeforeEach
     fun setUp() {
-        every { configuration.PDL_API_URL } returns "https://test.pdl.nav.no"
+        coEvery { configuration.PDL_API_URL } returns "https://test.pdl.nav.no"
+        coEvery { configuration.PDL_API_APIKEY } returns "PDL_API_API_VALUE"
     }
 
     @Test
-    suspend fun `henter adressebeskyttelsegradering om det finnes`() {
-        gittGradering(PdlAdressebeskyttelseGradering.UGRADERT) { (_, pdlService) ->
-            val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("any")
+    fun `henter adressebeskyttelsegradering om det finnes`() {
+        runBlocking {
+            val harAdressebeskyttelse = gittGradering(PdlAdressebeskyttelseGradering.UGRADERT).hentAdresseBeskyttelse(dummySubject)
             assertThat(harAdressebeskyttelse, Matchers.`is`(PdlAdressebeskyttelseGradering.UGRADERT))
         }
     }
 
     @Test
-    suspend fun `henter null om adressebeskyttelsegradering ikke finnes`() {
-        gittGradering(null) { (_, pdlService) ->
-            val harAdressebeskyttelse = pdlService.hentAdresseBeskyttelse("any")
-            assertThat(harAdressebeskyttelse, Matchers.`is`(null))
+    fun `henter null om adressebeskyttelsegradering ikke finnes`() {
+        runBlocking {
+            val harAdressebeskyttelse = gittGradering(null).hentAdresseBeskyttelse(dummySubject)
+            assertThat(harAdressebeskyttelse, Matchers.`is`(nullValue()))
         }
     }
 
     @Test
-    suspend fun `sjekk for kode6`() {
-        gittGradering(PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG) { (_, pdlService) ->
+    fun `sjekk for kode6`() {
+        runBlocking {
+            val pdlService = gittGradering(PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG)
             assertThat(pdlService.harKode6(MOCK_SUBJECT), Matchers.`is`(true))
         }
 
-        gittGradering(PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG) { (_, pdlService) ->
-            assertThat(pdlService.harStrengtFortroligAdresse(MOCK_SUBJECT), Matchers.`is`(false))
+        runBlocking {
+            val pdlService = gittGradering(PdlAdressebeskyttelseGradering.STRENGT_FORTROLIG)
+            assertThat(pdlService.harStrengtFortroligAdresse(MOCK_SUBJECT), Matchers.`is`(true))
         }
 
-        gittGradering(null) { (_, pdlService) ->
+        runBlocking {
+            val pdlService = gittGradering(null)
             assertThat(pdlService.harKode6(MOCK_SUBJECT), Matchers.`is`(false))
         }
 
-        gittGradering(null) { (_, pdlService) ->
+        runBlocking {
+            val pdlService = gittGradering(null)
             assertThat(pdlService.harStrengtFortroligAdresse(MOCK_SUBJECT), Matchers.`is`(false))
         }
     }
 
     @Test
-    suspend fun `sjekk for kode7`() {
-        gittGradering(PdlAdressebeskyttelseGradering.FORTROLIG) { (_, pdlService) ->
+    fun `sjekk for kode7`() {
+        runBlocking {
+            val pdlService = gittGradering(PdlAdressebeskyttelseGradering.FORTROLIG)
             assertThat(pdlService.harKode7(MOCK_SUBJECT), Matchers.`is`(true))
         }
 
-        gittGradering(PdlAdressebeskyttelseGradering.FORTROLIG) { (_, pdlService) ->
+        runBlocking {
+            val pdlService = gittGradering(PdlAdressebeskyttelseGradering.FORTROLIG)
             assertThat(pdlService.harFortroligAdresse(MOCK_SUBJECT), Matchers.`is`(true))
         }
 
-        gittGradering(null) { (_, pdlService) ->
+        runBlocking {
+            val pdlService = gittGradering(null)
             assertThat(pdlService.harKode7(MOCK_SUBJECT), Matchers.`is`(false))
         }
 
-        gittGradering(null) { (_, pdlService) ->
+        runBlocking {
+            val pdlService = gittGradering(null)
             assertThat(pdlService.harFortroligAdresse(MOCK_SUBJECT), Matchers.`is`(false))
         }
 
     }
 
     @Test
-    suspend fun `feil blir pakket inn i egen exceptiontype`() {
+    fun `feil blir pakket inn i egen exceptiontype`() {
         gittUrlTilPdl()
-        val mockContext = gittClientSomSvarer(body = gittErrorPdlResponse("Det skjedde en feil"))
+        val client = gittClientSomSvarer(body = gittErrorPdlResponse("Det skjedde en feil"))
         val stsService = gittStsService()
-        val pdlService = PdlService(mockContext.client, stsService, configuration)
+        val pdlService = PdlService(client, stsService, configuration)
 
         assertThrows<PdlException> {
             runBlocking {
-                pdlService.hentAdresseBeskyttelse("any()")
+                pdlService.hentAdresseBeskyttelse(dummySubject)
             }
         }
     }
 
-    fun gittClientSomSvarer(status: Int = 200, body: String = ""): MockContext {
-        val client = mockk<OkHttpClient>()
+    private fun gittClientSomSvarer(body: String = ""): OkHttpClient {
 
-        val remoteCall = mockk<Call>()
+        val interceptor = MockInterceptor()
 
-        val request = mockk<Request>()
+        interceptor.addRule()
+                .post()
+                .url("https://test.pdl.nav.no/graphql")
+                .respond(body, MEDIATYPE_JSON)
 
-        val response: Response = Response.Builder()
-                .request(request)
-                .protocol(Protocol.HTTP_1_1)
-                .code(status)
-                .message("test")
-                .body(
-                        ResponseBody.create(
-                                MediaType.parse("application/json"),
-                                body
-                        ))
+        return OkHttpClient.Builder()
+                .addInterceptor(interceptor)
                 .build()
-
-        every { remoteCall.execute() } returns response
-        every { client.newCall(any()) } returns (remoteCall)
-
-        return MockContext(client, response)
     }
 
     fun gittStsService(token: String = UUID.randomUUID().toString()): SystemuserTokenProvider {
@@ -161,12 +158,10 @@ internal class PdlServiceTest {
         """.trimIndent()
     }
 
-    suspend fun gittGradering(gradering: PdlAdressebeskyttelseGradering?, fn: suspend (Pair<MockContext, PdlService>) -> Unit) {
+    fun gittGradering(gradering: PdlAdressebeskyttelseGradering?): PdlService {
         gittUrlTilPdl()
-        val mockContext = gittClientSomSvarer(body = gittOkPdlResponse(gradering))
+        val client = gittClientSomSvarer(body = gittOkPdlResponse(gradering))
         val stsService = gittStsService()
-        val pdlService = PdlService(mockContext.client, stsService, configuration)
-
-        fn(Pair(mockContext, pdlService))
+        return PdlService(client, stsService, configuration)
     }
 }

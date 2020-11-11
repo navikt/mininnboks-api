@@ -15,7 +15,7 @@ import io.mockk.mockk
 import io.mockk.slot
 import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
-import no.nav.sbl.dialogarena.mininnboks.conditionalAuthenticate
+import no.nav.sbl.dialogarena.mininnboks.authenticateWithDummySubject
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
@@ -53,7 +53,7 @@ class HenvendelseControllerTest : Spek({
         engine.start(wait = false) // for now we can't eliminate it
 
         engine.application.routing {
-            conditionalAuthenticate(dummyPrincipalNiva4()) {
+            authenticateWithDummySubject(dummyPrincipalNiva4()) {
                 henvendelseController(service, tilgangService)
             }
         }

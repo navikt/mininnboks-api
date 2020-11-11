@@ -30,8 +30,10 @@ import java.util.*
 
 class ServiceConfig(val configuration: Configuration) {
 
-    private val personV3 = personV3()
-    val personService = PersonService.Default(personV3?.port?.build() as PersonV3)
+    private val personV3 = portBuilder(PersonV3::class.java,
+            configuration.PERSON_V_3_URL,
+            "",
+            stsConfig())
 
     val henvendelsePortType = portBuilder(HenvendelsePortType::class.java,
             configuration.HENVENDELSE_WS_URL,
@@ -51,6 +53,7 @@ class ServiceConfig(val configuration: Configuration) {
             stsConfig()
     )
 
+    val personService = PersonService.Default(personV3.port)
     val henvendelseService = henvendelseService()
     val stsService = systemUserTokenProvider()
     val pdlService = pdlService(stsService)
@@ -65,25 +68,24 @@ class ServiceConfig(val configuration: Configuration) {
         }
     }
 
-    val selfTestCheckPersonV3: SelfTestCheck? = personV3?.let {
-        portTypeSelfTestCheck("personV3") {
-            (it.pingPort?.build() as PersonV3).ping()
-        }
-    }
+    val selfTestCheckPersonV3: SelfTestCheck =
+            portTypeSelfTestCheck("personV3") {
+                personV3.pingPort.ping()
+            }
 
-    val selfTestCheckHenvendelse: SelfTestCheck? = portTypeSelfTestCheck(
+    val selfTestCheckHenvendelse: SelfTestCheck = portTypeSelfTestCheck(
             "no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType") {
-        (henvendelsePortType?.pingPort?.build() as HenvendelsePortType).ping()
+        henvendelsePortType.pingPort.ping()
     }
 
-    val selfTestCheckSendInnHenvendelsePortType: SelfTestCheck? = portTypeSelfTestCheck(
+    val selfTestCheckSendInnHenvendelsePortType: SelfTestCheck = portTypeSelfTestCheck(
             "no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType") {
-        (sendInnHenvendelsePortType?.pingPort?.build() as SendInnHenvendelsePortType).ping()
+        sendInnHenvendelsePortType.pingPort.ping()
     }
 
-    val selfTestCheckInnsynHenvendelsePortType: SelfTestCheck? = portTypeSelfTestCheck(
+    val selfTestCheckInnsynHenvendelsePortType: SelfTestCheck = portTypeSelfTestCheck(
             "no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType") {
-        (innsynHenvendelsePortType?.pingPort?.build() as InnsynHenvendelsePortType).ping()
+        innsynHenvendelsePortType.pingPort.ping()
     }
 
     val selfTestChecklist = listOf(
@@ -106,22 +108,14 @@ class ServiceConfig(val configuration: Configuration) {
         }
     }
 
-    private fun personV3(): PortType? {
-        return portBuilder(PersonV3::class.java,
-                configuration.PERSON_V_3_URL,
-                "",
-                stsConfig()
-        )
-    }
-
     private fun henvendelseService(): HenvendelseService {
         checkNotNull(henvendelsePortType) { "henvendelsePortType is null" }
         checkNotNull(innsynHenvendelsePortType) { "innsynHenvendelsePortType is null" }
 
         return HenvendelseService.Default(
-                henvendelsePortType.port?.build() as HenvendelsePortType,
-                sendInnHenvendelsePortType!!.port?.build() as SendInnHenvendelsePortType,
-                innsynHenvendelsePortType.port?.build() as InnsynHenvendelsePortType,
+                henvendelsePortType.port,
+                sendInnHenvendelsePortType.port,
+                innsynHenvendelsePortType.port,
                 personService
         )
     }

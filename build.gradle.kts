@@ -88,6 +88,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.4.2")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.9")
+    testImplementation ("com.github.gmazzo:okhttp-mock:1.2.1")
 }
 
 group = "no.nav.common"
@@ -129,14 +130,7 @@ val thinJar = task("thinJar", type = Jar::class) {
     from({
         configurations.implementation.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
         configurations.implementation.get().filter { it.isDirectory }.map { zipTree(it) }
-
     })
 }
 
-distributions {
-    main {
-        distributionBaseName.set("app")
-
-    }
-}
 

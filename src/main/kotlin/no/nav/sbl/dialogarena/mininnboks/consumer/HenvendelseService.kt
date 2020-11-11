@@ -42,7 +42,7 @@ interface HenvendelseService {
 
         private suspend fun sentSporsmalHenvendelse(henvendelse: Henvendelse, subject: Subject, xmlHenvendelseType: XMLHenvendelseType): WSSendInnHenvendelseResponse {
 
-            val enhet = personService.hentGeografiskTilknytning(subject).orElse(null)
+            val enhet = personService.hentGeografiskTilknytning(subject)
             val sporsmaltekst = HenvendelsesUtils.cleanOutHtml(HenvendelsesUtils.fjernHardeMellomrom(henvendelse.fritekst))
 
             return externalCall(subject) {

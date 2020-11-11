@@ -9,7 +9,7 @@ import no.nav.common.auth.subject.SsoToken
 import no.nav.common.auth.subject.Subject
 
 @KtorExperimentalAPI
-fun Route.conditionalAuthenticate(subjectPrincipal: SubjectPrincipal, build: Route.() -> Unit): Route {
+fun Route.authenticateWithDummySubject(subjectPrincipal: SubjectPrincipal, build: Route.() -> Unit): Route {
     val route = createChild(AuthenticationRouteSelector(listOf<String?>(null)))
     route.insertPhaseAfter(ApplicationCallPipeline.Features, Authentication.AuthenticatePhase)
     route.intercept(Authentication.AuthenticatePhase) {
