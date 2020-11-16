@@ -104,3 +104,6 @@ spec:
       value: "https://modapp-{{ namespace }}.adeo.no/henvendelse/services/domene.Brukerdialog/InnsynHenvendelse_v1"
     - name: DOMENE_BRUKERDIALOG_INNSYNHENVENDELSE_V1_WSDLURL
       value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/innsyn-henvendelse/0.3/innsyn-henvendelse-0.3.zip"
+    - name: CXF_SECURE_LOG
+      value: "enabled"
+

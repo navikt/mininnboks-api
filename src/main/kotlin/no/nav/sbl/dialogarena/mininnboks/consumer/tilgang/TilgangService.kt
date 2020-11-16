@@ -27,11 +27,8 @@ class TilgangServiceImpl(
             val tilKnytting = personService.hentGeografiskTilknytning(subject)
             return@runCatching tilKnytting?.isNotBlank()?.and(matches("\\d{4,}", tilKnytting)) ?: false
 
-        }.onFailure { exception ->
-            exception.printStackTrace()
-            return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers GT: ")
-
         }
+
         if (harGt.isFailure) {
             return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers GT: ${harGt.exceptionOrNull()?.message}")
         } else if (!harGt.getOrThrow()) {

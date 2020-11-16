@@ -49,6 +49,7 @@ dependencies {
     implementation("no.nav.common:rest")
     implementation("no.nav.common:metrics")
     implementation("no.nav.common:health")
+    implementation("no.nav.common:log")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.0")
     implementation("com.nimbusds:oauth2-oidc-sdk:6.23")
     implementation("no.nav.tjenestespesifikasjoner:dialogarena-behandlingsinformasjon:$tjenestespec_version")
