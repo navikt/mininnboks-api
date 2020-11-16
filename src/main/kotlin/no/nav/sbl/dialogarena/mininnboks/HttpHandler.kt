@@ -92,7 +92,9 @@ private fun Application.installKtorFeatures(configuration: Configuration) {
 
     install(CallLogging) {
         level = Level.INFO
-        filter { call -> call.request.path().contains("/internal") }
+        filter { call -> ! call.request.path().contains("/internal/isAlive") }
+        filter { call -> ! call.request.path().contains("/internal/isReady") }
+
     }
 }
 
