@@ -59,10 +59,6 @@ spec:
       value: "https://api-gw.oera.no/security-token-service/rest/v1/sts/token"
     - name: SERVICEGATEWAY_URL
       value: "https://service-gw.oera.no/"
-    - name: AAD_B2C_CLIENTID_USERNAME
-      value: "45104d6a-f5bc-4e8c-b352-4bbfc9381f25"
-    - name: AAD_B2C_DISCOVERY_URL
-      value: "https://login.microsoftonline.com/navnob2c.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1A_idporten"
     - name: OPENAM_RESTURL
       value: "https://itjenester.oera.no/esso"
     - name: MININNBOKS_LINK_URL
