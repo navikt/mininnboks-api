@@ -70,11 +70,11 @@ jobs:
   deploy-qa:
     name: Deploy to preprod
     needs: build-and-push
-    if: github.ref == 'refs/heads/OPP-1208_mininnboks-api-ktor'
+    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        namespace: [ q1 ]
+        namespace: [q0, q1, q6]
     steps:
       - uses: actions/checkout@v1
       - uses: nais/deploy/actions/deploy@v1
