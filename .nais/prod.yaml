@@ -59,6 +59,12 @@ spec:
       value: "https://api-gw.oera.no/security-token-service/rest/v1/sts/token"
     - name: SERVICEGATEWAY_URL
       value: "https://service-gw.oera.no/"
+    - name: AAD_B2C_CLIENTID_USERNAME
+      value: "45104d6a-f5bc-4e8c-b352-4bbfc9381f25"
+    - name: JWKS_URL
+      value: "https://navnob2c.b2clogin.com/navnob2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten"
+    - name: ISSUER
+      value: "https://navnob2c.b2clogin.com/8b7dfc8b-b52e-4741-bde4-d83ea366f94f/v2.0/"
     - name: OPENAM_RESTURL
       value: "https://itjenester.oera.no/esso"
     - name: MININNBOKS_LINK_URL
@@ -96,3 +102,5 @@ spec:
       value: "https://modapp.adeo.no/henvendelse/services/domene.Brukerdialog/InnsynHenvendelse_v1"
     - name: DOMENE_BRUKERDIALOG_INNSYNHENVENDELSE_V1_WSDLURL
       value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/innsyn-henvendelse/0.3/innsyn-henvendelse-0.3.zip"
+    - name: CXF_SECURE_LOG
+      value: "enabled"
