@@ -63,7 +63,6 @@ private fun Application.installKtorFeatures(configuration: Configuration) {
     install(CORS) {
         anyHost()
         method(HttpMethod.Post)
-        method(HttpMethod.Delete)
     }
 
     install(MicrometerMetrics) {
