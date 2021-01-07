@@ -17,6 +17,7 @@ spec:
     initialDelay: 20
   readiness:
     path: /internal/isReady
+    initialDelay: 20
   prometheus:
     enabled: true
     path: /internal/metrics
@@ -60,6 +61,12 @@ spec:
       value: "https://api-gw-{{ namespace }}.oera.no/security-token-service/rest/v1/sts/token"
     - name: SERVICEGATEWAY_URL
       value: "https://service-gw-{{ namespace }}.oera-q.local/"
+    - name: AAD_B2C_CLIENTID_USERNAME
+      value: "0090b6e1-ffcc-4c37-bc21-049f7d1f0fe5"
+    - name: JWKS_URL
+      value: "https://navtestb2c.b2clogin.com/navtestb2c.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_idporten_ver1"
+    - name: ISSUER
+      value: "https://navtestb2c.b2clogin.com/d38f25aa-eab8-4c50-9f28-ebf92c1256f2/v2.0/"
     - name: OPENAM_RESTURL
       value: "https://itjenester-{{ namespace }}.oera.no/esso"
     - name: MININNBOKS_LINK_URL
@@ -97,3 +104,6 @@ spec:
       value: "https://modapp-{{ namespace }}.adeo.no/henvendelse/services/domene.Brukerdialog/InnsynHenvendelse_v1"
     - name: DOMENE_BRUKERDIALOG_INNSYNHENVENDELSE_V1_WSDLURL
       value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/innsyn-henvendelse/0.3/innsyn-henvendelse-0.3.zip"
+    - name: CXF_SECURE_LOG
+      value: "enabled"
+
