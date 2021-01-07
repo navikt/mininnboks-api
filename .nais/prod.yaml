@@ -44,6 +44,8 @@ spec:
     - kvPath: /apikey/apigw/prod/security-token-service-token/mininnboks-api
       mountPath: /var/run/secrets/nais.io/apigw/security-token-service-token
   webproxy: true
+  secureLogs:
+    enabled: true
   envFrom:
     - configmap: loginservice-idporten
   env:
