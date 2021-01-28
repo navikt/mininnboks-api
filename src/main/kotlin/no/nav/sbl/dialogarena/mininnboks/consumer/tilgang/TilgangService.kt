@@ -47,6 +47,7 @@ class TilgangServiceImpl(
         }
 
         if (harGt.isFailure) {
+            log.error("Kunne ikke hente brukers GT", harGt.exceptionOrNull())
             return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers GT: ${harGt.exceptionOrNull()?.message}")
         } else if (!harGt.getOrThrow()) {
             return TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "Bruker har ikke gyldig GT")
@@ -56,8 +57,9 @@ class TilgangServiceImpl(
             pdlService.harKode6(subject)
         }
         if (harKode6.isFailure) {
+            log.error("Kunne ikke hente brukers diskresjonskode", harGt.exceptionOrNull())
             return TilgangDTO(TilgangDTO.Resultat.FEILET, "Kunne ikke hente brukers diskresjonskode: ${harKode6.exceptionOrNull()?.message}")
-        } else if (harKode6.getOrNull()!!) {
+        } else if (harKode6.getOrThrow()) {
             return TilgangDTO(TilgangDTO.Resultat.KODE6, "Bruker har diskresjonskode")
         }
         return TilgangDTO(TilgangDTO.Resultat.OK, "")
