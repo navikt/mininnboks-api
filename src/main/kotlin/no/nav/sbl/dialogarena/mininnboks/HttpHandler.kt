@@ -97,6 +97,7 @@ private fun Application.installKtorFeatures(configuration: Configuration) {
         level = Level.INFO
         filter { call -> !call.request.path().contains("/internal/isAlive") }
         filter { call -> !call.request.path().contains("/internal/isReady") }
+        MDC.configure(this)
     }
 }
 
