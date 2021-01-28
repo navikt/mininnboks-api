@@ -93,6 +93,7 @@ private fun Application.installKtorFeatures(configuration: Configuration) {
         register(ContentType.Application.Json, JacksonConverter(objectMapper))
     }
 
+    install(XForwardedHeaderSupport)
     install(CallLogging) {
         level = Level.INFO
         filter { call -> !call.request.path().contains("/internal/isAlive") }
