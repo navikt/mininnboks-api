@@ -157,7 +157,7 @@ open class PdlService(
                 tilleggsnavn = "$bruksenhetsnummer $tilleggsnavn",
                 husnummer = husnummer,
                 husbokstav = husbokstav,
-                kommunenavn = kommunenummer,
+                kommunenummer = kommunenummer,
                 postnummer = postnummer,
                 type = "VEGADRESSE"
             )

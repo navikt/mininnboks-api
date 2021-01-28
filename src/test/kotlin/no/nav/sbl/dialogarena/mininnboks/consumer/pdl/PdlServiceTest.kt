@@ -36,7 +36,7 @@ class PdlServiceTest {
     fun `henter adressebeskyttelsegradering om det finnes`() {
         runBlocking {
             val harAdressebeskyttelse = gittGradering(HentAdressebeskyttelse.AdressebeskyttelseGradering.UGRADERT)
-                    .hentAdresseBeskyttelse(dummySubject)
+                .hentAdresseBeskyttelse(dummySubject)
 
             assertThat(
                 harAdressebeskyttelse,
@@ -118,11 +118,21 @@ class PdlServiceTest {
     fun `skal hente ut alle adresser for bruker`() {
         runBlocking {
             val pdlService = gittAdresserData()
-            val adresser = pdlService.hentFolkeregistrertAdresse(MOCK_SUBJECT)
+            val adresse = pdlService.hentFolkeregistrertAdresse(MOCK_SUBJECT)
 
-            assertThat(adresser.size, Matchers.`is`(2))
-            assertThat(adresser.first(), Matchers.`is`("Kirkegata 12B H0101 Storgården, 1234"))
-            assertThat(adresser.last(), Matchers.`is`("H0101 Storgården, 1234"))
+            assertThat(
+                adresse, Matchers.`is`(
+                    Adresse(
+                        adresse = "Kirkegata",
+                        tilleggsnavn = "H0101 Storgården",
+                        husnummer = "12",
+                        husbokstav = "B",
+                        kommunenummer = "4321",
+                        postnummer = "1234",
+                        type = "VEGADRESSE"
+                    )
+                )
+            )
         }
     }
 
