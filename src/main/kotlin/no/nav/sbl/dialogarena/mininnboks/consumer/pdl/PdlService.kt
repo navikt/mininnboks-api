@@ -1,7 +1,5 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import no.nav.common.auth.subject.Subject
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
@@ -28,8 +26,13 @@ data class Adresse(
     val gatekode: String? = null,
     val bydel: String? = null,
     val geografiskTilknytning: String? = null,
-    val type: String
-)
+    val type: Type
+) {
+    enum class Type {
+        GATEADRESSE,
+        MATRIKKELADRESSE
+    }
+}
 
 open class PdlService(
     private val pdlClient: OkHttpClient,
@@ -150,7 +153,6 @@ open class PdlService(
     }
 
     private fun tilAdresse(vegadresse: HentFolkeregistrertAdresse.Vegadresse): Adresse {
-
         return with(vegadresse) {
             Adresse(
                 adresse = adressenavn,
@@ -159,7 +161,7 @@ open class PdlService(
                 husbokstav = husbokstav,
                 kommunenummer = kommunenummer,
                 postnummer = postnummer,
-                type = "VEGADRESSE"
+                type = Adresse.Type.GATEADRESSE
             )
         }
     }
@@ -170,7 +172,7 @@ open class PdlService(
                 adresse = "$bruksenhetsnummer $tilleggsnavn",
                 postnummer = postnummer,
                 kommunenummer = kommunenummer,
-                type = "MATRIKKELADRESSE"
+                type = Adresse.Type.MATRIKKELADRESSE
             )
         }
     }

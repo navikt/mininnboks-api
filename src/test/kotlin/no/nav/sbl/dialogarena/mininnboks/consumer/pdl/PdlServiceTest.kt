@@ -129,7 +129,7 @@ class PdlServiceTest {
                         husbokstav = "B",
                         kommunenummer = "4321",
                         postnummer = "1234",
-                        type = "VEGADRESSE"
+                        type = Adresse.Type.GATEADRESSE
                     )
                 )
             )
