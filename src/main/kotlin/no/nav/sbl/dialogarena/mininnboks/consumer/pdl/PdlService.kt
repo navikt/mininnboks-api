@@ -17,8 +17,18 @@ import okhttp3.Response
 class PdlException(message: String, cause: Throwable) : RuntimeException(message, cause)
 
 data class Adresse(
-    val adresse: String,
-    val gt: String
+    val adresse: String? = null,
+    val tilleggsnavn: String? = null,
+    val husnummer: String? = null,
+    val husbokstav: String? = null,
+    val kommunenummer: String? = null,
+    val kommunenavn: String? = null,
+    val postnummer: String? = null,
+    val poststed: String? = null,
+    val gatekode: String? = null,
+    val bydel: String? = null,
+    val geografiskTilknytning: String? = null,
+    val type: String
 )
 
 open class PdlService(
@@ -60,30 +70,25 @@ open class PdlService(
     suspend fun harKode7(subject: Subject): Boolean =
         harGradering(subject, HentAdressebeskyttelse.AdressebeskyttelseGradering.FORTROLIG)
 
-    suspend fun hentFolkeregistrertAdresseMedGt(subject: Subject): List<Adresse> = coroutineScope {
-        val gtAsync = async { hentGeografiskTilknytning(subject) }
-        val adresserAsync = async { hentFolkeregistrertAdresse(subject) }
-
-        val gt = gtAsync.await()
-        val adresser = adresserAsync.await()
-        adresser.map { Adresse(it, gt) }
-    }
-
-    suspend fun hentFolkeregistrertAdresse(subject: Subject): List<String> {
+    suspend fun hentAdresseBeskyttelse(subject: Subject): HentAdressebeskyttelse.AdressebeskyttelseGradering? {
         return graphqlClient
             .runCatching {
                 execute(
                     subject,
-                    HentFolkeregistrertAdresse(HentFolkeregistrertAdresse.Variables(subject.uid))
+                    HentAdressebeskyttelse(
+                        HentAdressebeskyttelse.Variables(subject.uid)
+                    )
                 )
             }
             .map { response ->
-                response.data?.hentPerson
+                response
+                    .data
+                    ?.hentPerson
+                    ?.adressebeskyttelse
+                    ?.firstOrNull()
+                    ?.gradering
             }
-            .map { adresser -> lagAdresseListe(adresser) }
-            .getOrThrow {
-                PdlException("Feil ved uthenting av adresser", it)
-            }
+            .getOrThrow { PdlException("Kunne ikke utlede adressebeskyttelse", it) }
     }
 
     suspend fun hentGeografiskTilknytning(subject: Subject): String {
@@ -109,35 +114,41 @@ open class PdlService(
             }
     }
 
-    suspend fun hentAdresseBeskyttelse(subject: Subject): HentAdressebeskyttelse.AdressebeskyttelseGradering? {
+    suspend fun hentFolkeregistrertAdresseMedGt(subject: Subject): Adresse? = coroutineScope {
+        val gtAsync = async { hentGeografiskTilknytning(subject) }
+        val adresserAsync = async { hentFolkeregistrertAdresse(subject) }
+
+        val gt = gtAsync.await()
+        val adresser = adresserAsync.await()
+        adresser?.copy( geografiskTilknytning = gt )
+    }
+
+    suspend fun hentFolkeregistrertAdresse(subject: Subject): Adresse? {
         return graphqlClient
             .runCatching {
                 execute(
                     subject,
-                    HentAdressebeskyttelse(
-                        HentAdressebeskyttelse.Variables(subject.uid)
-                    )
+                    HentFolkeregistrertAdresse(HentFolkeregistrertAdresse.Variables(subject.uid))
                 )
             }
             .map { response ->
-                response
-                    .data
-                    ?.hentPerson
-                    ?.adressebeskyttelse
-                    ?.firstOrNull()
-                    ?.gradering
+                response.data?.hentPerson
             }
-            .getOrThrow { PdlException("Kunne ikke utlede adressebeskyttelse", it) }
+            .map { adresser -> lagAdresseListe(adresser) }
+            .getOrThrow {
+                PdlException("Feil ved uthenting av adresser", it)
+            }
+            .firstOrNull()
     }
 
-    fun lagAdresseListe(response: HentFolkeregistrertAdresse.Person?): List<String> {
+    private fun lagAdresseListe(response: HentFolkeregistrertAdresse.Person?): List<Adresse> {
         if (response == null) {
             return emptyList()
         }
         return response.bostedsadresse.map(this::tilAdresse)
     }
 
-    private fun tilAdresse(adresse: HentFolkeregistrertAdresse.Bostedsadresse): String {
+    private fun tilAdresse(adresse: HentFolkeregistrertAdresse.Bostedsadresse): Adresse {
         return when {
             adresse.vegadresse != null -> tilAdresse(adresse.vegadresse)
             adresse.matrikkeladresse != null -> tilAdresse(adresse.matrikkeladresse)
@@ -147,15 +158,29 @@ open class PdlService(
         }
     }
 
-    private fun tilAdresse(vegadresse: HentFolkeregistrertAdresse.Vegadresse): String {
+    private fun tilAdresse(vegadresse: HentFolkeregistrertAdresse.Vegadresse): Adresse {
+
         return with(vegadresse) {
-            "$adressenavn $husnummer$husbokstav $bruksenhetsnummer $tilleggsnavn, $postnummer"
+            Adresse(
+                adresse = adressenavn,
+                tilleggsnavn = "$bruksenhetsnummer $tilleggsnavn",
+                husnummer = husnummer,
+                husbokstav = husbokstav,
+                kommunenavn = kommunenummer,
+                postnummer = postnummer,
+                type = "VEGADRESSE"
+            )
         }
     }
 
-    private fun tilAdresse(matrikkeladresse: HentFolkeregistrertAdresse.Matrikkeladresse): String {
+    private fun tilAdresse(matrikkeladresse: HentFolkeregistrertAdresse.Matrikkeladresse): Adresse {
         return with(matrikkeladresse) {
-            "$bruksenhetsnummer $tilleggsnavn, $postnummer"
+            Adresse(
+                adresse = "$bruksenhetsnummer $tilleggsnavn",
+                postnummer = postnummer,
+                kommunenummer = kommunenummer,
+                type = "MATRIKKELADRESSE"
+            )
         }
     }
 
