@@ -29,7 +29,7 @@ object MDC {
 
             mdc(MDCConstants.MDC_USER_ID) { call ->
                 val userId = call.request.cookies[RANDOM_USER_ID_COOKIE_NAME]
-                if (userId == null) {
+                if (userId == null && call.request.origin.scheme == "https") {
                     val generatedUserId = IdUtils.generateId()
                     call.response.cookies.append(
                         Cookie(
