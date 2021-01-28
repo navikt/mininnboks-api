@@ -23,7 +23,7 @@ object MDC {
                 LogFilter.NAV_CALL_ID_HEADER_NAMES
                     .toList()
                     .map { call.request.header(it) }
-                    .first(StringUtils::notNullOrEmpty)
+                    .firstOrNull(StringUtils::notNullOrEmpty)
                     ?: IdUtils.generateId()
             }
 
