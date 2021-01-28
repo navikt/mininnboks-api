@@ -13,7 +13,12 @@ fun Route.tilgangController(tilgangService: TilgangService) {
             withSubject(AuthLevel.Level4) { subject ->
                 call.respond(tilgangService.harTilgangTilKommunalInnsending(subject))
             }
+        }
 
+        get("/folkeregistrertadresse") {
+            withSubject(AuthLevel.Level4) { subject ->
+                call.respond(tilgangService.hentFolkeregistrertAdresseMedGt(subject))
+            }
         }
     }
 }

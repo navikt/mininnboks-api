@@ -114,15 +114,6 @@ open class PdlService(
             }
     }
 
-    suspend fun hentFolkeregistrertAdresseMedGt(subject: Subject): Adresse? = coroutineScope {
-        val gtAsync = async { hentGeografiskTilknytning(subject) }
-        val adresserAsync = async { hentFolkeregistrertAdresse(subject) }
-
-        val gt = gtAsync.await()
-        val adresser = adresserAsync.await()
-        adresser?.copy( geografiskTilknytning = gt )
-    }
-
     suspend fun hentFolkeregistrertAdresse(subject: Subject): Adresse? {
         return graphqlClient
             .runCatching {
