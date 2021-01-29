@@ -29,9 +29,11 @@ import no.nav.sbl.dialogarena.mininnboks.JwtUtil.Companion as JwtUtil
 
 val metricsRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 
-fun createHttpServer(applicationState: ApplicationState,
-                     configuration: Configuration,
-                     port: Int = 8080): ApplicationEngine = embeddedServer(Netty, port) {
+fun createHttpServer(
+    applicationState: ApplicationState,
+    configuration: Configuration,
+    port: Int = 8080
+): ApplicationEngine = embeddedServer(Netty, port) {
 
     installKtorFeatures(configuration)
 
@@ -45,9 +47,11 @@ fun createHttpServer(applicationState: ApplicationState,
         resourcesController()
 
         route("internal") {
-            naisRoutes(readinessCheck = { applicationState.initialized },
-                    livenessCheck = { applicationState.running },
-                    selftestChecks = serviceConfig.selfTestChecklist)
+            naisRoutes(
+                readinessCheck = { applicationState.initialized },
+                livenessCheck = { applicationState.running },
+                selftestChecks = serviceConfig.selfTestChecklist
+            )
         }
     }
 
@@ -68,11 +72,11 @@ private fun Application.installKtorFeatures(configuration: Configuration) {
     install(MicrometerMetrics) {
         registry = metricsRegistry
         meterBinders = listOf(
-                ClassLoaderMetrics(),
-                JvmMemoryMetrics(),
-                JvmGcMetrics(),
-                ProcessorMetrics(),
-                JvmThreadMetrics()
+            ClassLoaderMetrics(),
+            JvmMemoryMetrics(),
+            JvmGcMetrics(),
+            ProcessorMetrics(),
+            JvmThreadMetrics()
         )
     }
 
@@ -89,11 +93,12 @@ private fun Application.installKtorFeatures(configuration: Configuration) {
         register(ContentType.Application.Json, JacksonConverter(objectMapper))
     }
 
+    install(XForwardedHeaderSupport)
     install(CallLogging) {
         level = Level.INFO
         filter { call -> !call.request.path().contains("/internal/isAlive") }
         filter { call -> !call.request.path().contains("/internal/isReady") }
-
+        MDC.configure(this)
     }
 }
 
