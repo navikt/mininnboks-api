@@ -18,7 +18,7 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenven
 import org.joda.time.DateTime
 
 interface HenvendelseService {
-    suspend fun stillSporsmal(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse
+    suspend fun stillSporsmal(henvendelse: Henvendelse, overstyrtGt: String?, subject: Subject): WSSendInnHenvendelseResponse
     suspend fun stillSporsmalDirekte(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse
     suspend fun sendSvar(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse
     suspend fun hentAlleHenvendelser(subject: Subject): List<Henvendelse>
@@ -32,17 +32,22 @@ interface HenvendelseService {
                   private val personService: PersonService) : HenvendelseService {
 
 
-        override suspend fun stillSporsmal(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse {
-            return sentSporsmalHenvendelse(henvendelse, subject, XMLHenvendelseType.SPORSMAL_SKRIFTLIG)
+        override suspend fun stillSporsmal(henvendelse: Henvendelse, overstyrtGt: String?, subject: Subject): WSSendInnHenvendelseResponse {
+            return sentSporsmalHenvendelse(henvendelse, subject, overstyrtGt, XMLHenvendelseType.SPORSMAL_SKRIFTLIG)
         }
 
         override suspend fun stillSporsmalDirekte(henvendelse: Henvendelse, subject: Subject): WSSendInnHenvendelseResponse {
-            return sentSporsmalHenvendelse(henvendelse, subject, XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE)
+            return sentSporsmalHenvendelse(henvendelse, subject, null, XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE)
         }
 
-        private suspend fun sentSporsmalHenvendelse(henvendelse: Henvendelse, subject: Subject, xmlHenvendelseType: XMLHenvendelseType): WSSendInnHenvendelseResponse {
+        private suspend fun sentSporsmalHenvendelse(
+            henvendelse: Henvendelse,
+            subject: Subject,
+            overstyrtGt: String?,
+            xmlHenvendelseType: XMLHenvendelseType
+        ): WSSendInnHenvendelseResponse {
 
-            val enhet = personService.hentGeografiskTilknytning(subject)
+            val enhet = overstyrtGt ?: personService.hentGeografiskTilknytning(subject)
             val sporsmaltekst = HenvendelsesUtils.cleanOutHtml(HenvendelsesUtils.fjernHardeMellomrom(henvendelse.fritekst))
 
             return externalCall(subject) {
