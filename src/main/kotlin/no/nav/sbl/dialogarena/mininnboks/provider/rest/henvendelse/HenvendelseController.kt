@@ -107,7 +107,7 @@ private fun Route.sporsmal(tilgangService: TilgangService, henvendelseService: H
         withSubject(AuthLevel.Level4) { subject ->
             val sporsmal = call.receive(Sporsmal::class)
             val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-            val response = henvendelseService.stillSporsmal(henvendelse, subject)
+            val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
             call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
         }
     }
@@ -163,6 +163,7 @@ private fun Route.getId(henvendelseService: HenvendelseService) {
 
 suspend fun lagHenvendelse(tilgangService: TilgangService, subject: Subject, sporsmal: Sporsmal): Henvendelse {
     assertFritekst(sporsmal.fritekst)
+    assertOverstyrtGt(sporsmal)
     assertTemagruppeTilgang(tilgangService, subject, sporsmal.temagruppe)
     return Henvendelse(fritekst = sporsmal.fritekst, temagruppe = sporsmal.temagruppe, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
 }
@@ -218,6 +219,14 @@ class NyHenvendelseResultat(val behandlingsId: String?)
 
 fun assertFritekst(fritekst: String) {
     assertFritekst(fritekst, 1000)
+}
+
+fun assertOverstyrtGt(sporsmal: Sporsmal) {
+    if (sporsmal.temagruppe == Temagruppe.OKSOS && sporsmal.overstyrtGt.isNullOrBlank()) {
+        throw BadRequestException("overstyrtGT må være definert ved innsending på OKSOS")
+    } else if (sporsmal.temagruppe != Temagruppe.OKSOS && !sporsmal.overstyrtGt.isNullOrBlank()) {
+        throw BadRequestException("overstyrtGT må være udefinert ved innsending på ${sporsmal.temagruppe}")
+    }
 }
 
 fun assertFritekst(fritekst: String?, maxLengde: Int) {
