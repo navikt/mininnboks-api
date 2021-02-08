@@ -1,8 +1,5 @@
 FROM navikt/java:11
 
-# sett riktig tidssone
-RUN ln -fs /usr/share/zoneinfo/Europe/Oslo /etc/localtime
-
 COPY init-scripts /init-scripts
 
 ENV APPD_ENABLED=true
