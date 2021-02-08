@@ -1,7 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.tilgang
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
+import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.Adresse
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
 import org.slf4j.LoggerFactory
 import java.util.regex.Pattern.matches
@@ -11,9 +14,24 @@ data class TilgangDTO(val resultat: Resultat, val melding: String) {
         FEILET, KODE6, INGEN_ENHET, OK
     }
 }
+sealed class AdresseDTO(val fantAdresse: Boolean) {
+    class FantAdresse(val adresse: Adresse) : AdresseDTO(true)
+    object IngenAdresse : AdresseDTO(false)
+
+    companion object {
+        fun fromAdresse(adresse: Adresse?): AdresseDTO {
+            return if (adresse == null) {
+                IngenAdresse
+            } else {
+                FantAdresse(adresse)
+            }
+        }
+    }
+}
 
 interface TilgangService {
     suspend fun harTilgangTilKommunalInnsending(subject: Subject): TilgangDTO
+    suspend fun hentFolkeregistrertAdresseMedGt(subject: Subject): AdresseDTO
 }
 
 class TilgangServiceImpl(
@@ -45,5 +63,16 @@ class TilgangServiceImpl(
             return TilgangDTO(TilgangDTO.Resultat.KODE6, "Bruker har diskresjonskode")
         }
         return TilgangDTO(TilgangDTO.Resultat.OK, "")
+    }
+
+    override suspend fun hentFolkeregistrertAdresseMedGt(subject: Subject): AdresseDTO = coroutineScope {
+        val gtAsync = async { pdlService.hentGeografiskTilknytning(subject) }
+        val adresserAsync = async { pdlService.hentFolkeregistrertAdresse(subject) }
+
+        val gt = gtAsync.await()
+        val adresser = adresserAsync.await()
+
+        val adresseMedGt = adresser?.copy( geografiskTilknytning = gt )
+        AdresseDTO.fromAdresse(adresseMedGt)
     }
 }

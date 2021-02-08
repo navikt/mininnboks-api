@@ -1,9 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
-import io.mockk.coEvery
-import io.mockk.mockk
-import io.mockk.slot
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import no.nav.common.auth.subject.IdentType
 import no.nav.common.auth.subject.SsoToken
@@ -69,21 +66,41 @@ class HenvendelseServiceTest {
     fun `sender Inn Sporsmal Med Riktige Felter`() {
         runBlocking {
             val henvendelse = Henvendelse(fritekst = FRITEKST, temagruppe = TEMAGRUPPE, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
-            henvendelseService.stillSporsmal(henvendelse, subject)
+
+            henvendelseService.stillSporsmal(henvendelse, null, subject)
+
             verify { sendInnHenvendelsePortType.sendInnHenvendelse(capture(sendInnHenvendelseRequestArgumentCaptor)) }
+            coVerify { personService.hentGeografiskTilknytning(any()) }
             val request = sendInnHenvendelseRequestArgumentCaptor.captured
+            val xmlHenvendelse = request.any as XMLHenvendelse
+            val meldingFraBruker = xmlHenvendelse.metadataListe.metadata[0] as XMLMeldingFraBruker
+
             MatcherAssert.assertThat(request.type, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name))
             MatcherAssert.assertThat(request.fodselsnummer, Matchers.`is`(FNR))
-            val xmlHenvendelse = request.any as XMLHenvendelse
             MatcherAssert.assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name))
             MatcherAssert.assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
             MatcherAssert.assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
             MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
             MatcherAssert.assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(Matchers.nullValue()))
             MatcherAssert.assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
-            val meldingFraBruker = xmlHenvendelse.metadataListe.metadata[0] as XMLMeldingFraBruker
             MatcherAssert.assertThat(meldingFraBruker.temagruppe, Matchers.`is`(TEMAGRUPPE.name))
             MatcherAssert.assertThat(meldingFraBruker.fritekst, Matchers.`is`(FRITEKST))
+        }
+    }
+
+    @Test
+    fun `henter ikke ut GT om overstyring er satt`() {
+        runBlocking {
+            val overstyrtGt = "010101"
+            val henvendelse = Henvendelse(fritekst = FRITEKST, temagruppe = TEMAGRUPPE, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
+
+            henvendelseService.stillSporsmal(henvendelse, overstyrtGt, subject)
+
+            verify { sendInnHenvendelsePortType.sendInnHenvendelse(capture(sendInnHenvendelseRequestArgumentCaptor)) }
+            coVerify(exactly = 0) { personService.hentGeografiskTilknytning(any()) }
+            val request = sendInnHenvendelseRequestArgumentCaptor.captured
+            val xmlHenvendelse = request.any as XMLHenvendelse
+            MatcherAssert.assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(overstyrtGt))
         }
     }
 
