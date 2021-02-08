@@ -12,9 +12,9 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
 import org.hamcrest.CoreMatchers
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.joda.time.DateTime
-import org.junit.Assert
 import org.junit.jupiter.api.Test
 import java.util.*
 
@@ -31,13 +31,13 @@ class HenvendelsesUtilsTest {
         val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val dokumentHenvendelse = henvendelserListe[0]
-        Assert.assertThat(dokumentHenvendelse.id, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(dokumentHenvendelse.traadId, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(dokumentHenvendelse.type, CoreMatchers.`is`(Henvendelsetype.DOKUMENT_VARSEL))
-        Assert.assertThat(dokumentHenvendelse.lestDato, CoreMatchers.`is`(CoreMatchers.nullValue()))
-        Assert.assertThat(dokumentHenvendelse.isLest, CoreMatchers.`is`(false))
-        Assert.assertThat(dokumentHenvendelse.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
-        Assert.assertThat(dokumentHenvendelse.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        assertThat(dokumentHenvendelse.id, CoreMatchers.`is`(ID_1))
+        assertThat(dokumentHenvendelse.traadId, CoreMatchers.`is`(ID_1))
+        assertThat(dokumentHenvendelse.type, CoreMatchers.`is`(Henvendelsetype.DOKUMENT_VARSEL))
+        assertThat(dokumentHenvendelse.lestDato, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        assertThat(dokumentHenvendelse.isLest, CoreMatchers.`is`(false))
+        assertThat(dokumentHenvendelse.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        assertThat(dokumentHenvendelse.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
@@ -48,13 +48,13 @@ class HenvendelsesUtilsTest {
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val sporsmal = henvendelserListe[0]
         assertStandardFelter(sporsmal)
-        Assert.assertThat(sporsmal.id, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(sporsmal.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG))
-        Assert.assertThat(sporsmal.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
-        Assert.assertThat(sporsmal.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(sporsmal.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
-        Assert.assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        assertThat(sporsmal.id, CoreMatchers.`is`(ID_1))
+        assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_1))
+        assertThat(sporsmal.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG))
+        assertThat(sporsmal.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
+        assertThat(sporsmal.isLest, CoreMatchers.`is`(true))
+        assertThat(sporsmal.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
@@ -64,13 +64,13 @@ class HenvendelsesUtilsTest {
         val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val sporsmal = henvendelserListe[0]
-        Assert.assertThat(sporsmal.id, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(sporsmal.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG_DIREKTE))
-        Assert.assertThat(sporsmal.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
-        Assert.assertThat(sporsmal.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(sporsmal.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
-        Assert.assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        assertThat(sporsmal.id, CoreMatchers.`is`(ID_1))
+        assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_1))
+        assertThat(sporsmal.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_SKRIFTLIG_DIREKTE))
+        assertThat(sporsmal.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
+        assertThat(sporsmal.isLest, CoreMatchers.`is`(true))
+        assertThat(sporsmal.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
@@ -81,10 +81,10 @@ class HenvendelsesUtilsTest {
         val henvendelserListe = infoList
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val sporsmal = henvendelserListe[0]
-        Assert.assertThat(sporsmal.ferdigstiltUtenSvar, CoreMatchers.`is`(true))
-        Assert.assertThat(sporsmal.temagruppe?.name, CoreMatchers.`is`(Temagruppe.FMLI.name))
-        Assert.assertThat(sporsmal.statusTekst, CoreMatchers.`is`("Beskjed – Familie"))
-        Assert.assertThat(sporsmal.temagruppeNavn, CoreMatchers.`is`("Familie"))
+        assertThat(sporsmal.ferdigstiltUtenSvar, CoreMatchers.`is`(true))
+        assertThat(sporsmal.temagruppe?.name, CoreMatchers.`is`(Temagruppe.FMLI.name))
+        assertThat(sporsmal.statusTekst, CoreMatchers.`is`("Beskjed – Familie"))
+        assertThat(sporsmal.temagruppeNavn, CoreMatchers.`is`("Familie"))
     }
 
     @Test
@@ -95,14 +95,14 @@ class HenvendelsesUtilsTest {
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val svar = henvendelserListe[0]
         assertStandardFelter(svar)
-        Assert.assertThat(svar.id, CoreMatchers.`is`(ID_2))
-        Assert.assertThat(svar.traadId, CoreMatchers.`is`(ID_2))
-        Assert.assertThat(svar.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SBL_INNGAAENDE))
-        Assert.assertThat(svar.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
-        Assert.assertThat(svar.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(svar.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
-        Assert.assertThat(svar.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
-        Assert.assertThat(svar.kontorsperreEnhet, CoreMatchers.`is`(KONTORSPERRE_ENHET))
+        assertThat(svar.id, CoreMatchers.`is`(ID_2))
+        assertThat(svar.traadId, CoreMatchers.`is`(ID_2))
+        assertThat(svar.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SBL_INNGAAENDE))
+        assertThat(svar.lestDato, CoreMatchers.`is`(Matchers.notNullValue()))
+        assertThat(svar.isLest, CoreMatchers.`is`(true))
+        assertThat(svar.kanal, CoreMatchers.`is`(CoreMatchers.nullValue()))
+        assertThat(svar.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        assertThat(svar.kontorsperreEnhet, CoreMatchers.`is`(KONTORSPERRE_ENHET))
     }
 
     @Test
@@ -113,16 +113,16 @@ class HenvendelsesUtilsTest {
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val sporsmal = henvendelserListe[0]
         assertStandardFelter(sporsmal)
-        Assert.assertThat(sporsmal.id, CoreMatchers.`is`(ID_3))
-        Assert.assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_3))
-        Assert.assertThat(sporsmal.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE))
-        Assert.assertThat(sporsmal.lestDato, CoreMatchers.`is`(LEST_DATO))
-        Assert.assertThat(sporsmal.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(sporsmal.kanal, CoreMatchers.`is`(KANAL))
-        Assert.assertThat(sporsmal.eksternAktor, CoreMatchers.`is`(NAVIDENT))
-        Assert.assertThat(sporsmal.tilknyttetEnhet, CoreMatchers.`is`(TILKNYTTET_ENHET))
-        Assert.assertThat(sporsmal.erTilknyttetAnsatt, CoreMatchers.`is`(ER_TILKNYTTET_ANSATT))
-        Assert.assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        assertThat(sporsmal.id, CoreMatchers.`is`(ID_3))
+        assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_3))
+        assertThat(sporsmal.type, CoreMatchers.`is`(Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE))
+        assertThat(sporsmal.lestDato, CoreMatchers.`is`(LEST_DATO))
+        assertThat(sporsmal.isLest, CoreMatchers.`is`(true))
+        assertThat(sporsmal.kanal, CoreMatchers.`is`(KANAL))
+        assertThat(sporsmal.eksternAktor, CoreMatchers.`is`(NAVIDENT))
+        assertThat(sporsmal.tilknyttetEnhet, CoreMatchers.`is`(TILKNYTTET_ENHET))
+        assertThat(sporsmal.erTilknyttetAnsatt, CoreMatchers.`is`(ER_TILKNYTTET_ANSATT))
+        assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
@@ -131,13 +131,13 @@ class HenvendelsesUtilsTest {
         val infoList = listOf(info)
         val henvendelserListe = infoList.map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val svar = henvendelserListe[0]
-        Assert.assertThat(svar.id, CoreMatchers.`is`(ID_4))
-        Assert.assertThat(svar.traadId, CoreMatchers.`is`(ID_1))
-        Assert.assertThat(svar.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SKRIFTLIG))
-        Assert.assertThat(svar.lestDato, CoreMatchers.`is`(LEST_DATO))
-        Assert.assertThat(svar.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(svar.kanal, CoreMatchers.`is`(KANAL))
-        Assert.assertThat(svar.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        assertThat(svar.id, CoreMatchers.`is`(ID_4))
+        assertThat(svar.traadId, CoreMatchers.`is`(ID_1))
+        assertThat(svar.type, CoreMatchers.`is`(Henvendelsetype.SVAR_SKRIFTLIG))
+        assertThat(svar.lestDato, CoreMatchers.`is`(LEST_DATO))
+        assertThat(svar.isLest, CoreMatchers.`is`(true))
+        assertThat(svar.kanal, CoreMatchers.`is`(KANAL))
+        assertThat(svar.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     @Test
@@ -147,20 +147,20 @@ class HenvendelsesUtilsTest {
         val henvendelserListe = infoList.map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val referat = henvendelserListe[0]
         assertStandardFelter(referat)
-        Assert.assertThat(referat.id, CoreMatchers.`is`(ID_5))
-        Assert.assertThat(referat.traadId, CoreMatchers.`is`(ID_5))
-        Assert.assertThat(referat.type, CoreMatchers.`is`(Henvendelsetype.SAMTALEREFERAT_OPPMOTE))
-        Assert.assertThat(referat.lestDato, CoreMatchers.`is`(LEST_DATO))
-        Assert.assertThat(referat.isLest, CoreMatchers.`is`(true))
-        Assert.assertThat(referat.kanal, CoreMatchers.`is`(KANAL))
-        Assert.assertThat(referat.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
+        assertThat(referat.id, CoreMatchers.`is`(ID_5))
+        assertThat(referat.traadId, CoreMatchers.`is`(ID_5))
+        assertThat(referat.type, CoreMatchers.`is`(Henvendelsetype.SAMTALEREFERAT_OPPMOTE))
+        assertThat(referat.lestDato, CoreMatchers.`is`(LEST_DATO))
+        assertThat(referat.isLest, CoreMatchers.`is`(true))
+        assertThat(referat.kanal, CoreMatchers.`is`(KANAL))
+        assertThat(referat.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
     private fun assertStandardFelter(sporsmal: Henvendelse) {
-        Assert.assertThat(sporsmal.fritekst, CoreMatchers.`is`(FRITEKST))
-        Assert.assertThat(sporsmal.temagruppe, CoreMatchers.`is`(TEMAGRUPPE))
-        Assert.assertThat(sporsmal.opprettet, CoreMatchers.`is`(OPPRETTET_DATO))
-        Assert.assertThat(sporsmal.avsluttet, CoreMatchers.`is`(AVSLUTTET_DATO))
+        assertThat(sporsmal.fritekst, CoreMatchers.`is`(FRITEKST))
+        assertThat(sporsmal.temagruppe, CoreMatchers.`is`(TEMAGRUPPE))
+        assertThat(sporsmal.opprettet, CoreMatchers.`is`(OPPRETTET_DATO))
+        assertThat(sporsmal.avsluttet, CoreMatchers.`is`(AVSLUTTET_DATO))
     }
 
     @Test
@@ -170,26 +170,26 @@ class HenvendelsesUtilsTest {
         every { tekstService.hentTekst("innhold.kassert") } returns ("Innholdet er kassert")
         every { tekstService.hentTekst("temagruppe.kassert") } returns ("Kassert")
         val referat = HenvendelsesUtils.tilHenvendelse(info)
-        Assert.assertThat(referat.fritekst, CoreMatchers.`is`("Innholdet i denne henvendelsen er kassert av NAV."))
-        Assert.assertThat(referat.statusTekst, CoreMatchers.`is`("Kassert"))
-        Assert.assertThat(referat.temagruppe, CoreMatchers.nullValue())
+        assertThat(referat.fritekst, CoreMatchers.`is`("Innholdet i denne henvendelsen er kassert av NAV."))
+        assertThat(referat.statusTekst, CoreMatchers.`is`("Kassert"))
+        assertThat(referat.temagruppe, CoreMatchers.nullValue())
     }
 
     @Test
     fun `transformerer XMLHenvendelse Som Oppgave Varsel`() {
         val info = mockXMLHenvendelseMedXMLOppgaveVarsel(XMLHenvendelseType.OPPGAVE_VARSEL, ID_5, ID_5)
         val henvendelse = HenvendelsesUtils.tilHenvendelse(info)
-        Assert.assertThat(henvendelse.oppgaveType, CoreMatchers.`is`(OPPGAVE_TYPE))
-        Assert.assertThat(henvendelse.oppgaveUrl, CoreMatchers.`is`(OPPGAVE_URL))
-        Assert.assertThat(henvendelse.statusTekst, CoreMatchers.`is`("Oppgave"))
-        Assert.assertThat(henvendelse.fritekst, CoreMatchers.`is`("Du har mottatt en oppgave."))
+        assertThat(henvendelse.oppgaveType, CoreMatchers.`is`(OPPGAVE_TYPE))
+        assertThat(henvendelse.oppgaveUrl, CoreMatchers.`is`(OPPGAVE_URL))
+        assertThat(henvendelse.statusTekst, CoreMatchers.`is`("Oppgave"))
+        assertThat(henvendelse.fritekst, CoreMatchers.`is`("Du har mottatt en oppgave."))
     }
 
     @Test
     fun `transformerer XmlHenvendelse Som Delvise Svar`() {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1)
         val henvendelse = HenvendelsesUtils.tilHenvendelse(info)
-        Assert.assertThat(henvendelse.type, CoreMatchers.`is`(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG))
+        assertThat(henvendelse.type, CoreMatchers.`is`(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG))
     }
 
     @Test
@@ -202,7 +202,7 @@ class HenvendelsesUtilsTest {
         TekstServiceImpl.tekster[defaultKey] = defaulValue
 
         val tekst = hentTekst(key, defaultKey)
-        Assert.assertThat(tekst, CoreMatchers.`is`(defaulValue))
+        assertThat(tekst, CoreMatchers.`is`(defaulValue))
     }
 
     @Test
@@ -216,7 +216,7 @@ class HenvendelsesUtilsTest {
     fun `vasker Html I Fritekst Men Bevarer Line Endings`() {
         val tekst = "<h1>Hei</h1> \n Hallo"
         val cleanTekst = HenvendelsesUtils.cleanOutHtml(tekst)
-        Assert.assertThat(cleanTekst, CoreMatchers.`is`("Hei \n Hallo"))
+        assertThat(cleanTekst, CoreMatchers.`is`("Hei \n Hallo"))
     }
 
     private fun mockXMLHenvendelseMedXMLMeldingFraBruker(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
