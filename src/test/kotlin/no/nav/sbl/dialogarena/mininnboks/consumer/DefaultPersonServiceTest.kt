@@ -8,7 +8,7 @@ import no.nav.sbl.dialogarena.mininnboks.TestUtils.dummySubject
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kommune
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningResponse
-import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -24,7 +24,7 @@ class DefaultPersonServiceTest {
         coEvery { personV3.hentGeografiskTilknytning(any()) } returns
                 HentGeografiskTilknytningResponse().withGeografiskTilknytning(Kommune().withGeografiskTilknytning(enhet))
         runBlocking {
-            MatcherAssert.assertThat(personService.hentGeografiskTilknytning(dummySubject()), Is.`is`(enhet))
+            assertThat(personService.hentGeografiskTilknytning(dummySubject()), Is.`is`(enhet))
         }
     }
 
