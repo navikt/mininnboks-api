@@ -17,7 +17,7 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.Henvendels
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentBehandlingskjedeResponse
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeRequest
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeResponse
-import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -75,16 +75,16 @@ class HenvendelseServiceTest {
             val xmlHenvendelse = request.any as XMLHenvendelse
             val meldingFraBruker = xmlHenvendelse.metadataListe.metadata[0] as XMLMeldingFraBruker
 
-            MatcherAssert.assertThat(request.type, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name))
-            MatcherAssert.assertThat(request.fodselsnummer, Matchers.`is`(FNR))
-            MatcherAssert.assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name))
-            MatcherAssert.assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
-            MatcherAssert.assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
-            MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
-            MatcherAssert.assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(Matchers.nullValue()))
-            MatcherAssert.assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
-            MatcherAssert.assertThat(meldingFraBruker.temagruppe, Matchers.`is`(TEMAGRUPPE.name))
-            MatcherAssert.assertThat(meldingFraBruker.fritekst, Matchers.`is`(FRITEKST))
+            assertThat(request.type, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name))
+            assertThat(request.fodselsnummer, Matchers.`is`(FNR))
+            assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name))
+            assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
+            assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
+            assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
+            assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(Matchers.nullValue()))
+            assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
+            assertThat(meldingFraBruker.temagruppe, Matchers.`is`(TEMAGRUPPE.name))
+            assertThat(meldingFraBruker.fritekst, Matchers.`is`(FRITEKST))
         }
     }
 
@@ -100,7 +100,7 @@ class HenvendelseServiceTest {
             coVerify(exactly = 0) { personService.hentGeografiskTilknytning(any()) }
             val request = sendInnHenvendelseRequestArgumentCaptor.captured
             val xmlHenvendelse = request.any as XMLHenvendelse
-            MatcherAssert.assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(overstyrtGt))
+            assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(overstyrtGt))
         }
     }
 
@@ -112,18 +112,18 @@ class HenvendelseServiceTest {
             henvendelseService.stillSporsmalDirekte(henvendelse, subject)
             verify { sendInnHenvendelsePortType.sendInnHenvendelse(capture(sendInnHenvendelseRequestArgumentCaptor)) }
             val request = sendInnHenvendelseRequestArgumentCaptor.captured
-            MatcherAssert.assertThat(request.type, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name))
-            MatcherAssert.assertThat(request.fodselsnummer, Matchers.`is`(FNR))
+            assertThat(request.type, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name))
+            assertThat(request.fodselsnummer, Matchers.`is`(FNR))
             val xmlHenvendelse = request.any as XMLHenvendelse
-            MatcherAssert.assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name))
-            MatcherAssert.assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
-            MatcherAssert.assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
-            MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
-            MatcherAssert.assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(Matchers.nullValue()))
-            MatcherAssert.assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
+            assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name))
+            assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
+            assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
+            assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
+            assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(Matchers.nullValue()))
+            assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
             val meldingFraBruker = xmlHenvendelse.metadataListe.metadata[0] as XMLMeldingFraBruker
-            MatcherAssert.assertThat(meldingFraBruker.temagruppe, Matchers.`is`(TEMAGRUPPE.name))
-            MatcherAssert.assertThat(meldingFraBruker.fritekst, Matchers.`is`(FRITEKST))
+            assertThat(meldingFraBruker.temagruppe, Matchers.`is`(TEMAGRUPPE.name))
+            assertThat(meldingFraBruker.fritekst, Matchers.`is`(FRITEKST))
         }
     }
 
@@ -146,22 +146,22 @@ class HenvendelseServiceTest {
             }
         }
         val request = sendInnHenvendelseRequestArgumentCaptor.captured
-        MatcherAssert.assertThat(request.type, Matchers.`is`(XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name))
-        MatcherAssert.assertThat(request.fodselsnummer, Matchers.`is`(FNR))
+        assertThat(request.type, Matchers.`is`(XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name))
+        assertThat(request.fodselsnummer, Matchers.`is`(FNR))
         val xmlHenvendelse = request.any as XMLHenvendelse
-        MatcherAssert.assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name))
-        MatcherAssert.assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
-        MatcherAssert.assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
-        MatcherAssert.assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
-        MatcherAssert.assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(TRAAD_ID))
-        MatcherAssert.assertThat(xmlHenvendelse.eksternAktor, Matchers.`is`(EKSTERN_AKTOR))
-        MatcherAssert.assertThat(xmlHenvendelse.tilknyttetEnhet, Matchers.`is`(TILKNYTTET_ENHET))
-        MatcherAssert.assertThat(xmlHenvendelse.isErTilknyttetAnsatt, Matchers.`is`(ER_TILKNYTTET_ANSATT))
-        MatcherAssert.assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
-        MatcherAssert.assertThat(xmlHenvendelse.kontorsperreEnhet, Matchers.`is`(KONTORSPERRE_ENHET))
+        assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name))
+        assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
+        assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
+        assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
+        assertThat(xmlHenvendelse.behandlingskjedeId, Matchers.`is`(TRAAD_ID))
+        assertThat(xmlHenvendelse.eksternAktor, Matchers.`is`(EKSTERN_AKTOR))
+        assertThat(xmlHenvendelse.tilknyttetEnhet, Matchers.`is`(TILKNYTTET_ENHET))
+        assertThat(xmlHenvendelse.isErTilknyttetAnsatt, Matchers.`is`(ER_TILKNYTTET_ANSATT))
+        assertThat(xmlHenvendelse.brukersEnhet, Matchers.`is`(BRUKER_ENHET))
+        assertThat(xmlHenvendelse.kontorsperreEnhet, Matchers.`is`(KONTORSPERRE_ENHET))
         val meldingFraBruker = xmlHenvendelse.metadataListe.metadata[0] as XMLMeldingFraBruker
-        MatcherAssert.assertThat(meldingFraBruker.temagruppe, Matchers.`is`(TEMAGRUPPE.name))
-        MatcherAssert.assertThat(meldingFraBruker.fritekst, Matchers.`is`(FRITEKST))
+        assertThat(meldingFraBruker.temagruppe, Matchers.`is`(TEMAGRUPPE.name))
+        assertThat(meldingFraBruker.fritekst, Matchers.`is`(FRITEKST))
     }
 
     @Test
@@ -170,7 +170,7 @@ class HenvendelseServiceTest {
             henvendelseService.hentAlleHenvendelser(subject)
             verify { henvendelsePortType.hentHenvendelseListe(capture(hentHenvendelseListeRequestArgumentCaptor)) }
             val request = hentHenvendelseListeRequestArgumentCaptor.captured
-            MatcherAssert.assertThat(request.fodselsnummer, Matchers.`is`(FNR))
+            assertThat(request.fodselsnummer, Matchers.`is`(FNR))
         }
     }
 
@@ -184,7 +184,7 @@ class HenvendelseServiceTest {
             val request = hentHenvendelseListeRequestArgumentCaptor.captured
             val values: List<XMLHenvendelseType> = ArrayList(listOf(*XMLHenvendelseType.values()))
             for (type in request.typer) {
-                MatcherAssert.assertThat(values.contains(XMLHenvendelseType.fromValue(type)), Matchers.`is`(true))
+                assertThat(values.contains(XMLHenvendelseType.fromValue(type)), Matchers.`is`(true))
             }
         }
     }
@@ -232,7 +232,7 @@ class HenvendelseServiceTest {
             val argumentCaptor = slot<WSHentHenvendelseListeRequest>()
             coEvery { henvendelsePortType.hentHenvendelseListe(capture(argumentCaptor)) } returns WSHentHenvendelseListeResponse()
             henvendelseService.hentAlleHenvendelser(subject)
-            MatcherAssert.assertThat(argumentCaptor.captured.typer, Matchers.hasItem(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name))
+            assertThat(argumentCaptor.captured.typer, Matchers.hasItem(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name))
         }
     }
 }

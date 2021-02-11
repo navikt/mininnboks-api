@@ -13,7 +13,7 @@ import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMa
 import no.nav.sbl.dialogarena.mininnboks.authenticateWithDummySubject
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.dummyPrincipalNiva3
-import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -40,7 +40,7 @@ class SporsmalControllerTest : Spek({
             it("retunerer Exception") {
                 handleRequest(HttpMethod.Get, "/sporsmal/ubehandlet") {
                 }.apply {
-                    MatcherAssert.assertThat(response.status(), Matchers.`is`(HttpStatusCode.OK))
+                    assertThat(response.status(), Matchers.`is`(HttpStatusCode.OK))
                     coVerify(exactly = 1) { henvendelseService.hentAlleHenvendelser(any()) }
                 }
             }
