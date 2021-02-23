@@ -1,4 +1,4 @@
-FROM navikt/java:11
+FROM navikt/java:11-appdynamics
 
 COPY init-scripts /init-scripts
 
@@ -12,5 +12,5 @@ ENV JAVA_OPTS="${JAVA_OPTS} -Dio.netty.tryReflectionSetAccessible=true"
 ENV JAVA_OPTS="${JAVA_OPTS} -XX:MaxRAMPercentage=65.0"
 
 COPY  build/install/mininnboks-api/lib/  ./lib
-COPY build/libs/mininnboks*.jar ./app.jar
+COPY build/libs/app.jar app.jar
 
