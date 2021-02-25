@@ -1,1 +1,0 @@
-{ antall, plural, one {# melding i tråden} other {# meldinger i traaden} }
