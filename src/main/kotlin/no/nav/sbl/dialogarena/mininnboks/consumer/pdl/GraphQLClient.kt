@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JavaType
 import no.nav.common.auth.subject.Subject
 import no.nav.common.log.MDCConstants
 import no.nav.common.rest.client.RestUtils
-import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
+import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
 import no.nav.sbl.dialogarena.mininnboks.externalCall
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -20,6 +20,7 @@ data class GraphQLError(val message: String)
 interface GraphQLRequest<VARIABLES : GraphQLVariables, RETURN_TYPE : GraphQLResult> {
     val query: String
     val variables: VARIABLES
+
     @get:JsonIgnore
     val expectedReturnType: Class<RETURN_TYPE>
 }
@@ -72,11 +73,10 @@ class GraphQLClient(
                 "${config.tjenesteNavn}-Response-body was empty"
             }
 
-
-            val typeReference: JavaType = ObjectMapperProvider.objectMapper.typeFactory
+            val typeReference: JavaType = JacksonUtils.objectMapper.typeFactory
                 .constructParametricType(GraphQLResponse::class.java, request.expectedReturnType)
 
-            val response: GraphQLResponse<DATA> = body.let { ObjectMapperProvider.objectMapper.readValue(it, typeReference) }
+            val response: GraphQLResponse<DATA> = body.let { JacksonUtils.objectMapper.readValue(it, typeReference) }
             if (response.errors?.isNotEmpty() == true) {
                 val errorMessages = response.errors.joinToString(", ") { it.message }
                 log.info(

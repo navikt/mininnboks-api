@@ -37,98 +37,97 @@ object HenvendelsesUtils {
     private val domainMapper = DomainMapper<XMLHenvendelse, Henvendelse>()
 
     private val henvendelseFactory =
-            { xmlHenvendelse: XMLHenvendelse ->
-                val henvendelseType = HENVENDELSETYPE_MAP[XMLHenvendelseType.fromValue(xmlHenvendelse.henvendelseType)]!!
-                Henvendelse(
-                        id = xmlHenvendelse.behandlingsId,
-                        opprettet = utilDate(xmlHenvendelse.opprettetDato),
-                        avsluttet = utilDate(xmlHenvendelse.avsluttetDato),
-                        ferdigstiltUtenSvar = xmlHenvendelse.isFerdigstiltUtenSvar,
-                        traadId = Optional.ofNullable(xmlHenvendelse.behandlingskjedeId).orElse(xmlHenvendelse.behandlingsId),
-                        eksternAktor = xmlHenvendelse.eksternAktor,
-                        tilknyttetEnhet = xmlHenvendelse.tilknyttetEnhet,
-                        kontorsperreEnhet = xmlHenvendelse.kontorsperreEnhet,
-                        erTilknyttetAnsatt = xmlHenvendelse.isErTilknyttetAnsatt,
-                        type = henvendelseType,
-                        brukersEnhet = xmlHenvendelse.brukersEnhet,
-                        fraBruker = FRA_BRUKER.contains(henvendelseType),
-                        fraNav = !FRA_BRUKER.contains(henvendelseType),
-                        temaKode = xmlHenvendelse.tema,
-                        korrelasjonsId = xmlHenvendelse.korrelasjonsId
-                )
-            }
+        { xmlHenvendelse: XMLHenvendelse ->
+            val henvendelseType = HENVENDELSETYPE_MAP[XMLHenvendelseType.fromValue(xmlHenvendelse.henvendelseType)]!!
+            Henvendelse(
+                id = xmlHenvendelse.behandlingsId,
+                opprettet = utilDate(xmlHenvendelse.opprettetDato),
+                avsluttet = utilDate(xmlHenvendelse.avsluttetDato),
+                ferdigstiltUtenSvar = xmlHenvendelse.isFerdigstiltUtenSvar,
+                traadId = Optional.ofNullable(xmlHenvendelse.behandlingskjedeId).orElse(xmlHenvendelse.behandlingsId),
+                eksternAktor = xmlHenvendelse.eksternAktor,
+                tilknyttetEnhet = xmlHenvendelse.tilknyttetEnhet,
+                kontorsperreEnhet = xmlHenvendelse.kontorsperreEnhet,
+                erTilknyttetAnsatt = xmlHenvendelse.isErTilknyttetAnsatt,
+                type = henvendelseType,
+                brukersEnhet = xmlHenvendelse.brukersEnhet,
+                fraBruker = FRA_BRUKER.contains(henvendelseType),
+                fraNav = !FRA_BRUKER.contains(henvendelseType),
+                temaKode = xmlHenvendelse.tema,
+                korrelasjonsId = xmlHenvendelse.korrelasjonsId
+            )
+        }
 
     private val LEST_MAPPER = DomainMapper.Mapper(
-            { true },
-            { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
-                henvendelse.copy(
-                        lestDato = if (FRA_BRUKER.contains(henvendelse.type)) Date() else utilDate(xmlHenvendelse.lestDato)
-                )
-            }
+        { true },
+        { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
+            henvendelse.copy(
+                lestDato = if (FRA_BRUKER.contains(henvendelse.type)) Date() else utilDate(xmlHenvendelse.lestDato)
+            )
+        }
     )
 
     private val KASSERT_MAPPER = DomainMapper.Mapper(
-            { xmlHenvendelse: XMLHenvendelse -> xmlHenvendelse.metadataListe == null },
-            { _: XMLHenvendelse, henvendelse: Henvendelse ->
-                henvendelse.copy(
-                        kassert = true,
-                        fritekst = hentTekst("innhold.kassert"),
-                        statusTekst = hentTekst("temagruppe.kassert"),
-                        temagruppe = null,
-                        kanal = null
-                )
-            },
-            true
+        { xmlHenvendelse: XMLHenvendelse -> xmlHenvendelse.metadataListe == null },
+        { _: XMLHenvendelse, henvendelse: Henvendelse ->
+            henvendelse.copy(
+                kassert = true,
+                fritekst = hentTekst("innhold.kassert"),
+                statusTekst = hentTekst("temagruppe.kassert"),
+                temagruppe = null,
+                kanal = null
+            )
+        },
+        true
     )
 
     private val DOKUMENTVARSEL_MAPPER = DomainMapper.Mapper(
-            { xmlHenvendelse: XMLHenvendelse -> Henvendelsetype.DOKUMENT_VARSEL.name == xmlHenvendelse.henvendelseType },
-            { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
-                val varsel = xmlHenvendelse.metadataListe.metadata[0] as XMLDokumentVarsel
-                henvendelse.copy(
-                        statusTekst = varsel.dokumenttittel,
-                        temaNavn = varsel.temanavn,
-                        temagruppe = null,
-                        fritekst = varsel.fritekst?:"",
-                        opprettet = utilDate(varsel.ferdigstiltDato),
-                        journalpostId = varsel.journalpostId,
-                        dokumentIdListe = varsel.dokumentIdListe as ArrayList<String>
-                )
-            }
+        { xmlHenvendelse: XMLHenvendelse -> Henvendelsetype.DOKUMENT_VARSEL.name == xmlHenvendelse.henvendelseType },
+        { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
+            val varsel = xmlHenvendelse.metadataListe.metadata[0] as XMLDokumentVarsel
+            henvendelse.copy(
+                statusTekst = varsel.dokumenttittel,
+                temaNavn = varsel.temanavn,
+                temagruppe = null,
+                fritekst = varsel.fritekst ?: "",
+                opprettet = utilDate(varsel.ferdigstiltDato),
+                journalpostId = varsel.journalpostId,
+                dokumentIdListe = varsel.dokumentIdListe as ArrayList<String>
+            )
+        }
     )
     private val OPPGAVEVARSEL_MAPPER = DomainMapper.Mapper(
-            { xmlHenvendelse: XMLHenvendelse -> Henvendelsetype.OPPGAVE_VARSEL.name == xmlHenvendelse.henvendelseType },
-            { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
-                val varsel = xmlHenvendelse.metadataListe.metadata[0] as XMLOppgaveVarsel
-                henvendelse.copy(
-                        oppgaveType = varsel.oppgaveType,
-                        oppgaveUrl = varsel.oppgaveURL,
-                        statusTekst = hentTekst(String.format("oppgave.%s", varsel.oppgaveType), "oppgave.GEN"),
-                        fritekst = hentTekst(String.format("oppgave.%s.fritekst", varsel.oppgaveType), "oppgave.GEN.fritekst")
-                )
-            }
+        { xmlHenvendelse: XMLHenvendelse -> Henvendelsetype.OPPGAVE_VARSEL.name == xmlHenvendelse.henvendelseType },
+        { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
+            val varsel = xmlHenvendelse.metadataListe.metadata[0] as XMLOppgaveVarsel
+            henvendelse.copy(
+                oppgaveType = varsel.oppgaveType,
+                oppgaveUrl = varsel.oppgaveURL,
+                statusTekst = hentTekst(String.format("oppgave.%s", varsel.oppgaveType), "oppgave.GEN"),
+                fritekst = hentTekst(String.format("oppgave.%s.fritekst", varsel.oppgaveType), "oppgave.GEN.fritekst")
+            )
+        }
     )
     private val IKKEVARSEL_MAPPER = DomainMapper.Mapper(
-            { xmlHenvendelse: XMLHenvendelse ->
-                Henvendelsetype.OPPGAVE_VARSEL.name != xmlHenvendelse.henvendelseType &&
-                        Henvendelsetype.DOKUMENT_VARSEL.name != xmlHenvendelse.henvendelseType
-            },
-            { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
-                val xmlMelding = xmlHenvendelse.metadataListe.metadata[0] as XMLMelding
-                henvendelse.copy(
-                        temagruppe = Temagruppe.valueOf(xmlMelding.temagruppe),
-                        temagruppeNavn = hentTemagruppeNavn(xmlMelding.temagruppe),
-                        statusTekst = statusTekst(henvendelse, xmlMelding),
-                        fritekst = cleanOutHtml(xmlMelding.fritekst),
-                        kanal = if (xmlMelding is XMLMeldingTilBruker) xmlMelding.kanal else null
-                )
-            }
+        { xmlHenvendelse: XMLHenvendelse ->
+            Henvendelsetype.OPPGAVE_VARSEL.name != xmlHenvendelse.henvendelseType &&
+                Henvendelsetype.DOKUMENT_VARSEL.name != xmlHenvendelse.henvendelseType
+        },
+        { xmlHenvendelse: XMLHenvendelse, henvendelse: Henvendelse ->
+            val xmlMelding = xmlHenvendelse.metadataListe.metadata[0] as XMLMelding
+            henvendelse.copy(
+                temagruppe = Temagruppe.valueOf(xmlMelding.temagruppe),
+                temagruppeNavn = hentTemagruppeNavn(xmlMelding.temagruppe),
+                statusTekst = statusTekst(henvendelse, xmlMelding),
+                fritekst = cleanOutHtml(xmlMelding.fritekst),
+                kanal = if (xmlMelding is XMLMeldingTilBruker) xmlMelding.kanal else null
+            )
+        }
     )
 
     fun tilHenvendelse(wsMelding: XMLHenvendelse): Henvendelse {
         return domainMapper.apply(wsMelding, henvendelseFactory(wsMelding))
     }
-
 
     private fun hentTemagruppeNavn(temagruppeNavn: String?): String? {
         return try {
@@ -148,7 +147,7 @@ object HenvendelsesUtils {
         return tekst?.replace("[\\u00a0\\u2007\\u202f]".toRegex(), " ").toString()
     }
 
-    private fun statusTekst(henvendelse: Henvendelse, xmlMelding: XMLMelding): String { //NOSONAR
+    private fun statusTekst(henvendelse: Henvendelse, xmlMelding: XMLMelding): String { // NOSONAR
         if (!skalVisesTilBruker(henvendelse.type)) {
             return ""
         }

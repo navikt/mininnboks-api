@@ -21,9 +21,7 @@ import javax.xml.ws.soap.SOAPFaultException
 
 val logger: Logger = LoggerFactory.getLogger("mininnboks.henvendelseController")
 
-
 fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangService: TilgangService) {
-
     route("/traader") {
         hentAlleTraader(henvendelseService)
 
@@ -46,10 +44,12 @@ private fun Route.hentAlleTraader(henvendelseService: HenvendelseService) {
         withSubject(AuthLevel.Level4) { subject ->
             val henvendelser: List<Henvendelse> = henvendelseService.hentAlleHenvendelser(subject)
             val traader: Map<String?, List<Henvendelse>> = henvendelser.groupBy { it.traadId }
-            call.respond(traader.values
+            call.respond(
+                traader.values
                     .map { list: List<Henvendelse> -> filtrerDelsvar(list) }
                     .map { meldinger: List<Henvendelse> -> Traad(meldinger) }
-                    .sortedWith(Traad.NYESTE_FORST))
+                    .sortedWith(Traad.NYESTE_FORST)
+            )
         }
     }
 }
@@ -78,17 +78,18 @@ private fun Route.svar(henvendelseService: HenvendelseService) {
 
 private fun createHenvendelse(svar: Svar, traad: Traad): Henvendelse {
     return Henvendelse(
-            fritekst = svar.fritekst,
-            temagruppe = traad.nyeste?.temagruppe,
-            traadId = svar.traadId,
-            eksternAktor = traad.nyeste?.eksternAktor,
-            brukersEnhet = traad.eldste?.brukersEnhet,
-            tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet,
-            type = Henvendelsetype.SVAR_SBL_INNGAAENDE,
-            opprettet = Date(),
-            lestDato = Date(),
-            erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt,
-            kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet)
+        fritekst = svar.fritekst,
+        temagruppe = traad.nyeste?.temagruppe,
+        traadId = svar.traadId,
+        eksternAktor = traad.nyeste?.eksternAktor,
+        brukersEnhet = traad.eldste?.brukersEnhet,
+        tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet,
+        type = Henvendelsetype.SVAR_SBL_INNGAAENDE,
+        opprettet = Date(),
+        lestDato = Date(),
+        erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt,
+        kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet
+    )
 }
 
 private fun Route.sporsmaldirekte(tilgangService: TilgangService, henvendelseService: HenvendelseService) {
@@ -144,8 +145,9 @@ private fun Route.postByBehandlingsId(henvendelseService: HenvendelseService) {
 private fun Route.getId(henvendelseService: HenvendelseService) {
     get("/{id}") {
         val id = call.parameters["id"]
-        if (id == null)
+        if (id == null) {
             call.respond(HttpStatusCode.NotFound)
+        }
         withSubject(AuthLevel.Level4) { subject ->
             if (id != null) {
                 val traad = hentTraad(henvendelseService, id, subject)
@@ -184,10 +186,10 @@ suspend fun harTilgangTilKommunalInnsending(tilgangService: TilgangService, subj
 fun filtrerDelsvar(traad: List<Henvendelse>): List<Henvendelse> {
     return if (traadHarIkkeSkriftligSvarFraNAV(traad)) {
         traad.filter { henvendelse -> henvendelse.type != Henvendelsetype.DELVIS_SVAR_SKRIFTLIG }
-    } else
+    } else {
         traad
+    }
 }
-
 
 fun traadHarIkkeSkriftligSvarFraNAV(traad: List<Henvendelse?>?): Boolean {
     return traad?.filter { henvendelse -> henvendelse?.type == Henvendelsetype.SVAR_SKRIFTLIG }.isNullOrEmpty()
@@ -204,7 +206,6 @@ suspend fun hentTraad(henvendelseService: HenvendelseService, id: String, subjec
     } catch (fault: SoapFault) {
         logger.error("Fant ikke tråd med id: $id", fault)
         null
-
     } catch (fault1: SOAPFaultException) {
         logger.error("Fant ikke tråd med id: $id", fault1)
         null
@@ -213,7 +214,6 @@ suspend fun hentTraad(henvendelseService: HenvendelseService, id: String, subjec
         null
     }
 }
-
 
 class NyHenvendelseResultat(val behandlingsId: String?)
 

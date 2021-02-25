@@ -8,11 +8,8 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
 import no.nav.sbl.dialogarena.mininnboks.provider.LinkService
 
 fun Route.resourcesController() {
-
     route("/resources") {
-
         get {
-
             val tekster: MutableMap<String?, String?> = HashMap()
             TekstServiceImpl.hentTekster().let { it1 -> tekster.putAll(it1) }
             tekster["skriv.ny.link"] = LinkService.TEMAVELGER_LINK

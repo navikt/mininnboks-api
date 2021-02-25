@@ -17,7 +17,6 @@ const val PDL_API_APIKEY = "PDL_API_APIKEY"
 const val STS_APIKEY = "STS_APIKEY"
 private const val DEFAULT_SECRETS_BASE_PATH = "/var/run/secrets/nais.io"
 
-
 fun main() {
     loadVaultSecrets()
     loadApigwKeys()
@@ -25,15 +24,17 @@ fun main() {
     val applicationState = ApplicationState()
 
     val applicationServer = createHttpServer(
-            applicationState = applicationState,
-            configuration = configuration
+        applicationState = applicationState,
+        configuration = configuration
     )
 
-    Runtime.getRuntime().addShutdownHook(Thread {
-        log.info("Shutdown hook called, shutting down gracefully")
-        applicationState.initialized = false
-        applicationServer.stop(5000, 5000)
-    })
+    Runtime.getRuntime().addShutdownHook(
+        Thread {
+            log.info("Shutdown hook called, shutting down gracefully")
+            applicationState.initialized = false
+            applicationServer.stop(5000, 5000)
+        }
+    )
 
     applicationServer.start(wait = true)
 }
@@ -56,4 +57,3 @@ private fun getApigwKey(producerApp: String): String? {
     val location = "%s/apigw/%s/x-nav-apiKey".format(DEFAULT_SECRETS_BASE_PATH, producerApp)
     return NaisUtils.getFileContent(location)
 }
-

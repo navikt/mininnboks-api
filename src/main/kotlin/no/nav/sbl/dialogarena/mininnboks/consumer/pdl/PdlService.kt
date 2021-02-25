@@ -177,7 +177,6 @@ open class PdlService(
         }
     }
 
-
     private suspend fun harGradering(
         subject: Subject,
         gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering
@@ -187,16 +186,14 @@ open class PdlService(
     }
 
     fun checkHealth(): HealthCheckResult {
-
         kotlin.runCatching {
             pingGraphQL()
-
         }.onSuccess {
-            return if (it == 200)
+            return if (it == 200) {
                 HealthCheckResult.healthy()
-            else
+            } else {
                 HealthCheckResult.unhealthy("Statuskode: $it")
-
+            }
         }.onFailure {
             return HealthCheckResult.unhealthy(it.message)
         }
