@@ -20,7 +20,7 @@ class Traad(meldinger: List<Henvendelse>) {
 
     init {
         this.meldinger = meldinger
-                .sortedWith(Henvendelse.NYESTE_OVERST)
+            .sortedWith(Henvendelse.NYESTE_OVERST)
 
         nyeste = this.meldinger[0]
         eldste = this.meldinger[this.meldinger.size - 1]

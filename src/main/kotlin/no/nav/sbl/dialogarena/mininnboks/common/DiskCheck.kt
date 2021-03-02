@@ -5,7 +5,6 @@ import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import java.io.File
 
-
 class DiskCheck : HealthCheck {
     override fun checkHealth(): HealthCheckResult {
         val freeSpace = DISK.freeSpace
@@ -19,9 +18,10 @@ class DiskCheck : HealthCheck {
         private const val LIMIT = 300000000L
         private val DISK = File(".").absoluteFile
         fun asSelftestCheck(): SelfTestCheck {
-            return SelfTestCheck(String.format("Sjekk for om det er mindre enn %s MB diskplass ledig", LIMIT / 1000000),
-                    false,
-                    INSTANCE
+            return SelfTestCheck(
+                String.format("Sjekk for om det er mindre enn %s MB diskplass ledig", LIMIT / 1000000),
+                false,
+                INSTANCE
             )
         }
     }

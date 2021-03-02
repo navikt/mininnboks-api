@@ -9,7 +9,7 @@ import io.ktor.server.testing.*
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
+import no.nav.sbl.dialogarena.mininnboks.JacksonUtils.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.authenticateWithDummySubject
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.dummyPrincipalNiva3

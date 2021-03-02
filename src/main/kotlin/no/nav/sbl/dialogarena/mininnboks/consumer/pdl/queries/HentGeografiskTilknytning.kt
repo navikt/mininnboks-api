@@ -26,6 +26,7 @@ class HentGeografiskTilknytning(override val variables: Variables) :
         BYDEL,
         UTLAND,
         UDEFINERT,
+
         /**
          * This is a default enum value that will be used when attempting to deserialize unknown value.
          */
