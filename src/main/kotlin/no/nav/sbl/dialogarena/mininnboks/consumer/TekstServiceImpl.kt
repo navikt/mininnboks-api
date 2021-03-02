@@ -6,7 +6,6 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.util.*
 import java.util.regex.Pattern
 
-
 object TekstServiceImpl : TekstService {
     val tekster: MutableMap<String, String?> = HashMap()
 
@@ -14,12 +13,15 @@ object TekstServiceImpl : TekstService {
         val uri: URI? = TekstServiceImpl::class.java.classLoader?.getResource("tekster/mininnboks")?.toURI()
         (if (uri?.scheme == "jar") FileSystems.newFileSystem(uri, Collections.emptyMap<String, Any>()) else null).use {
             val myPath: Path = Paths.get(uri!!)
-            Files.walkFileTree(myPath, object : SimpleFileVisitor<Path>() {
-                override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
-                    tekster[finnKey(file)] = Files.readString(file).trim()
-                    return FileVisitResult.CONTINUE
+            Files.walkFileTree(
+                myPath,
+                object : SimpleFileVisitor<Path>() {
+                    override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
+                        tekster[finnKey(file)] = Files.readString(file).trim()
+                        return FileVisitResult.CONTINUE
+                    }
                 }
-            })
+            )
         }
     }
 
@@ -45,5 +47,4 @@ object TekstServiceImpl : TekstService {
     init {
         lastTekster()
     }
-
 }

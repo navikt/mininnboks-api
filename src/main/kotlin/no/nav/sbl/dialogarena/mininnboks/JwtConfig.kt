@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory
 import java.net.URL
 import java.util.concurrent.TimeUnit
 
-
 private val logger = LoggerFactory.getLogger("mininnboks-api.JwtConfig")
 
 class JwtUtil {
@@ -29,10 +28,10 @@ class JwtUtil {
         }
 
         fun makeJwkProvider(jwksUrl: String): JwkProvider =
-                JwkProviderBuilder(URL(jwksUrl))
-                        .cached(10, 24, TimeUnit.HOURS)
-                        .rateLimited(10, 1, TimeUnit.MINUTES)
-                        .build()
+            JwkProviderBuilder(URL(jwksUrl))
+                .cached(10, 24, TimeUnit.HOURS)
+                .rateLimited(10, 1, TimeUnit.MINUTES)
+                .build()
 
         fun validateJWT(call: ApplicationCall, credentials: JWTCredential, clientId: String): Principal? {
             return try {
@@ -40,12 +39,13 @@ class JwtUtil {
                 require(credentials.payload.audience.contains(clientId)) { "Audience claim is not correct: $credentials.payload.audience" }
 
                 val token = extractToken(call)
-                SubjectPrincipal(Subject(
+                SubjectPrincipal(
+                    Subject(
                         credentials.payload.subject,
                         IdentType.EksternBruker,
                         SsoToken.oidcToken(token, credentials.payload.claims)
-                ),
-                        credentials.payload.claims.getValue("acr").asString()
+                    ),
+                    credentials.payload.claims.getValue("acr").asString()
                 )
             } catch (e: Exception) {
                 logger.error("Failed to validate JWT token", e)
@@ -53,8 +53,10 @@ class JwtUtil {
             }
         }
 
-        private fun extractToken(call: ApplicationCall) = (call.request.cookies["selvbetjening-idtoken"]
-                ?: call.request.headers["Authorization"]?.removePrefix("Bearer"))
+        private fun extractToken(call: ApplicationCall) = (
+            call.request.cookies["selvbetjening-idtoken"]
+                ?: call.request.headers["Authorization"]?.removePrefix("Bearer")
+            )
     }
 }
 

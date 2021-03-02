@@ -35,8 +35,8 @@ interface TilgangService {
 }
 
 class TilgangServiceImpl(
-        private val pdlService: PdlService,
-        private val personService: PersonService
+    private val pdlService: PdlService,
+    private val personService: PersonService
 ) : TilgangService {
     private val log = LoggerFactory.getLogger(TilgangService::class.java)
 
@@ -72,7 +72,7 @@ class TilgangServiceImpl(
         val gt = gtAsync.await()
         val adresser = adresserAsync.await()
 
-        val adresseMedGt = adresser?.copy( geografiskTilknytning = gt )
+        val adresseMedGt = adresser?.copy(geografiskTilknytning = gt)
         AdresseDTO.fromAdresse(adresseMedGt)
     }
 }

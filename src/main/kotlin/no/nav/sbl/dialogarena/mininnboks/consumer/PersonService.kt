@@ -31,7 +31,7 @@ interface PersonService {
                 return null
             }
             return response.let { obj: HentGeografiskTilknytningResponse -> obj.geografiskTilknytning }
-                    .let { obj: GeografiskTilknytning -> obj.geografiskTilknytning }
+                .let { obj: GeografiskTilknytning -> obj.geografiskTilknytning }
         }
 
         private fun lagAktoer(ident: String): PersonIdent {
@@ -41,8 +41,7 @@ interface PersonService {
         companion object {
             val logger: Logger = LoggerFactory.getLogger(PersonService::class.java)
             val personV3IdentType: Personidenter = Personidenter()
-                    .withValue("FNR")
+                .withValue("FNR")
         }
-
     }
 }

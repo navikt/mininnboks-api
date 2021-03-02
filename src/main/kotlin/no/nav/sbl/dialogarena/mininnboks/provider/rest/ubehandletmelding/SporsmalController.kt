@@ -8,15 +8,13 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.withSubject
 
 fun Route.sporsmalController(henvendelseService: HenvendelseService) {
-
     route("/sporsmal") {
         get("/ubehandlet") {
             withSubject(AuthLevel.Level3) { subject ->
                 call.respond(
-                        UbehandletMeldingUtils.hentUbehandledeMeldinger(henvendelseService.hentAlleHenvendelser(subject))
+                    UbehandletMeldingUtils.hentUbehandledeMeldinger(henvendelseService.hentAlleHenvendelser(subject))
                 )
             }
         }
     }
 }
-

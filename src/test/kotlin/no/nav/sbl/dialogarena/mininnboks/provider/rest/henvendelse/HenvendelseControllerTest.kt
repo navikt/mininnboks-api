@@ -13,7 +13,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.slot
-import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
+import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.authenticateWithDummySubject
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
@@ -58,7 +58,7 @@ class HenvendelseControllerTest : Spek({
             }
         }
         engine.application.install(ContentNegotiation) {
-            register(ContentType.Application.Json, JacksonConverter(ObjectMapperProvider.objectMapper))
+            register(ContentType.Application.Json, JacksonConverter(JacksonUtils.objectMapper))
         }
         with(engine) {
             it("henter Ut Alle Henvendelser Og Gjor Om Til Traader") {

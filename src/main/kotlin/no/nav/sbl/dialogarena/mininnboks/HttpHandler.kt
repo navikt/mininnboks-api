@@ -18,7 +18,7 @@ import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
-import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider.Companion.objectMapper
+import no.nav.sbl.dialogarena.mininnboks.JacksonUtils.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.henvendelseController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.naisRoutes
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.resourcesController
@@ -34,7 +34,6 @@ fun createHttpServer(
     configuration: Configuration,
     port: Int = 8080
 ): ApplicationEngine = embeddedServer(Netty, port) {
-
     installKtorFeatures(configuration)
 
     val serviceConfig = ServiceConfig(configuration)
@@ -80,7 +79,6 @@ private fun Application.installKtorFeatures(configuration: Configuration) {
         )
     }
 
-
     install(Authentication) {
         jwt {
             authHeader(JwtUtil::useJwtFromCookie)
@@ -101,4 +99,3 @@ private fun Application.installKtorFeatures(configuration: Configuration) {
         MDC.configure(this)
     }
 }
-

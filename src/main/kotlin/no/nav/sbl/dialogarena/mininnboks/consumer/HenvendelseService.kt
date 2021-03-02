@@ -26,11 +26,12 @@ interface HenvendelseService {
     suspend fun merkAlleSomLest(behandlingskjedeId: String, subject: Subject)
     suspend fun merkSomLest(id: String, subject: Subject)
 
-    class Default(private val henvendelsePortType: HenvendelsePortType,
-                  private val sendInnHenvendelsePortType: SendInnHenvendelsePortType,
-                  private val innsynHenvendelsePortType: InnsynHenvendelsePortType,
-                  private val personService: PersonService) : HenvendelseService {
-
+    class Default(
+        private val henvendelsePortType: HenvendelsePortType,
+        private val sendInnHenvendelsePortType: SendInnHenvendelsePortType,
+        private val innsynHenvendelsePortType: InnsynHenvendelsePortType,
+        private val personService: PersonService
+    ) : HenvendelseService {
 
         override suspend fun stillSporsmal(henvendelse: Henvendelse, overstyrtGt: String?, subject: Subject): WSSendInnHenvendelseResponse {
             return sentSporsmalHenvendelse(henvendelse, subject, overstyrtGt, XMLHenvendelseType.SPORSMAL_SKRIFTLIG)
@@ -46,7 +47,6 @@ interface HenvendelseService {
             overstyrtGt: String?,
             xmlHenvendelseType: XMLHenvendelseType
         ): WSSendInnHenvendelseResponse {
-
             val enhet = overstyrtGt ?: personService.hentGeografiskTilknytning(subject)
             val sporsmaltekst = HenvendelsesUtils.cleanOutHtml(HenvendelsesUtils.fjernHardeMellomrom(henvendelse.fritekst))
 
@@ -59,15 +59,17 @@ interface HenvendelseService {
                     behandlingskjedeId = null
                     brukersEnhet = enhet
                     metadataListe = XMLMetadataListe().withMetadata(
-                            XMLMeldingFraBruker()
-                                    .withTemagruppe(henvendelse.temagruppe?.name)
-                                    .withFritekst(sporsmaltekst))
+                        XMLMeldingFraBruker()
+                            .withTemagruppe(henvendelse.temagruppe?.name)
+                            .withFritekst(sporsmaltekst)
+                    )
                 }
                 sendInnHenvendelsePortType.sendInnHenvendelse(
-                        WSSendInnHenvendelseRequest()
-                                .withType(xmlHenvendelseType.name)
-                                .withFodselsnummer(subject.uid)
-                                .withAny(info))
+                    WSSendInnHenvendelseRequest()
+                        .withType(xmlHenvendelseType.name)
+                        .withFodselsnummer(subject.uid)
+                        .withAny(info)
+                )
             }
         }
 
@@ -76,10 +78,12 @@ interface HenvendelseService {
             val svartekst = HenvendelsesUtils.cleanOutHtml(HenvendelsesUtils.fjernHardeMellomrom(henvendelse.fritekst))
             val info = createXmlHenvendelse(xmlHenvendelseType, henvendelse, svartekst)
             return externalCall(subject) {
-                sendInnHenvendelsePortType.sendInnHenvendelse(WSSendInnHenvendelseRequest()
+                sendInnHenvendelsePortType.sendInnHenvendelse(
+                    WSSendInnHenvendelseRequest()
                         .withType(xmlHenvendelseType)
                         .withFodselsnummer(subject.uid)
-                        .withAny(info))
+                        .withAny(info)
+                )
             }
         }
 
@@ -96,17 +100,18 @@ interface HenvendelseService {
                 brukersEnhet = henvendelse.brukersEnhet
                 kontorsperreEnhet = henvendelse.kontorsperreEnhet
                 metadataListe = XMLMetadataListe().withMetadata(
-                        XMLMeldingFraBruker()
-                                .withTemagruppe(henvendelse.temagruppe!!.name)
-                                .withFritekst(svartekst))
+                    XMLMeldingFraBruker()
+                        .withTemagruppe(henvendelse.temagruppe!!.name)
+                        .withFritekst(svartekst)
+                )
             }
         }
 
         override suspend fun merkAlleSomLest(behandlingskjedeId: String, subject: Subject) {
             val traad = hentTraad(behandlingskjedeId, subject)
             val ids = traad
-                    .filter { henvendelse: Henvendelse -> !henvendelse.isLest }
-                    .map { henvendelse: Henvendelse -> henvendelse.id }
+                .filter { henvendelse: Henvendelse -> !henvendelse.isLest }
+                .map { henvendelse: Henvendelse -> henvendelse.id }
             externalCall(subject) {
                 innsynHenvendelsePortType.merkSomLest(ids)
             }
@@ -119,17 +124,17 @@ interface HenvendelseService {
         }
 
         override suspend fun hentAlleHenvendelser(subject: Subject): List<Henvendelse> {
-
             val wsHenvendelser = externalCall(subject) {
                 henvendelsePortType.hentHenvendelseListe(
-                        WSHentHenvendelseListeRequest()
-                                .withFodselsnummer(subject.uid)
-                                .withTyper(typer))
-                        .any
-                        .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
+                    WSHentHenvendelseListeRequest()
+                        .withFodselsnummer(subject.uid)
+                        .withTyper(typer)
+                )
+                    .any
+                    .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
             }
             return wsHenvendelser
-                    .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         }
 
         override suspend fun hentTraad(behandlingskjedeId: String, subject: Subject): List<Henvendelse> {
@@ -137,27 +142,27 @@ interface HenvendelseService {
                 henvendelsePortType.hentBehandlingskjede(WSHentBehandlingskjedeRequest().withBehandlingskjedeId(behandlingskjedeId)).any
             }
             return wsBehandlingskjeder
-                    .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
-                    .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+                .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
+                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         }
     }
 
     companion object {
         const val KONTAKT_NAV_SAKSTEMA = "KNA"
         val typer = listOf(
-                XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name,
-                XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name,
-                XMLHenvendelseType.SVAR_SKRIFTLIG.name,
-                XMLHenvendelseType.SVAR_OPPMOTE.name,
-                XMLHenvendelseType.SVAR_TELEFON.name,
-                XMLHenvendelseType.REFERAT_OPPMOTE.name,
-                XMLHenvendelseType.REFERAT_TELEFON.name,
-                XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name,
-                XMLHenvendelseType.INFOMELDING_MODIA_UTGAAENDE.name,
-                XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name,
-                XMLHenvendelseType.DOKUMENT_VARSEL.name,
-                XMLHenvendelseType.OPPGAVE_VARSEL.name,
-                XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name)
-
+            XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name,
+            XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name,
+            XMLHenvendelseType.SVAR_SKRIFTLIG.name,
+            XMLHenvendelseType.SVAR_OPPMOTE.name,
+            XMLHenvendelseType.SVAR_TELEFON.name,
+            XMLHenvendelseType.REFERAT_OPPMOTE.name,
+            XMLHenvendelseType.REFERAT_TELEFON.name,
+            XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name,
+            XMLHenvendelseType.INFOMELDING_MODIA_UTGAAENDE.name,
+            XMLHenvendelseType.SVAR_SBL_INNGAAENDE.name,
+            XMLHenvendelseType.DOKUMENT_VARSEL.name,
+            XMLHenvendelseType.OPPGAVE_VARSEL.name,
+            XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name
+        )
     }
 }
