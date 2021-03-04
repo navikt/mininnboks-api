@@ -7,23 +7,22 @@ import no.nav.common.utils.EnvironmentUtils
 import no.nav.common.utils.SslUtils
 import java.util.*
 
-
 class TruststoreCheck : HealthCheck {
     override fun checkHealth(): HealthCheckResult {
         val truststore: Optional<String> = EnvironmentUtils
-                .getOptionalProperty(SslUtils.NAV_TRUSTSTORE_PATH)
+            .getOptionalProperty(SslUtils.NAV_TRUSTSTORE_PATH)
         return truststore
-                .map { HealthCheckResult.healthy() }
-                .orElseGet { HealthCheckResult.unhealthy(truststore.orElse("N/A")) }
+            .map { HealthCheckResult.healthy() }
+            .orElseGet { HealthCheckResult.unhealthy(truststore.orElse("N/A")) }
     }
 
     companion object {
         private val INSTANCE = TruststoreCheck()
         fun asSelftestCheck(): SelfTestCheck {
             return SelfTestCheck(
-                    "Sjekker at truststore er satt",
-                    true,
-                    INSTANCE
+                "Sjekker at truststore er satt",
+                true,
+                INSTANCE
             )
         }
     }

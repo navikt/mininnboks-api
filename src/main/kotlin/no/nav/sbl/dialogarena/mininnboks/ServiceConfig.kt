@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.mininnboks
 
-
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
@@ -27,30 +26,34 @@ import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
 import org.slf4j.MDC
 import java.util.*
 
-
 class ServiceConfig(val configuration: Configuration) {
 
-    private val personV3 = portBuilder(PersonV3::class.java,
-            configuration.PERSON_V_3_URL,
-            "",
-            stsConfig())
-
-    val henvendelsePortType = portBuilder(HenvendelsePortType::class.java,
-            configuration.HENVENDELSE_WS_URL,
-            "classpath:wsdl/Henvendelse.wsdl",
-            stsConfig()
+    private val personV3 = portBuilder(
+        PersonV3::class.java,
+        configuration.PERSON_V_3_URL,
+        "",
+        stsConfig()
     )
 
-    val sendInnHenvendelsePortType = portBuilder(SendInnHenvendelsePortType::class.java,
-            configuration.SEND_INN_HENVENDELSE_WS_URL,
-            "classpath:wsdl/SendInnHenvendelse.wsdl",
-            stsConfig()
+    val henvendelsePortType = portBuilder(
+        HenvendelsePortType::class.java,
+        configuration.HENVENDELSE_WS_URL,
+        "classpath:wsdl/Henvendelse.wsdl",
+        stsConfig()
     )
 
-    val innsynHenvendelsePortType = portBuilder(InnsynHenvendelsePortType::class.java,
-            configuration.INNSYN_HENVENDELSE_WS_URL,
-            "classpath:wsdl/InnsynHenvendelse.wsdl",
-            stsConfig()
+    val sendInnHenvendelsePortType = portBuilder(
+        SendInnHenvendelsePortType::class.java,
+        configuration.SEND_INN_HENVENDELSE_WS_URL,
+        "classpath:wsdl/SendInnHenvendelse.wsdl",
+        stsConfig()
+    )
+
+    val innsynHenvendelsePortType = portBuilder(
+        InnsynHenvendelsePortType::class.java,
+        configuration.INNSYN_HENVENDELSE_WS_URL,
+        "classpath:wsdl/InnsynHenvendelse.wsdl",
+        stsConfig()
     )
 
     val personService = PersonService.Default(personV3.port)
@@ -69,34 +72,37 @@ class ServiceConfig(val configuration: Configuration) {
     }
 
     val selfTestCheckPersonV3: SelfTestCheck =
-            portTypeSelfTestCheck("personV3") {
-                personV3.pingPort.ping()
-            }
+        portTypeSelfTestCheck("personV3") {
+            personV3.pingPort.ping()
+        }
 
     val selfTestCheckHenvendelse: SelfTestCheck = portTypeSelfTestCheck(
-            "no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType") {
+        "no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType"
+    ) {
         henvendelsePortType.pingPort.ping()
     }
 
     val selfTestCheckSendInnHenvendelsePortType: SelfTestCheck = portTypeSelfTestCheck(
-            "no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType") {
+        "no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType"
+    ) {
         sendInnHenvendelsePortType.pingPort.ping()
     }
 
     val selfTestCheckInnsynHenvendelsePortType: SelfTestCheck = portTypeSelfTestCheck(
-            "no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType") {
+        "no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType"
+    ) {
         innsynHenvendelsePortType.pingPort.ping()
     }
 
     val selfTestChecklist = listOf(
-            pdlService.selfTestCheck,
-            selfTestCheckStsService,
-            selfTestCheckPersonV3,
-            selfTestCheckHenvendelse,
-            selfTestCheckSendInnHenvendelsePortType,
-            selfTestCheckInnsynHenvendelsePortType,
-            DiskCheck.asSelftestCheck(),
-            TruststoreCheck.asSelftestCheck()
+        pdlService.selfTestCheck,
+        selfTestCheckStsService,
+        selfTestCheckPersonV3,
+        selfTestCheckHenvendelse,
+        selfTestCheckSendInnHenvendelsePortType,
+        selfTestCheckInnsynHenvendelsePortType,
+        DiskCheck.asSelftestCheck(),
+        TruststoreCheck.asSelftestCheck()
     )
 
     private fun checkHealthStsService(): HealthCheckResult {
@@ -113,28 +119,28 @@ class ServiceConfig(val configuration: Configuration) {
         checkNotNull(innsynHenvendelsePortType) { "innsynHenvendelsePortType is null" }
 
         return HenvendelseService.Default(
-                henvendelsePortType.port,
-                sendInnHenvendelsePortType.port,
-                innsynHenvendelsePortType.port,
-                personService
+            henvendelsePortType.port,
+            sendInnHenvendelsePortType.port,
+            innsynHenvendelsePortType.port,
+            personService
         )
     }
 
     private fun stsConfig(): StsConfig? {
         return StsConfig.builder()
-                .url(configuration.SECURITYTOKENSERVICE_URL)
-                .username(configuration.SRVMININNBOKS_USERNAME)
-                .password(configuration.SRVMININNBOKS_PASSWORD)
-                .build()
+            .url(configuration.SECURITYTOKENSERVICE_URL)
+            .username(configuration.SRVMININNBOKS_USERNAME)
+            .password(configuration.SRVMININNBOKS_PASSWORD)
+            .build()
     }
 
     private fun systemUserTokenProvider(): SystemuserTokenProvider {
         return fromTokenEndpoint(
-                configuration.STS_TOKENENDPOINT_URL,
-                configuration.FSS_SRVMININNBOKS_USERNAME,
-                configuration.FSS_SRVMININNBOKS_PASSWORD,
-                configuration.STS_APIKEY,
-                RestClient.baseClientBuilder().build()
+            configuration.STS_TOKENENDPOINT_URL,
+            configuration.FSS_SRVMININNBOKS_USERNAME,
+            configuration.FSS_SRVMININNBOKS_PASSWORD,
+            configuration.STS_APIKEY,
+            RestClient.baseClientBuilder().build()
         )
     }
 

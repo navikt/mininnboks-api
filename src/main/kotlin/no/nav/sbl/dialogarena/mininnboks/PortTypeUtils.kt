@@ -13,8 +13,10 @@ import no.nav.melding.domene.brukerdialog.behandlingsinformasjon.v1.XMLMetadataL
 object PortUtils {
 
     fun <T> portBuilder(clazz: Class<T>, address: String, wsdlUrl: String, stsConfig: StsConfig?): PortType<T> {
-        return PortType(cxfClientBuilder(clazz, address, wsdlUrl).configureStsForSubject(stsConfig).build(),
-                cxfClientBuilder(clazz, address, wsdlUrl).configureStsForSystemUser(stsConfig).build())
+        return PortType(
+            cxfClientBuilder(clazz, address, wsdlUrl).configureStsForSubject(stsConfig).build(),
+            cxfClientBuilder(clazz, address, wsdlUrl).configureStsForSystemUser(stsConfig).build()
+        )
     }
 
     fun portTypeSelfTestCheck(portTypeName: String, block: () -> Unit): SelfTestCheck {
@@ -32,17 +34,19 @@ object PortUtils {
 
     private fun <T> cxfClientBuilder(t: Class<T>, address: String, wsdlUrl: String): CXFClient<T> {
         return CXFClient<T>(t)
-                .address(address)
-                .wsdl(wsdlUrl)
-                .timeout(5_000, 20_000)
-                .withProperty("jaxb.additionalContextClasses", arrayOf<Class<*>>(
-                        XMLHenvendelse::class.java,
-                        XMLMetadataListe::class.java,
-                        XMLMeldingFraBruker::class.java,
-                        XMLMeldingTilBruker::class.java)
+            .address(address)
+            .wsdl(wsdlUrl)
+            .timeout(5_000, 20_000)
+            .withProperty(
+                "jaxb.additionalContextClasses",
+                arrayOf<Class<*>>(
+                    XMLHenvendelse::class.java,
+                    XMLMetadataListe::class.java,
+                    XMLMeldingFraBruker::class.java,
+                    XMLMeldingTilBruker::class.java
                 )
+            )
     }
 }
 
 data class PortType<T>(val port: T, val pingPort: T)
-

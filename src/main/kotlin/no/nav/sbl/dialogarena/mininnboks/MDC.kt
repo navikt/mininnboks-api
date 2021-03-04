@@ -10,15 +10,15 @@ import no.nav.common.utils.StringUtils
 
 object MDC {
     // These are stolen from `no.nav.common.log.LogFilter`, but has private visibility in original file
-    private const val RANDOM_USER_ID_COOKIE_NAME = "RUIDC";
-    private const val ONE_MONTH_IN_SECONDS = 60 * 60 * 24 * 30;
+    private const val RANDOM_USER_ID_COOKIE_NAME = "RUIDC"
+    private const val ONE_MONTH_IN_SECONDS = 60 * 60 * 24 * 30
 
     /**
      * Configures MDC with similar properties to `no.nav.common.log.LogFilter`,
      * which is needed in order to support MDC in other modules from common.
      */
     fun configure(config: CallLogging.Configuration) {
-        with (config) {
+        with(config) {
             mdc(MDCConstants.MDC_CALL_ID) { call ->
                 LogFilter.NAV_CALL_ID_HEADER_NAMES
                     .toList()

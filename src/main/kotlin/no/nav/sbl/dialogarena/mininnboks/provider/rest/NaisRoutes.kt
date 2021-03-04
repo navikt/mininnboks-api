@@ -13,12 +13,12 @@ import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.common.health.selftest.SelfTestUtils
 import no.nav.common.health.selftest.SelftestHtmlGenerator
 
-fun Route.naisRoutes(readinessCheck: () -> Boolean,
-                     livenessCheck: () -> Boolean = { true },
-                     selftestChecks: List<SelfTestCheck> = emptyList(),
-                     collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry
+fun Route.naisRoutes(
+    readinessCheck: () -> Boolean,
+    livenessCheck: () -> Boolean = { true },
+    selftestChecks: List<SelfTestCheck> = emptyList(),
+    collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry
 ) {
-
     get("/isAlive") { checkRespond({ livenessCheck() }, "Alive", "Not alive") }
     get("/isReady") { checkRespond({ readinessCheck() }, "Ready", "Not ready") }
 

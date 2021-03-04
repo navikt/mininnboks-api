@@ -18,15 +18,15 @@ enum class AuthLevel(val level: Int) {
 }
 
 suspend fun PipelineContext<Unit, ApplicationCall>.withSubject(authLevel: AuthLevel, block: suspend PipelineContext<Unit, ApplicationCall>.(Subject) -> Unit) =
-        this.call.authentication.principal<SubjectPrincipal>()
-                ?.takeIf {
-                     AuthLevel.valueOf(it.authLevel).level >= authLevel.level
-                }
-                ?.subject
-                ?.let {
-                    block(this, it)
-                }
-                ?: this.call.respond(HttpStatusCode.Forbidden, "Fant ikke subject ellers authLevel ikke på nivå ${authLevel.name}")
+    this.call.authentication.principal<SubjectPrincipal>()
+        ?.takeIf {
+            AuthLevel.valueOf(it.authLevel).level >= authLevel.level
+        }
+        ?.subject
+        ?.let {
+            block(this, it)
+        }
+        ?: this.call.respond(HttpStatusCode.Forbidden, "Fant ikke subject ellers authLevel ikke på nivå ${authLevel.name}")
 
 suspend fun <T> externalCall(subject: Subject, block: () -> T): T = withContext(Dispatchers.IO + MDCContext()) {
     SubjectHandler.withSubject(subject, UnsafeSupplier { block() })

@@ -8,7 +8,7 @@ import com.nimbusds.jwt.JWTParser
 import no.nav.common.log.MDCConstants
 import no.nav.common.rest.client.RestClient
 import no.nav.common.rest.client.RestUtils
-import no.nav.sbl.dialogarena.mininnboks.ObjectMapperProvider
+import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.slf4j.LoggerFactory
@@ -18,25 +18,24 @@ import java.util.*
 import javax.ws.rs.core.HttpHeaders
 import javax.ws.rs.core.MediaType
 
-
 const val MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH = 60 * 1000L
 
 interface SystemuserTokenProvider {
     companion object {
         fun fromDiscoveryUrl(
-                discoveryUrl: String,
-                srvUsername: String,
-                srvPassword: String,
-                stsApiKey: String,
-                client: OkHttpClient = RestClient.baseClientBuilder().build()
+            discoveryUrl: String,
+            srvUsername: String,
+            srvPassword: String,
+            stsApiKey: String,
+            client: OkHttpClient = RestClient.baseClientBuilder().build()
         ): SystemuserTokenProvider = SystemuserTokenProviderImpl(true, discoveryUrl, srvUsername, srvPassword, stsApiKey, client)
 
         fun fromTokenEndpoint(
-                tokenEndpointUrl: String,
-                srvUsername: String,
-                srvPassword: String,
-                stsApiKey: String,
-                client: OkHttpClient = RestClient.baseClientBuilder().build()
+            tokenEndpointUrl: String,
+            srvUsername: String,
+            srvPassword: String,
+            stsApiKey: String,
+            client: OkHttpClient = RestClient.baseClientBuilder().build()
         ): SystemuserTokenProvider = SystemuserTokenProviderImpl(false, tokenEndpointUrl, srvUsername, srvPassword, stsApiKey, client)
     }
 
@@ -45,12 +44,12 @@ interface SystemuserTokenProvider {
 
 // TODO Kan erstattes av tilsvarende klass i common etter bump.
 class SystemuserTokenProviderImpl internal constructor(
-        startingUrlIsDiscoveryUrl: Boolean,
-        startingUrl: String,
-        private val srvUsername: String,
-        private val srvPassword: String,
-        private val stsApiKey: String,
-        private val client: OkHttpClient
+    startingUrlIsDiscoveryUrl: Boolean,
+    startingUrl: String,
+    private val srvUsername: String,
+    private val srvPassword: String,
+    private val stsApiKey: String,
+    private val client: OkHttpClient
 ) : SystemuserTokenProvider {
 
     private val log = LoggerFactory.getLogger(SystemuserTokenProvider::class.java)
@@ -83,13 +82,13 @@ class SystemuserTokenProviderImpl internal constructor(
         val basicAuth: String = basicCredentials(srvUsername, srvPassword)
 
         val request: Request = Request.Builder()
-                .url(targetUrl)
-                .addHeader("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
-                .header(HttpHeaders.AUTHORIZATION, basicAuth)
-                .header("x-nav-apiKey", stsApiKey)
-                .get()
-                .build()
+            .url(targetUrl)
+            .addHeader("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
+            .header(HttpHeaders.AUTHORIZATION, basicAuth)
+            .header("x-nav-apiKey", stsApiKey)
+            .get()
+            .build()
 
         val response = client.newCall(request).execute()
 
@@ -100,7 +99,7 @@ class SystemuserTokenProviderImpl internal constructor(
             throw RuntimeException(errorMessage)
         } else {
             val body = response.body()?.string()
-            val credentials = body?.let { ObjectMapperProvider.objectMapper.readValue<ClientCredentialsResponse>(it) }
+            val credentials = body?.let { JacksonUtils.objectMapper.readValue<ClientCredentialsResponse>(it) }
             log.info("Fetched SystemUserToken, parts: ${credentials?.accessToken?.split(".")?.size}")
             return credentials
         }
@@ -122,26 +121,25 @@ private fun expiresWithin(jwt: JWT, withinMillis: Long): Boolean {
 }
 
 private fun hentOidcDiscoveryConfiguration(client: OkHttpClient, discoveryUrl: String, stsApiKey: String): OidcDiscoveryConfiguration? {
-
     val request = Request.Builder()
-            .url(discoveryUrl)
-            .header("x-nav-apiKey", stsApiKey)
-            .build()
+        .url(discoveryUrl)
+        .header("x-nav-apiKey", stsApiKey)
+        .build()
 
     val response = client.newCall(request).execute()
     val body = response.body()?.string()
-    return body?.let { ObjectMapperProvider.objectMapper.readValue<OidcDiscoveryConfiguration>(it) }
+    return body?.let { JacksonUtils.objectMapper.readValue<OidcDiscoveryConfiguration>(it) }
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 private data class ClientCredentialsResponse(
-        @JsonProperty("access_token") val accessToken: String
+    @JsonProperty("access_token") val accessToken: String
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 private data class OidcDiscoveryConfiguration(
-        @JsonProperty("jwks_uri") val jwksUri: String,
-        @JsonProperty("token_endpoint") val tokenEndpoint: String,
-        @JsonProperty("authorization_endpoint") val authorizationEndpoint: String,
-        @JsonProperty("issuer") val issuer: String
+    @JsonProperty("jwks_uri") val jwksUri: String,
+    @JsonProperty("token_endpoint") val tokenEndpoint: String,
+    @JsonProperty("authorization_endpoint") val authorizationEndpoint: String,
+    @JsonProperty("issuer") val issuer: String
 )

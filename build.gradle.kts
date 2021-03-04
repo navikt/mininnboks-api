@@ -111,6 +111,9 @@ tasks.named<KotlinCompile>("compileTestKotlin") {
 // setup the test task
 tasks.test {
     useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
 
 project.configurations.implementation.get().isCanBeResolved = true

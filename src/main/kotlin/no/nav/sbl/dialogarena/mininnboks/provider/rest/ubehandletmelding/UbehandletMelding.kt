@@ -9,7 +9,6 @@ enum class Status {
     ULEST, UBESVART
 }
 
-
 class UbehandletMelding(
     val behandlingskjedeId: String?,
     val opprettetDato: Date?,
@@ -17,13 +16,12 @@ class UbehandletMelding(
     val undertype: String?,
     val uri: String?,
     val statuser: MutableList<Status> = ArrayList(),
-    val varselid: String?) {
-
+    val varselid: String?
+) {
 
     companion object {
         val erIkkeKassert: (Henvendelse?) -> Boolean = { henvendelse: Henvendelse? -> !henvendelse?.kassert!! }
         var erUbesvart: (Henvendelse?) -> Boolean = { henvendelse: Henvendelse? -> henvendelse?.type == Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE }
         var erUlest: (Henvendelse?) -> Boolean = { henvendelse: Henvendelse? -> !henvendelse?.isLest!! }
     }
-
 }
