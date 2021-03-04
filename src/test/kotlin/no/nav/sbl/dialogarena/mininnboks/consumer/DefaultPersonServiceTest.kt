@@ -22,7 +22,7 @@ class DefaultPersonServiceTest {
     fun `henter Enhet`() {
         val enhet = "1234"
         coEvery { personV3.hentGeografiskTilknytning(any()) } returns
-                HentGeografiskTilknytningResponse().withGeografiskTilknytning(Kommune().withGeografiskTilknytning(enhet))
+            HentGeografiskTilknytningResponse().withGeografiskTilknytning(Kommune().withGeografiskTilknytning(enhet))
         runBlocking {
             assertThat(personService.hentGeografiskTilknytning(dummySubject()), Is.`is`(enhet))
         }
@@ -32,7 +32,7 @@ class DefaultPersonServiceTest {
     fun `kaster Runtime Exception Om Enhet Ikke Kan hentes`() {
         assertThrows<RuntimeException> {
             verify {
-            runBlocking {
+                runBlocking {
                     personService.hentGeografiskTilknytning(any())
                 }
             }

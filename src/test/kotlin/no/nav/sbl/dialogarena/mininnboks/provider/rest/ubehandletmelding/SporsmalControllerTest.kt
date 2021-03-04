@@ -18,7 +18,6 @@ import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-
 class SporsmalControllerTest : Spek({
 
     describe("kaller Henvendelse Service Med SubjectID") {
@@ -46,5 +45,4 @@ class SporsmalControllerTest : Spek({
             }
         }
     }
-
 })

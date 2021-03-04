@@ -34,7 +34,6 @@ import javax.xml.namespace.QName
 import javax.xml.soap.SOAPFactory
 import javax.xml.ws.soap.SOAPFaultException
 
-
 class HenvendelseControllerTest : Spek({
 
     describe("Henvendelse tester") {
@@ -71,16 +70,16 @@ class HenvendelseControllerTest : Spek({
 
             it("filtrerer Bort Uavsluttede Delsvar") {
                 val lstHenvendelserBehandlingskjedeMedDelsvar = listOf(
-                        Henvendelse(id = "123", traadId = "1", type = Henvendelsetype.SPORSMAL_SKRIFTLIG, opprettet = TestUtils.now()),
-                        Henvendelse(id = "234", traadId = "1", type = Henvendelsetype.DELVIS_SVAR_SKRIFTLIG, opprettet = TestUtils.now())
+                    Henvendelse(id = "123", traadId = "1", type = Henvendelsetype.SPORSMAL_SKRIFTLIG, opprettet = TestUtils.now()),
+                    Henvendelse(id = "234", traadId = "1", type = Henvendelsetype.DELVIS_SVAR_SKRIFTLIG, opprettet = TestUtils.now())
                 )
                 coEvery { service.hentAlleHenvendelser(any()) } returns lstHenvendelserBehandlingskjedeMedDelsvar
                 handleRequest(HttpMethod.Get, "/traader") {
                 }.apply {
-                    MatcherAssert.assertThat(response.content, not(stringContainsInOrder(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG.name))
+                    MatcherAssert.assertThat(
+                        response.content, not(stringContainsInOrder(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG.name))
                     )
                 }
-
             }
 
             it("henter Ut Enkelt Traad Basert PaId") {
@@ -101,7 +100,6 @@ class HenvendelseControllerTest : Spek({
                     val traad3: Traad? = response.content?.let { mapper.readValue(it) }
                     MatcherAssert.assertThat(traad3?.meldinger?.size, Is.`is`(1))
                 }
-
             }
 
             it("henter Ut Traad Som Ikke Finnes") {
@@ -109,7 +107,6 @@ class HenvendelseControllerTest : Spek({
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(404))
                 }
-
             }
 
             it("gir Statuskode Ikke Funnet Hvis Henvendelse Service Gir Soap Fault") {
@@ -119,7 +116,6 @@ class HenvendelseControllerTest : Spek({
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, `is`(HttpStatusCode.NotFound.value))
                 }
-
             }
 
             it("markering Som Lest") {
@@ -127,7 +123,6 @@ class HenvendelseControllerTest : Spek({
                 }.apply {
                     coVerify(exactly = 1) { service.merkSomLest("1", any()) }
                 }
-
             }
 
             it("markering Alle Som Lest") {
@@ -135,9 +130,7 @@ class HenvendelseControllerTest : Spek({
                 }.apply {
                     coVerify(exactly = 1) { service.merkAlleSomLest("1", any()) }
                 }
-
             }
-
 
             it("kan Ikke Sende Svar Nar Siste Henvendelse Ikke Er Sporsmal") {
                 handleRequest(HttpMethod.Post, "/traader/svar") {
@@ -145,7 +138,6 @@ class HenvendelseControllerTest : Spek({
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
                     setBody(mapper.writeValueAsString(Svar("1", "Tekst")))
-
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotAcceptable.value))
                 }
@@ -166,7 +158,6 @@ class HenvendelseControllerTest : Spek({
                 }
             }
 
-
             it("kopierer Nyeste Er Tilknyttet Ansatt Flagg Til Svaret") {
 
                 val henvendelse1 = Henvendelse(id = "1", erTilknyttetAnsatt = true, opprettet = TestUtils.now(), type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE)
@@ -186,9 +177,7 @@ class HenvendelseControllerTest : Spek({
                     coVerify { service.sendSvar(capture(henvendelseArgumentCaptor), any()) }
                     MatcherAssert.assertThat(henvendelseArgumentCaptor.captured.erTilknyttetAnsatt, Is.`is`(true))
                 }
-
             }
-
 
             it("kopierer Brukers Enhet Til Svaret") {
                 val brukersEnhet = "1234"
@@ -248,7 +237,6 @@ class HenvendelseControllerTest : Spek({
                 }
             }
 
-
             it("smeller Hvis Andre Sosial tjenester Temagruppe I Sporsmal") {
                 handleRequest(HttpMethod.Post, "/traader/sporsmal") {
 
@@ -264,7 +252,7 @@ class HenvendelseControllerTest : Spek({
                 coEvery {
                     tilgangService.harTilgangTilKommunalInnsending(any())
                 } returns
-                        TilgangDTO(TilgangDTO.Resultat.KODE6, "melding")
+                    TilgangDTO(TilgangDTO.Resultat.KODE6, "melding")
                 handleRequest(HttpMethod.Post, "/traader/sporsmal") {
 
                     addHeader("Content-Type", "application/json; charset=utf8")
@@ -279,14 +267,13 @@ class HenvendelseControllerTest : Spek({
                 coEvery {
                     tilgangService.harTilgangTilKommunalInnsending(any())
                 } returns (
-                        TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "melding")
-                        )
+                    TilgangDTO(TilgangDTO.Resultat.INGEN_ENHET, "melding")
+                    )
                 handleRequest(HttpMethod.Post, "/traader/sporsmal") {
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
                     setBody(mapper.writeValueAsString(createSporsmal()))
-
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
                 }
@@ -296,35 +283,32 @@ class HenvendelseControllerTest : Spek({
                 coEvery {
                     tilgangService.harTilgangTilKommunalInnsending(any())
                 } returns (
-                        TilgangDTO(TilgangDTO.Resultat.FEILET, "melding")
-                        )
+                    TilgangDTO(TilgangDTO.Resultat.FEILET, "melding")
+                    )
                 handleRequest(HttpMethod.Post, "/traader/sporsmal") {
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
                     setBody(mapper.writeValueAsString(createSporsmal()))
-
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
                 }
             }
         }
     }
-
 })
 
 private fun createSporsmal() = Sporsmal(Temagruppe.ANSOS, "DUMMY")
 
-
 fun setUp(service: HenvendelseService) {
     val henvendelser = listOf(
-            Henvendelse(id = "1", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
-            Henvendelse(id = "2", traadId = "2", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
-            Henvendelse(id = "3", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
-            Henvendelse(id = "4", traadId = "3", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
-            Henvendelse(id = "5", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
-            Henvendelse(id = "6", traadId = "2", type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE, opprettet = TestUtils.nowPlus(100)),
-            Henvendelse(id = "7", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now())
+        Henvendelse(id = "1", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
+        Henvendelse(id = "2", traadId = "2", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
+        Henvendelse(id = "3", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
+        Henvendelse(id = "4", traadId = "3", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
+        Henvendelse(id = "5", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
+        Henvendelse(id = "6", traadId = "2", type = Henvendelsetype.SPORSMAL_MODIA_UTGAAENDE, opprettet = TestUtils.nowPlus(100)),
+        Henvendelse(id = "7", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now())
     )
 
     val slot = slot<String>()
@@ -332,12 +316,10 @@ fun setUp(service: HenvendelseService) {
     coEvery { service.hentTraad(capture(slot), any()) } answers {
         val traadId = slot.captured
         henvendelser
-                .filter { henvendelse: Henvendelse? -> traadId == henvendelse!!.traadId }
+            .filter { henvendelse: Henvendelse? -> traadId == henvendelse!!.traadId }
     }
 
     coEvery { service.sendSvar(any(), any()) } returns (
-            WSSendInnHenvendelseResponse().withBehandlingsId(UUID.randomUUID().toString())
-            )
+        WSSendInnHenvendelseResponse().withBehandlingsId(UUID.randomUUID().toString())
+        )
 }
-
-

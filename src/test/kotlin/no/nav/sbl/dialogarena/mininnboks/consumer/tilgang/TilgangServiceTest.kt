@@ -11,11 +11,10 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Test
 
-
 internal data class MockContext(
-        val pdlService: PdlService,
-        val personService: PersonService,
-        val tilgangService: TilgangService
+    val pdlService: PdlService,
+    val personService: PersonService,
+    val tilgangService: TilgangService
 )
 
 class TilgangServiceTest {
@@ -31,7 +30,6 @@ class TilgangServiceTest {
             coVerify(exactly = 0) { pdlService.harStrengtFortroligAdresse(any()) }
         }
     }
-
 
     @Test
     fun `gir INGEN_ENHET om bruker ikke har enhet`() {

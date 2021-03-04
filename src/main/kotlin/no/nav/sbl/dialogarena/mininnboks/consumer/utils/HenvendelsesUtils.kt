@@ -68,17 +68,17 @@ object HenvendelsesUtils {
     )
 
     private val KASSERT_MAPPER = DomainMapper.Mapper(
-            { xmlHenvendelse: XMLHenvendelse -> xmlHenvendelse.metadataListe == null },
-            { _: XMLHenvendelse, henvendelse: Henvendelse ->
-                henvendelse.copy(
-                        kassert = true,
-                        fritekst = "Innholdet i denne henvendelsen er kassert av NAV.",
-                        statusTekst = "Kassert",
-                        temagruppe = null,
-                        kanal = null
-                )
-            },
-            true
+        { xmlHenvendelse: XMLHenvendelse -> xmlHenvendelse.metadataListe == null },
+        { _: XMLHenvendelse, henvendelse: Henvendelse ->
+            henvendelse.copy(
+                kassert = true,
+                fritekst = "Innholdet i denne henvendelsen er kassert av NAV.",
+                statusTekst = "Kassert",
+                temagruppe = null,
+                kanal = null
+            )
+        },
+        true
     )
 
     private val DOKUMENTVARSEL_MAPPER = DomainMapper.Mapper(
