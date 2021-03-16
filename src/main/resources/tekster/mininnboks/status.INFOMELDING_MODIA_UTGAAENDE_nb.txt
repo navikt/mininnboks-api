@@ -1,1 +1,1 @@
-Informasjon fra NAV – %s
+Informasjon fra NAV – %sktl

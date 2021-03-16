@@ -21,7 +21,6 @@ import java.util.*
 class HenvendelsesUtilsTest {
     val tekstService = mockk<TekstService>()
 
-
     @Test
     fun `transformerer Dokument Henvendelse`() {
         every { tekstService.hentTekst(any()) } returns "value"
@@ -29,7 +28,7 @@ class HenvendelsesUtilsTest {
 
         val infoList = listOf(dokument)
         val henvendelserListe = infoList
-                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+            .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val dokumentHenvendelse = henvendelserListe[0]
         assertThat(dokumentHenvendelse.id, CoreMatchers.`is`(ID_1))
         assertThat(dokumentHenvendelse.traadId, CoreMatchers.`is`(ID_1))
@@ -45,7 +44,7 @@ class HenvendelsesUtilsTest {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1)
         val infoList = listOf(info)
         val henvendelserListe = infoList
-                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+            .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val sporsmal = henvendelserListe[0]
         assertStandardFelter(sporsmal)
         assertThat(sporsmal.id, CoreMatchers.`is`(ID_1))
@@ -62,7 +61,7 @@ class HenvendelsesUtilsTest {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE, ID_1, ID_1)
         val infoList = listOf(info)
         val henvendelserListe = infoList
-                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+            .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val sporsmal = henvendelserListe[0]
         assertThat(sporsmal.id, CoreMatchers.`is`(ID_1))
         assertThat(sporsmal.traadId, CoreMatchers.`is`(ID_1))
@@ -79,7 +78,7 @@ class HenvendelsesUtilsTest {
         info.isFerdigstiltUtenSvar = true
         val infoList = listOf(info)
         val henvendelserListe = infoList
-                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+            .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val sporsmal = henvendelserListe[0]
         assertThat(sporsmal.ferdigstiltUtenSvar, CoreMatchers.`is`(true))
         assertThat(sporsmal.temagruppe?.name, CoreMatchers.`is`(Temagruppe.FMLI.name))
@@ -92,7 +91,7 @@ class HenvendelsesUtilsTest {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, ID_2, ID_2)
         val infoList = listOf(info)
         val henvendelserListe = infoList
-                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+            .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val svar = henvendelserListe[0]
         assertStandardFelter(svar)
         assertThat(svar.id, CoreMatchers.`is`(ID_2))
@@ -110,7 +109,7 @@ class HenvendelsesUtilsTest {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, ID_3, ID_3)
         val infoList = listOf(info)
         val henvendelserListe = infoList
-                .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
+            .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         val sporsmal = henvendelserListe[0]
         assertStandardFelter(sporsmal)
         assertThat(sporsmal.id, CoreMatchers.`is`(ID_3))
@@ -221,75 +220,83 @@ class HenvendelsesUtilsTest {
 
     private fun mockXMLHenvendelseMedXMLMeldingFraBruker(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
         return XMLHenvendelse()
-                .withHenvendelseType(type.name)
-                .withBehandlingsId(id)
-                .withBehandlingskjedeId(kjedeId)
-                .withOpprettetDato(OPPRETTET_DATO_JODA)
-                .withAvsluttetDato(AVSLUTTET_DATO_JODA)
-                .withBrukersEnhet(BRUKERS_ENHET)
-                .withKontorsperreEnhet(KONTORSPERRE_ENHET)
-                .withMetadataListe(XMLMetadataListe().withMetadata(
-                        XMLMeldingFraBruker()
-                                .withFritekst(FRITEKST)
-                                .withTemagruppe(TEMAGRUPPE.name)
-                ))
+            .withHenvendelseType(type.name)
+            .withBehandlingsId(id)
+            .withBehandlingskjedeId(kjedeId)
+            .withOpprettetDato(OPPRETTET_DATO_JODA)
+            .withAvsluttetDato(AVSLUTTET_DATO_JODA)
+            .withBrukersEnhet(BRUKERS_ENHET)
+            .withKontorsperreEnhet(KONTORSPERRE_ENHET)
+            .withMetadataListe(
+                XMLMetadataListe().withMetadata(
+                    XMLMeldingFraBruker()
+                        .withFritekst(FRITEKST)
+                        .withTemagruppe(TEMAGRUPPE.name)
+                )
+            )
     }
 
     private fun mockXMLHenvendelseMedXMLMeldingTilBruker(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
         return XMLHenvendelse()
-                .withHenvendelseType(type.name)
-                .withBehandlingsId(id)
-                .withBehandlingskjedeId(kjedeId)
-                .withOpprettetDato(OPPRETTET_DATO_JODA)
-                .withAvsluttetDato(AVSLUTTET_DATO_JODA)
-                .withLestDato(LEST_DATO_JODA)
-                .withEksternAktor(NAVIDENT)
-                .withBrukersEnhet(BRUKERS_ENHET)
-                .withTilknyttetEnhet(TILKNYTTET_ENHET)
-                .withErTilknyttetAnsatt(ER_TILKNYTTET_ANSATT)
-                .withMetadataListe(XMLMetadataListe().withMetadata(
-                        XMLMeldingTilBruker()
-                                .withFritekst(FRITEKST)
-                                .withTemagruppe(TEMAGRUPPE.name)
-                                .withKanal(KANAL)
-                                .withNavident(NAVIDENT)
-                ))
+            .withHenvendelseType(type.name)
+            .withBehandlingsId(id)
+            .withBehandlingskjedeId(kjedeId)
+            .withOpprettetDato(OPPRETTET_DATO_JODA)
+            .withAvsluttetDato(AVSLUTTET_DATO_JODA)
+            .withLestDato(LEST_DATO_JODA)
+            .withEksternAktor(NAVIDENT)
+            .withBrukersEnhet(BRUKERS_ENHET)
+            .withTilknyttetEnhet(TILKNYTTET_ENHET)
+            .withErTilknyttetAnsatt(ER_TILKNYTTET_ANSATT)
+            .withMetadataListe(
+                XMLMetadataListe().withMetadata(
+                    XMLMeldingTilBruker()
+                        .withFritekst(FRITEKST)
+                        .withTemagruppe(TEMAGRUPPE.name)
+                        .withKanal(KANAL)
+                        .withNavident(NAVIDENT)
+                )
+            )
     }
 
     private fun mockDokumentHenvendelse(): XMLHenvendelse {
         return XMLHenvendelse()
-                .withHenvendelseType(XMLHenvendelseType.DOKUMENT_VARSEL.name)
-                .withBehandlingsId(ID_1)
-                .withBehandlingskjedeId(ID_1)
-                .withOpprettetDato(OPPRETTET_DATO_JODA)
-                .withAvsluttetDato(AVSLUTTET_DATO_JODA)
-                .withBrukersEnhet(BRUKERS_ENHET)
-                .withKontorsperreEnhet(KONTORSPERRE_ENHET)
-                .withMetadataListe(XMLMetadataListe().withMetadata(
-                        XMLDokumentVarsel()
-                                .withTemagruppe("OVRG")
-                                .withFritekst("")
-                                .withStoppRepeterendeVarsel(true)
-                ))
+            .withHenvendelseType(XMLHenvendelseType.DOKUMENT_VARSEL.name)
+            .withBehandlingsId(ID_1)
+            .withBehandlingskjedeId(ID_1)
+            .withOpprettetDato(OPPRETTET_DATO_JODA)
+            .withAvsluttetDato(AVSLUTTET_DATO_JODA)
+            .withBrukersEnhet(BRUKERS_ENHET)
+            .withKontorsperreEnhet(KONTORSPERRE_ENHET)
+            .withMetadataListe(
+                XMLMetadataListe().withMetadata(
+                    XMLDokumentVarsel()
+                        .withTemagruppe("OVRG")
+                        .withFritekst("")
+                        .withStoppRepeterendeVarsel(true)
+                )
+            )
     }
 
     private fun mockXMLHenvendelseMedXMLOppgaveVarsel(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
         return XMLHenvendelse()
-                .withHenvendelseType(type.name)
-                .withBehandlingsId(id)
-                .withBehandlingskjedeId(kjedeId)
-                .withOpprettetDato(OPPRETTET_DATO_JODA)
-                .withAvsluttetDato(AVSLUTTET_DATO_JODA)
-                .withBrukersEnhet(BRUKERS_ENHET)
-                .withKontorsperreEnhet(KONTORSPERRE_ENHET)
-                .withMetadataListe(XMLMetadataListe().withMetadata(
-                        XMLOppgaveVarsel()
-                                .withOppgaveType(OPPGAVE_TYPE)
-                                .withFritekst("oppgave.$OPPGAVE_TYPE.fritekst")
-                                .withTemagruppe(TEMAGRUPPE.name)
-                                .withStoppRepeterendeVarsel(REPETERENDE_VARSEL)
-                                .withOppgaveURL(OPPGAVE_URL)
-                ))
+            .withHenvendelseType(type.name)
+            .withBehandlingsId(id)
+            .withBehandlingskjedeId(kjedeId)
+            .withOpprettetDato(OPPRETTET_DATO_JODA)
+            .withAvsluttetDato(AVSLUTTET_DATO_JODA)
+            .withBrukersEnhet(BRUKERS_ENHET)
+            .withKontorsperreEnhet(KONTORSPERRE_ENHET)
+            .withMetadataListe(
+                XMLMetadataListe().withMetadata(
+                    XMLOppgaveVarsel()
+                        .withOppgaveType(OPPGAVE_TYPE)
+                        .withFritekst("oppgave.$OPPGAVE_TYPE.fritekst")
+                        .withTemagruppe(TEMAGRUPPE.name)
+                        .withStoppRepeterendeVarsel(REPETERENDE_VARSEL)
+                        .withOppgaveURL(OPPGAVE_URL)
+                )
+            )
     }
 
     companion object {

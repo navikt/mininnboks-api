@@ -1,1 +1,0 @@
-{ antallMeldinger, plural, =0 { Du har ingen uleste meldinger } other { Uleste meldinger }}

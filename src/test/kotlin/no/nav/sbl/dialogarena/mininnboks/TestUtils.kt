@@ -21,7 +21,7 @@ object TestUtils {
         val henvendelse = lagForsteHenvendelseITraad()
         if (erLest) {
             return henvendelse.copy(
-                    lestDato = Date()
+                lestDato = Date()
             )
         }
         return henvendelse
@@ -45,21 +45,30 @@ object TestUtils {
         val henvendelse = opprettHenvendelse(id, id, DEFAULT_TEMAGRUPPE, type, DEFAULT_OPPRETTET, DEFAULT_EKSTERN_AKTOR, DEFAULT_TILKNYTTET_ENHET)
         if (lest) {
             return henvendelse.copy(
-                    lestDato = Date())
+                lestDato = Date()
+            )
         }
         return henvendelse
     }
 
-    fun opprettHenvendelse(id: String?, traadId: String?, temagruppe: Temagruppe?,
-                           type: Henvendelsetype, opprettet: Date?, eksternAktor: String?, tilknyttetEnhet: String?): Henvendelse {
+    fun opprettHenvendelse(
+        id: String?,
+        traadId: String?,
+        temagruppe: Temagruppe?,
+        type: Henvendelsetype,
+        opprettet: Date?,
+        eksternAktor: String?,
+        tilknyttetEnhet: String?
+    ): Henvendelse {
         return Henvendelse(
-                id = id,
-                temagruppe = temagruppe,
-                traadId = traadId,
-                type = type,
-                opprettet = opprettet,
-                eksternAktor = eksternAktor,
-                tilknyttetEnhet = tilknyttetEnhet)
+            id = id,
+            temagruppe = temagruppe,
+            traadId = traadId,
+            type = type,
+            opprettet = opprettet,
+            eksternAktor = eksternAktor,
+            tilknyttetEnhet = tilknyttetEnhet
+        )
     }
 
     fun nowPlus(days: Int): Date {
@@ -77,5 +86,4 @@ object TestUtils {
     fun dummySubject(): Subject {
         return Subject("12345678910", IdentType.EksternBruker, SsoToken.oidcToken("3434", emptyMap<String, Any>()))
     }
-
 }

@@ -23,7 +23,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 
-
 class HenvendelseServiceTest {
 
     private val sendInnHenvendelseRequestArgumentCaptor = slot<WSSendInnHenvendelseRequest>()
@@ -56,11 +55,10 @@ class HenvendelseServiceTest {
         val henvendelseListe: MutableList<Any> = ArrayList()
         henvendelseListe.add(lagHenvendelse(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name))
         coEvery { henvendelsePortType.hentHenvendelseListe(any()) } returns
-                WSHentHenvendelseListeResponse().withAny(henvendelseListe)
+            WSHentHenvendelseListeResponse().withAny(henvendelseListe)
         coEvery { sendInnHenvendelsePortType.sendInnHenvendelse(any()) } returns (WSSendInnHenvendelseResponse().withBehandlingsId("id"))
         coEvery { personService.hentGeografiskTilknytning(any()) } returns BRUKER_ENHET
     }
-
 
     @Test
     fun `sender Inn Sporsmal Med Riktige Felter`() {
@@ -130,15 +128,16 @@ class HenvendelseServiceTest {
     @Test
     fun `sender Inn Svar Med Riktige Felter`() {
         val henvendelse = Henvendelse(
-                fritekst = FRITEKST,
-                temagruppe = TEMAGRUPPE,
-                traadId = TRAAD_ID,
-                eksternAktor = EKSTERN_AKTOR,
-                brukersEnhet = BRUKER_ENHET,
-                tilknyttetEnhet = TILKNYTTET_ENHET,
-                erTilknyttetAnsatt = ER_TILKNYTTET_ANSATT,
-                kontorsperreEnhet = KONTORSPERRE_ENHET,
-                type = Henvendelsetype.SVAR_SKRIFTLIG)
+            fritekst = FRITEKST,
+            temagruppe = TEMAGRUPPE,
+            traadId = TRAAD_ID,
+            eksternAktor = EKSTERN_AKTOR,
+            brukersEnhet = BRUKER_ENHET,
+            tilknyttetEnhet = TILKNYTTET_ENHET,
+            erTilknyttetAnsatt = ER_TILKNYTTET_ANSATT,
+            kontorsperreEnhet = KONTORSPERRE_ENHET,
+            type = Henvendelsetype.SVAR_SKRIFTLIG
+        )
         runBlocking {
             henvendelseService.sendSvar(henvendelse, subject)
             verify {
@@ -189,26 +188,32 @@ class HenvendelseServiceTest {
         }
     }
 
-
     fun lagHenvendelse(type: String): XMLHenvendelse {
         return XMLHenvendelse().withHenvendelseType(type)
-                .withBehandlingsId("id")
+            .withBehandlingsId("id")
     }
 
     fun lagSporsmalSkriftlig(): XMLHenvendelse {
         return lagHenvendelse(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name)
-                .withMetadataListe(XMLMetadataListe().withMetadata(XMLMeldingFraBruker()
+            .withMetadataListe(
+                XMLMetadataListe().withMetadata(
+                    XMLMeldingFraBruker()
                         .withFritekst("Jeg har et spørsmål")
-                        .withTemagruppe(TEMAGRUPPE.name)))
+                        .withTemagruppe(TEMAGRUPPE.name)
+                )
+            )
     }
 
     fun lagDelvisSvarSkriftlig(): XMLHenvendelse {
         return lagHenvendelse(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name)
-                .withMetadataListe(XMLMetadataListe().withMetadata(XMLMeldingTilBruker()
+            .withMetadataListe(
+                XMLMetadataListe().withMetadata(
+                    XMLMeldingTilBruker()
                         .withFritekst("Delvis svar til deg")
-                        .withTemagruppe(TEMAGRUPPE.name)))
+                        .withTemagruppe(TEMAGRUPPE.name)
+                )
+            )
     }
-
 
     fun mockBehandlingskjedeMedDelsvar(): List<Any> {
         val henvendelseListe: MutableList<Any> = ArrayList()
@@ -216,7 +221,6 @@ class HenvendelseServiceTest {
         henvendelseListe.add(lagDelvisSvarSkriftlig())
         return henvendelseListe
     }
-
 
     @Test
     fun `hent Traad Som Inne holder Delsvar`() {
@@ -236,4 +240,3 @@ class HenvendelseServiceTest {
         }
     }
 }
-

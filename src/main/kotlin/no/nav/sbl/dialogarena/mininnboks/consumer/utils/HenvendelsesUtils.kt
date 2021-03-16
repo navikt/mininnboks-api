@@ -72,8 +72,8 @@ object HenvendelsesUtils {
         { _: XMLHenvendelse, henvendelse: Henvendelse ->
             henvendelse.copy(
                 kassert = true,
-                fritekst = hentTekst("innhold.kassert"),
-                statusTekst = hentTekst("temagruppe.kassert"),
+                fritekst = "Innholdet i denne henvendelsen er kassert av NAV.",
+                statusTekst = "Kassert",
                 temagruppe = null,
                 kanal = null
             )

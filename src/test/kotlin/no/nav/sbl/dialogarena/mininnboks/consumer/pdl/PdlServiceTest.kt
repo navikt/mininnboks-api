@@ -97,7 +97,6 @@ class PdlServiceTest {
             val pdlService = gittGradering(null)
             assertThat(pdlService.harFortroligAdresse(MOCK_SUBJECT), Matchers.`is`(false))
         }
-
     }
 
     @Test
@@ -121,7 +120,8 @@ class PdlServiceTest {
             val adresse = pdlService.hentFolkeregistrertAdresse(MOCK_SUBJECT)
 
             assertThat(
-                adresse, Matchers.`is`(
+                adresse,
+                Matchers.`is`(
                     Adresse(
                         adresse = "Kirkegata",
                         tilleggsnavn = "H0101 Storgården",
@@ -135,7 +135,6 @@ class PdlServiceTest {
             )
         }
     }
-
 
     private fun gittClientSomSvarer(body: String = ""): OkHttpClient {
 
