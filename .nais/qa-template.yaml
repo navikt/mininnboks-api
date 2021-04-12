@@ -2,8 +2,8 @@
 kind: Application
 apiVersion: nais.io/v1alpha1
 metadata:
-  name: mininnboks-api
-  namespace: {{ namespace }}
+  name: mininnboks-api-{{ namespace }}
+  namespace: personoversikt
   labels:
     team: personoversikt
 spec:
