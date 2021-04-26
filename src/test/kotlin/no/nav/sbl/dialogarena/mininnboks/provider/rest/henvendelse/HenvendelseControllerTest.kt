@@ -17,6 +17,7 @@ import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.authenticateWithDummySubject
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
+import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterGateway
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
@@ -40,6 +41,7 @@ class HenvendelseControllerTest : Spek({
 
         val service = mockk<HenvendelseService>(relaxed = true)
         val tilgangService = mockk<TilgangService>()
+        val rateLimiterGateway = mockk<RateLimiterGateway>()
         val mapper = jacksonObjectMapper()
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
@@ -53,7 +55,7 @@ class HenvendelseControllerTest : Spek({
 
         engine.application.routing {
             authenticateWithDummySubject(dummyPrincipalNiva4()) {
-                henvendelseController(service, tilgangService)
+                henvendelseController(service, tilgangService, rateLimiterGateway)
             }
         }
         engine.application.install(ContentNegotiation) {
@@ -211,7 +213,7 @@ class HenvendelseControllerTest : Spek({
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotFound.value))
                 }
             }
-
+            coEvery { rateLimiterGateway.erOkMedSendeSpørsmål() } returns true
             it("smeller Hvis Tom FritekstI Sporsmal") {
                 handleRequest(HttpMethod.Post, "/traader/sporsmal") {
 
@@ -292,6 +294,16 @@ class HenvendelseControllerTest : Spek({
                     setBody(mapper.writeValueAsString(createSporsmal()))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
+                }
+            }
+            it("smeller Hvis sender flere spørsmålet sammtidig") {
+                coEvery { rateLimiterGateway.erOkMedSendeSpørsmål() } returns false
+                handleRequest(HttpMethod.Post, "/traader/sporsmal") {
+                    addHeader("Content-Type", "application/json; charset=utf8")
+                    addHeader("Accept", "application/json")
+                    setBody(mapper.writeValueAsString(createSporsmal()))
+                }.apply {
+                    MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotAcceptable.value))
                 }
             }
         }

@@ -40,7 +40,7 @@ fun createHttpServer(
     routing {
         authenticate {
             sporsmalController(serviceConfig.henvendelseService)
-            henvendelseController(serviceConfig.henvendelseService, serviceConfig.tilgangService)
+            henvendelseController(serviceConfig.henvendelseService, serviceConfig.tilgangService, serviceConfig.rateLimiterService)
             tilgangController(serviceConfig.tilgangService)
         }
         resourcesController()

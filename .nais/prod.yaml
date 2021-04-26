@@ -106,3 +106,6 @@ spec:
       value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/innsyn-henvendelse/0.3/innsyn-henvendelse-0.3.zip"
     - name: CXF_SECURE_LOG
       value: "enabled"
+    - name: RATE_LIMITER_URL
+      value: "http://rate-limiter-{{ namespace }}.personoversikt.svc.nais.local"
+

@@ -9,6 +9,7 @@ import io.ktor.routing.*
 import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.AuthLevel
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
+import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterGateway
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
@@ -21,7 +22,11 @@ import javax.xml.ws.soap.SOAPFaultException
 
 val logger: Logger = LoggerFactory.getLogger("mininnboks.henvendelseController")
 
-fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangService: TilgangService) {
+fun Route.henvendelseController(
+    henvendelseService: HenvendelseService,
+    tilgangService: TilgangService,
+    rateLimiterGateway: RateLimiterGateway
+) {
     route("/traader") {
         hentAlleTraader(henvendelseService)
 
@@ -31,9 +36,9 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
 
         alleLest(henvendelseService)
 
-        sporsmal(tilgangService, henvendelseService)
+        sporsmal(tilgangService, henvendelseService, rateLimiterGateway)
 
-        sporsmaldirekte(tilgangService, henvendelseService)
+        sporsmaldirekte(tilgangService, henvendelseService, rateLimiterGateway)
 
         svar(henvendelseService)
     }
@@ -92,24 +97,48 @@ private fun createHenvendelse(svar: Svar, traad: Traad): Henvendelse {
     )
 }
 
-private fun Route.sporsmaldirekte(tilgangService: TilgangService, henvendelseService: HenvendelseService) {
+private fun Route.sporsmaldirekte(
+    tilgangService: TilgangService,
+    henvendelseService: HenvendelseService,
+    rateLimiterGateway: RateLimiterGateway
+) {
     post("/sporsmaldirekte") {
         withSubject(AuthLevel.Level4) { subject ->
-            val sporsmal = call.receive(Sporsmal::class)
-            val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-            val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
-            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+            takeIf {
+                rateLimiterGateway.erOkMedSendeSpørsmål()
+            }?.let {
+                call.receive(Sporsmal::class).let {
+                    lagHenvendelse(tilgangService, subject, it).let {
+                        henvendelseService.stillSporsmalDirekte(it, subject).also {
+                            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(it.behandlingsId))
+                            rateLimiterGateway.oppdatereRateLimiter()
+                        }
+                    }
+                }
+            } ?: call.respond(HttpStatusCode.NotAcceptable, "Maks grense for å sende spørsmålet er nådd")
         }
     }
 }
 
-private fun Route.sporsmal(tilgangService: TilgangService, henvendelseService: HenvendelseService) {
+private fun Route.sporsmal(
+    tilgangService: TilgangService,
+    henvendelseService: HenvendelseService,
+    rateLimiterGateway: RateLimiterGateway
+) {
     post("/sporsmal") {
         withSubject(AuthLevel.Level4) { subject ->
-            val sporsmal = call.receive(Sporsmal::class)
-            val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-            val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
-            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+            takeIf {
+                rateLimiterGateway.erOkMedSendeSpørsmål()
+            }?.let {
+                call.receive(Sporsmal::class).let { sporsmal ->
+                    lagHenvendelse(tilgangService, subject, sporsmal).let {
+                        henvendelseService.stillSporsmal(it, sporsmal.overstyrtGt, subject).also {
+                            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(it.behandlingsId))
+                            rateLimiterGateway.oppdatereRateLimiter()
+                        }
+                    }
+                }
+            } ?: call.respond(HttpStatusCode.NotAcceptable, "Maks grense for å sende spørsmålet er nådd")
         }
     }
 }
