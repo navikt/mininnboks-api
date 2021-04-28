@@ -107,5 +107,5 @@ spec:
     - name: CXF_SECURE_LOG
       value: "enabled"
     - name: RATE_LIMITER_URL
-      value: "http://rate-limiter-{{ namespace }}.personoversikt.svc.nais.local"
+      value: "http://rate-limiter.personoversikt.svc.nais.local"
 

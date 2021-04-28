@@ -62,7 +62,7 @@ class ServiceConfig(val configuration: Configuration) {
     val stsService = systemUserTokenProvider()
     val pdlService = pdlService(stsService)
     val tilgangService = tilgangService(pdlService)
-    val rateLimiterService = RateLimiterGatewayImpl(configuration.RATE_LIMITER_URL, stsService)
+    val rateLimiterService = RateLimiterGatewayImpl(configuration.RATE_LIMITER_URL)
 
     val selfTestCheckStsService: SelfTestCheck = SelfTestCheck("Sjekker at systembruker kan hente token fra STS", true) {
         runBlocking {

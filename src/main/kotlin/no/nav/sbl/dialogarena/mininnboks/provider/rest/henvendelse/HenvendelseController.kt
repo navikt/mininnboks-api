@@ -103,15 +103,16 @@ private fun Route.sporsmaldirekte(
     rateLimiterGateway: RateLimiterGateway
 ) {
     post("/sporsmaldirekte") {
+        val idToken = call.request.cookies["selvbetjening-idtoken"]
         withSubject(AuthLevel.Level4) { subject ->
             takeIf {
-                rateLimiterGateway.erOkMedSendeSpørsmål()
+                idToken != null && rateLimiterGateway.erOkMedSendeSpørsmål(idToken)
             }?.let {
                 call.receive(Sporsmal::class).let {
                     lagHenvendelse(tilgangService, subject, it).let {
                         henvendelseService.stillSporsmalDirekte(it, subject).also {
                             call.respond(HttpStatusCode.Created, NyHenvendelseResultat(it.behandlingsId))
-                            rateLimiterGateway.oppdatereRateLimiter()
+                            rateLimiterGateway.oppdatereRateLimiter(idToken!!)
                         }
                     }
                 }
@@ -126,15 +127,16 @@ private fun Route.sporsmal(
     rateLimiterGateway: RateLimiterGateway
 ) {
     post("/sporsmal") {
+        val idToken = call.request.cookies["selvbetjening-idtoken"]
         withSubject(AuthLevel.Level4) { subject ->
             takeIf {
-                rateLimiterGateway.erOkMedSendeSpørsmål()
+                idToken != null && rateLimiterGateway.erOkMedSendeSpørsmål(idToken)
             }?.let {
                 call.receive(Sporsmal::class).let { sporsmal ->
                     lagHenvendelse(tilgangService, subject, sporsmal).let {
                         henvendelseService.stillSporsmal(it, sporsmal.overstyrtGt, subject).also {
                             call.respond(HttpStatusCode.Created, NyHenvendelseResultat(it.behandlingsId))
-                            rateLimiterGateway.oppdatereRateLimiter()
+                            rateLimiterGateway.oppdatereRateLimiter(idToken!!)
                         }
                     }
                 }

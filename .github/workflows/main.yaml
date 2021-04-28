@@ -36,7 +36,7 @@ jobs:
       - name: Build and test
         run: ./gradlew clean build installDist thinJar
       - name: Publish Docker image
-        if: github.ref == 'refs/heads/OPP-1340_ratelimiter_som_konsumenter_av_mininnboks_api'
+        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -47,11 +47,11 @@ jobs:
   deploy-qa:
     name: Deploy to preprod
     needs: build
-    if: github.ref == 'refs/heads/OPP-1340_ratelimiter_som_konsumenter_av_mininnboks_api'
+    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        namespace: [q1]
+        namespace: [q0, q1, q6]
     steps:
       - uses: actions/checkout@v1
       - uses: nais/deploy/actions/deploy@v1
@@ -61,3 +61,18 @@ jobs:
           CLUSTER: dev-sbs
           RESOURCE: .nais/qa-template.yaml
           VAR: namespace=${{matrix.namespace}},version=${{github.sha}}
+
+  deploy-prod:
+    name: Deploy to prod
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          PRINT_PAYLOAD : true
+          CLUSTER: prod-sbs
+          RESOURCE: .nais/prod.yaml
+          VAR: version=${{github.sha}}

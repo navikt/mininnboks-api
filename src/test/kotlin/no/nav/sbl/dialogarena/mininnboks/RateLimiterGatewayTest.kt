@@ -6,12 +6,9 @@ import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.AnythingPattern
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import io.mockk.MockKAnnotations
-import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterGateway
 import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterGatewayImpl
-import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.jupiter.api.BeforeEach
@@ -19,20 +16,18 @@ import org.junit.jupiter.api.Test
 import org.slf4j.MDC
 
 internal class RateLimiterGatewayTest {
-    @MockK
-    private lateinit var stsService: SystemuserTokenProvider
+    private val token = "TOKEN"
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
-        every { stsService.getSystemUserAccessToken() } returns ("TOKEN")
         MDC.put(MDCConstants.MDC_CALL_ID, "MDC_CALL_ID")
     }
 
     @Test
     fun `er det ok å sende spørsmålet`() {
         withMockGateway(stub = getWithBody(statusCode = 200, body = "true")) { rateLimiterGateway ->
-            val response = rateLimiterGateway.erOkMedSendeSpørsmål()
+            val response = rateLimiterGateway.erOkMedSendeSpørsmål(token)
             assertThat(response, `is`(true))
         }
     }
@@ -40,7 +35,7 @@ internal class RateLimiterGatewayTest {
     @Test
     fun `handterer status coder utenfor 200-299 rangen`() {
         withMockGateway(stub = getWithBody(statusCode = 404)) { rateLimiterGateway ->
-            val response = rateLimiterGateway.erOkMedSendeSpørsmål()
+            val response = rateLimiterGateway.erOkMedSendeSpørsmål(token)
             assertThat(response, `is`(true))
         }
 
@@ -48,7 +43,7 @@ internal class RateLimiterGatewayTest {
             verify = verifyHeaders(postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))),
             stub = postWithBody(statusCode = 500, body = "")
         ) { rateLimiterGateway ->
-            val response = rateLimiterGateway.oppdatereRateLimiter()
+            val response = rateLimiterGateway.oppdatereRateLimiter(token)
             assertThat(response, `is`(true))
         }
     }
@@ -59,7 +54,7 @@ internal class RateLimiterGatewayTest {
             verify = verifyHeaders(postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))),
             stub = postWithBody(statusCode = 200, body = "true")
         ) { rateLimiterGateway ->
-            val opprettetDto = rateLimiterGateway.oppdatereRateLimiter()
+            val opprettetDto = rateLimiterGateway.oppdatereRateLimiter(token)
             assertThat(opprettetDto, `is`(true))
         }
     }
@@ -101,7 +96,7 @@ internal class RateLimiterGatewayTest {
             stub(wireMockServer)
             wireMockServer.start()
 
-            val client = RateLimiterGatewayImpl("http://localhost:${wireMockServer.port()}", stsService)
+            val client = RateLimiterGatewayImpl("http://localhost:${wireMockServer.port()}")
             test(client)
 
             if (verify != null) verify()
