@@ -88,6 +88,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.4.2")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.9")
     testImplementation("com.github.gmazzo:okhttp-mock:1.2.1")
+    testImplementation("com.github.tomakehurst:wiremock-standalone:2.27.2")
 }
 
 group = "no.nav.common"
