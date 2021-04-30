@@ -9,7 +9,7 @@ import io.ktor.routing.*
 import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.AuthLevel
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
-import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterGateway
+import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
@@ -25,7 +25,7 @@ val logger: Logger = LoggerFactory.getLogger("mininnboks.henvendelseController")
 fun Route.henvendelseController(
     henvendelseService: HenvendelseService,
     tilgangService: TilgangService,
-    rateLimiterGateway: RateLimiterGateway
+    rateLimiterApi: RateLimiterApi
 ) {
     route("/traader") {
         hentAlleTraader(henvendelseService)
@@ -36,9 +36,9 @@ fun Route.henvendelseController(
 
         alleLest(henvendelseService)
 
-        sporsmal(tilgangService, henvendelseService, rateLimiterGateway)
+        sporsmal(tilgangService, henvendelseService, rateLimiterApi)
 
-        sporsmaldirekte(tilgangService, henvendelseService, rateLimiterGateway)
+        sporsmaldirekte(tilgangService, henvendelseService, rateLimiterApi)
 
         svar(henvendelseService)
     }
@@ -100,23 +100,18 @@ private fun createHenvendelse(svar: Svar, traad: Traad): Henvendelse {
 private fun Route.sporsmaldirekte(
     tilgangService: TilgangService,
     henvendelseService: HenvendelseService,
-    rateLimiterGateway: RateLimiterGateway
+    rateLimiterApi: RateLimiterApi
 ) {
     post("/sporsmaldirekte") {
-        val idToken = call.request.cookies["selvbetjening-idtoken"]
         withSubject(AuthLevel.Level4) { subject ->
-            takeIf {
-                idToken != null && rateLimiterGateway.erOkMedSendeSpørsmål(idToken)
-            }?.let {
-                call.receive(Sporsmal::class).let {
-                    lagHenvendelse(tilgangService, subject, it).let {
-                        henvendelseService.stillSporsmalDirekte(it, subject).also {
-                            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(it.behandlingsId))
-                            rateLimiterGateway.oppdatereRateLimiter(idToken!!)
-                        }
-                    }
-                }
-            } ?: call.respond(HttpStatusCode.NotAcceptable, "Maks grense for å sende spørsmålet er nådd")
+            if (rateLimiterApi.erOkMedSendeSporsmal(subject.ssoToken.token)) {
+                val sporsmal = call.receive(Sporsmal::class)
+                val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+                val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
+                call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+            } else {
+                call.respond(HttpStatusCode.NotAcceptable, "Maks grense for å sende spørsmålet er nådd")
+            }
         }
     }
 }
@@ -124,23 +119,18 @@ private fun Route.sporsmaldirekte(
 private fun Route.sporsmal(
     tilgangService: TilgangService,
     henvendelseService: HenvendelseService,
-    rateLimiterGateway: RateLimiterGateway
+    rateLimiterApi: RateLimiterApi
 ) {
     post("/sporsmal") {
-        val idToken = call.request.cookies["selvbetjening-idtoken"]
         withSubject(AuthLevel.Level4) { subject ->
-            takeIf {
-                idToken != null && rateLimiterGateway.erOkMedSendeSpørsmål(idToken)
-            }?.let {
-                call.receive(Sporsmal::class).let { sporsmal ->
-                    lagHenvendelse(tilgangService, subject, sporsmal).let {
-                        henvendelseService.stillSporsmal(it, sporsmal.overstyrtGt, subject).also {
-                            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(it.behandlingsId))
-                            rateLimiterGateway.oppdatereRateLimiter(idToken!!)
-                        }
-                    }
-                }
-            } ?: call.respond(HttpStatusCode.NotAcceptable, "Maks grense for å sende spørsmålet er nådd")
+            if (rateLimiterApi.erOkMedSendeSporsmal(subject.ssoToken.token)) {
+                val sporsmal = call.receive(Sporsmal::class)
+                val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+                val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
+                call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+            } else {
+                call.respond(HttpStatusCode.NotAcceptable, "Maks grense for å sende spørsmålet er nådd")
+            }
         }
     }
 }

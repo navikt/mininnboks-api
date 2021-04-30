@@ -3,37 +3,26 @@ package no.nav.sbl.dialogarena.mininnboks.consumer
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.common.rest.client.RestClient
 import no.nav.common.utils.EnvironmentUtils
-import no.nav.sbl.dialogarena.mininnboks.LoggingInterceptor
-import no.nav.sbl.dialogarena.mininnboks.OkHttpUtils
-import no.nav.sbl.dialogarena.mininnboks.XCorrelationIdInterceptor
+import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
+import okhttp3.MediaType
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.Response
-import org.slf4j.LoggerFactory
 
-interface RateLimiterGateway {
-    fun erOkMedSendeSpørsmål(idToken: String): Boolean
+interface RateLimiterApi {
+    fun erOkMedSendeSporsmal(idToken: String): Boolean
     fun oppdatereRateLimiter(idToken: String): Boolean
 }
 
-class RateLimiterGatewayImpl(
+class RateLimiterApiImpl(
     private val baseUrl: String = EnvironmentUtils.getRequiredProperty("RATE_LIMITER_URL")
 
-) : RateLimiterGateway {
-    private val log = LoggerFactory.getLogger(RateLimiterGatewayImpl::class.java)
-    private val objectMapper = OkHttpUtils.objectMapper
-    private val client = RestClient.baseClient().newBuilder()
-        .addInterceptor(XCorrelationIdInterceptor())
-        .addInterceptor(
-            LoggingInterceptor("rate-limiter") { request ->
-                requireNotNull(request.header("X-Correlation-ID")) {
-                    "Kall uten \"X-Correlation-ID\" er ikke lov"
-                }
-            }
-        )
-        .build()
+) : RateLimiterApi {
+    private val objectMapper = JacksonUtils.objectMapper
+    private val client = RestClient.baseClient().newBuilder().build()
+    private val JSON: MediaType = requireNotNull(MediaType.parse("application/json; charset=utf-8"))
 
-    override fun erOkMedSendeSpørsmål(idToken: String): Boolean {
+    override fun erOkMedSendeSporsmal(idToken: String): Boolean {
         val request = Request
             .Builder()
             .url("$baseUrl/rate-limiter/api/limit")
@@ -41,12 +30,12 @@ class RateLimiterGatewayImpl(
             .header("Authorization", "Bearer $idToken")
             .build()
 
-        return fetch(request)
+        return try { fetch(request) } catch (e: IllegalStateException) { return true }
     }
 
     override fun oppdatereRateLimiter(idToken: String): Boolean {
         val requestBody = RequestBody.create(
-            OkHttpUtils.MediaTypes.JSON,
+            JSON,
             objectMapper.writeValueAsString("")
         )
         val request = Request
@@ -57,7 +46,7 @@ class RateLimiterGatewayImpl(
             .post(requestBody)
             .build()
 
-        return fetch(request)
+        return try { fetch(request) } catch (e: IllegalStateException) { return true }
     }
 
     private inline fun <reified RESPONSE> fetch(request: Request): RESPONSE {
@@ -70,8 +59,7 @@ class RateLimiterGatewayImpl(
         return if (response.code() in 200..299 && body != null) {
             objectMapper.readValue(body)
         } else {
-            log.error("Forventet 200-range svar og body fra rate-limiter, men fikk: ${response.code()}")
-            objectMapper.readValue("true")
+            throw IllegalStateException("Forventet 200-range svar og body fra rate-limiter, men fikk: ${response.code()}")
         }
     }
 }
