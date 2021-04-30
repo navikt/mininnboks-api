@@ -57,6 +57,13 @@ internal class RateLimiterApiTest {
             val opprettetDto = rateLimiterGateway.oppdatereRateLimiter(token)
             assertThat(opprettetDto, `is`(true))
         }
+        withMockGateway(
+            verify = { server -> verifyHeaders(server, postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))) },
+            stub = postWithBody(statusCode = 200, body = "false")
+        ) { rateLimiterGateway ->
+            val opprettetDto = rateLimiterGateway.oppdatereRateLimiter(token)
+            assertThat(opprettetDto, `is`(false))
+        }
     }
 
     private fun getWithBody(statusCode: Int = 200, body: String? = null): WireMockServer.() -> Unit = {

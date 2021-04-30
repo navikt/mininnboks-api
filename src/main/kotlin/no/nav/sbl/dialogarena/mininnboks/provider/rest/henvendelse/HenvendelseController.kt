@@ -106,10 +106,13 @@ private fun Route.sporsmaldirekte(
         withSubject(AuthLevel.Level4) { subject ->
             if (rateLimiterApi.erOkMedSendeSporsmal(subject.ssoToken.token)) {
                 val sporsmal = call.receive(Sporsmal::class)
-                val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-                val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
-                rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)
-                call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+                if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
+                    val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+                    val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
+                    call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError, "problem med oppdatering av rate-limiter")
+                }
             } else {
                 call.respond(HttpStatusCode.NotAcceptable, "Maks grense for å sende spørsmålet er nådd")
             }
@@ -127,9 +130,12 @@ private fun Route.sporsmal(
             if (rateLimiterApi.erOkMedSendeSporsmal(subject.ssoToken.token)) {
                 val sporsmal = call.receive(Sporsmal::class)
                 val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-                val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
-                rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)
-                call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+                if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
+                    val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
+                    call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError, "problem med oppdatering av rate-limiter")
+                }
             } else {
                 call.respond(HttpStatusCode.NotAcceptable, "Maks grense for å sende spørsmålet er nådd")
             }

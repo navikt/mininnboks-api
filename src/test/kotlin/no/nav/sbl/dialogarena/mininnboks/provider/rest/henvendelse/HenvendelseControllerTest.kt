@@ -309,6 +309,18 @@ class HenvendelseControllerTest : Spek({
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotAcceptable.value))
                 }
             }
+            it("smeller Hvis rate limiter oppdatering feiler") {
+                coEvery { rateLimiterGateway.erOkMedSendeSporsmal(any()) } returns true
+                coEvery { rateLimiterGateway.oppdatereRateLimiter(any()) } returns false
+                handleRequest(HttpMethod.Post, "/traader/sporsmal") {
+                    addHeader("Content-Type", "application/json; charset=utf8")
+                    addHeader("Accept", "application/json")
+
+                    setBody(mapper.writeValueAsString(createSporsmal()))
+                }.apply {
+                    MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.InternalServerError.value))
+                }
+            }
         }
     }
 })
