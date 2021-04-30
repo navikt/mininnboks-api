@@ -7,15 +7,15 @@ import com.github.tomakehurst.wiremock.matching.AnythingPattern
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import io.mockk.MockKAnnotations
 import no.nav.common.log.MDCConstants
-import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterGateway
-import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterGatewayImpl
+import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi
+import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApiImpl
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.slf4j.MDC
 
-internal class RateLimiterGatewayTest {
+internal class RateLimiterApiTest {
     private val token = "TOKEN"
 
     @BeforeEach
@@ -27,7 +27,7 @@ internal class RateLimiterGatewayTest {
     @Test
     fun `er det ok å sende spørsmålet`() {
         withMockGateway(stub = getWithBody(statusCode = 200, body = "true")) { rateLimiterGateway ->
-            val response = rateLimiterGateway.erOkMedSendeSpørsmål(token)
+            val response = rateLimiterGateway.erOkMedSendeSporsmal(token)
             assertThat(response, `is`(true))
         }
     }
@@ -35,12 +35,12 @@ internal class RateLimiterGatewayTest {
     @Test
     fun `handterer status coder utenfor 200-299 rangen`() {
         withMockGateway(stub = getWithBody(statusCode = 404)) { rateLimiterGateway ->
-            val response = rateLimiterGateway.erOkMedSendeSpørsmål(token)
+            val response = rateLimiterGateway.erOkMedSendeSporsmal(token)
             assertThat(response, `is`(true))
         }
 
         withMockGateway(
-            verify = verifyHeaders(postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))),
+            verify = { server -> verifyHeaders(server, postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))) },
             stub = postWithBody(statusCode = 500, body = "")
         ) { rateLimiterGateway ->
             val response = rateLimiterGateway.oppdatereRateLimiter(token)
@@ -51,7 +51,7 @@ internal class RateLimiterGatewayTest {
     @Test
     fun `skal kunne oppdatere Rate Limiter`() {
         withMockGateway(
-            verify = verifyHeaders(postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))),
+            verify = { server -> verifyHeaders(server, postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))) },
             stub = postWithBody(statusCode = 200, body = "true")
         ) { rateLimiterGateway ->
             val opprettetDto = rateLimiterGateway.oppdatereRateLimiter(token)
@@ -77,8 +77,8 @@ internal class RateLimiterGatewayTest {
         return this
     }
 
-    private fun verifyHeaders(call: RequestPatternBuilder): () -> Unit = {
-        verify(
+    private fun verifyHeaders(server: WireMockServer, call: RequestPatternBuilder): () -> Unit = {
+        server.verify(
             call
                 .withHeader("X-Correlation-ID", AnythingPattern())
                 .withHeader("Authorization", AnythingPattern())
@@ -88,18 +88,22 @@ internal class RateLimiterGatewayTest {
 
     private fun withMockGateway(
         stub: WireMockServer.() -> Unit = { },
-        verify: (() -> Unit)? = verifyHeaders(getRequestedFor(urlEqualTo("/rate-limiter/api/limit"))),
-        test: (RateLimiterGateway) -> Unit
+        verify: ((WireMockServer) -> Unit)? = null,
+        test: (RateLimiterApi) -> Unit
     ) {
         val wireMockServer = WireMockServer()
         try {
             stub(wireMockServer)
             wireMockServer.start()
 
-            val client = RateLimiterGatewayImpl("http://localhost:${wireMockServer.port()}")
+            val client = RateLimiterApiImpl("http://localhost:${wireMockServer.port()}")
             test(client)
 
-            if (verify != null) verify()
+            if (verify == null) {
+                verifyHeaders(wireMockServer, getRequestedFor(urlEqualTo("/rate-limiter/api/limit")))
+            } else {
+                verify(wireMockServer)
+            }
         } finally {
             wireMockServer.stop()
         }

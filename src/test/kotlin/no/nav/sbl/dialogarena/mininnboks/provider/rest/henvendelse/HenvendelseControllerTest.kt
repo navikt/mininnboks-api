@@ -17,7 +17,7 @@ import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.authenticateWithDummySubject
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
-import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterGateway
+import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
@@ -41,13 +41,8 @@ class HenvendelseControllerTest : Spek({
 
         val service = mockk<HenvendelseService>(relaxed = true)
         val tilgangService = mockk<TilgangService>()
-        val rateLimiterGateway = mockk<RateLimiterGateway>()
+        val rateLimiterGateway = mockk<RateLimiterApi>()
         val mapper = jacksonObjectMapper()
-        val trackedCookies = mutableListOf(Cookie("selvbetjening-idtoken", "Token")).map {
-            (it.name).encodeURLParameter() + "=" + (it.value).encodeURLParameter()
-        }
-            .joinToString("; ")
-
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
         beforeEachTest {
@@ -218,13 +213,12 @@ class HenvendelseControllerTest : Spek({
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotFound.value))
                 }
             }
-            coEvery { rateLimiterGateway.erOkMedSendeSpørsmål(any()) } returns true
+            coEvery { rateLimiterGateway.erOkMedSendeSporsmal(any()) } returns true
             it("smeller Hvis Tom FritekstI Sporsmal") {
                 handleRequest(HttpMethod.Post, "/traader/sporsmal") {
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    addHeader("Cookie", trackedCookies)
 
                     val sporsmal = Sporsmal(Temagruppe.ARBD, "")
                     setBody(mapper.writeValueAsString(sporsmal))
@@ -238,7 +232,6 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    addHeader("Cookie", trackedCookies)
 
                     val sporsmal = Sporsmal(Temagruppe.ARBD, join(Collections.nCopies(1001, 'a'), ""))
                     setBody(mapper.writeValueAsString(sporsmal))
@@ -252,8 +245,6 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    addHeader("Cookie", trackedCookies)
-
                     setBody(mapper.writeValueAsString(createSporsmal()))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
@@ -269,7 +260,6 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    addHeader("Cookie", trackedCookies)
                     setBody(mapper.writeValueAsString(createSporsmal()))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
@@ -286,7 +276,7 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    addHeader("Cookie", trackedCookies)
+
                     setBody(mapper.writeValueAsString(createSporsmal()))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
@@ -303,18 +293,17 @@ class HenvendelseControllerTest : Spek({
 
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    addHeader("Cookie", trackedCookies)
                     setBody(mapper.writeValueAsString(createSporsmal()))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
                 }
             }
             it("smeller Hvis sender flere spørsmålet sammtidig") {
-                coEvery { rateLimiterGateway.erOkMedSendeSpørsmål(any()) } returns false
+                coEvery { rateLimiterGateway.erOkMedSendeSporsmal(any()) } returns false
                 handleRequest(HttpMethod.Post, "/traader/sporsmal") {
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
-                    addHeader("Cookie", trackedCookies)
+
                     setBody(mapper.writeValueAsString(createSporsmal()))
                 }.apply {
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotAcceptable.value))
