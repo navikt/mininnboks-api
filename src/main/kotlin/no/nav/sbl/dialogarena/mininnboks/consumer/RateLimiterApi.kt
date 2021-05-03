@@ -46,7 +46,7 @@ class RateLimiterApiImpl(
             .post(requestBody)
             .build()
 
-        return try { fetch(request) } catch (e: IllegalStateException) { return false }
+        return try { fetch(request) } catch (e: IllegalStateException) { return true }
     }
 
     private inline fun <reified RESPONSE> fetch(request: Request): RESPONSE {
