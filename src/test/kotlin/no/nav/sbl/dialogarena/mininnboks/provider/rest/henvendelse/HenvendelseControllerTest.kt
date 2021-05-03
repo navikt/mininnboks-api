@@ -297,18 +297,7 @@ class HenvendelseControllerTest : Spek({
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
                 }
             }
-            it("smeller Hvis sender flere spørsmålet sammtidig") {
-                coEvery { rateLimiterApi.erOkMedSendeSporsmal(any()) } returns false
-                handleRequest(HttpMethod.Post, "/traader/sporsmal") {
-                    addHeader("Content-Type", "application/json; charset=utf8")
-                    addHeader("Accept", "application/json")
-
-                    setBody(mapper.writeValueAsString(createSporsmal()))
-                }.apply {
-                    MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.TooManyRequests.value))
-                }
-            }
-            it("smeller Hvis rate limiter oppdatering feiler") {
+            it("smeller Hvis rate limiter oppdatering feiler betyr at spørsmål grense er nådd") {
                 coEvery { rateLimiterApi.oppdatereRateLimiter(any()) } returns false
                 handleRequest(HttpMethod.Post, "/traader/sporsmal") {
                     addHeader("Content-Type", "application/json; charset=utf8")
@@ -316,7 +305,7 @@ class HenvendelseControllerTest : Spek({
 
                     setBody(mapper.writeValueAsString(createSporsmal()))
                 }.apply {
-                    MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.InternalServerError.value))
+                    MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.TooManyRequests.value))
                 }
             }
         }
@@ -343,7 +332,6 @@ fun setUp(service: HenvendelseService, rateLimiterApi: RateLimiterApi) {
         henvendelser
             .filter { henvendelse: Henvendelse? -> traadId == henvendelse!!.traadId }
     }
-    coEvery { rateLimiterApi.erOkMedSendeSporsmal(any()) } returns true
     coEvery { rateLimiterApi.oppdatereRateLimiter(any()) } returns true
 
     coEvery { service.sendSvar(any(), any()) } returns (

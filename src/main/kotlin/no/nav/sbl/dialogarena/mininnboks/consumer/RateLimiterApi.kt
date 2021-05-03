@@ -10,7 +10,6 @@ import okhttp3.RequestBody
 import okhttp3.Response
 
 interface RateLimiterApi {
-    fun erOkMedSendeSporsmal(idToken: String): Boolean
     fun oppdatereRateLimiter(idToken: String): Boolean
 }
 
@@ -21,17 +20,6 @@ class RateLimiterApiImpl(
     private val objectMapper = JacksonUtils.objectMapper
     private val client = RestClient.baseClient().newBuilder().build()
     private val JSON: MediaType = requireNotNull(MediaType.parse("application/json; charset=utf-8"))
-
-    override fun erOkMedSendeSporsmal(idToken: String): Boolean {
-        val request = Request
-            .Builder()
-            .url("$baseUrl/rate-limiter/api/limit")
-            .header("Accept", "application/json")
-            .header("Authorization", "Bearer $idToken")
-            .build()
-
-        return try { fetch(request) } catch (e: IllegalStateException) { return true }
-    }
 
     override fun oppdatereRateLimiter(idToken: String): Boolean {
         val requestBody = RequestBody.create(
