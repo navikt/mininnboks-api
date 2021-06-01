@@ -26,36 +26,25 @@ internal class RateLimiterApiTest {
 
     @Test
     fun `er det ok å sende spørsmålet`() {
-        withMockGateway(stub = getWithBody(statusCode = 200, body = "true")) { rateLimiterGateway ->
-            val response = rateLimiterGateway.erOkMedSendeSporsmal(token)
+        withMockGateway(stub = getWithBody(statusCode = 200, body = "true")) { rateLimiterApi ->
+            val response = rateLimiterApi.oppdatereRateLimiter(token)
             assertThat(response, `is`(true))
         }
     }
 
     @Test
     fun `handterer status coder utenfor 200-299 rangen`() {
-        withMockGateway(stub = getWithBody(statusCode = 404)) { rateLimiterGateway ->
-            val response = rateLimiterGateway.erOkMedSendeSporsmal(token)
+        withMockGateway(stub = getWithBody(statusCode = 404)) { rateLimiterApi ->
+            val response = rateLimiterApi.oppdatereRateLimiter(token)
             assertThat(response, `is`(true))
         }
 
         withMockGateway(
             verify = { server -> verifyHeaders(server, postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))) },
             stub = postWithBody(statusCode = 500, body = "")
-        ) { rateLimiterGateway ->
-            val response = rateLimiterGateway.oppdatereRateLimiter(token)
+        ) { rateLimiterApi ->
+            val response = rateLimiterApi.oppdatereRateLimiter(token)
             assertThat(response, `is`(true))
-        }
-    }
-
-    @Test
-    fun `skal kunne oppdatere Rate Limiter`() {
-        withMockGateway(
-            verify = { server -> verifyHeaders(server, postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))) },
-            stub = postWithBody(statusCode = 200, body = "true")
-        ) { rateLimiterGateway ->
-            val opprettetDto = rateLimiterGateway.oppdatereRateLimiter(token)
-            assertThat(opprettetDto, `is`(true))
         }
     }
 

@@ -104,13 +104,13 @@ private fun Route.sporsmaldirekte(
 ) {
     post("/sporsmaldirekte") {
         withSubject(AuthLevel.Level4) { subject ->
-            if (rateLimiterApi.erOkMedSendeSporsmal(subject.ssoToken.token)) {
+            if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
                 val sporsmal = call.receive(Sporsmal::class)
                 val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
                 val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
                 call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
             } else {
-                call.respond(HttpStatusCode.NotAcceptable, "Maks grense for å sende spørsmålet er nådd")
+                call.respond(HttpStatusCode.TooManyRequests, "Maks grense for å sende spørsmålet er nådd")
             }
         }
     }
@@ -123,13 +123,13 @@ private fun Route.sporsmal(
 ) {
     post("/sporsmal") {
         withSubject(AuthLevel.Level4) { subject ->
-            if (rateLimiterApi.erOkMedSendeSporsmal(subject.ssoToken.token)) {
+            if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
                 val sporsmal = call.receive(Sporsmal::class)
                 val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
                 val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
                 call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
             } else {
-                call.respond(HttpStatusCode.NotAcceptable, "Maks grense for å sende spørsmålet er nådd")
+                call.respond(HttpStatusCode.TooManyRequests, "Maks grense for å sende spørsmålet er nådd")
             }
         }
     }

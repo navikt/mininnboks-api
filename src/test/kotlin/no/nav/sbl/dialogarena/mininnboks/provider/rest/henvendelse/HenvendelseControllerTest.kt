@@ -41,13 +41,13 @@ class HenvendelseControllerTest : Spek({
 
         val service = mockk<HenvendelseService>(relaxed = true)
         val tilgangService = mockk<TilgangService>()
-        val rateLimiterGateway = mockk<RateLimiterApi>()
+        val rateLimiterApi = mockk<RateLimiterApi>()
         val mapper = jacksonObjectMapper()
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
         beforeEachTest {
 
-            setUp(service)
+            setUp(service, rateLimiterApi)
         }
 
         val engine = TestApplicationEngine(createTestEnvironment())
@@ -55,7 +55,7 @@ class HenvendelseControllerTest : Spek({
 
         engine.application.routing {
             authenticateWithDummySubject(dummyPrincipalNiva4()) {
-                henvendelseController(service, tilgangService, rateLimiterGateway)
+                henvendelseController(service, tilgangService, rateLimiterApi)
             }
         }
         engine.application.install(ContentNegotiation) {
@@ -213,7 +213,6 @@ class HenvendelseControllerTest : Spek({
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotFound.value))
                 }
             }
-            coEvery { rateLimiterGateway.erOkMedSendeSporsmal(any()) } returns true
             it("smeller Hvis Tom FritekstI Sporsmal") {
                 handleRequest(HttpMethod.Post, "/traader/sporsmal") {
 
@@ -298,15 +297,15 @@ class HenvendelseControllerTest : Spek({
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.BadRequest.value))
                 }
             }
-            it("smeller Hvis sender flere spørsmålet sammtidig") {
-                coEvery { rateLimiterGateway.erOkMedSendeSporsmal(any()) } returns false
+            it("smeller Hvis rate limiter oppdatering feiler betyr at spørsmål grense er nådd") {
+                coEvery { rateLimiterApi.oppdatereRateLimiter(any()) } returns false
                 handleRequest(HttpMethod.Post, "/traader/sporsmal") {
                     addHeader("Content-Type", "application/json; charset=utf8")
                     addHeader("Accept", "application/json")
 
                     setBody(mapper.writeValueAsString(createSporsmal()))
                 }.apply {
-                    MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotAcceptable.value))
+                    MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.TooManyRequests.value))
                 }
             }
         }
@@ -315,7 +314,7 @@ class HenvendelseControllerTest : Spek({
 
 private fun createSporsmal() = Sporsmal(Temagruppe.ANSOS, "DUMMY")
 
-fun setUp(service: HenvendelseService) {
+fun setUp(service: HenvendelseService, rateLimiterApi: RateLimiterApi) {
     val henvendelser = listOf(
         Henvendelse(id = "1", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
         Henvendelse(id = "2", traadId = "2", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
@@ -333,6 +332,7 @@ fun setUp(service: HenvendelseService) {
         henvendelser
             .filter { henvendelse: Henvendelse? -> traadId == henvendelse!!.traadId }
     }
+    coEvery { rateLimiterApi.oppdatereRateLimiter(any()) } returns true
 
     coEvery { service.sendSvar(any(), any()) } returns (
         WSSendInnHenvendelseResponse().withBehandlingsId(UUID.randomUUID().toString())
