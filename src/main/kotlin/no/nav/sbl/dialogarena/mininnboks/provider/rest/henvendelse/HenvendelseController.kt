@@ -9,6 +9,7 @@ import io.ktor.routing.*
 import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.AuthLevel
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
+import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
@@ -21,7 +22,11 @@ import javax.xml.ws.soap.SOAPFaultException
 
 val logger: Logger = LoggerFactory.getLogger("mininnboks.henvendelseController")
 
-fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangService: TilgangService) {
+fun Route.henvendelseController(
+    henvendelseService: HenvendelseService,
+    tilgangService: TilgangService,
+    rateLimiterApi: RateLimiterApi
+) {
     route("/traader") {
         hentAlleTraader(henvendelseService)
 
@@ -31,9 +36,9 @@ fun Route.henvendelseController(henvendelseService: HenvendelseService, tilgangS
 
         alleLest(henvendelseService)
 
-        sporsmal(tilgangService, henvendelseService)
+        sporsmal(tilgangService, henvendelseService, rateLimiterApi)
 
-        sporsmaldirekte(tilgangService, henvendelseService)
+        sporsmaldirekte(tilgangService, henvendelseService, rateLimiterApi)
 
         svar(henvendelseService)
     }
@@ -92,24 +97,40 @@ private fun createHenvendelse(svar: Svar, traad: Traad): Henvendelse {
     )
 }
 
-private fun Route.sporsmaldirekte(tilgangService: TilgangService, henvendelseService: HenvendelseService) {
+private fun Route.sporsmaldirekte(
+    tilgangService: TilgangService,
+    henvendelseService: HenvendelseService,
+    rateLimiterApi: RateLimiterApi
+) {
     post("/sporsmaldirekte") {
         withSubject(AuthLevel.Level4) { subject ->
-            val sporsmal = call.receive(Sporsmal::class)
-            val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-            val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
-            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+            if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
+                val sporsmal = call.receive(Sporsmal::class)
+                val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+                val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
+                call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+            } else {
+                call.respond(HttpStatusCode.TooManyRequests, "Maks grense for å sende spørsmålet er nådd")
+            }
         }
     }
 }
 
-private fun Route.sporsmal(tilgangService: TilgangService, henvendelseService: HenvendelseService) {
+private fun Route.sporsmal(
+    tilgangService: TilgangService,
+    henvendelseService: HenvendelseService,
+    rateLimiterApi: RateLimiterApi
+) {
     post("/sporsmal") {
         withSubject(AuthLevel.Level4) { subject ->
-            val sporsmal = call.receive(Sporsmal::class)
-            val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-            val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
-            call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+            if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
+                val sporsmal = call.receive(Sporsmal::class)
+                val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+                val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
+                call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+            } else {
+                call.respond(HttpStatusCode.TooManyRequests, "Maks grense for å sende spørsmålet er nådd")
+            }
         }
     }
 }

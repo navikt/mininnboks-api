@@ -14,6 +14,7 @@ import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
 import no.nav.sbl.dialogarena.mininnboks.common.TruststoreCheck
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
+import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApiImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider.Companion.fromTokenEndpoint
@@ -61,6 +62,7 @@ class ServiceConfig(val configuration: Configuration) {
     val stsService = systemUserTokenProvider()
     val pdlService = pdlService(stsService)
     val tilgangService = tilgangService(pdlService)
+    val rateLimiterService = RateLimiterApiImpl(configuration.RATE_LIMITER_URL)
 
     val selfTestCheckStsService: SelfTestCheck = SelfTestCheck("Sjekker at systembruker kan hente token fra STS", true) {
         runBlocking {
