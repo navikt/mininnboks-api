@@ -15,25 +15,22 @@ import okhttp3.mock.MediaTypes.MEDIATYPE_JSON
 import okhttp3.mock.MockInterceptor
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
+import org.hamcrest.core.Is
 import org.hamcrest.core.IsNull.nullValue
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.slf4j.MDC
+import org.spekframework.spek2.Spek
 import java.util.*
 
-class PdlServiceTest {
+private val configuration: Configuration = mockk()
 
-    val configuration: Configuration = mockk()
+object PdlServicetest : Spek({
 
-    @BeforeEach
-    fun setUp() {
+    beforeEachTest {
         coEvery { configuration.PDL_API_URL } returns "https://test.pdl.nav.no"
         coEvery { configuration.PDL_API_APIKEY } returns "PDL_API_API_VALUE"
     }
 
-    @Test
-    fun `henter adressebeskyttelsegradering om det finnes`() {
+    test("henter adressebeskyttelsegradering om det finnes") {
         runBlocking {
             val harAdressebeskyttelse = gittGradering(HentAdressebeskyttelse.AdressebeskyttelseGradering.UGRADERT)
                 .hentAdresseBeskyttelse(dummySubject)
@@ -45,16 +42,14 @@ class PdlServiceTest {
         }
     }
 
-    @Test
-    fun `henter null om adressebeskyttelsegradering ikke finnes`() {
+    test("henter null om adressebeskyttelsegradering ikke finnes") {
         runBlocking {
             val harAdressebeskyttelse = gittGradering(null).hentAdresseBeskyttelse(dummySubject)
             assertThat(harAdressebeskyttelse, Matchers.`is`(nullValue()))
         }
     }
 
-    @Test
-    fun `sjekk for kode6`() {
+    test("sjekk for kode6") {
         runBlocking {
             val pdlService = gittGradering(HentAdressebeskyttelse.AdressebeskyttelseGradering.STRENGT_FORTROLIG)
             assertThat(pdlService.harKode6(MOCK_SUBJECT), Matchers.`is`(true))
@@ -76,8 +71,7 @@ class PdlServiceTest {
         }
     }
 
-    @Test
-    fun `sjekk for kode7`() {
+    test("sjekk for kode7") {
         runBlocking {
             val pdlService = gittGradering(HentAdressebeskyttelse.AdressebeskyttelseGradering.FORTROLIG)
             assertThat(pdlService.harKode7(MOCK_SUBJECT), Matchers.`is`(true))
@@ -99,22 +93,21 @@ class PdlServiceTest {
         }
     }
 
-    @Test
-    fun `feil blir pakket inn i egen exceptiontype`() {
+    test("feil blir pakket inn i egen exceptiontype") {
         gittUrlTilPdl()
         val client = gittClientSomSvarer(body = gittErrorPdlResponse("Det skjedde en feil"))
         val stsService = gittStsService()
         val pdlService = PdlService(client, stsService, configuration)
-
-        assertThrows<PdlException> {
+        try {
             runBlocking {
                 pdlService.hentAdresseBeskyttelse(dummySubject)
             }
+        } catch (t: Throwable) {
+            assertThat(t.message, Is.`is`("Kunne ikke utlede adressebeskyttelse"))
         }
     }
 
-    @Test
-    fun `skal hente ut alle adresser for bruker`() {
+    test("skal hente ut alle adresser for bruker") {
         runBlocking {
             val pdlService = gittAdresserData()
             val adresse = pdlService.hentFolkeregistrertAdresse(MOCK_SUBJECT)
@@ -135,35 +128,36 @@ class PdlServiceTest {
             )
         }
     }
+})
 
-    private fun gittClientSomSvarer(body: String = ""): OkHttpClient {
+private fun gittClientSomSvarer(body: String = ""): OkHttpClient {
 
-        val interceptor = MockInterceptor()
+    val interceptor = MockInterceptor()
 
-        interceptor.addRule()
-            .post()
-            .url("https://test.pdl.nav.no/graphql")
-            .respond(body, MEDIATYPE_JSON)
+    interceptor.addRule()
+        .post()
+        .url("https://test.pdl.nav.no/graphql")
+        .respond(body, MEDIATYPE_JSON)
 
-        return OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
-    }
+    return OkHttpClient.Builder()
+        .addInterceptor(interceptor)
+        .build()
+}
 
-    fun gittStsService(token: String = UUID.randomUUID().toString()): SystemuserTokenProvider {
-        val stsService = mockk<SystemuserTokenProvider>()
+private fun gittStsService(token: String = UUID.randomUUID().toString()): SystemuserTokenProvider {
+    val stsService = mockk<SystemuserTokenProvider>()
 
-        every { stsService.getSystemUserAccessToken() } returns (token)
+    every { stsService.getSystemUserAccessToken() } returns (token)
 
-        return stsService
-    }
+    return stsService
+}
 
-    fun gittUrlTilPdl() {
-        MDC.put(MDCConstants.MDC_CALL_ID, UUID.randomUUID().toString())
-    }
+private fun gittUrlTilPdl() {
+    MDC.put(MDCConstants.MDC_CALL_ID, UUID.randomUUID().toString())
+}
 
-    fun gittOkAdressebeskyttelseResponse(gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering? = null): String {
-        return """
+private fun gittOkAdressebeskyttelseResponse(gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering? = null): String {
+    return """
             { 
                 "data": {
                     "hentPerson": {
@@ -173,64 +167,63 @@ class PdlServiceTest {
                     }
                 }
             }
-        """.trimIndent()
-    }
+    """.trimIndent()
+}
 
-    fun gittOkAdresserResponse(): String {
-        return """
-            {
-                "data": {
-                    "hentPerson": {
-                        "bostedsadresse": [
-                            {
-                                "vegadresse": {
-                                    "matrikkelId": "123456789",
-                                    "adressenavn": "Kirkegata",
-                                    "husnummer": "12",
-                                    "husbokstav": "B",
-                                    "tilleggsnavn": "Storgården",
-                                    "postnummer": "1234",
-                                    "kommunenummer": "4321",
-                                    "bruksenhetsnummer": "H0101"
-                                }
-                            },
-                            {
-                                "matrikkeladresse": {
-                                    "matrikkelId": "123456789",
-                                    "postnummer": "1234",
-                                    "tilleggsnavn": "Storgården",
-                                    "kommunenummer": "4321",
-                                    "bruksenhetsnummer": "H0101"
-                                }
+private fun gittOkAdresserResponse(): String {
+    return """
+        {
+            "data": {
+                "hentPerson": {
+                    "bostedsadresse": [
+                        {
+                            "vegadresse": {
+                                "matrikkelId": "123456789",
+                                "adressenavn": "Kirkegata",
+                                "husnummer": "12",
+                                "husbokstav": "B",
+                                "tilleggsnavn": "Storgården",
+                                "postnummer": "1234",
+                                "kommunenummer": "4321",
+                                "bruksenhetsnummer": "H0101"
                             }
-                        ]
-                    }
+                        },
+                        {
+                            "matrikkeladresse": {
+                                "matrikkelId": "123456789",
+                                "postnummer": "1234",
+                                "tilleggsnavn": "Storgården",
+                                "kommunenummer": "4321",
+                                "bruksenhetsnummer": "H0101"
+                            }
+                        }
+                    ]
                 }
             }
-        """.trimIndent()
-    }
+        }
+    """.trimIndent()
+}
 
-    fun gittErrorPdlResponse(message: String): String {
-        return """
-            {
-                "errors": [
-                    { "message": "$message"}
-                ]
-            }
-        """.trimIndent()
-    }
+private fun gittErrorPdlResponse(message: String): String {
+    return """
+        {
+            "errors": [
+                { "message": "$message"}
+            ]
+        }
+    """.trimIndent()
+}
 
-    fun gittGradering(gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering?): PdlService {
-        gittUrlTilPdl()
-        val client = gittClientSomSvarer(body = gittOkAdressebeskyttelseResponse(gradering))
-        val stsService = gittStsService()
-        return PdlService(client, stsService, configuration)
-    }
+private fun gittGradering(gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering?): PdlService {
+    gittUrlTilPdl()
+    val client = gittClientSomSvarer(body = gittOkAdressebeskyttelseResponse(gradering))
+    val stsService = gittStsService()
+    return PdlService(client, stsService, configuration)
+}
 
-    fun gittAdresserData(): PdlService {
-        gittUrlTilPdl()
-        val client = gittClientSomSvarer(body = gittOkAdresserResponse())
-        val stsService = gittStsService()
-        return PdlService(client, stsService, configuration)
-    }
+private fun gittAdresserData(): PdlService {
+    gittUrlTilPdl()
+    val client = gittClientSomSvarer(body = gittOkAdresserResponse())
+    val stsService = gittStsService()
+    return PdlService(client, stsService, configuration)
 }
