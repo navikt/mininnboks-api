@@ -11,7 +11,9 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is
 import org.spekframework.spek2.Spek
 
-class DefaultPersonServiceTest : Spek({
+val personV3: PersonV3 = mockk()
+
+object DefaultPersonServiceTest : Spek({
 
     var personService: PersonService.Default = PersonService.Default(personV3)
 
@@ -35,5 +37,3 @@ class DefaultPersonServiceTest : Spek({
         }
     }
 })
-
-val personV3: PersonV3 = mockk()

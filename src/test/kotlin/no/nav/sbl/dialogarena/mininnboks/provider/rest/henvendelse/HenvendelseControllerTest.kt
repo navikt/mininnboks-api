@@ -35,7 +35,12 @@ import javax.xml.namespace.QName
 import javax.xml.soap.SOAPFactory
 import javax.xml.ws.soap.SOAPFaultException
 
-class HenvendelseControllerTest : Spek({
+private val service = mockk<HenvendelseService>(relaxed = true)
+private val tilgangService = mockk<TilgangService>()
+private val rateLimiterApi = mockk<RateLimiterApi>()
+private val mapper = jacksonObjectMapper()
+
+object HenvendelseControllerTest : Spek({
 
     describe("Henvendelse tester") {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -308,7 +313,7 @@ class HenvendelseControllerTest : Spek({
 
 private fun createSporsmal() = Sporsmal(Temagruppe.ANSOS, "DUMMY")
 
-fun setUp(service: HenvendelseService, rateLimiterApi: RateLimiterApi) {
+private fun setUp(service: HenvendelseService, rateLimiterApi: RateLimiterApi) {
     val henvendelser = listOf(
         Henvendelse(id = "1", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
         Henvendelse(id = "2", traadId = "2", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
@@ -332,8 +337,3 @@ fun setUp(service: HenvendelseService, rateLimiterApi: RateLimiterApi) {
         WSSendInnHenvendelseResponse().withBehandlingsId(UUID.randomUUID().toString())
         )
 }
-
-val service = mockk<HenvendelseService>(relaxed = true)
-val tilgangService = mockk<TilgangService>()
-val rateLimiterApi = mockk<RateLimiterApi>()
-val mapper = jacksonObjectMapper()

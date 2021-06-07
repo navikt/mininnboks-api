@@ -21,7 +21,27 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
 
-class HenvendelseServiceTest : Spek({
+private val henvendelseListe: MutableList<Any> = java.util.ArrayList()
+private val sendInnHenvendelseRequestArgumentCaptor = slot<WSSendInnHenvendelseRequest>()
+private val hentHenvendelseListeRequestArgumentCaptor = slot<WSHentHenvendelseListeRequest>()
+private val henvendelsePortType: HenvendelsePortType = mockk()
+private val sendInnHenvendelsePortType: SendInnHenvendelsePortType = mockk()
+private val innsynHenvendelsePortType: InnsynHenvendelsePortType = mockk()
+private val personService: PersonService = mockk()
+private val tekstService: TekstService = mockk()
+private var henvendelseService: HenvendelseService = mockk()
+private val FNR = "fnr"
+private val subject = Subject(FNR, IdentType.EksternBruker, SsoToken.oidcToken("fnr", emptyMap<String, Any>()))
+private val TEMAGRUPPE = Temagruppe.ARBD
+private val FRITEKST = "fritekst"
+private val TRAAD_ID = "traadId"
+private val EKSTERN_AKTOR = "eksternAktor"
+private val TILKNYTTET_ENHET = "tilknyttetEnhet"
+private val KONTORSPERRE_ENHET = "kontorsperreEnhet"
+private val BRUKER_ENHET = "brukersEnhet"
+private val ER_TILKNYTTET_ANSATT = false
+
+object HenvendelseServiceTest : Spek({
 
     beforeEachTest {
         henvendelseService = HenvendelseService.Default(henvendelsePortType, sendInnHenvendelsePortType, innsynHenvendelsePortType, personService)
@@ -185,12 +205,12 @@ class HenvendelseServiceTest : Spek({
     }
 })
 
-fun lagHenvendelse(type: String): XMLHenvendelse {
+private fun lagHenvendelse(type: String): XMLHenvendelse {
     return XMLHenvendelse().withHenvendelseType(type)
         .withBehandlingsId("id")
 }
 
-fun lagSporsmalSkriftlig(): XMLHenvendelse {
+private fun lagSporsmalSkriftlig(): XMLHenvendelse {
     return lagHenvendelse(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name)
         .withMetadataListe(
             XMLMetadataListe().withMetadata(
@@ -201,7 +221,7 @@ fun lagSporsmalSkriftlig(): XMLHenvendelse {
         )
 }
 
-fun lagDelvisSvarSkriftlig(): XMLHenvendelse {
+private fun lagDelvisSvarSkriftlig(): XMLHenvendelse {
     return lagHenvendelse(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name)
         .withMetadataListe(
             XMLMetadataListe().withMetadata(
@@ -212,29 +232,9 @@ fun lagDelvisSvarSkriftlig(): XMLHenvendelse {
         )
 }
 
-fun mockBehandlingskjedeMedDelsvar(): List<Any> {
+private fun mockBehandlingskjedeMedDelsvar(): List<Any> {
     val henvendelseListe: MutableList<Any> = ArrayList()
     henvendelseListe.add(lagSporsmalSkriftlig())
     henvendelseListe.add(lagDelvisSvarSkriftlig())
     return henvendelseListe
 }
-
-val henvendelseListe: MutableList<Any> = java.util.ArrayList()
-val sendInnHenvendelseRequestArgumentCaptor = slot<WSSendInnHenvendelseRequest>()
-val hentHenvendelseListeRequestArgumentCaptor = slot<WSHentHenvendelseListeRequest>()
-val henvendelsePortType: HenvendelsePortType = mockk()
-val sendInnHenvendelsePortType: SendInnHenvendelsePortType = mockk()
-val innsynHenvendelsePortType: InnsynHenvendelsePortType = mockk()
-val personService: PersonService = mockk()
-val tekstService: TekstService = mockk()
-var henvendelseService: HenvendelseService = mockk()
-val FNR = "fnr"
-val subject = Subject(FNR, IdentType.EksternBruker, SsoToken.oidcToken("fnr", emptyMap<String, Any>()))
-val TEMAGRUPPE = Temagruppe.ARBD
-val FRITEKST = "fritekst"
-val TRAAD_ID = "traadId"
-val EKSTERN_AKTOR = "eksternAktor"
-val TILKNYTTET_ENHET = "tilknyttetEnhet"
-val KONTORSPERRE_ENHET = "kontorsperreEnhet"
-val BRUKER_ENHET = "brukersEnhet"
-val ER_TILKNYTTET_ANSATT = false

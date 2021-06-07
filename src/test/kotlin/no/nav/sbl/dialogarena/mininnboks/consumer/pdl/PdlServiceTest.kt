@@ -21,7 +21,9 @@ import org.slf4j.MDC
 import org.spekframework.spek2.Spek
 import java.util.*
 
-class PdlServicetest : Spek({
+private val configuration: Configuration = mockk()
+
+object PdlServicetest : Spek({
 
     beforeEachTest {
         coEvery { configuration.PDL_API_URL } returns "https://test.pdl.nav.no"
@@ -142,7 +144,7 @@ private fun gittClientSomSvarer(body: String = ""): OkHttpClient {
         .build()
 }
 
-fun gittStsService(token: String = UUID.randomUUID().toString()): SystemuserTokenProvider {
+private fun gittStsService(token: String = UUID.randomUUID().toString()): SystemuserTokenProvider {
     val stsService = mockk<SystemuserTokenProvider>()
 
     every { stsService.getSystemUserAccessToken() } returns (token)
@@ -150,11 +152,11 @@ fun gittStsService(token: String = UUID.randomUUID().toString()): SystemuserToke
     return stsService
 }
 
-fun gittUrlTilPdl() {
+private fun gittUrlTilPdl() {
     MDC.put(MDCConstants.MDC_CALL_ID, UUID.randomUUID().toString())
 }
 
-fun gittOkAdressebeskyttelseResponse(gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering? = null): String {
+private fun gittOkAdressebeskyttelseResponse(gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering? = null): String {
     return """
             { 
                 "data": {
@@ -168,7 +170,7 @@ fun gittOkAdressebeskyttelseResponse(gradering: HentAdressebeskyttelse.Adressebe
     """.trimIndent()
 }
 
-fun gittOkAdresserResponse(): String {
+private fun gittOkAdresserResponse(): String {
     return """
         {
             "data": {
@@ -202,7 +204,7 @@ fun gittOkAdresserResponse(): String {
     """.trimIndent()
 }
 
-fun gittErrorPdlResponse(message: String): String {
+private fun gittErrorPdlResponse(message: String): String {
     return """
         {
             "errors": [
@@ -212,18 +214,16 @@ fun gittErrorPdlResponse(message: String): String {
     """.trimIndent()
 }
 
-fun gittGradering(gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering?): PdlService {
+private fun gittGradering(gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering?): PdlService {
     gittUrlTilPdl()
     val client = gittClientSomSvarer(body = gittOkAdressebeskyttelseResponse(gradering))
     val stsService = gittStsService()
     return PdlService(client, stsService, configuration)
 }
 
-fun gittAdresserData(): PdlService {
+private fun gittAdresserData(): PdlService {
     gittUrlTilPdl()
     val client = gittClientSomSvarer(body = gittOkAdresserResponse())
     val stsService = gittStsService()
     return PdlService(client, stsService, configuration)
 }
-
-val configuration: Configuration = mockk()

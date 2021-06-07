@@ -18,7 +18,31 @@ import org.joda.time.DateTime
 import org.spekframework.spek2.Spek
 import java.util.*
 
-class HenvendelsesUtilsTest : Spek({
+private val tekstService = mockk<TekstService>()
+private val ID_1 = "1"
+private val ID_2 = "2"
+private val ID_3 = "3"
+private val ID_4 = "4"
+private val ID_5 = "5"
+private val FRITEKST = "fritekst"
+private val OPPRETTET_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 1))
+private val AVSLUTTET_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 2))
+private val LEST_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 3))
+private val OPPRETTET_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 1))
+private val AVSLUTTET_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 2))
+private val LEST_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 3))
+private val TEMAGRUPPE = Temagruppe.FMLI
+private val KANAL = "kanal"
+private val NAVIDENT = "navident"
+private val TILKNYTTET_ENHET = "tilknyttetEnhet"
+private val ER_TILKNYTTET_ANSATT = false
+private val REPETERENDE_VARSEL = false
+private val BRUKERS_ENHET = "1234"
+private val KONTORSPERRE_ENHET = "kontorsperreEnhet"
+private val OPPGAVE_URL = "oppgave/url"
+private val OPPGAVE_TYPE = "sykepenger"
+
+object HenvendelsesUtilsTest : Spek({
 
     test("transformerer Dokument Henvendelse") {
         every { tekstService.hentTekst(any()) } returns "value"
@@ -197,37 +221,14 @@ class HenvendelsesUtilsTest : Spek({
     }
 })
 
-val ID_1 = "1"
-val ID_2 = "2"
-val ID_3 = "3"
-val ID_4 = "4"
-val ID_5 = "5"
-val FRITEKST = "fritekst"
-val OPPRETTET_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 1))
-val AVSLUTTET_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 2))
-val LEST_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 3))
-val OPPRETTET_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 1))
-val AVSLUTTET_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 2))
-val LEST_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 3))
-val TEMAGRUPPE = Temagruppe.FMLI
-val KANAL = "kanal"
-val NAVIDENT = "navident"
-val TILKNYTTET_ENHET = "tilknyttetEnhet"
-val ER_TILKNYTTET_ANSATT = false
-val REPETERENDE_VARSEL = false
-val BRUKERS_ENHET = "1234"
-val KONTORSPERRE_ENHET = "kontorsperreEnhet"
-val OPPGAVE_URL = "oppgave/url"
-val OPPGAVE_TYPE = "sykepenger"
-
-fun assertStandardFelter(sporsmal: Henvendelse) {
+private fun assertStandardFelter(sporsmal: Henvendelse) {
     assertThat(sporsmal.fritekst, CoreMatchers.`is`(FRITEKST))
     assertThat(sporsmal.temagruppe, CoreMatchers.`is`(TEMAGRUPPE))
     assertThat(sporsmal.opprettet, CoreMatchers.`is`(OPPRETTET_DATO))
     assertThat(sporsmal.avsluttet, CoreMatchers.`is`(AVSLUTTET_DATO))
 }
 
-fun mockXMLHenvendelseMedXMLMeldingFraBruker(
+private fun mockXMLHenvendelseMedXMLMeldingFraBruker(
     type: XMLHenvendelseType,
     id: String,
     kjedeId: String
@@ -249,7 +250,7 @@ fun mockXMLHenvendelseMedXMLMeldingFraBruker(
         )
 }
 
-fun mockXMLHenvendelseMedXMLMeldingTilBruker(
+private fun mockXMLHenvendelseMedXMLMeldingTilBruker(
     type: XMLHenvendelseType,
     id: String,
     kjedeId: String
@@ -276,7 +277,7 @@ fun mockXMLHenvendelseMedXMLMeldingTilBruker(
         )
 }
 
-fun mockDokumentHenvendelse(): XMLHenvendelse {
+private fun mockDokumentHenvendelse(): XMLHenvendelse {
     return XMLHenvendelse()
         .withHenvendelseType(XMLHenvendelseType.DOKUMENT_VARSEL.name)
         .withBehandlingsId(ID_1)
@@ -295,7 +296,7 @@ fun mockDokumentHenvendelse(): XMLHenvendelse {
         )
 }
 
-fun mockXMLHenvendelseMedXMLOppgaveVarsel(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
+private fun mockXMLHenvendelseMedXMLOppgaveVarsel(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
     return XMLHenvendelse()
         .withHenvendelseType(type.name)
         .withBehandlingsId(id)
@@ -315,5 +316,3 @@ fun mockXMLHenvendelseMedXMLOppgaveVarsel(type: XMLHenvendelseType, id: String, 
             )
         )
 }
-
-val tekstService = mockk<TekstService>()

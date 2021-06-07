@@ -13,8 +13,9 @@ import org.hamcrest.core.Is.`is`
 import org.slf4j.MDC
 import org.spekframework.spek2.Spek
 
-internal class RateLimiterApiTest : Spek({
-    val token = "TOKEN"
+private val token = "TOKEN"
+
+object RateLimiterApiTest : Spek({
     MDC.put(MDCConstants.MDC_CALL_ID, "MDC_CALL_ID")
 
     test("er det ok å sende spørsmålet") {

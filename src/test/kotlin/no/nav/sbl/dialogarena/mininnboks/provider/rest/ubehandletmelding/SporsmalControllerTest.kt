@@ -19,7 +19,9 @@ import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-class SporsmalControllerTest : Spek({
+private val henvendelseService = mockk<HenvendelseService>()
+
+object SporsmalControllerTest : Spek({
 
     beforeEachTest {
         coEvery { (henvendelseService.hentAlleHenvendelser(dummySubject)) } returns emptyList()
@@ -50,5 +52,3 @@ class SporsmalControllerTest : Spek({
         }
     }
 })
-
-val henvendelseService = mockk<HenvendelseService>()

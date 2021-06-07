@@ -5,7 +5,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
 
-class TekstServiceImplTest : Spek({
+object TekstServiceImplTest : Spek({
 
     test("smoketest") {
         assertThat(TekstServiceImpl.hentTekster().size, Matchers.greaterThan(0) as Matcher<in Int?>?)

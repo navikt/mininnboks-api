@@ -9,7 +9,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
 
-class UbehandletMeldingUtilsTest : Spek({
+object UbehandletMeldingUtilsTest : Spek({
     setup()
 
     test("deler Opp Henvendelser SporsmalsVarsel Per Traad") {
@@ -68,7 +68,7 @@ class UbehandletMeldingUtilsTest : Spek({
     }
 })
 
-fun setup() {
+private fun setup() {
     EnvironmentUtils.setProperty(LinkService.MININNBOKS_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
     EnvironmentUtils.setProperty(LinkService.SAKSOVERSIKT_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
     EnvironmentUtils.setProperty(LinkService.TEMAVELGER_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
