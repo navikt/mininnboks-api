@@ -13,17 +13,23 @@ import no.nav.sbl.dialogarena.mininnboks.JacksonUtils.Companion.objectMapper
 import no.nav.sbl.dialogarena.mininnboks.authenticateWithDummySubject
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.dummyPrincipalNiva3
+import no.nav.sbl.dialogarena.mininnboks.dummySubject
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
 class SporsmalControllerTest : Spek({
+    val henvendelseService = mockk<HenvendelseService>()
+
+    beforeEachTest {
+        coEvery { (henvendelseService.hentAlleHenvendelser(dummySubject)) } returns emptyList()
+    }
 
     describe("kaller Henvendelse Service Med SubjectID") {
         val engine = TestApplicationEngine(createTestEnvironment())
         engine.start(wait = false) // for now we can't eliminate it
-        val henvendelseService = mockk<HenvendelseService>()
+
         engine.application.routing {
             authenticateWithDummySubject(dummyPrincipalNiva3()) {
                 sporsmalController(henvendelseService)
@@ -34,7 +40,6 @@ class SporsmalControllerTest : Spek({
         }
 
         with(engine) {
-            coEvery { (henvendelseService.hentAlleHenvendelser(any())) } returns emptyList()
 
             it("retunerer Exception") {
                 handleRequest(HttpMethod.Get, "/sporsmal/ubehandlet") {

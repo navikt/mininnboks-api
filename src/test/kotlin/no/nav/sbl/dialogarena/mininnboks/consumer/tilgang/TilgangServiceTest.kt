@@ -9,7 +9,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
 import no.nav.sbl.dialogarena.mininnboks.dummySubject
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
-import org.junit.jupiter.api.Test
+import org.spekframework.spek2.Spek
 
 internal data class MockContext(
     val pdlService: PdlService,
@@ -17,9 +17,16 @@ internal data class MockContext(
     val tilgangService: TilgangService
 )
 
-class TilgangServiceTest {
-    @Test
-    fun `gir FEILET om hentEnhet feiler`() {
+class TilgangServiceTest : Spek({
+
+    fun gittContext(): MockContext {
+        val pdlService = mockk<PdlService>()
+        val personService = mockk<PersonService>()
+        val tilgangService = TilgangServiceImpl(pdlService, personService)
+        return MockContext(pdlService, personService, tilgangService)
+    }
+
+    test("gir FEILET om hentEnhet feiler") {
         val (pdlService, personService, tilgangService) = gittContext()
         coEvery { personService.hentGeografiskTilknytning(dummySubject) } throws IllegalStateException()
         runBlocking {
@@ -31,8 +38,7 @@ class TilgangServiceTest {
         }
     }
 
-    @Test
-    fun `gir INGEN_ENHET om bruker ikke har enhet`() {
+    test("gir INGEN_ENHET om bruker ikke har enhet") {
         val (pdlService, personService, tilgangService) = gittContext()
         coEvery { personService.hentGeografiskTilknytning(dummySubject) } returns null
         runBlocking {
@@ -44,8 +50,7 @@ class TilgangServiceTest {
         }
     }
 
-    @Test
-    fun `gir INGEN_ENHET om bruker ikke har GT`() {
+    test("gir INGEN_ENHET om bruker ikke har GT") {
         val (pdlService, personService, tilgangService) = gittContext()
         coEvery { personService.hentGeografiskTilknytning(dummySubject) } returns null
         runBlocking {
@@ -57,8 +62,7 @@ class TilgangServiceTest {
         }
     }
 
-    @Test
-    fun `gir INGEN_ENHET om bruker har GT utland`() {
+    test("gir INGEN_ENHET om bruker har GT utland") {
         val (pdlService, personService, tilgangService) = gittContext()
         runBlocking {
             coEvery { personService.hentGeografiskTilknytning(dummySubject) } returns "SWE"
@@ -70,8 +74,7 @@ class TilgangServiceTest {
         }
     }
 
-    @Test
-    fun `gir FEILET om pdl-api kall feiler`() {
+    test("gir FEILET om pdl-api kall feiler") {
         val (pdlService, personService, tilgangService) = gittContext()
         coEvery { personService.hentGeografiskTilknytning(dummySubject) } returns "0123"
         coEvery { pdlService.harKode6(any()) } throws IllegalStateException()
@@ -83,8 +86,7 @@ class TilgangServiceTest {
         }
     }
 
-    @Test
-    fun `gir KODE6 om bruker har kode6`() {
+    test("gir KODE6 om bruker har kode6") {
         val (pdlService, personService, tilgangService) = gittContext()
         coEvery { personService.hentGeografiskTilknytning(dummySubject) } returns "0123"
         coEvery { pdlService.harKode6(any()) } returns true
@@ -95,8 +97,7 @@ class TilgangServiceTest {
         }
     }
 
-    @Test
-    fun `gir OK om bruker har har enhet og ikke kode6`() {
+    test("gir OK om bruker har har enhet og ikke kode6") {
         val (pdlService, personService, tilgangService) = gittContext()
         coEvery { personService.hentGeografiskTilknytning(dummySubject) } returns "0123"
         coEvery { pdlService.harKode6(any()) } returns false
@@ -105,11 +106,4 @@ class TilgangServiceTest {
             assertThat(result.resultat, Matchers.`is`(TilgangDTO.Resultat.OK))
         }
     }
-
-    private fun gittContext(): MockContext {
-        val pdlService = mockk<PdlService>()
-        val personService = mockk<PersonService>()
-        val tilgangService = TilgangServiceImpl(pdlService, personService)
-        return MockContext(pdlService, personService, tilgangService)
-    }
-}
+})
