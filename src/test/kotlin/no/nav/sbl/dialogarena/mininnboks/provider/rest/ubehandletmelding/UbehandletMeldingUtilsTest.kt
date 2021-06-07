@@ -1,9 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding
 
+import no.nav.common.utils.EnvironmentUtils
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
-import no.nav.sbl.dialogarena.mininnboks.config.LinkMock.setup
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
+import no.nav.sbl.dialogarena.mininnboks.provider.LinkService
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
@@ -66,3 +67,10 @@ class UbehandletMeldingUtilsTest : Spek({
         assertThat(sporsmalVarsler[0].statuser.contains(Status.ULEST), Matchers.`is`(true))
     }
 })
+
+fun setup() {
+    EnvironmentUtils.setProperty(LinkService.MININNBOKS_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
+    EnvironmentUtils.setProperty(LinkService.SAKSOVERSIKT_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
+    EnvironmentUtils.setProperty(LinkService.TEMAVELGER_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
+    EnvironmentUtils.setProperty(LinkService.BRUKERPROFIL_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
+}

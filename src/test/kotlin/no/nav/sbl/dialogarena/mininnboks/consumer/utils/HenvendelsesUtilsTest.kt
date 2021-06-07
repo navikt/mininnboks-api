@@ -19,7 +19,6 @@ import org.spekframework.spek2.Spek
 import java.util.*
 
 class HenvendelsesUtilsTest : Spek({
-    val tekstService = mockk<TekstService>()
 
     test("transformerer Dokument Henvendelse") {
         every { tekstService.hentTekst(any()) } returns "value"
@@ -316,3 +315,5 @@ fun mockXMLHenvendelseMedXMLOppgaveVarsel(type: XMLHenvendelseType, id: String, 
             )
         )
 }
+
+val tekstService = mockk<TekstService>()

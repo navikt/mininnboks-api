@@ -11,20 +11,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
 
-internal data class MockContext(
-    val pdlService: PdlService,
-    val personService: PersonService,
-    val tilgangService: TilgangService
-)
-
 class TilgangServiceTest : Spek({
-
-    fun gittContext(): MockContext {
-        val pdlService = mockk<PdlService>()
-        val personService = mockk<PersonService>()
-        val tilgangService = TilgangServiceImpl(pdlService, personService)
-        return MockContext(pdlService, personService, tilgangService)
-    }
 
     test("gir FEILET om hentEnhet feiler") {
         val (pdlService, personService, tilgangService) = gittContext()
@@ -107,3 +94,16 @@ class TilgangServiceTest : Spek({
         }
     }
 })
+
+fun gittContext(): MockContext {
+    val pdlService = mockk<PdlService>()
+    val personService = mockk<PersonService>()
+    val tilgangService = TilgangServiceImpl(pdlService, personService)
+    return MockContext(pdlService, personService, tilgangService)
+}
+
+data class MockContext(
+    val pdlService: PdlService,
+    val personService: PersonService,
+    val tilgangService: TilgangService
+)

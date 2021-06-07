@@ -38,15 +38,9 @@ import javax.xml.ws.soap.SOAPFaultException
 class HenvendelseControllerTest : Spek({
 
     describe("Henvendelse tester") {
-
-        val service = mockk<HenvendelseService>(relaxed = true)
-        val tilgangService = mockk<TilgangService>()
-        val rateLimiterApi = mockk<RateLimiterApi>()
-        val mapper = jacksonObjectMapper()
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
         beforeEachTest {
-
             setUp(service, rateLimiterApi)
         }
 
@@ -338,3 +332,8 @@ fun setUp(service: HenvendelseService, rateLimiterApi: RateLimiterApi) {
         WSSendInnHenvendelseResponse().withBehandlingsId(UUID.randomUUID().toString())
         )
 }
+
+val service = mockk<HenvendelseService>(relaxed = true)
+val tilgangService = mockk<TilgangService>()
+val rateLimiterApi = mockk<RateLimiterApi>()
+val mapper = jacksonObjectMapper()

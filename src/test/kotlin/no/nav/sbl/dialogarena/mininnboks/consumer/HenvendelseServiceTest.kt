@@ -22,7 +22,6 @@ import org.hamcrest.Matchers
 import org.spekframework.spek2.Spek
 
 class HenvendelseServiceTest : Spek({
-    val henvendelseListe: MutableList<Any> = java.util.ArrayList()
 
     beforeEachTest {
         henvendelseService = HenvendelseService.Default(henvendelsePortType, sendInnHenvendelsePortType, innsynHenvendelsePortType, personService)
@@ -186,25 +185,6 @@ class HenvendelseServiceTest : Spek({
     }
 })
 
-val sendInnHenvendelseRequestArgumentCaptor = slot<WSSendInnHenvendelseRequest>()
-val hentHenvendelseListeRequestArgumentCaptor = slot<WSHentHenvendelseListeRequest>()
-val henvendelsePortType: HenvendelsePortType = mockk()
-val sendInnHenvendelsePortType: SendInnHenvendelsePortType = mockk()
-val innsynHenvendelsePortType: InnsynHenvendelsePortType = mockk()
-val personService: PersonService = mockk()
-val tekstService: TekstService = mockk()
-var henvendelseService: HenvendelseService = mockk()
-val FNR = "fnr"
-val subject = Subject(FNR, IdentType.EksternBruker, SsoToken.oidcToken("fnr", emptyMap<String, Any>()))
-val TEMAGRUPPE = Temagruppe.ARBD
-val FRITEKST = "fritekst"
-val TRAAD_ID = "traadId"
-val EKSTERN_AKTOR = "eksternAktor"
-val TILKNYTTET_ENHET = "tilknyttetEnhet"
-val KONTORSPERRE_ENHET = "kontorsperreEnhet"
-val BRUKER_ENHET = "brukersEnhet"
-val ER_TILKNYTTET_ANSATT = false
-
 fun lagHenvendelse(type: String): XMLHenvendelse {
     return XMLHenvendelse().withHenvendelseType(type)
         .withBehandlingsId("id")
@@ -238,3 +218,23 @@ fun mockBehandlingskjedeMedDelsvar(): List<Any> {
     henvendelseListe.add(lagDelvisSvarSkriftlig())
     return henvendelseListe
 }
+
+val henvendelseListe: MutableList<Any> = java.util.ArrayList()
+val sendInnHenvendelseRequestArgumentCaptor = slot<WSSendInnHenvendelseRequest>()
+val hentHenvendelseListeRequestArgumentCaptor = slot<WSHentHenvendelseListeRequest>()
+val henvendelsePortType: HenvendelsePortType = mockk()
+val sendInnHenvendelsePortType: SendInnHenvendelsePortType = mockk()
+val innsynHenvendelsePortType: InnsynHenvendelsePortType = mockk()
+val personService: PersonService = mockk()
+val tekstService: TekstService = mockk()
+var henvendelseService: HenvendelseService = mockk()
+val FNR = "fnr"
+val subject = Subject(FNR, IdentType.EksternBruker, SsoToken.oidcToken("fnr", emptyMap<String, Any>()))
+val TEMAGRUPPE = Temagruppe.ARBD
+val FRITEKST = "fritekst"
+val TRAAD_ID = "traadId"
+val EKSTERN_AKTOR = "eksternAktor"
+val TILKNYTTET_ENHET = "tilknyttetEnhet"
+val KONTORSPERRE_ENHET = "kontorsperreEnhet"
+val BRUKER_ENHET = "brukersEnhet"
+val ER_TILKNYTTET_ANSATT = false

@@ -20,7 +20,6 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
 class SporsmalControllerTest : Spek({
-    val henvendelseService = mockk<HenvendelseService>()
 
     beforeEachTest {
         coEvery { (henvendelseService.hentAlleHenvendelser(dummySubject)) } returns emptyList()
@@ -51,3 +50,5 @@ class SporsmalControllerTest : Spek({
         }
     }
 })
+
+val henvendelseService = mockk<HenvendelseService>()

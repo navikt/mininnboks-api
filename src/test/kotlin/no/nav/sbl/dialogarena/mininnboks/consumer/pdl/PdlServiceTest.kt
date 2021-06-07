@@ -23,22 +23,6 @@ import java.util.*
 
 class PdlServicetest : Spek({
 
-    val configuration: Configuration = mockk()
-
-    fun gittGradering(gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering?): PdlService {
-        gittUrlTilPdl()
-        val client = gittClientSomSvarer(body = gittOkAdressebeskyttelseResponse(gradering))
-        val stsService = gittStsService()
-        return PdlService(client, stsService, configuration)
-    }
-
-    fun gittAdresserData(): PdlService {
-        gittUrlTilPdl()
-        val client = gittClientSomSvarer(body = gittOkAdresserResponse())
-        val stsService = gittStsService()
-        return PdlService(client, stsService, configuration)
-    }
-
     beforeEachTest {
         coEvery { configuration.PDL_API_URL } returns "https://test.pdl.nav.no"
         coEvery { configuration.PDL_API_APIKEY } returns "PDL_API_API_VALUE"
@@ -227,3 +211,19 @@ fun gittErrorPdlResponse(message: String): String {
         }
     """.trimIndent()
 }
+
+fun gittGradering(gradering: HentAdressebeskyttelse.AdressebeskyttelseGradering?): PdlService {
+    gittUrlTilPdl()
+    val client = gittClientSomSvarer(body = gittOkAdressebeskyttelseResponse(gradering))
+    val stsService = gittStsService()
+    return PdlService(client, stsService, configuration)
+}
+
+fun gittAdresserData(): PdlService {
+    gittUrlTilPdl()
+    val client = gittClientSomSvarer(body = gittOkAdresserResponse())
+    val stsService = gittStsService()
+    return PdlService(client, stsService, configuration)
+}
+
+val configuration: Configuration = mockk()

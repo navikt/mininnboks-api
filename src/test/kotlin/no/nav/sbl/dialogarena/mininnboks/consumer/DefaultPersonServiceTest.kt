@@ -13,7 +13,6 @@ import org.spekframework.spek2.Spek
 
 class DefaultPersonServiceTest : Spek({
 
-    val personV3: PersonV3 = mockk()
     var personService: PersonService.Default = PersonService.Default(personV3)
 
     test("henter Enhet") {
@@ -36,3 +35,5 @@ class DefaultPersonServiceTest : Spek({
         }
     }
 })
+
+val personV3: PersonV3 = mockk()

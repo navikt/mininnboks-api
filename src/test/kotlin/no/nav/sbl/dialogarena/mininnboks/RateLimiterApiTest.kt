@@ -5,7 +5,6 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.AnythingPattern
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
-import io.mockk.MockKAnnotations
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi
 import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApiImpl
@@ -16,8 +15,6 @@ import org.spekframework.spek2.Spek
 
 internal class RateLimiterApiTest : Spek({
     val token = "TOKEN"
-
-    MockKAnnotations.init(this, relaxUnitFun = true)
     MDC.put(MDCConstants.MDC_CALL_ID, "MDC_CALL_ID")
 
     test("er det ok å sende spørsmålet") {
