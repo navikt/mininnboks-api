@@ -19,40 +19,33 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenven
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.meldinger.WSHentHenvendelseListeResponse
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import java.util.*
+import org.spekframework.spek2.Spek
 
-class HenvendelseServiceTest {
+private val henvendelseListe: MutableList<Any> = java.util.ArrayList()
+private val sendInnHenvendelseRequestArgumentCaptor = slot<WSSendInnHenvendelseRequest>()
+private val hentHenvendelseListeRequestArgumentCaptor = slot<WSHentHenvendelseListeRequest>()
+private val henvendelsePortType: HenvendelsePortType = mockk()
+private val sendInnHenvendelsePortType: SendInnHenvendelsePortType = mockk()
+private val innsynHenvendelsePortType: InnsynHenvendelsePortType = mockk()
+private val personService: PersonService = mockk()
+private val tekstService: TekstService = mockk()
+private var henvendelseService: HenvendelseService = mockk()
+private val FNR = "fnr"
+private val subject = Subject(FNR, IdentType.EksternBruker, SsoToken.oidcToken("fnr", emptyMap<String, Any>()))
+private val TEMAGRUPPE = Temagruppe.ARBD
+private val FRITEKST = "fritekst"
+private val TRAAD_ID = "traadId"
+private val EKSTERN_AKTOR = "eksternAktor"
+private val TILKNYTTET_ENHET = "tilknyttetEnhet"
+private val KONTORSPERRE_ENHET = "kontorsperreEnhet"
+private val BRUKER_ENHET = "brukersEnhet"
+private val ER_TILKNYTTET_ANSATT = false
 
-    private val sendInnHenvendelseRequestArgumentCaptor = slot<WSSendInnHenvendelseRequest>()
+object HenvendelseServiceTest : Spek({
 
-    private val hentHenvendelseListeRequestArgumentCaptor = slot<WSHentHenvendelseListeRequest>()
-
-    private val henvendelsePortType: HenvendelsePortType = mockk()
-    private val sendInnHenvendelsePortType: SendInnHenvendelsePortType = mockk()
-    private val innsynHenvendelsePortType: InnsynHenvendelsePortType = mockk()
-    private val personService: PersonService = mockk()
-    private val tekstService: TekstService = mockk()
-    private var henvendelseService: HenvendelseService = mockk()
-    val FNR = "fnr"
-
-    private val subject = Subject(FNR, IdentType.EksternBruker, SsoToken.oidcToken("fnr", emptyMap<String, Any>()))
-
-    val TEMAGRUPPE = Temagruppe.ARBD
-    val FRITEKST = "fritekst"
-    val TRAAD_ID = "traadId"
-    val EKSTERN_AKTOR = "eksternAktor"
-    val TILKNYTTET_ENHET = "tilknyttetEnhet"
-    val KONTORSPERRE_ENHET = "kontorsperreEnhet"
-    val BRUKER_ENHET = "brukersEnhet"
-    val ER_TILKNYTTET_ANSATT = false
-
-    @BeforeEach
-    fun setUp() {
+    beforeEachTest {
         henvendelseService = HenvendelseService.Default(henvendelsePortType, sendInnHenvendelsePortType, innsynHenvendelsePortType, personService)
         coEvery { tekstService.hentTekst(any()) } returns "Tekst"
-        val henvendelseListe: MutableList<Any> = ArrayList()
         henvendelseListe.add(lagHenvendelse(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name))
         coEvery { henvendelsePortType.hentHenvendelseListe(any()) } returns
             WSHentHenvendelseListeResponse().withAny(henvendelseListe)
@@ -60,10 +53,15 @@ class HenvendelseServiceTest {
         coEvery { personService.hentGeografiskTilknytning(any()) } returns BRUKER_ENHET
     }
 
-    @Test
-    fun `sender Inn Sporsmal Med Riktige Felter`() {
+    afterEachTest {
+        // Det er nødvendig  å reset count til 0 i mockk system etter hvert test ellers  coVerify(exactly) skal svare feil.
+        clearAllMocks()
+    }
+
+    test("sender Inn Sporsmal Med Riktige Felter") {
         runBlocking {
-            val henvendelse = Henvendelse(fritekst = FRITEKST, temagruppe = TEMAGRUPPE, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
+            val henvendelse =
+                Henvendelse(fritekst = FRITEKST, temagruppe = TEMAGRUPPE, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
 
             henvendelseService.stillSporsmal(henvendelse, null, subject)
 
@@ -86,13 +84,13 @@ class HenvendelseServiceTest {
         }
     }
 
-    @Test
-    fun `henter ikke ut GT om overstyring er satt`() {
+    test("henter ikke ut GT om overstyring er satt") {
         runBlocking {
             val overstyrtGt = "010101"
-            val henvendelse = Henvendelse(fritekst = FRITEKST, temagruppe = TEMAGRUPPE, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
+            val henvendelse =
+                Henvendelse(fritekst = FRITEKST, temagruppe = TEMAGRUPPE, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
 
-            henvendelseService.stillSporsmal(henvendelse, overstyrtGt, subject)
+            henvendelseService.stillSporsmal(henvendelse, "010101", subject)
 
             verify { sendInnHenvendelsePortType.sendInnHenvendelse(capture(sendInnHenvendelseRequestArgumentCaptor)) }
             coVerify(exactly = 0) { personService.hentGeografiskTilknytning(any()) }
@@ -102,9 +100,9 @@ class HenvendelseServiceTest {
         }
     }
 
-    @Test
-    fun `sender Inn Direkte Sporsmal Med Riktige Felter`() {
-        val henvendelse = Henvendelse(fritekst = FRITEKST, temagruppe = TEMAGRUPPE, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
+    test("sender Inn Direkte Sporsmal Med Riktige Felter") {
+        val henvendelse =
+            Henvendelse(fritekst = FRITEKST, temagruppe = TEMAGRUPPE, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
 
         runBlocking {
             henvendelseService.stillSporsmalDirekte(henvendelse, subject)
@@ -113,7 +111,10 @@ class HenvendelseServiceTest {
             assertThat(request.type, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name))
             assertThat(request.fodselsnummer, Matchers.`is`(FNR))
             val xmlHenvendelse = request.any as XMLHenvendelse
-            assertThat(xmlHenvendelse.henvendelseType, Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name))
+            assertThat(
+                xmlHenvendelse.henvendelseType,
+                Matchers.`is`(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name)
+            )
             assertThat(xmlHenvendelse.opprettetDato, Matchers.`is`(Matchers.notNullValue()))
             assertThat(xmlHenvendelse.avsluttetDato, Matchers.`is`(Matchers.notNullValue()))
             assertThat(xmlHenvendelse.tema, Matchers.`is`(HenvendelseService.KONTAKT_NAV_SAKSTEMA))
@@ -125,8 +126,7 @@ class HenvendelseServiceTest {
         }
     }
 
-    @Test
-    fun `sender Inn Svar Med Riktige Felter`() {
+    test("sender Inn Svar Med Riktige Felter") {
         val henvendelse = Henvendelse(
             fritekst = FRITEKST,
             temagruppe = TEMAGRUPPE,
@@ -163,8 +163,7 @@ class HenvendelseServiceTest {
         assertThat(meldingFraBruker.fritekst, Matchers.`is`(FRITEKST))
     }
 
-    @Test
-    fun `spor Om Riktig Fodselsnummer Naar Den Henter Alle`() {
+    test("spor Om Riktig Fodselsnummer Naar Den Henter Alle") {
         runBlocking {
             henvendelseService.hentAlleHenvendelser(subject)
             verify { henvendelsePortType.hentHenvendelseListe(capture(hentHenvendelseListeRequestArgumentCaptor)) }
@@ -173,8 +172,7 @@ class HenvendelseServiceTest {
         }
     }
 
-    @Test
-    fun `spor Om Alle Henvendelsestyper Naar Den Henter Alle`() {
+    test("spor Om Alle Henvendelsestyper Naar Den Henter Alle") {
         runBlocking {
             henvendelseService.hentAlleHenvendelser(subject)
             verify {
@@ -188,50 +186,16 @@ class HenvendelseServiceTest {
         }
     }
 
-    fun lagHenvendelse(type: String): XMLHenvendelse {
-        return XMLHenvendelse().withHenvendelseType(type)
-            .withBehandlingsId("id")
-    }
-
-    fun lagSporsmalSkriftlig(): XMLHenvendelse {
-        return lagHenvendelse(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name)
-            .withMetadataListe(
-                XMLMetadataListe().withMetadata(
-                    XMLMeldingFraBruker()
-                        .withFritekst("Jeg har et spørsmål")
-                        .withTemagruppe(TEMAGRUPPE.name)
-                )
-            )
-    }
-
-    fun lagDelvisSvarSkriftlig(): XMLHenvendelse {
-        return lagHenvendelse(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name)
-            .withMetadataListe(
-                XMLMetadataListe().withMetadata(
-                    XMLMeldingTilBruker()
-                        .withFritekst("Delvis svar til deg")
-                        .withTemagruppe(TEMAGRUPPE.name)
-                )
-            )
-    }
-
-    fun mockBehandlingskjedeMedDelsvar(): List<Any> {
-        val henvendelseListe: MutableList<Any> = ArrayList()
-        henvendelseListe.add(lagSporsmalSkriftlig())
-        henvendelseListe.add(lagDelvisSvarSkriftlig())
-        return henvendelseListe
-    }
-
-    @Test
-    fun `hent Traad Som Inne holder Delsvar`() {
+    test("hent Traad Som Inne holder Delsvar") {
         runBlocking {
-            coEvery { henvendelsePortType.hentBehandlingskjede(any()) } returns WSHentBehandlingskjedeResponse().withAny(mockBehandlingskjedeMedDelsvar())
+            coEvery { henvendelsePortType.hentBehandlingskjede(any()) } returns WSHentBehandlingskjedeResponse().withAny(
+                mockBehandlingskjedeMedDelsvar()
+            )
             henvendelseService.hentTraad(TRAAD_ID, subject)
         }
     }
 
-    @Test
-    fun `hent Alle Henvendelser Henter Delsvar`() {
+    test("hent Alle Henvendelser Henter Delsvar") {
         runBlocking {
             val argumentCaptor = slot<WSHentHenvendelseListeRequest>()
             coEvery { henvendelsePortType.hentHenvendelseListe(capture(argumentCaptor)) } returns WSHentHenvendelseListeResponse()
@@ -239,4 +203,38 @@ class HenvendelseServiceTest {
             assertThat(argumentCaptor.captured.typer, Matchers.hasItem(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name))
         }
     }
+})
+
+private fun lagHenvendelse(type: String): XMLHenvendelse {
+    return XMLHenvendelse().withHenvendelseType(type)
+        .withBehandlingsId("id")
+}
+
+private fun lagSporsmalSkriftlig(): XMLHenvendelse {
+    return lagHenvendelse(XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name)
+        .withMetadataListe(
+            XMLMetadataListe().withMetadata(
+                XMLMeldingFraBruker()
+                    .withFritekst("Jeg har et spørsmål")
+                    .withTemagruppe(TEMAGRUPPE.name)
+            )
+        )
+}
+
+private fun lagDelvisSvarSkriftlig(): XMLHenvendelse {
+    return lagHenvendelse(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG.name)
+        .withMetadataListe(
+            XMLMetadataListe().withMetadata(
+                XMLMeldingTilBruker()
+                    .withFritekst("Delvis svar til deg")
+                    .withTemagruppe(TEMAGRUPPE.name)
+            )
+        )
+}
+
+private fun mockBehandlingskjedeMedDelsvar(): List<Any> {
+    val henvendelseListe: MutableList<Any> = ArrayList()
+    henvendelseListe.add(lagSporsmalSkriftlig())
+    henvendelseListe.add(lagDelvisSvarSkriftlig())
+    return henvendelseListe
 }

@@ -15,14 +15,36 @@ import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.joda.time.DateTime
-import org.junit.jupiter.api.Test
+import org.spekframework.spek2.Spek
 import java.util.*
 
-class HenvendelsesUtilsTest {
-    val tekstService = mockk<TekstService>()
+private val tekstService = mockk<TekstService>()
+private val ID_1 = "1"
+private val ID_2 = "2"
+private val ID_3 = "3"
+private val ID_4 = "4"
+private val ID_5 = "5"
+private val FRITEKST = "fritekst"
+private val OPPRETTET_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 1))
+private val AVSLUTTET_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 2))
+private val LEST_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 3))
+private val OPPRETTET_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 1))
+private val AVSLUTTET_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 2))
+private val LEST_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 3))
+private val TEMAGRUPPE = Temagruppe.FMLI
+private val KANAL = "kanal"
+private val NAVIDENT = "navident"
+private val TILKNYTTET_ENHET = "tilknyttetEnhet"
+private val ER_TILKNYTTET_ANSATT = false
+private val REPETERENDE_VARSEL = false
+private val BRUKERS_ENHET = "1234"
+private val KONTORSPERRE_ENHET = "kontorsperreEnhet"
+private val OPPGAVE_URL = "oppgave/url"
+private val OPPGAVE_TYPE = "sykepenger"
 
-    @Test
-    fun `transformerer Dokument Henvendelse`() {
+object HenvendelsesUtilsTest : Spek({
+
+    test("transformerer Dokument Henvendelse") {
         every { tekstService.hentTekst(any()) } returns "value"
         val dokument = mockDokumentHenvendelse()
 
@@ -39,8 +61,7 @@ class HenvendelsesUtilsTest {
         assertThat(dokumentHenvendelse.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
-    @Test
-    fun `transformerer XMLHenvendelse Som Sporsmal Fra Bruker`() {
+    test("transformerer XMLHenvendelse Som Sporsmal Fra Bruker") {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1)
         val infoList = listOf(info)
         val henvendelserListe = infoList
@@ -56,8 +77,7 @@ class HenvendelsesUtilsTest {
         assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
-    @Test
-    fun `transformerer XMLHenvendelse Som Sporsmal Direkte Fra Bruker`() {
+    test("transformerer XMLHenvendelse Som Sporsmal Direkte Fra Bruker") {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE, ID_1, ID_1)
         val infoList = listOf(info)
         val henvendelserListe = infoList
@@ -72,8 +92,7 @@ class HenvendelsesUtilsTest {
         assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
-    @Test
-    fun `transformerer XMLHenvendelse Ferdigstilt Uten Svar`() {
+    test("transformerer XMLHenvendelse Ferdigstilt Uten Svar") {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SPORSMAL_SKRIFTLIG, ID_1, ID_1)
         info.isFerdigstiltUtenSvar = true
         val infoList = listOf(info)
@@ -86,8 +105,7 @@ class HenvendelsesUtilsTest {
         assertThat(sporsmal.temagruppeNavn, CoreMatchers.`is`("Familie"))
     }
 
-    @Test
-    fun `transformerer XMLHenvendelse Som Svar Fra Bruker`() {
+    test("transformerer XMLHenvendelse Som Svar Fra Bruker") {
         val info = mockXMLHenvendelseMedXMLMeldingFraBruker(XMLHenvendelseType.SVAR_SBL_INNGAAENDE, ID_2, ID_2)
         val infoList = listOf(info)
         val henvendelserListe = infoList
@@ -104,8 +122,7 @@ class HenvendelsesUtilsTest {
         assertThat(svar.kontorsperreEnhet, CoreMatchers.`is`(KONTORSPERRE_ENHET))
     }
 
-    @Test
-    fun `transformerer XMLHenvendelse Som Sporsmal Til Bruker`() {
+    test("transformerer XMLHenvendelse Som Sporsmal Til Bruker") {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE, ID_3, ID_3)
         val infoList = listOf(info)
         val henvendelserListe = infoList
@@ -124,8 +141,7 @@ class HenvendelsesUtilsTest {
         assertThat(sporsmal.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
-    @Test
-    fun `transformerer XMLHenvendelse Som Svar Til Bruker`() {
+    test("transformerer XMLHenvendelse Som Svar Til Bruker") {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.SVAR_SKRIFTLIG, ID_4, ID_1)
         val infoList = listOf(info)
         val henvendelserListe = infoList.map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
@@ -139,8 +155,7 @@ class HenvendelsesUtilsTest {
         assertThat(svar.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
-    @Test
-    fun `transformerer XMLHenvendelse Som Referat Til Bruker`() {
+    test("transformerer XMLHenvendelse Som Referat Til Bruker") {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5)
         val infoList = listOf(info)
         val henvendelserListe = infoList.map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
@@ -155,15 +170,7 @@ class HenvendelsesUtilsTest {
         assertThat(referat.brukersEnhet, CoreMatchers.`is`(BRUKERS_ENHET))
     }
 
-    private fun assertStandardFelter(sporsmal: Henvendelse) {
-        assertThat(sporsmal.fritekst, CoreMatchers.`is`(FRITEKST))
-        assertThat(sporsmal.temagruppe, CoreMatchers.`is`(TEMAGRUPPE))
-        assertThat(sporsmal.opprettet, CoreMatchers.`is`(OPPRETTET_DATO))
-        assertThat(sporsmal.avsluttet, CoreMatchers.`is`(AVSLUTTET_DATO))
-    }
-
-    @Test
-    fun `hvis Innholdet Er Borte Blir Henvendelsen Merket Som Kassert`() {
+    test("hvis Innholdet Er Borte Blir Henvendelsen Merket Som Kassert") {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.REFERAT_OPPMOTE, ID_5, ID_5)
         info.metadataListe = null
         every { tekstService.hentTekst("innhold.kassert") } returns ("Innholdet er kassert")
@@ -174,8 +181,7 @@ class HenvendelsesUtilsTest {
         assertThat(referat.temagruppe, CoreMatchers.nullValue())
     }
 
-    @Test
-    fun `transformerer XMLHenvendelse Som Oppgave Varsel`() {
+    test("transformerer XMLHenvendelse Som Oppgave Varsel") {
         val info = mockXMLHenvendelseMedXMLOppgaveVarsel(XMLHenvendelseType.OPPGAVE_VARSEL, ID_5, ID_5)
         val henvendelse = HenvendelsesUtils.tilHenvendelse(info)
         assertThat(henvendelse.oppgaveType, CoreMatchers.`is`(OPPGAVE_TYPE))
@@ -184,15 +190,13 @@ class HenvendelsesUtilsTest {
         assertThat(henvendelse.fritekst, CoreMatchers.`is`("Du har mottatt en oppgave."))
     }
 
-    @Test
-    fun `transformerer XmlHenvendelse Som Delvise Svar`() {
+    test("transformerer XmlHenvendelse Som Delvise Svar") {
         val info = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1)
         val henvendelse = HenvendelsesUtils.tilHenvendelse(info)
         assertThat(henvendelse.type, CoreMatchers.`is`(Henvendelsetype.DELVIS_SVAR_SKRIFTLIG))
     }
 
-    @Test
-    fun `returnerer DefaultKey Hvis Hent Tekst Kaster Exception`() {
+    test("returnerer DefaultKey Hvis Hent Tekst Kaster Exception") {
 
         val key = "nokkel"
         val defaultKey = "defaultKey"
@@ -204,123 +208,111 @@ class HenvendelsesUtilsTest {
         assertThat(tekst, CoreMatchers.`is`(defaulValue))
     }
 
-    @Test
-    fun `prover Ikke Aa Hente Status Tekst For DelviseSvar`() {
+    test("prover Ikke Aa Hente Status Tekst For DelviseSvar") {
         val henvendelse = mockXMLHenvendelseMedXMLMeldingTilBruker(XMLHenvendelseType.DELVIS_SVAR_SKRIFTLIG, ID_2, ID_1)
         HenvendelsesUtils.tilHenvendelse(henvendelse)
         verify(exactly = 0) { tekstService.hentTekst("status." + Henvendelsetype.DELVIS_SVAR_SKRIFTLIG.name) }
     }
 
-    @Test
-    fun `vasker Html I Fritekst Men Bevarer Line Endings`() {
+    test("vasker Html I Fritekst Men Bevarer Line Endings") {
         val tekst = "<h1>Hei</h1> \n Hallo"
         val cleanTekst = HenvendelsesUtils.cleanOutHtml(tekst)
         assertThat(cleanTekst, CoreMatchers.`is`("Hei \n Hallo"))
     }
+})
 
-    private fun mockXMLHenvendelseMedXMLMeldingFraBruker(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
-        return XMLHenvendelse()
-            .withHenvendelseType(type.name)
-            .withBehandlingsId(id)
-            .withBehandlingskjedeId(kjedeId)
-            .withOpprettetDato(OPPRETTET_DATO_JODA)
-            .withAvsluttetDato(AVSLUTTET_DATO_JODA)
-            .withBrukersEnhet(BRUKERS_ENHET)
-            .withKontorsperreEnhet(KONTORSPERRE_ENHET)
-            .withMetadataListe(
-                XMLMetadataListe().withMetadata(
-                    XMLMeldingFraBruker()
-                        .withFritekst(FRITEKST)
-                        .withTemagruppe(TEMAGRUPPE.name)
-                )
+private fun assertStandardFelter(sporsmal: Henvendelse) {
+    assertThat(sporsmal.fritekst, CoreMatchers.`is`(FRITEKST))
+    assertThat(sporsmal.temagruppe, CoreMatchers.`is`(TEMAGRUPPE))
+    assertThat(sporsmal.opprettet, CoreMatchers.`is`(OPPRETTET_DATO))
+    assertThat(sporsmal.avsluttet, CoreMatchers.`is`(AVSLUTTET_DATO))
+}
+
+private fun mockXMLHenvendelseMedXMLMeldingFraBruker(
+    type: XMLHenvendelseType,
+    id: String,
+    kjedeId: String
+): XMLHenvendelse {
+    return XMLHenvendelse()
+        .withHenvendelseType(type.name)
+        .withBehandlingsId(id)
+        .withBehandlingskjedeId(kjedeId)
+        .withOpprettetDato(OPPRETTET_DATO_JODA)
+        .withAvsluttetDato(AVSLUTTET_DATO_JODA)
+        .withBrukersEnhet(BRUKERS_ENHET)
+        .withKontorsperreEnhet(KONTORSPERRE_ENHET)
+        .withMetadataListe(
+            XMLMetadataListe().withMetadata(
+                XMLMeldingFraBruker()
+                    .withFritekst(FRITEKST)
+                    .withTemagruppe(TEMAGRUPPE.name)
             )
-    }
+        )
+}
 
-    private fun mockXMLHenvendelseMedXMLMeldingTilBruker(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
-        return XMLHenvendelse()
-            .withHenvendelseType(type.name)
-            .withBehandlingsId(id)
-            .withBehandlingskjedeId(kjedeId)
-            .withOpprettetDato(OPPRETTET_DATO_JODA)
-            .withAvsluttetDato(AVSLUTTET_DATO_JODA)
-            .withLestDato(LEST_DATO_JODA)
-            .withEksternAktor(NAVIDENT)
-            .withBrukersEnhet(BRUKERS_ENHET)
-            .withTilknyttetEnhet(TILKNYTTET_ENHET)
-            .withErTilknyttetAnsatt(ER_TILKNYTTET_ANSATT)
-            .withMetadataListe(
-                XMLMetadataListe().withMetadata(
-                    XMLMeldingTilBruker()
-                        .withFritekst(FRITEKST)
-                        .withTemagruppe(TEMAGRUPPE.name)
-                        .withKanal(KANAL)
-                        .withNavident(NAVIDENT)
-                )
+private fun mockXMLHenvendelseMedXMLMeldingTilBruker(
+    type: XMLHenvendelseType,
+    id: String,
+    kjedeId: String
+): XMLHenvendelse {
+    return XMLHenvendelse()
+        .withHenvendelseType(type.name)
+        .withBehandlingsId(id)
+        .withBehandlingskjedeId(kjedeId)
+        .withOpprettetDato(OPPRETTET_DATO_JODA)
+        .withAvsluttetDato(AVSLUTTET_DATO_JODA)
+        .withLestDato(LEST_DATO_JODA)
+        .withEksternAktor(NAVIDENT)
+        .withBrukersEnhet(BRUKERS_ENHET)
+        .withTilknyttetEnhet(TILKNYTTET_ENHET)
+        .withErTilknyttetAnsatt(ER_TILKNYTTET_ANSATT)
+        .withMetadataListe(
+            XMLMetadataListe().withMetadata(
+                XMLMeldingTilBruker()
+                    .withFritekst(FRITEKST)
+                    .withTemagruppe(TEMAGRUPPE.name)
+                    .withKanal(KANAL)
+                    .withNavident(NAVIDENT)
             )
-    }
+        )
+}
 
-    private fun mockDokumentHenvendelse(): XMLHenvendelse {
-        return XMLHenvendelse()
-            .withHenvendelseType(XMLHenvendelseType.DOKUMENT_VARSEL.name)
-            .withBehandlingsId(ID_1)
-            .withBehandlingskjedeId(ID_1)
-            .withOpprettetDato(OPPRETTET_DATO_JODA)
-            .withAvsluttetDato(AVSLUTTET_DATO_JODA)
-            .withBrukersEnhet(BRUKERS_ENHET)
-            .withKontorsperreEnhet(KONTORSPERRE_ENHET)
-            .withMetadataListe(
-                XMLMetadataListe().withMetadata(
-                    XMLDokumentVarsel()
-                        .withTemagruppe("OVRG")
-                        .withFritekst("")
-                        .withStoppRepeterendeVarsel(true)
-                )
+private fun mockDokumentHenvendelse(): XMLHenvendelse {
+    return XMLHenvendelse()
+        .withHenvendelseType(XMLHenvendelseType.DOKUMENT_VARSEL.name)
+        .withBehandlingsId(ID_1)
+        .withBehandlingskjedeId(ID_1)
+        .withOpprettetDato(OPPRETTET_DATO_JODA)
+        .withAvsluttetDato(AVSLUTTET_DATO_JODA)
+        .withBrukersEnhet(BRUKERS_ENHET)
+        .withKontorsperreEnhet(KONTORSPERRE_ENHET)
+        .withMetadataListe(
+            XMLMetadataListe().withMetadata(
+                XMLDokumentVarsel()
+                    .withTemagruppe("OVRG")
+                    .withFritekst("")
+                    .withStoppRepeterendeVarsel(true)
             )
-    }
+        )
+}
 
-    private fun mockXMLHenvendelseMedXMLOppgaveVarsel(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
-        return XMLHenvendelse()
-            .withHenvendelseType(type.name)
-            .withBehandlingsId(id)
-            .withBehandlingskjedeId(kjedeId)
-            .withOpprettetDato(OPPRETTET_DATO_JODA)
-            .withAvsluttetDato(AVSLUTTET_DATO_JODA)
-            .withBrukersEnhet(BRUKERS_ENHET)
-            .withKontorsperreEnhet(KONTORSPERRE_ENHET)
-            .withMetadataListe(
-                XMLMetadataListe().withMetadata(
-                    XMLOppgaveVarsel()
-                        .withOppgaveType(OPPGAVE_TYPE)
-                        .withFritekst("oppgave.$OPPGAVE_TYPE.fritekst")
-                        .withTemagruppe(TEMAGRUPPE.name)
-                        .withStoppRepeterendeVarsel(REPETERENDE_VARSEL)
-                        .withOppgaveURL(OPPGAVE_URL)
-                )
+private fun mockXMLHenvendelseMedXMLOppgaveVarsel(type: XMLHenvendelseType, id: String, kjedeId: String): XMLHenvendelse {
+    return XMLHenvendelse()
+        .withHenvendelseType(type.name)
+        .withBehandlingsId(id)
+        .withBehandlingskjedeId(kjedeId)
+        .withOpprettetDato(OPPRETTET_DATO_JODA)
+        .withAvsluttetDato(AVSLUTTET_DATO_JODA)
+        .withBrukersEnhet(BRUKERS_ENHET)
+        .withKontorsperreEnhet(KONTORSPERRE_ENHET)
+        .withMetadataListe(
+            XMLMetadataListe().withMetadata(
+                XMLOppgaveVarsel()
+                    .withOppgaveType(OPPGAVE_TYPE)
+                    .withFritekst("oppgave.$OPPGAVE_TYPE.fritekst")
+                    .withTemagruppe(TEMAGRUPPE.name)
+                    .withStoppRepeterendeVarsel(REPETERENDE_VARSEL)
+                    .withOppgaveURL(OPPGAVE_URL)
             )
-    }
-
-    companion object {
-        private const val ID_1 = "1"
-        private const val ID_2 = "2"
-        private const val ID_3 = "3"
-        private const val ID_4 = "4"
-        private const val ID_5 = "5"
-        private const val FRITEKST = "fritekst"
-        private val OPPRETTET_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 1))
-        private val AVSLUTTET_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 2))
-        private val LEST_DATO = TestUtils.date(GregorianCalendar(Calendar.YEAR, 1, 3))
-        private val OPPRETTET_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 1))
-        private val AVSLUTTET_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 2))
-        private val LEST_DATO_JODA = DateTime(GregorianCalendar(Calendar.YEAR, 1, 3))
-        private val TEMAGRUPPE = Temagruppe.FMLI
-        private const val KANAL = "kanal"
-        private const val NAVIDENT = "navident"
-        private const val TILKNYTTET_ENHET = "tilknyttetEnhet"
-        private const val ER_TILKNYTTET_ANSATT = false
-        private const val REPETERENDE_VARSEL = false
-        private const val BRUKERS_ENHET = "1234"
-        private const val KONTORSPERRE_ENHET = "kontorsperreEnhet"
-        private const val OPPGAVE_URL = "oppgave/url"
-        private const val OPPGAVE_TYPE = "sykepenger"
-    }
+        )
 }

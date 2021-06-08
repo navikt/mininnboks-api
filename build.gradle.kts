@@ -78,15 +78,10 @@ dependencies {
     // test
     testImplementation("org.hamcrest:hamcrest:2.2")
     testImplementation("no.nav.common:auth:test-jar:tests")
-    testImplementation("org.junit.platform:junit-platform-launcher:1.1.1")
-    testImplementation("org.junit.vintage:junit-vintage-engine:5.1.1")
     testImplementation("io.ktor:ktor-server-test-host:1.4.0")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spek_version")
     testImplementation("io.mockk:mockk:1.10.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.4.2")
-    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.9")
     testImplementation("com.github.gmazzo:okhttp-mock:1.2.1")
     testImplementation("com.github.tomakehurst:wiremock-standalone:2.27.2")
 }
