@@ -141,8 +141,7 @@ class ServiceConfig(val configuration: Configuration) {
             configuration.STS_TOKENENDPOINT_URL,
             configuration.FSS_SRVMININNBOKS_USERNAME,
             configuration.FSS_SRVMININNBOKS_PASSWORD,
-            configuration.STS_APIKEY,
-            RestClient.baseClientBuilder().build()
+            configuration.STS_APIKEY
         )
     }
 
