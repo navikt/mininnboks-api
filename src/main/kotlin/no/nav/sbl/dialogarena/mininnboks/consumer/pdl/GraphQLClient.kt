@@ -35,7 +35,6 @@ data class GraphQLClientConfig(
 )
 
 class GraphQLClient(
-    private val httpClient: OkHttpClient,
     private val config: GraphQLClientConfig
 ) {
     private val log = LoggerFactory.getLogger(GraphQLClient::class.java)
