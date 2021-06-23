@@ -42,7 +42,6 @@ open class PdlService(
 ) {
     private val pdlUrl: String = configuration.PDL_API_URL + "/graphql"
     private val graphqlClient = GraphQLClient(
-        pdlClient,
         GraphQLClientConfig(
             tjenesteNavn = "PDL",
             requestConfig = { callId, subject ->
