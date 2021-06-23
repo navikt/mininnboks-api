@@ -5,10 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.nimbusds.jwt.JWT
 import com.nimbusds.jwt.JWTParser
+import io.ktor.client.request.*
+import kotlinx.coroutines.runBlocking
+import no.nav.common.auth.oidc.discovery.OidcDiscoveryConfiguration
 import no.nav.common.log.MDCConstants
 import no.nav.common.rest.client.RestClient
 import no.nav.common.rest.client.RestUtils
 import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
+import no.nav.sbl.dialogarena.mininnboks.ktorClient
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.slf4j.LoggerFactory
@@ -56,7 +60,7 @@ class SystemuserTokenProviderImpl internal constructor(
 
     private var accessToken: JWT? = null
     private val tokenEndpointUrl: String? = if (startingUrlIsDiscoveryUrl) {
-        hentOidcDiscoveryConfiguration(client, startingUrl, stsApiKey)?.tokenEndpoint
+        hentOidcDiscoveryConfiguration(startingUrl, stsApiKey)?.tokenEndpoint
     } else {
         startingUrl
     }
@@ -120,15 +124,13 @@ private fun expiresWithin(jwt: JWT, withinMillis: Long): Boolean {
     }
 }
 
-private fun hentOidcDiscoveryConfiguration(client: OkHttpClient, discoveryUrl: String, stsApiKey: String): OidcDiscoveryConfiguration? {
-    val request = Request.Builder()
-        .url(discoveryUrl)
-        .header("x-nav-apiKey", stsApiKey)
-        .build()
-
-    val response = client.newCall(request).execute()
-    val body = response.body()?.string()
-    return body?.let { JacksonUtils.objectMapper.readValue<OidcDiscoveryConfiguration>(it) }
+private fun hentOidcDiscoveryConfiguration(discoveryUrl: String, stsApiKey: String): OidcDiscoveryConfiguration? {
+    // Denne må kjøre runBlocking siden den kjører i init av klassen?
+    return runBlocking {
+        ktorClient.get<OidcDiscoveryConfiguration>(discoveryUrl) {
+            header("x-nav-apiKey", stsApiKey)
+        }
+    }
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)

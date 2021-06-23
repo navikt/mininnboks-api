@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
+import io.ktor.client.request.*
 import no.nav.common.auth.subject.Subject
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
@@ -49,13 +50,15 @@ open class PdlService(
                 val appToken: String = stsService.getSystemUserAccessToken()
                     ?: throw IllegalStateException("Kunne ikke hente ut systemusertoken")
 
-                url(pdlUrl)
-                addHeader("Nav-Call-Id", callId)
-                addHeader("Nav-Consumer-Id", "mininnboks-api")
-                addHeader("Nav-Consumer-Token", "Bearer $appToken")
-                addHeader("Authorization", "Bearer $subjectToken")
-                addHeader("Tema", "GEN")
-                addHeader("x-nav-apiKey", configuration.PDL_API_APIKEY)
+                HttpRequestBuilder().apply {
+                    url(pdlUrl)
+                    header("Nav-Call-Id", callId)
+                    header("Nav-Consumer-Id", "mininnboks-api")
+                    header("Nav-Consumer-Token", "Bearer $appToken")
+                    header("Authorization", "Bearer $subjectToken")
+                    header("Tema", "GEN")
+                    header("x-nav-apiKey", configuration.PDL_API_APIKEY)
+                }
             }
         )
     )

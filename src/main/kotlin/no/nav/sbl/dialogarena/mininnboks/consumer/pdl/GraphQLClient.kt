@@ -1,15 +1,12 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.databind.JavaType
+import io.ktor.client.request.*
+import kotlinx.coroutines.runBlocking
 import no.nav.common.auth.subject.Subject
 import no.nav.common.log.MDCConstants
-import no.nav.common.rest.client.RestUtils
-import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
 import no.nav.sbl.dialogarena.mininnboks.externalCall
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import no.nav.sbl.dialogarena.mininnboks.ktorClient
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.util.*
@@ -31,7 +28,7 @@ data class GraphQLResponse<DATA>(
 
 data class GraphQLClientConfig(
     val tjenesteNavn: String,
-    val requestConfig: Request.Builder.(callId: String, subject: Subject) -> Unit
+    val requestConfig: (callId: String, subject: Subject) -> HttpRequestBuilder
 )
 
 class GraphQLClient(
@@ -53,36 +50,23 @@ class GraphQLClient(
                     ------------------------------------------------------------------------------------
                 """.trimIndent()
             )
-            val httpRequest: Request = createRequest(
-                callId = callId,
-                subject = subject,
-                request = request
-            )
-            val httpResponse: Response = httpClient.newCall(httpRequest).execute()
-            val body = httpResponse.body()?.string()
-            log.info(
-                """
-                    ${config.tjenesteNavn}-response: $callId
-                    ------------------------------------------------------------------------------------
-                        status: ${httpResponse.code()} ${httpResponse.message()}
-                    ------------------------------------------------------------------------------------
-                """.trimIndent()
-            )
-            requireNotNull(body) {
-                "${config.tjenesteNavn}-Response-body was empty"
+
+            // Hvorfor må denne kjøres i runBlocking? Vi kjører i en suspend-metode
+            val response = runBlocking {
+                ktorClient.post<GraphQLResponse<DATA>> {
+                    body = request
+                    apply {
+                        config.requestConfig(callId, subject)
+                    }
+                }
             }
 
-            val typeReference: JavaType = JacksonUtils.objectMapper.typeFactory
-                .constructParametricType(GraphQLResponse::class.java, request.expectedReturnType)
-
-            val response: GraphQLResponse<DATA> = body.let { JacksonUtils.objectMapper.readValue(it, typeReference) }
             if (response.errors?.isNotEmpty() == true) {
                 val errorMessages = response.errors.joinToString(", ") { it.message }
                 log.info(
                     """
                         ${config.tjenesteNavn}-response: $callId
                         ------------------------------------------------------------------------------------
-                            status: ${httpResponse.code()} ${httpResponse.message()}
                             errors: $errorMessages
                         ------------------------------------------------------------------------------------
                     """.trimIndent()
@@ -104,18 +88,5 @@ class GraphQLClient(
 
             throw exception
         }
-    }
-
-    private fun <VARS : GraphQLVariables, DATA : GraphQLResult, REQUEST : GraphQLRequest<VARS, DATA>> createRequest(
-        callId: String,
-        subject: Subject,
-        request: REQUEST
-    ): Request {
-        return Request.Builder()
-            .apply {
-                config.requestConfig(this, callId, subject)
-            }
-            .post(RestUtils.toJsonRequestBody(request))
-            .build()
     }
 }
