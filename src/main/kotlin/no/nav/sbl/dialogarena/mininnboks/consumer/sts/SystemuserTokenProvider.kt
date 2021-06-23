@@ -24,14 +24,14 @@ interface SystemuserTokenProvider {
             discoveryUrl: String,
             srvUsername: String,
             srvPassword: String,
-            stsApiKey: String,
+            stsApiKey: String
         ): SystemuserTokenProvider = SystemuserTokenProviderImpl(true, discoveryUrl, srvUsername, srvPassword, stsApiKey)
 
         fun fromTokenEndpoint(
             tokenEndpointUrl: String,
             srvUsername: String,
             srvPassword: String,
-            stsApiKey: String,
+            stsApiKey: String
         ): SystemuserTokenProvider = SystemuserTokenProviderImpl(false, tokenEndpointUrl, srvUsername, srvPassword, stsApiKey)
     }
 
