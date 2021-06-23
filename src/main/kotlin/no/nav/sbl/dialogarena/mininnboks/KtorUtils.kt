@@ -2,6 +2,9 @@ package no.nav.sbl.dialogarena.mininnboks
 
 import io.ktor.application.*
 import io.ktor.auth.*
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.features.json.*
 import io.ktor.http.*
 import io.ktor.response.*
 import io.ktor.util.pipeline.*
@@ -30,4 +33,10 @@ suspend fun PipelineContext<Unit, ApplicationCall>.withSubject(authLevel: AuthLe
 
 suspend fun <T> externalCall(subject: Subject, block: () -> T): T = withContext(Dispatchers.IO + MDCContext()) {
     SubjectHandler.withSubject(subject, UnsafeSupplier { block() })
+}
+
+val ktorClient = HttpClient(CIO) {
+    install(JsonFeature) {
+        serializer = JacksonSerializer(JacksonUtils.objectMapper)
+    }
 }
