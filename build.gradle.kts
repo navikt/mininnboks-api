@@ -72,6 +72,8 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9")
     implementation("io.ktor:ktor-metrics:$ktor_version")
     implementation("io.ktor:ktor-metrics-micrometer:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-jackson:$ktor_version")
 
     // Java
     implementation("com.auth0:java-jwt:3.11.0")
