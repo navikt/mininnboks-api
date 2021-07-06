@@ -7,7 +7,6 @@ import no.nav.common.cxf.StsConfig
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.common.log.MDCConstants
-import no.nav.common.rest.client.RestClient
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portBuilder
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
