@@ -1,5 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
+import io.ktor.client.*
+import io.ktor.client.engine.mock.*
+import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -10,9 +13,6 @@ import no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentAdressebeskyttelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.mininnboks.dummySubject
-import okhttp3.OkHttpClient
-import okhttp3.mock.MediaTypes.MEDIATYPE_JSON
-import okhttp3.mock.MockInterceptor
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.hamcrest.core.Is
@@ -130,18 +130,22 @@ object PdlServicetest : Spek({
     }
 })
 
-private fun gittClientSomSvarer(body: String = ""): OkHttpClient {
+private fun gittClientSomSvarer(body: String = ""): HttpClient {
+    val client = HttpClient(MockEngine) {
+        engine {
+            addHandler { request ->
+                when (request.url.encodedPath) {
+                    "https://test.pdl.nav.no/graphql" -> {
+                        val responseHeaders = headersOf("Content-Type" to listOf(ContentType.Application.Json.toString()))
+                        respond(body, headers = responseHeaders)
+                    }
+                    else -> error("Unhandled ${request.url}")
+                }
+            }
+        }
+    }
 
-    val interceptor = MockInterceptor()
-
-    interceptor.addRule()
-        .post()
-        .url("https://test.pdl.nav.no/graphql")
-        .respond(body, MEDIATYPE_JSON)
-
-    return OkHttpClient.Builder()
-        .addInterceptor(interceptor)
-        .build()
+    return client
 }
 
 private fun gittStsService(token: String = UUID.randomUUID().toString()): SystemuserTokenProvider {
