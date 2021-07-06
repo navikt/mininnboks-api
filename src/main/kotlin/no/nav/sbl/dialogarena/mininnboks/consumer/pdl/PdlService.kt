@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
+import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.cio.*
 import kotlinx.coroutines.runBlocking
@@ -11,7 +12,6 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentAdressebeskytt
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentFolkeregistrertAdresse
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentGeografiskTilknytning
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
-import no.nav.sbl.dialogarena.mininnboks.ktorClient
 
 class PdlException(message: String, cause: Throwable) : RuntimeException(message, cause)
 
@@ -36,6 +36,7 @@ data class Adresse(
 }
 
 open class PdlService(
+    private val client: HttpClient,
     private val stsService: SystemuserTokenProvider,
     private val configuration: Configuration
 ) {
@@ -204,7 +205,7 @@ open class PdlService(
 
     private fun pingGraphQL(): Int {
        val response: Response = runBlocking {
-            ktorClient.get<Response>(configuration.PDL_API_URL + "/graphql") {
+            client.get<Response>(configuration.PDL_API_URL + "/graphql") {
                 header("x-nav-apiKey", configuration.PDL_API_APIKEY)
             }
         }
