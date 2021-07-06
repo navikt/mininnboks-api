@@ -204,7 +204,7 @@ open class PdlService(
     }
 
     private fun pingGraphQL(): Int {
-       val response: Response = runBlocking {
+        val response: Response = runBlocking {
             client.get<Response>(configuration.PDL_API_URL + "/graphql") {
                 header("x-nav-apiKey", configuration.PDL_API_APIKEY)
             }
