@@ -1,5 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks
 
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.json.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
@@ -27,6 +30,11 @@ import org.slf4j.MDC
 import java.util.*
 
 class ServiceConfig(val configuration: Configuration) {
+    private val ktorClient = HttpClient(OkHttp) {
+        install(JsonFeature) {
+            serializer = JacksonSerializer(JacksonUtils.objectMapper)
+        }
+    }
 
     private val personV3 = portBuilder(
         PersonV3::class.java,
@@ -108,8 +116,10 @@ class ServiceConfig(val configuration: Configuration) {
 
     private fun checkHealthStsService(): HealthCheckResult {
         return try {
-            stsService.getSystemUserAccessToken()
-            HealthCheckResult.healthy()
+            runBlocking {
+                stsService.getSystemUserAccessToken()
+                HealthCheckResult.healthy()
+            }
         } catch (e: Exception) {
             HealthCheckResult.unhealthy(e.message)
         }

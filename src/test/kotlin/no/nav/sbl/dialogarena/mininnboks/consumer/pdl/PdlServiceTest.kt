@@ -2,13 +2,14 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
+import io.ktor.client.features.json.*
 import io.ktor.http.*
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.Configuration
+import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
 import no.nav.sbl.dialogarena.mininnboks.TestUtils.MOCK_SUBJECT
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentAdressebeskyttelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
@@ -131,10 +132,13 @@ object PdlServicetest : Spek({
 })
 
 private fun gittClientSomSvarer(body: String = ""): HttpClient {
-    val client = HttpClient(MockEngine) {
+    return  HttpClient(MockEngine) {
+        install(JsonFeature) {
+            serializer = JacksonSerializer(JacksonUtils.objectMapper)
+        }
         engine {
             addHandler { request ->
-                when (request.url.encodedPath) {
+                when (request.url.toString()) {
                     "https://test.pdl.nav.no/graphql" -> {
                         val responseHeaders = headersOf("Content-Type" to listOf(ContentType.Application.Json.toString()))
                         respond(body, headers = responseHeaders)
@@ -144,14 +148,12 @@ private fun gittClientSomSvarer(body: String = ""): HttpClient {
             }
         }
     }
-
-    return client
 }
 
 private fun gittStsService(token: String = UUID.randomUUID().toString()): SystemuserTokenProvider {
     val stsService = mockk<SystemuserTokenProvider>()
 
-    every { stsService.getSystemUserAccessToken() } returns (token)
+    coEvery { stsService.getSystemUserAccessToken() } returns (token)
 
     return stsService
 }

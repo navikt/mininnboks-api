@@ -42,6 +42,7 @@ open class PdlService(
 ) {
     private val pdlUrl: String = configuration.PDL_API_URL + "/graphql"
     private val graphqlClient = GraphQLClient(
+        client,
         GraphQLClientConfig(
             tjenesteNavn = "PDL",
             requestConfig = { callId, subject ->
@@ -49,15 +50,13 @@ open class PdlService(
                 val appToken: String = stsService.getSystemUserAccessToken()
                     ?: throw IllegalStateException("Kunne ikke hente ut systemusertoken")
 
-                HttpRequestBuilder().apply {
-                    url(pdlUrl)
-                    header("Nav-Call-Id", callId)
-                    header("Nav-Consumer-Id", "mininnboks-api")
-                    header("Nav-Consumer-Token", "Bearer $appToken")
-                    header("Authorization", "Bearer $subjectToken")
-                    header("Tema", "GEN")
-                    header("x-nav-apiKey", configuration.PDL_API_APIKEY)
-                }
+                url(pdlUrl)
+                header("Nav-Call-Id", callId)
+                header("Nav-Consumer-Id", "mininnboks-api")
+                header("Nav-Consumer-Token", "Bearer $appToken")
+                header("Authorization", "Bearer $subjectToken")
+                header("Tema", "GEN")
+                header("x-nav-apiKey", configuration.PDL_API_APIKEY)
             }
         )
     )

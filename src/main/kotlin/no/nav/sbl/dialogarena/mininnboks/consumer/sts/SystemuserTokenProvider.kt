@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.nimbusds.jwt.JWT
 import com.nimbusds.jwt.JWTParser
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.runBlocking
 import no.nav.common.auth.oidc.discovery.OidcDiscoveryConfiguration
 import no.nav.common.log.MDCConstants
-import no.nav.sbl.dialogarena.mininnboks.ktorClient
+import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.text.ParseException
@@ -35,7 +38,7 @@ interface SystemuserTokenProvider {
         ): SystemuserTokenProvider = SystemuserTokenProviderImpl(false, tokenEndpointUrl, srvUsername, srvPassword, stsApiKey)
     }
 
-    fun getSystemUserAccessToken(): String?
+    suspend fun getSystemUserAccessToken(): String?
 }
 
 // TODO Kan erstattes av tilsvarende klass i common etter bump.
@@ -48,22 +51,29 @@ class SystemuserTokenProviderImpl internal constructor(
 ) : SystemuserTokenProvider {
 
     private val log = LoggerFactory.getLogger(SystemuserTokenProvider::class.java)
+    private val ktorClient = HttpClient(OkHttp) {
+        install(JsonFeature) {
+            serializer = JacksonSerializer(JacksonUtils.objectMapper)
+        }
+    }
 
     private var accessToken: JWT? = null
     private val tokenEndpointUrl: String? = if (startingUrlIsDiscoveryUrl) {
-        hentOidcDiscoveryConfiguration(startingUrl, stsApiKey)?.tokenEndpoint
+        runBlocking {
+            hentOidcDiscoveryConfiguration(startingUrl, stsApiKey)?.tokenEndpoint
+        }
     } else {
         startingUrl
     }
 
-    override fun getSystemUserAccessToken(): String? {
+    override suspend fun getSystemUserAccessToken(): String? {
         if (tokenIsSoonExpired()) {
             refreshToken()
         }
         return accessToken?.parsedString
     }
 
-    private fun refreshToken() {
+    private suspend fun refreshToken() {
         val clientCredentials = fetchSystemUserAccessToken()
         this.accessToken = JWTParser.parse(clientCredentials?.accessToken)
     }
@@ -72,43 +82,39 @@ class SystemuserTokenProviderImpl internal constructor(
         return accessToken == null || expiresWithin(accessToken!!, MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH)
     }
 
-    private fun fetchSystemUserAccessToken(): ClientCredentialsResponse? {
+    private suspend fun fetchSystemUserAccessToken(): ClientCredentialsResponse? {
         val targetUrl = "$tokenEndpointUrl?grant_type=client_credentials&scope=openid"
         val basicAuth: String = basicCredentials(srvUsername, srvPassword)
 
-        return runBlocking {
-            ktorClient.get<ClientCredentialsResponse>(targetUrl) {
-                header("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))
-                header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
-                header(HttpHeaders.AUTHORIZATION, basicAuth)
-                header("x-nav-apiKey", stsApiKey)
-            }
-        }
-    }
-}
-
-private fun basicCredentials(username: String, password: String): String {
-    return "Basic " + Base64.getEncoder().encodeToString(String.format("%s:%s", username, password).toByteArray())
-}
-
-private fun expiresWithin(jwt: JWT, withinMillis: Long): Boolean {
-    return try {
-        val tokenExpiration: Date = jwt.jwtClaimsSet.expirationTime
-        val expirationTime = tokenExpiration.time - withinMillis
-        System.currentTimeMillis() > expirationTime
-    } catch (e: ParseException) {
-        true
-    }
-}
-
-private fun hentOidcDiscoveryConfiguration(discoveryUrl: String, stsApiKey: String): OidcDiscoveryConfiguration? {
-    // Denne må kjøre runBlocking siden den kjører i init av klassen?
-    return runBlocking {
-        ktorClient.get<OidcDiscoveryConfiguration>(discoveryUrl) {
+        return ktorClient.get<ClientCredentialsResponse>(targetUrl) {
+            header("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))
+            header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
+            header(HttpHeaders.AUTHORIZATION, basicAuth)
             header("x-nav-apiKey", stsApiKey)
         }
     }
+
+    private fun basicCredentials(username: String, password: String): String {
+        return "Basic " + Base64.getEncoder().encodeToString(String.format("%s:%s", username, password).toByteArray())
+    }
+
+    private fun expiresWithin(jwt: JWT, withinMillis: Long): Boolean {
+        return try {
+            val tokenExpiration: Date = jwt.jwtClaimsSet.expirationTime
+            val expirationTime = tokenExpiration.time - withinMillis
+            System.currentTimeMillis() > expirationTime
+        } catch (e: ParseException) {
+            true
+        }
+    }
+
+    private suspend fun hentOidcDiscoveryConfiguration(discoveryUrl: String, stsApiKey: String): OidcDiscoveryConfiguration? {
+        return ktorClient.get<OidcDiscoveryConfiguration>(discoveryUrl) {
+                header("x-nav-apiKey", stsApiKey)
+        }
+    }
 }
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 private data class ClientCredentialsResponse(
