@@ -146,7 +146,7 @@ class ServiceConfig(val configuration: Configuration) {
     }
 
     private fun pdlService(stsService: SystemuserTokenProvider): PdlService {
-        return PdlService(RestClient.baseClientBuilder().build(), stsService, configuration)
+        return PdlService(ktorClient, stsService, configuration)
     }
 
     private fun tilgangService(pdlService: PdlService): TilgangService {
