@@ -110,11 +110,10 @@ class SystemuserTokenProviderImpl internal constructor(
 
     private suspend fun hentOidcDiscoveryConfiguration(discoveryUrl: String, stsApiKey: String): OidcDiscoveryConfiguration? {
         return ktorClient.get<OidcDiscoveryConfiguration>(discoveryUrl) {
-                header("x-nav-apiKey", stsApiKey)
+            header("x-nav-apiKey", stsApiKey)
         }
     }
 }
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 private data class ClientCredentialsResponse(

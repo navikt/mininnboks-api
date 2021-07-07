@@ -132,7 +132,7 @@ object PdlServicetest : Spek({
 })
 
 private fun gittClientSomSvarer(body: String = ""): HttpClient {
-    return  HttpClient(MockEngine) {
+    return HttpClient(MockEngine) {
         install(JsonFeature) {
             serializer = JacksonSerializer(JacksonUtils.objectMapper)
         }

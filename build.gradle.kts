@@ -76,7 +76,6 @@ dependencies {
     implementation("io.ktor:ktor-client-jackson:$ktor_version")
     implementation("io.ktor:ktor-client-mock:$ktor_version")
 
-
     // Java
     implementation("com.auth0:java-jwt:3.11.0")
     // test

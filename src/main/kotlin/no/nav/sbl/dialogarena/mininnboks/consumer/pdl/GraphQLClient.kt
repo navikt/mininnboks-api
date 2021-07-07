@@ -30,7 +30,7 @@ data class GraphQLResponse<DATA>(
 
 data class GraphQLClientConfig(
     val tjenesteNavn: String,
-    val requestConfig: suspend HttpRequestBuilder.(callId : String, subject: Subject) -> Unit
+    val requestConfig: suspend HttpRequestBuilder.(callId: String, subject: Subject) -> Unit
 )
 
 class GraphQLClient(
@@ -60,7 +60,7 @@ class GraphQLClient(
                 config.requestConfig.invoke(this, callId, subject)
             }
 
-            val typeReference : JavaType = JacksonUtils.objectMapper.typeFactory
+            val typeReference: JavaType = JacksonUtils.objectMapper.typeFactory
                 .constructParametricType(GraphQLResponse::class.java, request.expectedReturnType)
             val response = JacksonUtils.objectMapper.readValue<GraphQLResponse<DATA>>(body, typeReference)
 

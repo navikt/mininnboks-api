@@ -30,10 +30,13 @@ suspend fun PipelineContext<Unit, ApplicationCall>.withSubject(authLevel: AuthLe
 suspend fun <T> externalCall(subject: Subject, block: suspend () -> T): T =
     withContext(Dispatchers.IO + MDCContext()) {
         val scope = this.coroutineContext
-        val job = SubjectHandler.withSubject(subject, UnsafeSupplier<Deferred<T>> {
-            async(scope) {
-                block()
+        val job = SubjectHandler.withSubject(
+            subject,
+            UnsafeSupplier<Deferred<T>> {
+                async(scope) {
+                    block()
+                }
             }
-        })
+        )
         job.await()
     }
