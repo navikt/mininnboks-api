@@ -4,14 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.nimbusds.jwt.JWT
 import com.nimbusds.jwt.JWTParser
-import io.ktor.client.*
-import io.ktor.client.engine.okhttp.*
-import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.runBlocking
 import no.nav.common.auth.oidc.discovery.OidcDiscoveryConfiguration
 import no.nav.common.log.MDCConstants
-import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
+import no.nav.sbl.dialogarena.mininnboks.ServiceConfig
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.text.ParseException
@@ -51,12 +48,6 @@ class SystemuserTokenProviderImpl internal constructor(
 ) : SystemuserTokenProvider {
 
     private val log = LoggerFactory.getLogger(SystemuserTokenProvider::class.java)
-    private val ktorClient = HttpClient(OkHttp) {
-        install(JsonFeature) {
-            serializer = JacksonSerializer(JacksonUtils.objectMapper)
-        }
-    }
-
     private var accessToken: JWT? = null
     private val tokenEndpointUrl: String? = if (startingUrlIsDiscoveryUrl) {
         runBlocking {
@@ -86,7 +77,7 @@ class SystemuserTokenProviderImpl internal constructor(
         val targetUrl = "$tokenEndpointUrl?grant_type=client_credentials&scope=openid"
         val basicAuth: String = basicCredentials(srvUsername, srvPassword)
 
-        return ktorClient.get<ClientCredentialsResponse>(targetUrl) {
+        return ServiceConfig.ktorClient.get<ClientCredentialsResponse>(targetUrl) {
             header("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))
             header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
             header(HttpHeaders.AUTHORIZATION, basicAuth)
@@ -109,7 +100,7 @@ class SystemuserTokenProviderImpl internal constructor(
     }
 
     private suspend fun hentOidcDiscoveryConfiguration(discoveryUrl: String, stsApiKey: String): OidcDiscoveryConfiguration? {
-        return ktorClient.get<OidcDiscoveryConfiguration>(discoveryUrl) {
+        return ServiceConfig.ktorClient.get<OidcDiscoveryConfiguration>(discoveryUrl) {
             header("x-nav-apiKey", stsApiKey)
         }
     }

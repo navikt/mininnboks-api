@@ -30,9 +30,11 @@ import org.slf4j.MDC
 import java.util.*
 
 class ServiceConfig(val configuration: Configuration) {
-    private val ktorClient = HttpClient(OkHttp) {
-        install(JsonFeature) {
-            serializer = JacksonSerializer(JacksonUtils.objectMapper)
+    companion object {
+        val ktorClient = HttpClient(OkHttp) {
+            install(JsonFeature) {
+                serializer = JacksonSerializer(JacksonUtils.objectMapper)
+            }
         }
     }
 
@@ -69,7 +71,7 @@ class ServiceConfig(val configuration: Configuration) {
     val stsService = systemUserTokenProvider()
     val pdlService = pdlService(stsService)
     val tilgangService = tilgangService(pdlService)
-    val rateLimiterService = RateLimiterApiImpl(configuration.RATE_LIMITER_URL)
+    val rateLimiterService = RateLimiterApiImpl(configuration.RATE_LIMITER_URL, ktorClient)
 
     val selfTestCheckStsService: SelfTestCheck = SelfTestCheck("Sjekker at systembruker kan hente token fra STS", true) {
         runBlocking {
