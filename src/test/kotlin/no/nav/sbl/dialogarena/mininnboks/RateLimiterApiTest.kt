@@ -4,7 +4,6 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.AnythingPattern
-import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import kotlinx.coroutines.runBlocking
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi

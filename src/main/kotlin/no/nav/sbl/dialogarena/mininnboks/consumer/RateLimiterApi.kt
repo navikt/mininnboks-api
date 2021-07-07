@@ -42,9 +42,9 @@ class RateLimiterApiImpl(
     private suspend inline fun <reified RESPONSE> fetch(block: HttpRequestBuilder.() -> Unit): RESPONSE {
         val response: HttpResponse = client.request(block)
         if (response.status.isSuccess()) {
-            val body : String = response.receive() ?: throw IllegalStateException("Forventet body fra rate-limiter, men fikk: null")
+            val body: String = response.receive() ?: throw IllegalStateException("Forventet body fra rate-limiter, men fikk: null")
             return objectMapper.readValue(body)
-        }else {
+        } else {
             throw IllegalStateException("Forventet 200-range svar, men fikk: ${response.status.value}")
         }
     }
