@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -64,17 +65,18 @@ class GraphQLClient(
 
             val httpResponse: HttpResponse = httpClient.request(body)
 
+            val responseData: String = httpResponse.receive()
+
+            val httpResponseMessage = JacksonUtils.objectMapper.readValue<String>(responseData)
+
             log.info(
                 """
                     ${config.tjenesteNavn}-response: $callId
                     ------------------------------------------------------------------------------------
-                        status: ${httpResponse.status} ${JacksonUtils.objectMapper.readValue<HttpResponse>(body)}
+                        status: ${httpResponse.status} $httpResponseMessage
                     ------------------------------------------------------------------------------------
                 """.trimIndent()
             )
-            requireNotNull(body) {
-                "${config.tjenesteNavn}-Response-body was empty"
-            }
 
             val typeReference: JavaType = JacksonUtils.objectMapper.typeFactory
                 .constructParametricType(GraphQLResponse::class.java, request.expectedReturnType)
