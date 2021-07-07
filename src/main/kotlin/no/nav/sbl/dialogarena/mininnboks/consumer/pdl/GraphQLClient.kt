@@ -2,8 +2,10 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.ktor.client.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import no.nav.common.auth.subject.Subject
 import no.nav.common.log.MDCConstants
@@ -60,6 +62,20 @@ class GraphQLClient(
                 config.requestConfig.invoke(this, callId, subject)
             }
 
+            val httpResponse: HttpResponse = httpClient.request(body)
+
+            log.info(
+                """
+                    ${config.tjenesteNavn}-response: $callId
+                    ------------------------------------------------------------------------------------
+                        status: ${httpResponse.status} ${JacksonUtils.objectMapper.readValue<HttpResponse>(body)}
+                    ------------------------------------------------------------------------------------
+                """.trimIndent()
+            )
+            requireNotNull(body) {
+                "${config.tjenesteNavn}-Response-body was empty"
+            }
+
             val typeReference: JavaType = JacksonUtils.objectMapper.typeFactory
                 .constructParametricType(GraphQLResponse::class.java, request.expectedReturnType)
             val response = JacksonUtils.objectMapper.readValue<GraphQLResponse<DATA>>(body, typeReference)
@@ -70,6 +86,7 @@ class GraphQLClient(
                     """
                         ${config.tjenesteNavn}-response: $callId
                         ------------------------------------------------------------------------------------
+                            status: ${httpResponse.status} ${response.data}
                             errors: $errorMessages
                         ------------------------------------------------------------------------------------
                     """.trimIndent()
