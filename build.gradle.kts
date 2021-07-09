@@ -74,7 +74,6 @@ dependencies {
     implementation("io.ktor:ktor-metrics-micrometer:$ktor_version")
     implementation("io.ktor:ktor-client-okhttp:$ktor_version")
     implementation("io.ktor:ktor-client-jackson:$ktor_version")
-    implementation("io.ktor:ktor-client-mock:$ktor_version")
 
     // Java
     implementation("com.auth0:java-jwt:3.11.0")
@@ -86,6 +85,7 @@ dependencies {
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spek_version")
     testImplementation("io.mockk:mockk:1.10.2")
     testImplementation("com.github.tomakehurst:wiremock-standalone:2.27.2")
+    testImplementation("io.ktor:ktor-client-mock:$ktor_version")
 }
 
 group = "no.nav.common"
