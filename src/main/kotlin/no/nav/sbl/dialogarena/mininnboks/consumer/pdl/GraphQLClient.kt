@@ -33,7 +33,7 @@ data class GraphQLResponse<DATA>(
 
 data class GraphQLClientConfig(
     val tjenesteNavn: String,
-    val requestConfig: suspend HttpRequestBuilder.(callId: String, subject: Subject) -> Unit
+    val requestConfig: HttpRequestBuilder.(callId: String, subject: Subject) -> Unit
 )
 
 class GraphQLClient(
@@ -57,17 +57,18 @@ class GraphQLClient(
                 """.trimIndent()
             )
 
-            val body: String = httpClient.post {
+            val block: HttpRequestBuilder.() -> Unit = {
+                method = HttpMethod.Post
                 contentType(ContentType.Application.Json)
-                body = request
                 config.requestConfig.invoke(this, callId, subject)
+                body = request
             }
 
-            val httpResponse: HttpResponse = httpClient.request(body)
+            val httpResponse: HttpResponse = httpClient.request(block)
 
-            val responseData: String = httpResponse.receive()
+            val body: String = httpResponse.receive()
 
-            val httpResponseMessage = JacksonUtils.objectMapper.readValue<String>(responseData)
+            val httpResponseMessage = JacksonUtils.objectMapper.readValue<String>(body)
 
             log.info(
                 """
