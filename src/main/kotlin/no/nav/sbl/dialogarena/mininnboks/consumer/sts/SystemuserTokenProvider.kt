@@ -73,11 +73,11 @@ class SystemuserTokenProviderImpl internal constructor(
         return accessToken == null || expiresWithin(accessToken!!, MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH)
     }
 
-    private suspend fun fetchSystemUserAccessToken(): ClientCredentialsResponse? {
+    private suspend fun fetchSystemUserAccessToken(): ClientCredentialsResponse {
         val targetUrl = "$tokenEndpointUrl?grant_type=client_credentials&scope=openid"
         val basicAuth: String = basicCredentials(srvUsername, srvPassword)
 
-        return ServiceConfig.ktorClient.get<ClientCredentialsResponse>(targetUrl) {
+        return ServiceConfig.ktorClient.get(targetUrl) {
             header("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))
             header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
             header(HttpHeaders.AUTHORIZATION, basicAuth)
