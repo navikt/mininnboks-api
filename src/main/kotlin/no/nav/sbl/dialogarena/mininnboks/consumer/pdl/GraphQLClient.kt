@@ -2,7 +2,6 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.JavaType
-import com.fasterxml.jackson.module.kotlin.readValue
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -33,7 +32,7 @@ data class GraphQLResponse<DATA>(
 
 data class GraphQLClientConfig(
     val tjenesteNavn: String,
-    val requestConfig: HttpRequestBuilder.(callId: String, subject: Subject) -> Unit
+    val requestConfig: suspend HttpRequestBuilder.(callId: String, subject: Subject) -> Unit
 )
 
 class GraphQLClient(
@@ -57,24 +56,20 @@ class GraphQLClient(
                 """.trimIndent()
             )
 
-            val block: HttpRequestBuilder.() -> Unit = {
+            val httpResponse: HttpResponse = httpClient.request {
                 method = HttpMethod.Post
                 contentType(ContentType.Application.Json)
                 config.requestConfig.invoke(this, callId, subject)
                 body = request
             }
 
-            val httpResponse: HttpResponse = httpClient.request(block)
-
             val body: String = httpResponse.receive()
-
-            val httpResponseMessage = JacksonUtils.objectMapper.readValue<String>(body)
-
             log.info(
                 """
                     ${config.tjenesteNavn}-response: $callId
                     ------------------------------------------------------------------------------------
-                        status: ${httpResponse.status} $httpResponseMessage
+                        status: ${httpResponse.status} 
+                        body: $body
                     ------------------------------------------------------------------------------------
                 """.trimIndent()
             )
