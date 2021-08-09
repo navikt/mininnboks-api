@@ -1,5 +1,9 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.http.cio.*
+import kotlinx.coroutines.runBlocking
 import no.nav.common.auth.subject.Subject
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
@@ -8,9 +12,6 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentAdressebeskytt
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentFolkeregistrertAdresse
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentGeografiskTilknytning
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 
 class PdlException(message: String, cause: Throwable) : RuntimeException(message, cause)
 
@@ -35,13 +36,13 @@ data class Adresse(
 }
 
 open class PdlService(
-    private val pdlClient: OkHttpClient,
+    private val client: HttpClient,
     private val stsService: SystemuserTokenProvider,
     private val configuration: Configuration
 ) {
     private val pdlUrl: String = configuration.PDL_API_URL + "/graphql"
     private val graphqlClient = GraphQLClient(
-        pdlClient,
+        client,
         GraphQLClientConfig(
             tjenesteNavn = "PDL",
             requestConfig = { callId, subject ->
@@ -50,12 +51,12 @@ open class PdlService(
                     ?: throw IllegalStateException("Kunne ikke hente ut systemusertoken")
 
                 url(pdlUrl)
-                addHeader("Nav-Call-Id", callId)
-                addHeader("Nav-Consumer-Id", "mininnboks-api")
-                addHeader("Nav-Consumer-Token", "Bearer $appToken")
-                addHeader("Authorization", "Bearer $subjectToken")
-                addHeader("Tema", "GEN")
-                addHeader("x-nav-apiKey", configuration.PDL_API_APIKEY)
+                header("Nav-Call-Id", callId)
+                header("Nav-Consumer-Id", "mininnboks-api")
+                header("Nav-Consumer-Token", "Bearer $appToken")
+                header("Authorization", "Bearer $subjectToken")
+                header("Tema", "GEN")
+                header("x-nav-apiKey", configuration.PDL_API_APIKEY)
             }
         )
     )
@@ -202,19 +203,17 @@ open class PdlService(
     }
 
     private fun pingGraphQL(): Int {
-        val request: Request = Request.Builder()
-            .url(configuration.PDL_API_URL + "/graphql")
-            .method("OPTIONS", null)
-            .addHeader("x-nav-apiKey", configuration.PDL_API_APIKEY)
-            .build()
+        val response: Response = runBlocking {
+            client.get<Response>(configuration.PDL_API_URL + "/graphql") {
+                header("x-nav-apiKey", configuration.PDL_API_APIKEY)
+            }
+        }
 
-        val response: Response = pdlClient.newCall(request).execute()
-
-        return if (response.isSuccessful) {
-            response.code()
+        return if (response.status == 200) {
+            response.status
         } else {
-            response.body()?.close()
-            response.code()
+            response.close()
+            response.status
         }
     }
 

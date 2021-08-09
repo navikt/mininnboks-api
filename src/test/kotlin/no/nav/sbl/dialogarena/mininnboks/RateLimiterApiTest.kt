@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.AnythingPattern
-import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
+import kotlinx.coroutines.runBlocking
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi
 import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApiImpl
@@ -18,21 +18,24 @@ private val token = "TOKEN"
 object RateLimiterApiTest : Spek({
     MDC.put(MDCConstants.MDC_CALL_ID, "MDC_CALL_ID")
 
-    test("er det ok å sende spørsmålet") {
-        withMockGateway(stub = getWithBody(statusCode = 200, body = "true")) { rateLimiterApi ->
+    test("henter ut ratelimiter status") {
+        withMockGateway(
+            stub = postWithBody(statusCode = 200, body = "false")
+        ) { rateLimiterApi ->
             val response = rateLimiterApi.oppdatereRateLimiter(token)
-            assertThat(response, `is`(true))
+            assertThat(response, `is`(false))
         }
     }
 
     test("handterer status coder utenfor 200-299 rangen") {
-        withMockGateway(stub = getWithBody(statusCode = 404)) { rateLimiterApi ->
+        withMockGateway(
+            stub = postWithBody(statusCode = 404)
+        ) { rateLimiterApi ->
             val response = rateLimiterApi.oppdatereRateLimiter(token)
             assertThat(response, `is`(true))
         }
 
         withMockGateway(
-            verify = { server -> verifyHeaders(server, postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))) },
             stub = postWithBody(statusCode = 500, body = "")
         ) { rateLimiterApi ->
             val response = rateLimiterApi.oppdatereRateLimiter(token)
@@ -40,10 +43,6 @@ object RateLimiterApiTest : Spek({
         }
     }
 })
-
-private fun getWithBody(statusCode: Int = 200, body: String? = null): WireMockServer.() -> Unit = {
-    this.stubFor(get(anyUrl()).withBody(statusCode, body))
-}
 
 private fun postWithBody(statusCode: Int = 200, body: String? = null): WireMockServer.() -> Unit = {
     this.stubFor(post(anyUrl()).withBody(statusCode, body))
@@ -59,33 +58,27 @@ private fun MappingBuilder.withBody(statusCode: Int = 200, body: String? = null)
     return this
 }
 
-private fun verifyHeaders(server: WireMockServer, call: RequestPatternBuilder): () -> Unit = {
-    server.verify(
-        call
-            .withHeader("X-Correlation-ID", AnythingPattern())
-            .withHeader("Authorization", AnythingPattern())
-            .withHeader("accept", matching("application/json"))
-    )
-}
-
 private fun withMockGateway(
     stub: WireMockServer.() -> Unit = { },
-    verify: ((WireMockServer) -> Unit)? = null,
-    test: (RateLimiterApi) -> Unit
+    test: suspend (RateLimiterApi) -> Unit
 ) {
     val wireMockServer = WireMockServer()
     try {
         stub(wireMockServer)
         wireMockServer.start()
 
-        val client = RateLimiterApiImpl("http://localhost:${wireMockServer.port()}")
-        test(client)
-
-        if (verify == null) {
-            verifyHeaders(wireMockServer, getRequestedFor(urlEqualTo("/rate-limiter/api/limit")))
-        } else {
-            verify(wireMockServer)
+        val client = RateLimiterApiImpl("http://localhost:${wireMockServer.port()}", ServiceConfig.ktorClient)
+        runBlocking {
+            test(client)
         }
+
+        wireMockServer.verify(
+            postRequestedFor(urlEqualTo("/rate-limiter/api/limit"))
+                .withHeader("X-Correlation-ID", AnythingPattern())
+                .withHeader("Authorization", AnythingPattern())
+                .withHeader("Accept", matching("application/json"))
+                .withHeader("Content-Type", matching("application/json"))
+        )
     } finally {
         wireMockServer.stop()
     }
