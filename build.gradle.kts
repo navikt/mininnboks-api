@@ -72,6 +72,8 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9")
     implementation("io.ktor:ktor-metrics:$ktor_version")
     implementation("io.ktor:ktor-metrics-micrometer:$ktor_version")
+    implementation("io.ktor:ktor-client-okhttp:$ktor_version")
+    implementation("io.ktor:ktor-client-jackson:$ktor_version")
 
     // Java
     implementation("com.auth0:java-jwt:3.11.0")
@@ -82,8 +84,8 @@ dependencies {
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spek_version")
     testImplementation("io.mockk:mockk:1.10.2")
-    testImplementation("com.github.gmazzo:okhttp-mock:1.2.1")
     testImplementation("com.github.tomakehurst:wiremock-standalone:2.27.2")
+    testImplementation("io.ktor:ktor-client-mock:$ktor_version")
 }
 
 group = "no.nav.common"

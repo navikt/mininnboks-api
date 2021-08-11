@@ -1,5 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks
 
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.json.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
@@ -7,7 +10,6 @@ import no.nav.common.cxf.StsConfig
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.common.log.MDCConstants
-import no.nav.common.rest.client.RestClient
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portBuilder
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
@@ -28,6 +30,13 @@ import org.slf4j.MDC
 import java.util.*
 
 class ServiceConfig(val configuration: Configuration) {
+    companion object {
+        val ktorClient = HttpClient(OkHttp) {
+            install(JsonFeature) {
+                serializer = JacksonSerializer(JacksonUtils.objectMapper)
+            }
+        }
+    }
 
     private val personV3 = portBuilder(
         PersonV3::class.java,
@@ -62,7 +71,7 @@ class ServiceConfig(val configuration: Configuration) {
     val stsService = systemUserTokenProvider()
     val pdlService = pdlService(stsService)
     val tilgangService = tilgangService(pdlService)
-    val rateLimiterService = RateLimiterApiImpl(configuration.RATE_LIMITER_URL)
+    val rateLimiterService = RateLimiterApiImpl(configuration.RATE_LIMITER_URL, ktorClient)
 
     val selfTestCheckStsService: SelfTestCheck = SelfTestCheck("Sjekker at systembruker kan hente token fra STS", true) {
         runBlocking {
@@ -109,8 +118,10 @@ class ServiceConfig(val configuration: Configuration) {
 
     private fun checkHealthStsService(): HealthCheckResult {
         return try {
-            stsService.getSystemUserAccessToken()
-            HealthCheckResult.healthy()
+            runBlocking {
+                stsService.getSystemUserAccessToken()
+                HealthCheckResult.healthy()
+            }
         } catch (e: Exception) {
             HealthCheckResult.unhealthy(e.message)
         }
@@ -141,13 +152,12 @@ class ServiceConfig(val configuration: Configuration) {
             configuration.STS_TOKENENDPOINT_URL,
             configuration.FSS_SRVMININNBOKS_USERNAME,
             configuration.FSS_SRVMININNBOKS_PASSWORD,
-            configuration.STS_APIKEY,
-            RestClient.baseClientBuilder().build()
+            configuration.STS_APIKEY
         )
     }
 
     private fun pdlService(stsService: SystemuserTokenProvider): PdlService {
-        return PdlService(RestClient.baseClientBuilder().build(), stsService, configuration)
+        return PdlService(ktorClient, stsService, configuration)
     }
 
     private fun tilgangService(pdlService: PdlService): TilgangService {
