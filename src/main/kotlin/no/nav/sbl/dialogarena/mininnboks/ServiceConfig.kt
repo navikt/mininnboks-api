@@ -36,7 +36,7 @@ class ServiceConfig(val configuration: Configuration) {
         }
     }
 
-    private val unleash: UnleashService = UnleashServiceImpl(
+    private val unleashService: UnleashService = UnleashServiceImpl(
         ByEnvironmentStrategy()
     )
 
@@ -116,7 +116,7 @@ class ServiceConfig(val configuration: Configuration) {
         selfTestCheckInnsynHenvendelsePortType,
         DiskCheck.asSelftestCheck(),
         TruststoreCheck.asSelftestCheck(),
-        SelfTestCheck("Unleash", false, unleash::checkHealth)
+        SelfTestCheck("Unleash", false, unleashService::checkHealth)
     )
 
     private fun checkHealthStsService(): HealthCheckResult {
@@ -138,7 +138,8 @@ class ServiceConfig(val configuration: Configuration) {
             henvendelsePortType.port,
             sendInnHenvendelsePortType.port,
             innsynHenvendelsePortType.port,
-            personService
+            personService,
+            unleashService
         )
     }
 

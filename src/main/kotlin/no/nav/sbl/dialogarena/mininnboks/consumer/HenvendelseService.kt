@@ -30,7 +30,8 @@ interface HenvendelseService {
         private val henvendelsePortType: HenvendelsePortType,
         private val sendInnHenvendelsePortType: SendInnHenvendelsePortType,
         private val innsynHenvendelsePortType: InnsynHenvendelsePortType,
-        private val personService: PersonService
+        private val personService: PersonService,
+        private val unleashService: UnleashService
     ) : HenvendelseService {
 
         override suspend fun stillSporsmal(henvendelse: Henvendelse, overstyrtGt: String?, subject: Subject): WSSendInnHenvendelseResponse {
@@ -128,7 +129,7 @@ interface HenvendelseService {
                 henvendelsePortType.hentHenvendelseListe(
                     WSHentHenvendelseListeRequest()
                         .withFodselsnummer(subject.uid)
-                        .withTyper(typer)
+                        .withTyper(hentAktuelleHenvendelseTyper())
                 )
                     .any
                     .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
@@ -145,11 +146,23 @@ interface HenvendelseService {
                 .map { obj: Any? -> XMLHenvendelse::class.java.cast(obj) }
                 .map { wsMelding -> HenvendelsesUtils.tilHenvendelse(wsMelding) }
         }
+
+        private fun hentAktuelleHenvendelseTyper(): List<String> {
+            return if (unleashService.isEnabled("modiabrukerdialog.bruker-salesforce-dialoger")) {
+                salesforceTyper
+            } else {
+                henvendelseTyper
+            }
+        }
     }
 
     companion object {
         const val KONTAKT_NAV_SAKSTEMA = "KNA"
-        val typer = listOf(
+        val salesforceTyper = listOf(
+            XMLHenvendelseType.DOKUMENT_VARSEL.name,
+            XMLHenvendelseType.OPPGAVE_VARSEL.name
+        )
+        val henvendelseTyper = listOf(
             XMLHenvendelseType.SPORSMAL_SKRIFTLIG.name,
             XMLHenvendelseType.SPORSMAL_SKRIFTLIG_DIREKTE.name,
             XMLHenvendelseType.SVAR_SKRIFTLIG.name,

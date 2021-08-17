@@ -30,6 +30,8 @@ private val innsynHenvendelsePortType: InnsynHenvendelsePortType = mockk()
 private val personService: PersonService = mockk()
 private val tekstService: TekstService = mockk()
 private var henvendelseService: HenvendelseService = mockk()
+private var unleashService: UnleashService = mockk()
+
 private val FNR = "fnr"
 private val subject = Subject(FNR, IdentType.EksternBruker, SsoToken.oidcToken("fnr", emptyMap<String, Any>()))
 private val TEMAGRUPPE = Temagruppe.ARBD
@@ -44,13 +46,20 @@ private val ER_TILKNYTTET_ANSATT = false
 object HenvendelseServiceTest : Spek({
 
     beforeEachTest {
-        henvendelseService = HenvendelseService.Default(henvendelsePortType, sendInnHenvendelsePortType, innsynHenvendelsePortType, personService)
+        henvendelseService = HenvendelseService.Default(
+            henvendelsePortType,
+            sendInnHenvendelsePortType,
+            innsynHenvendelsePortType,
+            personService,
+            unleashService
+        )
         coEvery { tekstService.hentTekst(any()) } returns "Tekst"
         henvendelseListe.add(lagHenvendelse(XMLHenvendelseType.SPORSMAL_MODIA_UTGAAENDE.name))
         coEvery { henvendelsePortType.hentHenvendelseListe(any()) } returns
             WSHentHenvendelseListeResponse().withAny(henvendelseListe)
         coEvery { sendInnHenvendelsePortType.sendInnHenvendelse(any()) } returns (WSSendInnHenvendelseResponse().withBehandlingsId("id"))
         coEvery { personService.hentGeografiskTilknytning(any()) } returns BRUKER_ENHET
+        every { unleashService.isEnabled(any()) } returns false
     }
 
     afterEachTest {
