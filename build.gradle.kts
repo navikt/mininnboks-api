@@ -49,6 +49,7 @@ dependencies {
     implementation("no.nav.common:metrics")
     implementation("no.nav.common:health")
     implementation("no.nav.common:log")
+    implementation("no.finn.unleash:unleash-client-java:3.2.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.0")
     implementation("com.nimbusds:oauth2-oidc-sdk:6.23")
     implementation("no.nav.tjenestespesifikasjoner:dialogarena-behandlingsinformasjon:$tjenestespec_version")

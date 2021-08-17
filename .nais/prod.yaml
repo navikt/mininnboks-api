@@ -108,4 +108,6 @@ spec:
       value: "enabled"
     - name: RATE_LIMITER_URL
       value: "http://rate-limiter.personoversikt.svc.nais.local"
+    - name: UNLEASH_API_URL
+      value: "https://unleash.nais.io/api"
 

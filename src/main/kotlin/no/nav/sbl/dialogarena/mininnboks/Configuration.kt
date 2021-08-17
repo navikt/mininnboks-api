@@ -45,7 +45,8 @@ data class Configuration(
     val LOGINSERVICE_IDPORTEN_DISCOVERY_URL: String = config()[Key("LOGINSERVICE_IDPORTEN_DISCOVERY_URL", stringType)],
     val LOGINSERVICE_IDPORTEN_AUDIENCE: String = config()[Key("LOGINSERVICE_IDPORTEN_AUDIENCE", stringType)],
     val SRVMININNBOKS_PASSWORD: String = config()[Key("SRVMININNBOKS_PASSWORD", stringType)],
-    val RATE_LIMITER_URL: String = config()[Key("RATE_LIMITER_URL", stringType)]
+    val RATE_LIMITER_URL: String = config()[Key("RATE_LIMITER_URL", stringType)],
+    val UNLEASH_API_URL: String = config()[Key("UNLEASH_API_URL", stringType)]
 )
 
 private fun config() = ConfigurationProperties.systemProperties() overriding

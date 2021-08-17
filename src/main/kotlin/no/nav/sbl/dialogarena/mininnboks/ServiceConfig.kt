@@ -14,9 +14,7 @@ import no.nav.sbl.dialogarena.mininnboks.PortUtils.portBuilder
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
 import no.nav.sbl.dialogarena.mininnboks.common.TruststoreCheck
-import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
-import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
-import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApiImpl
+import no.nav.sbl.dialogarena.mininnboks.consumer.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider.Companion.fromTokenEndpoint
@@ -37,6 +35,10 @@ class ServiceConfig(val configuration: Configuration) {
             }
         }
     }
+
+    private val unleash: UnleashService = UnleashServiceImpl(
+        ByEnvironmentStrategy()
+    )
 
     private val personV3 = portBuilder(
         PersonV3::class.java,
@@ -113,7 +115,8 @@ class ServiceConfig(val configuration: Configuration) {
         selfTestCheckSendInnHenvendelsePortType,
         selfTestCheckInnsynHenvendelsePortType,
         DiskCheck.asSelftestCheck(),
-        TruststoreCheck.asSelftestCheck()
+        TruststoreCheck.asSelftestCheck(),
+        SelfTestCheck("Unleash", false, unleash::checkHealth)
     )
 
     private fun checkHealthStsService(): HealthCheckResult {
