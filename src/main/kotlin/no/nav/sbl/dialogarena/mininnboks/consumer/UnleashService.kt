@@ -12,10 +12,16 @@ import no.nav.common.auth.subject.SubjectHandler
 import no.nav.common.health.HealthCheck
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.utils.EnvironmentUtils
+import no.nav.sbl.dialogarena.mininnboks.consumer.UnleashService.FeatureToggle
 
 interface UnleashService : HealthCheck {
-    fun isEnabled(toggleName: String): Boolean
-    fun isEnabled(toggleName: String, context: UnleashContext): Boolean
+    class FeatureToggle(val name: String)
+    object Toggles {
+        val stengSTO = FeatureToggle("modia.innboks.steng-sto")
+        val brukerSalesforce = FeatureToggle("modia.innboks.bruker-salesforce-dialoger")
+    }
+    fun isEnabled(toggleName: FeatureToggle): Boolean
+    fun isEnabled(toggleName: FeatureToggle, context: UnleashContext): Boolean
 }
 
 class UnleashServiceImpl : UnleashService, UnleashSubscriber {
@@ -45,8 +51,8 @@ class UnleashServiceImpl : UnleashService, UnleashSubscriber {
         this.unleash = DefaultUnleash(config, *strategies)
     }
 
-    override fun isEnabled(toggleName: String): Boolean = unleash.isEnabled(toggleName, resolveUnleashContext())
-    override fun isEnabled(toggleName: String, context: UnleashContext): Boolean = unleash.isEnabled(toggleName, context)
+    override fun isEnabled(toggleName: FeatureToggle): Boolean = unleash.isEnabled(toggleName.name, resolveUnleashContext())
+    override fun isEnabled(toggleName: FeatureToggle, context: UnleashContext): Boolean = unleash.isEnabled(toggleName.name, context)
 
     override fun togglesFetched(toggleResponse: FeatureToggleResponse?) {
         this.lastFetchStatus = toggleResponse?.status

@@ -9,15 +9,13 @@ import io.ktor.http.*
 import io.ktor.jackson.*
 import io.ktor.routing.*
 import io.ktor.server.testing.*
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
-import io.mockk.slot
+import io.mockk.*
 import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.authenticateWithDummySubject
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi
+import no.nav.sbl.dialogarena.mininnboks.consumer.UnleashService
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
@@ -38,6 +36,7 @@ import javax.xml.ws.soap.SOAPFaultException
 private val service = mockk<HenvendelseService>(relaxed = true)
 private val tilgangService = mockk<TilgangService>()
 private val rateLimiterApi = mockk<RateLimiterApi>()
+private val unleashService = mockk<UnleashService>()
 private val mapper = jacksonObjectMapper()
 
 object HenvendelseControllerTest : Spek({
@@ -46,7 +45,7 @@ object HenvendelseControllerTest : Spek({
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
         beforeEachTest {
-            setUp(service, rateLimiterApi)
+            setUp(service, rateLimiterApi, unleashService)
         }
 
         val engine = TestApplicationEngine(createTestEnvironment())
@@ -54,7 +53,7 @@ object HenvendelseControllerTest : Spek({
 
         engine.application.routing {
             authenticateWithDummySubject(dummyPrincipalNiva4()) {
-                henvendelseController(service, tilgangService, rateLimiterApi)
+                henvendelseController(service, tilgangService, rateLimiterApi, unleashService)
             }
         }
         engine.application.install(ContentNegotiation) {
@@ -307,13 +306,26 @@ object HenvendelseControllerTest : Spek({
                     MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.TooManyRequests.value))
                 }
             }
+            it("smeller hvis steng-sto er true") {
+                every { unleashService.isEnabled(any()) } returns true
+                every { unleashService.isEnabled(any(), any()) } returns true
+
+                handleRequest(HttpMethod.Post, "/traader/sporsmal") {
+                    addHeader("Content-Type", "application/json; charset=utf8")
+                    addHeader("Accept", "application/json")
+
+                    setBody(mapper.writeValueAsString(createSporsmal()))
+                }.apply {
+                    MatcherAssert.assertThat(response.status()?.value, Is.`is`(HttpStatusCode.NotAcceptable.value))
+                }
+            }
         }
     }
 })
 
 private fun createSporsmal() = Sporsmal(Temagruppe.ANSOS, "DUMMY")
 
-private fun setUp(service: HenvendelseService, rateLimiterApi: RateLimiterApi) {
+private fun setUp(service: HenvendelseService, rateLimiterApi: RateLimiterApi, unleashService: UnleashService) {
     val henvendelser = listOf(
         Henvendelse(id = "1", traadId = "1", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
         Henvendelse(id = "2", traadId = "2", type = Henvendelsetype.SAMTALEREFERAT_OPPMOTE, opprettet = TestUtils.now()),
@@ -336,4 +348,7 @@ private fun setUp(service: HenvendelseService, rateLimiterApi: RateLimiterApi) {
     coEvery { service.sendSvar(any(), any()) } returns (
         WSSendInnHenvendelseResponse().withBehandlingsId(UUID.randomUUID().toString())
         )
+
+    every { unleashService.isEnabled(any()) } returns false
+    every { unleashService.isEnabled(any(), any()) } returns false
 }
