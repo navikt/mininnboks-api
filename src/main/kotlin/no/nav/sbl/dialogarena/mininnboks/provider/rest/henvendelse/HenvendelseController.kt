@@ -10,6 +10,7 @@ import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.AuthLevel
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi
+import no.nav.sbl.dialogarena.mininnboks.consumer.UnleashService
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
@@ -25,7 +26,8 @@ val logger: Logger = LoggerFactory.getLogger("mininnboks.henvendelseController")
 fun Route.henvendelseController(
     henvendelseService: HenvendelseService,
     tilgangService: TilgangService,
-    rateLimiterApi: RateLimiterApi
+    rateLimiterApi: RateLimiterApi,
+    unleashService: UnleashService
 ) {
     route("/traader") {
         hentAlleTraader(henvendelseService)
@@ -36,11 +38,11 @@ fun Route.henvendelseController(
 
         alleLest(henvendelseService)
 
-        sporsmal(tilgangService, henvendelseService, rateLimiterApi)
+        sporsmal(tilgangService, henvendelseService, rateLimiterApi, unleashService)
 
-        sporsmaldirekte(tilgangService, henvendelseService, rateLimiterApi)
+        sporsmaldirekte(tilgangService, henvendelseService, rateLimiterApi, unleashService)
 
-        svar(henvendelseService)
+        svar(henvendelseService, unleashService)
     }
 }
 
@@ -59,8 +61,12 @@ private fun Route.hentAlleTraader(henvendelseService: HenvendelseService) {
     }
 }
 
-private fun Route.svar(henvendelseService: HenvendelseService) {
+private fun Route.svar(henvendelseService: HenvendelseService, unleashService: UnleashService) {
     post("/svar") {
+        if (unleashService.isEnabled(UnleashService.Toggles.stengSTO)) {
+            call.respond(HttpStatusCode.NotAcceptable)
+            return@post
+        }
         val svar = call.receive(Svar::class)
         assertFritekst(svar.fritekst, 2500)
         withSubject(AuthLevel.Level4) { subject ->
@@ -100,9 +106,14 @@ private fun createHenvendelse(svar: Svar, traad: Traad): Henvendelse {
 private fun Route.sporsmaldirekte(
     tilgangService: TilgangService,
     henvendelseService: HenvendelseService,
-    rateLimiterApi: RateLimiterApi
+    rateLimiterApi: RateLimiterApi,
+    unleashService: UnleashService
 ) {
     post("/sporsmaldirekte") {
+        if (unleashService.isEnabled(UnleashService.Toggles.stengSTO)) {
+            call.respond(HttpStatusCode.NotAcceptable)
+            return@post
+        }
         withSubject(AuthLevel.Level4) { subject ->
             if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
                 val sporsmal = call.receive(Sporsmal::class)
@@ -119,9 +130,14 @@ private fun Route.sporsmaldirekte(
 private fun Route.sporsmal(
     tilgangService: TilgangService,
     henvendelseService: HenvendelseService,
-    rateLimiterApi: RateLimiterApi
+    rateLimiterApi: RateLimiterApi,
+    unleashService: UnleashService
 ) {
     post("/sporsmal") {
+        if (unleashService.isEnabled(UnleashService.Toggles.stengSTO)) {
+            call.respond(HttpStatusCode.NotAcceptable)
+            return@post
+        }
         withSubject(AuthLevel.Level4) { subject ->
             if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
                 val sporsmal = call.receive(Sporsmal::class)
