@@ -148,7 +148,7 @@ interface HenvendelseService {
         }
 
         private fun hentAktuelleHenvendelseTyper(): List<String> {
-            return if (unleashService.isEnabled("modia.innboks.bruker-salesforce-dialoger")) {
+            return if (unleashService.isEnabled(UnleashService.Toggles.brukerSalesforce)) {
                 salesforceTyper
             } else {
                 henvendelseTyper

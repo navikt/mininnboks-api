@@ -36,7 +36,7 @@ class ServiceConfig(val configuration: Configuration) {
         }
     }
 
-    private val unleashService: UnleashService = UnleashServiceImpl(
+    val unleashService: UnleashService = UnleashServiceImpl(
         ByEnvironmentStrategy()
     )
 
