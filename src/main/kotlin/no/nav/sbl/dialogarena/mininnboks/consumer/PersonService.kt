@@ -30,8 +30,9 @@ interface PersonService {
                 logger.info("HentGeografiskTilknytningPersonIkkeFunnet ved kall på hentGeografiskTilknyttning", hentGeografiskTilknytningPersonIkkeFunnet)
                 return null
             }
-            return response.let { obj: HentGeografiskTilknytningResponse -> obj.geografiskTilknytning }
-                .let { obj: GeografiskTilknytning -> obj.geografiskTilknytning }
+            return response
+                ?.let { obj: HentGeografiskTilknytningResponse -> obj.geografiskTilknytning }
+                ?.let { obj: GeografiskTilknytning -> obj.geografiskTilknytning }
         }
 
         private fun lagAktoer(ident: String): PersonIdent {
