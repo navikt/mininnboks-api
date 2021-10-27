@@ -10,6 +10,7 @@ import no.nav.common.cxf.StsConfig
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.common.log.MDCConstants
+import no.nav.common.utils.EnvironmentUtils.getRequiredProperty
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portBuilder
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
@@ -20,6 +21,9 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider.Companion.fromTokenEndpoint
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangServiceImpl
+import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsConsumer
+import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsService
+import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsServiceImpl
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType
@@ -35,6 +39,18 @@ class ServiceConfig(val configuration: Configuration) {
             }
         }
     }
+
+    val tokendingsMetadata = TokendingsConsumer.fetchMetadata(ktorClient, getRequiredProperty("TOKEN_X_WELL_KNOWN_URL"))
+    val tokendingsService: TokendingsService = TokendingsServiceImpl(
+        tokendingsConsumer = TokendingsConsumer(
+            httpClient = ktorClient,
+            metadata = tokendingsMetadata
+        ),
+        jwtAudience = tokendingsMetadata.tokenEndpoint,
+        clientId = getRequiredProperty("TOKEN_X_CLIENT_ID"),
+        privateJwk = getRequiredProperty("TOKEN_X_PRIVATE_JWK")
+    )
+    val safClientId = getRequiredProperty("SAF_CLIENT_ID")
 
     val unleashService: UnleashService = UnleashServiceImpl(
         ByEnvironmentStrategy()
