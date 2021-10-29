@@ -113,4 +113,4 @@ spec:
     - name: UNLEASH_API_URL
       value: "https://unleash.nais.io/api"
     - name: SAF_CLIENT_ID
-      value: "prod-gcp:teamdokumenthandtering:safselvbetjening"
+      value: "prod-fss:teamdokumenthandtering:safselvbetjening"
