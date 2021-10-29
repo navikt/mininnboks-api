@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.tokendings
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -9,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class TokendingsTokenResponse(
     @JsonProperty("access_token") val accessToken: String,
     @JsonProperty("issued_token_type") val issuedTokenType: String,
@@ -37,6 +39,7 @@ class TokendingsConsumer(
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     data class TokendingsConfigurationMetadata(
         @JsonProperty("issuer") val issuer: String,
         @JsonProperty("token_endpoint") val tokenEndpoint: String,
