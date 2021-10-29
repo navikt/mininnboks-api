@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.jackson.*
 import io.ktor.metrics.micrometer.*
 import io.ktor.request.*
+import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -51,6 +52,15 @@ fun createHttpServer(
                 livenessCheck = { applicationState.running },
                 selftestChecks = serviceConfig.selfTestChecklist
             )
+            authenticate {
+                get("/tokendings") {
+                    val subject = requireNotNull(this.call.authentication.principal<SubjectPrincipal>())
+                    val token = subject.subject.ssoToken.token
+                    val exchangedToken = serviceConfig.tokendingsService.exchangeToken(token, serviceConfig.safClientId)
+
+                    call.respond(exchangedToken)
+                }
+            }
         }
     }
 
