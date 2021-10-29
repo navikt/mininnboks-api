@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.json.*
+import io.ktor.client.features.logging.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
@@ -21,13 +22,13 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider.Companion.fromTokenEndpoint
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangServiceImpl
-import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsConsumer
 import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsService
 import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsServiceImpl
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
+import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.util.*
 
@@ -37,16 +38,19 @@ class ServiceConfig(val configuration: Configuration) {
             install(JsonFeature) {
                 serializer = JacksonSerializer(JacksonUtils.objectMapper)
             }
+            install(Logging) {
+                level = LogLevel.ALL
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        LoggerFactory.getLogger("SecureLog").info(message)
+                    }
+                }
+            }
         }
     }
 
-    val tokendingsMetadata = TokendingsConsumer.fetchMetadata(ktorClient, getRequiredProperty("TOKEN_X_WELL_KNOWN_URL"))
     val tokendingsService: TokendingsService = TokendingsServiceImpl(
-        tokendingsConsumer = TokendingsConsumer(
-            httpClient = ktorClient,
-            metadata = tokendingsMetadata
-        ),
-        jwtAudience = tokendingsMetadata.tokenEndpoint,
+        httpClient = ktorClient,
         clientId = getRequiredProperty("TOKEN_X_CLIENT_ID"),
         privateJwk = getRequiredProperty("TOKEN_X_PRIVATE_JWK")
     )
@@ -125,6 +129,7 @@ class ServiceConfig(val configuration: Configuration) {
 
     val selfTestChecklist = listOf(
         pdlService.selfTestCheck,
+        tokendingsService.selftestCheck,
         selfTestCheckStsService,
         selfTestCheckPersonV3,
         selfTestCheckHenvendelse,
