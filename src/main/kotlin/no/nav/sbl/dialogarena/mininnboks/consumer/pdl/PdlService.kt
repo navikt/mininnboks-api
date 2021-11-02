@@ -8,6 +8,8 @@ import no.nav.common.auth.subject.Subject
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.Configuration
+import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClient
+import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClientConfig
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentAdressebeskyttelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentFolkeregistrertAdresse
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentGeografiskTilknytning
@@ -214,15 +216,6 @@ open class PdlService(
         } else {
             response.close()
             response.status
-        }
-    }
-
-    companion object {
-        fun lastQueryFraFil(name: String): String {
-            return GraphQLClient::class.java
-                .getResource("/pdl/$name.graphql")
-                .readText()
-                .replace("[\n\r]", "")
         }
     }
 }

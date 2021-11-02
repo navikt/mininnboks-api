@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
+package no.nav.sbl.dialogarena.mininnboks.consumer
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.JavaType
@@ -105,6 +105,15 @@ class GraphQLClient(
             )
 
             throw exception
+        }
+    }
+
+    companion object {
+        fun lastQueryFraFil(source: String, name: String): String {
+            return GraphQLClient::class.java
+                .getResource("/$source/$name.graphql")
+                .readText()
+                .replace("[\n\r]", "")
         }
     }
 }
