@@ -140,7 +140,10 @@ class ServiceConfig(val configuration: Configuration) {
     private fun checkHealthStsService(): HealthCheckResult {
         return try {
             runBlocking {
-                stsService.getSystemUserAccessToken()
+                val systemUserAccessToken = stsService.getSystemUserAccessToken()
+                requireNotNull(systemUserAccessToken) {
+                    "Systemtoken var null"
+                }
                 HealthCheckResult.healthy()
             }
         } catch (e: Exception) {
