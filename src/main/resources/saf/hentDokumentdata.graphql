@@ -1,0 +1,26 @@
+fragment avsenderFragment on AvsenderMottaker {
+    id
+    type
+}
+
+query hentDokumentdata($ident: String!, $tema: [Tema]!) {
+    dokumentoversiktSelvbetjening(ident: $ident, tema: $tema) {
+        journalposter {
+            journalpostId
+            tittel
+            journalposttype
+            tema
+            avsender { ...avsenderFragment }
+            mottaker { ...avsenderFragment }
+            kanal
+            dokumenter {
+                dokumentInfoId
+                tittel
+                dokumentvarianter {
+                    variantformat
+                    brukerHarTilgang
+                }
+            }
+        }
+    }
+}
