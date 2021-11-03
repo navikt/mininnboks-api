@@ -50,6 +50,11 @@ fun createHttpServer(
 
                 call.respond(exchangedToken)
             }
+            get("/dokumentoversikt") {
+                val subject = requireNotNull(this.call.authentication.principal<SubjectPrincipal>())
+                val dokumentoversikt = serviceConfig.safService.hentDokumentoversikt(subject.subject)
+                call.respond(dokumentoversikt)
+            }
         }
         resourcesController()
 
