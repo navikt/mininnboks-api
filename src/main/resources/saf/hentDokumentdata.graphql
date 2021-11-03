@@ -12,7 +12,10 @@ query hentDokumentdata($ident: String!, $tema: [Tema]!) {
             tema
             avsender { ...avsenderFragment }
             mottaker { ...avsenderFragment }
-            kanal
+            relevanteDatoer {
+                dato
+                datotype
+            }
             dokumenter {
                 dokumentInfoId
                 tittel

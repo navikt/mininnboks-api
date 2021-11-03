@@ -50,9 +50,9 @@ fun createHttpServer(
 
                 call.respond(exchangedToken)
             }
-            get("/dokumentoversikt") {
+            get("/journalposter") {
                 val subject = requireNotNull(this.call.authentication.principal<SubjectPrincipal>())
-                val dokumentoversikt = serviceConfig.safService.hentDokumentoversikt(subject.subject)
+                val dokumentoversikt = serviceConfig.safService.hentJournalposter(subject.subject)
                 call.respond(dokumentoversikt)
             }
         }
