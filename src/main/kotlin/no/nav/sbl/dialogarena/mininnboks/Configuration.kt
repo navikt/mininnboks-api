@@ -14,6 +14,9 @@ private val defaultProperties = ConfigurationMap(
         "PERSON_V_3_URL" to "person.v3.url",
         "PDL_API_URL" to "PDL_API_URL",
         "PDL_API_APIKEY" to "PDL_API_APIKEY",
+        "SAF_API_URL" to "SAF_API_URL",
+        "SAF_API_APIKEY" to "SAF_API_APIKEY",
+        "SAF_CLIENT_ID" to "SAF_CLIENT_ID",
         "STS_APIKEY" to "STS_APIKEY",
         "STS_TOKENENDPOINT_URL" to "STS_TOKENENDPOINT_URL",
         "SECURITYTOKENSERVICE_URL" to "SECURITYTOKENSERVICE_URL",
@@ -22,7 +25,10 @@ private val defaultProperties = ConfigurationMap(
         "SRVMININNBOKS_USERNAME" to "SRVMININNBOKS_USERNAME",
         "SRVMININNBOKS_PASSWORD" to "SRVMININNBOKS_PASSWORD",
         "LOGINSERVICE_IDPORTEN_AUDIENCE" to "LOGINSERVICE_IDPORTEN_AUDIENCE",
-        "RATE_LIMITER_URL" to "RATE_LIMITER_URL"
+        "RATE_LIMITER_URL" to "RATE_LIMITER_URL",
+        "TOKEN_X_WELL_KNOWN_URL" to "TOKEN_X_WELL_KNOWN_URL",
+        "TOKEN_X_CLIENT_ID" to "TOKEN_X_CLIENT_ID",
+        "TOKEN_X_PRIVATE_JWK" to "TOKEN_X_PRIVATE_JWK"
     )
 )
 
@@ -36,6 +42,10 @@ data class Configuration(
     val PERSON_V_3_URL: String = config()[Key("SERVICEGATEWAY_URL", stringType)],
     val PDL_API_URL: String = config()[Key("PDL_API_URL", stringType)],
     val PDL_API_APIKEY: String = config()[Key("PDL_API_APIKEY", stringType)],
+    val SAF_API_URL: String = config()[Key("SAF_API_URL", stringType)],
+    val SAF_CLIENT_ID: String = config()[Key("SAF_CLIENT_ID", stringType)],
+    val SAF_GRAPHQL_API_APIKEY: String = config()[Key("SAF_GRAPHQL_API_APIKEY", stringType)],
+    val SAF_REST_API_APIKEY: String = config()[Key("SAF_REST_API_APIKEY", stringType)],
     val STS_APIKEY: String = config()[Key("STS_APIKEY", stringType)],
     val STS_TOKENENDPOINT_URL: String = config()[Key("STS_TOKENENDPOINT_URL", stringType)],
     val SECURITYTOKENSERVICE_URL: String = config()[Key("SECURITYTOKENSERVICE_URL", stringType)],
@@ -46,7 +56,10 @@ data class Configuration(
     val LOGINSERVICE_IDPORTEN_AUDIENCE: String = config()[Key("LOGINSERVICE_IDPORTEN_AUDIENCE", stringType)],
     val SRVMININNBOKS_PASSWORD: String = config()[Key("SRVMININNBOKS_PASSWORD", stringType)],
     val RATE_LIMITER_URL: String = config()[Key("RATE_LIMITER_URL", stringType)],
-    val UNLEASH_API_URL: String = config()[Key("UNLEASH_API_URL", stringType)]
+    val UNLEASH_API_URL: String = config()[Key("UNLEASH_API_URL", stringType)],
+    val TOKEN_X_WELL_KNOWN_URL: String = config()[Key("TOKEN_X_WELL_KNOWN_URL", stringType)],
+    val TOKEN_X_CLIENT_ID: String = config()[Key("TOKEN_X_CLIENT_ID", stringType)],
+    val TOKEN_X_PRIVATE_JWK: String = config()[Key("TOKEN_X_PRIVATE_JWK", stringType)]
 )
 
 private fun config() = ConfigurationProperties.systemProperties() overriding
