@@ -11,7 +11,6 @@ import no.nav.common.cxf.StsConfig
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.common.log.MDCConstants
-import no.nav.common.utils.EnvironmentUtils.getRequiredProperty
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portBuilder
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
@@ -51,10 +50,8 @@ class ServiceConfig(val configuration: Configuration) {
 
     val tokendingsService: TokendingsService = TokendingsServiceImpl(
         httpClient = ktorClient,
-        clientId = getRequiredProperty("TOKEN_X_CLIENT_ID"),
-        privateJwk = getRequiredProperty("TOKEN_X_PRIVATE_JWK")
+        configuration = configuration
     )
-    val safClientId = getRequiredProperty("SAF_CLIENT_ID")
 
     val unleashService: UnleashService = UnleashServiceImpl(
         ByEnvironmentStrategy()
