@@ -120,3 +120,5 @@ spec:
       value: "https://unleash.nais.io/api"
     - name: SAF_CLIENT_ID
       value: "dev-fss:teamdokumenthandtering:safselvbetjening"
+    - name: SAF_FEATURETOGGLE
+      value: "true"
