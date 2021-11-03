@@ -14,6 +14,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentAdressebeskytt
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentFolkeregistrertAdresse
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentGeografiskTilknytning
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
+import no.nav.sbl.dialogarena.mininnboks.getOrThrowWith
 
 class PdlException(message: String, cause: Throwable) : RuntimeException(message, cause)
 
@@ -94,7 +95,7 @@ open class PdlService(
                     ?.firstOrNull()
                     ?.gradering
             }
-            .getOrThrow { PdlException("Kunne ikke utlede adressebeskyttelse", it) }
+            .getOrThrowWith { PdlException("Kunne ikke utlede adressebeskyttelse", it) }
     }
 
     suspend fun hentGeografiskTilknytning(subject: Subject): String {
@@ -115,7 +116,7 @@ open class PdlService(
                     }
                 }
             }
-            .getOrThrow {
+            .getOrThrowWith {
                 PdlException("Feil ved uthenting av GT", it)
             }
     }
@@ -132,7 +133,7 @@ open class PdlService(
                 response.data?.hentPerson
             }
             .map { adresser -> lagAdresseListe(adresser) }
-            .getOrThrow {
+            .getOrThrowWith {
                 PdlException("Feil ved uthenting av adresser", it)
             }
             .firstOrNull()
@@ -218,12 +219,4 @@ open class PdlService(
             response.status
         }
     }
-}
-
-private inline fun <T> Result<T>.getOrThrow(fn: (Throwable) -> Throwable): T {
-    val exception = exceptionOrNull()
-    if (exception != null) {
-        throw fn(exception)
-    }
-    return getOrThrow()
 }
