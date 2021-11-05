@@ -1,6 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.JavaType
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -15,9 +17,31 @@ import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.util.*
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class GraphQLError(
+    val message: String,
+    val locations: List<SourceLocation>? = null,
+    val path: List<Any>? = null,
+    val extensions: Map<String, Any?>? = null
+)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class SourceLocation(
+    val line: Int,
+    val column: Int
+)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class GraphQLResponse<DATA>(
+    val data: DATA? = null,
+    val errors: List<GraphQLError>? = null,
+    val extensions: Map<String, Any?>? = null
+)
+
 interface GraphQLVariables
 interface GraphQLResult
-data class GraphQLError(val message: String)
+
 interface GraphQLRequest<VARIABLES : GraphQLVariables, RETURN_TYPE : GraphQLResult> {
     val query: String
     val variables: VARIABLES
@@ -25,10 +49,6 @@ interface GraphQLRequest<VARIABLES : GraphQLVariables, RETURN_TYPE : GraphQLResu
     @get:JsonIgnore
     val expectedReturnType: Class<RETURN_TYPE>
 }
-data class GraphQLResponse<DATA>(
-    val errors: List<GraphQLError>?,
-    val data: DATA?
-)
 
 data class GraphQLClientConfig(
     val tjenesteNavn: String,
