@@ -120,8 +120,8 @@ spec:
     - name: UNLEASH_API_URL
       value: "https://unleash.nais.io/api"
     - name: SAF_API_URL
-      # SAF Selvbetjening er bare i Q1. Så vi må gå via q1 apigw
-      value: "https://api-gw-q1.adeo.no/safselvbetjening"
+      # SAFSelvbetjening er bare i Q1
+      value: "https://api-gw-q1.oera.no/safselvbetjening"
     - name: SAF_CLIENT_ID
       value: "dev-fss:teamdokumenthandtering:safselvbetjening"
     - name: SAF_FEATURETOGGLE
