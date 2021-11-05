@@ -29,7 +29,6 @@ import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.Inns
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
-import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.util.*
 
@@ -39,14 +38,7 @@ class ServiceConfig(val configuration: Configuration) {
             install(JsonFeature) {
                 serializer = JacksonSerializer(JacksonUtils.objectMapper)
             }
-            install(Logging) {
-                level = LogLevel.ALL
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        LoggerFactory.getLogger("SecureLog").info(message)
-                    }
-                }
-            }
+            install(TjenestekallLogging)
         }
     }
 
