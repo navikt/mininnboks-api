@@ -45,9 +45,10 @@ spec:
       mountPath: /var/run/secrets/nais.io/apigw/pdl-api
     - kvPath: /apikey/apigw/dev/security-token-service-token/mininnboks-api_{{ namespace }}
       mountPath: /var/run/secrets/nais.io/apigw/security-token-service-token
-    - kvPath: /apikey/apigw/dev/graphql/mininnboks-api-{{ namespace }}_q1
+      # SAFSelvbetjening er bare i Q1
+    - kvPath: /apikey/apigw/dev/graphql/mininnboks-api_q1
       mountPath: /var/run/secrets/nais.io/apigw/saf-graphql
-    - kvPath: /apikey/apigw/dev/rest_hentdokument/mininnboks-api-{{ namespace }}_q1
+    - kvPath: /apikey/apigw/dev/rest_hentdokument/mininnboks-api_q1
       mountPath: /var/run/secrets/nais.io/apigw/saf-rest
   tokenx:
     enabled: true
