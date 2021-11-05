@@ -143,7 +143,7 @@ class SafServiceImpl(
                     method = HttpMethod.Get
                     header("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID) ?: UUID.randomUUID().toString())
                     header("Authorization", "Bearer $token")
-                    header("x-nav-apiKey", configuration.SAF_GRAPHQL_API_APIKEY)
+                    header("x-nav-apiKey", configuration.SAF_REST_API_APIKEY)
                 }
             }.onFailure { cause ->
                 if (cause is ClientRequestException && cause.response.status == HttpStatusCode.NotFound) {
