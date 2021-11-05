@@ -38,7 +38,7 @@ class ServiceConfig(val configuration: Configuration) {
             install(JsonFeature) {
                 serializer = JacksonSerializer(JacksonUtils.objectMapper)
             }
-            install(TjenestekallLogging)
+//            install(TjenestekallLogging)
         }
     }
 
