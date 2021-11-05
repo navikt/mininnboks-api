@@ -139,7 +139,7 @@ class SafServiceImpl(
             val token = tokendings.exchangeToken(subject.ssoToken.token, configuration.SAF_CLIENT_ID)
             val response: HttpResponse = runCatching {
                 client.request<HttpResponse> {
-                    url(configuration.SAF_API_URL + "/rest_hentdokument/$journalpostId/$dokumentId/ARKIV")
+                    url(configuration.SAF_API_URL + "/rest/hentdokument/$journalpostId/$dokumentId/ARKIV")
                     method = HttpMethod.Get
                     header("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID) ?: UUID.randomUUID().toString())
                     header("Authorization", "Bearer $token")
