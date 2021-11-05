@@ -24,7 +24,7 @@ import java.util.*
 
 interface SafService {
     suspend fun hentJournalposter(subject: Subject): List<Journalpost>
-    suspend fun hentJournalpost(subject: Subject, journalpostId: String, dokumentIdListe: List<String>): Journalpost?
+    suspend fun hentJournalpost(subject: Subject, journalpostId: String): Journalpost?
     suspend fun hentDokument(subject: Subject, journalpostId: String, dokumentId: String): ByteArray
 
     data class Journalpost(
@@ -129,15 +129,9 @@ class SafServiceImpl(
         }
     }
 
-    override suspend fun hentJournalpost(subject: Subject, journalpostId: String, dokumentIdListe: List<String>): SafService.Journalpost? {
-        val journalposter = hentJournalposter(subject)
-
-        val journalpost = journalposter
+    override suspend fun hentJournalpost(subject: Subject, journalpostId: String): SafService.Journalpost? {
+        return hentJournalposter(subject)
             .find { it.journalpostId == journalpostId }
-        val dokumenter = (journalpost?.dokumenter ?: emptyList())
-            .filter { dokumentIdListe.contains(it.dokumentId) }
-
-        return journalpost?.copy(dokumenter = dokumenter)
     }
 
     override suspend fun hentDokument(subject: Subject, journalpostId: String, dokumentId: String): ByteArray {

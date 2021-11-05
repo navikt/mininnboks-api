@@ -6,11 +6,10 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import no.nav.sbl.dialogarena.mininnboks.AuthLevel
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.SafService
-import no.nav.sbl.dialogarena.mininnboks.requireNotEmpty
 import no.nav.sbl.dialogarena.mininnboks.withSubject
 
 fun Route.dokumentController(safService: SafService) {
-    get("/journalposter") {
+    get("/dokument") {
         withSubject(AuthLevel.Level4) { subject ->
             call.respond(
                 safService.hentJournalposter(subject)
@@ -23,11 +22,8 @@ fun Route.dokumentController(safService: SafService) {
             val journalpostId = requireNotNull(call.parameters["journalpostId"]) {
                 "journalpostId må være spesifisert"
             }
-            val dokumentIdListe = requireNotEmpty(call.request.queryParameters.getAll("dokumentId")) {
-                "Minst ett dokument må være spesifisert"
-            }
 
-            val journalpost = safService.hentJournalpost(subject, journalpostId, dokumentIdListe)
+            val journalpost = safService.hentJournalpost(subject, journalpostId)
             if (journalpost == null) {
                 call.respond(HttpStatusCode.NotFound)
             } else {
