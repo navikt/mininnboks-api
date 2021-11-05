@@ -81,7 +81,7 @@ class SafServiceImpl(
                     execute(
                         subject,
                         HentDokumentdata(
-                            HentDokumentdata.Variables(ident)
+                            HentDokumentdata.Variables(ident, emptyList())
                         )
                     )
                 }

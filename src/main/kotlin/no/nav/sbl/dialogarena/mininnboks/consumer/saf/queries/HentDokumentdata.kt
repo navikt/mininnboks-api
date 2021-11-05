@@ -12,7 +12,7 @@ class HentDokumentdata(override val variables: Variables) :
     override val query: String = lastQueryFraFil("saf", "hentDokumentdata")
     override val expectedReturnType: Class<Result> = Result::class.java
 
-    data class Variables(val ident: String) : GraphQLVariables
+    data class Variables(val ident: String, val tema: List<String>) : GraphQLVariables
     data class Result(val dokumentoversiktSelvbetjening: DokumentOversikt) : GraphQLResult
 
     data class DokumentOversikt(val journalposter: List<Journalpost?>)
