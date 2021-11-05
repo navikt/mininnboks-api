@@ -25,12 +25,14 @@ data class GraphQLError(
     val path: List<Any>? = null,
     val extensions: Map<String, Any?>? = null
 )
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class SourceLocation(
     val line: Int,
     val column: Int
 )
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class GraphQLResponse<DATA>(
