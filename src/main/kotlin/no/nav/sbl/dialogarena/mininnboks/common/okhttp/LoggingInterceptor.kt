@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.mininnboks.common.okhttp
 
+import kotlinx.coroutines.asContextElement
 import no.nav.common.log.MDCConstants
 import no.nav.common.utils.IdUtils
 import no.nav.sbl.dialogarena.mininnboks.common.TjenestekallLogger
@@ -10,9 +11,20 @@ import okio.Buffer
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 
-class LoggingInterceptor() : Interceptor {
+class LoggingInterceptor : Interceptor {
+    companion object {
+        private val includeRequestBody = ThreadLocal.withInitial { true }
+        private val includeResponseBody = ThreadLocal.withInitial { true }
+        fun includeRequestBody(value: Boolean = includeRequestBody.get() ?: true) = includeRequestBody.asContextElement(value)
+        fun includeResponseBody(value: Boolean = includeResponseBody.get() ?: true) = includeResponseBody.asContextElement(value)
+    }
+
     private val log = LoggerFactory.getLogger(LoggingInterceptor::class.java)
     private fun Request.peekContent(): String? {
+        val includeRequestBody = includeRequestBody.get() ?: false
+        if (!includeRequestBody) {
+            return "MASKED"
+        }
         val copy = this.newBuilder().build()
         val buffer = Buffer()
         copy.body()?.writeTo(buffer)
@@ -21,6 +33,10 @@ class LoggingInterceptor() : Interceptor {
     }
 
     private fun Response.peekContent(): String? {
+        val includeResponseBody = includeResponseBody.get() ?: false
+        if (!includeResponseBody) {
+            return "MASKED"
+        }
         return this.peekBody(Long.MAX_VALUE).string()
     }
 

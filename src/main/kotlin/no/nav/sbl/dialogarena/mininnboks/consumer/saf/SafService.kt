@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import no.nav.common.auth.subject.Subject
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.Configuration
+import no.nav.sbl.dialogarena.mininnboks.common.okhttp.LoggingInterceptor
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClient
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClientConfig
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.queries.HentDokumentdata
@@ -135,7 +136,7 @@ class SafServiceImpl(
     }
 
     override suspend fun hentDokument(subject: Subject, journalpostId: String, dokumentId: String): ByteArray {
-        return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO + LoggingInterceptor.includeResponseBody(false)) {
             val token = tokendings.exchangeToken(subject.ssoToken.token, configuration.SAF_CLIENT_ID)
             val response: HttpResponse = runCatching {
                 client.request<HttpResponse> {

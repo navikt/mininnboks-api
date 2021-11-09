@@ -9,6 +9,7 @@ import io.ktor.http.content.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import no.nav.sbl.dialogarena.mininnboks.common.okhttp.LoggingInterceptor
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class TokendingsTokenResponse(
@@ -22,7 +23,11 @@ class TokendingsConsumer(
     private val metadata: TokendingsConfigurationMetadata
 ) {
     suspend fun exchangeToken(subjectToken: String, clientAssertion: String, audience: String): TokendingsTokenResponse {
-        return withContext(Dispatchers.IO) {
+        return withContext(
+            Dispatchers.IO +
+                LoggingInterceptor.includeRequestBody(false) +
+                LoggingInterceptor.includeResponseBody(false)
+        ) {
             val urlParameters = ParametersBuilder().apply {
                 append("grant_type", "urn:ietf:params:oauth:grant-type:token-exchange")
                 append("client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer")
