@@ -15,6 +15,7 @@ import no.nav.sbl.dialogarena.mininnboks.PortUtils.portBuilder
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
 import no.nav.sbl.dialogarena.mininnboks.common.TruststoreCheck
+import no.nav.sbl.dialogarena.mininnboks.common.okhttp.LoggingInterceptor
 import no.nav.sbl.dialogarena.mininnboks.consumer.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.SafService
@@ -35,10 +36,12 @@ import java.util.*
 class ServiceConfig(val configuration: Configuration) {
     companion object {
         val ktorClient = HttpClient(OkHttp) {
+            engine {
+                addInterceptor(LoggingInterceptor())
+            }
             install(JsonFeature) {
                 serializer = JacksonSerializer(JacksonUtils.objectMapper)
             }
-//            install(TjenestekallLogging)
         }
     }
 
