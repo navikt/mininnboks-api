@@ -11,50 +11,44 @@ import no.nav.common.cxf.StsConfig
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.common.log.MDCConstants
-import no.nav.common.utils.EnvironmentUtils.getRequiredProperty
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portBuilder
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
 import no.nav.sbl.dialogarena.mininnboks.common.TruststoreCheck
+import no.nav.sbl.dialogarena.mininnboks.common.okhttp.LoggingInterceptor
 import no.nav.sbl.dialogarena.mininnboks.consumer.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
+import no.nav.sbl.dialogarena.mininnboks.consumer.saf.SafService
+import no.nav.sbl.dialogarena.mininnboks.consumer.saf.SafServiceImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider.Companion.fromTokenEndpoint
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangServiceImpl
+import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.CachingTokendingsServiceImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsService
-import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsServiceImpl
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
-import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.util.*
 
 class ServiceConfig(val configuration: Configuration) {
     companion object {
         val ktorClient = HttpClient(OkHttp) {
+            engine {
+                addInterceptor(LoggingInterceptor())
+            }
             install(JsonFeature) {
                 serializer = JacksonSerializer(JacksonUtils.objectMapper)
-            }
-            install(Logging) {
-                level = LogLevel.ALL
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        LoggerFactory.getLogger("SecureLog").info(message)
-                    }
-                }
             }
         }
     }
 
-    val tokendingsService: TokendingsService = TokendingsServiceImpl(
+    val tokendingsService: TokendingsService = CachingTokendingsServiceImpl(
         httpClient = ktorClient,
-        clientId = getRequiredProperty("TOKEN_X_CLIENT_ID"),
-        privateJwk = getRequiredProperty("TOKEN_X_PRIVATE_JWK")
+        configuration = configuration
     )
-    val safClientId = getRequiredProperty("SAF_CLIENT_ID")
 
     val unleashService: UnleashService = UnleashServiceImpl(
         ByEnvironmentStrategy()
@@ -92,6 +86,11 @@ class ServiceConfig(val configuration: Configuration) {
     val henvendelseService = henvendelseService()
     val stsService = systemUserTokenProvider()
     val pdlService = pdlService(stsService)
+    val safService: SafService = SafServiceImpl(
+        client = ktorClient,
+        tokendings = tokendingsService,
+        configuration = configuration
+    )
     val tilgangService = tilgangService(pdlService)
     val rateLimiterService = RateLimiterApiImpl(configuration.RATE_LIMITER_URL, ktorClient)
 
@@ -143,7 +142,10 @@ class ServiceConfig(val configuration: Configuration) {
     private fun checkHealthStsService(): HealthCheckResult {
         return try {
             runBlocking {
-                stsService.getSystemUserAccessToken()
+                val systemUserAccessToken = stsService.getSystemUserAccessToken()
+                requireNotNull(systemUserAccessToken) {
+                    "Systemtoken var null"
+                }
                 HealthCheckResult.healthy()
             }
         } catch (e: Exception) {

@@ -14,7 +14,6 @@ import org.slf4j.MDC
 import java.text.ParseException
 import java.util.*
 import javax.ws.rs.core.HttpHeaders
-import javax.ws.rs.core.MediaType
 
 const val MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH = 60 * 1000L
 
@@ -79,7 +78,6 @@ class SystemuserTokenProviderImpl internal constructor(
 
         return ServiceConfig.ktorClient.get(targetUrl) {
             header("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))
-            header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
             header(HttpHeaders.AUTHORIZATION, basicAuth)
             header("x-nav-apiKey", stsApiKey)
         }

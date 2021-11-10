@@ -1,0 +1,11 @@
+{
+  "name": "saf-api",
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "SAF GraphQL Endpoint": {
+        "introspect": false
+      }
+    }
+  }
+}

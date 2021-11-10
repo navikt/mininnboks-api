@@ -10,7 +10,7 @@ import com.nimbusds.jwt.SignedJWT
 import io.ktor.client.*
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
-import no.nav.common.utils.EnvironmentUtils
+import no.nav.sbl.dialogarena.mininnboks.Configuration
 import java.time.Instant
 import java.util.*
 
@@ -21,14 +21,13 @@ interface TokendingsService {
 
 class TokendingsServiceImpl(
     private val httpClient: HttpClient,
-    private val clientId: String,
-    privateJwk: String
+    private val configuration: Configuration
 ) : TokendingsService {
-    private val privateRsaKey = RSAKey.parse(privateJwk)
+    private val privateRsaKey = RSAKey.parse(configuration.TOKEN_X_PRIVATE_JWK)
     private val tokendingsMetadata: TokendingsConsumer.TokendingsConfigurationMetadata by lazy {
         TokendingsConsumer.fetchMetadata(
             httpClient,
-            EnvironmentUtils.getRequiredProperty("TOKEN_X_WELL_KNOWN_URL")
+            configuration.TOKEN_X_WELL_KNOWN_URL
         )
     }
     private val tokendingsConsumer: TokendingsConsumer by lazy {
@@ -38,11 +37,15 @@ class TokendingsServiceImpl(
         )
     }
 
-    override suspend fun exchangeToken(token: String, targetApp: String): String {
+    suspend fun exchangeTokenForResponse(token: String, targetApp: String): TokendingsTokenResponse {
         val audience = tokendingsMetadata.tokenEndpoint
-        val jwt = createSignedAssertion(clientId, audience, privateRsaKey)
+        val jwt = createSignedAssertion(configuration.TOKEN_X_CLIENT_ID, audience, privateRsaKey)
 
-        return tokendingsConsumer.exchangeToken(token, jwt, targetApp).accessToken
+        return tokendingsConsumer.exchangeToken(token, jwt, targetApp)
+    }
+
+    override suspend fun exchangeToken(token: String, targetApp: String): String {
+        return exchangeTokenForResponse(token, targetApp).accessToken
     }
 
     override val selftestCheck = SelfTestCheck(
@@ -52,7 +55,7 @@ class TokendingsServiceImpl(
         runCatching {
             TokendingsConsumer.fetchMetadata(
                 httpClient,
-                EnvironmentUtils.getRequiredProperty("TOKEN_X_WELL_KNOWN_URL")
+                configuration.TOKEN_X_WELL_KNOWN_URL
             )
         }.fold(
             onSuccess = { HealthCheckResult.healthy() },

@@ -36,7 +36,7 @@ jobs:
       - name: Build and test
         run: ./gradlew clean build installDist thinJar
       - name: Publish Docker image
-        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/feat/saf-api'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -47,11 +47,11 @@ jobs:
   deploy-qa:
     name: Deploy to preprod
     needs: build
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/feat/saf-api'
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        namespace: [q0, q1, q6]
+        namespace: [q0, q1]
     steps:
       - uses: actions/checkout@v1
       - uses: nais/deploy/actions/deploy@v1

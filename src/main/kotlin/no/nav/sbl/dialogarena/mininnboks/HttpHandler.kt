@@ -20,6 +20,7 @@ import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import no.nav.sbl.dialogarena.mininnboks.JacksonUtils.Companion.objectMapper
+import no.nav.sbl.dialogarena.mininnboks.provider.rest.dokument.dokumentController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.henvendelseController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.naisRoutes
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.resourcesController
@@ -42,11 +43,13 @@ fun createHttpServer(
         authenticate {
             sporsmalController(serviceConfig.henvendelseService)
             henvendelseController(serviceConfig.henvendelseService, serviceConfig.tilgangService, serviceConfig.rateLimiterService, serviceConfig.unleashService)
+            dokumentController(serviceConfig.safService)
             tilgangController(serviceConfig.tilgangService)
+
             get("/tokendings") {
                 val subject = requireNotNull(this.call.authentication.principal<SubjectPrincipal>())
                 val token = subject.subject.ssoToken.token
-                val exchangedToken = serviceConfig.tokendingsService.exchangeToken(token, serviceConfig.safClientId)
+                val exchangedToken = serviceConfig.tokendingsService.exchangeToken(token, configuration.SAF_CLIENT_ID)
 
                 call.respond(exchangedToken)
             }

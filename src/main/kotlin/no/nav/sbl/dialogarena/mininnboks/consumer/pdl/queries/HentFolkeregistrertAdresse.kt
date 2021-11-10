@@ -1,13 +1,13 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries
 
-import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.GraphQLRequest
-import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.GraphQLResult
-import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.GraphQLVariables
-import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService.Companion.lastQueryFraFil
+import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClient.Companion.lastQueryFraFil
+import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLRequest
+import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLResult
+import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLVariables
 
 class HentFolkeregistrertAdresse(override val variables: Variables) :
     GraphQLRequest<HentFolkeregistrertAdresse.Variables, HentFolkeregistrertAdresse.Result> {
-    override val query: String = lastQueryFraFil("hentFolkeregistrertAdresse")
+    override val query: String = lastQueryFraFil("pdl", "hentFolkeregistrertAdresse")
     override val expectedReturnType: Class<Result> = Result::class.java
 
     data class Variables(val ident: String) : GraphQLVariables
