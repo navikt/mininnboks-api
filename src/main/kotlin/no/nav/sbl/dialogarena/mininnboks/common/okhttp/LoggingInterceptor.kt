@@ -18,7 +18,7 @@ class LoggingInterceptor : Interceptor {
     }
     private val log = LoggerFactory.getLogger(LoggingInterceptor::class.java)
     private fun Request.peekContent(): String? {
-        val contentType = this.body()?.contentType()
+        val contentType = this.body()?.contentType() ?: this.header("Content-Type")?.let(MediaType::parse)
         return when {
             contentType.equivalentTo(text, json) -> {
                 val copy = this.newBuilder().build()
@@ -31,7 +31,7 @@ class LoggingInterceptor : Interceptor {
     }
 
     private fun Response.peekContent(): String? {
-        val contentType = this.body()?.contentType()
+        val contentType = this.body()?.contentType() ?: this.header("Content-Type")?.let(MediaType::parse)
         return when {
             contentType.equivalentTo(text, json) -> this.peekBody(Long.MAX_VALUE).string()
             else -> "Content of type: $contentType"
