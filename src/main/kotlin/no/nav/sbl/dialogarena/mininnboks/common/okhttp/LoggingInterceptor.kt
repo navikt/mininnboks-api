@@ -18,8 +18,9 @@ class LoggingInterceptor : Interceptor {
     }
     private val log = LoggerFactory.getLogger(LoggingInterceptor::class.java)
     private fun Request.peekContent(): String? {
-        return when (val contentType = this.body()?.contentType() ?: text) {
-            text, json -> {
+        val contentType = this.body()?.contentType()
+        return when {
+            contentType.equivalentTo(text, json) -> {
                 val copy = this.newBuilder().build()
                 val buffer = Buffer()
                 copy.body()?.writeTo(buffer)
@@ -30,8 +31,9 @@ class LoggingInterceptor : Interceptor {
     }
 
     private fun Response.peekContent(): String? {
-        return when (val contentType: MediaType = this.body()?.contentType() ?: text) {
-            text, json -> this.peekBody(Long.MAX_VALUE).string()
+        val contentType = this.body()?.contentType()
+        return when {
+            contentType.equivalentTo(text, json) -> this.peekBody(Long.MAX_VALUE).string()
             else -> "Content of type: $contentType"
         }
     }
@@ -85,4 +87,11 @@ class LoggingInterceptor : Interceptor {
         }
         return response
     }
+}
+
+private fun MediaType?.equivalentTo(vararg others: MediaType): Boolean {
+    if (this == null) return false
+    val thisType = "${this.type()}/${this.subtype()}"
+    val otherTypes = others.map { "${it.type()}/${it.subtype()}" }
+    return otherTypes.contains(thisType)
 }
