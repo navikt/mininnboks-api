@@ -33,7 +33,7 @@ class LoggingInterceptor : Interceptor {
     private fun Response.peekContent(): String? {
         val contentType = this.body()?.contentType() ?: this.header("Content-Type")?.let(MediaType::parse)
         return when {
-            contentType.equivalentTo(text, json) -> this.peekBody(Long.MAX_VALUE).string()
+            contentType.equivalentTo(text, json) -> this.peekBody(Long.MAX_VALUE).string().sanitize()
             else -> "Content of type: $contentType"
         }
     }
@@ -94,4 +94,24 @@ private fun MediaType?.equivalentTo(vararg others: MediaType): Boolean {
     val thisType = "${this.type()}/${this.subtype()}"
     val otherTypes = others.map { "${it.type()}/${it.subtype()}" }
     return otherTypes.contains(thisType)
+}
+
+private fun String?.sanitize(): String? {
+    return when {
+        this == null -> null
+        this.contains("token") -> this.scrambleWordsLongerThan(100)
+        else -> this
+    }
+}
+
+private fun String.scrambleWordsLongerThan(length: Int): String {
+    val halfLength: Int = length / 2
+    val words = this.split(" ")
+    return words.joinToString(" ") { word ->
+        if (word.length < length) {
+            word
+        } else {
+            word.substring(0, halfLength) + "[...]" + word.substring(word.length - halfLength)
+        }
+    }
 }
