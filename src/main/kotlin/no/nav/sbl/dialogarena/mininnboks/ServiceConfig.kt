@@ -24,8 +24,8 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider.Companion.fromTokenEndpoint
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangServiceImpl
+import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.CachingTokendingsServiceImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsService
-import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsServiceImpl
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType
@@ -45,7 +45,7 @@ class ServiceConfig(val configuration: Configuration) {
         }
     }
 
-    val tokendingsService: TokendingsService = TokendingsServiceImpl(
+    val tokendingsService: TokendingsService = CachingTokendingsServiceImpl(
         httpClient = ktorClient,
         configuration = configuration
     )

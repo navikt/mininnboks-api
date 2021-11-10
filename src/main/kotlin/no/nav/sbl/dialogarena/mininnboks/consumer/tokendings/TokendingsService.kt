@@ -37,11 +37,15 @@ class TokendingsServiceImpl(
         )
     }
 
-    override suspend fun exchangeToken(token: String, targetApp: String): String {
+    suspend fun exchangeTokenForResponse(token: String, targetApp: String): TokendingsTokenResponse {
         val audience = tokendingsMetadata.tokenEndpoint
         val jwt = createSignedAssertion(configuration.TOKEN_X_CLIENT_ID, audience, privateRsaKey)
 
-        return tokendingsConsumer.exchangeToken(token, jwt, targetApp).accessToken
+        return tokendingsConsumer.exchangeToken(token, jwt, targetApp)
+    }
+
+    override suspend fun exchangeToken(token: String, targetApp: String): String {
+        return exchangeTokenForResponse(token, targetApp).accessToken
     }
 
     override val selftestCheck = SelfTestCheck(
