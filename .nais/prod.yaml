@@ -116,5 +116,3 @@ spec:
       value: "https://api-gw.adeo.no/safselvbetjening"
     - name: SAF_CLIENT_ID
       value: "prod-fss:teamdokumenthandtering:safselvbetjening"
-    - name: SAF_FEATURETOGGLE
-      value: "false"

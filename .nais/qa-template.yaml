@@ -124,5 +124,3 @@ spec:
       value: "https://api-gw-q1.oera.no/safselvbetjening"
     - name: SAF_CLIENT_ID
       value: "dev-fss:teamdokumenthandtering:safselvbetjening"
-    - name: SAF_FEATURETOGGLE
-      value: "true"
