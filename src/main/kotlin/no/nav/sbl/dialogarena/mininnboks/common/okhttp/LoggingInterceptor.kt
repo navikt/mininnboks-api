@@ -1,10 +1,10 @@
 package no.nav.sbl.dialogarena.mininnboks.common.okhttp
 
-import kotlinx.coroutines.asContextElement
 import no.nav.common.log.MDCConstants
 import no.nav.common.utils.IdUtils
 import no.nav.sbl.dialogarena.mininnboks.common.TjenestekallLogger
 import okhttp3.Interceptor
+import okhttp3.MediaType
 import okhttp3.Request
 import okhttp3.Response
 import okio.Buffer
@@ -13,31 +13,27 @@ import org.slf4j.MDC
 
 class LoggingInterceptor : Interceptor {
     companion object {
-        private val includeRequestBody = ThreadLocal.withInitial { true }
-        private val includeResponseBody = ThreadLocal.withInitial { true }
-        fun includeRequestBody(value: Boolean = includeRequestBody.get() ?: true) = includeRequestBody.asContextElement(value)
-        fun includeResponseBody(value: Boolean = includeResponseBody.get() ?: true) = includeResponseBody.asContextElement(value)
+        private val text = MediaType.get("text/plain")
+        private val json = MediaType.get("application/json")
     }
-
     private val log = LoggerFactory.getLogger(LoggingInterceptor::class.java)
     private fun Request.peekContent(): String? {
-        val includeRequestBody = includeRequestBody.get() ?: false
-        if (!includeRequestBody) {
-            return "MASKED"
+        return when (val contentType = this.body()?.contentType() ?: text) {
+            text, json -> {
+                val copy = this.newBuilder().build()
+                val buffer = Buffer()
+                copy.body()?.writeTo(buffer)
+                buffer.readUtf8()
+            }
+            else -> "Content of type: $contentType"
         }
-        val copy = this.newBuilder().build()
-        val buffer = Buffer()
-        copy.body()?.writeTo(buffer)
-
-        return buffer.readUtf8()
     }
 
     private fun Response.peekContent(): String? {
-        val includeResponseBody = includeResponseBody.get() ?: false
-        if (!includeResponseBody) {
-            return "MASKED"
+        return when (val contentType: MediaType = this.body()?.contentType() ?: text) {
+            text, json -> this.peekBody(Long.MAX_VALUE).string()
+            else -> "Content of type: $contentType"
         }
-        return this.peekBody(Long.MAX_VALUE).string()
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
