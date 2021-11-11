@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import no.nav.common.auth.subject.Subject
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.Configuration
+import no.nav.sbl.dialogarena.mininnboks.WebStatusException
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClient
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClientConfig
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.queries.HentDokumentdata
@@ -52,7 +53,6 @@ interface SafService {
     }
 }
 
-class SafException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
 class SafServiceImpl(
     private val client: HttpClient,
     private val tokendings: TokendingsService,
@@ -125,7 +125,7 @@ class SafServiceImpl(
                             )
                         }
                 }
-                .getOrThrowWith { SafException("Uthenting av dokumentoversikt feilet", it) }
+                .getOrThrowWith { WebStatusException(HttpStatusCode.InternalServerError, "Uthenting av dokumentoversikt feilet", it) }
         }
     }
 
@@ -145,18 +145,30 @@ class SafServiceImpl(
                     header("Authorization", "Bearer $token")
                     header("x-nav-apiKey", configuration.SAF_REST_API_APIKEY)
                 }
-            }.onFailure { cause ->
-                if (cause is ClientRequestException && cause.response.status == HttpStatusCode.NotFound) {
-                    throw SafException("Fant ikke dokument. $journalpostId $dokumentId", cause)
+            }.mapCatching {
+                if (it.status.isSuccess()) {
+                    it
                 } else {
-                    throw SafException("Klarte ikke å hente dokument. $journalpostId $dokumentId", cause)
+                    throw WebStatusException(it.status, it.status.description)
+                }
+            }.onFailure { cause ->
+                when (cause) {
+                    is WebStatusException -> {
+                        throw cause
+                    }
+                    is ClientRequestException -> {
+                        throw WebStatusException(cause.response.status, cause.response.status.description)
+                    }
+                    else -> {
+                        throw WebStatusException(HttpStatusCode.InternalServerError, "Klarte ikke å hente dokument. $journalpostId $dokumentId")
+                    }
                 }
             }.getOrThrow()
 
             runCatching {
                 response.readBytes()
             }.onFailure { cause ->
-                throw SafException("Klarte ikke å lese inn dataene i responsen fra SAF", cause)
+                throw WebStatusException(HttpStatusCode.InternalServerError, "Klarte ikke å lese inn dataene i responsen fra SAF", cause)
             }.getOrThrow()
         }
     }
@@ -175,7 +187,7 @@ class SafServiceImpl(
             HentDokumentdata.Journalposttype.I -> SafService.Retning.INN
             HentDokumentdata.Journalposttype.U -> SafService.Retning.UT
             HentDokumentdata.Journalposttype.N -> SafService.Retning.INTERN
-            else -> throw SafException("Ukjent journalposttype ${journalpost.journalposttype}")
+            else -> throw WebStatusException(HttpStatusCode.InternalServerError, "Ukjent journalposttype ${journalpost.journalposttype}")
         }
     }
 
