@@ -57,7 +57,7 @@ dependencies {
     implementation("no.nav.tjenestespesifikasjoner:send-inn-henvendelse:$tjenestespec_version")
     implementation("no.nav.tjenestespesifikasjoner:innsyn-henvendelse:$tjenestespec_version")
     implementation("io.micrometer:micrometer-registry-prometheus:1.5.5")
-
+    implementation("com.github.ben-manes.caffeine:caffeine:3.0.4")
     implementation("no.nav.tjenestespesifikasjoner:person-v3-tjenestespesifikasjon:$tjenestespec_version")
     implementation("com.sun.xml.ws:jaxws-ri:2.3.3")
 
@@ -75,6 +75,7 @@ dependencies {
     implementation("io.ktor:ktor-metrics-micrometer:$ktor_version")
     implementation("io.ktor:ktor-client-okhttp:$ktor_version")
     implementation("io.ktor:ktor-client-jackson:$ktor_version")
+    implementation("io.ktor:ktor-client-logging-jvm:$ktor_version")
 
     // Java
     implementation("com.auth0:java-jwt:3.11.0")

@@ -8,10 +8,13 @@ import no.nav.common.auth.subject.Subject
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.Configuration
+import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClient
+import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClientConfig
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentAdressebeskyttelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentFolkeregistrertAdresse
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentGeografiskTilknytning
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
+import no.nav.sbl.dialogarena.mininnboks.getOrThrowWith
 
 class PdlException(message: String, cause: Throwable) : RuntimeException(message, cause)
 
@@ -92,7 +95,7 @@ open class PdlService(
                     ?.firstOrNull()
                     ?.gradering
             }
-            .getOrThrow { PdlException("Kunne ikke utlede adressebeskyttelse", it) }
+            .getOrThrowWith { PdlException("Kunne ikke utlede adressebeskyttelse", it) }
     }
 
     suspend fun hentGeografiskTilknytning(subject: Subject): String {
@@ -113,7 +116,7 @@ open class PdlService(
                     }
                 }
             }
-            .getOrThrow {
+            .getOrThrowWith {
                 PdlException("Feil ved uthenting av GT", it)
             }
     }
@@ -130,7 +133,7 @@ open class PdlService(
                 response.data?.hentPerson
             }
             .map { adresser -> lagAdresseListe(adresser) }
-            .getOrThrow {
+            .getOrThrowWith {
                 PdlException("Feil ved uthenting av adresser", it)
             }
             .firstOrNull()
@@ -216,21 +219,4 @@ open class PdlService(
             response.status
         }
     }
-
-    companion object {
-        fun lastQueryFraFil(name: String): String {
-            return GraphQLClient::class.java
-                .getResource("/pdl/$name.graphql")
-                .readText()
-                .replace("[\n\r]", "")
-        }
-    }
-}
-
-private inline fun <T> Result<T>.getOrThrow(fn: (Throwable) -> Throwable): T {
-    val exception = exceptionOrNull()
-    if (exception != null) {
-        throw fn(exception)
-    }
-    return getOrThrow()
 }

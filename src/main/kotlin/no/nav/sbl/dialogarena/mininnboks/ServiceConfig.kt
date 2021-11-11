@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.json.*
+import io.ktor.client.features.logging.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
@@ -14,12 +15,17 @@ import no.nav.sbl.dialogarena.mininnboks.PortUtils.portBuilder
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
 import no.nav.sbl.dialogarena.mininnboks.common.TruststoreCheck
+import no.nav.sbl.dialogarena.mininnboks.common.okhttp.LoggingInterceptor
 import no.nav.sbl.dialogarena.mininnboks.consumer.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
+import no.nav.sbl.dialogarena.mininnboks.consumer.saf.SafService
+import no.nav.sbl.dialogarena.mininnboks.consumer.saf.SafServiceImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider.Companion.fromTokenEndpoint
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
 import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangServiceImpl
+import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.CachingTokendingsServiceImpl
+import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsService
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType
@@ -30,11 +36,19 @@ import java.util.*
 class ServiceConfig(val configuration: Configuration) {
     companion object {
         val ktorClient = HttpClient(OkHttp) {
+            engine {
+                addInterceptor(LoggingInterceptor())
+            }
             install(JsonFeature) {
                 serializer = JacksonSerializer(JacksonUtils.objectMapper)
             }
         }
     }
+
+    val tokendingsService: TokendingsService = CachingTokendingsServiceImpl(
+        httpClient = ktorClient,
+        configuration = configuration
+    )
 
     val unleashService: UnleashService = UnleashServiceImpl(
         ByEnvironmentStrategy()
@@ -72,6 +86,11 @@ class ServiceConfig(val configuration: Configuration) {
     val henvendelseService = henvendelseService()
     val stsService = systemUserTokenProvider()
     val pdlService = pdlService(stsService)
+    val safService: SafService = SafServiceImpl(
+        client = ktorClient,
+        tokendings = tokendingsService,
+        configuration = configuration
+    )
     val tilgangService = tilgangService(pdlService)
     val rateLimiterService = RateLimiterApiImpl(configuration.RATE_LIMITER_URL, ktorClient)
 
@@ -109,6 +128,7 @@ class ServiceConfig(val configuration: Configuration) {
 
     val selfTestChecklist = listOf(
         pdlService.selfTestCheck,
+        tokendingsService.selftestCheck,
         selfTestCheckStsService,
         selfTestCheckPersonV3,
         selfTestCheckHenvendelse,
@@ -122,7 +142,10 @@ class ServiceConfig(val configuration: Configuration) {
     private fun checkHealthStsService(): HealthCheckResult {
         return try {
             runBlocking {
-                stsService.getSystemUserAccessToken()
+                val systemUserAccessToken = stsService.getSystemUserAccessToken()
+                requireNotNull(systemUserAccessToken) {
+                    "Systemtoken var null"
+                }
                 HealthCheckResult.healthy()
             }
         } catch (e: Exception) {

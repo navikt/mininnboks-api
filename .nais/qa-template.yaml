@@ -45,6 +45,13 @@ spec:
       mountPath: /var/run/secrets/nais.io/apigw/pdl-api
     - kvPath: /apikey/apigw/dev/security-token-service-token/mininnboks-api_{{ namespace }}
       mountPath: /var/run/secrets/nais.io/apigw/security-token-service-token
+      # SAFSelvbetjening er bare i Q1
+    - kvPath: /apikey/apigw/dev/graphql/mininnboks-api_q1
+      mountPath: /var/run/secrets/nais.io/apigw/saf-graphql
+    - kvPath: /apikey/apigw/dev/rest_hentdokument/mininnboks-api_q1
+      mountPath: /var/run/secrets/nais.io/apigw/saf-rest
+  tokenx:
+    enabled: true
   webproxy: true
   secureLogs:
     enabled: true
@@ -112,3 +119,8 @@ spec:
       value: "http://rate-limiter-{{ namespace }}.personoversikt.svc.nais.local"
     - name: UNLEASH_API_URL
       value: "https://unleash.nais.io/api"
+    - name: SAF_API_URL
+      # SAFSelvbetjening er bare i Q1
+      value: "https://api-gw-q1.oera.no/safselvbetjening"
+    - name: SAF_CLIENT_ID
+      value: "dev-fss:teamdokumenthandtering:safselvbetjening"

@@ -43,6 +43,12 @@ spec:
       mountPath: /var/run/secrets/nais.io/apigw/pdl-api
     - kvPath: /apikey/apigw/prod/security-token-service-token/mininnboks-api
       mountPath: /var/run/secrets/nais.io/apigw/security-token-service-token
+    - kvPath: /apikey/apigw/prod/graphql/mininnboks-api
+      mountPath: /var/run/secrets/nais.io/apigw/saf-graphql
+    - kvPath: /apikey/apigw/prod/rest_hentdokument/mininnboks-api
+      mountPath: /var/run/secrets/nais.io/apigw/saf-rest
+  tokenx:
+    enabled: true
   webproxy: true
   secureLogs:
     enabled: true
@@ -110,4 +116,7 @@ spec:
       value: "http://rate-limiter.personoversikt.svc.nais.local"
     - name: UNLEASH_API_URL
       value: "https://unleash.nais.io/api"
-
+    - name: SAF_API_URL
+      value: "https://api-gw.oera.no/safselvbetjening"
+    - name: SAF_CLIENT_ID
+      value: "prod-fss:teamdokumenthandtering:safselvbetjening"

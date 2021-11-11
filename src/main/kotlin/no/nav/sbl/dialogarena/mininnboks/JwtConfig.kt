@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.mininnboks
 
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
+import com.auth0.jwt.JWT
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
@@ -57,6 +58,10 @@ class JwtUtil {
             call.request.cookies["selvbetjening-idtoken"]
                 ?: call.request.headers["Authorization"]?.removePrefix("Bearer")
             )
+
+        fun extractSubject(token: String): String {
+            return JWT.decode(token).subject
+        }
     }
 }
 
