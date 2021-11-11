@@ -11,11 +11,11 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import no.nav.common.auth.subject.Subject
 import no.nav.common.log.MDCConstants
+import no.nav.common.utils.IdUtils
 import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
+import no.nav.sbl.dialogarena.mininnboks.common.TjenestekallLogger
 import no.nav.sbl.dialogarena.mininnboks.externalCall
-import org.slf4j.LoggerFactory
 import org.slf4j.MDC
-import java.util.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -61,21 +61,20 @@ class GraphQLClient(
     private val httpClient: HttpClient,
     private val config: GraphQLClientConfig
 ) {
-    private val log = LoggerFactory.getLogger(GraphQLClient::class.java)
-
     suspend fun <VARS : GraphQLVariables, DATA : GraphQLResult, REQUEST : GraphQLRequest<VARS, DATA>> execute(
         subject: Subject,
         request: REQUEST
     ): GraphQLResponse<DATA> = externalCall(subject) {
-        val callId = MDC.get(MDCConstants.MDC_CALL_ID) ?: UUID.randomUUID().toString()
+        val callId = MDC.get(MDCConstants.MDC_CALL_ID) ?: IdUtils.generateId()
+        val requestId = IdUtils.generateId()
+        val tjenesteKallHeader = "${config.tjenesteNavn}-request: $callId ($requestId)"
         try {
-            log.info(
-                """
-                    ${config.tjenesteNavn}-request: $callId
-                    ------------------------------------------------------------------------------------
-                        callId: ${MDC.get(MDCConstants.MDC_CALL_ID)}
-                    ------------------------------------------------------------------------------------
-                """.trimIndent()
+            TjenestekallLogger.info(
+                tjenesteKallHeader,
+                mapOf(
+                    "subject" to subject.uid,
+                    "request" to request
+                )
             )
 
             val httpResponse: HttpResponse = httpClient.request {
@@ -86,46 +85,26 @@ class GraphQLClient(
             }
 
             val body: String = httpResponse.receive()
-            log.info(
-                """
-                    ${config.tjenesteNavn}-response: $callId
-                    ------------------------------------------------------------------------------------
-                        status: ${httpResponse.status} 
-                        body: $body
-                    ------------------------------------------------------------------------------------
-                """.trimIndent()
-            )
-
             val typeReference: JavaType = JacksonUtils.objectMapper.typeFactory
                 .constructParametricType(GraphQLResponse::class.java, request.expectedReturnType)
             val response = JacksonUtils.objectMapper.readValue<GraphQLResponse<DATA>>(body, typeReference)
 
+            val tjenestekallFelter = mapOf(
+                "status" to httpResponse.status,
+                "data" to response.data,
+                "errors" to response.errors
+            )
+
             if (response.errors?.isNotEmpty() == true) {
+                TjenestekallLogger.error(tjenesteKallHeader, tjenestekallFelter)
                 val errorMessages = response.errors.joinToString(", ") { it.message }
-                log.info(
-                    """
-                        ${config.tjenesteNavn}-response: $callId
-                        ------------------------------------------------------------------------------------
-                            status: ${httpResponse.status} ${response.data}
-                            errors: $errorMessages
-                        ------------------------------------------------------------------------------------
-                    """.trimIndent()
-                )
                 throw Exception(errorMessages)
             }
+            TjenestekallLogger.info(tjenesteKallHeader, tjenestekallFelter)
 
             return@externalCall response
         } catch (exception: Exception) {
-            log.error(
-                """
-                    ${config.tjenesteNavn}-response: $callId
-                    ------------------------------------------------------------------------------------
-                        exception:
-                        $exception
-                    ------------------------------------------------------------------------------------
-                """.trimIndent()
-            )
-
+            TjenestekallLogger.error(tjenesteKallHeader, mapOf("exception" to exception))
             throw exception
         }
     }

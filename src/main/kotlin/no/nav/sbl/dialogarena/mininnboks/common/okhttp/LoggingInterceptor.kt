@@ -8,7 +8,6 @@ import okhttp3.MediaType
 import okhttp3.Request
 import okhttp3.Response
 import okio.Buffer
-import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 
 class LoggingInterceptor : Interceptor {
@@ -16,7 +15,7 @@ class LoggingInterceptor : Interceptor {
         private val text = MediaType.get("text/plain")
         private val json = MediaType.get("application/json")
     }
-    private val log = LoggerFactory.getLogger(LoggingInterceptor::class.java)
+
     private fun Request.peekContent(): String? {
         val contentType = this.body()?.contentType() ?: this.header("Content-Type")?.let(MediaType::parse)
         return when {
@@ -55,7 +54,6 @@ class LoggingInterceptor : Interceptor {
 
         val response: Response = runCatching { chain.proceed(request) }
             .onFailure { exception ->
-                log.error("Response-error (ID: $callId)", exception)
                 TjenestekallLogger.error(
                     "Response-error: $callId ($requestId)",
                     mapOf(
