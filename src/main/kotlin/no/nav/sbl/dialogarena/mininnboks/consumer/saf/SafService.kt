@@ -173,47 +173,49 @@ class SafServiceImpl(
         }
     }
 
-    private fun getDato(journalpost: HentDokumentdata.Journalpost): LocalDateTime {
-        return when (journalpost.journalposttype) {
-            HentDokumentdata.Journalposttype.I -> journalpost.finnRelevantDato(DATO_REGISTRERT)
-            HentDokumentdata.Journalposttype.U -> journalpost.finnRelevantDato(DATO_EKSPEDERT, DATO_SENDT_PRINT, DATO_JOURNALFOERT)
-            HentDokumentdata.Journalposttype.N -> journalpost.finnRelevantDato(DATO_JOURNALFOERT)
-            else -> LocalDateTime.now()
-        } ?: LocalDateTime.now()
-    }
-
-    private fun getRetning(journalpost: HentDokumentdata.Journalpost): SafService.Retning {
-        return when (journalpost.journalposttype) {
-            HentDokumentdata.Journalposttype.I -> SafService.Retning.INN
-            HentDokumentdata.Journalposttype.U -> SafService.Retning.UT
-            HentDokumentdata.Journalposttype.N -> SafService.Retning.INTERN
-            else -> throw WebStatusException(HttpStatusCode.InternalServerError, "Ukjent journalposttype ${journalpost.journalposttype}")
+    companion object {
+        fun getDato(journalpost: HentDokumentdata.Journalpost): LocalDateTime {
+            return when (journalpost.journalposttype) {
+                HentDokumentdata.Journalposttype.I -> journalpost.finnRelevantDato(DATO_REGISTRERT)
+                HentDokumentdata.Journalposttype.U -> journalpost.finnRelevantDato(DATO_EKSPEDERT, DATO_SENDT_PRINT, DATO_JOURNALFOERT)
+                HentDokumentdata.Journalposttype.N -> journalpost.finnRelevantDato(DATO_JOURNALFOERT)
+                else -> LocalDateTime.now()
+            } ?: LocalDateTime.now()
         }
-    }
 
-    private fun getAvsender(journalpost: HentDokumentdata.Journalpost): SafService.Entitet {
-        return when (journalpost.journalposttype) {
-            HentDokumentdata.Journalposttype.N -> SafService.Entitet.NAV
-            HentDokumentdata.Journalposttype.U -> SafService.Entitet.NAV
-            HentDokumentdata.Journalposttype.I -> if (journalpost.avsender?.type == FNR) SafService.Entitet.SLUTTBRUKER else SafService.Entitet.EKSTERN_PART
-            else -> SafService.Entitet.UKJENT
+        private fun getRetning(journalpost: HentDokumentdata.Journalpost): SafService.Retning {
+            return when (journalpost.journalposttype) {
+                HentDokumentdata.Journalposttype.I -> SafService.Retning.INN
+                HentDokumentdata.Journalposttype.U -> SafService.Retning.UT
+                HentDokumentdata.Journalposttype.N -> SafService.Retning.INTERN
+                else -> throw WebStatusException(HttpStatusCode.InternalServerError, "Ukjent journalposttype ${journalpost.journalposttype}")
+            }
         }
-    }
 
-    private fun getMottaker(journalpost: HentDokumentdata.Journalpost): SafService.Entitet {
-        return when (journalpost.journalposttype) {
-            HentDokumentdata.Journalposttype.I -> SafService.Entitet.NAV
-            HentDokumentdata.Journalposttype.N -> SafService.Entitet.NAV
-            HentDokumentdata.Journalposttype.U -> if (journalpost.mottaker?.type == FNR) SafService.Entitet.SLUTTBRUKER else SafService.Entitet.EKSTERN_PART
-            else -> SafService.Entitet.UKJENT
+        private fun getAvsender(journalpost: HentDokumentdata.Journalpost): SafService.Entitet {
+            return when (journalpost.journalposttype) {
+                HentDokumentdata.Journalposttype.N -> SafService.Entitet.NAV
+                HentDokumentdata.Journalposttype.U -> SafService.Entitet.NAV
+                HentDokumentdata.Journalposttype.I -> if (journalpost.avsender?.type == FNR) SafService.Entitet.SLUTTBRUKER else SafService.Entitet.EKSTERN_PART
+                else -> SafService.Entitet.UKJENT
+            }
         }
-    }
 
-    private fun HentDokumentdata.Journalpost.finnRelevantDato(vararg datotyper: HentDokumentdata.Datotype): LocalDateTime? {
-        return this
-            .relevanteDatoer
-            .filterNotNull()
-            .find { datotyper.contains(it.datotype) }
-            ?.dato
+        private fun getMottaker(journalpost: HentDokumentdata.Journalpost): SafService.Entitet {
+            return when (journalpost.journalposttype) {
+                HentDokumentdata.Journalposttype.I -> SafService.Entitet.NAV
+                HentDokumentdata.Journalposttype.N -> SafService.Entitet.NAV
+                HentDokumentdata.Journalposttype.U -> if (journalpost.mottaker?.type == FNR) SafService.Entitet.SLUTTBRUKER else SafService.Entitet.EKSTERN_PART
+                else -> SafService.Entitet.UKJENT
+            }
+        }
+
+        private fun HentDokumentdata.Journalpost.finnRelevantDato(vararg datotyper: HentDokumentdata.Datotype): LocalDateTime? {
+            val relevanteDatoer = this.relevanteDatoer.filterNotNull().associateBy { it.datotype }
+            return datotyper
+                .find { relevanteDatoer.containsKey(it) }
+                ?.let { relevanteDatoer[it] }
+                ?.dato
+        }
     }
 }
