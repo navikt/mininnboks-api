@@ -6,6 +6,12 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 
+class WebStatusException(
+    val status: HttpStatusCode,
+    message: String,
+    cause: Throwable? = null
+) : Throwable(message, cause)
+
 fun StatusPages.Configuration.exceptionHandler() {
     exception<Throwable> { cause ->
         call.logErrorAndRespond(cause) { "An internal error occurred during routing" }
@@ -14,6 +20,12 @@ fun StatusPages.Configuration.exceptionHandler() {
     exception<IllegalArgumentException> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
             "The request was either invalid or lacked required parameters"
+        }
+    }
+
+    exception<WebStatusException> { cause ->
+        call.logErrorAndRespond(cause, cause.status) {
+            cause.message ?: "The request was either invalid or lacked required parameters"
         }
     }
 }
