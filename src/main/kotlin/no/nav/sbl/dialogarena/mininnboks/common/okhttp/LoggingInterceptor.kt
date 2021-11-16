@@ -31,9 +31,10 @@ class LoggingInterceptor : Interceptor {
 
     private fun Response.peekContent(): String? {
         val contentType = this.body()?.contentType() ?: this.header("Content-Type")?.let(MediaType::parse)
+        val content = this.peekBody(Long.MAX_VALUE).string().sanitize()
         return when {
-            contentType.equivalentTo(text, json) -> this.peekBody(Long.MAX_VALUE).string().sanitize()
-            else -> "Content of type: $contentType"
+            contentType.equivalentTo(text, json) -> content
+            else -> "Content of type: $contentType (${content?.length ?: 0})"
         }
     }
 
