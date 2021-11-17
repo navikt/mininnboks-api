@@ -7,7 +7,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLResult
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLVariables
 import java.time.LocalDateTime
 
-class HentDokumentdata(override val variables: Variables) :
+data class HentDokumentdata(override val variables: Variables) :
     GraphQLRequest<HentDokumentdata.Variables, HentDokumentdata.Result> {
     override val query: String = lastQueryFraFil("saf", "hentDokumentdata")
     override val expectedReturnType: Class<Result> = Result::class.java

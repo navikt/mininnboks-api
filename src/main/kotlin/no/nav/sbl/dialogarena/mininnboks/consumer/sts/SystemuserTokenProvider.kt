@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.nimbusds.jwt.JWT
 import com.nimbusds.jwt.JWTParser
+import io.ktor.client.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.runBlocking
 import no.nav.common.auth.oidc.discovery.OidcDiscoveryConfiguration
 import no.nav.common.log.MDCConstants
-import no.nav.sbl.dialogarena.mininnboks.ServiceConfig
-import org.slf4j.LoggerFactory
+import no.nav.sbl.dialogarena.mininnboks.createHttpClient
 import org.slf4j.MDC
 import java.text.ParseException
 import java.util.*
@@ -43,10 +43,9 @@ class SystemuserTokenProviderImpl internal constructor(
     startingUrl: String,
     private val srvUsername: String,
     private val srvPassword: String,
-    private val stsApiKey: String
+    private val stsApiKey: String,
+    private val httpClient: HttpClient = createHttpClient("STS")
 ) : SystemuserTokenProvider {
-
-    private val log = LoggerFactory.getLogger(SystemuserTokenProvider::class.java)
     private var accessToken: JWT? = null
     private val tokenEndpointUrl: String? = if (startingUrlIsDiscoveryUrl) {
         runBlocking {
@@ -76,7 +75,7 @@ class SystemuserTokenProviderImpl internal constructor(
         val targetUrl = "$tokenEndpointUrl?grant_type=client_credentials&scope=openid"
         val basicAuth: String = basicCredentials(srvUsername, srvPassword)
 
-        return ServiceConfig.ktorClient.get(targetUrl) {
+        return httpClient.get(targetUrl) {
             header("Nav-Call-Id", MDC.get(MDCConstants.MDC_CALL_ID))
             header(HttpHeaders.AUTHORIZATION, basicAuth)
             header("x-nav-apiKey", stsApiKey)
@@ -98,7 +97,7 @@ class SystemuserTokenProviderImpl internal constructor(
     }
 
     private suspend fun hentOidcDiscoveryConfiguration(discoveryUrl: String, stsApiKey: String): OidcDiscoveryConfiguration? {
-        return ServiceConfig.ktorClient.get<OidcDiscoveryConfiguration>(discoveryUrl) {
+        return httpClient.get<OidcDiscoveryConfiguration>(discoveryUrl) {
             header("x-nav-apiKey", stsApiKey)
         }
     }

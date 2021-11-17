@@ -13,7 +13,6 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.CachingTokendingsSe
 import java.util.concurrent.TimeUnit
 
 class CachingTokendingsServiceImpl(
-    httpClient: HttpClient,
     configuration: Configuration
 ) : TokendingsService {
     data class TokendingsCacheKey(
@@ -25,7 +24,7 @@ class CachingTokendingsServiceImpl(
         val expiresInSeconds: Long
     )
 
-    private val tokendingsService = TokendingsServiceImpl(httpClient, configuration)
+    private val tokendingsService = TokendingsServiceImpl(configuration)
     private val cache: Cache<TokendingsCacheKey, TokendingsCacheValue> = Caffeine
         .newBuilder()
         .expireAfter(ExpirationPolicy(expiryMarginInSeconds = 10))

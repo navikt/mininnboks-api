@@ -9,6 +9,7 @@ import io.ktor.http.*
 import no.nav.common.log.MDCConstants
 import no.nav.common.utils.EnvironmentUtils
 import no.nav.sbl.dialogarena.mininnboks.JacksonUtils
+import no.nav.sbl.dialogarena.mininnboks.createHttpClient
 import org.slf4j.MDC
 import java.util.*
 
@@ -18,7 +19,7 @@ interface RateLimiterApi {
 
 class RateLimiterApiImpl(
     private val baseUrl: String = EnvironmentUtils.getRequiredProperty("RATE_LIMITER_URL"),
-    private val client: HttpClient
+    private val client: HttpClient = createHttpClient("Ratelimiter")
 ) : RateLimiterApi {
     private val objectMapper = JacksonUtils.objectMapper
 
