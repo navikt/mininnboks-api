@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.http.content.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -22,7 +23,7 @@ class TokendingsConsumer(
     private val metadata: TokendingsConfigurationMetadata
 ) {
     suspend fun exchangeToken(subjectToken: String, clientAssertion: String, audience: String): TokendingsTokenResponse {
-        return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO + MDCContext()) {
             val urlParameters = ParametersBuilder().apply {
                 append("grant_type", "urn:ietf:params:oauth:grant-type:token-exchange")
                 append("client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer")
@@ -48,7 +49,7 @@ class TokendingsConsumer(
 
     companion object {
         fun fetchMetadata(httpClient: HttpClient, wellKnownUrl: String): TokendingsConfigurationMetadata = runBlocking {
-            withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO + MDCContext()) {
                 httpClient.request<TokendingsConfigurationMetadata> {
                     method = HttpMethod.Get
                     url(wellKnownUrl)

@@ -5,8 +5,6 @@ import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import no.nav.common.auth.subject.Subject
 import no.nav.common.log.MDCConstants
 import no.nav.sbl.dialogarena.mininnboks.Configuration
@@ -18,6 +16,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.saf.queries.HentDokumentdata.A
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.queries.HentDokumentdata.Datotype.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.queries.HentDokumentdata.VariantFormat.ARKIV
 import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsService
+import no.nav.sbl.dialogarena.mininnboks.externalCall
 import no.nav.sbl.dialogarena.mininnboks.getOrThrowWith
 import org.slf4j.MDC
 import java.time.LocalDateTime
@@ -75,7 +74,7 @@ class SafServiceImpl(
 
     override suspend fun hentJournalposter(subject: Subject): List<SafService.Journalpost> {
         val ident = subject.uid
-        return withContext(Dispatchers.IO) {
+        return externalCall(subject) {
             graphqlClient
                 .runCatching {
                     execute(
@@ -135,7 +134,7 @@ class SafServiceImpl(
     }
 
     override suspend fun hentDokument(subject: Subject, journalpostId: String, dokumentId: String): ByteArray {
-        return withContext(Dispatchers.IO) {
+        return externalCall(subject) {
             val token = tokendings.exchangeToken(subject.ssoToken.token, configuration.SAF_CLIENT_ID)
             val response: HttpResponse = runCatching {
                 client.request<HttpResponse> {
