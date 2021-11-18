@@ -58,8 +58,8 @@ data class GraphQLClientConfig(
 )
 
 class GraphQLClient(
-    private val httpClient: HttpClient,
-    private val config: GraphQLClientConfig
+    private val config: GraphQLClientConfig,
+    private val httpClient: HttpClient
 ) {
     suspend fun <VARS : GraphQLVariables, DATA : GraphQLResult, REQUEST : GraphQLRequest<VARS, DATA>> execute(
         subject: Subject,

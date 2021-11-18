@@ -8,6 +8,14 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.AuthLevel
+import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Action.*
+import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Companion.describe
+import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Companion.withAudit
+import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditIdentifier.BEHANDLINGSID
+import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.Henvendelse
+import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.Les
+import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.SendSporsmal
+import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.SendSvar
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
 import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi
 import no.nav.sbl.dialogarena.mininnboks.consumer.UnleashService
@@ -49,14 +57,16 @@ fun Route.henvendelseController(
 private fun Route.hentAlleTraader(henvendelseService: HenvendelseService) {
     get("/") {
         withSubject(AuthLevel.Level4) { subject ->
-            val henvendelser: List<Henvendelse> = henvendelseService.hentAlleHenvendelser(subject)
-            val traader: Map<String?, List<Henvendelse>> = henvendelser.groupBy { it.traadId }
-            call.respond(
-                traader.values
-                    .map { list: List<Henvendelse> -> filtrerDelsvar(list) }
-                    .map { meldinger: List<Henvendelse> -> Traad(meldinger) }
-                    .sortedWith(Traad.NYESTE_FORST)
-            )
+            withAudit(describe(subject, READ, Henvendelse)) {
+                val henvendelser: List<Henvendelse> = henvendelseService.hentAlleHenvendelser(subject)
+                val traader: Map<String?, List<Henvendelse>> = henvendelser.groupBy { it.traadId }
+                call.respond(
+                    traader.values
+                        .map { list: List<Henvendelse> -> filtrerDelsvar(list) }
+                        .map { meldinger: List<Henvendelse> -> Traad(meldinger) }
+                        .sortedWith(Traad.NYESTE_FORST)
+                )
+            }
         }
     }
 }
@@ -67,20 +77,21 @@ private fun Route.svar(henvendelseService: HenvendelseService, unleashService: U
             call.respond(HttpStatusCode.NotAcceptable)
             return@post
         }
-        val svar = call.receive(Svar::class)
-        assertFritekst(svar.fritekst, 2500)
         withSubject(AuthLevel.Level4) { subject ->
-            val traad = hentTraad(henvendelseService, svar.traadId, subject)
-            if (traad == null) {
-                call.respond(HttpStatusCode.NotFound)
-            } else {
-                if (!traad.kanBesvares) {
-                    call.respond(HttpStatusCode.NotAcceptable)
-                    return@withSubject
+            val svar = call.receive(Svar::class)
+            withAudit(describe(subject, CREATE, SendSvar, BEHANDLINGSID to svar.traadId)) {
+                assertFritekst(svar.fritekst, 2500)
+                val traad = hentTraad(henvendelseService, svar.traadId, subject)
+                if (traad == null) {
+                    call.respond(HttpStatusCode.NotFound)
                 } else {
-                    val henvendelse = createHenvendelse(svar, traad)
-                    val response = henvendelseService.sendSvar(henvendelse, subject)
-                    call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+                    if (!traad.kanBesvares) {
+                        call.respond(HttpStatusCode.NotAcceptable)
+                    } else {
+                        val henvendelse = createHenvendelse(svar, traad)
+                        val response = henvendelseService.sendSvar(henvendelse, subject)
+                        call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+                    }
                 }
             }
         }
@@ -115,13 +126,15 @@ private fun Route.sporsmaldirekte(
             return@post
         }
         withSubject(AuthLevel.Level4) { subject ->
-            if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
-                val sporsmal = call.receive(Sporsmal::class)
-                val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-                val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
-                call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
-            } else {
-                call.respond(HttpStatusCode.TooManyRequests, "Maks grense for å sende spørsmålet er nådd")
+            withAudit(describe(subject, CREATE, SendSporsmal)) {
+                if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
+                    val sporsmal = call.receive(Sporsmal::class)
+                    val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+                    val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
+                    call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+                } else {
+                    call.respond(HttpStatusCode.TooManyRequests, "Maks grense for å sende spørsmålet er nådd")
+                }
             }
         }
     }
@@ -139,13 +152,15 @@ private fun Route.sporsmal(
             return@post
         }
         withSubject(AuthLevel.Level4) { subject ->
-            if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
-                val sporsmal = call.receive(Sporsmal::class)
-                val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
-                val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
-                call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
-            } else {
-                call.respond(HttpStatusCode.TooManyRequests, "Maks grense for å sende spørsmålet er nådd")
+            withAudit(describe(subject, CREATE, SendSporsmal)) {
+                if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
+                    val sporsmal = call.receive(Sporsmal::class)
+                    val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+                    val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
+                    call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
+                } else {
+                    call.respond(HttpStatusCode.TooManyRequests, "Maks grense for å sende spørsmålet er nådd")
+                }
             }
         }
     }
@@ -154,11 +169,12 @@ private fun Route.sporsmal(
 private fun Route.alleLest(henvendelseService: HenvendelseService) {
     post("/allelest/{behandlingskjedeId}") {
         val behandlingskjedeId = call.parameters["behandlingskjedeId"]
-
         withSubject(AuthLevel.Level4) { subject ->
-            if (behandlingskjedeId != null) {
-                henvendelseService.merkAlleSomLest(behandlingskjedeId, subject)
-                call.respond(mutableMapOf("traadId" to behandlingskjedeId))
+            withAudit(describe(subject, UPDATE, Les, BEHANDLINGSID to call.parameters["behandlingskjedeId"])) {
+                if (behandlingskjedeId != null) {
+                    henvendelseService.merkAlleSomLest(behandlingskjedeId, subject)
+                    call.respond(mutableMapOf("traadId" to behandlingskjedeId))
+                }
             }
         }
     }
@@ -168,13 +184,15 @@ private fun Route.postByBehandlingsId(henvendelseService: HenvendelseService) {
     post("/lest/{behandlingsId}") {
         val behandlingsId = call.parameters["behandlingsId"]
 
-        if (behandlingsId != null) {
-            withSubject(AuthLevel.Level4) { subject ->
-                henvendelseService.merkSomLest(behandlingsId, subject)
-                call.respond(mapOf("traadId" to behandlingsId))
+        withSubject(AuthLevel.Level4) { subject ->
+            withAudit(describe(subject, UPDATE, Les, BEHANDLINGSID to call.parameters["behandlingskjedeId"])) {
+                if (behandlingsId != null) {
+                    henvendelseService.merkSomLest(behandlingsId, subject)
+                    call.respond(mapOf("traadId" to behandlingsId))
+                } else {
+                    call.respond(HttpStatusCode.NotFound)
+                }
             }
-        } else {
-            call.respond(HttpStatusCode.NotFound)
         }
     }
 }
@@ -186,14 +204,16 @@ private fun Route.getId(henvendelseService: HenvendelseService) {
             call.respond(HttpStatusCode.NotFound)
         }
         withSubject(AuthLevel.Level4) { subject ->
-            if (id != null) {
-                val traad = hentTraad(henvendelseService, id, subject)
+            withAudit(describe(subject, READ, Henvendelse, BEHANDLINGSID to id)) {
+                if (id != null) {
+                    val traad = hentTraad(henvendelseService, id, subject)
 
-                if (traad != null) {
-                    val filtrertTraad = Traad(filtrerDelsvar(traad.meldinger))
-                    call.respond(filtrertTraad)
-                } else {
-                    call.respond(HttpStatusCode.NotFound)
+                    if (traad != null) {
+                        val filtrertTraad = Traad(filtrerDelsvar(traad.meldinger))
+                        call.respond(filtrertTraad)
+                    } else {
+                        call.respond(HttpStatusCode.NotFound)
+                    }
                 }
             }
         }
@@ -204,7 +224,11 @@ suspend fun lagHenvendelse(tilgangService: TilgangService, subject: Subject, spo
     assertFritekst(sporsmal.fritekst)
     assertOverstyrtGt(sporsmal)
     assertTemagruppeTilgang(tilgangService, subject, sporsmal.temagruppe)
-    return Henvendelse(fritekst = sporsmal.fritekst, temagruppe = sporsmal.temagruppe, type = Henvendelsetype.SPORSMAL_SKRIFTLIG)
+    return Henvendelse(
+        fritekst = sporsmal.fritekst,
+        temagruppe = sporsmal.temagruppe,
+        type = Henvendelsetype.SPORSMAL_SKRIFTLIG
+    )
 }
 
 suspend fun assertTemagruppeTilgang(tilgangService: TilgangService, subject: Subject, temagruppe: Temagruppe) {

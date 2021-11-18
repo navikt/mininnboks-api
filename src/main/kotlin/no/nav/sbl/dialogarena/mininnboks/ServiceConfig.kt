@@ -1,9 +1,5 @@
 package no.nav.sbl.dialogarena.mininnboks
 
-import io.ktor.client.*
-import io.ktor.client.engine.okhttp.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.logging.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
@@ -15,7 +11,6 @@ import no.nav.sbl.dialogarena.mininnboks.PortUtils.portBuilder
 import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
 import no.nav.sbl.dialogarena.mininnboks.common.TruststoreCheck
-import no.nav.sbl.dialogarena.mininnboks.common.okhttp.LoggingInterceptor
 import no.nav.sbl.dialogarena.mininnboks.consumer.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.SafService
@@ -34,22 +29,7 @@ import org.slf4j.MDC
 import java.util.*
 
 class ServiceConfig(val configuration: Configuration) {
-    companion object {
-        val ktorClient = HttpClient(OkHttp) {
-            engine {
-                addInterceptor(LoggingInterceptor())
-            }
-            install(JsonFeature) {
-                serializer = JacksonSerializer(JacksonUtils.objectMapper)
-            }
-        }
-    }
-
-    val tokendingsService: TokendingsService = CachingTokendingsServiceImpl(
-        httpClient = ktorClient,
-        configuration = configuration
-    )
-
+    val tokendingsService: TokendingsService = CachingTokendingsServiceImpl(configuration)
     val unleashService: UnleashService = UnleashServiceImpl(
         ByEnvironmentStrategy()
     )
@@ -87,12 +67,11 @@ class ServiceConfig(val configuration: Configuration) {
     val stsService = systemUserTokenProvider()
     val pdlService = pdlService(stsService)
     val safService: SafService = SafServiceImpl(
-        client = ktorClient,
         tokendings = tokendingsService,
         configuration = configuration
     )
     val tilgangService = tilgangService(pdlService)
-    val rateLimiterService = RateLimiterApiImpl(configuration.RATE_LIMITER_URL, ktorClient)
+    val rateLimiterService = RateLimiterApiImpl(configuration.RATE_LIMITER_URL)
 
     val selfTestCheckStsService: SelfTestCheck = SelfTestCheck("Sjekker at systembruker kan hente token fra STS", true) {
         runBlocking {
@@ -184,7 +163,7 @@ class ServiceConfig(val configuration: Configuration) {
     }
 
     private fun pdlService(stsService: SystemuserTokenProvider): PdlService {
-        return PdlService(ktorClient, stsService, configuration)
+        return PdlService(stsService, configuration)
     }
 
     private fun tilgangService(pdlService: PdlService): TilgangService {
