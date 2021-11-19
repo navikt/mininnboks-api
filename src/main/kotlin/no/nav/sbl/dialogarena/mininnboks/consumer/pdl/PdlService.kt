@@ -1,6 +1,8 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.pdl
 
 import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import io.ktor.http.cio.*
 import kotlinx.coroutines.runBlocking
@@ -14,6 +16,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentAdressebeskytt
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentFolkeregistrertAdresse
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.queries.HentGeografiskTilknytning
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
+import no.nav.sbl.dialogarena.mininnboks.createHttpClient
 import no.nav.sbl.dialogarena.mininnboks.getOrThrowWith
 
 class PdlException(message: String, cause: Throwable) : RuntimeException(message, cause)
@@ -39,14 +42,15 @@ data class Adresse(
 }
 
 open class PdlService(
-    private val client: HttpClient,
     private val stsService: SystemuserTokenProvider,
-    private val configuration: Configuration
+    private val configuration: Configuration,
+    private val client: HttpClient = createHttpClient("PDL"),
+    graphQLHttpClient: HttpClient? = null
 ) {
     private val pdlUrl: String = configuration.PDL_API_URL + "/graphql"
     private val graphqlClient = GraphQLClient(
-        client,
-        GraphQLClientConfig(
+        httpClient = graphQLHttpClient ?: createHttpClient(null),
+        config = GraphQLClientConfig(
             tjenesteNavn = "PDL",
             requestConfig = { callId, subject ->
                 val subjectToken = subject.ssoToken.token

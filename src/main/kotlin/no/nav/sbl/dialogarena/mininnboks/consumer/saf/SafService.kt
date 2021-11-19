@@ -7,8 +7,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import no.nav.common.auth.subject.Subject
 import no.nav.common.log.MDCConstants
-import no.nav.sbl.dialogarena.mininnboks.Configuration
-import no.nav.sbl.dialogarena.mininnboks.WebStatusException
+import no.nav.sbl.dialogarena.mininnboks.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClient
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLClientConfig
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.queries.HentDokumentdata
@@ -16,8 +15,6 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.saf.queries.HentDokumentdata.A
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.queries.HentDokumentdata.Datotype.*
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.queries.HentDokumentdata.VariantFormat.ARKIV
 import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsService
-import no.nav.sbl.dialogarena.mininnboks.externalCall
-import no.nav.sbl.dialogarena.mininnboks.getOrThrowWith
 import org.slf4j.MDC
 import java.time.LocalDateTime
 import java.util.*
@@ -53,13 +50,14 @@ interface SafService {
 }
 
 class SafServiceImpl(
-    private val client: HttpClient,
     private val tokendings: TokendingsService,
-    private val configuration: Configuration
+    private val configuration: Configuration,
+    private val client: HttpClient = createHttpClient("SAF"),
+    graphQLHttpClient: HttpClient? = null
 ) : SafService {
     private val graphqlClient = GraphQLClient(
-        client,
-        GraphQLClientConfig(
+        httpClient = graphQLHttpClient ?: createHttpClient(null),
+        config = GraphQLClientConfig(
             tjenesteNavn = "SAF",
             requestConfig = { callId, subject ->
                 val token = tokendings.exchangeToken(subject.ssoToken.token, configuration.SAF_CLIENT_ID)

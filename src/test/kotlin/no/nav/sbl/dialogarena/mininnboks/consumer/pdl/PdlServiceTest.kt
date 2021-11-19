@@ -98,7 +98,7 @@ object PdlServicetest : Spek({
         gittUrlTilPdl()
         val client = gittClientSomSvarer(body = gittErrorPdlResponse("Det skjedde en feil"))
         val stsService = gittStsService()
-        val pdlService = PdlService(client, stsService, configuration)
+        val pdlService = PdlService(stsService, configuration, client = client, graphQLHttpClient = client)
         try {
             runBlocking {
                 pdlService.hentAdresseBeskyttelse(dummySubject)
@@ -224,12 +224,12 @@ private fun gittGradering(gradering: HentAdressebeskyttelse.AdressebeskyttelseGr
     gittUrlTilPdl()
     val client = gittClientSomSvarer(body = gittOkAdressebeskyttelseResponse(gradering))
     val stsService = gittStsService()
-    return PdlService(client, stsService, configuration)
+    return PdlService(stsService, configuration, client = client, graphQLHttpClient = client)
 }
 
 private fun gittAdresserData(): PdlService {
     gittUrlTilPdl()
     val client = gittClientSomSvarer(body = gittOkAdresserResponse())
     val stsService = gittStsService()
-    return PdlService(client, stsService, configuration)
+    return PdlService(stsService, configuration, client = client, graphQLHttpClient = client)
 }

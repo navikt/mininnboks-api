@@ -67,7 +67,7 @@ private fun withMockGateway(
         stub(wireMockServer)
         wireMockServer.start()
 
-        val client = RateLimiterApiImpl("http://localhost:${wireMockServer.port()}", ServiceConfig.ktorClient)
+        val client = RateLimiterApiImpl("http://localhost:${wireMockServer.port()}")
         runBlocking {
             test(client)
         }

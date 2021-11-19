@@ -10,7 +10,7 @@ import okhttp3.Response
 import okio.Buffer
 import org.slf4j.MDC
 
-class LoggingInterceptor : Interceptor {
+class LoggingInterceptor(private val name: String) : Interceptor {
     companion object {
         private val text = MediaType.get("text/plain")
         private val json = MediaType.get("application/json")
@@ -45,7 +45,7 @@ class LoggingInterceptor : Interceptor {
         val requestBody = request.peekContent()
 
         TjenestekallLogger.info(
-            "Request: $callId ($requestId)",
+            "$name-request: $callId ($requestId)",
             mapOf(
                 "url" to request.url().toString(),
                 "headers" to request.headers().names().joinToString(", "),
@@ -56,7 +56,7 @@ class LoggingInterceptor : Interceptor {
         val response: Response = runCatching { chain.proceed(request) }
             .onFailure { exception ->
                 TjenestekallLogger.error(
-                    "Response-error: $callId ($requestId)",
+                    "$name-response-error: $callId ($requestId)",
                     mapOf(
                         "exception" to exception
                     )
@@ -68,7 +68,7 @@ class LoggingInterceptor : Interceptor {
 
         if (response.code() in 200..299) {
             TjenestekallLogger.info(
-                "Response: $callId ($requestId)",
+                "$name-response: $callId ($requestId)",
                 mapOf(
                     "status" to "${response.code()} ${response.message()}",
                     "body" to responseBody
@@ -76,7 +76,7 @@ class LoggingInterceptor : Interceptor {
             )
         } else {
             TjenestekallLogger.error(
-                "Response-error: $callId ($requestId)",
+                "$name-response-error: $callId ($requestId)",
                 mapOf(
                     "status" to "${response.code()} ${response.message()}",
                     "request" to request,

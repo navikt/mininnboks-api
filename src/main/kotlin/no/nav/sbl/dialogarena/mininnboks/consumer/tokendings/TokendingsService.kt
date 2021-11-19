@@ -11,6 +11,7 @@ import io.ktor.client.*
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.Configuration
+import no.nav.sbl.dialogarena.mininnboks.createHttpClient
 import java.time.Instant
 import java.util.*
 
@@ -20,9 +21,10 @@ interface TokendingsService {
 }
 
 class TokendingsServiceImpl(
-    private val httpClient: HttpClient,
-    private val configuration: Configuration
+    private val configuration: Configuration,
+    private val httpClient: HttpClient = createHttpClient("Tokendings")
 ) : TokendingsService {
+
     private val privateRsaKey = RSAKey.parse(configuration.TOKEN_X_PRIVATE_JWK)
     private val tokendingsMetadata: TokendingsConsumer.TokendingsConfigurationMetadata by lazy {
         TokendingsConsumer.fetchMetadata(
