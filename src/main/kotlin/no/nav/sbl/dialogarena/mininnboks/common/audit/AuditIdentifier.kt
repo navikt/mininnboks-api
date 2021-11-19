@@ -6,5 +6,6 @@ enum class AuditIdentifier {
     TYPE,
     JOURNALPOST,
     DOKUMENT,
+    BEHANDLINGSKJEDEID,
     BEHANDLINGSID
 }

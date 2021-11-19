@@ -12,6 +12,7 @@ import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Action.*
 import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Companion.describe
 import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Companion.withAudit
 import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditIdentifier.BEHANDLINGSID
+import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditIdentifier.BEHANDLINGSKJEDEID
 import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.Les
 import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.SendSporsmal
@@ -170,7 +171,7 @@ private fun Route.alleLest(henvendelseService: HenvendelseService) {
     post("/allelest/{behandlingskjedeId}") {
         val behandlingskjedeId = call.parameters["behandlingskjedeId"]
         withSubject(AuthLevel.Level4) { subject ->
-            withAudit(describe(subject, UPDATE, Les, BEHANDLINGSID to call.parameters["behandlingskjedeId"])) {
+            withAudit(describe(subject, UPDATE, Les, BEHANDLINGSKJEDEID to call.parameters["behandlingskjedeId"])) {
                 if (behandlingskjedeId != null) {
                     henvendelseService.merkAlleSomLest(behandlingskjedeId, subject)
                     call.respond(mutableMapOf("traadId" to behandlingskjedeId))
@@ -185,7 +186,7 @@ private fun Route.postByBehandlingsId(henvendelseService: HenvendelseService) {
         val behandlingsId = call.parameters["behandlingsId"]
 
         withSubject(AuthLevel.Level4) { subject ->
-            withAudit(describe(subject, UPDATE, Les, BEHANDLINGSID to call.parameters["behandlingskjedeId"])) {
+            withAudit(describe(subject, UPDATE, Les, BEHANDLINGSID to call.parameters["behandlingsId"])) {
                 if (behandlingsId != null) {
                     henvendelseService.merkSomLest(behandlingsId, subject)
                     call.respond(mapOf("traadId" to behandlingsId))
