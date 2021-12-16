@@ -102,7 +102,7 @@ open class PdlService(
             .getOrThrowWith { PdlException("Kunne ikke utlede adressebeskyttelse", it) }
     }
 
-    suspend fun hentGeografiskTilknytning(subject: Subject): String {
+    suspend fun hentGeografiskTilknytning(subject: Subject): String? {
         return graphqlClient
             .runCatching {
                 execute(
@@ -113,11 +113,10 @@ open class PdlService(
             .map { response -> response.data?.hentGeografiskTilknytning }
             .map { gt ->
                 when (gt?.gtType) {
+                    HentGeografiskTilknytning.GtType.UTLAND -> requireNotNull(gt.gtLand)
                     HentGeografiskTilknytning.GtType.KOMMUNE -> requireNotNull(gt.gtKommune)
                     HentGeografiskTilknytning.GtType.BYDEL -> requireNotNull(gt.gtBydel)
-                    else -> {
-                        throw IllegalStateException("Ukjent GtType: ${gt?.gtType}")
-                    }
+                    else -> null
                 }
             }
             .getOrThrowWith {
