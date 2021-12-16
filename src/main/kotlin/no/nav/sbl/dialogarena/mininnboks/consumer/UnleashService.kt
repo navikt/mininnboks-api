@@ -70,7 +70,7 @@ class UnleashServiceImpl : UnleashService, UnleashSubscriber {
 }
 
 class ByEnvironmentStrategy : Strategy {
-    val ENVIRONMENT_PROPERTY = "APP_ENVIRONMENT_NAME"
+    val ENVIRONMENT_PROPERTY = "APP_ENVIRONMENT"
     override fun getName() = "byEnvironment"
 
     override fun isEnabled(parameters: MutableMap<String, String>?): Boolean {
