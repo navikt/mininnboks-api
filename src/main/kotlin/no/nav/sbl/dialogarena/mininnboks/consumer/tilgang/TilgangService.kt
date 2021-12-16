@@ -1,7 +1,5 @@
 package no.nav.sbl.dialogarena.mininnboks.consumer.tilgang
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.consumer.PersonService
 import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.Adresse
@@ -65,14 +63,11 @@ class TilgangServiceImpl(
         return TilgangDTO(TilgangDTO.Resultat.OK, "")
     }
 
-    override suspend fun hentFolkeregistrertAdresseMedGt(subject: Subject): AdresseDTO = coroutineScope {
-        val gtAsync = async { pdlService.hentGeografiskTilknytning(subject) }
-        val adresserAsync = async { pdlService.hentFolkeregistrertAdresse(subject) }
-
-        val gt = gtAsync.await()
-        val adresser = adresserAsync.await()
+    override suspend fun hentFolkeregistrertAdresseMedGt(subject: Subject): AdresseDTO {
+        val gt = pdlService.hentGeografiskTilknytning(subject)
+        val adresser = pdlService.hentFolkeregistrertAdresse(subject)
 
         val adresseMedGt = adresser?.copy(geografiskTilknytning = gt)
-        AdresseDTO.fromAdresse(adresseMedGt)
+        return AdresseDTO.fromAdresse(adresseMedGt)
     }
 }
