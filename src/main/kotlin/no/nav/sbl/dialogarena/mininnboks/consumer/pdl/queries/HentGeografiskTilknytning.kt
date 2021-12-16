@@ -6,7 +6,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLRequest
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLResult
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLVariables
 
-class HentGeografiskTilknytning(override val variables: Variables) :
+data class HentGeografiskTilknytning(override val variables: Variables) :
     GraphQLRequest<HentGeografiskTilknytning.Variables, HentGeografiskTilknytning.Result> {
     override val query: String = lastQueryFraFil("pdl", "hentGeografiskTilknytning")
     override val expectedReturnType: Class<Result> = Result::class.java

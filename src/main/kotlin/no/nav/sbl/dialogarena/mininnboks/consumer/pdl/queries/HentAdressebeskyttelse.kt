@@ -6,7 +6,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLRequest
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLResult
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLVariables
 
-class HentAdressebeskyttelse(override val variables: Variables) :
+data class HentAdressebeskyttelse(override val variables: Variables) :
     GraphQLRequest<HentAdressebeskyttelse.Variables, HentAdressebeskyttelse.Result> {
     override val query: String = lastQueryFraFil("pdl", "hentAdressebeskyttelse")
     override val expectedReturnType: Class<Result> = Result::class.java

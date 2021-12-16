@@ -67,10 +67,9 @@ class GraphQLClient(
     ): GraphQLResponse<DATA> = externalCall(subject) {
         val callId = MDC.get(MDCConstants.MDC_CALL_ID) ?: IdUtils.generateId()
         val requestId = IdUtils.generateId()
-        val tjenesteKallHeader = "${config.tjenesteNavn}-request: $callId ($requestId)"
         try {
             TjenestekallLogger.info(
-                tjenesteKallHeader,
+                "${config.tjenesteNavn}-request: $callId ($requestId)",
                 mapOf(
                     "subject" to subject.uid,
                     "request" to request
@@ -96,15 +95,15 @@ class GraphQLClient(
             )
 
             if (response.errors?.isNotEmpty() == true) {
-                TjenestekallLogger.error(tjenesteKallHeader, tjenestekallFelter)
+                TjenestekallLogger.error("${config.tjenesteNavn}-response-error: $callId ($requestId)", tjenestekallFelter)
                 val errorMessages = response.errors.joinToString(", ") { it.message }
                 throw Exception(errorMessages)
             }
-            TjenestekallLogger.info(tjenesteKallHeader, tjenestekallFelter)
+            TjenestekallLogger.info("${config.tjenesteNavn}-response: $callId ($requestId)", tjenestekallFelter)
 
             return@externalCall response
         } catch (exception: Exception) {
-            TjenestekallLogger.error(tjenesteKallHeader, mapOf("exception" to exception))
+            TjenestekallLogger.error("${config.tjenesteNavn}-response-error: $callId ($requestId)", mapOf("exception" to exception))
             throw exception
         }
     }

@@ -5,7 +5,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLRequest
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLResult
 import no.nav.sbl.dialogarena.mininnboks.consumer.GraphQLVariables
 
-class HentFolkeregistrertAdresse(override val variables: Variables) :
+data class HentFolkeregistrertAdresse(override val variables: Variables) :
     GraphQLRequest<HentFolkeregistrertAdresse.Variables, HentFolkeregistrertAdresse.Result> {
     override val query: String = lastQueryFraFil("pdl", "hentFolkeregistrertAdresse")
     override val expectedReturnType: Class<Result> = Result::class.java
