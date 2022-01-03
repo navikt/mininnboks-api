@@ -4,6 +4,7 @@ import no.nav.common.utils.EnvironmentUtils
 import no.nav.sbl.dialogarena.mininnboks.TestUtils
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelsetype
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Temagruppe
 import no.nav.sbl.dialogarena.mininnboks.provider.LinkService
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
@@ -73,4 +74,5 @@ private fun setup() {
     EnvironmentUtils.setProperty(LinkService.SAKSOVERSIKT_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
     EnvironmentUtils.setProperty(LinkService.TEMAVELGER_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
     EnvironmentUtils.setProperty(LinkService.BRUKERPROFIL_LINK_PROPERTY, "/", EnvironmentUtils.Type.PUBLIC)
+    EnvironmentUtils.setProperty(Temagruppe.GODKJENTE_TEMAGRUPPER_PROPERTY, "ARBD", EnvironmentUtils.Type.PUBLIC)
 }

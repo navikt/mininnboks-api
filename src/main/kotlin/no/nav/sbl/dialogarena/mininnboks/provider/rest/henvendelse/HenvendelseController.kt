@@ -130,7 +130,7 @@ private fun Route.sporsmaldirekte(
             withAudit(describe(subject, CREATE, SendSporsmal)) {
                 if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
                     val sporsmal = call.receive(Sporsmal::class)
-                    val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+                    val henvendelse = lagHenvendelse(tilgangService, unleashService, subject, sporsmal)
                     val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
                     call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
                 } else {
@@ -156,7 +156,7 @@ private fun Route.sporsmal(
             withAudit(describe(subject, CREATE, SendSporsmal)) {
                 if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
                     val sporsmal = call.receive(Sporsmal::class)
-                    val henvendelse = lagHenvendelse(tilgangService, subject, sporsmal)
+                    val henvendelse = lagHenvendelse(tilgangService, unleashService, subject, sporsmal)
                     val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
                     call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
                 } else {
@@ -221,9 +221,17 @@ private fun Route.getId(henvendelseService: HenvendelseService) {
     }
 }
 
-suspend fun lagHenvendelse(tilgangService: TilgangService, subject: Subject, sporsmal: Sporsmal): Henvendelse {
+suspend fun lagHenvendelse(
+    tilgangService: TilgangService,
+    unleashService: UnleashService,
+    subject: Subject,
+    sporsmal: Sporsmal
+): Henvendelse {
+    val oksosAdressesok = unleashService.isEnabled(UnleashService.Toggles.oksosAdressesok)
     assertFritekst(sporsmal.fritekst)
-    assertOverstyrtGt(sporsmal)
+    if (oksosAdressesok) {
+        assertOverstyrtGt(sporsmal)
+    }
     assertTemagruppeTilgang(tilgangService, subject, sporsmal.temagruppe)
     return Henvendelse(
         fritekst = sporsmal.fritekst,

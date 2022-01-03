@@ -124,3 +124,5 @@ spec:
       value: "https://api-gw-q1.oera.no/safselvbetjening"
     - name: SAF_CLIENT_ID
       value: "dev-fss:teamdokumenthandtering:safselvbetjening"
+    - name: GODKJENTE_TEMAGRUPPER
+      value: "ARBD,HELSE,FMLI,FDAG,HJLPM,BIL,ORT_HJE,PENS,UFRT,OVRG,OKSOS"

@@ -19,6 +19,7 @@ interface UnleashService : HealthCheck {
     object Toggles {
         val stengSTO = FeatureToggle("modia.innboks.steng-sto")
         val brukerSalesforce = FeatureToggle("modia.innboks.bruker-salesforce-dialoger")
+        val oksosAdressesok = FeatureToggle("modia.innboks.oksos-adressesok")
     }
     fun isEnabled(toggleName: FeatureToggle): Boolean
     fun isEnabled(toggleName: FeatureToggle, context: UnleashContext): Boolean
@@ -69,7 +70,7 @@ class UnleashServiceImpl : UnleashService, UnleashSubscriber {
 }
 
 class ByEnvironmentStrategy : Strategy {
-    val ENVIRONMENT_PROPERTY = "APP_ENVIRONMENT_NAME"
+    val ENVIRONMENT_PROPERTY = "APP_ENVIRONMENT"
     override fun getName() = "byEnvironment"
 
     override fun isEnabled(parameters: MutableMap<String, String>?): Boolean {

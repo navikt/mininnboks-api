@@ -167,6 +167,6 @@ class ServiceConfig(val configuration: Configuration) {
     }
 
     private fun tilgangService(pdlService: PdlService): TilgangService {
-        return TilgangServiceImpl(pdlService, personService)
+        return TilgangServiceImpl(pdlService)
     }
 }
