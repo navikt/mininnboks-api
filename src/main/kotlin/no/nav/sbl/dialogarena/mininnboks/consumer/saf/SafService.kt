@@ -157,7 +157,7 @@ class SafServiceImpl(
                         throw WebStatusException(cause.response.status, cause.response.status.description)
                     }
                     else -> {
-                        throw WebStatusException(HttpStatusCode.InternalServerError, "Klarte ikke å hente dokument. $journalpostId $dokumentId")
+                        throw WebStatusException(HttpStatusCode.InternalServerError, "Klarte ikke å hente dokument. $journalpostId $dokumentId", cause)
                     }
                 }
             }.getOrThrow()
