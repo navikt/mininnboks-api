@@ -1,57 +1,38 @@
 package no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse
 
 import io.ktor.application.*
-import io.ktor.features.*
 import io.ktor.http.*
-import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import no.nav.common.auth.subject.Subject
 import no.nav.sbl.dialogarena.mininnboks.AuthLevel
-import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Action.*
+import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Action.READ
+import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Action.UPDATE
 import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Companion.describe
 import no.nav.sbl.dialogarena.mininnboks.common.audit.Audit.Companion.withAudit
 import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditIdentifier.BEHANDLINGSID
 import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditIdentifier.BEHANDLINGSKJEDEID
 import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.Henvendelse
 import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.Les
-import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.SendSporsmal
-import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditResources.Companion.SendSvar
 import no.nav.sbl.dialogarena.mininnboks.consumer.HenvendelseService
-import no.nav.sbl.dialogarena.mininnboks.consumer.RateLimiterApi
-import no.nav.sbl.dialogarena.mininnboks.consumer.UnleashService
-import no.nav.sbl.dialogarena.mininnboks.consumer.domain.*
-import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangDTO
-import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Henvendelse
+import no.nav.sbl.dialogarena.mininnboks.consumer.domain.Traad
 import no.nav.sbl.dialogarena.mininnboks.withSubject
 import org.apache.cxf.binding.soap.SoapFault
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.*
 import javax.xml.ws.soap.SOAPFaultException
 
 val logger: Logger = LoggerFactory.getLogger("mininnboks.henvendelseController")
 
 fun Route.henvendelseController(
-    henvendelseService: HenvendelseService,
-    tilgangService: TilgangService,
-    rateLimiterApi: RateLimiterApi,
-    unleashService: UnleashService
+    henvendelseService: HenvendelseService
 ) {
     route("/traader") {
         hentAlleTraader(henvendelseService)
-
         getId(henvendelseService)
-
         postByBehandlingsId(henvendelseService)
-
         alleLest(henvendelseService)
-
-        sporsmal(tilgangService, henvendelseService, rateLimiterApi, unleashService)
-
-        sporsmaldirekte(tilgangService, henvendelseService, rateLimiterApi, unleashService)
-
-        svar(henvendelseService, unleashService)
     }
 }
 
@@ -63,105 +44,9 @@ private fun Route.hentAlleTraader(henvendelseService: HenvendelseService) {
                 val traader: Map<String?, List<Henvendelse>> = henvendelser.groupBy { it.traadId }
                 call.respond(
                     traader.values
-                        .map { list: List<Henvendelse> -> filtrerDelsvar(list) }
                         .map { meldinger: List<Henvendelse> -> Traad(meldinger) }
                         .sortedWith(Traad.NYESTE_FORST)
                 )
-            }
-        }
-    }
-}
-
-private fun Route.svar(henvendelseService: HenvendelseService, unleashService: UnleashService) {
-    post("/svar") {
-        if (unleashService.isEnabled(UnleashService.Toggles.stengSTO)) {
-            call.respond(HttpStatusCode.NotAcceptable)
-            return@post
-        }
-        withSubject(AuthLevel.Level4) { subject ->
-            val svar = call.receive(Svar::class)
-            withAudit(describe(subject, CREATE, SendSvar, BEHANDLINGSID to svar.traadId)) {
-                assertFritekst(svar.fritekst, 2500)
-                val traad = hentTraad(henvendelseService, svar.traadId, subject)
-                if (traad == null) {
-                    call.respond(HttpStatusCode.NotFound)
-                } else {
-                    if (!traad.kanBesvares) {
-                        call.respond(HttpStatusCode.NotAcceptable)
-                    } else {
-                        val henvendelse = createHenvendelse(svar, traad)
-                        val response = henvendelseService.sendSvar(henvendelse, subject)
-                        call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
-                    }
-                }
-            }
-        }
-    }
-}
-
-private fun createHenvendelse(svar: Svar, traad: Traad): Henvendelse {
-    return Henvendelse(
-        fritekst = svar.fritekst,
-        temagruppe = traad.nyeste?.temagruppe,
-        traadId = svar.traadId,
-        eksternAktor = traad.nyeste?.eksternAktor,
-        brukersEnhet = traad.eldste?.brukersEnhet,
-        tilknyttetEnhet = traad.nyeste?.tilknyttetEnhet,
-        type = Henvendelsetype.SVAR_SBL_INNGAAENDE,
-        opprettet = Date(),
-        lestDato = Date(),
-        erTilknyttetAnsatt = traad.nyeste?.erTilknyttetAnsatt,
-        kontorsperreEnhet = traad.nyeste?.kontorsperreEnhet
-    )
-}
-
-private fun Route.sporsmaldirekte(
-    tilgangService: TilgangService,
-    henvendelseService: HenvendelseService,
-    rateLimiterApi: RateLimiterApi,
-    unleashService: UnleashService
-) {
-    post("/sporsmaldirekte") {
-        if (unleashService.isEnabled(UnleashService.Toggles.stengSTO)) {
-            call.respond(HttpStatusCode.NotAcceptable)
-            return@post
-        }
-        withSubject(AuthLevel.Level4) { subject ->
-            withAudit(describe(subject, CREATE, SendSporsmal)) {
-                if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
-                    val sporsmal = call.receive(Sporsmal::class)
-                    val henvendelse = lagHenvendelse(tilgangService, unleashService, subject, sporsmal)
-                    val response = henvendelseService.stillSporsmalDirekte(henvendelse, subject)
-                    call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
-                } else {
-                    call.respond(HttpStatusCode.TooManyRequests, "Maks grense for å sende spørsmålet er nådd")
-                }
-            }
-        }
-    }
-}
-
-private fun Route.sporsmal(
-    tilgangService: TilgangService,
-    henvendelseService: HenvendelseService,
-    rateLimiterApi: RateLimiterApi,
-    unleashService: UnleashService
-) {
-    post("/sporsmal") {
-        if (unleashService.isEnabled(UnleashService.Toggles.stengSTO)) {
-            call.respond(HttpStatusCode.NotAcceptable)
-            return@post
-        }
-        withSubject(AuthLevel.Level4) { subject ->
-            withAudit(describe(subject, CREATE, SendSporsmal)) {
-                if (rateLimiterApi.oppdatereRateLimiter(subject.ssoToken.token)) {
-                    val sporsmal = call.receive(Sporsmal::class)
-                    val henvendelse = lagHenvendelse(tilgangService, unleashService, subject, sporsmal)
-                    val response = henvendelseService.stillSporsmal(henvendelse, sporsmal.overstyrtGt, subject)
-                    call.respond(HttpStatusCode.Created, NyHenvendelseResultat(response.behandlingsId))
-                } else {
-                    call.respond(HttpStatusCode.TooManyRequests, "Maks grense for å sende spørsmålet er nådd")
-                }
             }
         }
     }
@@ -210,8 +95,7 @@ private fun Route.getId(henvendelseService: HenvendelseService) {
                     val traad = hentTraad(henvendelseService, id, subject)
 
                     if (traad != null) {
-                        val filtrertTraad = Traad(filtrerDelsvar(traad.meldinger))
-                        call.respond(filtrertTraad)
+                        call.respond(traad)
                     } else {
                         call.respond(HttpStatusCode.NotFound)
                     }
@@ -219,50 +103,6 @@ private fun Route.getId(henvendelseService: HenvendelseService) {
             }
         }
     }
-}
-
-suspend fun lagHenvendelse(
-    tilgangService: TilgangService,
-    unleashService: UnleashService,
-    subject: Subject,
-    sporsmal: Sporsmal
-): Henvendelse {
-    val oksosAdressesok = unleashService.isEnabled(UnleashService.Toggles.oksosAdressesok)
-    assertFritekst(sporsmal.fritekst)
-    if (oksosAdressesok) {
-        assertOverstyrtGt(sporsmal)
-    }
-    assertTemagruppeTilgang(tilgangService, subject, sporsmal.temagruppe)
-    return Henvendelse(
-        fritekst = sporsmal.fritekst,
-        temagruppe = sporsmal.temagruppe,
-        type = Henvendelsetype.SPORSMAL_SKRIFTLIG
-    )
-}
-
-suspend fun assertTemagruppeTilgang(tilgangService: TilgangService, subject: Subject, temagruppe: Temagruppe) {
-    if (!Temagruppe.GODKJENTE_FOR_INNGAAENDE_SPORSMAAL.contains(temagruppe)) {
-        throw BadRequestException("Innsending på temagruppe er ikke godkjent")
-    }
-    if (temagruppe == Temagruppe.OKSOS && !harTilgangTilKommunalInnsending(tilgangService, subject)) {
-        throw BadRequestException("Bruker har ikke lov til å sende inn henvendelse på temagruppe OKSOS.")
-    }
-}
-
-suspend fun harTilgangTilKommunalInnsending(tilgangService: TilgangService, subject: Subject): Boolean {
-    return TilgangDTO.Resultat.OK == tilgangService.harTilgangTilKommunalInnsending(subject).resultat
-}
-
-fun filtrerDelsvar(traad: List<Henvendelse>): List<Henvendelse> {
-    return if (traadHarIkkeSkriftligSvarFraNAV(traad)) {
-        traad.filter { henvendelse -> henvendelse.type != Henvendelsetype.DELVIS_SVAR_SKRIFTLIG }
-    } else {
-        traad
-    }
-}
-
-fun traadHarIkkeSkriftligSvarFraNAV(traad: List<Henvendelse?>?): Boolean {
-    return traad?.filter { henvendelse -> henvendelse?.type == Henvendelsetype.SVAR_SKRIFTLIG }.isNullOrEmpty()
 }
 
 suspend fun hentTraad(henvendelseService: HenvendelseService, id: String, subject: Subject): Traad? {
@@ -282,33 +122,5 @@ suspend fun hentTraad(henvendelseService: HenvendelseService, id: String, subjec
     } catch (e: Exception) {
         logger.error("Uforventet feil $e.message")
         null
-    }
-}
-
-class NyHenvendelseResultat(val behandlingsId: String?)
-
-fun assertFritekst(fritekst: String) {
-    assertFritekst(fritekst, 1000)
-}
-
-fun assertOverstyrtGt(sporsmal: Sporsmal) {
-    if (sporsmal.temagruppe == Temagruppe.OKSOS && sporsmal.overstyrtGt.isNullOrBlank()) {
-        throw BadRequestException("overstyrtGT må være definert ved innsending på OKSOS")
-    } else if (sporsmal.temagruppe != Temagruppe.OKSOS && !sporsmal.overstyrtGt.isNullOrBlank()) {
-        throw BadRequestException("overstyrtGT må være udefinert ved innsending på ${sporsmal.temagruppe}")
-    }
-}
-
-fun assertFritekst(fritekst: String?, maxLengde: Int) {
-    when {
-        fritekst == null -> {
-            throw BadRequestException("Fritekst må være sendt med")
-        }
-        fritekst.trim().isEmpty() -> {
-            throw BadRequestException("Fritekst må inneholde tekst")
-        }
-        fritekst.trim().length > maxLengde -> {
-            throw BadRequestException("Fritekst kan ikke være lengre enn $maxLengde tegn")
-        }
     }
 }

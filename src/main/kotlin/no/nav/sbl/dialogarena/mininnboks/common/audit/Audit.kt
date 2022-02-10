@@ -3,11 +3,12 @@ package no.nav.sbl.dialogarena.mininnboks.common.audit
 import io.ktor.application.*
 import io.ktor.util.pipeline.*
 import no.nav.common.auth.subject.Subject
-import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditIdentifier.*
+import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditIdentifier.DENY_REASON
+import no.nav.sbl.dialogarena.mininnboks.common.audit.AuditIdentifier.FAIL_REASON
 import org.slf4j.LoggerFactory
-import java.util.*
 
 private val tjenestekallLogg = LoggerFactory.getLogger("SecureLog")
+
 class Audit {
     open class AuditResource(val resource: String)
     enum class Action {
@@ -42,11 +43,19 @@ class Audit {
     }
 
     companion object {
-        fun describe(subject: Subject?, action: Action, resourceType: AuditResource, vararg identifiers: Pair<AuditIdentifier, String?>): AuditDescriptor<Any> {
+        fun describe(
+            subject: Subject?,
+            action: Action,
+            resourceType: AuditResource,
+            vararg identifiers: Pair<AuditIdentifier, String?>
+        ): AuditDescriptor<Any> {
             return Descriptor(subject, action, resourceType, identifiers)
         }
 
-        suspend fun PipelineContext<Unit, ApplicationCall>.withAudit(descriptor: AuditDescriptor<Any>, block: suspend PipelineContext<Unit, ApplicationCall>.() -> Unit) {
+        suspend fun PipelineContext<Unit, ApplicationCall>.withAudit(
+            descriptor: AuditDescriptor<Any>,
+            block: suspend PipelineContext<Unit, ApplicationCall>.() -> Unit
+        ) {
             val scope = this
             try {
                 block(scope)
@@ -57,7 +66,12 @@ class Audit {
             }
         }
 
-        private fun logInternal(subject: Subject?, action: Action, resourceType: AuditResource, identifiers: Array<out Pair<AuditIdentifier, String?>>) {
+        private fun logInternal(
+            subject: Subject?,
+            action: Action,
+            resourceType: AuditResource,
+            identifiers: Array<out Pair<AuditIdentifier, String?>>
+        ) {
             val logline = listOfNotNull(
                 "action='$action'",
                 subject?.let { "subject='${it.uid}'" },

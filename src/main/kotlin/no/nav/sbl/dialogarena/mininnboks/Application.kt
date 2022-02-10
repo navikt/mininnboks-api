@@ -52,7 +52,6 @@ private fun loadVaultSecrets() {
 
 private fun loadApigwKeys() {
     EnvironmentUtils.setProperty(STS_APIKEY, getApigwKey("security-token-service-token"), EnvironmentUtils.Type.SECRET)
-    EnvironmentUtils.setProperty(PDL_API_APIKEY, getApigwKey("pdl-api"), EnvironmentUtils.Type.SECRET)
     EnvironmentUtils.setProperty(SAF_GRAPHQL_API_APIKEY, getApigwKey("saf-graphql"), EnvironmentUtils.Type.SECRET)
     EnvironmentUtils.setProperty(SAF_REST_API_APIKEY, getApigwKey("saf-rest"), EnvironmentUtils.Type.SECRET)
 }

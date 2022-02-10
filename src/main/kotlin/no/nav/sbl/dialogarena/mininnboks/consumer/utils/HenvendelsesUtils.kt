@@ -143,10 +143,6 @@ object HenvendelsesUtils {
         return StringEscapeUtils.unescapeHtml(clean).replace(LINE_REPLACEMENT_STRING.toRegex(), LINE_BREAK)
     }
 
-    fun fjernHardeMellomrom(tekst: String?): String {
-        return tekst?.replace("[\\u00a0\\u2007\\u202f]".toRegex(), " ").toString()
-    }
-
     private fun statusTekst(henvendelse: Henvendelse, xmlMelding: XMLMelding): String { // NOSONAR
         if (!skalVisesTilBruker(henvendelse.type)) {
             return ""
