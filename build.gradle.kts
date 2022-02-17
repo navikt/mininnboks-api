@@ -54,11 +54,9 @@ dependencies {
     implementation("com.nimbusds:oauth2-oidc-sdk:6.23")
     implementation("no.nav.tjenestespesifikasjoner:dialogarena-behandlingsinformasjon:$tjenestespec_version")
     implementation("no.nav.tjenestespesifikasjoner:henvendelse-informasjon-v2:$tjenestespec_version")
-    implementation("no.nav.tjenestespesifikasjoner:send-inn-henvendelse:$tjenestespec_version")
     implementation("no.nav.tjenestespesifikasjoner:innsyn-henvendelse:$tjenestespec_version")
     implementation("io.micrometer:micrometer-registry-prometheus:1.5.5")
     implementation("com.github.ben-manes.caffeine:caffeine:3.0.4")
-    implementation("no.nav.tjenestespesifikasjoner:person-v3-tjenestespesifikasjon:$tjenestespec_version")
     implementation("com.sun.xml.ws:jaxws-ri:2.3.3")
 
     // Ktor

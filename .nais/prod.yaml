@@ -39,8 +39,6 @@ spec:
       mountPath: /var/run/secrets/nais.io/srvmininnboks
     - kvPath: /apikey/appdynamics/prod
       mountPath: /var/run/secrets/nais.io/vault
-    - kvPath: /apikey/apigw/prod/pdl-api/mininnboks-api
-      mountPath: /var/run/secrets/nais.io/apigw/pdl-api
     - kvPath: /apikey/apigw/prod/security-token-service-token/mininnboks-api
       mountPath: /var/run/secrets/nais.io/apigw/security-token-service-token
     - kvPath: /apikey/apigw/prod/graphql/mininnboks-api
@@ -83,37 +81,13 @@ spec:
       value: "https://tjenester.nav.no/brukerprofil/"
     - name: SAKSOVERSIKT_LINK_URL
       value: "https://tjenester.nav.no/saksoversikt"
-    - name: PDL_API_URL
-      value: "https://api-gw.oera.no/pdl-api"
 #     Properties nedenfor brukes egentlig ikke. Men appen har en avhengighet mot disse tjenestene via service-gateway.
-    - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_SECURITYTOKEN
-      value: "SAML"
     - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_ENDPOINTURL
       value: "https://modapp.adeo.no/henvendelse/services/domene.Brukerdialog/Henvendelse_v2"
-    - name: DOMENE_BRUKERDIALOG_HENVENDELSE_V2_WSDLURL
-      value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/henvendelse-informasjon-v2/0.6/henvendelse-informasjon-v2-0.6.zip"
-    - name: VIRKSOMHET_DISKRESJONSKODE_V1_SECURITYTOKEN
-      value: "SAML"
-    - name: VIRKSOMHET_DISKRESJONSKODE_V1_ENDPOINTURL
-      value: "https://wasapp.adeo.no/tpsws/Diskresjonskode"
-    - name: VIRKSOMHET_DISKRESJONSKODE_V1_WSDLURL
-      value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/tjenester/pip/nav-pip-diskresjonskode-v1-tjenestespesifikasjon/1.2.3/nav-pip-diskresjonskode-v1-tjenestespesifikasjon-1.2.3.zip"
-    - name: DOMENE_BRUKERDIALOG_SENDINNHENVENDELSE_V1_ENDPOINTURL
-      value: "https://modapp.adeo.no/henvendelse/services/domene.Brukerdialog/SendInnHenvendelse_v1"
-    - name: DOMENE_BRUKERDIALOG_SENDINNHENVENDELSE_V1_WSDLURL
-      value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/send-inn-henvendelse/0.3/send-inn-henvendelse-0.3.zip"
-    - name: DOMENE_BRUKERDIALOG_SENDINNHENVENDELSE_V1_SECURITYTOKEN
-      value: "SAML"
-    - name: DOMENE_BRUKERDIALOG_INNSYNHENVENDELSE_V1_SECURITYTOKEN
-      value: "SAML"
     - name: DOMENE_BRUKERDIALOG_INNSYNHENVENDELSE_V1_ENDPOINTURL
       value: "https://modapp.adeo.no/henvendelse/services/domene.Brukerdialog/InnsynHenvendelse_v1"
-    - name: DOMENE_BRUKERDIALOG_INNSYNHENVENDELSE_V1_WSDLURL
-      value: "http://maven.adeo.no/nexus/content/groups/public/no/nav/sbl/dialogarena/innsyn-henvendelse/0.3/innsyn-henvendelse-0.3.zip"
     - name: CXF_SECURE_LOG
       value: "enabled"
-    - name: RATE_LIMITER_URL
-      value: "http://rate-limiter.personoversikt.svc.nais.local"
     - name: UNLEASH_API_URL
       value: "https://unleash.nais.io/api"
     - name: SAF_API_URL

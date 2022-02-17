@@ -24,7 +24,6 @@ import no.nav.sbl.dialogarena.mininnboks.provider.rest.dokument.dokumentControll
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.henvendelse.henvendelseController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.naisRoutes
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.resources.resourcesController
-import no.nav.sbl.dialogarena.mininnboks.provider.rest.tilgang.tilgangController
 import no.nav.sbl.dialogarena.mininnboks.provider.rest.ubehandletmelding.sporsmalController
 import org.slf4j.event.Level
 import no.nav.sbl.dialogarena.mininnboks.JwtUtil.Companion as JwtUtil
@@ -42,9 +41,8 @@ fun createHttpServer(
     routing {
         authenticate {
             sporsmalController(serviceConfig.henvendelseService)
-            henvendelseController(serviceConfig.henvendelseService, serviceConfig.tilgangService, serviceConfig.rateLimiterService, serviceConfig.unleashService)
+            henvendelseController(serviceConfig.henvendelseService)
             dokumentController(serviceConfig.safService)
-            tilgangController(serviceConfig.tilgangService)
 
             get("/tokendings") {
                 val subject = requireNotNull(this.call.authentication.principal<SubjectPrincipal>())

@@ -64,7 +64,7 @@ class SystemuserTokenProviderImpl internal constructor(
 
     private suspend fun refreshToken() {
         val clientCredentials = fetchSystemUserAccessToken()
-        this.accessToken = JWTParser.parse(clientCredentials?.accessToken)
+        this.accessToken = JWTParser.parse(clientCredentials.accessToken)
     }
 
     private fun tokenIsSoonExpired(): Boolean {

@@ -3,7 +3,6 @@ package no.nav.sbl.dialogarena.mininnboks.consumer.tokendings
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.Expiry
-import io.ktor.client.*
 import kotlinx.coroutines.runBlocking
 import no.nav.common.health.selftest.SelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.Configuration
@@ -19,6 +18,7 @@ class CachingTokendingsServiceImpl(
         val subject: String,
         val targetApp: String
     )
+
     data class TokendingsCacheValue(
         val accessToken: String,
         val expiresInSeconds: Long

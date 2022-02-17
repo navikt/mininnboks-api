@@ -12,19 +12,14 @@ import no.nav.sbl.dialogarena.mininnboks.PortUtils.portTypeSelfTestCheck
 import no.nav.sbl.dialogarena.mininnboks.common.DiskCheck
 import no.nav.sbl.dialogarena.mininnboks.common.TruststoreCheck
 import no.nav.sbl.dialogarena.mininnboks.consumer.*
-import no.nav.sbl.dialogarena.mininnboks.consumer.pdl.PdlService
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.SafService
 import no.nav.sbl.dialogarena.mininnboks.consumer.saf.SafServiceImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider
 import no.nav.sbl.dialogarena.mininnboks.consumer.sts.SystemuserTokenProvider.Companion.fromTokenEndpoint
-import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangService
-import no.nav.sbl.dialogarena.mininnboks.consumer.tilgang.TilgangServiceImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.CachingTokendingsServiceImpl
 import no.nav.sbl.dialogarena.mininnboks.consumer.tokendings.TokendingsService
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.innsynhenvendelse.InnsynHenvendelsePortType
-import no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType
 import no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType
-import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
 import org.slf4j.MDC
 import java.util.*
 
@@ -34,24 +29,10 @@ class ServiceConfig(val configuration: Configuration) {
         ByEnvironmentStrategy()
     )
 
-    private val personV3 = portBuilder(
-        PersonV3::class.java,
-        configuration.PERSON_V_3_URL,
-        "",
-        stsConfig()
-    )
-
     val henvendelsePortType = portBuilder(
         HenvendelsePortType::class.java,
         configuration.HENVENDELSE_WS_URL,
         "classpath:wsdl/Henvendelse.wsdl",
-        stsConfig()
-    )
-
-    val sendInnHenvendelsePortType = portBuilder(
-        SendInnHenvendelsePortType::class.java,
-        configuration.SEND_INN_HENVENDELSE_WS_URL,
-        "classpath:wsdl/SendInnHenvendelse.wsdl",
         stsConfig()
     )
 
@@ -62,41 +43,27 @@ class ServiceConfig(val configuration: Configuration) {
         stsConfig()
     )
 
-    val personService = PersonService.Default(personV3.port)
     val henvendelseService = henvendelseService()
     val stsService = systemUserTokenProvider()
-    val pdlService = pdlService(stsService)
     val safService: SafService = SafServiceImpl(
         tokendings = tokendingsService,
         configuration = configuration
     )
-    val tilgangService = tilgangService(pdlService)
-    val rateLimiterService = RateLimiterApiImpl(configuration.RATE_LIMITER_URL)
 
-    val selfTestCheckStsService: SelfTestCheck = SelfTestCheck("Sjekker at systembruker kan hente token fra STS", true) {
-        runBlocking {
-            MDC.put(MDCConstants.MDC_CALL_ID, UUID.randomUUID().toString())
-            withContext(MDCContext()) {
-                checkHealthStsService()
+    val selfTestCheckStsService: SelfTestCheck =
+        SelfTestCheck("Sjekker at systembruker kan hente token fra STS", true) {
+            runBlocking {
+                MDC.put(MDCConstants.MDC_CALL_ID, UUID.randomUUID().toString())
+                withContext(MDCContext()) {
+                    checkHealthStsService()
+                }
             }
-        }
-    }
-
-    val selfTestCheckPersonV3: SelfTestCheck =
-        portTypeSelfTestCheck("personV3") {
-            personV3.pingPort.ping()
         }
 
     val selfTestCheckHenvendelse: SelfTestCheck = portTypeSelfTestCheck(
         "no.nav.tjeneste.domene.brukerdialog.henvendelse.v2.henvendelse.HenvendelsePortType"
     ) {
         henvendelsePortType.pingPort.ping()
-    }
-
-    val selfTestCheckSendInnHenvendelsePortType: SelfTestCheck = portTypeSelfTestCheck(
-        "no.nav.tjeneste.domene.brukerdialog.henvendelse.v1.sendinnhenvendelse.SendInnHenvendelsePortType"
-    ) {
-        sendInnHenvendelsePortType.pingPort.ping()
     }
 
     val selfTestCheckInnsynHenvendelsePortType: SelfTestCheck = portTypeSelfTestCheck(
@@ -106,12 +73,9 @@ class ServiceConfig(val configuration: Configuration) {
     }
 
     val selfTestChecklist = listOf(
-        pdlService.selfTestCheck,
         tokendingsService.selftestCheck,
         selfTestCheckStsService,
-        selfTestCheckPersonV3,
         selfTestCheckHenvendelse,
-        selfTestCheckSendInnHenvendelsePortType,
         selfTestCheckInnsynHenvendelsePortType,
         DiskCheck.asSelftestCheck(),
         TruststoreCheck.asSelftestCheck(),
@@ -138,10 +102,7 @@ class ServiceConfig(val configuration: Configuration) {
 
         return HenvendelseService.Default(
             henvendelsePortType.port,
-            sendInnHenvendelsePortType.port,
-            innsynHenvendelsePortType.port,
-            personService,
-            unleashService
+            innsynHenvendelsePortType.port
         )
     }
 
@@ -160,13 +121,5 @@ class ServiceConfig(val configuration: Configuration) {
             configuration.FSS_SRVMININNBOKS_PASSWORD,
             configuration.STS_APIKEY
         )
-    }
-
-    private fun pdlService(stsService: SystemuserTokenProvider): PdlService {
-        return PdlService(stsService, configuration)
-    }
-
-    private fun tilgangService(pdlService: PdlService): TilgangService {
-        return TilgangServiceImpl(pdlService)
     }
 }
