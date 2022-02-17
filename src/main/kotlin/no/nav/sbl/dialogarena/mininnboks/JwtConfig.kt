@@ -3,6 +3,7 @@ package no.nav.sbl.dialogarena.mininnboks
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
 import com.auth0.jwt.JWT
+import com.auth0.jwt.interfaces.Payload
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
@@ -40,13 +41,16 @@ class JwtUtil {
                 require(credentials.payload.audience.contains(clientId)) { "Audience claim is not correct: $credentials.payload.audience" }
 
                 val token = extractToken(call)
+                val claims = credentials.payload.claims
+                val subject = extractSubject(credentials.payload)
+
                 SubjectPrincipal(
                     Subject(
-                        credentials.payload.subject,
+                        subject,
                         IdentType.EksternBruker,
-                        SsoToken.oidcToken(token, credentials.payload.claims)
+                        SsoToken.oidcToken(token, claims)
                     ),
-                    credentials.payload.claims.getValue("acr").asString()
+                    claims.getValue("acr").asString()
                 )
             } catch (e: Exception) {
                 logger.error("Failed to validate JWT token", e)
@@ -60,7 +64,13 @@ class JwtUtil {
             )
 
         fun extractSubject(token: String): String {
-            return JWT.decode(token).subject
+            return extractSubject(JWT.decode(token))
+        }
+
+        private fun extractSubject(payload: Payload): String {
+            return requireNotNull(payload.getClaim("pid").asString() ?: payload.subject) {
+                "'pid' and 'sub' was missing for token"
+            }
         }
     }
 }
