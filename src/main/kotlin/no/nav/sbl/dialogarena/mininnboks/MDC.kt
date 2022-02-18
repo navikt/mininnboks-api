@@ -7,7 +7,6 @@ import no.nav.common.log.LogFilter
 import no.nav.common.log.MDCConstants
 import no.nav.common.utils.IdUtils
 import no.nav.common.utils.StringUtils
-import org.slf4j.MDC as LogMDC
 
 object MDC {
     // These are stolen from `no.nav.common.log.LogFilter`, but has private visibility in original file
@@ -52,19 +51,9 @@ object MDC {
                 call.request.header(LogFilter.CONSUMER_ID_HEADER_NAME)
             }
 
-            mdc(MDCConstants.MDC_REQUEST_ID) { call ->
+            mdc(MDCConstants.MDC_REQUEST_ID) {
                 IdUtils.generateId()
             }
-        }
-    }
-
-    fun putIfAbsent(key: String, value: String): String {
-        val presentValue = LogMDC.get(key)
-        return if (presentValue == null) {
-            LogMDC.put(key, value)
-            value
-        } else {
-            presentValue
         }
     }
 }

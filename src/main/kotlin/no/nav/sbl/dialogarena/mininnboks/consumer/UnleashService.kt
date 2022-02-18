@@ -17,9 +17,7 @@ import no.nav.sbl.dialogarena.mininnboks.consumer.UnleashService.FeatureToggle
 interface UnleashService : HealthCheck {
     class FeatureToggle(val name: String)
     object Toggles {
-        val stengSTO = FeatureToggle("modia.innboks.steng-sto-backend")
-        val brukerSalesforce = FeatureToggle("modia.innboks.bruker-salesforce-dialoger")
-        val oksosAdressesok = FeatureToggle("modia.innboks.oksos-adressesok")
+        val example = FeatureToggle("mininnboks.example.toggle")
     }
     fun isEnabled(toggleName: FeatureToggle): Boolean
     fun isEnabled(toggleName: FeatureToggle, context: UnleashContext): Boolean

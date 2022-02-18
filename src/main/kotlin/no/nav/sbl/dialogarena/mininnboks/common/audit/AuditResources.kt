@@ -6,8 +6,6 @@ class AuditResources {
         val Dokument = Audit.AuditResource("dokument.dokument")
 
         val Henvendelse = Audit.AuditResource("henvendelse")
-        val SendSvar = Audit.AuditResource("henvendelse.sendsvar")
-        val SendSporsmal = Audit.AuditResource("henvendelse.sendsporsmal")
         val Les = Audit.AuditResource("henvendelse.les")
     }
 }
